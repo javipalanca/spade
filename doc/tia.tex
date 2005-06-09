@@ -1,0 +1,33 @@
+%Cabecera
+\documentclass[12pt,a4paper,spanish]{report}
+\usepackage[latin1]{inputenc}
+\usepackage{babel}
+\usepackage{setspace}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{fancyvrb, moreverb}
+\usepackage[nottoc]{tocbibind}
+\onehalfspacing
+\begin{document}
+
+%Portada
+\title{\Huge{Implementación de \\\textbf{FIP}A \textbf{P}latform on jab\textbf{er}\\(FIPPER)}\\Técnicas de inteligencia artificial 1}
+\author{Aranda Bada, Gustavo\\Palanca Camara, Javier}
+\maketitle
+\tableofcontents
+\listoffigures
+
+\chapter{¿Qué es FIPPER?}
+\appendix
+\chapter{Changelog}
+\include{changelog}
+\include{gpl}
+%Bibliografia
+\begin{thebibliography}{Name YY}
+
+\bibitem[Web de Python]{py} http://www.python.org
+\bibitem[Web de wxWindows]{wx} http://www.wxwindows.org
+
+\end{thebibliography}
+
+\end{document}

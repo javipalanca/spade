@@ -1,0 +1,111 @@
+2004-02-07 20:40  jpalanca
+
+	* message.py, sender.py: los agentes ya se envian mensajes
+
+2004-02-07 19:46  jpalanca
+
+	* kk.py, message.py: classe message mola. usamos xmlstream
+
+2004-02-07 19:44  gusarba
+
+	* test_client.py: "Retoques en el cliente de pruebas para que
+	  registre en el JUD"
+
+2004-02-07 18:54  gusarba
+
+	* xmlcolor.py: "Ahora permitimos formatear raw XML"
+
+2004-02-07 18:31  gusarba
+
+	* xmlcolor.py: "Modulo para presentar XML formateado y coloreado
+	  por consola"
+
+2004-02-07 15:54  gusarba
+
+	* agent.py, kk.py, message.py: "Arreglado un importante fallo de
+	  referencias internas"
+
+2004-02-07 15:40  jpalanca
+
+	* message.py: debug sucks
+
+2004-02-07 15:06  jpalanca
+
+	* kk.py, message.py: esto peta
+
+2004-02-07 14:50  jpalanca
+
+	* kk.py, message.py: actualizo
+
+2004-02-07 12:59  jpalanca
+
+	* Makefile: anyadido Makefile
+
+2004-02-07 12:59  jpalanca
+
+	* ChangeLog, message.py, message.pyc, kk.py: no pillo el bug...
+
+2004-02-06 21:48  jpalanca
+
+	* recv.py, sender.py: anyadidos tests de prueba
+
+2004-02-06 21:48  jpalanca
+
+	* message.py, message.pyc: debuggeando message.py
+
+2004-02-06 21:09  jpalanca
+
+	* iq.py, message.py, test_client.py: message acabada y realizamos
+	  busquedas en JUD
+
+2004-02-06 03:55  corsario
+
+	* doc/: Makefile, gpl.tex, tia.tex: creada doc
+
+2004-02-06 03:15  corsario
+
+	* gui/: AgentGUIApp.py, AgentGUIFrame.py: Creada Interfaz de
+	  Usuario de Control de Agentes de FIPPER
+
+2004-02-04 23:24  gusarba
+
+	* agent.py, envelope.py: Comenzada la implementacion de envelope
+
+2004-02-04 19:36  gusarba
+
+	* agent.py, run-agent.py: Soporte para multiples recursos/servicios
+	  en la conexion del agente
+
+2004-02-04 19:24  gusarba
+
+	* agent.py, message.py, message.pyc, run-agent.py: "Constructor
+	  factorizado"
+
+2004-02-02 00:06  gusarba
+
+	* agent.py: Actualizado agent
+
+2004-02-01 18:52  jpalanca
+
+	* message.py: clase message acabada, creo...
+
+2004-01-31 05:40  jpalanca
+
+	* message.py: inicio de Mensaje
+
+2004-01-31 01:10  jpalanca
+
+	* agent-directory.py, agent.py, fileobj.py, jrpc.py,
+	  mailchecker.py.gz, main.py, megahal.log, megahal.txt, message.py,
+	  message.pyc, offline.xpm, online.xpm, pending.xpm,
+	  pygtkjab.py.gz, pypguijab.py.gz, pyqtjab.py.gz, readme,
+	  test_client.py: Initial revision
+
+2004-01-31 01:10  jpalanca
+
+	* agent-directory.py, agent.py, fileobj.py, jrpc.py,
+	  mailchecker.py.gz, main.py, megahal.log, megahal.txt, message.py,
+	  message.pyc, offline.xpm, online.xpm, pending.xpm,
+	  pygtkjab.py.gz, pypguijab.py.gz, pyqtjab.py.gz, readme,
+	  test_client.py: initial repository
+
