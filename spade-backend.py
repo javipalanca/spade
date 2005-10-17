@@ -19,7 +19,7 @@ def runAgent(configfile, section, agentClass):
 print "Starting SpadePlatform..."
 configfile = ConfigParser.ConfigParser()
 try:
-    configfilename = 'spade.ini'
+    configfilename = '/etc/spade.ini'
     cffile = open(configfilename,'r')
 except IOError:
     print "SPADE requires configuration file, please supply either spade.ini"
