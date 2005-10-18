@@ -8,14 +8,15 @@ from spade import *
 class SpadeBackend:
 
 	def runAgent(self, configfile, section, agentClass):
-	    jid = configfile.get(section,'JID')
-	    passwd = configfile.get(section,'Password')
-	    server = configfile.get(section,'Server')
-	    port = int(configfile.get(section,'Port'))
-	    agent = agentClass(jid, passwd, server, port)
-	    agent.start()
+		jid = configfile.get(section,'JID')
+		passwd = configfile.get(section,'Password')
+		server = configfile.get(section,'Server')
+		port = int(configfile.get(section,'Port'))
+		agent = agentClass(jid, passwd, server, port)
+		#agent.setDaemon(True)
+		agent.start()
+		return agent
     
-
 	def __init__(self, configfilename="/etc/spade/spade.ini"):
 		print "SPADE started."
 		self.configfile = ConfigParser.ConfigParser()
@@ -31,6 +32,7 @@ class SpadeBackend:
 		self.runAgent(self.configfile, "spade", Platform.SpadePlatform)
 		self.runAgent(self.configfile, "ams", AMS.AMS)
 		self.runAgent(self.configfile, "df", DF.DF)
+	
 
 if __name__ ==  "__main__":
 	p = SpadeBackend()

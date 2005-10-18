@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import os, signal
 import sys
 import time
 import ConfigParser
@@ -42,10 +42,10 @@ def main():
   # default settings for play_and_quit.
   if os.name == "posix":
 	 configfilename = "/etc/spade/spade.ini"
-	 jabber = "/etc/spade/jabber.xml"
+	 jabberxml = "/etc/spade/jabber.xml"
   else:
-	 configfilename = "etc\spade.ini"
-	 jabber = "etc\jabber.xml"
+	 configfilename = "etc" + os.sep + "spade.ini"
+	 jabberxml = "etc" + os.sep + "jabber.xml"
 	
 
   for opt, arg in getopt(sys.argv[1:],
@@ -54,7 +54,7 @@ def main():
     if opt in ["-h", "--help"]: print_help()
     elif opt in ["-v", "--version"]: print_version()
     elif opt in ["-c", "--configfile"]: configfilename = arg
-    elif opt in ["-j", "--jabber"]: jabber = arg
+    elif opt in ["-j", "--jabber"]: jabberxml = arg
 
 
   configfile = ConfigParser.ConfigParser()
@@ -63,84 +63,27 @@ def main():
   cffile.close()
 
   jabberpath = configfile.get("Jabber","path")
-  if os.path.exists(jabberpath) and os.path.exists(jabber):
-	os.system(str(jabberpath + "  -c " + jabber + " &"))
+  if os.path.exists(jabberpath) and os.path.exists(jabberxml):
+	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml))
+	#print "PID: " + str(jabberpid)
 
-  time.sleep(2)
-
-  #if os.path.exists("/usr/bin/spade-backend.py") and os.path.exists(configfilename):
-  #	os.system(str( "/usr/bin/spade-backend.py " + configfilename))
-  platform = spade_backend.SpadeBackend(configfilename)
-  platform.start()
-
-  print "OUCH!"
-
-  """  
-  for dir in mainconfig["songdir"].split(os.pathsep):
-    print "Searching for songs in", dir
-    song_list.extend(util.find(dir, ['*.dance', '*.dwi', '*.sm', '*/song.*']))
-  for dir in mainconfig["coursedir"].split(os.pathsep):
-    print "Searching for courses in", dir
-    course_list.extend(util.find(dir, ['*.crs']))
-
-  screen = set_display_mode()
-  
-  pygame.display.set_caption("pydance " + VERSION)
-  pygame.mouse.set_visible(False)
   try:
-    if os.path.exists("/usr/share/pixmaps/pydance.png"):
-      icon = pygame.image.load("/usr/share/pixmaps/pydance.png")
-    else: icon = pygame.image.load(os.path.join(pydance_path, "icon.png"))
-    pygame.display.set_icon(icon)
-  except: pass
+  	time.sleep(2)
 
-  music.load(os.path.join(sound_path, "menu.ogg"))
-  music.play(4, 0.0)
+  	platform = spade_backend.SpadeBackend(configfilename)
+	platform.start()
 
-  songs = load_files(screen, song_list, "songs", SongItem, (False,))
+	while True:
+		time.sleep(1)
+  except KeyboardInterrupt:
+    pass
+ 
+  del platform
 
-  # Construct the song and record dictionaries for courses. These are
-  # necessary because courses identify songs by title and mix, rather
-  # than filename. The recordkey dictionary is needed for player's
-  # picks courses.
-  song_dict = {}
-  record_dict = {}
-  for song in songs:
-    mix = song.info["mix"].lower()
-    title = song.info["title"].lower()
-    if song.info["subtitle"]: title += " " + song.info["subtitle"].lower()
-    if not song_dict.has_key(mix): song_dict[mix] = {}
-    song_dict[mix][title] = song
-    record_dict[song.info["recordkey"]] = song
+  if os.name == "posix":
+  	os.kill(jabberpid, signal.SIGTERM)
+  	time.sleep(2)
 
-  crs = load_files(screen, course_list, "courses", courses.CourseFile,
-                   (song_dict, record_dict))
-  crs.extend(courses.make_players(song_dict, record_dict))
-  records.verify(record_dict)
+  print "Jabber server terminated..."
 
-  # Let the GC clean these up if it needs to.
-  song_list = None
-  course_list = None
-  record_dict = None
-  pad.empty()
-
-  if len(songs) < 1:
-    ErrorMessage(screen,
-                 ("You don't have any songs or step files. Check out "
-                  "http://icculus.org/pyddr/get.php#songs "
-                  "and download some free ones. "
-                  "If you already have some, make sure they're in ") +
-                 mainconfig["songdir"])
-    raise SystemExit("You don't have any songs. Check http://icculus.org/pyddr/get.php#songs .")
-
-  menudriver.do(screen, (songs, crs, screen))
-
-  # Clean up shit.
-  music.stop()
-  pygame.quit()
-  mainconfig.write(os.path.join(rc_path, "pydance.cfg"))
-  # FIXME -- is this option a good idea?
-  if mainconfig["saveinput"]: pad.write(os.path.join(rc_path, "input.cfg"))
-  records.write()
- """
 if __name__ == '__main__': main()

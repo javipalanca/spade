@@ -33,6 +33,7 @@ class MessageReceiver(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
 		self.__messages = MessageList()
+		self.setDaemon(True)
 
 	def __getMessage(self, block, timeout):
 		try:

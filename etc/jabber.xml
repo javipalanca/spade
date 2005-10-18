@@ -389,7 +389,7 @@
       <xdb_file>/usr/local/lib/libjabberdxdbfile.so</xdb_file>
     </load>
     <xdb_file xmlns="jabber:config:xdb_file">
-      <spool><jabberd:cmdline flag='s'>/usr/local/var/spool/jabberd</jabberd:cmdline></spool>
+      <spool><jabberd:cmdline flag='s'>/tmp</jabberd:cmdline></spool>
       <!-- How long should XDB data be kept in memory?
            Default: 3600 seconds. Change to <timeout/> to disable. -->
       <timeout>3600</timeout>
@@ -965,7 +965,7 @@
   <!--
   This specifies the file to store the pid of the process in.
   -->
-  <pidfile>/usr/local/var/run/jabberd/jabber.pid</pidfile>
+  <pidfile>/tmp/jabber.pid</pidfile>
 
 
 </jabber>
