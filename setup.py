@@ -11,5 +11,5 @@ setup(name='SPADE',
       package_dir={'spade': 'spade'},
       packages=['spade'],
       scripts=['spade-rma.py'],
-      data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml'])]
+      data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml', 'etc/rma.glade'])]
      )
