@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import ConfigParser
+from spade-backend import *
 from getopt import getopt
 
 VERSION = "1.9b"
@@ -67,8 +68,10 @@ def main():
 
   time.sleep(2)
 
-  if os.path.exists("/usr/bin/spade-backend.py") and os.path.exists(configfilename):
-	os.system(str( "/usr/bin/spade-backend.py " + configfilename))
+  #if os.path.exists("/usr/bin/spade-backend.py") and os.path.exists(configfilename):
+  #	os.system(str( "/usr/bin/spade-backend.py " + configfilename))
+  platform = SpadeBackend(configfilename)
+  platform.start()
 
   print "OUCH!"
 
