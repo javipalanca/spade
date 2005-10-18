@@ -18,19 +18,19 @@ class SpadeBackend:
 
 	def __init__(self, configfilename="/etc/spade/spade.ini"):
 		print "SPADE started."
-		configfile = ConfigParser.ConfigParser()
+		self.configfile = ConfigParser.ConfigParser()
 		try:
 		    cffile = open(configfilename,'r')
 		except IOError:
 		    print "SPADE requires configuration file, please supply either spade.ini"
 		    sys.exit(1)
-		configfile.readfp(cffile)
+		self.configfile.readfp(cffile)
 		cffile.close()
 
 	def start(self):
-		runAgent(configfile, "spade", Platform.SpadePlatform)
-		runAgent(configfile, "ams", AMS.AMS)
-		runAgent(configfile, "df", DF.DF)
+		self.runAgent(self.configfile, "spade", Platform.SpadePlatform)
+		self.runAgent(self.configfile, "ams", AMS.AMS)
+		self.runAgent(self.configfile, "df", DF.DF)
 
 if __name__ ==  "__main__":
 	p = SpadeBackend()

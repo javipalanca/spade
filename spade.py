@@ -70,7 +70,7 @@ def main():
 
   #if os.path.exists("/usr/bin/spade-backend.py") and os.path.exists(configfilename):
   #	os.system(str( "/usr/bin/spade-backend.py " + configfilename))
-  platform = SpadeBackend(configfilename)
+  platform = spade_backend.SpadeBackend(configfilename)
   platform.start()
 
   print "OUCH!"
