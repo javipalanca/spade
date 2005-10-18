@@ -7,10 +7,13 @@ import gobject
 import pickle
 import sys
 import types
+import time
 from spade import *
 
 #a.func_defaults
 #a.func_code.co_varnames
+
+rmaxml = "/etc/rma.glade"
 
 class rma(Agent.Agent):
 	class GTKWindow:
@@ -23,7 +26,7 @@ class rma(Agent.Agent):
 			
 	class RunAgentWindow(GTKWindow):
 		def __init__(self, mainWin):
-			rma.GTKWindow.__init__(self,"rma.glade","RunAgent")
+			rma.GTKWindow.__init__(self,rmaxml,"RunAgent")
 			self.glade.signal_autoconnect(self)
 			self.win.show()
 			self.mainWin = mainWin
@@ -46,13 +49,13 @@ class rma(Agent.Agent):
 					pass
 			
 			#self.mainWin.on_updateagents_clicked(None)
-			self.win.destroy()		
+			self.win.destroy()
 		def on_cancel_clicked(self, data):
-			self.win.destroy()		
+			self.win.destroy()
 
 	class MainWindow(GTKWindow):
 		def __init__(self, agent):
-			rma.GTKWindow.__init__(self,"rma.glade","MainWindow")
+			rma.GTKWindow.__init__(self,rmaxml,"MainWindow")
 			self.myAgent = agent
 			self.listagents = []
 			self.glade.signal_autoconnect(self)
@@ -85,7 +88,7 @@ class rma(Agent.Agent):
 			self.agentslistwidget.append_column(column)
 			
 			self.agentslistwidget.set_search_column(0)
-			#self.agentslistwidget.set_reorderable(True)	
+			#self.agentslistwidget.set_reorderable(True)
 			self.agentslistwidget.set_headers_clickable(True)
 		
 		def on_sendmessage_clicked(self, data):
@@ -118,7 +121,7 @@ class rma(Agent.Agent):
 	
 	class AIDViewer(GTKWindow):
 		def __init__(self, aid):
-			rma.GTKWindow.__init__(self,"rma.glade","AIDViewer")
+			rma.GTKWindow.__init__(self,rmaxml,"AIDViewer")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.read_aid(aid)
@@ -148,7 +151,7 @@ class rma(Agent.Agent):
 			
 	class AIDEdit(GTKWindow):
 		def __init__(self):
-			rma.GTKWindow.__init__(self,"rma.glade","AIDEdit")
+			rma.GTKWindow.__init__(self,rmaxml,"AIDEdit")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.win.show()
@@ -187,14 +190,14 @@ class rma(Agent.Agent):
 			column = gtk.TreeViewColumn('Resolvers')
 			cell = gtk.CellRendererText()
 			column.pack_start(cell, True)
-			cell.set_property("editable",True)			
+			cell.set_property("editable",True)
 			cell.connect('edited', self.on_edit_cb, self.resolversliststore)
 			column.add_attribute(cell, 'text', 0)
 			resolverslistwidget.append_column(column)
 
 			
 		def on_cancel_clicked(self,data):
-			self.win.destroy()		
+			self.win.destroy()
 		
 		def on_ok_clicked(self,data):
 			self.aid = AID.aid()
@@ -212,11 +215,11 @@ class rma(Agent.Agent):
 		def on_destroy(self, data):
 			self.Closed = True
 	
-	
+
 	
 	class ACLMessageViewer(GTKWindow):
 		def __init__(self, msg):
-			rma.GTKWindow.__init__(self,"rma.glade","ACLMessageViewer")
+			rma.GTKWindow.__init__(self,rmaxml,"ACLMessageViewer")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.read_message(msg)
@@ -262,14 +265,14 @@ class rma(Agent.Agent):
 			self.glade.get_widget("protocol").set_text(str(msg.getProtocol()))
 			
 		def on_close_clicked(self,data):
-			self.win.destroy()		
+			self.win.destroy()
 			
 		def on_view_sender_clicked(self,data):
 			w = rma.AIDViewer(self._msg.getSender())
 			
 	class ACLMessageSend(GTKWindow):
 		def __init__(self, agent):
-			rma.GTKWindow.__init__(self,"rma.glade","ACLMessageSend")
+			rma.GTKWindow.__init__(self,rmaxml,"ACLMessageSend")
 			self.configure_lists()
 			self.glade.signal_autoconnect(self)
 			self.win.show()
@@ -380,7 +383,9 @@ class rma(Agent.Agent):
 			self.myAgent.send(msg)
 			
 
-
-alfred=rma("rma@localhost","secret")
-alfred.start()
+if __name__ == "__main__":
+	rma=rma("rma@localhost","secret")
+	rma.start()
+	while(rma.isAlive()):
+		time.sleep(1)
 

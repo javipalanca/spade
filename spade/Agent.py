@@ -43,16 +43,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #       Registrarse automaticamente o algo..
         #print "auth", name, password
         if (self.jabber.auth(name,password,"spade") == None):
-            raise NotImplementedError
-	    """
+            #raise NotImplementedError
+	    
 	    if (autoregister == True):                
-                xmpp.features.getRegInfo(self.jabber,jid.getDomain())
-                xmpp.features.register(self.jabber,jid.getDomain(),{'username':str(jid), 'password':password})
+                a = xmpp.features.getRegInfo(self.jabber,jid.getDomain())
+                b = xmpp.features.register(self.jabber,jid.getDomain(),{'username':str(jid), 'password':password})
+		print a,b
                 if (self.jabber.auth(name,password,"spade") == None):
                     raise NotImplementedError
             else:
                 raise NotImplementedError
-	    """
+	    
 
         print "auth ok", name
         thread.start_new_thread(self.jabber_process, tuple())
