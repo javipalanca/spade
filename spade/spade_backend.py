@@ -32,6 +32,6 @@ class SpadeBackend:
 		runAgent(configfile, "ams", AMS.AMS)
 		runAgent(configfile, "df", DF.DF)
 
-if __main__ ==  "__main__":
+if __name__ ==  "__main__":
 	p = SpadeBackend()
 	p.start()

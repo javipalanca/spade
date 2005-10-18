@@ -4,7 +4,7 @@ import os
 import sys
 import time
 import ConfigParser
-from spade-backend import *
+from spade import spade_backend
 from getopt import getopt
 
 VERSION = "1.9b"
