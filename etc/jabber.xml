@@ -194,6 +194,7 @@
 
         end of <service/> examples -->
 
+	<!-- SPADE cambia a ACC -->
         <service jid="spade.localhost" name="SmartPython Multi Agent Development Environment">
         </service>
         <service jid="ams.localhost" name="SPADE ams FIPA Agent">

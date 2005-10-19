@@ -1,0 +1,33 @@
+<spade>
+
+ <domain>
+   <hostname>localhost</hostname>
+   <jabberport>5222</jabberport>
+ </domain>
+
+ <acc>
+   <hostname>localhost</hostname>
+   <password>secret</password>
+   <port>9000</port>
+ </acc>
+
+ <ams>
+   <hostname>localhost</hostname>
+   <password>secret</password>
+   <port>9001</port>
+ </ams>
+
+ <df>
+   <hostname>localhost</hostname>
+   <password>secret</password>
+   <port>9002</port>
+ </df>
+
+ <jabber>
+   <binpath>/usr/local/bin/jabberd</binpath>
+   <libpath>/usr/local/lib/</libpath>
+   <workpath>/tmp/</workpath>
+   <allowregister>yes</allowregister>
+ </jabber>
+
+</spade>

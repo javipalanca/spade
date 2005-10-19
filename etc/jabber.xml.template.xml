@@ -1,0 +1,210 @@
+<jabber>
+
+  <service id="sessions">
+
+    <host><jabberd:cmdline flag="h">localhost</jabberd:cmdline></host>
+
+    <jsm xmlns="jabber:config:jsm">
+
+      <vCard>
+        <FN>Jabber Server</FN>
+        <DESC>A Jabber Server!</DESC>
+        <URL>http://localhost/</URL>
+      </vCard>
+      
+      <register notify="yes">
+        <instructions>Choose a username and password to register with this server.</instructions>
+        <name/>
+      </register>
+     
+      <welcome xml:lang='en'>
+        <subject>Welcome!</subject>
+        <body>Welcome to the SPADE server at localhost -- we hope you enjoy this service! For information about how to use SPADE, visit http://magentix.gti-ia.dsic.upv.es</body>
+      </welcome>
+       <welcome xml:lang='es'>
+        <subject>¡Bienvenido!</subject>
+        <body>Bienvenido al servidor SPADE en localhost -- esperamos que disfrute del servicio. Para más información, consulte http://magentix.gti-ia.dsic.upv.es</body>
+      </welcome>
+     
+      <vcard2jud/>
+     
+      <browse>
+        
+	<service jid="acc.localhost" name="SmartPython Multi Agent Development Environment">
+        </service>
+        <service jid="ams.localhost" name="SPADE ams FIPA Agent">
+          <ns>jabber:iq:search</ns>
+        </service>
+        <service jid="df.localhost" name="SPADE df FIPA Agent">
+          <ns>jabber:iq:search</ns>
+        </service>
+
+      </browse>
+
+      <disco>
+        <identity category='services' type='jabber' name='Jabber 1.4 Server'/>
+        <feature var='jabber:iq:browse'/>
+        <feature var='jabber:iq:agents'/>
+        <feature var='jabber:iq:register'/>
+        <feature var='jabber:iq:time'/>
+        <feature var='jabber:iq:last'/>
+        <feature var='jabber:iq:version'/>
+      </disco>
+
+      <mod_auth_crypt>
+        <hash>SHA1</hash>
+      </mod_auth_crypt>
+
+      <presence>
+      </presence>
+
+    </jsm>
+
+    <load main="jsm">
+      <jsm>/usr/local/lib/libjabberdsm.so</jsm>
+      <mod_stat>/usr/local/lib/libjabberdsm.so</mod_stat>
+      <mod_echo>/usr/local/lib/libjabberdsm.so</mod_echo>
+      <mod_roster>/usr/local/lib/libjabberdsm.so</mod_roster>
+      <mod_time>/usr/local/lib/libjabberdsm.so</mod_time>
+      <mod_vcard>/usr/local/lib/libjabberdsm.so</mod_vcard>
+      <mod_last>/usr/local/lib/libjabberdsm.so</mod_last>
+      <mod_version>/usr/local/lib/libjabberdsm.so</mod_version>
+      <mod_announce>/usr/local/lib/libjabberdsm.so</mod_announce>
+      <mod_agents>/usr/local/lib/libjabberdsm.so</mod_agents>
+      <mod_browse>/usr/local/lib/libjabberdsm.so</mod_browse>
+      <mod_disco>/usr/local/lib/libjabberdsm.so</mod_disco>
+      <mod_admin>/usr/local/lib/libjabberdsm.so</mod_admin>
+      <mod_offline>/usr/local/lib/libjabberdsm.so</mod_offline>
+      <mod_presence>/usr/local/lib/libjabberdsm.so</mod_presence>
+
+      <mod_auth_digest>/usr/local/lib/libjabberdsm.so</mod_auth_digest>
+      <mod_auth_plain>/usr/local/lib/libjabberdsm.so</mod_auth_plain>
+    
+      <mod_log>/usr/local/lib/libjabberdsm.so</mod_log>
+      <mod_register>/usr/local/lib/libjabberdsm.so</mod_register>
+      <mod_xml>/usr/local/lib/libjabberdsm.so</mod_xml>
+    </load>
+
+  </service>
+
+  <xdb id="xdb">
+    <host/>
+    
+    <ns/>
+    
+    <load>
+      <xdb_file>/usr/local/lib/libjabberdxdbfile.so</xdb_file>
+    </load>
+    <xdb_file xmlns="jabber:config:xdb_file">
+      <spool><jabberd:cmdline flag='s'>/tmp</jabberd:cmdline></spool>
+      <timeout>3600</timeout>
+      <sizelimit>500000</sizelimit>
+    </xdb_file>
+  </xdb>
+
+  <service id="c2s">
+    <load>
+      <pthsock_client>/usr/local/lib/libjabberdpthsock.so</pthsock_client>
+    </load>
+    <pthcsock xmlns='jabber:config:pth-csock'>
+      <authtime>120</authtime>
+      <heartbeat>60</heartbeat>
+      <ip port="5222"/>
+
+    </pthcsock>
+  </service>
+
+
+  <log id='elogger'>
+    <host/>
+    <logtype/>
+    
+    <format>[%t] (%h): %s</format>
+    <syslog>local0</syslog>
+    
+
+  </log>
+
+  <service id="dnsrv">
+    <host/>
+    <load>
+      <dnsrv>/usr/local/lib/libjabberddnsrv.so</dnsrv>
+    </load>
+    <dnsrv xmlns="jabber:config:dnsrv">
+
+    	<resend service="_xmpp-server._tcp">s2s</resend>
+    	<resend service="_jabber._tcp">s2s</resend>
+    	<resend>s2s</resend>
+    </dnsrv>
+  </service>
+
+
+  <service id="s2s">
+    <load>
+      <dialback>/usr/local/lib/libjabberddialback.so</dialback>
+    </load>
+    <dialback xmlns='jabber:config:dialback'>
+      <ip port="5269"/>
+      <karma>
+        <init>50</init>
+        <max>50</max>
+        <inc>4</inc>
+        <dec>1</dec>
+        <penalty>-5</penalty>
+        <restore>50</restore>
+      </karma>
+    </dialback>
+  </service>
+
+
+ <service id="spade.localhost">
+    <accept>
+      <ip/>
+      <port>9000</port>
+      <secret>secret</secret>
+    </accept>
+  </service>
+  <service id="ams.localhost">
+    <accept>
+      <ip/>
+      <port>9001</port>
+      <secret>secret</secret>
+    </accept>
+  </service>
+  <service id="df.localhost">
+    <accept>
+      <ip/>
+      <port>9002</port>
+      <secret>secret</secret>
+    </accept>
+  </service>
+
+
+
+
+  <service id="update.jabber.org">
+    <host>update.jabber.org</host>
+    <null/>
+  </service>
+
+  <io>
+
+    <rate points="5" time="25"/>
+
+    <streamconf>
+      <default type='s2s'>
+        <stream-from/>
+      </default>
+    </streamconf>
+
+
+  </io>
+
+  <debug>
+      <mask>0</mask>
+
+  </debug>
+
+  <pidfile>jabber.pid</pidfile>
+
+</jabber>
