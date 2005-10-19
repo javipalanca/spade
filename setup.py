@@ -9,7 +9,7 @@ setup(name='SPADE',
       author_email='jpalanca@dsic.upv.es',
       url='http://gti-ia.dsic.upv.es/projects/magentix/',
       package_dir={'spade': 'spade'},
-      packages=['spade'],
-      scripts=['spade-rma.py'],
-      data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml', 'etc/rma.glade'])]
+      packages=['spade', 'spade.xmpp'],
+      scripts=['spade-rma.py', 'spade.py'],
+      data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml']),('/usr/share/spade',['etc/rma.glade'])]
      )
