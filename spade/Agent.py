@@ -1,4 +1,5 @@
 # -*- coding: cp1252 -*-
+import sys
 import xmpp
 import threading
 import thread
@@ -24,7 +25,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     
     def __init__(self, agentjid, serverplatform):
         MessageReceiver.MessageReceiver.__init__(self)
-        self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://spade."+serverplatform ])
+        self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://acc."+serverplatform ])
         self._jabber = None
         self._serverplatform = serverplatform
         self._defaultbehaviour = None
@@ -45,17 +46,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (self.jabber.auth(name,password,"spade") == None):
             #raise NotImplementedError
 	    
-	    if (autoregister == True):                
-                a = xmpp.features.getRegInfo(self.jabber,jid.getDomain())
-                b = xmpp.features.register(self.jabber,jid.getDomain(),{'username':str(jid), 'password':password})
-		print a,b
+	    if (autoregister == True):
+                a=xmpp.features.getRegInfo(self.jabber,jid.getDomain())
+		#print a
+                b = xmpp.features.register(self.jabber,jid.getDomain(),\
+		{'username':name, 'password':str(password)})
+                #print "--------------------------------> ", str(name)
                 if (self.jabber.auth(name,password,"spade") == None):
                     raise NotImplementedError
             else:
                 raise NotImplementedError
 	    
 
-        print "auth ok", name
+        #print "auth ok", name
         thread.start_new_thread(self.jabber_process, tuple())
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
@@ -96,7 +99,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     
     def jabber_process(self):
         while 1:
-            self.jabber.Process(1)
+	    try:
+	            self.jabber.Process(1)
+	    except:
+		    pass
 
 
 
@@ -105,13 +111,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return self._aid
 
     def getAMS(self):
-        return AID.aid(name="ams." + self._serverplatform, addresses=[ "xmpp://spade."+self._serverplatform ])
+        return AID.aid(name="ams." + self._serverplatform, addresses=[ "xmpp://acc."+self._serverplatform ])
 
     def getDF(self):
-        return AID.aid(name="df." + self._serverplatform, addresses=[ "xmpp://spade."+self._serverplatform ])
+        return AID.aid(name="df." + self._serverplatform, addresses=[ "xmpp://acc."+self._serverplatform ])
 
     def getSpadePlatformJID(self):
-        return "spade." + self._serverplatform
+        return "acc." + self._serverplatform
     
     def send(self, ACLmsg):
         self.sendTo(ACLmsg, self.getSpadePlatformJID())
@@ -182,33 +188,44 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
         #Main Loop
-        while(self.isAlive()):
-            #Check for new Messages form the server
-            #self.jabber.Process(1)
-            #Check for queued messages
-            time.sleep(0)
-            proc = False
-            msg = self.blockingReceive(1)
-            if (msg != None):
-                for b in self._behaviourList:
-                    t = self._behaviourList[b]
-                    if (t != None):
-                        if (t.match(msg) == True):
-                            b.postMessage(msg)
-                            #if (b.done() == True):
-                            #    self.removeBehaviour(b)
-                            proc = True
-                            break
-                if (proc == False):
-                    if (self._defaultbehaviour != None):
-                        self._defaultbehaviour.postMessage(msg)
-        #Stop the Behaviours
-        for b in self._behaviourList:
-            self.removeBehaviour(b)
-        if (self._defaultbehaviour != None):
-            self._defaultbehaviour.kill()
-        #DeInit the Agent
-        self.takeDown()
+        try:
+            while(self.isAlive()):
+                #Check for new Messages form the server
+                #self.jabber.Process(1)
+                #Check for queued messages
+                time.sleep(0)
+                proc = False
+                msg = self.blockingReceive(1)
+                if (msg != None):
+                    for b in self._behaviourList:
+                        t = self._behaviourList[b]
+                        if (t != None):
+                            if (t.match(msg) == True):
+                                b.postMessage(msg)
+                                #if (b.done() == True):
+                                #    self.removeBehaviour(b)
+                                proc = True
+                                break
+                    if (proc == False):
+                        if (self._defaultbehaviour != None):
+                            self._defaultbehaviour.postMessage(msg)
+            #Stop the Behaviours
+            for b in self._behaviourList:
+                self.removeBehaviour(b)
+            if (self._defaultbehaviour != None):
+                self._defaultbehaviour.kill()
+            #DeInit the Agent
+            self.takeDown()
+        except:
+            pass
+            
+    def start_and_wait(self):
+	self.start()
+	try:
+		while(self.isAlive()):
+			time.sleep(1)
+	except:
+		pass
 
         
     def setDefaultBehaviour(self, behaviour):
@@ -717,19 +734,19 @@ class Agent(AbstractAgent):
 
 	msg = self.blockingReceive(20)
 	if msg == None or msg.getPerformative() is not 'agree':
-		print "There was an error deregistering the Agent."
+		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:
-			print str(msg)
+			sys.stdout.write(str(msg))
 		return -1
 	msg = self.blockingReceive(20)
 	if msg == None or msg.getPerformative() is not 'inform':
-		print "There was an error deregistering the Agent."
+		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:
-			print str(msg)
+			sys.stdout.write(str(msg))
 		return -1
 	
 	if debug:
-		print str(msg)
+		sys.stdout.write(str(msg))
 	return 1
 
 

@@ -1,7 +1,7 @@
 import threading
-import Queue
+from Queue import *
 
-class MessageList(Queue.Queue):
+class MessageList(Queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
         try:
@@ -35,11 +35,17 @@ class MessageReceiver(threading.Thread):
 		self.__messages = MessageList()
 		self.setDaemon(True)
 
-	def __getMessage(self, block, timeout):
+	def __getMessage(self, block, tout):
 		try:
-			message = self.__messages.get(block, timeout)
-		except Queue.Empty:
+			message = self.__messages.get(block, tout)
+		except Empty:
 			message = None
+			#print "MESSAGE = None - Empty "+str(tout)
+		except:
+			message = None
+			#time.sleep(1)
+			#print "MESSAGE = None - otra"
+
 		return message
 		
 	def receive(self):

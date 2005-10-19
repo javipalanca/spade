@@ -362,7 +362,8 @@ class rma(Agent.Agent):
 			#	a.kill()
 			self.myAgent.kill()
 		def idle(self):
-			msg = self.receive()
+			#MIGUEL
+			msg = self.blockingReceive(0.2)
 			if (msg != None):
 				win = rma.ACLMessageViewer(msg)
 			return True
@@ -388,7 +389,7 @@ class rma(Agent.Agent):
 
 if __name__ == "__main__":
 	rma=rma("rma@localhost","secret")
-	rma.start()
-	while(rma.isAlive()):
-		time.sleep(1)
+	rma.start_and_wait()
+	#while(rma.isAlive()):
+	#	time.sleep(1)
 

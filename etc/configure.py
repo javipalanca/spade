@@ -389,7 +389,7 @@ if __name__ == '__main__':
     parser.setContentHandler(dh)
 
     # Parse the input
-    parser.parse("spade.ini.xml")
+    parser.parse("spade.xml")
 
     # Manage the results
     spade['domain'] = domain
@@ -397,7 +397,7 @@ if __name__ == '__main__':
     spade['ams'] = ams
     spade['df'] = df
     spade['jabber'] = jabber
-    print spade
+    #print spade
 
-    generateCode('generated-jabber.xml')
+    generateCode('jabber.xml')
 
