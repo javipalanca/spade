@@ -2,7 +2,25 @@
 # -*- coding: cp1252 -*-
 import sys, ConfigParser
 #import Platform,AMS
-from spade import *
+
+#from spade import *
+
+from spade import ACLMessage
+from spade import Agent
+from spade import AMS
+from spade import Behaviour
+from spade import Envelope
+from spade import Platform
+from spade import ReceivedObject
+from spade import ACLParser
+from spade import AID
+from spade import BasicFipaDateTime
+from spade import DF
+from spade import FIPAMessage
+from spade import MessageReceiver
+from spade import pyparsing
+from spade import SL0Parser
+from spade import XMLCodec
 
     
 class SpadeBackend:

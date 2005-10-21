@@ -10,6 +10,6 @@ setup(name='SPADE',
       url='http://gti-ia.dsic.upv.es/projects/magentix/',
       package_dir={'spade': 'spade'},
       packages=['spade', 'spade.xmpp'],
-      scripts=['spade-rma.py', 'spade.py'],
+      scripts=['spade-rma.py', 'runspade.py'],
       data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml']),('/usr/share/spade',['usr/share/spade/rma.glade'])]
      )
