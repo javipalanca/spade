@@ -5,6 +5,9 @@ from SL0Parser import *
 
 
 class AMS(Agent.PlatformAgent):
+	"""
+	Agent Management System
+	"""
 
 	class DefaultBehaviour(Behaviour.PeriodicBehaviour):
 
@@ -357,8 +360,15 @@ class AMS(Agent.PlatformAgent):
 
 
 class AmsAgentDescription:
+	"""
+	Agent Descriptor for AMS registering
+	"""
 
 	def __init__(self, content = None):
+		"""
+		AAD constructor
+		Optionally accepts a string containing a SL definition of the AAD
+		"""
 			
 		self.name = None #AID.aid()
 		self.ownership = None
@@ -368,16 +378,30 @@ class AmsAgentDescription:
 			self.loadSL0(content)
 
 	def getAID(self):
+		"""
+		returns the AID class
+		"""
 		return self.name
 
 	def getOwnership(self):
+		"""
+		returns the ownership
+		"""
 		return self.ownership
 
 	def getState(self):
+		"""
+		returns the state of the agent
+		"""
 		return self.state
 
 
 	def __eq__(self,y):
+		"""
+		equal operator (==)
+		returns False if the AADs are different
+		else returns True
+		"""
 
 		if not self.name == y.getAID() \
 		and self.name != None and y.getAID() != None:
@@ -392,10 +416,18 @@ class AmsAgentDescription:
 		return True
 
 	def __ne__(self,y):
+		"""
+		non equal operator (!=)
+		returns True if the AADs are different
+		else returns False
+		"""
 		return not self == y
 
 
 	def loadSL0(self,content):
+		"""
+		inits the AAD with a SL string representation
+		"""
 		if content != None:
 			if "name" in content:
 				self.name = AID.aid()
@@ -408,6 +440,9 @@ class AmsAgentDescription:
 				self.state = content.state[0]
 
 	def __str__(self):
+		"""
+		returns a printable version of the AAD in SL format)
+		"""
 
 		if ( (self.name == None) and (self.ownership == None) and (self.state == None) ):
 			return "None"

@@ -6,6 +6,9 @@ from SL0Parser import *
 
 
 class DF(Agent.PlatformAgent):
+	"""
+	Directory Facilitator Agent
+	"""
 
 	class DefaultBehaviour(Behaviour.Behaviour):
 

@@ -1,51 +1,3 @@
-"""
-JADE - Java Agent DEvelopment Framework is a framework to develop 
-multi-agent systems in compliance with the FIPA specifications.
-Copyright (C) 2000 CSELT S.p.A. 
-
-GNU Lesser General Public License
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation, 
-version 2.1 of the License. 
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-Boston, MA  02111-1307, USA.
-"""
-
-"""
-   The class ACLMessage implements an ACL message compliant to the <b>FIPA 2000</b> "FIPA ACL Message Structure Specification" (fipa000061) specifications.
-   All parameters are couples <em>keyword: value</em>.
-   All keywords are <code>private final String</code>.
-   All values can be set by using the methods <em>set</em> and can be read by using
-   the methods <em>get</em>. 
-   <p> <b>Warning: </b> since JADE 3.1  an exception might be thrown 
-   during the serialization of the ACLMessage parameters (with 
-   exception of the content of the ACLMessage) because of a limitation
-   to 65535 in the total number of bytes needed to represent all the 
-   characters of a String (see also java.io.DataOutput#writeUTF(String)).
-   <p> The methods <code> setByteSequenceContent() </code> and 
-   <code> getByteSequenceContent() </code> allow to send arbitrary
-   sequence of bytes
-   over the content of an ACLMessage.
-   <p> The couple of methods 
-   <code> setContentObject() </code> and 
-   <code> getContentObject() </code> allow to send
-   serialized Java objects over the content of an ACLMessage.
-   These method are not strictly 
-   FIPA compliant so their usage is not encouraged.
-   @author Fabio Bellifemine - CSELT
-   @version $Date: 2004/10/21 13:01:37 $ $Revision: 2.39 $
-   @see <a href=http://www.fipa.org/specs/fipa00061/XC00061D.html>FIPA Spec</a>
-"""
 #import time
 import AID
 import random
@@ -54,7 +6,9 @@ import string
 
 
 class ACLMessage:
-
+	"""
+	ACLMessage class stores a message using the ACL language
+	"""
 
 	cid_base = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(5)])
 	cid_autocount = 0
@@ -86,47 +40,88 @@ class ACLMessage:
 		#self.userDefProps = None
 
 	def reset(self):
+		"""
+		resets the object
+		its structures are set to its initial value
+		"""
 		self.__init__()
 
 	def setSender(self, sender):
+		"""
+		set the sender (AID class)
+		"""
 		self.sender = sender
 
 	def getSender(self):
+		"""
+		returns the sender (AID class)
+		"""
 		return self.sender
 
 	def addReceiver(self, recv):
+		"""
+		adds a receiver to the list (AID class)
+		"""
 		self.receivers.append(recv)
 
 	def removeReceiver(self, recv):
+		"""
+		removes a receiver from the list (AID class)
+		"""
 		if recv in self.receivers:
 			self.receivers.remove(recv)
 
 	def getReceivers(self):
+		"""
+		returns the list of reveivers
+		"""
 		return self.receivers
 
 
 	def addReplyTo(self, re):
+		"""
+		adds a 'reply to' to the list (AID class)
+		"""
 		if isinstance(re,AID.aid):
 			self.reply_to.append(re)
 
 	def removeReplyTo(self, re):
+		"""
+		removes a 'reply to' from the list (AID class)
+		"""
 		if re in self.reply_to:
 			self.reply_to.remove(re)
 
 	def getReplyTo(self):
+		"""
+		returns a 'reply to' from the list (AID class)
+		"""
 		return self.reply_to
 
 	def setPerformative(self, p):
+		"""
+		sets the message performative (string)
+		must be in ACLMessage.commacts
+		"""
 		if p in self.commacts:
 			self.performative = p
 
 	def getPerformative(self):
+		"""
+		returns the message performative (string)
+		"""
 		return self.performative
 
 	def setContent(self,c):
+		"""
+		sets the message content (string, bytestream, ...)
+		"""
 		self.content = c
 
 	def getContent(self):
+		"""
+		returns the message content
+		"""
 		return self.content
 
 	def setReplyWith(self,rw):
@@ -175,6 +170,12 @@ class ACLMessage:
 		return self.conversation_id
 
 	def createReply(self):
+		"""
+		Creates a reply for the message
+		Duplicates all the message structures
+		exchanges the 'from' AID with the 'to' AID
+		"""
+
 		m = ACLMessage()
 
 		m.setPerformative(self.performative)
@@ -205,6 +206,10 @@ class ACLMessage:
 
 
 	def __str__(self):
+		"""
+		returns a printable version of the message in SL0 language
+		"""
+
 		p = '('
 
 		p=p+ str(self.performative) + '\n'

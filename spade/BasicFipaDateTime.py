@@ -1,45 +1,15 @@
-"""
- * Java Agent Message Router - JAMR ( http://liawww.epfl.ch/~cion/jamr ) 
- * FIPA compliant Message Transport Implementation
- *
- * Copyright (C) 2000, 2001, Laboratoire d'Intelligence Artificielle,
- * Echole Polytechnique Federale de Lausanne ( http://liawww.epfl.ch )
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software foundation
- *
- *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
- * General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library (file lesser.txt); if not, try downloading it
- * from http://www.gnu.org/copyleft/lesser.txt or write to the Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307  USA
- *
- *
- * BasicFipaDateTime.java
- *
- *
- * Created: Mon Aug 28 22:41:41 2000
- *
- * @author Ion Constantinescu ( ion.constantinescu@epfl.ch )
- * @version 0.72
- * @author Nicolas Lhuillier (Motorola Labs)
- * Corrected bug with Java Calendar class
- * @version 1.0
-"""
-
 from datetime import datetime
 
-
 class BasicFipaDateTime:
+	"""
+	Help class to operate dates and times
+	"""
 
 	def __init__(self,date = None):
+		"""
+		constructor
+		date parameter can be suplied
+		"""
 		if (date == None):
 			self.fromDateTime(datetime.now())
 		else:
@@ -50,9 +20,15 @@ class BasicFipaDateTime:
 	
 		
 	def fromDateTime(self, dt):
+		"""
+		inits the object with another BasicFipaDateTime class
+		"""
 		self.calendar = dt
 
 	def fromString(self, string):
+		"""
+		loads the date and time from a string
+		"""
 		if string != None and string != "":
 			#print "string: " + str(string)
 			
@@ -130,6 +106,9 @@ class BasicFipaDateTime:
 		return str(res)
 
 	def __str__(self):
+		"""
+		returns a printable version of the object
+		"""
 		str_date = str(self.getYear()) + self.paddedInt(2,self.getMonth()) + self.paddedInt(2,self.getDay())+"T"
 		str_date = str_date + str(self.paddedInt(2,self.getHour()))
 		str_date = str_date + str(self.paddedInt(2,self.getMinutes())) + str(self.paddedInt(2,self.getSeconds())) + str(self.paddedInt(3,self.getMilliseconds()))
@@ -137,9 +116,15 @@ class BasicFipaDateTime:
 		return str_date;
 
 	def getTime(self):
+		"""
+		returns a printable version of the object
+		"""
 		return self.__str__()
 	
 	def getDate(self):
+		"""
+		returns a printable version of the object
+		"""
 		return self.__str__()
 	
 	

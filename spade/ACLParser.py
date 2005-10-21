@@ -6,6 +6,9 @@ import AID
 from BasicFipaDateTime import *
 
 class ACLParser:
+	"""
+	Parser for the ACL language
+	"""
 
 	def __init__(self):
 
@@ -176,6 +179,11 @@ class ACLParser:
 		#bnf.setDebug()
 
 	def processAID(self, _aid):
+		"""
+		parses an AID.
+		returns a pyparsing.ParseResult class
+		"""
+
 		aid = AID.aid()
 
 		if 'name' in _aid:
@@ -194,6 +202,10 @@ class ACLParser:
 		return aid
 
 	def parse(self,string):
+		"""
+		parses a string
+		returns a pyparsing.ParseResult class
+		"""
 
 		try:
 			m = self.bnf.parseString(string)
@@ -210,6 +222,10 @@ class ACLParser:
 		return self.buildACL(m)
 
 	def parseFile(self,file):
+		"""
+		parses a file
+		returns an ACLMessage
+		"""
 
 		try:
 			m = self.bnf.parseFile(file)
@@ -226,6 +242,9 @@ class ACLParser:
 		return self.buildACL(m)
 
 	def buildACL(self, m):
+		"""
+		returns an ACLMessage object from a pyparsing.ParseResults object
+		"""
 		
 		#print repr(m)
 		#print m.asXML()

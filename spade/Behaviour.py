@@ -5,6 +5,9 @@ import threading
 
 
 class ACLTemplate:
+	"""
+	Template for message matching
+	"""
 	def __init__(self):
 		self.performative = None
 		self.sender = None
@@ -114,6 +117,9 @@ class ACLTemplate:
 
 
 class BehaviourTemplate:
+	"""
+	Template operators
+	"""
 	def __init__(self):
 		pass
 	def match(self, message):
@@ -227,8 +233,14 @@ class Behaviour(MessageReceiver.MessageReceiver):
 	def getParent(self):
 		return self.myParent
 	def setAgent(self, agent):
+		"""
+		sets the agent which controls the behavior
+		"""
 		self.myAgent = agent
 	def getAgent(self):
+		"""
+		returns the agent which controls the behavior
+		"""
 		return self.myAgent
 	def root(self):
 		if (self.myParent != None):
@@ -237,19 +249,39 @@ class Behaviour(MessageReceiver.MessageReceiver):
 			return self
 	
 	def done(self):
+		"""
+		returns True if the behavior has finished
+		else returns False
+		"""
 		return False
 	
 	def process(self):
+		"""
+		main loop
+		must be overridden
+		"""
 		raise NotImplementedError
 	
 	def kill(self):
+		"""
+		stops the behavior
+		"""
 		self._forceKill.set()
 		
 	def onStart(self):
+		"""
+		this method runs when the behavior starts
+		"""
 		pass
 	def onEnd(self):
+		"""
+		this method runs when the behavior stops
+		"""
 		pass
 	def exitCode(self):
+		"""
+		returns the default exit code for the behavior
+		"""
 		return 0
 		
 	def run(self):
@@ -261,6 +293,9 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		self.myAgent.removeBehaviour(self)
 		
 class OneShotBehaviour(Behaviour):
+	"""
+	this behavior is only executed one time
+	"""
 	def __init__(self):
 		Behaviour.__init__(self)
 		self._firsttime = True
@@ -274,6 +309,9 @@ class OneShotBehaviour(Behaviour):
 
 
 class PeriodicBehaviour(Behaviour):
+	"""
+	this behavior runs periodically with a period
+	"""
 	def __init__(self, period, timestart = None):
 		Behaviour.__init__(self)
 		self._period = period
@@ -296,10 +334,17 @@ class PeriodicBehaviour(Behaviour):
 			time.sleep(self._nextActivation - time.time())
 			
 	def onTick(self):
+		"""
+		this method is executed every period
+		must be overridden
+		"""
 		raise NotImplementedError
 
 
 class TimeOutBehaviour(PeriodicBehaviour):
+	"""
+	this behavior is executed only one time after a timeout
+	"""
 	def __init__(self, timeout):		
 		PeriodicBehaviour.__init__(self, timeout, time.time()+timeout)
 		self._stop = False
@@ -307,6 +352,9 @@ class TimeOutBehaviour(PeriodicBehaviour):
 	def getTimeOut(self):
 		return self.getPeriod()
 	def stop(self):
+		"""
+		cancels the programmed execution
+		"""
 		self._stop = True		
 	def done(self):
 		return self._stop
@@ -317,6 +365,10 @@ class TimeOutBehaviour(PeriodicBehaviour):
 		self.stop()
 		
 	def timeOut(self):
+		"""
+		this method is executed after the timeout
+		must be overridden
+		"""
 		raise NotImplementedError
 
 
@@ -324,6 +376,9 @@ class TimeOutBehaviour(PeriodicBehaviour):
 
 
 class FSMBehaviour(Behaviour):
+	"""
+	this behavior is executed according to a Finite State Machine
+	"""
 	def __init__(self):
 		Behaviour.__init__(self)
 		self._firstStateName = None
@@ -334,24 +389,39 @@ class FSMBehaviour(Behaviour):
 		self._lastexitcode = 0
 
 	def setAgent(self, agent):
+		"""
+		sets the parent agent
+		"""
 		self.setAgent(agent)
 		for b in self._states:
 			self._states[b].setAgent(agent)
 	
 	def registerState(self, behaviour, name):
+		"""
+		registers a state with a behavior
+		"""
 		behaviour.setPatent(self)
 		self._states[name]=behaviour
 		self._transitions[name]=dict()
 		
 	def registerFirstState(self, behaviour, name):
+		"""
+		sets the first state of the fsm
+		"""
 		self.registerState(behaviour, name)
 		self._firstStateName = name
 		
 	def registerLastState(self, behaviour, name):
+		"""
+		sets the final state of the fsm
+		"""
 		self.registerState(behaviour, name)
 		self._lastStatesNames += [name]
 	
 	def registerTransition(self, fromname, toname, event):
+		"""
+		registers a transition between two states
+		"""
 		self._transitions[fromname][event] = toname
 	
 	def getState(self, name):

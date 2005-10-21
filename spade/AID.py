@@ -2,6 +2,13 @@
 
 class aid:
 	def __init__(self, name = None, addresses = None, resolvers = None, userDefinedProperties= None):
+		"""
+		Agent Identifier Class
+		Optional parameters:
+			String name
+			String[] addresses
+			String[] resolvers
+		"""
 		if name != None:
 			self.__name = name
 		else:
@@ -20,21 +27,39 @@ class aid:
 			self.__userDefinedProperties = list() #properties
 
 	def getName(self):
+		"""
+		returns name of the agent (string)
+		"""
 		return self.__name
 
 	def setName(self,name):
+		"""
+		sets name of the agent (string)
+		"""
 		self.__name = name
 
 	def getAddresses(self):
+		"""
+		returns a list of addreses
+		"""
 		return self.__addresses
 
 	def addAddress(self,addr):
+		"""
+		adds a new address to the addresses list
+		"""
 		self.__addresses.append(addr)
 
 	def getResolvers(self):
+		"""
+		returns a list of resolvers
+		"""
 		return self.__resolvers
 
 	def addResolvers(self,resolver):
+		"""
+		adds a new resolver to the resolvers list
+		"""
 		self.__resolvers.append(resolver)
 
 	def getProperties(self):
@@ -44,6 +69,11 @@ class aid:
 		self.__userDefinedProperties.append(prop)
 
 	def __eq__(self, other):
+		"""
+		Comparision operator (==)
+		returns True if two AIDs are equal
+		else returns False
+		"""
 		if other != None:
 			if (self.getName() != None and other.getName() != None \
 			and self.getName() != other.getName()):
@@ -56,6 +86,12 @@ class aid:
 		else: return False
 
 	def __ne__(self,other):
+		"""
+		!= operator
+		returns False if two AIDs are equal
+		else returns True
+		"""
+	
 		return not self == other
 
 
@@ -70,6 +106,9 @@ class aid:
             return h
         
 	def __str__(self):
+		"""
+		returns a printable version of an AID
+		"""
 		sb = ""
 		if self.getName() != None:
 			sb = sb + ":name " + str(self.getName()) + "\n"
@@ -92,6 +131,9 @@ class aid:
 
 
 	def asXML(self):
+		"""
+		returns a printable version of an AID in XML
+		"""
 		sb = "<agent-identifier>\n\t" + self.encodeTag( "name", self.getName() ) + "\n"
 		sb = sb + "\t<addresses>\n"
     
@@ -105,12 +147,22 @@ class aid:
 		return sb
 
 	def encodeTag( self, tag, content ):
+		"""
+		encodes a content between 2 XML tags using the tag parameter
+		
+			<tag>content</tag>
+
+		return string
+		"""
 		sb = "<" + tag + ">" + content + "</" + tag + ">"
 
 		return sb
 
 
 	def loadSL0(self, content):
+		"""
+		initialices an AID class using a string content encoded in SLO
+		"""
 
 		if "agent-identifier" in content:
 			if "name" in content["agent-identifier"]:

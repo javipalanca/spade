@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='SPADE',
-      version='1.9b',
+      version='1.9.2',
       description='Smart Python multi-Agent Develpment Environment',
       author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
       author_email='jpalanca@dsic.upv.es',

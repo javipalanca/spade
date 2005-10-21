@@ -17,13 +17,16 @@ import SL0Parser
 #from AMS import AmsAgentDescription
 
 class AbstractAgent(MessageReceiver.MessageReceiver):
-    #
-    # Que necesitamos de un agente:
-    #   Dirección jabber del agente:  tipo@direccion.es
-    #   Direccion jabber de la plataforma: direccion.es
-    #
+    """
+    Abstract Agent
+    only for heritance
+    Child classes: PlatformAgent, Agent
+    """
     
     def __init__(self, agentjid, serverplatform):
+	"""
+	inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
+	"""
         MessageReceiver.MessageReceiver.__init__(self)
         self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://acc."+serverplatform ])
         self._jabber = None
@@ -33,6 +36,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._isAlive = True
 
     def _register(self, password, autoregister=True):
+	"""
+	registers the agent in the Jabber server
+	"""
+
         jid = xmpp.protocol.JID(self._aid.getName())
         name = jid.getNode()
 
@@ -63,6 +70,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
     def jabber_messageCB(self, conn, mess):
+	"""
+	message callback
+	read the message envelope and post the message to the agent
+	"""
         if (mess.getError() == None):
             envxml=None
             payload=mess.getBody()
@@ -94,10 +105,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def other_messageCB(self, conn, mess):
+	"""
+	non jabber:x:fipa chat messages callback
+	"""
         pass
 
     
     def jabber_process(self):
+	"""
+	periodic jabber update
+	"""
         while 1:
 	    try:
 	            self.jabber.Process(1)
@@ -108,21 +125,39 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def getAID(self):
+	"""
+	returns AID
+	"""
         return self._aid
 
     def getAMS(self):
+	"""
+	returns the AMS aid
+	"""
         return AID.aid(name="ams." + self._serverplatform, addresses=[ "xmpp://acc."+self._serverplatform ])
 
     def getDF(self):
+	"""
+	returns the DF aid
+	"""
         return AID.aid(name="df." + self._serverplatform, addresses=[ "xmpp://acc."+self._serverplatform ])
 
     def getSpadePlatformJID(self):
+	"""
+	returns the SPADE JID (string)
+	"""
         return "acc." + self._serverplatform
     
     def send(self, ACLmsg):
+	"""
+	sends an ACLMessage
+	"""
         self.sendTo(ACLmsg, self.getSpadePlatformJID())
 
     def sendTo(self, ACLmsg, tojid):
+	"""
+	sends an ACLMessage to a specific JabberID
+	"""
         if (ACLmsg.getSender() == None):
             ACLmsg.setSender(self.getAID())
 
@@ -169,19 +204,36 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     
     def kill(self):
+	"""
+	kills the agent
+	"""
         self._isAlive = False
+
     def isAlive(self):
+	"""
+	returns True if alive
+	else False
+	"""
         return self._isAlive
         
     def setup(self):
-        #debe ser sobrecargado
+	"""
+	setup agent method. configures the agent
+	must be overridden
+        """
         pass
 
     def takeDown(self):
-        #debe ser sobrecargado
+	"""
+	stops the agent
+	must be overridden
+        """
         pass
 
     def run(self):
+	"""
+	periodic agent execution
+	"""
         #Init The agent
         self.setup()
         #Start the Behaviours
@@ -220,6 +272,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             pass
             
     def start_and_wait(self):
+	"""
+	starts the agent and remains until the agent finishes
+	"""
+
 	self.start()
 	try:
 		while(self.isAlive()):
@@ -229,15 +285,30 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         
     def setDefaultBehaviour(self, behaviour):
+	"""
+	sets a Behavior as Default
+	"""
         self._defaultbehaviour = behaviour
         behaviour.setAgent(self)
+
     def getDefaultBehaviour(self):
+	"""
+	returns the default behavior
+	"""
         return self._defaultbehaviour
+
     def addBehaviour(self, behaviour, template=None):
+	"""
+	adds a new behavior to the agent
+	"""
         self._behaviourList[behaviour] = template
         behaviour.setAgent(self)
         behaviour.start()
+
     def removeBehaviour(self, behaviour):
+	"""
+	removes a behavior from the agent
+	"""
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
@@ -294,6 +365,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.finished = True
 
     def searchAgent(self, AAD, debug=False):
+	"""
+	searches an agent in the AMS
+	the search template is an AmsAgentDescription class
+	"""
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -349,6 +424,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return 1
 
     def modifyAgent(self, AAD, debug=False):
+	"""
+	modifies the AmsAgentDescription of an agent in the AMS
+	"""
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
@@ -400,6 +478,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.result = msg.getContent()
 
     def getPlatformInfo(self, debug=False):
+	"""
+	returns the Plarform Info
+	"""
 	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -458,6 +539,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.result = True
 
     def registerService(self, DAD, debug=False):
+	"""
+	registers a service in the DF
+	the service template is a DfAgentDescriptor
+	"""
 	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -514,6 +599,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		return
 
     def deregisterService(self, DAD, debug=False):
+	"""
+	deregisters a service in the DF
+	the service template is a DfAgentDescriptor
+	"""
 	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -576,6 +665,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			except:
 				return
     def searchService(self, DAD, debug=False):
+	"""
+	search a service in the DF
+	the service template is a DfAgentDescriptor
+	"""
 	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -633,6 +726,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.result = True
 		return
     def modifyService(self, DAD, debug=False):
+	"""
+	modifies a service in the DF
+	the service template is a DfAgentDescriptor
+	"""
 	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -647,6 +744,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	##################################
 
 class PlatformAgent(AbstractAgent):
+    """
+    A PlatformAgent is a SPADE component.
+    Examples: AMS, DF, ACC, ...
+    """
     def __init__(self, node, password, server="localhost", port=5347):
         AbstractAgent.__init__(self, node, server)
         self.jabber = xmpp.Component(server, port, debug=[])
@@ -654,6 +755,9 @@ class PlatformAgent(AbstractAgent):
 
 
 class Agent(AbstractAgent):
+    """
+    This is the main class which may be inherited to build a SPADE agent
+    """
     def __init__(self, agentjid, password, port=5222):
         jid = xmpp.protocol.JID(agentjid)
         server = jid.getDomain()
@@ -663,6 +767,10 @@ class Agent(AbstractAgent):
         self.jabber.sendInitPresence()
 
     def run(self):
+	"""
+	Main loop of the agent
+	registers in AMS, runs the agent and, finally, deregisters it from the AMS
+	"""
 	print "Registrando...."
         self.__register_in_AMS()
 	print "Agent Registred!!!"

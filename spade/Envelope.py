@@ -2,7 +2,9 @@ import types
 import AID
 
 class Envelope:
-	#public Envelope(FIPA.AgentID[] __to, FIPA.AgentID[] __from, String __comments, String __aclRepresentation, int __payloadLength, String __payloadEncoding, FIPA.DateTime[] __date, String[] __encrypted, FIPA.AgentID[] __intendedReceiver, FIPA.ReceivedObject[] __received, FIPA.Property[][] __transportBehaviour, FIPA.Property[] __userDefinedProperties) {
+	"""
+	FIPA envelope
+	"""
 	def __init__(self,to=None,_from=None,comments=None,aclRepresentation=None,payloadLength=None,payloadEncoding=None,date=None,encrypted=None,intendedReceiver=None,received=None,transportBehaviour=None,userDefinedProperties=None):
 
 		self.to = list()
@@ -119,6 +121,9 @@ class Envelope:
 
 
 	def __str__(self):
+		"""
+		returns a printable version of the envelope in XML
+		"""
 		r = '<?xml version="1.0"?>' +"\n" 
 		r=r+"\t\t<envelope> \n"
 		r=r+'\t\t\t<params index="1">'+"\n"
