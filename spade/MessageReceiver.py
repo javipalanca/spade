@@ -49,9 +49,18 @@ class MessageReceiver(threading.Thread):
 		return message
 		
 	def receive(self):
+		"""
+		returns a message if available
+		else returns None
+		"""
 		return self.__getMessage(False, None)
 	
 	def blockingReceive(self, time_seg = None):
+		"""
+		waits for a message during time_seg
+		if time_seg == None waits until a message is received
+		if no message is received returns None
+		"""
 		return self.__getMessage(True, time_seg)
 
 	def postMessage(self, message):

@@ -58,6 +58,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		#print a
                 b = xmpp.features.register(self.jabber,jid.getDomain(),\
 		{'username':name, 'password':str(password)})
+
+		#TODO: a better way???
+		time.sleep(0.5)
+
                 #print "--------------------------------> ", str(name)
                 if (self.jabber.auth(name,password,"spade") == None):
                     raise NotImplementedError

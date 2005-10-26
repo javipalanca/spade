@@ -2,6 +2,9 @@ from pyparsing import *
 import sys
 
 class SL0Parser:
+	"""
+	SL parser
+	"""
 
 	def __init__(self):
 
@@ -40,6 +43,10 @@ class SL0Parser:
 
 
 	def parse(self,string):
+		"""
+		parses a string
+		returns a pyparsing.ParseResults
+		"""
 
 		try:
 			m = self.bnf.parseString(string)
@@ -56,6 +63,10 @@ class SL0Parser:
 		return m
 
 	def parseFile(self,file):
+		"""
+		parses a file
+		returns a pyparsing.ParseResults
+		"""
 
 		try:
 			m = self.bnf.parseFile(file)

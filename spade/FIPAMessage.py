@@ -6,6 +6,9 @@
 """
 
 class FipaMessage:
+    """
+    This object contains the envelope and payload (body) of a fipa message
+    """
 
     def __init__(self, messageEnvelopes, messageBody):
         self.__messageEnvelopes = messageEnvelopes

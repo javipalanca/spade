@@ -1,16 +1,3 @@
-"""
- * XMLCodec.java
- *
- *
- * @author Jose Antonio Exposito
- * @author MARISM-A Development group ( marisma-info@ccd.uab.es )
- * @version 0.1
- * @author Nicolas Lhuillier
- * @author Joan Ametller
- * @version 1.0
-"""
-
-
 import xml.sax
 from xml.sax import handler
 from BasicFipaDateTime import *
@@ -21,6 +8,9 @@ import Envelope
 
 
 class XMLCodec(handler.ContentHandler):
+	"""
+	XML Parser
+	"""
 	def __init__(self):
 		#self.parser = xmlreader.IncrementalParser()
 		#self.parser.setContentHandler(self)
@@ -163,8 +153,10 @@ class XMLCodec(handler.ContentHandler):
 
 		return sb 
   
-	""" General Encoding of the envelope """
 	def encodeXML(self, env):
+		"""
+		General Encoding of the envelope
+		"""
      
 		#Create the message XML
 		sb = self.OT + self.ENVELOPE_TAG + self.CT
@@ -413,6 +405,9 @@ class XMLCodec(handler.ContentHandler):
 
 	# Main method #
 	def parse(self, _in):
+	    """
+	    parses the xml input
+	    """
             xml.sax.parseString(_in, self)
             return self.env
 

@@ -24,8 +24,15 @@ from spade import XMLCodec
 
     
 class SpadeBackend:
+	"""
+	Runs the platform.
+	Inits the platform components (AMS, DF, ...)
+	"""
 
 	def runAgent(self, configfile, section, agentClass):
+		"""
+		starts an agent
+		"""
 		jid = configfile.get(section,'JID')
 		passwd = configfile.get(section,'Password')
 		server = configfile.get(section,'Server')

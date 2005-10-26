@@ -1,10 +1,3 @@
-"""
-  File: ./FIPA/RECEIVEDOBJECT.JAVA
-  From: FIPA.IDL
-  Date: Mon Sep 04 15:08:50 2000
-  By: idltojava Java IDL 1.2 Nov 10 1997 13:52:11
-"""
-
 class ReceivedObject:
 
 	def __init__(self, by=None, _from=None, date=None, id=None, via=None):
