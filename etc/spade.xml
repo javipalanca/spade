@@ -1,31 +1,31 @@
 <spade>
 
  <domain>
-   <hostname>localhost</hostname>
+   <hostname>thx1138.dsic.upv.es</hostname>
    <jabberport>5222</jabberport>
  </domain>
 
  <acc>
-   <hostname>localhost</hostname>
+   <hostname>thx1138.dsic.upv.es</hostname>
    <password>secret</password>
    <port>9000</port>
  </acc>
 
  <ams>
-   <hostname>localhost</hostname>
+   <hostname>thx1138.dsic.upv.es</hostname>
    <password>secret</password>
    <port>9001</port>
  </ams>
 
  <df>
-   <hostname>localhost</hostname>
+   <hostname>thx1138.dsic.upv.es</hostname>
    <password>secret</password>
    <port>9002</port>
  </df>
 
  <jabber>
-   <binpath>/usr/local/bin/jabberd</binpath>
-   <libpath>/usr/local/lib/</libpath>
+   <binpath>/home/gusarba/devel/jabber/jabberd-1.4.3.1/jabberd/jabberd</binpath>
+   <libpath>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/</libpath>
    <workpath>/tmp/</workpath>
    <allowregister>yes</allowregister>
  </jabber>

@@ -388,7 +388,7 @@ class rma(Agent.Agent):
 			
 
 if __name__ == "__main__":
-	rma=rma("rma@localhost","secret")
+	rma=rma("rma@thx1138.dsic.upv.es","secret")
 	rma.start_and_wait()
 	#while(rma.isAlive()):
 	#	time.sleep(1)
