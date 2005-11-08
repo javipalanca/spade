@@ -17,7 +17,7 @@ from spade import *
 if os.name == "posix":
 	rmaxml = os.sep + "usr" + os.sep + "share" + os.sep + "spade" + os.sep + "rma.glade"
 else:
-	rmaxml = "etc" + os.sep + "rma.glade"
+	rmaxml = "usr/share/spade/rma.glade"
 
 
 class rma(Agent.Agent):

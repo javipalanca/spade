@@ -46,7 +46,7 @@ def main():
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/usr/share/spade/jabberd/jabber.xml"
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
-	 configfilename = "etc" + os.sep + "spade.xml"
+	 configfilename = "./etc" + os.sep + "spade.xml"
 	 jabberxml = "./usr/share/spade/jabberd/jabber.xml"
 	
 
