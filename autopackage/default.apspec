@@ -1,0 +1,47 @@
+# -*-shell-script-*-
+
+[Meta]
+RootName: @foobar.org/foobar:$SOFTWAREVERSION
+DisplayName: SPADE Multi-Agent Platform
+ShortName: spade
+Maintainer: Gustavo Aranda <garanda@dsic.upv.es>
+Packager: Gustavo Aranda <garanda@dsic.upv.es>
+Summary: SPADE (Smart Python multi-Agent Development Environment)
+URL: http://magentix.gti-ia.dsic.upv.es
+License: GNU General Public License, Version 2
+SoftwareVersion: 1.0
+AutopackageTarget: 1.0
+
+# Only uncomment InterfaceVersion if your package exposes interfaces to other software,
+# for instance if it includes DSOs or python/perl modules. See the developer guide for more info,
+# or ask on autopackage-dev if you don't understand interface versioning in autopackage.
+#
+# InterfaceVersion: 0.0
+
+[Description]
+SPADE (Smart Python multi-Agent Development Environment)
+
+#[BuildPrepare]
+#prepareBuild
+
+#[BuildUnprepare]
+#unprepareBuild
+
+[Imports]
+pwd
+#echo '*' | import
+ls $source_dir -lah
+echo $source_dir/* | import
+
+[Prepare]
+# Dependency checking
+#require @whatever.you/need 1.0
+
+[Install]
+# Put your installation script here
+#installExe bin/*
+python setup.py install
+
+[Uninstall]
+# Usually just the following line is enough to uninstall everything
+#uninstallFromLog
