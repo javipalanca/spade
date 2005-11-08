@@ -72,7 +72,7 @@ def main():
 		os.mkdir(spool)
   else:
 	  jabberpath = workpath + "jabberd.exe"
-	  spool = workpath + "spool/"
+	  spool = workpath + "spool"
 
   if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
