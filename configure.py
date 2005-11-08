@@ -1,4 +1,4 @@
-#! python
+#!/usr/bin/env python
 
 #import sys
 #import SocketServer
@@ -124,14 +124,15 @@ jabber_template = """
 
     </pthcsock>
   </service>
-
+  
   <log id='elogger'>
     <host/>
     <logtype/>
 
     <format>%d: [%t] (%h): %s</format>
-    <file>./error.log</file>
+    <file>$ERRORLOG$</file>
     <stderr/>
+   
     
     <!--<format>[%t] (%h): %s</format>
     <syslog>local0</syslog>-->
@@ -231,6 +232,7 @@ def generateCode():
 		dnsrv = "libjabberddnsrv.so"
 		#workpath = os.sep + "usr"+os.sep+"share"+os.sep+"spade"+os.sep+"jabberd"+os.sep
 		hostname = socket.gethostname()
+		errorlog = "/dev/null"
 
 	else:
 		jsm = "jsm.dll"
@@ -240,6 +242,7 @@ def generateCode():
 		dnsrv = "dnsrv.dll"
 		#workpath = "./jabberd/"
 		hostname = socket.gethostbyaddr(socket.gethostname())[0]
+		errorlog = "./error.log"
 
 	acc_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
 	ams_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
@@ -267,6 +270,7 @@ def generateCode():
 	jabber_template = jabber_template.replace('$XDB$', xdb)
 	jabber_template = jabber_template.replace('$PTH$', pth)
 	jabber_template = jabber_template.replace('$DNSRV$', dnsrv)
+	jabber_template = jabber_template.replace('$ERRORLOG$', errorlog)
 
 	file = open("usr/share/spade/jabberd/jabber.xml", "w+")
 	file.write(jabber_template)

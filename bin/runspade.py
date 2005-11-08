@@ -44,10 +44,10 @@ def main():
   """
   # default settings for play_and_quit.
   configfilename = "/etc/spade/spade.xml"
-  jabberxml = "/etc/spade/jabber.xml"
+  jabberxml = "/usr/share/spade/jabberd/jabber.xml"
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
 	 configfilename = "etc" + os.sep + "spade.xml"
-	 jabberxml = "etc" + os.sep + "jabber.xml"
+	 jabberxml = "./usr/share/spade/jabberd/jabber.xml"
 	
 
   for opt, arg in getopt(sys.argv[1:],
@@ -67,11 +67,15 @@ def main():
 
   if os.name == "posix":
 	  jabberpath = workpath + "jabberd"
+	  spool = os.environ['HOME'] + "/.spade/"
+	  if not os.path.exists(spool):
+		os.mkdir(spool)
   else:
 	  jabberpath = workpath + "jabberd.exe"
+	  spool = workpath + "spool/"
 
   if os.path.exists(jabberpath) and os.path.exists(jabberxml):
-	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath))
+	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 from distutils.core import setup
+import glob
 
 
 if os.name == "posix":
@@ -12,9 +13,16 @@ if os.name == "posix":
 	url='http://gti-ia.dsic.upv.es/projects/magentix/',
 	package_dir={'spade': 'spade'},
 	packages=['spade', 'spade.xmpp'],
-	scripts=['spade-rma.py', 'runspade.py'],
-	data_files=[('/etc/spade',['etc/spade.ini','etc/jabber.xml']),('/usr/share/spade',['usr/share/spade/rma.glade'])]
+	scripts=['bin/spade-rma.py', 'bin/runspade.py'],
+	data_files=[
+		('/etc/spade',['etc/spade.xml']),
+		('/usr/share/spade',['usr/share/spade/rma.glade']),
+		('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
+		('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
+		('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
+	]
 	)
+
 else:
 	import py2exe
 	setup(name='SPADE',
