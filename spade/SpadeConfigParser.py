@@ -342,62 +342,67 @@ class spadeXMLHandler(ContentHandler):
 			jabber['allowregister'] = self.chars
 		self.message = self.chars
 
+class ConfigParser:
+	def get(self, section, keyword):
+		answer = ""
+		try:
+			d = spade[section]
+			answer = d[keyword]
+		except:
+			print "Section %s does not have keyword %s" % (str(section), keyword)
+		return answer
+		pass
 
-def generateCode(fn):
-	# Fill the template with the correct data
+	def generateCode(self, fn):
+		# Fill the template with the correct data
 	
-	global jabber_template
+		global jabber_template
 	
-	if jabber['allowregister'] == 'yes':
-		jabber_template = jabber_template.replace('$REGISTER$', '<mod_register>$LIBPATH$libjabberdsm.so</mod_register>')
-	else:
-		jabber_template = jabber_template.replace('$REGISTER$', '')
-	jabber_template = jabber_template.replace('$SERVERNAME$', domain['hostname'])
-	jabber_template = jabber_template.replace('$ACCSERVERNAME$', acc['hostname'])
-	jabber_template = jabber_template.replace('$ACCPORT$', acc['port'])
-	jabber_template = jabber_template.replace('$ACCPASSWORD$', acc['password'])
-	jabber_template = jabber_template.replace('$AMSSERVERNAME$', ams['hostname'])
-	jabber_template = jabber_template.replace('$AMSPORT$', ams['port'])
-	jabber_template = jabber_template.replace('$AMSPASSWORD$', ams['password'])
-	jabber_template = jabber_template.replace('$DFSERVERNAME$', df['hostname'])
-	jabber_template = jabber_template.replace('$DFPORT$', df['port'])
-	jabber_template = jabber_template.replace('$DFPASSWORD$', df['password'])
-	jabber_template = jabber_template.replace('$WORKPATH$', jabber['workpath'])
-	jabber_template = jabber_template.replace('$LIBPATH$', jabber['libpath'])
+		if jabber['allowregister'] == 'yes':
+			jabber_template = jabber_template.replace('$REGISTER$', '<mod_register>$LIBPATH$libjabberdsm.so</mod_register>')
+		else:
+			jabber_template = jabber_template.replace('$REGISTER$', '')
+		jabber_template = jabber_template.replace('$SERVERNAME$', domain['hostname'])
+		jabber_template = jabber_template.replace('$ACCSERVERNAME$', acc['hostname'])
+		jabber_template = jabber_template.replace('$ACCPORT$', acc['port'])
+		jabber_template = jabber_template.replace('$ACCPASSWORD$', acc['password'])
+		jabber_template = jabber_template.replace('$AMSSERVERNAME$', ams['hostname'])
+		jabber_template = jabber_template.replace('$AMSPORT$', ams['port'])
+		jabber_template = jabber_template.replace('$AMSPASSWORD$', ams['password'])
+		jabber_template = jabber_template.replace('$DFSERVERNAME$', df['hostname'])
+		jabber_template = jabber_template.replace('$DFPORT$', df['port'])
+		jabber_template = jabber_template.replace('$DFPASSWORD$', df['password'])
+		jabber_template = jabber_template.replace('$WORKPATH$', jabber['workpath'])
+		jabber_template = jabber_template.replace('$LIBPATH$', jabber['libpath'])
 
-	file = open(fn, "w+")
-	file.write(jabber_template)
-	file.close()
+		file = open(fn, "w+")
+		file.write(jabber_template)
+		file.close()
 
+	def __init__(self, fn):
+#if __name__ == '__main__':
+    		# Create a parser
+    		parser = make_parser()
 
-if __name__ == '__main__':
-    # Create the handler
-    #dh = sbConnection("initial", '1.0')
-    
-    #parseString(datosSB, dh)
+    		# Tell the parser we are not interested in XML namespaces
+    		parser.setFeature(feature_namespaces, 0)
 
-    # Create a parser
-    parser = make_parser()
+    		# Create the handler
+    		dh = spadeXMLHandler()
 
-    # Tell the parser we are not interested in XML namespaces
-    parser.setFeature(feature_namespaces, 0)
+    		# Tell the parser to use our handler
+    		parser.setContentHandler(dh)
 
-    # Create the handler
-    dh = spadeXMLHandler()
+    		# Parse the input
+    		parser.parse(fn)
 
-    # Tell the parser to use our handler
-    parser.setContentHandler(dh)
+    		# Manage the results
+    		spade['domain'] = domain
+    		spade['acc'] = acc
+    		spade['ams'] = ams
+    		spade['df'] = df
+    		spade['jabber'] = jabber
+    		#print spade
 
-    # Parse the input
-    parser.parse("spade.xml")
-
-    # Manage the results
-    spade['domain'] = domain
-    spade['acc'] = acc
-    spade['ams'] = ams
-    spade['df'] = df
-    spade['jabber'] = jabber
-    #print spade
-
-    generateCode('jabber.xml')
+    		#generateCode('jabber.xml')
 

@@ -13,3 +13,4 @@ import Platform
 import Agent
 import AMS
 import spade_backend
+import SpadeConfigParser
