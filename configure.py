@@ -72,7 +72,7 @@ jabber_template = """
 
     <load main="jsm">
       <jsm>$LIBPATH$$JSM$</jsm>
-      <mod_stat>$LIBPATH$$JSM$</mod_stat>
+<!--      <mod_stat>$LIBPATH$$JSM$</mod_stat> -->
       <mod_echo>$LIBPATH$$JSM$</mod_echo>
       <mod_roster>$LIBPATH$$JSM$</mod_roster>
       <mod_time>$LIBPATH$$JSM$</mod_time>
@@ -82,7 +82,7 @@ jabber_template = """
       <mod_announce>$LIBPATH$$JSM$</mod_announce>
       <mod_agents>$LIBPATH$$JSM$</mod_agents>
       <mod_browse>$LIBPATH$$JSM$</mod_browse>
-      <mod_disco>$LIBPATH$$JSM$</mod_disco>
+<!--      <mod_disco>$LIBPATH$$JSM$</mod_disco> -->
       <mod_admin>$LIBPATH$$JSM$</mod_admin>
       <mod_offline>$LIBPATH$$JSM$</mod_offline>
       <mod_presence>$LIBPATH$$JSM$</mod_presence>
@@ -204,11 +204,6 @@ jabber_template = """
 
 
   </io>
-
-  <debug>
-      <mask>0</mask>
-
-  </debug>
 
   <pidfile>./jabber.pid</pidfile>
 

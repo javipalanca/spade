@@ -47,7 +47,7 @@ def main():
   jabberxml = "/usr/share/spade/jabberd/jabber.xml"
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
 	 configfilename = "./etc" + os.sep + "spade.xml"
-	 jabberxml = "./usr/share/spade/jabberd/jabber.xml"
+	 jabberxml = "jabber.xml"
 	
 
   for opt, arg in getopt(sys.argv[1:],
@@ -74,13 +74,15 @@ def main():
 	  jabberpath = workpath + "jabberd.exe"
 	  spool = workpath + "spool/"
 
-  if os.path.exists(jabberpath) and os.path.exists(jabberxml):
+  if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass
 
   try:
+  	print "Esperando...."
   	time.sleep(2)
+  	print "Lanzando..."
 
   	platform = spade_backend.SpadeBackend(configfilename)
 	platform.start()
