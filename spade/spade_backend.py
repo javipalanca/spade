@@ -1,9 +1,7 @@
 #! python
 # -*- coding: cp1252 -*-
-import sys, ConfigParser
-#import Platform,AMS
+import sys
 
-#from spade import *
 
 from spade import ACLMessage
 from spade import Agent
@@ -36,7 +34,7 @@ class SpadeBackend:
 		"""
 		#jid = configfile.get(section,'JID')
 		passwd = configfile.get(section,'password')
-		server = configfile.get(section,'hostname')
+		server = configfile.get("domain",'hostname')
 		port = int(configfile.get(section,'port'))
 		jid = section + "." + server
 		agent = agentClass(jid, passwd, server, port)

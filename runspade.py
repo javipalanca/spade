@@ -61,7 +61,10 @@ def main():
 
   configfile = SpadeConfigParser.ConfigParser(configfilename)
 
-  workpath = configfile.get("jabber","workpath")
+  workpath = "/usr/share/spade/jabberd/" #configfile.get("jabber","workpath")
+  if not os.path.exists(workpath):
+	workpath = "./usr/share/spade/jabberd/"
+
   if os.name == "posix":
 	  jabberpath = workpath + "jabberd"
   else:
@@ -70,6 +73,7 @@ def main():
   if os.path.exists(jabberpath) and os.path.exists(jabberxml):
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath))
 	#print "PID: " + str(jabberpid)
+	pass
 
   try:
   	time.sleep(2)

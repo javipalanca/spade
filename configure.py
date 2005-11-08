@@ -229,7 +229,7 @@ def generateCode():
 		xdb = "libjabberdxdbfile.so"
 		pth = "libjabberdpthsock.so"
 		dnsrv = "libjabberddnsrv.so"
-		workpath = os.sep + "usr"+os.sep+"share"+os.sep+"spade"+os.sep+"jabberd"+os.sep
+		#workpath = os.sep + "usr"+os.sep+"share"+os.sep+"spade"+os.sep+"jabberd"+os.sep
 		hostname = socket.gethostname()
 
 	else:
@@ -238,7 +238,7 @@ def generateCode():
 		xdb = "xdb_file.dll"
 		pth = "pthsock_client.dll"
 		dnsrv = "dnsrv.dll"
-		workpath = "./jabberd"
+		#workpath = "./jabberd/"
 		hostname = socket.gethostbyaddr(socket.gethostname())[0]
 
 	acc_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
@@ -262,12 +262,13 @@ def generateCode():
 	jabber_template = jabber_template.replace('$DFPASSWORD$', df_passwd)
 	#jabber_template = jabber_template.replace('$WORKPATH$', jabber['workpath'])
 	jabber_template = jabber_template.replace('$LIBPATH$', libpath)
+	jabber_template = jabber_template.replace('$JSM$', jsm)
 	jabber_template = jabber_template.replace('$DIALBACK$', dialback)
 	jabber_template = jabber_template.replace('$XDB$', xdb)
 	jabber_template = jabber_template.replace('$PTH$', pth)
 	jabber_template = jabber_template.replace('$DNSRV$', dnsrv)
 
-	file = open("etc/jabber.xml", "w+")
+	file = open("usr/share/spade/jabberd/jabber.xml", "w+")
 	file.write(jabber_template)
 	file.close()
 
@@ -296,11 +297,6 @@ def generateCode():
                       <password>"""+df_passwd+"""</password>
                       <port>9002</port>
                </df>
-
-               <jabber>
-                      <workpath>"""+workpath+"""</workpath>
-                      <allowregister>yes</allowregister>
-               </jabber>
 
         </spade>
 	"""
