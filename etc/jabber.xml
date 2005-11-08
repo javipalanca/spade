@@ -3,14 +3,14 @@
 
   <service id="sessions">
 
-    <host><jabberd:cmdline flag="h">thx1138.dsic.upv.es</jabberd:cmdline></host>
+    <host><jabberd:cmdline flag="h">tatooine.dsic.upv.es</jabberd:cmdline></host>
 
     <jsm xmlns="jabber:config:jsm">
 
       <vCard>
         <FN>SPADE Server</FN>
         <DESC>A SPADE Server!</DESC>
-        <URL>http://thx1138.dsic.upv.es</URL>
+        <URL>http://tatooine.dsic.upv.es</URL>
       </vCard>
       
       <register notify="yes">
@@ -20,23 +20,23 @@
      
       <welcome xml:lang='en'>
         <subject>Welcome!</subject>
-        <body>Welcome to the SPADE server at thx1138.dsic.upv.es -- we hope you enjoy this service! For information about how to use SPADE, visit http://magentix.gti-ia.dsic.upv.es</body>
+        <body>Welcome to the SPADE server at tatooine.dsic.upv.es -- we hope you enjoy this service! For information about how to use SPADE, visit http://magentix.gti-ia.dsic.upv.es</body>
       </welcome>
        <welcome xml:lang='es'>
         <subject>Bienvenido!</subject>
-        <body>Bienvenido al servidor SPADE en thx1138.dsic.upv.es -- esperamos que disfrute del servicio. Para mas informacion, consulte http://magentix.gti-ia.dsic.upv.es</body>
+        <body>Bienvenido al servidor SPADE en tatooine.dsic.upv.es -- esperamos que disfrute del servicio. Para mas informacion, consulte http://magentix.gti-ia.dsic.upv.es</body>
       </welcome>
      
       <vcard2jud/>
      
       <browse>
         
-	<service jid="acc.thx1138.dsic.upv.es" name="SmartPython Multi Agent Development Environment">
+	<service jid="acc.tatooine.dsic.upv.es" name="SmartPython Multi Agent Development Environment">
         </service>
-        <service jid="ams.thx1138.dsic.upv.es" name="SPADE ams FIPA Agent">
+        <service jid="ams.tatooine.dsic.upv.es" name="SPADE ams FIPA Agent">
           <ns>jabber:iq:search</ns>
         </service>
-        <service jid="df.thx1138.dsic.upv.es" name="SPADE df FIPA Agent">
+        <service jid="df.tatooine.dsic.upv.es" name="SPADE df FIPA Agent">
           <ns>jabber:iq:search</ns>
         </service>
 
@@ -62,30 +62,28 @@
     </jsm>
 
     <load main="jsm">
-      <jsm>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</jsm>
-      <mod_stat>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_stat>
-      <mod_echo>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_echo>
-      <mod_roster>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_roster>
-      <mod_time>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_time>
-      <mod_vcard>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_vcard>
-      <mod_last>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_last>
-      <mod_version>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_version>
-      <mod_announce>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_announce>
-      <mod_agents>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_agents>
-      <mod_browse>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_browse>
-      <mod_disco>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_disco>
-      <mod_admin>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_admin>
-      <mod_offline>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_offline>
-      <mod_presence>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_presence>
-      <mod_auth_digest>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_auth_digest>
-      <mod_auth_plain>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_auth_plain>    
-      <mod_log>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_log>
+      <jsm>./libs/$JSM$</jsm>
+      <mod_stat>./libs/$JSM$</mod_stat>
+      <mod_echo>./libs/$JSM$</mod_echo>
+      <mod_roster>./libs/$JSM$</mod_roster>
+      <mod_time>./libs/$JSM$</mod_time>
+      <mod_vcard>./libs/$JSM$</mod_vcard>
+      <mod_last>./libs/$JSM$</mod_last>
+      <mod_version>./libs/$JSM$</mod_version>
+      <mod_announce>./libs/$JSM$</mod_announce>
+      <mod_agents>./libs/$JSM$</mod_agents>
+      <mod_browse>./libs/$JSM$</mod_browse>
+      <mod_disco>./libs/$JSM$</mod_disco>
+      <mod_admin>./libs/$JSM$</mod_admin>
+      <mod_offline>./libs/$JSM$</mod_offline>
+      <mod_presence>./libs/$JSM$</mod_presence>
+      <mod_auth_digest>./libs/$JSM$</mod_auth_digest>
+      <mod_auth_plain>./libs/$JSM$</mod_auth_plain>    
+      <mod_log>./libs/$JSM$</mod_log>
       
-      <mod_register>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_register>
+      <mod_register>./libs/$JSM$</mod_register>
       
-      <!--<mod_register>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/libjabberdsm.so</mod_register>-->
-      
-      <mod_xml>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/jsm.so</mod_xml>
+      <mod_xml>./libs/$JSM$</mod_xml>
     </load>
 
   </service>
@@ -96,10 +94,10 @@
     <ns/>
     
     <load>
-      <xdb_file>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/libjabberdxdbfile.so</xdb_file>
+      <xdb_file>./libs/libjabberdxdbfile.so</xdb_file>
     </load>
     <xdb_file xmlns="jabber:config:xdb_file">
-      <spool><jabberd:cmdline flag='s'>/tmp/</jabberd:cmdline></spool>
+      <spool><jabberd:cmdline flag='s'>./spool</jabberd:cmdline></spool>
       <timeout>3600</timeout>
       <sizelimit>500000</sizelimit>
     </xdb_file>
@@ -107,7 +105,7 @@
 
   <service id="c2s">
     <load>
-      <pthsock_client>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/libjabberdpthsock.so</pthsock_client>
+      <pthsock_client>./libs/libjabberdpthsock.so</pthsock_client>
     </load>
     <pthcsock xmlns='jabber:config:pth-csock'>
       <authtime>120</authtime>
@@ -122,7 +120,7 @@
     <logtype/>
 
     <format>%d: [%t] (%h): %s</format>
-    <file>/tmp/error.log</file>
+    <file>./error.log</file>
     <stderr/>
     
     <!--<format>[%t] (%h): %s</format>
@@ -133,7 +131,7 @@
   <service id="dnsrv">
     <host/>
     <load>
-      <dnsrv>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/libjabberddnsrv.so</dnsrv>
+      <dnsrv>./libs/libjabberddnsrv.so</dnsrv>
     </load>
     <dnsrv xmlns="jabber:config:dnsrv">
 
@@ -146,41 +144,33 @@
 
   <service id="s2s">
     <load>
-      <dialback>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/libjabberddialback.so</dialback>
+      <dialback>./libs/libjabberddialback.so</dialback>
     </load>
     <dialback xmlns='jabber:config:dialback'>
       <ip port="5269"/>
-      <karma>
-        <init>50</init>
-        <max>50</max>
-        <inc>4</inc>
-        <dec>1</dec>
-        <penalty>-5</penalty>
-        <restore>50</restore>
-      </karma>
     </dialback>
   </service>
 
 
- <service id="acc.thx1138.dsic.upv.es">
+ <service id="acc.tatooine.dsic.upv.es">
     <accept>
       <ip/>
       <port>9000</port>
-      <secret>secret</secret>
+      <secret>pbvqvEbs</secret>
     </accept>
   </service>
-  <service id="ams.thx1138.dsic.upv.es">
+  <service id="ams.tatooine.dsic.upv.es">
     <accept>
       <ip/>
       <port>9001</port>
-      <secret>secret</secret>
+      <secret>svYxhPEl</secret>
     </accept>
   </service>
-  <service id="df.thx1138.dsic.upv.es">
+  <service id="df.tatooine.dsic.upv.es">
     <accept>
       <ip/>
       <port>9002</port>
-      <secret>secret</secret>
+      <secret>xCszPqQq</secret>
     </accept>
   </service>
 
@@ -210,6 +200,6 @@
 
   </debug>
 
-  <pidfile>/tmp/jabber.pid</pidfile>
+  <pidfile>./jabber.pid</pidfile>
 
 </jabber>

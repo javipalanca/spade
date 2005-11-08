@@ -1,33 +1,33 @@
-<spade>
 
- <domain>
-   <hostname>thx1138.dsic.upv.es</hostname>
-   <jabberport>5222</jabberport>
- </domain>
+	<spade>
 
- <acc>
-   <hostname>thx1138.dsic.upv.es</hostname>
-   <password>secret</password>
-   <port>9000</port>
- </acc>
+               <domain>
+                       <hostname>tatooine.dsic.upv.es</hostname>
+                       <jabberport>5222</jabberport>
+               </domain>
 
- <ams>
-   <hostname>thx1138.dsic.upv.es</hostname>
-   <password>secret</password>
-   <port>9001</port>
- </ams>
+               <acc>
+                       <hostname>acc.tatooine.dsic.upv.es</hostname>
+                       <password>pbvqvEbs</password>
+                       <port>9000</port>
+               </acc>
 
- <df>
-   <hostname>thx1138.dsic.upv.es</hostname>
-   <password>secret</password>
-   <port>9002</port>
- </df>
+               <ams>
+                      <hostname>ams.tatooine.dsic.upv.es</hostname>
+                      <password>svYxhPEl</password>
+                      <port>9001</port>
+               </ams>
 
- <jabber>
-   <binpath>/home/gusarba/devel/jabber/jabberd-1.4.3.1/jabberd/jabberd</binpath>
-   <libpath>/home/gusarba/devel/jabber/jabberd-1.4.3.1/lib/</libpath>
-   <workpath>/tmp/</workpath>
-   <allowregister>yes</allowregister>
- </jabber>
+               <df>
+                      <hostname>df.tatooine.dsic.upv.es</hostname>
+                      <password>xCszPqQq</password>
+                      <port>9002</port>
+               </df>
 
-</spade>
+               <jabber>
+                      <workpath>/usr/share/spade/jabberd</workpath>
+                      <allowregister>yes</allowregister>
+               </jabber>
+
+        </spade>
+	
