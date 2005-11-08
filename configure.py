@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-#import sys
-#import SocketServer
+import sys
 import string
 import random
 import os
@@ -216,11 +215,13 @@ jabber_template = """
 </jabber>
 """
 
+globalhostname = ""
 
 def generateCode():
 	# Fill the template with the correct data
 	
 	global jabber_template
+	global globalhostname
 
 	libpath = "./libs/"
 
@@ -231,7 +232,11 @@ def generateCode():
 		pth = "libjabberdpthsock.so"
 		dnsrv = "libjabberddnsrv.so"
 		#workpath = os.sep + "usr"+os.sep+"share"+os.sep+"spade"+os.sep+"jabberd"+os.sep
-		hostname = socket.gethostname()
+		# If no hostname was previously specified, get one from the system
+		if globalhostname == "":	
+			hostname = socket.gethostname()
+		else:
+			hostname = globalhostname
 		errorlog = "/dev/null"
 
 	else:
@@ -241,7 +246,11 @@ def generateCode():
 		pth = "pthsock_client.dll"
 		dnsrv = "dnsrv.dll"
 		#workpath = "./jabberd/"
-		hostname = socket.gethostbyaddr(socket.gethostname())[0]
+		# If no hostname was previously specified, get one from the system
+		if globalhostname == "":	
+			hostname = socket.gethostbyaddr(socket.gethostname())[0]
+		else:
+			hostname = globalhostname
 		errorlog = "./error.log"
 
 	acc_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
@@ -272,7 +281,11 @@ def generateCode():
 	jabber_template = jabber_template.replace('$DNSRV$', dnsrv)
 	jabber_template = jabber_template.replace('$ERRORLOG$', errorlog)
 
-	file = open("usr/share/spade/jabberd/jabber.xml", "w+")
+	###############################
+	# HARD-CODED PATH OF THE MUERTE
+	###############################
+	#file = open("usr/share/spade/jabberd/jabber.xml", "w+")
+	file = open("etc/jabber.xml", "w+")
 	file.write(jabber_template)
 	file.close()
 
@@ -310,5 +323,13 @@ def generateCode():
 	file.close()
 
 if __name__ == '__main__':
+    # We look for a command line parameter
+    if len(sys.argv) > 1:
+	# There is a parameter
+	globalhostname = sys.argv[1]
+    else:
+	# There is no parameter (i.e. macho-mode)
+	pass
+	
     generateCode()
 
