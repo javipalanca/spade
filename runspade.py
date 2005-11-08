@@ -65,9 +65,10 @@ def main():
   cffile.close()
 
   jabberpath = configfile.get("Jabber","path")
+  print "jabberpath: " + str(jabberpath)
   if os.path.exists(jabberpath) and os.path.exists(jabberxml):
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml))
-	#print "PID: " + str(jabberpid)
+	print "PID: " + str(jabberpid)
 
   try:
   	time.sleep(2)

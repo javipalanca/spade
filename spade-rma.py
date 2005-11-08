@@ -15,8 +15,10 @@ from spade import *
 #a.func_code.co_varnames
 
 if os.name == "posix":
-	rmaxml = os.sep 
-rmaxml += "usr" + os.sep + "share" + os.sep + "spade" + os.sep + "rma.glade"
+	rmaxml = os.sep + "usr" + os.sep + "share" + os.sep + "spade" + os.sep + "rma.glade"
+else:
+	rmaxml = "etc" + os.sep + "rma.glade"
+
 
 class rma(Agent.Agent):
 	class GTKWindow:
