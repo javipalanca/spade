@@ -261,19 +261,23 @@ class spadeXMLHandler(ContentHandler):
 		if name == "domain":
 			self.current_tag = "domain"
 			#print "Current Tag: " + name
-		if name == "acc":
+		elif name == "acc":
 			self.current_tag = "acc"
 			#print "Current Tag: " + name
-		if name == "ams":
+		elif name == "ams":
 			self.current_tag = "ams"
 			#print "Current Tag: " + name
-		if name == "df":
+		elif name == "df":
 			self.current_tag = "df"
 			#print "Current Tag: " + name
-		if name == "jabber":
+		elif name == "jabber":
 			self.current_tag = "jabber"
 			#print "Current Tag: " + name
-		
+		else:
+			self.chars = ""
+			self.tag_name = name
+
+		'''
 		if name == "connection":
 			self.tag_attr["type"] = attrs.get("type", None)
 			self.tag_attr['name'] = attrs.get('name', None)
@@ -289,9 +293,7 @@ class spadeXMLHandler(ContentHandler):
 		elif name == "keepalive":
 			self.tag_attr['id'] = attrs.get('id', None)
 			self.tag_attr['handle'] = attrs.get('handle', None)
-		else:
-			self.chars = ""
-			self.tag_name = name
+		'''
 
 	def characters(self, ch):
 		'''Caracteres incluidos en un nodo'''
@@ -312,7 +314,7 @@ class spadeXMLHandler(ContentHandler):
 				ams['hostname'] = self.chars
 			elif self.current_tag == "df":
 				df['hostname'] = self.chars
-		if name == "password":
+		elif name == "password":
 			if self.current_tag == "domain":
 				domain['password'] = self.chars
 			elif self.current_tag == "acc":
@@ -321,7 +323,7 @@ class spadeXMLHandler(ContentHandler):
 				ams['password'] = self.chars
 			elif self.current_tag == "df":
 				df['password'] = self.chars
-		if name == "port":
+		elif name == "port":
 			if self.current_tag == "domain":
 				domain['port'] = self.chars
 			elif self.current_tag == "acc":
@@ -330,16 +332,15 @@ class spadeXMLHandler(ContentHandler):
 				ams['port'] = self.chars
 			elif self.current_tag == "df":
 				df['port'] = self.chars
-		if name == "binpath":
+		elif name == "binpath":
 			jabber['binpath'] = self.chars
-		if name == "libpath":
+		elif name == "libpath":
 			jabber['libpath'] = self.chars
-		if name == "workpath":
+		elif name == "workpath":
 			jabber['workpath'] = self.chars
-		if name == "allowregister":
+		elif name == "allowregister":
 			jabber['allowregister'] = self.chars
 		self.message = self.chars
-		pass
 
 
 def generateCode(fn):
@@ -367,7 +368,6 @@ def generateCode(fn):
 	file = open(fn, "w+")
 	file.write(jabber_template)
 	file.close()
-
 
 
 if __name__ == '__main__':

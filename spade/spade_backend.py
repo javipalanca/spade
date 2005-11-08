@@ -42,13 +42,13 @@ class SpadeBackend:
 		agent.start()
 		return agent
     
-	def __init__(self, configfilename="/etc/spade/spade.ini"):
+	def __init__(self, configfilename="/etc/spade/spade.xml"):
 		print "SPADE started."
 		self.configfile = ConfigParser.ConfigParser()
 		try:
 		    cffile = open(configfilename,'r')
 		except IOError:
-		    print "SPADE requires configuration file, please supply either spade.ini"
+		    print "SPADE requires configuration file, please supply either spade.xml"
 		    sys.exit(1)
 		self.configfile.readfp(cffile)
 		cffile.close()
