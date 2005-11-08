@@ -6,6 +6,7 @@ import time
 import ConfigParser
 from getopt import getopt
 from spade import spade_backend
+from spade import SpadeConfigParser
 #import spade
 
 VERSION = "1.9b"
@@ -42,11 +43,10 @@ def main():
     except ImportError: print "W: Psyco optimizing compiler not found."
   """
   # default settings for play_and_quit.
-  if os.name == "posix":
-	 configfilename = "/etc/spade/spade.ini"
-	 jabberxml = "/etc/spade/jabber.xml"
-  else:
-	 configfilename = "etc" + os.sep + "spade.ini"
+  configfilename = "/etc/spade/spade.xml"
+  jabberxml = "/etc/spade/jabber.xml"
+  if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
+	 configfilename = "etc" + os.sep + "spade.xml"
 	 jabberxml = "etc" + os.sep + "jabber.xml"
 	
 
@@ -59,16 +59,17 @@ def main():
     elif opt in ["-j", "--jabber"]: jabberxml = arg
 
 
-  configfile = ConfigParser.ConfigParser()
-  cffile = open(configfilename,'r')
-  configfile.readfp(cffile)
-  cffile.close()
+  configfile = SpadeConfigParser.ConfigParser(configfilename)
 
-  jabberpath = configfile.get("Jabber","path")
-  print "jabberpath: " + str(jabberpath)
+  workpath = configfile.get("jabber","workpath")
+  if os.name == "posix":
+	  jabberpath = workpath + "jabberd"
+  else:
+	  jabberpath = workpath + "jabberd.exe"
+
   if os.path.exists(jabberpath) and os.path.exists(jabberxml):
-	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml))
-	print "PID: " + str(jabberpid)
+	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath))
+	#print "PID: " + str(jabberpid)
 
   try:
   	time.sleep(2)

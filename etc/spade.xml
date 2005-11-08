@@ -8,24 +8,24 @@
 
                <acc>
                        <hostname>acc.tatooine.dsic.upv.es</hostname>
-                       <password>pbvqvEbs</password>
+                       <password>YeMFsjMx</password>
                        <port>9000</port>
                </acc>
 
                <ams>
                       <hostname>ams.tatooine.dsic.upv.es</hostname>
-                      <password>svYxhPEl</password>
+                      <password>giadYrHo</password>
                       <port>9001</port>
                </ams>
 
                <df>
                       <hostname>df.tatooine.dsic.upv.es</hostname>
-                      <password>xCszPqQq</password>
+                      <password>DxoherqD</password>
                       <port>9002</port>
                </df>
 
                <jabber>
-                      <workpath>/usr/share/spade/jabberd</workpath>
+                      <workpath>/usr/share/spade/jabberd/</workpath>
                       <allowregister>yes</allowregister>
                </jabber>
 

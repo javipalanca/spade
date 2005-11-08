@@ -156,21 +156,21 @@
     <accept>
       <ip/>
       <port>9000</port>
-      <secret>pbvqvEbs</secret>
+      <secret>YeMFsjMx</secret>
     </accept>
   </service>
   <service id="ams.tatooine.dsic.upv.es">
     <accept>
       <ip/>
       <port>9001</port>
-      <secret>svYxhPEl</secret>
+      <secret>giadYrHo</secret>
     </accept>
   </service>
   <service id="df.tatooine.dsic.upv.es">
     <accept>
       <ip/>
       <port>9002</port>
-      <secret>xCszPqQq</secret>
+      <secret>DxoherqD</secret>
     </accept>
   </service>
 
