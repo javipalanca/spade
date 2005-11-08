@@ -35,43 +35,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._behaviourList = dict()
         self._isAlive = True
 
-    def _register(self, password, autoregister=True):
-	"""
-	registers the agent in the Jabber server
-	"""
 
-        jid = xmpp.protocol.JID(self._aid.getName())
-        name = jid.getNode()
-
-        #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
-        self.jabber.connect()
-        
-
-        #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
-        #       Registrarse automaticamente o algo..
-        #print "auth", name, password
-        if (self.jabber.auth(name,password,"spade") == None):
-            #raise NotImplementedError
-	    
-	    if (autoregister == True):
-                a=xmpp.features.getRegInfo(self.jabber,jid.getDomain())
-		#print a
-                b = xmpp.features.register(self.jabber,jid.getDomain(),\
-		{'username':name, 'password':str(password)})
-
-		#TODO: a better way???
-		time.sleep(0.5)
-
-                #print "--------------------------------> ", str(name)
-                if (self.jabber.auth(name,password,"spade") == None):
-                    raise NotImplementedError
-            else:
-                raise NotImplementedError
-	    
-
-        #print "auth ok", name
-        thread.start_new_thread(self.jabber_process, tuple())
-        self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
     def jabber_messageCB(self, conn, mess):
 	"""
@@ -757,6 +721,24 @@ class PlatformAgent(AbstractAgent):
         self.jabber = xmpp.Component(server, port, debug=[])
         self._register(password)
 
+    def _register(self, password, autoregister=True):
+	"""
+	registers the agent in the Jabber server
+	"""
+
+        jid = xmpp.protocol.JID(self._aid.getName())
+        name = jid.getNode()
+
+        #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
+        self.jabber.connect()
+        
+
+        if (self.jabber.auth(name,password,"spade") == None):
+                raise NotImplementedError
+
+        #print "auth ok", name
+        thread.start_new_thread(self.jabber_process, tuple())
+        self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
 class Agent(AbstractAgent):
     """
@@ -764,11 +746,53 @@ class Agent(AbstractAgent):
     """
     def __init__(self, agentjid, password, port=5222):
         jid = xmpp.protocol.JID(agentjid)
-        server = jid.getDomain()
-        AbstractAgent.__init__(self, agentjid, server)
-        self.jabber = xmpp.Client(server, port, debug=[])
+        self.server = jid.getDomain()
+	self.port = port
+        AbstractAgent.__init__(self, agentjid, self.server)
+        self.jabber = xmpp.Client(self.server, self.port, debug=[])
         self._register(password)
         self.jabber.sendInitPresence()
+
+    def _register(self, password, autoregister=True):
+	"""
+	registers the agent in the Jabber server
+	"""
+
+        jid = xmpp.protocol.JID(self._aid.getName())
+        name = jid.getNode()
+
+        #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
+        self.jabber.connect()
+        
+
+        #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
+        #       Registrarse automaticamente o algo..
+        #print "auth", name, password
+        if (self.jabber.auth(name,password,"spade") == None):
+            #raise NotImplementedError
+	    
+	    if (autoregister == True):
+                #a=xmpp.features.getRegInfo(self.jabber,jid.getDomain())
+		#print a
+                b = xmpp.features.register(self.jabber,jid.getDomain(),\
+		{'username':name, 'password':str(password)})
+
+		#self.jabber.reconnectAndReauth()
+		self.jabber.disconnect()
+		del self.jabber
+        	self.jabber = xmpp.Client(self.server, self.port, debug=[])
+		self.jabber.connect()
+
+                #print "--------------------------------> ", str(name)
+                if (self.jabber.auth(name,password,"spade") == None):
+                    raise NotImplementedError
+            else:
+                raise NotImplementedError
+	    
+
+        #print "auth ok", name
+        thread.start_new_thread(self.jabber_process, tuple())
+        self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
     def run(self):
 	"""
