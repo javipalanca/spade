@@ -75,6 +75,8 @@ def main():
 	  spool = workpath + "spool"
 
   if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
+	print "JABBERPATH: " + jabberpath
+	print "JABBERXML: "+ jabberxml
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass

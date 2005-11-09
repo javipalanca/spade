@@ -219,6 +219,7 @@ def generateCode():
 	global globalhostname
 
 	libpath = "./libs/"
+	#libpath = "/usr/share/spade/jabberd/libs/"
 
 	if os.name == "posix":
 		jsm = "libjabberdsm.so"
