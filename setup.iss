@@ -577,3 +577,5 @@ begin
   end;
 end;
 }
+[UninstallDelete]
+Name: {app}; Type: filesandordirs; Tasks: 
