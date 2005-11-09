@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.auth.SASL</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.auth-module.html">Module&nbsp;auth</a> ::
+        Class&nbsp;SASL
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/spade.xmpp.auth.SASL-class.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp.auth.SASL-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class SASL</h2>
+
+<pre class="base-tree">
+<a href="spade.xmpp.client.PlugIn-class.html"><code>PlugIn</code></a> --+
+         |
+        <b>SASL</b>
+</pre><br />
+
+<hr/>
+
+Implements SASL authentication.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.auth.SASL-class.html#auth" class="summary-sig-name"><code>auth</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>username</span>,
+          <span class=summary-sig-arg>password</span>)</span></code>
+<br />
+Start authentication.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.auth.SASL-class.html#FeaturesHandler" class="summary-sig-name"><code>FeaturesHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>conn</span>,
+          <span class=summary-sig-arg>feats</span>)</span></code>
+<br />
+Used to determine if server supports SASL auth.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="plugin"></a><span class="summary-sig"><span class="summary-sig-name">plugin</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>owner</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.auth.SASL-class.html#plugout" class="summary-sig-name"><code>plugout</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Remove SASL handlers from owner's dispatcher.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.auth.SASL-class.html#SASLHandler" class="summary-sig-name"><code>SASLHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>conn</span>,
+          <span class=summary-sig-arg>challenge</span>)</span></code>
+<br />
+Perform next SASL auth step.</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from PlugIn</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.PlugIn-class.html#__init__" class="summary-sig-name"><code>__init__</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.PlugIn-class.html#DEBUG" class="summary-sig-name"><code>DEBUG</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>text</span>,
+          <span class=summary-sig-arg>severity</span>)</span></code>
+<br />
+Feed a provided debug line to main instance's debug facility along 
+with our ID string.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.PlugIn-class.html#PlugIn" class="summary-sig-name"><code>PlugIn</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>owner</span>)</span></code>
+<br />
+Attach to main instance and register ourself and all our staff in 
+it.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.PlugIn-class.html#PlugOut" class="summary-sig-name"><code>PlugOut</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Unregister all our staff from main instance and detach from it.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="auth"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">auth</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>username</span>,
+          <span class=sig-arg>password</span>)</span>
+  </h3>
+  Start authentication. Result can be obtained via 
+  &quot;SASL.startsasl&quot; attribute and will be either 
+  &quot;success&quot; or &quot;failure&quot;. Note that successfull auth 
+  will take at least two Dispatcher.Process() calls.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="FeaturesHandler"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">FeaturesHandler</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>conn</span>,
+          <span class=sig-arg>feats</span>)</span>
+  </h3>
+  Used to determine if server supports SASL auth. Used internally.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="plugout"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">plugout</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Remove SASL handlers from owner's dispatcher. Used internally.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="SASLHandler"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">SASLHandler</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>conn</span>,
+          <span class=sig-arg>challenge</span>)</span>
+  </h3>
+  Perform next SASL auth step. Used internally.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:06 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

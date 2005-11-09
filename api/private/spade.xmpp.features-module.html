@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.features</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        Module&nbsp;features
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/spade.xmpp.features-module.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp.features-module.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF MODULE DESCRIPTION =========== -->
+<h2 class="module">Module spade.xmpp.features</h2>
+
+<pre class="literalblock">
+This module contains variable stuff that is not worth splitting into separate modules.
+Here is:
+    DISCO client and agents-to-DISCO and browse-to-DISCO emulators.
+    IBR and password manager.
+    jabber:iq:privacy methods
+All these methods takes 'disp' first argument that should be already connected
+(and in most cases already authorised) dispatcher instance.
+</pre>
+<hr/>
+
+<!-- =========== START OF FUNCTION SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Function Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#changePasswordTo" class="summary-sig-name"><code>changePasswordTo</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>newpassword</span>,
+          <span class=summary-sig-arg>host</span>)</span></code>
+<br />
+Changes password on specified or current (if not specified) 
+server.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#delPrivacyList" class="summary-sig-name"><code>delPrivacyList</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>listname</span>)</span></code>
+<br />
+Deletes privacy list 'listname'.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#discoverInfo" class="summary-sig-name"><code>discoverInfo</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>jid</span>,
+          <span class=summary-sig-arg>node</span>)</span></code>
+<br />
+Query remote object about info that it publishes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#discoverItems" class="summary-sig-name"><code>discoverItems</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>jid</span>,
+          <span class=summary-sig-arg>node</span>)</span></code>
+<br />
+Query remote object about any items that it contains.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#getPrivacyList" class="summary-sig-name"><code>getPrivacyList</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>listname</span>)</span></code>
+<br />
+Requests specific privacy list listname.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#getPrivacyLists" class="summary-sig-name"><code>getPrivacyLists</code></a>(<span class=summary-sig-arg>disp</span>)</span></code>
+<br />
+Requests privacy lists from connected server.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#getRegInfo" class="summary-sig-name"><code>getRegInfo</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>host</span>,
+          <span class=summary-sig-arg>info</span>)</span></code>
+<br />
+Gets registration form from remote host.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#register" class="summary-sig-name"><code>register</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>host</span>,
+          <span class=summary-sig-arg>info</span>)</span></code>
+<br />
+Perform registration on remote server with provided info.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#setActivePrivacyList" class="summary-sig-name"><code>setActivePrivacyList</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>listname</span>,
+          <span class=summary-sig-arg>typ</span>)</span></code>
+<br />
+Switches privacy list 'listname' to specified type.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#setDefaultPrivacyList" class="summary-sig-name"><code>setDefaultPrivacyList</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>listname</span>)</span></code>
+<br />
+Sets the default privacy list as 'listname'.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#setPrivacyList" class="summary-sig-name"><code>setPrivacyList</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>list</span>)</span></code>
+<br />
+Set the ruleset.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.features-module.html#unregister" class="summary-sig-name"><code>unregister</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>host</span>)</span></code>
+<br />
+Unregisters with host (permanently removes account).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="../private/spade.xmpp.features-module.html#_discover" class="summary-sig-name"><code>_discover</code></a>(<span class=summary-sig-arg>disp</span>,
+          <span class=summary-sig-arg>ns</span>,
+          <span class=summary-sig-arg>jid</span>,
+          <span class=summary-sig-arg>node</span>,
+          <span class=summary-sig-arg>fb2b</span>,
+          <span class=summary-sig-arg>fb2a</span>)</span></code>
+<br />
+Try to obtain info from the remote object.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF FUNCTION DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Function Details</th></tr>
+</table>
+
+<a name="changePasswordTo"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">changePasswordTo</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>newpassword</span>,
+          <span class=sig-arg>host</span>=<span class=sig-default>None</span>)</span>
+  </h3>
+  Changes password on specified or current (if not specified) server. 
+  disp must be connected and authorized dispatcher instance. Returns true 
+  on success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="delPrivacyList"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">delPrivacyList</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>listname</span>)</span>
+  </h3>
+  Deletes privacy list 'listname'. Returns true on success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="discoverInfo"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">discoverInfo</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>jid</span>,
+          <span class=sig-arg>node</span>=<span class=sig-default>None</span>)</span>
+  </h3>
+  Query remote object about info that it publishes. Returns identities 
+  and features lists.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="discoverItems"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">discoverItems</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>jid</span>,
+          <span class=sig-arg>node</span>=<span class=sig-default>None</span>)</span>
+  </h3>
+  Query remote object about any items that it contains. Return items 
+  list.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getPrivacyList"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getPrivacyList</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>listname</span>)</span>
+  </h3>
+  Requests specific privacy list listname. Returns list of XML nodes 
+  (rules) taken from the server responce.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getPrivacyLists"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getPrivacyLists</span>(<span class=sig-arg>disp</span>)</span>
+  </h3>
+  Requests privacy lists from connected server. Returns dictionary of 
+  existing lists on success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getRegInfo"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getRegInfo</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>host</span>,
+          <span class=sig-arg>info</span>=<span class=sig-default>{}</span>)</span>
+  </h3>
+  Gets registration form from remote host. You can pre-fill the info 
+  dictionary. F.e. if you are requesting info on registering user joey 
+  than specify info as {'username':'joey'}. See JEP-0077 for details. 
+  'disp' must be connected dispatcher instance.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="register"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">register</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>host</span>,
+          <span class=sig-arg>info</span>)</span>
+  </h3>
+  Perform registration on remote server with provided info. disp must 
+  be connected dispatcher instance. Returns true or false depending on 
+  registration result. If registration fails you can get additional info 
+  from the dispatcher's owner attributes lastErrNode, lastErr and 
+  lastErrCode.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setActivePrivacyList"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setActivePrivacyList</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>listname</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>typ</span>=<span class=sig-default>'active'</span>)</span>
+  </h3>
+  Switches privacy list 'listname' to specified type. By default the 
+  type is 'active'. Returns true on success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setDefaultPrivacyList"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setDefaultPrivacyList</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>listname</span>=<span class=sig-default>None</span>)</span>
+  </h3>
+  Sets the default privacy list as 'listname'. Returns true on 
+  success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setPrivacyList"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setPrivacyList</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>list</span>)</span>
+  </h3>
+  Set the ruleset. 'list' should be the simpleXML node formatted 
+  according to RFC 3921 (XMPP-IM) (I.e. 
+  Node('list',{'name':listname},payload=[...]) ) Returns true on 
+  success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="unregister"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">unregister</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>host</span>)</span>
+  </h3>
+  Unregisters with host (permanently removes account). disp must be 
+  connected and authorized dispatcher instance. Returns true on 
+  success.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="_discover"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">_discover</span>(<span class=sig-arg>disp</span>,
+          <span class=sig-arg>ns</span>,
+          <span class=sig-arg>jid</span>,
+          <span class=sig-arg>node</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>fb2b</span>=<span class=sig-default>0</span>,
+          <span class=sig-arg>fb2a</span>=<span class=sig-default>1</span>)</span>
+  </h3>
+  Try to obtain info from the remote object. If remote object doesn't 
+  support disco fall back to browse (if fb2b is true) and if it doesnt 
+  support browse (or fb2b is not true) fall back to agents protocol (if 
+  gb2a is true). Returns obtained info. Used internally.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:05 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

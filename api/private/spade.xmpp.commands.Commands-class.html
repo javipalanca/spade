@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.commands.Commands</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.commands-module.html">Module&nbsp;commands</a> ::
+        Class&nbsp;Commands
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/spade.xmpp.commands.Commands-class.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp.commands.Commands-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class Commands</h2>
+
+<pre class="base-tree">
+<a href="xmpp.client.PlugIn-class.html"><code>PlugIn</code></a> --+
+         |
+        <b>Commands</b>
+</pre><br />
+
+<hr/>
+
+<pre class="literalblock">
+Commands is an ancestor of Plugin and can be attached to any session.
+
+The commands class provides a lookup and browse mechnism. It follows the same priciple of the Browser class, for Service Discovery to provide the list of commands, it adds the 'list' disco type to your existing disco handler function. 
+
+How it works:
+    The commands are added into the existing Browser on the correct nodes. When the command list is built the supplied discovery handler function needs to have a 'list' option in type. This then gets enumerated, all results returned as None are ignored.
+    The command executed is then called using it's Execute method. All session management is handled by the command itself.
+</pre>
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#__init__" class="summary-sig-name"><code>__init__</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Initialises class and sets up local variables</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#addCommand" class="summary-sig-name"><code>addCommand</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>cmddisco</span>,
+          <span class=summary-sig-arg>cmdexecute</span>,
+          <span class=summary-sig-arg>jid</span>)</span></code>
+<br />
+The method to call if adding a new command to the session, the requred 
+parameters of cmddisco and cmdexecute are the methods to enable that 
+command to be executed</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#delCommand" class="summary-sig-name"><code>delCommand</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>jid</span>)</span></code>
+<br />
+Removed command from the session</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#getCommand" class="summary-sig-name"><code>getCommand</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>,
+          <span class=summary-sig-arg>jid</span>)</span></code>
+<br />
+Returns the command tuple</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#plugin" class="summary-sig-name"><code>plugin</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>owner</span>,
+          <span class=summary-sig-arg>browser</span>)</span></code>
+<br />
+Makes handlers within the session</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.commands.Commands-class.html#plugout" class="summary-sig-name"><code>plugout</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Removes handlers from the session</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="../private/spade.xmpp.commands.Commands-class.html#_CommandHandler" class="summary-sig-name"><code>_CommandHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>conn</span>,
+          <span class=summary-sig-arg>request</span>)</span></code>
+<br />
+The internal method to process the routing of command execution 
+requests</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="../private/spade.xmpp.commands.Commands-class.html#_DiscoHandler" class="summary-sig-name"><code>_DiscoHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>conn</span>,
+          <span class=summary-sig-arg>request</span>,
+          <span class=summary-sig-arg>typ</span>)</span></code>
+<br />
+The internal method to process service discovery requests</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from PlugIn</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="xmpp.client.PlugIn-class.html#DEBUG" class="summary-sig-name"><code>DEBUG</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>text</span>,
+          <span class=summary-sig-arg>severity</span>)</span></code>
+<br />
+Feed a provided debug line to main instance's debug facility along 
+with our ID string.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="xmpp.client.PlugIn-class.html#PlugIn" class="summary-sig-name"><code>PlugIn</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>owner</span>)</span></code>
+<br />
+Attach to main instance and register ourself and all our staff in 
+it.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="xmpp.client.PlugIn-class.html#PlugOut" class="summary-sig-name"><code>PlugOut</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Unregister all our staff from main instance and detach from it.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="__init__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__init__</span>(<span class=sig-arg>self</span>)</span>
+    <br /><i>(Constructor)</i>
+  </h3>
+  Initialises class and sets up local variables
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="xmpp.client.PlugIn-class.html#__init__"><code>xmpp.client.PlugIn.__init__</code></a></dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="addCommand"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">addCommand</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>name</span>,
+          <span class=sig-arg>cmddisco</span>,
+          <span class=sig-arg>cmdexecute</span>,
+          <span class=sig-arg>jid</span>=<span class=sig-default>''</span>)</span>
+  </h3>
+  The method to call if adding a new command to the session, the 
+  requred parameters of cmddisco and cmdexecute are the methods to enable 
+  that command to be executed
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="delCommand"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">delCommand</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>name</span>,
+          <span class=sig-arg>jid</span>=<span class=sig-default>''</span>)</span>
+  </h3>
+  Removed command from the session
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getCommand"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getCommand</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>name</span>,
+          <span class=sig-arg>jid</span>=<span class=sig-default>''</span>)</span>
+  </h3>
+  Returns the command tuple
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="plugin"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">plugin</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>owner</span>,
+          <span class=sig-arg>browser</span>)</span>
+  </h3>
+  Makes handlers within the session
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="plugout"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">plugout</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Removes handlers from the session
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="_CommandHandler"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">_CommandHandler</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>conn</span>,
+          <span class=sig-arg>request</span>)</span>
+  </h3>
+  The internal method to process the routing of command execution 
+  requests
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="_DiscoHandler"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">_DiscoHandler</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>conn</span>,
+          <span class=sig-arg>request</span>,
+          <span class=sig-arg>typ</span>)</span>
+  </h3>
+  The internal method to process service discovery requests
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:05 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

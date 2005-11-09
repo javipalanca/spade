@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol.JID</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.protocol-module.html">Module&nbsp;protocol</a> ::
+        Class&nbsp;JID
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/spade.xmpp.protocol.JID-class.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp.protocol.JID-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class JID</h2>
+
+<hr/>
+
+JID object. JID can be built from string, modified, compared, 
+serialised into string.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#__init__" class="summary-sig-name"><code>__init__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>jid</span>,
+          <span class=summary-sig-arg>node</span>,
+          <span class=summary-sig-arg>domain</span>,
+          <span class=summary-sig-arg>resource</span>)</span></code>
+<br />
+Constructor.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#__eq__" class="summary-sig-name"><code>__eq__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+<br />
+Compare the JID to another instance or to string for equality.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#__hash__" class="summary-sig-name"><code>__hash__</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Produce hash of the JID, Allows to use JID objects as keys of the 
+dictionary.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#__ne__" class="summary-sig-name"><code>__ne__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+<br />
+Compare the JID to another instance or to string for non-equality.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#__str__" class="summary-sig-name"><code>__str__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>wresource</span>)</span></code>
+<br />
+Serialise JID into string.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#bareMatch" class="summary-sig-name"><code>bareMatch</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>other</span>)</span></code>
+<br />
+Compare the node and domain parts of the JID's for equality.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#getDomain" class="summary-sig-name"><code>getDomain</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the domain part of the JID</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#getNode" class="summary-sig-name"><code>getNode</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the node part of the JID</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#getResource" class="summary-sig-name"><code>getResource</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the resource part of the JID</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#getStripped" class="summary-sig-name"><code>getStripped</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the bare representation of JID.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#setDomain" class="summary-sig-name"><code>setDomain</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>domain</span>)</span></code>
+<br />
+Set the domain part of the JID to new value.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#setNode" class="summary-sig-name"><code>setNode</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>node</span>)</span></code>
+<br />
+Set the node part of the JID to new value.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.protocol.JID-class.html#setResource" class="summary-sig-name"><code>setResource</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>resource</span>)</span></code>
+<br />
+Set the resource part of the JID to new value.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="__init__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__init__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>jid</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>node</span>=<span class=sig-default>''</span>,
+          <span class=sig-arg>domain</span>=<span class=sig-default>''</span>,
+          <span class=sig-arg>resource</span>=<span class=sig-default>''</span>)</span>
+    <br /><i>(Constructor)</i>
+  </h3>
+  Constructor. JID can be specified as string (jid argument) or as 
+  separate parts. Examples: JID('node&#64;domain/resource') 
+  JID(node='node',domain='domain.org')
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__eq__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__eq__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>other</span>)</span>
+    <br /><i>(Equality operator)</i>
+  </h3>
+  Compare the JID to another instance or to string for equality.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__hash__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__hash__</span>(<span class=sig-arg>self</span>)</span>
+    <br /><i>(Hashing function)</i>
+  </h3>
+  Produce hash of the JID, Allows to use JID objects as keys of the 
+  dictionary.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__ne__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__ne__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>other</span>)</span>
+  </h3>
+  Compare the JID to another instance or to string for 
+  non-equality.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="__str__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__str__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>wresource</span>=<span class=sig-default>1</span>)</span>
+    <br /><i>(Informal representation operator)</i>
+  </h3>
+  Serialise JID into string.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="bareMatch"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">bareMatch</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>other</span>)</span>
+  </h3>
+  Compare the node and domain parts of the JID's for equality.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getDomain"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getDomain</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the domain part of the JID
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getNode"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getNode</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the node part of the JID
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getResource"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getResource</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the resource part of the JID
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getStripped"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getStripped</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the bare representation of JID. I.e. string value w/o 
+  resource.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setDomain"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setDomain</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>domain</span>)</span>
+  </h3>
+  Set the domain part of the JID to new value.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setNode"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setNode</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>node</span>)</span>
+  </h3>
+  Set the node part of the JID to new value. Specify None to remove 
+  the node part.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setResource"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setResource</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>resource</span>)</span>
+  </h3>
+  Set the resource part of the JID to new value. Specify None to 
+  remove the resource part.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:05 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

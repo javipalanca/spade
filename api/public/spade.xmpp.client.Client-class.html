@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.client.Client</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.client-module.html">Module&nbsp;client</a> ::
+        Class&nbsp;Client
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/spade.xmpp.client.Client-class.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp.client.Client-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class Client</h2>
+
+<pre class="base-tree">
+<a href="spade.xmpp.client.CommonClient-class.html"><code>CommonClient</code></a> --+
+               |
+              <b>Client</b>
+</pre><br />
+
+<hr/>
+
+Example client class, based on CommonClient.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#auth" class="summary-sig-name"><code>auth</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>user</span>,
+          <span class=summary-sig-arg>password</span>,
+          <span class=summary-sig-arg>resource</span>)</span></code>
+<br />
+Authenticate connnection and bind resource.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#connect" class="summary-sig-name"><code>connect</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>server</span>,
+          <span class=summary-sig-arg>proxy</span>,
+          <span class=summary-sig-arg>tls</span>)</span></code>
+<br />
+Connect to jabber server.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#getRoster" class="summary-sig-name"><code>getRoster</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the Roster instance, previously plugging it in and requesting 
+roster from server if needed.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#sendInitPresence" class="summary-sig-name"><code>sendInitPresence</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>requestRoster</span>)</span></code>
+<br />
+Send roster request and initial &lt;presence/&gt;.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#sendPresence" class="summary-sig-name"><code>sendPresence</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>jid</span>,
+          <span class=summary-sig-arg>typ</span>,
+          <span class=summary-sig-arg>requestRoster</span>)</span></code>
+<br />
+Send some specific presence state.</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from CommonClient</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#__init__" class="summary-sig-name"><code>__init__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>server</span>,
+          <span class=summary-sig-arg>port</span>,
+          <span class=summary-sig-arg>debug</span>)</span></code>
+<br />
+Caches server name and (optionally) port to connect to.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#disconnected" class="summary-sig-name"><code>disconnected</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called on disconnection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#DisconnectHandler" class="summary-sig-name"><code>DisconnectHandler</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Default disconnect handler.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#event" class="summary-sig-name"><code>event</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>eventName</span>,
+          <span class=summary-sig-arg>args</span>)</span></code>
+<br />
+Default event handler.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#isConnected" class="summary-sig-name"><code>isConnected</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Returns connection state.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#reconnectAndReauth" class="summary-sig-name"><code>reconnectAndReauth</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Example of reconnection method.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#RegisterDisconnectHandler" class="summary-sig-name"><code>RegisterDisconnectHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>handler</span>)</span></code>
+<br />
+Register handler that will be called on disconnect.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="spade.xmpp.client.CommonClient-class.html#UnregisterDisconnectHandler" class="summary-sig-name"><code>UnregisterDisconnectHandler</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>handler</span>)</span></code>
+<br />
+Unregister handler that is called on disconnect.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="auth"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">auth</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>user</span>,
+          <span class=sig-arg>password</span>,
+          <span class=sig-arg>resource</span>=<span class=sig-default>''</span>)</span>
+  </h3>
+  Authenticate connnection and bind resource. If resource is not 
+  provided random one or library name used.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="connect"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">connect</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>server</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>proxy</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>tls</span>=<span class=sig-default>1</span>)</span>
+  </h3>
+  Connect to jabber server. If you want to specify different ip/port 
+  to connect to you can pass it as tuple as first parameter. If there is 
+  HTTP proxy between you and server - specify it's address and 
+  credentials (if needed) in the second argument. Example: 
+  connect(('192.168.5.5':5222),{'host':'proxy.my.net','port':8080,'user':'me','password':'secret'})
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="spade.xmpp.client.CommonClient-class.html#connect"><code>spade.xmpp.client.CommonClient.connect</code></a></dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getRoster"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getRoster</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the Roster instance, previously plugging it in and requesting 
+  roster from server if needed.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="sendInitPresence"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">sendInitPresence</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>requestRoster</span>=<span class=sig-default>1</span>)</span>
+  </h3>
+  Send roster request and initial &lt;presence/&gt;. You can disable 
+  the first by setting requestRoster argument to 0.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="sendPresence"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">sendPresence</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>jid</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>typ</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>requestRoster</span>=<span class=sig-default>0</span>)</span>
+  </h3>
+  Send some specific presence state. Can also request roster from 
+  server if according agrument is set.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:05 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

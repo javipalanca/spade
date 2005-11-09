@@ -17,6 +17,10 @@ if os.name == "posix":
 	data_files=[
 		('/etc/spade',['etc/spade.xml']),
 		('/usr/share/spade',['usr/share/spade/rma.glade']),
+		('/usr/share/doc/spade',['readme.txt']),
+		('/usr/share/doc/spade/api/private',glob.glob('api/private/*')),
+		('/usr/share/doc/spade/api/public',glob.glob('api/public/*')),
+		('/usr/share/doc/spade/api',['api/index.html','api/epydoc.css']),
 		('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
 		('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
 		('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])

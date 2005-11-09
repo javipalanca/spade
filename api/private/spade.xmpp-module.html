@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Package&nbsp;xmpp
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/spade.xmpp-module.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="spade.xmpp-module.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF PACKAGE DESCRIPTION =========== -->
+<h2 class="package">Package spade.xmpp</h2>
+
+<p>All features of xmpppy library contained within separate modules. At 
+present there are modules: simplexml - XML handling routines protocol - 
+jabber-objects (I.e. JID and different stanzas and sub-stanzas) handling 
+routines. debug - Jacob Lundquist's debugging module. Very handy if you 
+like colored debug. auth - Non-SASL and SASL stuff. You will need it to 
+auth as a client or transport. transports - low level connection 
+handling. TCP and TLS currently. HTTP support planned. roster - simple 
+roster for use in clients. dispatcher - decision-making logic. Handles 
+all hooks. The first who takes control over fresh stanzas. features - 
+different stuff that didn't worths separating into modules browser - 
+DISCO server framework. Allows to build dynamic disco tree. filetransfer 
+- Currently contains only IBB stuff. Can be used for bot-to-bot 
+transfers.</p>
+Most of the classes that is defined in all these modules is an 
+ancestors of class PlugIn so they share a single set of methods allowing 
+you to compile a featured XMPP client. For every instance of PlugIn class 
+the 'owner' is the class in what the plug was plugged. While plugging in 
+such instance usually sets some methods of owner to it's own ones for 
+easy access. All session specific info stored either in instance of 
+PlugIn or in owner's instance. This is considered unhandy and there are 
+plans to port 'Session' class from xmppd.py project for storing all 
+session-related info. Though if you are not accessing instances variables 
+directly and use only methods for access all values you should not have 
+any problems.
+<hr/>
+
+<!-- =========== START OF SUBMODULES =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Submodules</th></tr>
+  <tr><td><ul>
+<li> <b><a href="spade.xmpp.auth-module.html"><code>auth</code></a></b>: <i>Provides library with all Non-SASL and SASL authentication 
+mechanisms.</i>
+<li> <b><a href="spade.xmpp.browser-module.html"><code>browser</code></a></b>: <i>Browser module provides DISCO server framework for your 
+application.</i>
+<li> <b><a href="spade.xmpp.client-module.html"><code>client</code></a></b>: <i>Provides PlugIn class functionality to develop extentions for 
+xmpppy.</i>
+<li> <b><a href="spade.xmpp.commands-module.html"><code>commands</code></a></b>: <i>This module is a ad-hoc command processor for xmpppy.</i>
+<li> <b><a href="spade.xmpp.debug-module.html"><code>debug</code></a></b>
+<li> <b><a href="spade.xmpp.dispatcher-module.html"><code>dispatcher</code></a></b>: <i>Main xmpppy mechanism.</i>
+<li> <b><a href="spade.xmpp.features-module.html"><code>features</code></a></b>: <i>This module contains variable stuff that is not worth splitting into separate modules.</i>
+<li> <b><a href="spade.xmpp.filetransfer-module.html"><code>filetransfer</code></a></b>: <i>This module contains IBB class that is the simple implementation of 
+JEP-0047.</i>
+<li> <b><a href="spade.xmpp.protocol-module.html"><code>protocol</code></a></b>: <i>Protocol module contains tools that is needed for processing of 
+xmpp-related data structures.</i>
+<li> <b><a href="spade.xmpp.roster-module.html"><code>roster</code></a></b>: <i>Simple roster implementation.</i>
+<li> <b><a href="spade.xmpp.simplexml-module.html"><code>simplexml</code></a></b>: <i>Simplexml module provides xmpppy library with all needed tools to 
+handle XML nodes and XML streams.</i>
+<li> <b><a href="spade.xmpp.transports-module.html"><code>transports</code></a></b>: <i>This module contains the low-level implementations of xmpppy connect 
+methods or (in other words) transports for xmpp-stanzas.</i>
+  </ul></td></tr>
+</table><br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.1 on Wed Oct 26 17:42:05 2005</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>
