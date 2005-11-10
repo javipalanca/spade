@@ -20,9 +20,7 @@ if os.name == "posix":
 		('/etc/spade',['etc/spade.xml']),
 		('/usr/share/spade',['usr/share/spade/rma.glade']),
 		('/usr/share/doc/spade',['readme.txt']),
-		('/usr/share/doc/spade/api/private',glob.glob('doc/api/private/*')),
-		('/usr/share/doc/spade/api/public',glob.glob('doc/api/public/*')),
-		('/usr/share/doc/spade/api',['doc/api/index.html','doc/api/epydoc.css']),
+		('/usr/share/doc/spade/',['doc/api.tar.gz']),
 		('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
 		('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
 		('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
