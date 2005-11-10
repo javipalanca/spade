@@ -58,6 +58,10 @@ testForPythonModule distutils
 #	read hostname
 #fi;
 python configure.py $hostname
+cd spade
+pwd
+python xmpp-setup.py install
+cd ..
 python setup.py install
 
 [Uninstall]
