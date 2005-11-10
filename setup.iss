@@ -526,6 +526,7 @@ Source: doc\api\private\toc-spade-module.html; DestDir: {app}\doc\private
 Source: doc\api\private\trees.html; DestDir: {app}\doc\private
 Source: doc\api\private\xmpp.client.PlugIn-class.html; DestDir: {app}\doc\private
 Source: readme.txt; DestDir: {app}; Flags: isreadme
+Source: usr\share\spade\jabberd\cygwin1.dll; DestDir: {app}\usr\share\spade\jabberd
 [Dirs]
 Name: {app}\spade
 Name: {app}\spade\xmpp
