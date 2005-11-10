@@ -1,6 +1,6 @@
 # -*- coding: cp1252 -*-
 import sys
-import spade.xmpp
+import xmpp
 import threading
 import thread
 import Queue
