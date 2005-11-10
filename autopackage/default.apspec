@@ -35,17 +35,19 @@ echo $source_dir/* | import
 [Prepare]
 # Dependency checking
 #require @whatever.you/need 1.0
-if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
-	$hostname=`zenity --entry --text "Type Hostname" --entry-text "localhost"`
-else
-	echo -n "Insert hostname: "
-	read hostname
-fi;
-python $source_dir/configure.py $hostname
+requireFile /usr/bin/python
+testForPythonModule distutils
 
 [Install]
 # Put your installation script here
 #installExe bin/*
+#if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
+#	hostname=`zenity --entry --text "Type Hostname" --entry-text "localhost"`
+#else
+#	echo -n "Insert hostname: "
+#	read hostname
+#fi;
+python configure.py $hostname
 python setup.py install
 
 [Uninstall]
