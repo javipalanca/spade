@@ -29,8 +29,18 @@ SPADE (Smart Python multi-Agent Development Environment)
 
 [Imports]
 #echo '*' | import
-#ls $source_dir -lah
-echo $source_dir/* | import
+#echo $source_dir/* | import
+import << EOF
+$source_dir/configure.py
+$source_dir/setup.py
+$source_dir/runspade.py
+$source_dir/spade-rma.py
+$source_dir/etc
+$source_dir/readme.txt
+$source_dir/doc
+$source_dir/spade
+$source_dir/usr
+EOF
 
 [Prepare]
 # Dependency checking
