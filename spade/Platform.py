@@ -1,4 +1,4 @@
-import xmpp
+import spade.xmpp
 import threading
 import Agent
 import Envelope
