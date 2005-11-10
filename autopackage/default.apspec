@@ -51,17 +51,25 @@ testForPythonModule distutils
 [Install]
 # Put your installation script here
 #installExe bin/*
+outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
-	hostname=`zenity --entry --text "Type Hostname" --entry-text "localhost"`
+	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
 else
-	echo -n "Insert hostname: "
+	echo -n "Please insert the hostname: "
 	read hostname
 fi;
+outputTestPass
+outputTest "SPADE pre-configuration"
 python configure.py $hostname
+outputTestPass
+outputTest "Python-XMPP installation"
 cd spade
 python xmpp-setup.py install
 cd ..
+outputTestPass
+outputTest "SPADE platform installation"
 python setup.py install
+outputTestPass
 
 [Uninstall]
 # Usually just the following line is enough to uninstall everything
