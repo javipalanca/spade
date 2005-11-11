@@ -55,8 +55,16 @@ outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
 else
-	echo -n "Please insert the hostname: "
-	read hostname
+	OPTIONS="localhost $HOSTNAME Other..."
+	echo -n "\nPlease select hostname: "
+	select opt in $OPTIONS; do
+		if [ $opt == "Other..." ]; then
+			echo -n "Insert new hostname:"
+			read hostname
+		else
+			hostname=$opt
+		fi;
+	done
 fi;
 outputTestPass
 outputTest "SPADE pre-configuration"
