@@ -56,12 +56,16 @@ if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
 else
 	S3="Your choice: "
-	OPTIONS="localhost $HOSTNAME Other..."
+	OPTIONS="localhost $HOSTNAME"
+	if [ -e /usr/bin/dialog ]; then
+		OPTIONS="$OPTIONS Other..."
+	fi;
 	echo -n "Please select hostname: "
 	select opt in $OPTIONS; do
 		if [ $opt == "Other..." ]; then
-			echo -n "Insert new hostname: "
-			read hostname|true
+			#echo -n "Insert new hostname: "
+			#read hostname|true
+			hostname=`dialog --inputbox "Please type the hostname" 10 50`
 			break
 		else
 			hostname=$opt
