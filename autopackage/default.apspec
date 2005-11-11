@@ -55,14 +55,17 @@ outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
 else
+	S3="Your choice: "
 	OPTIONS="localhost $HOSTNAME Other..."
-	echo -n "\nPlease select hostname: "
+	echo -n "Please select hostname: "
 	select opt in $OPTIONS; do
 		if [ $opt == "Other..." ]; then
-			echo -n "Insert new hostname:"
+			echo -n "Insert new hostname: "
 			read hostname
+			break
 		else
 			hostname=$opt
+			break
 		fi;
 	done
 fi;
