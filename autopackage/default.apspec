@@ -61,7 +61,7 @@ else
 	select opt in $OPTIONS; do
 		if [ $opt == "Other..." ]; then
 			echo -n "Insert new hostname: "
-			read hostname
+			read hostname|true
 			break
 		else
 			hostname=$opt
