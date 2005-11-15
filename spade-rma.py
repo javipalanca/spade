@@ -20,16 +20,15 @@ if os.name == "posix":
 else:
 	rmaxml = "usr/share/spade/rma.glade"
 
+class GTKWindow:
+	def __init__(self, file, windowname):
+		self._file = file
+		self._windowname=windowname
+		self.glade = gtk.glade.XML(self._file, self._windowname)
+		self.win = self.glade.get_widget(self._windowname)
 
-class rma(Agent.Agent):
-	class GTKWindow:
-		def __init__(self, file, windowname):
-			self._file = file
-			self._windowname=windowname
-			self.glade = gtk.glade.XML(self._file, self._windowname)
-			self.win = self.glade.get_widget(self._windowname)
-			
-			
+
+class rma(Agent.Agent):						
 	class RunAgentWindow(GTKWindow):
 		def __init__(self, mainWin):
 			rma.GTKWindow.__init__(self,rmaxml,"RunAgent")
@@ -50,7 +49,7 @@ class rma(Agent.Agent):
 					if (issubclass(a,Agent.Agent)):
 						agent = a(name, passwd)
 						agent.start()
-                        			self.mainWin.listagents.append(agent)
+						self.mainWin.listagents.append(agent)
 				except:
 					pass
 			
@@ -68,7 +67,6 @@ class rma(Agent.Agent):
 			self.configure_agentslist()
 			self.win.show()
 			self.on_updateagents_clicked(None)
-            
 			
 		def on_window_delete_event(self, widget, event, data=None):
 			gtk.main_quit()
@@ -356,14 +354,17 @@ class rma(Agent.Agent):
 			self.win.destroy()
 
 
-	class GUIBehaviour(Behaviour.OneShotBehaviour):
-		def process(self):
+	class GUIBehaviour(Behaviour.PeriodicBehaviour):
+		def __init__(self):
+			Behaviour.PeriodicBehaviour.__init__(self, 10)
+		
+		def onStart(self):
 			win = rma.MainWindow(self.myAgent)
 			gobject.idle_add(rma.GUIBehaviour.idle,self)
-			gtk.main()
-			#for a in win.listagents:
-			#	a.kill()
-			self.myAgent.kill()
+			
+		def process(self):
+			pass
+			
 		def idle(self):
 			#MIGUEL
 			msg = self.blockingReceive(0.2)
@@ -390,9 +391,31 @@ class rma(Agent.Agent):
 			self.myAgent.send(msg)
 			
 
+class RMALogin(GTKWindow):
+	def __init__(self):
+		GTKWindow.__init__(self,rmaxml,"RMALogin")
+		self.glade.signal_autoconnect(self)
+		self.win.show()
+		
+	def on_cancel_clicked(self, data):
+		print "cancel"
+		gtk.main_quit()
+		
+	def on_ok_clicked(self, data):
+		self.win.hide();
+		username = self.glade.get_widget("entry_username").get_text()
+		password = self.glade.get_widget("entry_passwd").get_text()
+		rma_instance=rma(username, password)
+		rma_instance.start_and_wait()
+		rma_instance.kill()
+		gtk.main_quit()
+		
+	def on_window_delete_event(self, widget, event, data=None):
+		gtk.main_quit()
+		return False
+
+
 if __name__ == "__main__":
-	rma=rma("rma@sig-blanco.dsic.upv.es","secret")
-	rma.start_and_wait()
-	#while(rma.isAlive()):
-	#	time.sleep(1)
+	login = RMALogin()
+	gtk.main()
 

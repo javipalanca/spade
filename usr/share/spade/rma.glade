@@ -3362,7 +3362,7 @@ propagate</property>
       </child>
 
       <child>
-	<widget class="GtkEntry" id="entry1">
+	<widget class="GtkEntry" id="entry_username">
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
 	  <property name="editable">True</property>
@@ -3384,7 +3384,7 @@ propagate</property>
       </child>
 
       <child>
-	<widget class="GtkEntry" id="entry2">
+	<widget class="GtkEntry" id="entry_passwd">
 	  <property name="visible">True</property>
 	  <property name="can_focus">True</property>
 	  <property name="editable">True</property>
