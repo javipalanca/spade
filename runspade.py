@@ -9,7 +9,7 @@ from spade import spade_backend
 from spade import SpadeConfigParser
 #import spade
 
-VERSION = "1.9b"
+VERSION = "1.9.3"
 
 def print_help():
   print
@@ -43,6 +43,7 @@ def main():
     except ImportError: print "W: Psyco optimizing compiler not found."
   """
   # default settings for play_and_quit.
+  gui = False
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/usr/share/spade/jabberd/jabber.xml"
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
@@ -51,12 +52,13 @@ def main():
 	
 
   for opt, arg in getopt(sys.argv[1:],
-                         "hv:c:j:", ["help", "version", "configfile=",
+                         "hvgc:j:", ["help", "version", "gui", "configfile=",
                                       "jabber="])[0]:
     if opt in ["-h", "--help"]: print_help()
     elif opt in ["-v", "--version"]: print_version()
     elif opt in ["-c", "--configfile"]: configfilename = arg
     elif opt in ["-j", "--jabber"]: jabberxml = arg
+    elif opt in ["-g", "--gui"]: gui = True
 
 
   configfile = SpadeConfigParser.ConfigParser(configfilename)
@@ -67,7 +69,7 @@ def main():
 
   if os.name == "posix":
 	  jabberpath = workpath + "jabberd"
-	  spool = os.environ['HOME'] + "/.spade/"
+	  spool = os.environ['HOME'] + "/.spade"
 	  if not os.path.exists(spool):
 		os.mkdir(spool)
   else:
@@ -75,8 +77,8 @@ def main():
 	  spool = workpath + "spool"
 
   if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
-	print "JABBERPATH: " + jabberpath
-	print "JABBERXML: "+ jabberxml
+	#print "JABBERPATH: " + jabberpath
+	#print "JABBERXML: "+ jabberxml
 	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass
@@ -88,6 +90,9 @@ def main():
 
   	platform = spade_backend.SpadeBackend(configfilename)
 	platform.start()
+
+	if gui:
+		os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
 
 	while True:
 		time.sleep(1)

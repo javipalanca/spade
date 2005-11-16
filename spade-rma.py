@@ -12,13 +12,13 @@ import time
 import os
 from spade import *
 
-#a.func_defaults
-#a.func_code.co_varnames
-
 if os.name == "posix":
 	rmaxml = os.sep + "usr" + os.sep + "share" + os.sep + "spade" + os.sep + "rma.glade"
+	if not os.path.exists(rmaxml):
+		rmaxml = "usr/share/spade/rma.glade"
 else:
 	rmaxml = "usr/share/spade/rma.glade"
+
 
 class GTKWindow:
 	def __init__(self, file, windowname):
@@ -31,7 +31,7 @@ class GTKWindow:
 class rma(Agent.Agent):						
 	class RunAgentWindow(GTKWindow):
 		def __init__(self, mainWin):
-			rma.GTKWindow.__init__(self,rmaxml,"RunAgent")
+			GTKWindow.__init__(self,rmaxml,"RunAgent")
 			self.glade.signal_autoconnect(self)
 			self.win.show()
 			self.mainWin = mainWin
@@ -60,7 +60,7 @@ class rma(Agent.Agent):
 
 	class MainWindow(GTKWindow):
 		def __init__(self, agent):
-			rma.GTKWindow.__init__(self,rmaxml,"MainWindow")
+			GTKWindow.__init__(self,rmaxml,"MainWindow")
 			self.myAgent = agent
 			self.listagents = []
 			self.glade.signal_autoconnect(self)
@@ -125,7 +125,7 @@ class rma(Agent.Agent):
 	
 	class AIDViewer(GTKWindow):
 		def __init__(self, aid):
-			rma.GTKWindow.__init__(self,rmaxml,"AIDViewer")
+			GTKWindow.__init__(self,rmaxml,"AIDViewer")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.read_aid(aid)
@@ -155,7 +155,7 @@ class rma(Agent.Agent):
 			
 	class AIDEdit(GTKWindow):
 		def __init__(self):
-			rma.GTKWindow.__init__(self,rmaxml,"AIDEdit")
+			GTKWindow.__init__(self,rmaxml,"AIDEdit")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.win.show()
@@ -223,7 +223,7 @@ class rma(Agent.Agent):
 	
 	class ACLMessageViewer(GTKWindow):
 		def __init__(self, msg):
-			rma.GTKWindow.__init__(self,rmaxml,"ACLMessageViewer")
+			GTKWindow.__init__(self,rmaxml,"ACLMessageViewer")
 			self.glade.signal_autoconnect(self)
 			self.configure_lists()
 			self.read_message(msg)
@@ -276,7 +276,7 @@ class rma(Agent.Agent):
 			
 	class ACLMessageSend(GTKWindow):
 		def __init__(self, agent):
-			rma.GTKWindow.__init__(self,rmaxml,"ACLMessageSend")
+			GTKWindow.__init__(self,rmaxml,"ACLMessageSend")
 			self.configure_lists()
 			self.glade.signal_autoconnect(self)
 			self.win.show()
@@ -398,7 +398,7 @@ class RMALogin(GTKWindow):
 		self.win.show()
 		
 	def on_cancel_clicked(self, data):
-		print "cancel"
+		#print "cancel"
 		gtk.main_quit()
 		
 	def on_ok_clicked(self, data):

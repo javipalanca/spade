@@ -3295,6 +3295,7 @@ propagate</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
+  <signal name="delete_event" handler="on_window_delete_event" last_modification_time="Tue, 15 Nov 2005 14:20:47 GMT"/>
 
   <child>
     <widget class="GtkTable" id="table7">
@@ -3303,7 +3304,7 @@ propagate</property>
       <property name="n_columns">2</property>
       <property name="homogeneous">True</property>
       <property name="row_spacing">5</property>
-      <property name="column_spacing">15</property>
+      <property name="column_spacing">0</property>
 
       <child>
 	<widget class="GtkLabel" id="label45">
