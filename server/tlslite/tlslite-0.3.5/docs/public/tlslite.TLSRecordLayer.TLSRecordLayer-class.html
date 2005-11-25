@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite.TLSRecordLayer.TLSRecordLayer</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="tlslite-module.html">Package&nbsp;tlslite</a> ::
+        <a href="tlslite.TLSRecordLayer-module.html">Module&nbsp;TLSRecordLayer</a> ::
+        Class&nbsp;TLSRecordLayer
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/tlslite.TLSRecordLayer.TLSRecordLayer-class.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class TLSRecordLayer</h2>
+
+<dl><dt><b>Known Subclasses:</b></dt>
+<dd>
+    <a href="tlslite.TLSConnection.TLSConnection-class.html"><code>TLSConnection</code></a></dd></dl>
+
+<hr/>
+
+<p>This class handles data transmission for a TLS connection.</p>
+Its only subclass is <a 
+href="tlslite.TLSConnection.TLSConnection-class.html" 
+class="link"><code>tlslite.TLSConnection.TLSConnection</code></a>. We've 
+separated the code in this class from TLSConnection to make things more 
+readable.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__init__"></a><span class="summary-sig"><span class="summary-sig-name">__init__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>sock</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        str
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#read" class="summary-sig-name"><code>read</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>max</span>,
+          <span class=summary-sig-arg>min</span>)</span></code>
+<br />
+Read some data from the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        iterable
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#readAsync" class="summary-sig-name"><code>readAsync</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>max</span>,
+          <span class=summary-sig-arg>min</span>)</span></code>
+<br />
+Start a read operation on the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#write" class="summary-sig-name"><code>write</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>s</span>)</span></code>
+<br />
+Write some data to the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        iterable
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#writeAsync" class="summary-sig-name"><code>writeAsync</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>s</span>)</span></code>
+<br />
+Start a write operation on the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#close" class="summary-sig-name"><code>close</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Close the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        iterable
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#closeAsync" class="summary-sig-name"><code>closeAsync</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Start a close operation on the TLS connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        str
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#getCipherImplementation" class="summary-sig-name"><code>getCipherImplementation</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the name of the cipher implementation used with this 
+connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        str
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#getCipherName" class="summary-sig-name"><code>getCipherName</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the name of the cipher used with this connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#getpeername" class="summary-sig-name"><code>getpeername</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the remote address to which the socket is connected (socket 
+emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#getsockname" class="summary-sig-name"><code>getsockname</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the socket's own address (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#gettimeout" class="summary-sig-name"><code>gettimeout</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Return the timeout associated with socket operations (socket 
+emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        <a href="tlslite.FileObject.FileObject-class.html" 
+        class="link"><code>tlslite.FileObject.FileObject</code></a>
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#makefile" class="summary-sig-name"><code>makefile</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>mode</span>,
+          <span class=summary-sig-arg>bufsize</span>)</span></code>
+<br />
+Create a file object for the TLS connection (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#recv" class="summary-sig-name"><code>recv</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>bufsize</span>)</span></code>
+<br />
+Get some data from the TLS connection (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#send" class="summary-sig-name"><code>send</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>s</span>)</span></code>
+<br />
+Send data to the TLS connection (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#sendall" class="summary-sig-name"><code>sendall</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>s</span>)</span></code>
+<br />
+Send data to the TLS connection (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#setsockopt" class="summary-sig-name"><code>setsockopt</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>level</span>,
+          <span class=summary-sig-arg>optname</span>,
+          <span class=summary-sig-arg>value</span>)</span></code>
+<br />
+Set the value of the given socket option (socket emulation).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#settimeout" class="summary-sig-name"><code>settimeout</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>value</span>)</span></code>
+<br />
+Set a timeout on blocking socket operations (socket emulation).</td></tr>
+</table><br />
+
+
+<!-- =========== START OF INSTANCE VARIABLE SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Instance Variable Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">str or None</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#allegedSharedKeyUsername"><code>allegedSharedKeyUsername</code></a></b>: This is set to the shared-key username asserted by the client, whether 
+the handshake succeeded or not.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">str or None</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#allegedSrpUsername"><code>allegedSrpUsername</code></a></b>: This is set to the SRP username asserted by the client, whether the 
+handshake succeeded or not.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">bool</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#closed"><code>closed</code></a></b>: If this connection is closed.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">bool</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#closeSocket"><code>closeSocket</code></a></b>: If the socket should be closed when the connection is closed 
+(writable).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">bool</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#ignoreAbruptClose"><code>ignoreAbruptClose</code></a></b>: If an abrupt close of the socket should raise an error (writable).</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">bool</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#resumed"><code>resumed</code></a></b>: If this connection is based on a resumed session.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><a href="tlslite.Session.Session-class.html" 
+          class="link"><code>tlslite.Session.Session</code></a></font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#session"><code>session</code></a></b>: The session corresponding to this connection.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">socket.socket</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#sock"><code>sock</code></a></b>: The underlying socket object.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">tuple</font></td>
+<td><b><a href="tlslite.TLSRecordLayer.TLSRecordLayer-class.html#version"><code>version</code></a></b>: The TLS version being used for this connection.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="read"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">read</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>max</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>min</span>=<span class=sig-default>1</span>)</span>
+  </h3>
+  <p>Read some data from the TLS connection.</p>
+  <p>This function will block until at least 'min' bytes are available 
+  (or the connection is closed).</p>
+  If an exception is raised, the connection will have been 
+  automatically closed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>max</b></code> -
+         The maximum number of bytes to return.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=int)</i>
+      <dd><code><b>min</b></code> -
+         The minimum number of bytes to return
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=int)</i>
+      </dd>
+    </dl>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        A string of no more than 'max' bytes, and no fewer than 'min' 
+        (unless the connection has been closed, in which case fewer than 
+        'min' bytes may be returned).
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+      <dd><code><b>tlslite.errors.TLSAbruptCloseError</b></code> -
+        If the socket is closed without a preceding alert.
+      <dd><code><b>tlslite.errors.TLSAlert</b></code> -
+        If a TLS alert is signalled.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="readAsync"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">readAsync</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>max</span>=<span class=sig-default>None</span>,
+          <span class=sig-arg>min</span>=<span class=sig-default>1</span>)</span>
+  </h3>
+  <p>Start a read operation on the TLS connection.</p>
+  This function returns a generator which behaves similarly to read(). 
+  Successive invocations of the generator will return 0 if it is waiting 
+  to read from the socket, 1 if it is waiting to write to the socket, or 
+  a string if the read operation has completed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        A generator; see above for details.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=iterable)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="write"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">write</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>s</span>)</span>
+  </h3>
+  <p>Write some data to the TLS connection.</p>
+  <p>This function will block until all the data has been sent.</p>
+  If an exception is raised, the connection will have been 
+  automatically closed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>s</b></code> -
+         The data to transmit to the other party.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="writeAsync"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">writeAsync</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>s</span>)</span>
+  </h3>
+  <p>Start a write operation on the TLS connection.</p>
+  This function returns a generator which behaves similarly to 
+  write(). Successive invocations of the generator will return 1 if it is 
+  waiting to write to the socket, or will raise StopIteration if the 
+  write operation has completed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        A generator; see above for details.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=iterable)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="close"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">close</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Close the TLS connection.</p>
+  <p>This function will block until it has exchanged close_notify alerts 
+  with the other party. After doing so, it will shut down the TLS 
+  connection. Further attempts to read through this connection will 
+  return &quot;&quot;. Further attempts to write through this connection 
+  will raise ValueError.</p>
+  <p>If makefile() has been called on this connection, the connection 
+  will be not be closed until the connection object and all file objects 
+  have been closed.</p>
+  Even if an exception is raised, the connection will have been 
+  closed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+      <dd><code><b>tlslite.errors.TLSAbruptCloseError</b></code> -
+        If the socket is closed without a preceding alert.
+      <dd><code><b>tlslite.errors.TLSAlert</b></code> -
+        If a TLS alert is signalled.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="closeAsync"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">closeAsync</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Start a close operation on the TLS connection.</p>
+  This function returns a generator which behaves similarly to 
+  close(). Successive invocations of the generator will return 0 if it is 
+  waiting to read from the socket, 1 if it is waiting to write to the 
+  socket, or will raise StopIteration if the close operation has 
+  completed.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        A generator; see above for details.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=iterable)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getCipherImplementation"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getCipherImplementation</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Get the name of the cipher implementation used with this 
+  connection.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        The name of the cipher implementation used with this 
+        connection. Either 'python', 'cryptlib', 'openssl', or 
+        'pycrypto'.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getCipherName"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getCipherName</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Get the name of the cipher used with this connection.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        The name of the cipher used with this connection. Either 
+        'aes128', 'aes256', 'rc4', or '3des'.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getpeername"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getpeername</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the remote address to which the socket is connected (socket 
+  emulation).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getsockname"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getsockname</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the socket's own address (socket emulation).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="gettimeout"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">gettimeout</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Return the timeout associated with socket operations (socket 
+  emulation).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="makefile"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">makefile</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>mode</span>=<span class=sig-default>'r'</span>,
+          <span class=sig-arg>bufsize</span>=<span class=sig-default>-1</span>)</span>
+  </h3>
+  Create a file object for the TLS connection (socket emulation).
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        <a href="tlslite.FileObject.FileObject-class.html" 
+        class="link"><code>tlslite.FileObject.FileObject</code></a>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="recv"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">recv</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>bufsize</span>)</span>
+  </h3>
+  Get some data from the TLS connection (socket emulation).
+  <dl><dt></dt><dd>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+      <dd><code><b>tlslite.errors.TLSAbruptCloseError</b></code> -
+        If the socket is closed without a preceding alert.
+      <dd><code><b>tlslite.errors.TLSAlert</b></code> -
+        If a TLS alert is signalled.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="send"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">send</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>s</span>)</span>
+  </h3>
+  Send data to the TLS connection (socket emulation).
+  <dl><dt></dt><dd>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="sendall"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">sendall</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>s</span>)</span>
+  </h3>
+  Send data to the TLS connection (socket emulation).
+  <dl><dt></dt><dd>
+    <dl><dt><b>Raises:</b></dt>
+      <dd><code><b>socket.error</b></code> -
+        If a socket error occurs.
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setsockopt"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setsockopt</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>level</span>,
+          <span class=sig-arg>optname</span>,
+          <span class=sig-arg>value</span>)</span>
+  </h3>
+  Set the value of the given socket option (socket emulation).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="settimeout"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">settimeout</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>value</span>)</span>
+  </h3>
+  Set a timeout on blocking socket operations (socket emulation).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF INSTANCE VARIABLE DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Instance Variable Details</th></tr>
+</table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="allegedSharedKeyUsername"></a>
+<h3>allegedSharedKeyUsername</h3>
+This is set to the shared-key username asserted by the client, whether 
+the handshake succeeded or not. If the handshake fails, this can be 
+inspected to determine if a guessing attack is in progress against a 
+particular user account.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          str or None
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="allegedSrpUsername"></a>
+<h3>allegedSrpUsername</h3>
+This is set to the SRP username asserted by the client, whether the 
+handshake succeeded or not. If the handshake fails, this can be inspected 
+to determine if a guessing attack is in progress against a particular 
+user account.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          str or None
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="closed"></a>
+<h3>closed</h3>
+If this connection is closed.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          bool
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="closeSocket"></a>
+<h3>closeSocket</h3>
+<p>If the socket should be closed when the connection is closed 
+(writable).</p>
+If you set this to True, TLS Lite will assume the responsibility of 
+closing the socket when the TLS Connection is shutdown (either through an 
+error or through the user calling close()). The default is False.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          bool
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="ignoreAbruptClose"></a>
+<h3>ignoreAbruptClose</h3>
+<p>If an abrupt close of the socket should raise an error (writable).</p>
+<p>If you set this to True, TLS Lite will not raise a <a 
+href="tlslite.errors.TLSAbruptCloseError-class.html" 
+class="link"><code>tlslite.errors.TLSAbruptCloseError</code></a> 
+exception if the underlying socket is unexpectedly closed. Such an 
+unexpected closure could be caused by an attacker. However, it also 
+occurs with some incorrect TLS implementations.</p>
+You should set this to True only if you're not worried about an 
+attacker truncating the connection, and only if necessary to avoid 
+spurious errors. The default is False.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          bool
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="resumed"></a>
+<h3>resumed</h3>
+If this connection is based on a resumed session.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          bool
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="session"></a>
+<h3>session</h3>
+<p>The session corresponding to this connection.</p>
+Due to TLS session resumption, multiple connections can correspond to 
+the same underlying session.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          <a href="tlslite.Session.Session-class.html" 
+          class="link"><code>tlslite.Session.Session</code></a>
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="sock"></a>
+<h3>sock</h3>
+The underlying socket object.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          socket.socket
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="version"></a>
+<h3>version</h3>
+<p>The TLS version being used for this connection.</p>
+(3,0) means SSL 3.0, and (3,1) means TLS 1.0.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          tuple
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:50 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

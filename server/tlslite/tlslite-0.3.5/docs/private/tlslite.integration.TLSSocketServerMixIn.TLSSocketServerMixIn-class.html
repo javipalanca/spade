@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite.integration.TLSSocketServerMixIn.TLSSocketServerMixIn</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="tlslite-module.html">Package&nbsp;tlslite</a> ::
+        <a href="tlslite.integration-module.html">Package&nbsp;integration</a> ::
+        <a href="tlslite.integration.TLSSocketServerMixIn-module.html">Module&nbsp;TLSSocketServerMixIn</a> ::
+        Class&nbsp;TLSSocketServerMixIn
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/tlslite.integration.TLSSocketServerMixIn.TLSSocketServerMixIn-class.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite.integration.TLSSocketServerMixIn.TLSSocketServerMixIn-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class TLSSocketServerMixIn</h2>
+
+<hr/>
+
+<p>This class can be mixed in with any 
+<code>SocketServer.TCPServer</code> to add TLS support.</p>
+To use this class, define a new class that inherits from it and some 
+<code>SocketServer.TCPServer</code> (with the mix-in first). Then 
+implement the handshake() method, doing some sort of server handshake on 
+the connection argument. If the handshake method returns True, the 
+RequestHandler will be triggered. Below is a complete example of a 
+threaded HTTPS server:
+<pre class="literalblock">
+   from SocketServer import *
+   from BaseHTTPServer import *
+   from SimpleHTTPServer import *
+   from tlslite.api import *
+
+   s = open(&quot;./serverX509Cert.pem&quot;).read()
+   x509 = X509()
+   x509.parse(s)
+   certChain = X509CertChain([x509])
+
+   s = open(&quot;./serverX509Key.pem&quot;).read()
+   privateKey = parsePEMKey(s, private=True)
+
+   sessionCache = SessionCache()
+
+   class MyHTTPServer(ThreadingMixIn, TLSSocketServerMixIn,
+                      HTTPServer):
+     def handshake(self, tlsConnection):
+         try:
+             tlsConnection.handshakeServer(certChain=certChain,
+                                           privateKey=privateKey,
+                                           sessionCache=sessionCache)
+             tlsConnection.ignoreAbruptClose = True
+             return True
+         except TLSError, error:
+             print &quot;Handshake failure:&quot;, str(error)
+             return False
+
+   httpd = MyHTTPServer(('localhost', 443), SimpleHTTPRequestHandler)
+   httpd.serve_forever()
+</pre>
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="finish_request"></a><span class="summary-sig"><span class="summary-sig-name">finish_request</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>sock</span>,
+          <span class=summary-sig-arg>client_address</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="handshake"></a><span class="summary-sig"><span class="summary-sig-name">handshake</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>tlsConnection</span>)</span></code>
+</td></tr>
+</table><br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:51 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th bgcolor="#70b0f0" class="navselect">&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        Package&nbsp;tlslite
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/tlslite-module.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite-module.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF PACKAGE DESCRIPTION =========== -->
+<h2 class="package">Package tlslite</h2>
+
+<p>TLS Lite is a free python library that implements SSL v3 and TLS v1. 
+TLS Lite supports non-traditional authentication methods such as SRP, 
+shared keys, and cryptoIDs, in addition to X.509 certificates. TLS Lite 
+is pure python, however it can access OpenSSL, cryptlib, pycrypto, and 
+GMPY for faster crypto operations. TLS Lite integrates with httplib, 
+xmlrpclib, SocketServer, asyncore, and Twisted.</p>
+To use, do:
+<pre class="literalblock">
+   from tlslite.api import *
+</pre>
+Then use the <a href="tlslite.TLSConnection.TLSConnection-class.html" 
+class="link"><code>tlslite.TLSConnection.TLSConnection</code></a> class 
+with a socket, or use one of the integration classes in <a 
+href="tlslite.integration-module.html" 
+class="link"><code>tlslite.integration</code></a>.
+<hr/>
+<p><b>Version:</b> 0.3.5
+</p>
+
+
+<!-- =========== START OF SUBMODULES =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Submodules</th></tr>
+  <tr><td><ul>
+<li> <b><a href="tlslite.api-module.html"><code>api</code></a></b>: <i>Import this module for easy access to TLS Lite objects.</i>
+<li> <b><a href="tlslite.BaseDB-module.html"><code>BaseDB</code></a></b>: <i>Base class for SharedKeyDB and VerifierDB.</i>
+<li> <b><a href="tlslite.Checker-module.html"><code>Checker</code></a></b>: <i>Class for post-handshake certificate checking.</i>
+<li> <b><a href="tlslite.constants-module.html"><code>constants</code></a></b>: <i>Constants used in various places.</i>
+<li> <b><a href="tlslite.errors-module.html"><code>errors</code></a></b>: <i>Exception classes.</i>
+<li> <b><a href="tlslite.FileObject-module.html"><code>FileObject</code></a></b>: <i>Class returned by TLSConnection.makefile().</i>
+<li> <b><a href="tlslite.HandshakeSettings-module.html"><code>HandshakeSettings</code></a></b>: <i>Class for setting handshake parameters.</i>
+<li> <b><a href="tlslite.integration-module.html"><code>integration</code></a></b>: <i>Classes for integrating TLS Lite with other packages.</i>
+  <ul>
+    <li> <b><a href="tlslite.integration.AsyncStateMachine-module.html"><code>AsyncStateMachine</code></a></b>: <i>A state machine for using TLS Lite with asynchronous I/O.</i>
+    <li> <b><a href="tlslite.integration.HTTPTLSConnection-module.html"><code>HTTPTLSConnection</code></a></b>: <i>TLS Lite + httplib.</i>
+    <li> <b><a href="tlslite.integration.TLSAsyncDispatcherMixIn-module.html"><code>TLSAsyncDispatcherMixIn</code></a></b>: <i>TLS Lite + asyncore.</i>
+    <li> <b><a href="tlslite.integration.TLSSocketServerMixIn-module.html"><code>TLSSocketServerMixIn</code></a></b>: <i>TLS Lite + SocketServer.</i>
+    <li> <b><a href="tlslite.integration.TLSTwistedProtocolWrapper-module.html"><code>TLSTwistedProtocolWrapper</code></a></b>: <i>TLS Lite + Twisted.</i>
+    <li> <b><a href="tlslite.integration.XMLRPCTransport-module.html"><code>XMLRPCTransport</code></a></b>: <i>TLS Lite + xmlrpclib.</i>
+  </ul>
+<li> <b><a href="tlslite.mathtls-module.html"><code>mathtls</code></a></b>: <i>Miscellaneous helper functions.</i>
+<li> <b><a href="tlslite.messages-module.html"><code>messages</code></a></b>: <i>Classes representing TLS messages.</i>
+<li> <b><a href="tlslite.Session-module.html"><code>Session</code></a></b>: <i>Class representing a TLS session.</i>
+<li> <b><a href="tlslite.SessionCache-module.html"><code>SessionCache</code></a></b>: <i>Class for caching TLS sessions.</i>
+<li> <b><a href="tlslite.SharedKeyDB-module.html"><code>SharedKeyDB</code></a></b>: <i>Class for storing shared keys.</i>
+<li> <b><a href="tlslite.TLSConnection-module.html"><code>TLSConnection</code></a></b>: <i>Main class for TLS Lite.</i>
+<li> <b><a href="tlslite.TLSRecordLayer-module.html"><code>TLSRecordLayer</code></a></b>: <i>Helper class for TLSConnection.</i>
+<li> <b><a href="tlslite.utils-module.html"><code>utils</code></a></b>: <i>Toolkit for crypto and other stuff.</i>
+  <ul>
+    <li> <b><a href="tlslite.utils.AES-module.html"><code>AES</code></a></b>: <i>Abstract class for AES.</i>
+    <li> <b><a href="tlslite.utils.ASN1Parser-module.html"><code>ASN1Parser</code></a></b>: <i>Class for parsing ASN.1</i>
+    <li> <b><a href="tlslite.utils.cipherfactory-module.html"><code>cipherfactory</code></a></b>: <i>Factory functions for symmetric cryptography.</i>
+    <li> <b><a href="tlslite.utils.codec-module.html"><code>codec</code></a></b>: <i>Classes for reading/writing binary data (such as TLS records).</i>
+    <li> <b><a href="tlslite.utils.Cryptlib_AES-module.html"><code>Cryptlib_AES</code></a></b>: <i>Cryptlib AES implementation.</i>
+    <li> <b><a href="tlslite.utils.Cryptlib_RC4-module.html"><code>Cryptlib_RC4</code></a></b>: <i>Cryptlib RC4 implementation.</i>
+    <li> <b><a href="tlslite.utils.Cryptlib_TripleDES-module.html"><code>Cryptlib_TripleDES</code></a></b>: <i>Cryptlib 3DES implementation.</i>
+    <li> <b><a href="tlslite.utils.dateFuncs-module.html"><code>dateFuncs</code></a></b>
+    <li> <b><a href="tlslite.utils.hmac-module.html"><code>hmac</code></a></b>: <i>HMAC (Keyed-Hashing for Message Authentication) Python module.</i>
+    <li> <b><a href="tlslite.utils.jython_compat-module.html"><code>jython_compat</code></a></b>: <i>Miscellaneous functions to mask Python/Jython differences.</i>
+    <li> <b><a href="tlslite.utils.keyfactory-module.html"><code>keyfactory</code></a></b>: <i>Factory functions for asymmetric cryptography.</i>
+    <li> <b><a href="tlslite.utils.OpenSSL_AES-module.html"><code>OpenSSL_AES</code></a></b>: <i>OpenSSL/M2Crypto AES implementation.</i>
+    <li> <b><a href="tlslite.utils.OpenSSL_RC4-module.html"><code>OpenSSL_RC4</code></a></b>: <i>OpenSSL/M2Crypto RC4 implementation.</i>
+    <li> <b><a href="tlslite.utils.OpenSSL_RSAKey-module.html"><code>OpenSSL_RSAKey</code></a></b>: <i>OpenSSL/M2Crypto RSA implementation.</i>
+    <li> <b><a href="tlslite.utils.OpenSSL_TripleDES-module.html"><code>OpenSSL_TripleDES</code></a></b>: <i>OpenSSL/M2Crypto 3DES implementation.</i>
+    <li> <b><a href="tlslite.utils.PyCrypto_AES-module.html"><code>PyCrypto_AES</code></a></b>: <i>PyCrypto AES implementation.</i>
+    <li> <b><a href="tlslite.utils.PyCrypto_RC4-module.html"><code>PyCrypto_RC4</code></a></b>: <i>PyCrypto RC4 implementation.</i>
+    <li> <b><a href="tlslite.utils.PyCrypto_RSAKey-module.html"><code>PyCrypto_RSAKey</code></a></b>: <i>PyCrypto RSA implementation.</i>
+    <li> <b><a href="tlslite.utils.PyCrypto_TripleDES-module.html"><code>PyCrypto_TripleDES</code></a></b>: <i>PyCrypto 3DES implementation.</i>
+    <li> <b><a href="tlslite.utils.Python_AES-module.html"><code>Python_AES</code></a></b>: <i>Pure-Python AES implementation.</i>
+    <li> <b><a href="tlslite.utils.Python_RC4-module.html"><code>Python_RC4</code></a></b>: <i>Pure-Python RC4 implementation.</i>
+    <li> <b><a href="tlslite.utils.Python_RSAKey-module.html"><code>Python_RSAKey</code></a></b>: <i>Pure-Python RSA implementation.</i>
+    <li> <b><a href="tlslite.utils.RC4-module.html"><code>RC4</code></a></b>: <i>Abstract class for RC4.</i>
+    <li> <b><a href="tlslite.utils.rijndael-module.html"><code>rijndael</code></a></b>: <i>A pure python (slow) implementation of rijndael with a decent 
+interface</i>
+    <li> <b><a href="tlslite.utils.RSAKey-module.html"><code>RSAKey</code></a></b>: <i>Abstract class for RSA.</i>
+    <li> <b><a href="tlslite.utils.TripleDES-module.html"><code>TripleDES</code></a></b>: <i>Abstract class for 3DES.</i>
+    <li> <b><a href="tlslite.utils.xmltools-module.html"><code>xmltools</code></a></b>: <i>Helper functions for XML.</i>
+  </ul>
+<li> <b><a href="tlslite.VerifierDB-module.html"><code>VerifierDB</code></a></b>: <i>Class for storing SRP password verifiers.</i>
+<li> <b><a href="tlslite.X509-module.html"><code>X509</code></a></b>: <i>Class representing an X.509 certificate.</i>
+<li> <b><a href="tlslite.X509CertChain-module.html"><code>X509CertChain</code></a></b>: <i>Class representing an X.509 certificate chain.</i>
+  </ul></td></tr>
+</table><br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th bgcolor="#70b0f0" class="navselect">&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:50 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

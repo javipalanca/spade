@@ -1,0 +1,437 @@
+#!/usr/bin/python
+##
+##   XMPP server
+##
+##   Copyright (C) 2004 Alexey "Snake" Nezhdanov
+##
+##   This program is free software; you can redistribute it and/or modify
+##   it under the terms of the GNU General Public License as published by
+##   the Free Software Foundation; either version 2, or (at your option)
+##   any later version.
+##
+##   This program is distributed in the hope that it will be useful,
+##   but WITHOUT ANY WARRANTY; without even the implied warranty of
+##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##   GNU General Public License for more details.
+
+Revision="$Id: xmppd.py,v 1.10 2004/10/24 04:37:19 snakeru Exp $"[5:41].replace(',v',' Rev:')
+
+from xmpp import *
+
+#if __name__=='__main__':
+#    print "Firing up PsyCo"
+#    from psyco.classes import *
+
+import socket,select,random,os,thread,errno
+"""
+_socket_state live/dead
+_session_state   no/in-process/yes
+_stream_state not-opened/opened/closing/closed
+"""
+# Transport-level flags
+SOCKET_UNCONNECTED  =0
+SOCKET_ALIVE        =1
+SOCKET_DEAD         =2
+# XML-level flags
+STREAM__NOT_OPENED =1
+STREAM__OPENED     =2
+STREAM__CLOSING    =3
+STREAM__CLOSED     =4
+# XMPP-session flags
+SESSION_NOT_AUTHED =1
+SESSION_AUTHED     =2
+SESSION_BOUND      =3
+SESSION_OPENED     =4
+
+class Session:
+    def __init__(self,socket,server,xmlns,peer=None):
+        self.xmlns=xmlns
+        if peer:
+            self.TYP='client'
+            self.peer=peer
+            self._socket_state=SOCKET_UNCONNECTED
+        else:
+            self.TYP='server'
+            self.peer=None
+            self._socket_state=SOCKET_ALIVE
+        self._sock=socket
+        self._send=socket.send
+        self._recv=socket.recv
+        self._registered=0
+        self.trusted=0
+
+        self.Dispatcher=server.Dispatcher
+        self.DBG_LINE='session'
+        self.DEBUG=server.Dispatcher.DEBUG
+        self._expected={}
+        self._owner=server
+        if self.TYP=='server': self.ID=`random.random()`[2:]
+        else: self.ID=None
+
+        self.sendbuffer=''
+        self._stream_pos_queued=None
+        self._stream_pos_sent=0
+        self.deliver_key_queue=[]
+        self.deliver_queue_map={}
+        self.stanza_queue=[]
+
+        self._session_state=SESSION_NOT_AUTHED
+        self.waiting_features=[]
+        for feature in [NS_TLS,NS_SASL,NS_BIND,NS_SESSION]:
+            if feature in server.features: self.waiting_features.append(feature)
+        self.features=[]
+        self.feature_in_process=None
+        self.slave_session=None
+        self.StartStream()
+
+    def StartStream(self):
+        self._stream_state=STREAM__NOT_OPENED
+        self.Stream=simplexml.NodeBuilder()
+        self.Stream._dispatch_depth=2
+        self.Stream.dispatch=self.dispatch
+        self.Parse=self.Stream.Parse
+        self.Stream.stream_footer_received=self._stream_close
+        if self.TYP=='client':
+            self.Stream.stream_header_received=self._catch_stream_id
+            self._stream_open()
+        else:
+            self.Stream.stream_header_received=self._stream_open
+
+    def receive(self):
+        """Reads all pending incoming data. Raises IOError on disconnect."""
+        try: received = self._recv(10240)
+        except: received = ''
+
+        if len(received): # length of 0 means disconnect
+            self.DEBUG(`self._sock.fileno()`+' '+received,'got')
+        else:
+            self.DEBUG('Socket error while receiving data','error')
+            self.set_socket_state(SOCKET_DEAD)
+            raise IOError("Peer disconnected")
+        return received
+
+    def send(self,chunk):
+        if isinstance(chunk,Node): chunk = str(chunk).encode('utf-8')
+        elif type(chunk)==type(u''): chunk = chunk.encode('utf-8')
+        self.enqueue(chunk)
+
+    def enqueue(self,stanza):
+        """ Takes Protocol instance as argument. """
+        if isinstance(stanza,Protocol):
+            self.stanza_queue.append(stanza)
+        else: self.sendbuffer+=stanza
+        if self._socket_state>=SOCKET_ALIVE: self.push_queue()
+
+    def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
+
+        if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
+            self._owner.deactivatesession(self)
+            self.trusted=1
+            for key in self.deliver_key_queue:                            # Not sure. May be I
+                self.dispatch(Error(self.deliver_queue_map[key],failreason))                                          # should simply re-dispatch it?
+            for stanza in self.stanza_queue:                              # But such action can invoke
+                self.dispatch(Error(stanza,failreason))                                          # Infinite loops in case of S2S connection...
+            self.deliver_queue_map,self.deliver_key_queue,self.stanza_queue={},[],[]
+            return
+        elif self._session_state>=SESSION_AUTHED:       # FIXME!
+            #### LOCK_QUEUE
+            for stanza in self.stanza_queue:
+                txt=stanza.__str__().encode('utf-8')
+                self.sendbuffer+=txt
+                self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
+                self.deliver_queue_map[self._stream_pos_queued]=stanza     # position of the stream when stanza will be successfully and fully sent
+                self.deliver_key_queue.append(self._stream_pos_queued)
+            self.stanza_queue=[]
+            #### UNLOCK_QUEUE
+
+        if self.sendbuffer and select.select([],[self._sock],[])[1]:
+            try:
+                # LOCK_QUEUE
+                sent=self._send(self.sendbuffer)    # Блокирующая штучка!
+            except:
+                # UNLOCK_QUEUE
+                self.set_socket_state(SOCKET_DEAD)
+                self.DEBUG("Socket error while sending data",'error')
+                return self.terminate_stream()
+            self.DEBUG(`self._sock.fileno()`+' '+self.sendbuffer[:sent],'sent')
+            self._stream_pos_sent+=sent
+            self.sendbuffer=self.sendbuffer[sent:]
+            self._stream_pos_delivered=self._stream_pos_sent            # Should be acquired from socket somehow. Take SSL into account.
+            while self.deliver_key_queue and self._stream_pos_delivered>self.deliver_key_queue[0]:
+                del self.deliver_queue_map[self.deliver_key_queue[0]]
+                self.deliver_key_queue.remove(self.deliver_key_queue[0])
+            # UNLOCK_QUEUE
+
+    def dispatch(self,stanza):
+        if self._stream_state==STREAM__OPENED:                  # if the server really should reject all stanzas after he is closed stream (himeself)?
+            self.DEBUG(stanza.__str__(),'dispatch')
+            return self.Dispatcher.dispatch(stanza,self)
+
+    def fileno(self): return self._sock.fileno()
+
+    def _catch_stream_id(self,ns=None,tag='stream',attrs={}):
+        if not attrs.has_key('id') or not attrs['id']:
+            return self.terminate_stream(STREAM_INVALID_XML)
+        self.ID=attrs['id']
+        if not attrs.has_key('version'): self._owner.Dialback(self)
+
+    def _stream_open(self,ns=None,tag='stream',attrs={}):
+        text='<?xml version="1.0" encoding="utf-8"?>\n<stream:stream'
+        if self.TYP=='client':
+            text+=' to="%s"'%self.peer
+        else:
+            text+=' id="%s"'%self.ID
+            if not attrs.has_key('to'): text+=' from="%s"'%self._owner.servernames[0]
+            else: text+=' from="%s"'%attrs['to']
+        if attrs.has_key('xml:lang'): text+=' xml:lang="%s"'%attrs['xml:lang']
+        if self.xmlns: xmlns=self.xmlns
+        else: xmlns=NS_SERVER
+        text+=' xmlns:db="%s" xmlns:stream="%s" xmlns="%s"'%(NS_DIALBACK,NS_STREAMS,xmlns)
+        if attrs.has_key('version') or self.TYP=='client': text+=' version="1.0"'
+        self.send(text+'>')
+        self.set_stream_state(STREAM__OPENED)
+        if self.TYP=='client': return
+        if tag<>'stream': return self.terminate_stream(STREAM_INVALID_XML)
+        if ns<>NS_STREAMS: return self.terminate_stream(STREAM_INVALID_NAMESPACE)
+        if self.Stream.xmlns<>self.xmlns: return self.terminate_stream(STREAM_BAD_NAMESPACE_PREFIX)
+        if not attrs.has_key('to'): return self.terminate_stream(STREAM_IMPROPER_ADDRESSING)
+        if attrs['to'] not in self._owner.servernames: return self.terminate_stream(STREAM_HOST_UNKNOWN)
+        self.ourname=attrs['to'].lower()
+        if self.TYP=='server' and attrs.has_key('version'): self.send_features()
+
+    def send_features(self):
+        features=Node('stream:features')
+        if NS_TLS in self.waiting_features:
+            features.T.starttls.setNamespace(NS_TLS)
+            features.T.starttls.T.required
+        if NS_SASL in self.waiting_features:
+            features.T.mechanisms.setNamespace(NS_SASL)
+            for mec in self._owner.SASL.mechanisms:
+                features.T.mechanisms.NT.mechanism=mec
+        else:
+            if NS_BIND in self.waiting_features: features.T.bind.setNamespace(NS_BIND)
+            if NS_SESSION in self.waiting_features: features.T.session.setNamespace(NS_SESSION)
+        self.send(features)
+
+    def feature(self,feature):
+        if feature not in self.features: self.features.append(feature)
+        self.unfeature(feature)
+
+    def unfeature(self,feature):
+        if feature in self.waiting_features: self.waiting_features.remove(feature)
+
+    def _stream_close(self,unregister=1):
+        if self._stream_state>=STREAM__CLOSED: return
+        self.set_stream_state(STREAM__CLOSING)
+        self.send('</stream:stream>')
+        self.set_stream_state(STREAM__CLOSED)
+        self.push_queue()       # decompose queue really since STREAM__CLOSED
+        if unregister: self._owner.unregistersession(self)
+        self._destroy_socket()
+
+    def terminate_stream(self,error=None,unregister=1):
+        if self._stream_state>=STREAM__CLOSING: return
+        if self._stream_state<STREAM__OPENED:
+            self.set_stream_state(STREAM__CLOSING)
+            self._stream_open()
+        else:
+            self.set_stream_state(STREAM__CLOSING)
+            p=Presence(typ='unavailable')
+            p.setNamespace(NS_CLIENT)
+            self.Dispatcher.dispatch(p,self)
+        if error:
+            if isinstance(error,Node): self.send(error)
+            else: self.send(ErrorNode(error))
+        self._stream_close(unregister=unregister)
+        if self.slave_session:
+            self.slave_session.terminate_stream(STREAM_REMOTE_CONNECTION_FAILED)
+
+    def _destroy_socket(self):
+        """ breaking cyclic dependancy to let python's GC free memory just now """
+        self.Stream.dispatch=None
+        self.Stream.stream_footer_received=None
+        self.Stream.stream_header_received=None
+        self.Stream.destroy()
+        self._sock.close()
+        self.set_socket_state(SOCKET_DEAD)
+
+    def start_feature(self,f):
+        if self.feature_in_process: raise "Starting feature %s over %s !"%(f,self.feature_in_process)
+        self.feature_in_process=f
+    def stop_feature(self,f):
+        if self.feature_in_process<>f: raise "Stopping feature %s instead of %s !"%(f,self.feature_in_process)
+        self.feature_in_process=None
+    def set_socket_state(self,newstate):
+        if self._socket_state<newstate: self._socket_state=newstate
+    def set_session_state(self,newstate):
+        if self._session_state<newstate:
+            if self._session_state<SESSION_AUTHED and \
+               newstate>=SESSION_AUTHED: self._stream_pos_queued=self._stream_pos_sent
+            self._session_state=newstate
+            if newstate==SESSION_OPENED: self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
+    def set_stream_state(self,newstate):
+        if self._stream_state<newstate: self._stream_state=newstate
+
+class Server:
+    def __init__(self,debug=['always']):
+        self.sockets={}
+        self.sockpoll=select.poll()
+        self.ID=`random.random()`[2:]
+
+        self._DEBUG=Debug.Debug(debug)
+        self.DEBUG=self._DEBUG.Show
+        self.debug_flags=self._DEBUG.debug_flags
+        self.debug_flags.append('session')
+        self.debug_flags.append('dispatcher')
+        self.debug_flags.append('server')
+
+        self.SESS_LOCK=thread.allocate_lock()
+        self.Dispatcher=dispatcher.Dispatcher()
+        self.Dispatcher._owner=self
+        self.Dispatcher._init()
+
+        self.features=[]
+        import modules
+        for addon in modules.addons:
+            if issubclass(addon,PlugIn): addon().PlugIn(self)
+            else: self.__dict__[addon.__class__.__name__]=addon()
+            self.feature(addon.NS)
+        self.routes={}
+
+        for port in [5222,5223,5269,9000,9001,9002]:
+            sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            sock.bind(('', port))
+            sock.listen(1)
+            self.registersession(sock)
+
+    def feature(self,feature):
+        if feature and feature not in self.features: self.features.append(feature)
+
+    def registersession(self,s):
+        self.SESS_LOCK.acquire()
+        if isinstance(s,Session):
+            if s._registered:
+                self.SESS_LOCK.release()
+                if self._DEBUG.active: raise "Twice session Registration!"
+                else: return
+            s._registered=1
+        self.sockets[s.fileno()]=s
+        self.sockpoll.register(s,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+        self.DEBUG('server','registered %s (%s)'%(s.fileno(),s))
+        self.SESS_LOCK.release()
+
+    def unregistersession(self,s):
+        self.SESS_LOCK.acquire()
+        if isinstance(s,Session):
+            if not s._registered:
+                self.SESS_LOCK.release()
+                if self._DEBUG.active: raise "Twice session UNregistration!"
+                else: return
+            s._registered=0
+        self.sockpoll.unregister(s)
+        del self.sockets[s.fileno()]
+        self.DEBUG('server','UNregistered %s (%s)'%(s.fileno(),s))
+        self.SESS_LOCK.release()
+
+    def activatesession(self,s,peer=None):
+        if not peer: peer=s.peer
+        alt_s=self.getsession(peer)
+        if s==alt_s: return
+        elif alt_s: self.deactivatesession(peer)
+        self.routes[peer]=s
+
+    def getsession(self, jid):
+        try: return self.routes[jid]
+        except KeyError: pass
+
+    def deactivatesession(self, peer):
+        s=self.getsession(peer)
+        if self.routes.has_key(peer): del self.routes[peer]
+        return s
+
+    def handle(self):
+        for fileno,ev in self.sockpoll.poll(1000):
+            sock=self.sockets[fileno]
+            if isinstance(sock,Session):
+                sess=sock
+                try: data=sess.receive()
+                except IOError: # client closed the connection
+                    sess.terminate_stream()
+                    data=''
+                if data:
+                    try:
+                        sess.Parse(data)
+                    except simplexml.xml.parsers.expat.ExpatError:
+                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+            elif isinstance(sock,socket.socket):
+                conn, addr = sock.accept()
+                host,port=sock.getsockname()
+                if port in [5222,5223]: sess=Session(conn,self,NS_CLIENT)
+                else: sess=Session(conn,self,NS_SERVER)
+                self.registersession(sess)
+                if port==5223: self.TLS.startservertls(sess)
+            else: raise "Unknown instance type: %s"%sock
+
+    def run(self):
+	print "SERVER ON THE RUN!!"
+        try:
+            while 1: self.handle()
+        except KeyboardInterrupt:
+            self.DEBUG('server','Shutting down on user\'s behalf','info')
+            self.shutdown(STREAM_SYSTEM_SHUTDOWN)
+#        except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
+
+    def shutdown(self,reason):
+        socklist=self.sockets.keys()
+        for fileno in socklist:
+            s=self.sockets[fileno]
+            if isinstance(s,socket.socket):
+                self.unregistersession(s)
+                s.shutdown(2)
+                s.close()
+            elif isinstance(s,Session): s.terminate_stream(reason)
+
+    def S2S(self,ourname,domain,slave_session=None):
+        s=Session(socket.socket(socket.AF_INET, socket.SOCK_STREAM),self,NS_SERVER,domain)
+        s.slave_session=slave_session
+        s.ourname=ourname
+        self.activatesession(s)
+        thread.start_new_thread(self._connect_session,(s,domain))
+        return s
+
+    def _connect_session(self,session,domain):
+        try: session._sock.connect((domain,5269))
+        except socket.error,err:
+            session.set_session_state(SESSION_BOUND)
+            session.set_socket_state(SOCKET_DEAD)
+            if err[0]==errno.ETIMEDOUT: failreason=ERR_REMOTE_SERVER_TIMEOUT
+            elif err[0]==socket.EAI_NONAME: failreason=ERR_REMOTE_SERVER_NOT_FOUND
+            else: failreason=ERR_UNDEFINED_CONDITION
+            session.push_queue(failreason)
+            session.terminate_stream(STREAM_REMOTE_CONNECTION_FAILED,unregister=0)
+            return
+        session.set_socket_state(SOCKET_ALIVE)
+        session.push_queue()
+        self.registersession(session)
+
+    def Privacy(self,peer,stanza): pass
+    def Dialback(self,session):
+        session.terminate_stream(STREAM_UNSUPPORTED_VERSION)
+
+def start_new_thread_fake(func,args):
+    func(*args)
+
+def testrun():
+    thread.start_new_thread=start_new_thread_fake
+    import modules
+    modules.stream.thread.start_new_thread=start_new_thread_fake
+    return Server()
+
+if __name__=='__main__':
+    s=Server()
+    #print "Firing up PsyCo"
+    import psyco
+    #psyco.log()
+    psyco.full()
+    s.run()

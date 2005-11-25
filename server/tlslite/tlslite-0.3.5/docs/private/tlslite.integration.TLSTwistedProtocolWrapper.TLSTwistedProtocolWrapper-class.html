@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="tlslite-module.html">Package&nbsp;tlslite</a> ::
+        <a href="tlslite.integration-module.html">Package&nbsp;integration</a> ::
+        <a href="tlslite.integration.TLSTwistedProtocolWrapper-module.html">Module&nbsp;TLSTwistedProtocolWrapper</a> ::
+        Class&nbsp;TLSTwistedProtocolWrapper
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class TLSTwistedProtocolWrapper</h2>
+
+<pre class="base-tree">
+   <a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html"><code>AsyncStateMachine</code></a> --+
+                       |
+<a href="..\private\twisted.internet.protocol.BaseProtocol-class.html"><code>BaseProtocol</code></a> --+       |
+               |       |
+        <a href="twisted.internet.protocol.Protocol-class.html"><code>Protocol</code></a> --+   |
+                   |   |
+     <a href="twisted.protocols.policies.ProtocolWrapper-class.html"><code>ProtocolWrapper</code></a> --+
+                       |
+                      <b>TLSTwistedProtocolWrapper</b>
+</pre><br />
+
+<hr/>
+
+<p>This class can wrap Twisted protocols to add TLS support.</p>
+<p>Below is a complete example of using TLS Lite with a Twisted echo 
+server.</p>
+There are two server implementations below. Echo is the original 
+protocol, which is oblivious to TLS. Echo1 subclasses Echo and negotiates 
+TLS when the client connects. Echo2 subclasses Echo and negotiates TLS 
+when the client sends &quot;STARTTLS&quot;:
+<pre class="literalblock">
+   from twisted.internet.protocol import Protocol, Factory
+   from twisted.internet import reactor
+   from twisted.protocols.policies import WrappingFactory
+   from twisted.protocols.basic import LineReceiver
+   from twisted.python import log
+   from twisted.python.failure import Failure
+   import sys
+   from tlslite.api import *
+
+   s = open(&quot;./serverX509Cert.pem&quot;).read()
+   x509 = X509()
+   x509.parse(s)
+   certChain = X509CertChain([x509])
+
+   s = open(&quot;./serverX509Key.pem&quot;).read()
+   privateKey = parsePEMKey(s, private=True)
+
+   verifierDB = VerifierDB(&quot;verifierDB&quot;)
+   verifierDB.open()
+
+   class Echo(LineReceiver):
+       def connectionMade(self):
+           self.transport.write(&quot;Welcome to the echo server!\r\n&quot;)
+
+       def lineReceived(self, line):
+           self.transport.write(line + &quot;\r\n&quot;)
+
+   class Echo1(Echo):
+       def connectionMade(self):
+           if not self.transport.tlsStarted:
+               self.transport.setServerHandshakeOp(certChain=certChain,
+                                                   privateKey=privateKey,
+                                                   verifierDB=verifierDB)
+           else:
+               Echo.connectionMade(self)
+
+       def connectionLost(self, reason):
+           pass #Handle any TLS exceptions here
+
+   class Echo2(Echo):
+       def lineReceived(self, data):
+           if data == &quot;STARTTLS&quot;:
+               self.transport.setServerHandshakeOp(certChain=certChain,
+                                                   privateKey=privateKey,
+                                                   verifierDB=verifierDB)
+           else:
+               Echo.lineReceived(self, data)
+
+       def connectionLost(self, reason):
+           pass #Handle any TLS exceptions here
+
+   factory = Factory()
+   factory.protocol = Echo1
+   #factory.protocol = Echo2
+
+   wrappingFactory = WrappingFactory(factory)
+   wrappingFactory.protocol = TLSTwistedProtocolWrapper
+
+   log.startLogging(sys.stdout)
+   reactor.listenTCP(1079, wrappingFactory)
+   reactor.run()
+</pre>
+<p>This class works as follows:</p>
+<p>Data comes in and is given to the AsyncStateMachine for handling. 
+AsyncStateMachine will forward events to this class, and we'll pass them 
+on to the ProtocolHandler, which will proxy them to the wrapped protocol. 
+The wrapped protocol may then call back into this class, and these calls 
+will be proxied into the AsyncStateMachine.</p>
+The call graph looks like this:
+<ul>
+  <li>
+    self.dataReceived
+    <ul>
+      <li>
+        AsyncStateMachine.inReadEvent
+        <ul>
+          <li>
+            self.out(Connect|Close|Read)Event
+            <ul>
+              <li>
+                              <p>ProtocolWrapper.(connectionMade|loseConnection|dataReceived)
+                <ul>
+                  <li>
+                    self.(loseConnection|write|writeSequence)
+                    <ul>
+                      <li>
+                        AsyncStateMachine.(setCloseOp|setWriteOp)
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__init__"></a><span class="summary-sig"><span class="summary-sig-name">__init__</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>factory</span>,
+          <span class=summary-sig-arg>wrappedProtocol</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="connectionLost"></a><span class="summary-sig"><span class="summary-sig-name">connectionLost</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>reason</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html#connectionMade" class="summary-sig-name"><code>connectionMade</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a connection is made.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html#dataReceived" class="summary-sig-name"><code>dataReceived</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>data</span>)</span></code>
+<br />
+Called whenever data is received.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="loseConnection"></a><span class="summary-sig"><span class="summary-sig-name">loseConnection</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html#outCloseEvent" class="summary-sig-name"><code>outCloseEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a close operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html#outConnectEvent" class="summary-sig-name"><code>outConnectEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a handshake operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="outReadEvent"></a><span class="summary-sig"><span class="summary-sig-name">outReadEvent</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>data</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html#setServerHandshakeOp" class="summary-sig-name"><code>setServerHandshakeOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class="summary-sig-kwarg">**args</span>)</span></code>
+<br />
+Start a handshake operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="write"></a><span class="summary-sig"><span class="summary-sig-name">write</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>data</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="writeSequence"></a><span class="summary-sig"><span class="summary-sig-name">writeSequence</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>seq</span>)</span></code>
+</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from ProtocolWrapper</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#__getattr__" class="summary-sig-name"><code>__getattr__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>name</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#getHost" class="summary-sig-name"><code>getHost</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#getPeer" class="summary-sig-name"><code>getPeer</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#makeConnection" class="summary-sig-name"><code>makeConnection</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>transport</span>)</span></code>
+<br />
+Make a connection to a transport and a server.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#registerProducer" class="summary-sig-name"><code>registerProducer</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>producer</span>,
+          <span class=summary-sig-arg>streaming</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#stopConsuming" class="summary-sig-name"><code>stopConsuming</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.protocols.policies.ProtocolWrapper-class.html#unregisterProducer" class="summary-sig-name"><code>unregisterProducer</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from Protocol</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="twisted.internet.protocol.Protocol-class.html#connectionFailed" class="summary-sig-name"><code>connectionFailed</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+(Deprecated)</td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from AsyncStateMachine</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#inReadEvent" class="summary-sig-name"><code>inReadEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Tell the state machine it can read from the socket.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#inWriteEvent" class="summary-sig-name"><code>inWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Tell the state machine it can write to the socket.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outWriteEvent" class="summary-sig-name"><code>outWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a write operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setCloseOp" class="summary-sig-name"><code>setCloseOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Start a close operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setHandshakeOp" class="summary-sig-name"><code>setHandshakeOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>handshaker</span>)</span></code>
+<br />
+Start a handshake operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setWriteOp" class="summary-sig-name"><code>setWriteOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>writeBuffer</span>)</span></code>
+<br />
+Start a write operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        bool or None
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#wantsReadEvent" class="summary-sig-name"><code>wantsReadEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+If the state machine wants to read.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        bool or None
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#wantsWriteEvent" class="summary-sig-name"><code>wantsWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+If the state machine wants to write.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_checkAssert" class="summary-sig-name"><code>_checkAssert</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>maxActive</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_clear" class="summary-sig-name"><code>_clear</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_doCloseOp" class="summary-sig-name"><code>_doCloseOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_doHandshakeOp" class="summary-sig-name"><code>_doHandshakeOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_doReadOp" class="summary-sig-name"><code>_doReadOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="..\private\tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#_doWriteOp" class="summary-sig-name"><code>_doWriteOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+</table><br />
+
+
+<!-- =========== START OF CLASS VARIABLE SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Class Variable Summary</th></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from ProtocolWrapper</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>tuple</code></font></td>
+<td><b><a href="twisted.protocols.policies.ProtocolWrapper-class.html#__implements__"><code>__implements__</code></a></b> = <span title="(&lt;class 'twisted.internet.interfaces.ITransport'&gt;,)"><code>(&lt;class&nbsp;'twisted.internet.interfaces.IT<span class="variable-ellipsis">...</span></code>
+</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>int</code></font></td>
+<td><b><a href="twisted.protocols.policies.ProtocolWrapper-class.html#disconnecting"><code>disconnecting</code></a></b> = <span title="0">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
+<tr bgcolor="#e8f0f8" class="group">
+  <th colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Inherited from BaseProtocol</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>int</code></font></td>
+<td><b><a href="..\private\twisted.internet.protocol.BaseProtocol-class.html#connected"><code>connected</code></a></b> = <span title="0">0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1"><code>NoneType</code></font></td>
+<td><b><a href="..\private\twisted.internet.protocol.BaseProtocol-class.html#transport"><code>transport</code></a></b> = <span title="None">None&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="connectionMade"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">connectionMade</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a connection is made.</p>
+  This may be considered the initializer of the protocol, because it 
+  is called when the connection is completed. For clients, this is called 
+  once the connection to the server has been established; for servers, 
+  this is called after an accept() call stops blocking and a socket has 
+  been received. If you need to send any greeting or initial message, do 
+  it here.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="twisted.protocols.policies.ProtocolWrapper-class.html#connectionMade"><code>twisted.protocols.policies.ProtocolWrapper.connectionMade</code></a> <i>(inherited documentation)</i>
+</dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="dataReceived"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">dataReceived</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>data</span>)</span>
+  </h3>
+  <p>Called whenever data is received.</p>
+  Use this method to translate to a higher-level message. Usually, 
+  some callback will be made upon the receipt of each complete protocol 
+  message.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>data</b></code> -
+         a string of indeterminate length. Please keep in mind that you 
+        will probably need to buffer some data, as partial (or multiple) 
+        protocol messages may be received! I recommend that unit tests 
+        for protocols call through to this method with differing chunk 
+        sizes, down to one byte at a time.
+      </dd>
+    </dl>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="twisted.protocols.policies.ProtocolWrapper-class.html#dataReceived"><code>twisted.protocols.policies.ProtocolWrapper.dataReceived</code></a> <i>(inherited documentation)</i>
+</dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outCloseEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outCloseEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a close operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outCloseEvent"><code>tlslite.integration.AsyncStateMachine.AsyncStateMachine.outCloseEvent</code></a> <i>(inherited documentation)</i>
+</dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outConnectEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outConnectEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a handshake operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outConnectEvent"><code>tlslite.integration.AsyncStateMachine.AsyncStateMachine.outConnectEvent</code></a> <i>(inherited documentation)</i>
+</dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setServerHandshakeOp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setServerHandshakeOp</span>(<span class=sig-arg>self</span>,
+          <span class="sig-kwarg">**args</span>)</span>
+  </h3>
+  <p>Start a handshake operation.</p>
+  The arguments passed to this function will be forwarded to <a 
+  href="tlslite.TLSConnection.TLSConnection-class.html#handshakeServerAsync" 
+  class="link"><code>tlslite.TLSConnection.TLSConnection.handshakeServerAsync</code></a>.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Overrides:</b></dt>
+      <dd><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setServerHandshakeOp"><code>tlslite.integration.AsyncStateMachine.AsyncStateMachine.setServerHandshakeOp</code></a> <i>(inherited documentation)</i>
+</dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:50 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

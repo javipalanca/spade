@@ -403,6 +403,7 @@ class RMALogin(GTKWindow):
 		
 	def on_ok_clicked(self, data):
 		self.win.hide();
+		print "NO DESAPAREZCO"
 		username = self.glade.get_widget("entry_username").get_text()
 		password = self.glade.get_widget("entry_passwd").get_text()
 		rma_instance=rma(username, password)

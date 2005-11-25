@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite.integration.AsyncStateMachine.AsyncStateMachine</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="tlslite-module.html">Package&nbsp;tlslite</a> ::
+        <a href="tlslite.integration-module.html">Package&nbsp;integration</a> ::
+        <a href="tlslite.integration.AsyncStateMachine-module.html">Module&nbsp;AsyncStateMachine</a> ::
+        Class&nbsp;AsyncStateMachine
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[show&nbsp;private&nbsp;|&nbsp;<a href="../public/tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html">hide&nbsp;private</a>]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class AsyncStateMachine</h2>
+
+<dl><dt><b>Known Subclasses:</b></dt>
+<dd>
+    <a href="tlslite.integration.TLSAsyncDispatcherMixIn.TLSAsyncDispatcherMixIn-class.html"><code>TLSAsyncDispatcherMixIn</code></a>,
+    <a href="tlslite.integration.TLSTwistedProtocolWrapper.TLSTwistedProtocolWrapper-class.html"><code>TLSTwistedProtocolWrapper</code></a></dd></dl>
+
+<hr/>
+
+<p>This is an abstract class that's used to integrate TLS Lite with 
+asyncore and Twisted.</p>
+<p>This class signals wantsReadsEvent() and wantsWriteEvent(). When the 
+underlying socket has become readable or writeable, the event should be 
+passed to this class by calling inReadEvent() or inWriteEvent(). This 
+class will then try to read or write through the socket, and will update 
+its state appropriately.</p>
+This class will forward higher-level events to its subclass. For 
+example, when a complete TLS record has been received, outReadEvent() 
+will be called with the decrypted data.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="__init__"></a><span class="summary-sig"><span class="summary-sig-name">__init__</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#inReadEvent" class="summary-sig-name"><code>inReadEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Tell the state machine it can read from the socket.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#inWriteEvent" class="summary-sig-name"><code>inWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Tell the state machine it can write to the socket.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outCloseEvent" class="summary-sig-name"><code>outCloseEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a close operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outConnectEvent" class="summary-sig-name"><code>outConnectEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a handshake operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outReadEvent" class="summary-sig-name"><code>outReadEvent</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>readBuffer</span>)</span></code>
+<br />
+Called when a read operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#outWriteEvent" class="summary-sig-name"><code>outWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Called when a write operation completes.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setCloseOp" class="summary-sig-name"><code>setCloseOp</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Start a close operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setHandshakeOp" class="summary-sig-name"><code>setHandshakeOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>handshaker</span>)</span></code>
+<br />
+Start a handshake operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setServerHandshakeOp" class="summary-sig-name"><code>setServerHandshakeOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class="summary-sig-kwarg">**args</span>)</span></code>
+<br />
+Start a handshake operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#setWriteOp" class="summary-sig-name"><code>setWriteOp</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>writeBuffer</span>)</span></code>
+<br />
+Start a write operation.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        bool or None
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#wantsReadEvent" class="summary-sig-name"><code>wantsReadEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+If the state machine wants to read.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        bool or None
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.integration.AsyncStateMachine.AsyncStateMachine-class.html#wantsWriteEvent" class="summary-sig-name"><code>wantsWriteEvent</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+If the state machine wants to write.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_checkAssert"></a><span class="summary-sig"><span class="summary-sig-name">_checkAssert</span>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>maxActive</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_clear"></a><span class="summary-sig"><span class="summary-sig-name">_clear</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_doCloseOp"></a><span class="summary-sig"><span class="summary-sig-name">_doCloseOp</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_doHandshakeOp"></a><span class="summary-sig"><span class="summary-sig-name">_doHandshakeOp</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_doReadOp"></a><span class="summary-sig"><span class="summary-sig-name">_doReadOp</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><a name="_doWriteOp"></a><span class="summary-sig"><span class="summary-sig-name">_doWriteOp</span>(<span class=summary-sig-arg>self</span>)</span></code>
+</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="inReadEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">inReadEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Tell the state machine it can read from the socket.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="inWriteEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">inWriteEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Tell the state machine it can write to the socket.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outCloseEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outCloseEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a close operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outConnectEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outConnectEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a handshake operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outReadEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outReadEvent</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>readBuffer</span>)</span>
+  </h3>
+  <p>Called when a read operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="outWriteEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">outWriteEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Called when a write operation completes.</p>
+  May be overridden in subclass.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setCloseOp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setCloseOp</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Start a close operation.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setHandshakeOp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setHandshakeOp</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>handshaker</span>)</span>
+  </h3>
+  Start a handshake operation.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>handshaker</b></code> -
+         A generator created by using one of the asynchronous handshake 
+        functions (i.e. handshakeServerAsync, or handshakeClientxxx(..., 
+        async=True).
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=generator)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setServerHandshakeOp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setServerHandshakeOp</span>(<span class=sig-arg>self</span>,
+          <span class="sig-kwarg">**args</span>)</span>
+  </h3>
+  <p>Start a handshake operation.</p>
+  The arguments passed to this function will be forwarded to <a 
+  href="tlslite.TLSConnection.TLSConnection-class.html#handshakeServerAsync" 
+  class="link"><code>tlslite.TLSConnection.TLSConnection.handshakeServerAsync</code></a>.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+
+<a name="setWriteOp"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">setWriteOp</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>writeBuffer</span>)</span>
+  </h3>
+  Start a write operation.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>writeBuffer</b></code> -
+         The string to transmit.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="wantsReadEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">wantsReadEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>If the state machine wants to read.</p>
+  If an operation is active, this returns whether or not the operation 
+  wants to read from the socket. If an operation is not active, this 
+  returns None.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        If the state machine wants to read.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=bool or None)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="wantsWriteEvent"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">wantsWriteEvent</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>If the state machine wants to write.</p>
+  If an operation is active, this returns whether or not the operation 
+  wants to write to the socket. If an operation is not active, this 
+  returns None.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        If the state machine wants to write.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=bool or None)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:51 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,25 @@
+You can choose to install both tlslite and xmpppy or you can install nothing.
+If you will not install anything, do:
+    tar xzf tlslite-0.3.5.tar.gz
+    ln -s ../tlslite/tlslite-0.3.5/tlslite xmppd
+so the xmppd will be able to find it.
+
+=============tlslite module installation=========
+
+You will need to install tlslite module prior to running xmppd.py .
+
+I have included tlslite tarball in this package and using it myself.
+This is not guarantees though that it is good [enough] or that it is not troyaned or 
+didn't contain any malicious code. I've just grabbed it and installed it blindly on
+my machine.
+If you don't like such way - just pull the TLS module out of xmppd - you can do it by 
+killing one line from modules/__init__.py and removing the according "import" line from
+modules/stream.py
+
+If you decided nevertheless to install it - it is simple:
+just do "setup.py install" from the root shell and you'll be done with that.
+
+========== xmpppy library ===========
+You can also install xmpppy library. This step is similar to previous:
+run "setup.py install" from the root shell.
+Or you can just leave it alone - symlink is already in place and the things will work "as is".

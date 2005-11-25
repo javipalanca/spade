@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>tlslite.X509CertChain.X509CertChain</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css"></link>
+</head>
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <font size="-1"><b class="breadcrumbs">
+        <a href="tlslite-module.html">Package&nbsp;tlslite</a> ::
+        <a href="tlslite.X509CertChain-module.html">Module&nbsp;X509CertChain</a> ::
+        Class&nbsp;X509CertChain
+      </b></font></br>
+    </td>
+    <td><table cellpadding="0" cellspacing="0">
+      <tr><td align="right"><font size="-2">[<a href="../private/tlslite.X509CertChain.X509CertChain-class.html">show&nbsp;private</a>&nbsp;|&nbsp;hide&nbsp;private]</font></td></tr>
+      <tr><td align="right"><font size="-2">[<a href="frames.html"target="_top">frames</a>&nbsp;|&nbsp;<a href="tlslite.X509CertChain.X509CertChain-class.html" target="_top">no&nbsp;frames</a>]</font></td></tr>
+    </table></td>
+</tr></table>
+
+<!-- =========== START OF CLASS DESCRIPTION =========== -->
+<h2 class="class">Class X509CertChain</h2>
+
+<hr/>
+
+This class represents a chain of X.509 certificates.
+<hr/>
+
+
+<!-- =========== START OF METHOD SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Method Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#__init__" class="summary-sig-name"><code>__init__</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>x509List</span>)</span></code>
+<br />
+Create a new X509CertChain.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        str or None
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#getCommonName" class="summary-sig-name"><code>getCommonName</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the Subject's Common Name from the end-entity certificate.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        <a href="tlslite.utils.RSAKey.RSAKey-class.html" 
+        class="link"><code>tlslite.utils.RSAKey.RSAKey</code></a>
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#getEndEntityPublicKey" class="summary-sig-name"><code>getEndEntityPublicKey</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the public key from the end-entity certificate.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        str
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#getFingerprint" class="summary-sig-name"><code>getFingerprint</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the hex-encoded fingerprint of the end-entity certificate.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">        int
+</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#getNumCerts" class="summary-sig-name"><code>getNumCerts</code></a>(<span class=summary-sig-arg>self</span>)</span></code>
+<br />
+Get the number of certificates in this chain.</td></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">&nbsp;</font></td>
+  <td><code><span class="summary-sig"><a href="tlslite.X509CertChain.X509CertChain-class.html#validate" class="summary-sig-name"><code>validate</code></a>(<span class=summary-sig-arg>self</span>,
+          <span class=summary-sig-arg>x509TrustList</span>)</span></code>
+<br />
+Check the validity of the certificate chain.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF INSTANCE VARIABLE SUMMARY =========== -->
+<table class="summary" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="summary">
+  <th colspan="2">Instance Variable Summary</th></tr>
+<tr><td align="right" valign="top" width="15%"><font size="-1">list</font></td>
+<td><b><a href="tlslite.X509CertChain.X509CertChain-class.html#x509List"><code>x509List</code></a></b>: A list of <a href="tlslite.X509.X509-class.html" 
+class="link"><code>tlslite.X509.X509</code></a> instances, starting with 
+the end-entity certificate and with every subsequent certificate 
+certifying the previous.</td></tr>
+</table><br />
+
+
+<!-- =========== START OF METHOD DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Method Details</th></tr>
+</table>
+
+<a name="__init__"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">__init__</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>x509List</span>=<span class=sig-default>None</span>)</span>
+    <br /><i>(Constructor)</i>
+  </h3>
+  Create a new X509CertChain.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>x509List</b></code> -
+         A list of <a href="tlslite.X509.X509-class.html" 
+        class="link"><code>tlslite.X509.X509</code></a> instances, 
+        starting with the end-entity certificate and with every 
+        subsequent certificate certifying the previous.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=list)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getCommonName"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getCommonName</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  <p>Get the Subject's Common Name from the end-entity certificate.</p>
+  The cryptlib_py module must be installed in order to use this 
+  function.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        The CN component of the certificate's subject DN, if 
+        present.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str or None)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getEndEntityPublicKey"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getEndEntityPublicKey</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Get the public key from the end-entity certificate.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        <a href="tlslite.utils.RSAKey.RSAKey-class.html" 
+        class="link"><code>tlslite.utils.RSAKey.RSAKey</code></a>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getFingerprint"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getFingerprint</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Get the hex-encoded fingerprint of the end-entity certificate.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        A hex-encoded fingerprint.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=str)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="getNumCerts"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">getNumCerts</span>(<span class=sig-arg>self</span>)</span>
+  </h3>
+  Get the number of certificates in this chain.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Returns:</b></dt>
+      <dd>
+        int
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+
+<a name="validate"></a>
+<table width="100%" class="func-details" bgcolor="#e0e0e0"><tr><td>
+  <h3><span class="sig"><span class="sig-name">validate</span>(<span class=sig-arg>self</span>,
+          <span class=sig-arg>x509TrustList</span>)</span>
+  </h3>
+  <p>Check the validity of the certificate chain.</p>
+  <p>This checks that every certificate in the chain validates with the 
+  subsequent one, until some certificate validates with (or is identical 
+  to) one of the passed-in root certificates.</p>
+  The cryptlib_py module must be installed in order to use this 
+  function.
+  <dl><dt></dt><dd>
+    <dl><dt><b>Parameters:</b></dt>
+      <dd><code><b>x509TrustList</b></code> -
+         A list of trusted root certificates. The certificate chain 
+        must extend to one of these certificates to be considered 
+        valid.
+        <br /><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        (type=list of <a href="tlslite.X509.X509-class.html" 
+              class="link"><code>tlslite.X509.X509</code></a>)</i>
+      </dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+<br />
+
+
+<!-- =========== START OF INSTANCE VARIABLE DETAILS =========== -->
+<table class="details" border="1" cellpadding="3" cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="details">
+  <th colspan="2">Instance Variable Details</th></tr>
+</table>
+<table width="100%" class="var-details" bgcolor="#e0e0e0"><tr><td>
+<a name="x509List"></a>
+<h3>x509List</h3>
+A list of <a href="tlslite.X509.X509-class.html" 
+class="link"><code>tlslite.X509.X509</code></a> instances, starting with 
+the end-entity certificate and with every subsequent certificate 
+certifying the previous.
+<dl>
+  <dt></dt>
+  <dd>
+    <dl>
+      <dt><b>Type:</b></dt>
+      <dd>
+          list
+
+      </dd>
+    </dl>
+  </dd>
+</dl></td></tr></table>
+<br />
+
+
+<!-- =========== START OF NAVBAR =========== -->
+<table class="navbar" border="0" width="100%" cellpadding="0" bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="center">
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="tlslite-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="trees.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="indices.html">Index</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar">&nbsp;&nbsp;&nbsp;<a class="navbar" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+    <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td align="left"><font size="-2">Generated by Epydoc 2.0 on Thu Sep 16 23:48:50 2004</font></td>
+    <td align="right"><a href="http://epydoc.sourceforge.net"
+                      ><font size="-2">http://epydoc.sf.net</font></a></td>
+  </tr>
+</table>
+</body>
+</html>

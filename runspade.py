@@ -79,7 +79,7 @@ def main():
   if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
 	#print "JABBERPATH: " + jabberpath
 	#print "JABBERXML: "+ jabberxml
-	jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
+	#####jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass
 
@@ -102,7 +102,7 @@ def main():
   del platform
 
   if os.name == "posix":
-  	os.kill(jabberpid, signal.SIGTERM)
+  	######os.kill(jabberpid, signal.SIGTERM)
   	time.sleep(2)
 
   print "Jabber server terminated..."
