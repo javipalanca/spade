@@ -730,7 +730,7 @@ class PlatformAgent(AbstractAgent):
         name = jid.getNode()
 
         #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
-        self.jabber.connect()
+	self.jabber.connect()
         
 
         if (self.jabber.auth(name,password,"spade") == None):

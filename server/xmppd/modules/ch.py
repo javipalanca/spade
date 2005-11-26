@@ -3,7 +3,7 @@ from xmpp import *
 
 
 class CH(PlugIn):
-	NS='jabber:component:accept'
+	NS=''
 	def configureCH(self, server):
 		'''Kinda constructor'''
 		self.port = 9000
@@ -25,21 +25,27 @@ class CH(PlugIn):
 
         def plugin(self,server):
         	self._data = {}
-		#self.configureCH(server)
+		self.configureCH(server)
 		server.Dispatcher.RegisterNamespace('jabber:component:accept')
         	server.Dispatcher.RegisterNamespaceHandler('jabber:component:accept',self.componentHandler)
-	        #server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
 	        #server.Dispatcher.RegisterHandler('acc',self.do)
 		print "jabber:component:accept  REGISTERED !!!!"
 
 	def componentHandler(self, session, stanza):
-		print "####################################"
-		print "####################################"
-		print "####################################"
-		print stanza	
-		print "####################################"
-		print "####################################"
-		print "####################################"
+		#print "####################################"
+		#print "####################################"
+		#print "####################################"
+		#print stanza	
+		#print "####################################"
+		#print "####################################"
+		#print "####################################"
+		print "Component Handler called"
+		print stanza
+		name = stanza.getName()
+		if name == 'handshake':
+			# Reply handshake
+			rep = Node('handshake')
+			session.send(rep)
 		raise NodeProcessed
 		
 

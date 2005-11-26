@@ -81,10 +81,10 @@ class Router(PlugIn):
     def safeguard(self,session,stanza):
         if stanza.getNamespace() not in [NS_CLIENT,NS_SERVER]: return # this is not XMPP stanza
 
-        if session._session_state<SESSION_AUTHED: # NOT AUTHED yet (stream's stuff already done)
+	if session._session_state<SESSION_AUTHED: # NOT AUTHED yet (stream's stuff already done)
             session.terminate_stream(STREAM_NOT_AUTHORIZED)
             raise NodeProcessed
-
+	
         frm=stanza['from']
         to=stanza['to']
         if stanza.getNamespace()==NS_SERVER:
@@ -112,6 +112,7 @@ class Router(PlugIn):
         """ XMPP-Core 9.1.1 rules """
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
+	#print "With stanza:"
 
         to=stanza['to']
         if stanza.getNamespace()==NS_CLIENT and \
@@ -120,7 +121,7 @@ class Router(PlugIn):
               return
 
         if not session.trusted: self.safeguard(session,stanza)
-
+	
         if not to: return # stanza.setTo(session.ourname)
         domain=to.getDomain()
 

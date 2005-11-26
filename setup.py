@@ -23,7 +23,7 @@ if os.name == "posix":
 		('/usr/share/doc/spade/',['doc/api.tar.gz']),
 		('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
 		('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
-		('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
+		#('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
 	]
 	)
 
