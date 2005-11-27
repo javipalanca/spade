@@ -115,6 +115,19 @@ class Router(PlugIn):
 	#print "With stanza:"
 
         to=stanza['to']
+
+
+# 0. Surprise! It's a component
+	simple_to = str(to)
+	#at = simple_to.find('@')
+	if not('@' in simple_to):  # Component name
+	        s=self._owner.getsession(to)
+	if s:
+		s.enqueue(stanza)
+		print "Stanza "+str(stanza)+" sent to component"
+		raise NodeProcessed  	
+# Non-components from here
+
         if stanza.getNamespace()==NS_CLIENT and \
             (not to or to==session.ourname) and \
             stanza.props in ( [NS_AUTH], [NS_REGISTER], [NS_BIND], [NS_SESSION] ):
@@ -131,6 +144,8 @@ class Router(PlugIn):
             if not node: return
             self._owner.Privacy(session.peer,stanza) # it will raise NodeProcessed if needed
             bareto=node+'@'+domain
+	    dbg_msg='BARETO: ' + bareto
+	    self.DEBUG(dbg_msg, 'info')
             resource=to.getResource()
 # 1. If the JID is of the form <user@domain/resource> and an available resource matches the full JID, 
 #    the recipient's server MUST deliver the stanza to that resource.
