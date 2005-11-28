@@ -123,8 +123,8 @@ class Router(PlugIn):
 	if not('@' in simple_to):  # Component name
 	        s=self._owner.getsession(to)
 	if s:
+		print "Stanza "+str(stanza)+" going to component enqueue"
 		s.enqueue(stanza)
-		print "Stanza "+str(stanza)+" sent to component"
 		raise NodeProcessed  	
 # Non-components from here
 

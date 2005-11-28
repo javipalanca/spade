@@ -1,5 +1,6 @@
 
 from xmpp import *
+from xmppd import *
 
 components_db = {}
 components_db['localhost'] = {}
@@ -51,6 +52,7 @@ class CH(PlugIn):
 			# Reply handshake
 			rep = Node('handshake')
 			session.send(rep)
+			session.set_session_state(SESSION_AUTHED)
 			# Identify component
 			host,port = session._sock.getsockname()
 			#print "HOST: " + str(host) + " PORT: " + str(port)

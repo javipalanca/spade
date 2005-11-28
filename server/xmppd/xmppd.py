@@ -119,8 +119,11 @@ class Session:
         """ Takes Protocol instance as argument. """
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
-        else: self.sendbuffer+=stanza
-        if self._socket_state>=SOCKET_ALIVE: self.push_queue()
+	    print "Stanza: " + str(stanza) + " append"
+        else: 
+	    self.sendbuffer+=stanza
+        if self._socket_state>=SOCKET_ALIVE:
+	    self.push_queue()
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
@@ -136,6 +139,7 @@ class Session:
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
             #### LOCK_QUEUE
             for stanza in self.stanza_queue:
+		print "PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
                 self.sendbuffer+=txt
                 self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
