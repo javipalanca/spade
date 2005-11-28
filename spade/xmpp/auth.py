@@ -136,14 +136,20 @@ class SASL(PlugIn):
         if "DIGEST-MD5" in mecs:
             node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'DIGEST-MD5'})
         elif "PLAIN" in mecs:
-            sasl_data='%s\x00%s\x00%s'%(self.username+'@'+self._owner.Server,self.username,self.password)
-            node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'PLAIN'},payload=[base64.encodestring(sasl_data)])
+	# Added exception handling (for SPADE)
+	    try:
+            	sasl_data='%s\x00%s\x00%s'%(self.username+'@'+self._owner.Server,self.username,self.password)
+            	node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'PLAIN'},payload=[base64.encodestring(sasl_data)])
+	    except: pass
         else:
             self.startsasl='failure'
             self.DEBUG('I can only use DIGEST-MD5 and PLAIN mecanisms.','error')
             return
         self.startsasl='in-process'
-        self._owner.send(node.__str__())
+	# Added exception handling (for SPADE)
+	try:
+        	self._owner.send(node.__str__())
+	except: pass
         raise NodeProcessed
 
     def SASLHandler(self,conn,challenge):

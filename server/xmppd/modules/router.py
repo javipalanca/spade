@@ -119,7 +119,6 @@ class Router(PlugIn):
 
 # 0. Surprise! It's a component
 	simple_to = str(to)
-	#at = simple_to.find('@')
 	if not('@' in simple_to):  # Component name
 	        s=self._owner.getsession(to)
 	if s:

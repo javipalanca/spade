@@ -718,7 +718,7 @@ class PlatformAgent(AbstractAgent):
     """
     def __init__(self, node, password, server="localhost", port=5347):
         AbstractAgent.__init__(self, node, server)
-        self.jabber = xmpp.Component(server, port, debug=[])
+        self.jabber = xmpp.Component(server, port, debug=['always'])
         self._register(password)
 
     def _register(self, password, autoregister=True):

@@ -38,13 +38,6 @@ class CH(PlugIn):
 		print "jabber:component:accept  REGISTERED !!!!"
 
 	def componentHandler(self, session, stanza):
-		#print "####################################"
-		#print "####################################"
-		#print "####################################"
-		#print stanza	
-		#print "####################################"
-		#print "####################################"
-		#print "####################################"
 		print "Component Handler called"
 		print stanza
 		name = stanza.getName()
