@@ -35,30 +35,41 @@ class CH(PlugIn):
 		server.Dispatcher.RegisterNamespace('jabber:component:accept')
         	server.Dispatcher.RegisterNamespaceHandler('jabber:component:accept',self.componentHandler)
 	        #server.Dispatcher.RegisterHandler('acc',self.do)
-		print "jabber:component:accept  REGISTERED !!!!"
+		#print "jabber:component:accept  REGISTERED !!!!"
 
 	def componentHandler(self, session, stanza):
 		print "Component Handler called"
-		print stanza
 		name = stanza.getName()
 		if name == 'handshake':
 			# Reply handshake
 			rep = Node('handshake')
 			session.send(rep)
-			session.set_session_state(SESSION_AUTHED)
 			# Identify component
 			host,port = session._sock.getsockname()
 			#print "HOST: " + str(host) + " PORT: " + str(port)
 			primary_name = self.server.servernames[0]
 			if port == 9000:  # ACC
 				component_name = 'acc.' + primary_name
+				session.peer = component_name
 				self.server.activatesession(session, component_name)
+				session.set_session_state(SESSION_AUTHED)
+				session.set_session_state(SESSION_OPENED)
 			elif port == 9001:  # AMS
 				component_name = 'ams.' + primary_name
+				session.peer = component_name
 				self.server.activatesession(session, component_name)
+				session.set_session_state(SESSION_AUTHED)
+				session.set_session_state(SESSION_OPENED)
 			elif port == 9002:  # DF
 				component_name = 'df.' + primary_name
+				session.peer = component_name
 				self.server.activatesession(session, component_name)
+				session.set_session_state(SESSION_AUTHED)
+				session.set_session_state(SESSION_OPENED)
+		else:
+			if session._session_state >= SESSION_AUTHED:
+				print "COMPONENT SENDS:"
+				print str(stanza)
 		print self.server.routes
 		raise NodeProcessed
 		

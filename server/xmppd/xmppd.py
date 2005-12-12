@@ -119,7 +119,7 @@ class Session:
         """ Takes Protocol instance as argument. """
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
-	    print "Stanza: " + str(stanza) + " append"
+	    #print "Stanza: " + str(stanza) + " append"
         else: 
 	    self.sendbuffer+=stanza
         if self._socket_state>=SOCKET_ALIVE:
@@ -139,7 +139,7 @@ class Session:
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
             #### LOCK_QUEUE
             for stanza in self.stanza_queue:
-		print "PUSHING STANZA: " + str(stanza)
+		#print "PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
                 self.sendbuffer+=txt
                 self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
@@ -272,7 +272,9 @@ class Session:
             if self._session_state<SESSION_AUTHED and \
                newstate>=SESSION_AUTHED: self._stream_pos_queued=self._stream_pos_sent
             self._session_state=newstate
-            if newstate==SESSION_OPENED: self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
+            if newstate==SESSION_OPENED:
+		self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
+		print "### SENT WELCOME MESSAGE TO PEER: " + str(self.peer)
     def set_stream_state(self,newstate):
         if self._stream_state<newstate: self._stream_state=newstate
 
@@ -343,6 +345,7 @@ class Server:
         alt_s=self.getsession(peer)
         if s==alt_s: return
         elif alt_s: self.deactivatesession(peer)
+	print "### ACTIVATING SESSION %s WITH PEER %s" % (str(s),str(peer))
         self.routes[peer]=s
 
     def getsession(self, jid):
