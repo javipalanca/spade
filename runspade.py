@@ -4,6 +4,8 @@ import os, signal
 import sys
 import time
 import ConfigParser
+from optparse import OptionParser
+
 from getopt import getopt
 from spade import spade_backend
 from spade import SpadeConfigParser
@@ -11,13 +13,14 @@ from spade import SpadeConfigParser
 
 VERSION = "1.9.3"
 
+
 def print_help():
   print
   print "Usage: %s [options]" % sys.argv[0]
   print " -h, --help         display this help text and exit"
   print " -v, --version      display the version and exit"
-  print " -c, --configfile   load the configuration file (default /etc/spade/spade.ini)"
-  print " -j, --jabber       load the jabber configuration file (default /etc/spade/jabber.xml)"
+  print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
+  print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
   raise SystemExit
 
 def print_version():
@@ -25,9 +28,14 @@ def print_version():
   print "jpalanca@dsic.upv.es - http://magentix.gti-ia.dsic.upv.es/"
   raise SystemExit
 
+gui = False
+
+"""
 if len(sys.argv) < 2: pass 
 elif sys.argv[1] in ["--help", "-h"]: print_help()
 elif sys.argv[1] in ["--version", "-v"]: print_version()
+elif sys.argv[1] in ["--gui", "-g"]: gui = True
+"""
 
 
 # Actually start the program running.
@@ -43,7 +51,15 @@ def main():
     except ImportError: print "W: Psyco optimizing compiler not found."
   """
   # default settings for play_and_quit.
-  gui = False
+
+
+  parser = OptionParser()
+
+  parser.add_option("-c", "--config", dest="config", help="load the configuration file (default /etc/spade/spade.xml)")
+  parser.add_option("-j", "--jabber", dest="jabber", help="load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)")
+  parser.add_option("-v", "--version", action="store_true", dest="version", help="display the version and exit")
+  parser.add_option("-g", "--gui", action="store_true", dest="gui", help="run the SPADE RMA")
+
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/usr/share/spade/jabberd/jabber.xml"
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
