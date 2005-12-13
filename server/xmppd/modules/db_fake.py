@@ -8,7 +8,7 @@ from xmpp import *
 
 db={}
 db['localhost']={}
-db['thx1138.dsic.upv.es']={}
+db['tatooine.dsic.upv.es']={}
 db['localhost']['test']='test'
 db['localhost']['test2']='test'
 db['localhost']['gusarba']='kakatua'
@@ -16,13 +16,14 @@ db['localhost']['acc']='secret'
 db['localhost']['ams']='secret'
 db['localhost']['df']='secret'
 db['localhost']['rma']='secret'
-db['thx1138.dsic.upv.es']['gusarba']='kakatua'
-db['thx1138.dsic.upv.es']['jpalanca']='kakatua'
-db['thx1138.dsic.upv.es']['test']='test'
-db['thx1138.dsic.upv.es']['acc']='secret'
-db['thx1138.dsic.upv.es']['ams']='secret'
-db['thx1138.dsic.upv.es']['df']='secret'
-db['thx1138.dsic.upv.es']['rma']='secret'
+db['tatooine.dsic.upv.es']['gusarba']='kakatua'
+db['tatooine.dsic.upv.es']['jpalanca']='kakatua'
+db['tatooine.dsic.upv.es']['test']='test'
+db['tatooine.dsic.upv.es']['acc']='secret'
+db['tatooine.dsic.upv.es']['ams']='secret'
+db['tatooine.dsic.upv.es']['df']='secret'
+db['tatooine.dsic.upv.es']['rma']='secret'
+db['tatooine.dsic.upv.es']['ping']='secret'
 
 class AUTH(PlugIn):
     NS=''

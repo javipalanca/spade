@@ -294,6 +294,7 @@ class Server:
         self.SESS_LOCK=thread.allocate_lock()
         self.Dispatcher=dispatcher.Dispatcher()
         self.Dispatcher._owner=self
+	self.defaultNamespace = NS_CLIENT
         self.Dispatcher._init()
 
         self.features=[]
