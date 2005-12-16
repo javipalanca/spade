@@ -119,11 +119,13 @@ class Session:
         """ Takes Protocol instance as argument. """
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
-	    #print "Stanza: " + str(stanza) + " append"
+	    print ">>>> Session" + str(self)+  ": append stanza"
         else: 
 	    self.sendbuffer+=stanza
+	    print ">>>> Session" + str(self)+  ": sendbuffer"
         if self._socket_state>=SOCKET_ALIVE:
 	    self.push_queue()
+	    print ">>>> Session" + str(self)+  ": queue pushed"
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 

@@ -12,9 +12,19 @@ class Router(PlugIn):
     NS='presence'
     def plugin(self,server):
         self._data = {}
-        server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
+        # For the common folk
+	#server.Dispatcher.RegisterNamespace(NS_COMPONENT_ACCEPT)
+	
+	server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
         server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
-        server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
+        
+	server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT,self.routerHandler) # Mine
+	server.Dispatcher.RegisterHandler('handshake',self.componentHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+	server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+	self.server = server
+        
+	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
+        
 
     def presenceHandler(self,session,stanza):
 #       filter out presences that should not influate our 'roster'
@@ -123,7 +133,11 @@ class Router(PlugIn):
 	        s=self._owner.getsession(to)
 	if s:
 		#print "Stanza "+str(stanza)+" going to component enqueue"
+		ns = stanza
+		print ">>>> NS = "
+		print ns
 		s.enqueue(stanza)
+		print ">>>> Router: there was a message for a component and it has been delivered"
 		raise NodeProcessed  	
 # Non-components from here
 
@@ -239,3 +253,57 @@ class Router(PlugIn):
                 s=self._owner.S2S(session.ourname,domain)
             s.enqueue(stanza)
             raise NodeProcessed
+
+
+    def componentHandler(self, session, stanza):
+                print "Component Handler called"
+                print "Server Routes:"
+                print self.server.routes
+                name = stanza.getName()
+                if name == 'handshake':
+                        # Reply handshake
+                        rep = Node('handshake')
+                        session.send(rep)
+                        # Identify component
+                        host,port = session._sock.getsockname()
+                        #print "HOST: " + str(host) + " PORT: " + str(port)
+                        primary_name = self.server.servernames[0]
+                        if port == 9000:  # ACC
+                                component_name = 'acc.' + primary_name
+                                session.peer = component_name
+                                self.server.activatesession(session, component_name)
+                                session.set_session_state(SESSION_AUTHED)
+                                session.set_session_state(SESSION_OPENED)
+                                raise NodeProcessed
+                        elif port == 9001:  # AMS
+                                component_name = 'ams.' + primary_name
+                                session.peer = component_name
+                                self.server.activatesession(session, component_name)
+                                session.set_session_state(SESSION_AUTHED)
+                                session.set_session_state(SESSION_OPENED)
+                                raise NodeProcessed
+                        elif port == 9002:  # DF
+                                component_name = 'df.' + primary_name
+                                session.peer = component_name
+                                self.server.activatesession(session, component_name)
+                                session.set_session_state(SESSION_AUTHED)
+                                session.set_session_state(SESSION_OPENED)
+                                raise NodeProcessed
+                elif name == 'message':
+                        print "Component sends a MESSAGE"
+                        to=stanza['to']
+                        simple_to = str(to)
+                        #if not('@' in simple_to):  # Component name
+                        s=self._owner.getsession(to)
+                        if s:
+                                print "Found session for to: %s %d" % (str(to), s._session_state)
+                                s.enqueue(stanza)
+                                print "Stanza going to component enqueue"
+                                print s.stanza_queue
+                        raise NodeProcessed
+                else:
+                        if session._session_state >= SESSION_AUTHED:
+                                print "COMPONENT SENDS:"
+                                print str(stanza)
+
+

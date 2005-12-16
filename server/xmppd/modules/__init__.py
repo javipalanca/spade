@@ -18,6 +18,7 @@ addons = [
     stream.SASL,
     dialback.Dialback,
 
+
 # XMPP-IM
     stream.Bind,
     stream.Session,
@@ -29,6 +30,6 @@ addons = [
     jep0078.NSA,
 
 # Mine
-    dummy.dummyClass,
-    ch.CH,
+    #ch.CH,
+    #dummy.dummyClass,
     ]
