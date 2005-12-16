@@ -40,6 +40,7 @@ elif sys.argv[1] in ["--gui", "-g"]: gui = True
 
 # Actually start the program running.
 def main():
+  global gui
   #print dir(spade)
   print "SPADE", VERSION, "<jpalanca@dsic.upv.es> - http://magentix.gti-ia.dsic.upv.es/"
   """

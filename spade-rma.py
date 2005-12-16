@@ -398,15 +398,16 @@ class RMALogin(GTKWindow):
 		self.win.show()
 		
 	def on_cancel_clicked(self, data):
-		#print "cancel"
+		print "cancel"
 		gtk.main_quit()
 		
 	def on_ok_clicked(self, data):
-		self.win.hide();
-		print "NO DESAPAREZCO"
+		self.win.hide()
 		username = self.glade.get_widget("entry_username").get_text()
 		password = self.glade.get_widget("entry_passwd").get_text()
+		print "Got '%s' and '%s' ..." % (username,password)
 		rma_instance=rma(username, password)
+		print "Sent authentication data ..."
 		rma_instance.start_and_wait()
 		rma_instance.kill()
 		gtk.main_quit()

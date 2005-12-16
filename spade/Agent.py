@@ -42,6 +42,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	message callback
 	read the message envelope and post the message to the agent
 	"""
+	print "SOY jabber_messageCB Y ME HA LLEGADO UN MENSAJE:"
+	print mess
         if (mess.getError() == None):
             envxml=None
             payload=mess.getBody()
@@ -76,6 +78,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
+	print "### SOY other_messageCB Y ME HA LLEGADO: "
+	print mess
         pass
 
     
@@ -718,7 +722,7 @@ class PlatformAgent(AbstractAgent):
     """
     def __init__(self, node, password, server="localhost", port=5347):
         AbstractAgent.__init__(self, node, server)
-        self.jabber = xmpp.Component(server, port, debug=['always'])
+        self.jabber = xmpp.Component(server, port, debug=[])
         self._register(password)
 
     def _register(self, password, autoregister=True):
@@ -737,8 +741,8 @@ class PlatformAgent(AbstractAgent):
                 raise NotImplementedError
 
         #print "auth ok", name
-        thread.start_new_thread(self.jabber_process, tuple())
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
+        thread.start_new_thread(self.jabber_process, tuple())
 
 class Agent(AbstractAgent):
     """
