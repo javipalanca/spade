@@ -173,6 +173,7 @@ class SASL(PlugIn):
         session.StartStream()
         session.peer=authzid.lower()
         if session.xmlns==NS_CLIENT: session.set_session_state(SESSION_AUTHED)
+        elif session.xmlns==NS_COMPONENT_ACCEPT: session.set_session_state(SESSION_AUTHED)
         else: session.set_session_state(SESSION_BOUND)
         self.DEBUG('Peer %s successfully authenticated'%authzid,'ok')
 
@@ -235,6 +236,7 @@ class SASL(PlugIn):
                     if not authzid:
                         authzid=authcid
                         if session.xmlns==NS_CLIENT: authzid+='@'+session.ourname
+                        #elif session.xmlns==NS_COMPONENT_ACCEPT: authzid+='.'+session.ourname
                     username,domain=(authzid.split('@',1)+[''])[:2]
                     res = ( passwd == self._owner.AUTH.getpassword(username, domain) )
                 if res: self.commit_auth(session,authzid)
@@ -294,7 +296,8 @@ class Bind(PlugIn):
         server.Dispatcher.RegisterHandler('iq',self.bindHandler,typ='set',ns=NS_BIND)
 
     def bindHandler(self,session,stanza):
-        if session.xmlns<>NS_CLIENT or session.__dict__.has_key('resource'):
+        #if session.xmlns<>NS_CLIENT or session.__dict__.has_key('resource'):
+        if (session.xmlns not in [NS_CLIENT, NS_COMPONENT_ACCEPT]) or session.__dict__.has_key('resource'):
             session.send(Error(stanza,ERR_SERVICE_UNAVAILABLE))
         else:
             if session._session_state<SESSION_AUTHED:
@@ -322,7 +325,8 @@ class Session(PlugIn):
         if session._session_state<SESSION_AUTHED:
             session.terminate_stream(STREAM_NOT_AUTHORIZED)
             raise NodeProcessed
-        if session.xmlns<>NS_CLIENT \
+        #if session.xmlns<>NS_CLIENT \
+        if session.xmlns not in [NS_CLIENT, NS_COMPONENT_ACCEPT] \
           or session._session_state<SESSION_BOUND \
           or self._owner.getsession(session.peer)==session:
             session.send(Error(stanza,ERR_SERVICE_UNAVAILABLE))

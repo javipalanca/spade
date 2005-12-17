@@ -378,7 +378,7 @@ class Server:
                 conn, addr = sock.accept()
                 host,port=sock.getsockname()
                 if port in [5222,5223]: sess=Session(conn,self,NS_CLIENT)
-		elif port in [9000,9001,9002]: sess=Session(conn, self, 'jabber:component:accept')  # It is a component
+		elif port in [9000,9001,9002]: sess=Session(conn, self, NS_COMPONENT_ACCEPT)  # It is a component
                 else: sess=Session(conn,self,NS_SERVER)
                 self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)

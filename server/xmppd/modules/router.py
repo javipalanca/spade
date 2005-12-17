@@ -89,7 +89,13 @@ class Router(PlugIn):
         else: self._owner.deactivatesession(barejid)
 
     def safeguard(self,session,stanza):
-        if stanza.getNamespace() not in [NS_CLIENT,NS_SERVER]: return # this is not XMPP stanza
+        if stanza.getNamespace() not in [NS_CLIENT,NS_SERVER,NS_COMPONENT_ACCEPT]: return # this is not XMPP stanza
+        #if stanza.getNamespace() not in [NS_CLIENT,NS_SERVER]: return # this is not XMPP stanza
+
+	# This is ugly and unorthodox, but it works: bypass security for handshakes
+	if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='handshake':
+		print ">>>> Router: safeguard: handshake received, calling handler"
+		return
 
 	if session._session_state<SESSION_AUTHED: # NOT AUTHED yet (stream's stuff already done)
             session.terminate_stream(STREAM_NOT_AUTHORIZED)
@@ -123,22 +129,30 @@ class Router(PlugIn):
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
 	#print "With stanza:"
+	#print stanza
 
         to=stanza['to']
 
-
 # 0. Surprise! It's a component
+	# Counter measure for component originated messages
+	the_from = stanza['from']
+	simple_from = str(the_from)
+	if not('@' in simple_from):  # Component-originated
+		if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
+			# Fake the namespace. Pose as a client
+			stanza.setNamespace(NS_CLIENT)
+			print ">>>> Router: namespace faked: " + str(stanza.getNamespace())
+
+	# Measure for component-destinated stanzas
 	simple_to = str(to)
+	s = False
 	if not('@' in simple_to):  # Component name
 	        s=self._owner.getsession(to)
 	if s:
-		#print "Stanza "+str(stanza)+" going to component enqueue"
-		ns = stanza
-		print ">>>> NS = "
-		print ns
 		s.enqueue(stanza)
 		print ">>>> Router: there was a message for a component and it has been delivered"
-		raise NodeProcessed  	
+		raise NodeProcessed
+
 # Non-components from here
 
         if stanza.getNamespace()==NS_CLIENT and \
