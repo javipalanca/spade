@@ -356,13 +356,21 @@ class rma(Agent.Agent):
 
 	class GUIBehaviour(Behaviour.PeriodicBehaviour):
 		def __init__(self):
-			Behaviour.PeriodicBehaviour.__init__(self, 10)
-		
+			print "GUIBehaviour init..."
+			Behaviour.PeriodicBehaviour.__init__(self,1)
+
 		def onStart(self):
+			print "MainWindow onstart..."
 			win = rma.MainWindow(self.myAgent)
 			gobject.idle_add(rma.GUIBehaviour.idle,self)
-			
-		def process(self):
+			import thread
+			thread.start_new_thread(updateScreen,("Thread No:1",2))
+
+		#def process(self):
+		def onTick(self):
+			#time.sleep(1)
+			#gtk.main_iteration(block=False)
+			print "rma: onTick()..."
 			pass
 			
 		def idle(self):
@@ -375,6 +383,7 @@ class rma(Agent.Agent):
 		
 	def setup(self):
 		self.setDefaultBehaviour(rma.GUIBehaviour())
+		print "GUIBehaviour anyadido como default bahaviour..."
 		#self.addBehaviour(rma.TestBehaviour(5))
 		#self.addBehaviour(rma.TestBehaviour(10))
 	
@@ -402,7 +411,9 @@ class RMALogin(GTKWindow):
 		gtk.main_quit()
 		
 	def on_ok_clicked(self, data):
+		print "ME ESCONDO"
 		self.win.hide()
+		print "ME HE ESCONDIDO"
 		username = self.glade.get_widget("entry_username").get_text()
 		password = self.glade.get_widget("entry_passwd").get_text()
 		print "Got '%s' and '%s' ..." % (username,password)
@@ -416,8 +427,15 @@ class RMALogin(GTKWindow):
 		gtk.main_quit()
 		return False
 
+def updateScreen(one,two):
+	while True:
+		gtk.main_iteration()
 
 if __name__ == "__main__":
 	login = RMALogin()
+	#rma_instance=rma('rma@localhost', 'secret')
+	#rma_instance.start()
+	#print rma_instance
+	print "VOY A LLAMAR A GTK:MAIN()"
 	gtk.main()
 
