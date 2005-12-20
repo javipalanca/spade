@@ -26,7 +26,7 @@ addons = [
 #    privacy.Privacy,
 
 # JEPs
-#    jep0077.IBR,
+    jep0077.IBR,
     jep0078.NSA,
 
 # Mine

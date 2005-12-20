@@ -40,3 +40,12 @@ class AUTH(PlugIn):
 class DB(PlugIn):
     NS=''
     def store(self,domain,node,stanza,id='next_unique_id'): pass
+    def registeruser(self,domain,username,password):
+	try:
+		db[domain][username] = password
+		return True
+	except:
+		return False
+    def printdb(self):
+	print db
+

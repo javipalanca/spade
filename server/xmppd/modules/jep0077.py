@@ -8,6 +8,7 @@
 from xmpp import *
 
 class IBR(PlugIn):
+    NS=NS_REGISTER
     def plugin(self,server):
         server.Dispatcher.RegisterHandler('iq',self.getRegInfoHandler,'get',NS_REGISTER)
         server.Dispatcher.RegisterHandler('iq',self.setRegInfoHandler,'set',NS_REGISTER)
@@ -29,7 +30,21 @@ class IBR(PlugIn):
         if name not in self._owner.servernames:
             sess.send(Error(stanza,ERR_ITEM_NOT_FOUND))
         else:
-            sess.send(Error(stanza,ERR_CONFLICT))       # dummy code for now
+	    #username=stanza.T.query.T.username
+	    #password=stanza.T.query.T.password
+     	    servername=name.getDomain()
+            username=stanza.T.query.T.username.getData().lower()
+            password=stanza.T.query.T.password.getData()
+	    if not(self._owner.AUTH.isuser(username, servername)):
+			reg_ok = self._owner.DB.registeruser(servername, username, password)
+			if reg_ok:
+				iq=stanza.buildReply('result')
+				sess.send(iq)
+				print "DATABASE"
+				self._owner.DB.printdb()
+			else:
+				sess.send(Error(stanza,ERR_CONFLICT))	    
+            #sess.send(Error(stanza,ERR_CONFLICT))       # dummy code for now	    
             """iq=stanza.buildReply('result')
             iq.T.query.T.username
             iq.T.query.T.password
