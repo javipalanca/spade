@@ -38,8 +38,6 @@ class SpadeBackend:
 		port = int(configfile.get(section,'port'))
 		jid = section + "." + server
 		agent = agentClass(jid, passwd, server, port)
-		print "jid=%s passwd=%s port=%d" % (jid,passwd,port)
-		#agent.setDaemon(True)
 		agent.start()
 		return agent
     
@@ -60,7 +58,7 @@ class SpadeBackend:
 	def start(self):
 		self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
 		self.runAgent(self.configfile, "ams", AMS.AMS)
-		self.runAgent(self.configfile, "df", DF.DF)
+		#self.runAgent(self.configfile, "df", DF.DF)
 	
 
 if __name__ ==  "__main__":

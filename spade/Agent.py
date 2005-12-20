@@ -42,8 +42,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	message callback
 	read the message envelope and post the message to the agent
 	"""
-	print "SOY jabber_messageCB Y ME HA LLEGADO UN MENSAJE:"
-	print mess
         if (mess.getError() == None):
             envxml=None
             payload=mess.getBody()
@@ -54,11 +52,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if (envxml != None):
                 xc = XMLCodec.XMLCodec()
                 ac =ACLParser.ACLParser()
-		#print str(envxml)
                 envelope = xc.parse(str(envxml))
-                #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-                #print payload
-                #print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
                 ACLmsg = ac.parse(payload)
 	        content = ACLmsg.getContent()
@@ -78,8 +72,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
-	print "### SOY other_messageCB Y ME HA LLEGADO: "
-	print mess
         pass
 
     
@@ -226,6 +218,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (t != None):
                             if (t.match(msg) == True):
                                 b.postMessage(msg)
+
                                 #if (b.done() == True):
                                 #    self.removeBehaviour(b)
                                 proc = True
@@ -771,13 +764,11 @@ class Agent(AbstractAgent):
 
         #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
         #       Registrarse automaticamente o algo..
-        #print "auth", name, password
         if (self.jabber.auth(name,password,"spade") == None):
             #raise NotImplementedError
 	    
 	    if (autoregister == True):
-                #a=xmpp.features.getRegInfo(self.jabber,jid.getDomain())
-		#print a
+                #xmpp.features.getRegInfo(self.jabber,jid.getDomain())
                 b = xmpp.features.register(self.jabber,jid.getDomain(),\
 		{'username':name, 'password':str(password)})
 
@@ -787,14 +778,12 @@ class Agent(AbstractAgent):
         	self.jabber = xmpp.Client(self.server, self.port, debug=[])
 		self.jabber.connect()
 
-                #print "--------------------------------> ", str(name)
                 if (self.jabber.auth(name,password,"spade") == None):
                     raise NotImplementedError
             else:
                 raise NotImplementedError
 	    
 
-        #print "auth ok", name
         thread.start_new_thread(self.jabber_process, tuple())
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
@@ -803,11 +792,11 @@ class Agent(AbstractAgent):
 	Main loop of the agent
 	registers in AMS, runs the agent and, finally, deregisters it from the AMS
 	"""
-	print "Registrando...."
+	#print "Registrando...."
         self.__register_in_AMS()
-	print "Agent Registred!!!"
+	#print "Agent Registred!!!"
 	AbstractAgent.run(self)
-	print "Des-Registrando...."
+	#print "Des-Registrando...."
         self.__deregister_from_AMS()
 
 

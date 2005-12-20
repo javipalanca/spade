@@ -28,32 +28,24 @@ def print_version():
   print "jpalanca@dsic.upv.es - http://magentix.gti-ia.dsic.upv.es/"
   raise SystemExit
 
-gui = False
-
-"""
-if len(sys.argv) < 2: pass 
-elif sys.argv[1] in ["--help", "-h"]: print_help()
-elif sys.argv[1] in ["--version", "-v"]: print_version()
-elif sys.argv[1] in ["--gui", "-g"]: gui = True
-"""
-
-
 # Actually start the program running.
 def main():
   global gui
-  #print dir(spade)
   print "SPADE", VERSION, "<jpalanca@dsic.upv.es> - http://magentix.gti-ia.dsic.upv.es/"
-  """
-  if mainconfig["usepsyco"]:
-    try:
-      import psyco
-      print "Psyco optimizing compiler found. Using psyco.full()."
-      psyco.full()
-    except ImportError: print "W: Psyco optimizing compiler not found."
-  """
-  # default settings for play_and_quit.
+  
+  try:
+  	import psyco
+	print "Psyco optimizing compiler found. Using psyco.full()."
+	psyco.full()
+  except ImportError: print "W: Psyco optimizing compiler not found."
+  
+  gui = False
+  if len(sys.argv) < 2: pass 
+  elif sys.argv[1] in ["--help", "-h"]: print_help()
+  elif sys.argv[1] in ["--version", "-v"]: print_version()
+  elif sys.argv[1] in ["--gui", "-g"]: gui = True
 
-
+  """
   parser = OptionParser()
 
   parser.add_option("-c", "--config", dest="config", help="load the configuration file (default /etc/spade/spade.xml)")
@@ -61,8 +53,11 @@ def main():
   parser.add_option("-v", "--version", action="store_true", dest="version", help="display the version and exit")
   parser.add_option("-g", "--gui", action="store_true", dest="gui", help="run the SPADE RMA")
 
+  """
+
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/usr/share/spade/jabberd/jabber.xml"
+
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
 	 configfilename = "./etc" + os.sep + "spade.xml"
 	 jabberxml = "jabber.xml"
@@ -96,7 +91,7 @@ def main():
   if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
 	#print "JABBERPATH: " + jabberpath
 	#print "JABBERXML: "+ jabberxml
-	#####jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
+	####jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
 	pass
 

@@ -5,6 +5,8 @@ from xmppd import *
 components_db = {}
 components_db['localhost'] = {}
 components_db['localhost']['acc'] = ['9000', 'secret']
+components_db['localhost']['ams'] = ['9001', 'secret']
+components_db['localhost']['df'] =  ['9002', 'secret']
 
 class CH(PlugIn):
 	NS=''
@@ -17,6 +19,7 @@ class CH(PlugIn):
 		# For each servername, create an acc referer name
 		for name in server.servernames:
 			name = 'acc.' + name
+			name = 'ams.' + name
 			self.names.append(name)
 		
  

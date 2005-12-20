@@ -227,7 +227,7 @@ class AMS(Agent.PlatformAgent):
 				reply = self.msg.createReply()
 				reply.setSender(self.myAgent.getAID())
 				reply.setPerformative("failure")
-				reply.setContent("( "+msg.getContent() + error+")")
+				reply.setContent("( "+self.msg.getContent() + error+")")
 				self.myAgent.send(reply)
 				return -1
 

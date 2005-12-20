@@ -70,3 +70,4 @@ class MessageReceiver(threading.Thread):
 	def putBackMessage(self, message):
 		if (message != None):
 			self.__messages.putAfter(message)
+

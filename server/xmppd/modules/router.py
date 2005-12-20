@@ -148,6 +148,7 @@ class Router(PlugIn):
 	s = False
 	if not('@' in simple_to):  # Component name
 	        s=self._owner.getsession(to)
+		print "ROUTE::COMPONENT getsession("+str(to)+") ->" + str(s)
 	if s:
 		s.enqueue(stanza)
 		print ">>>> Router: there was a message for a component and it has been delivered"
