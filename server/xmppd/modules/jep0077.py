@@ -44,6 +44,8 @@ class IBR(PlugIn):
 				self._owner.DB.printdb()
 			else:
 				sess.send(Error(stanza,ERR_CONFLICT))	    
+	    else:
+			sess.send(Error(stanza,ERR_CONFLICT))
             #sess.send(Error(stanza,ERR_CONFLICT))       # dummy code for now	    
             """iq=stanza.buildReply('result')
             iq.T.query.T.username

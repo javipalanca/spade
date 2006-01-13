@@ -147,13 +147,19 @@ class Router(PlugIn):
 	simple_to = str(to)
 	s = False
 	if not('@' in simple_to):  # Component name
-	        s=self._owner.getsession(to)
+		# SPECIAL CASE: message directed to the server itself
+		if (simple_to in self._owner.servernames) and (stanza.getName()=='message'):
+			# Process message
+			print ">>>>> Message for the server"
+			self.servercommandHandler(session, stanza)
+			raise NodeProcessed
+	        else:
+			s=self._owner.getsession(to)
 		print "ROUTE::COMPONENT getsession("+str(to)+") ->" + str(s)
 	if s:
 		s.enqueue(stanza)
 		print ">>>> Router: there was a message for a component and it has been delivered"
 		raise NodeProcessed
-
 # Non-components from here
 
         if stanza.getNamespace()==NS_CLIENT and \
@@ -321,4 +327,43 @@ class Router(PlugIn):
                                 print "COMPONENT SENDS:"
                                 print str(stanza)
 
+    def servercommandHandler(self, session, stanza):
+		#print ">>>>> stanza = " + str(stanza)
+		#simple_from = stanza['from']
+		simple_from = ''
+		for k, v in self._owner.routes.items():
+			if v == session:
+				simple_from = k
+		if simple_from == '':
+			# Bizarre situation when a command has arrived from a non-existent session
+			return
+		username = simple_from.split('@')[0]
+		print ">>>>> Command from " + str(username)
+            	if self._owner.AUTH.isadmin(str(username)):
+			# An admin has sent a command
+			body = stanza.getBody()
+			if body == 'SAVEDB':
+				try:
+					if self._owner.DB.savedb():
+						simple_to = str(stanza['to'])
+						rep = Message(simple_from,'Database Saved Succesfully', frm=simple_to)
+						session.enqueue(rep)
+				except:
+					pass
+			elif body == 'LOADDB':
+				try:
+					if self._owner.DB.loaddb():
+						simple_to = str(stanza['to'])
+						rep = Message(simple_from,'Database Loaded Succesfully', frm=simple_to)
+						session.enqueue(rep)						
+				except:
+					pass
+			elif body == 'DB':
+				try:
+					content = str(self._owner.DB.listdb())
+					simple_to = str(stanza['to'])
+					rep = Message(simple_from,content,frm=simple_to)
+					session.enqueue(rep)
+				except:
+					pass					
 
