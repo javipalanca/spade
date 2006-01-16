@@ -14,27 +14,27 @@ except:
 	pass
 
 db={}
-db['localhost']={}
-db['thx1138.dsic.upv.es']={}
-db['__admin__']={}
-db['localhost']['test']='test'
-db['localhost']['test2']='test'
-db['localhost']['gusarba']='kakatua'
-db['localhost']['jpalanca']='kakatua'
-db['localhost']['acc']='secret'
-db['localhost']['ams']='secret'
-db['localhost']['df']='secret'
-db['localhost']['rma']='secret'
-db['localhost']['ping']='secret'
-db['thx1138.dsic.upv.es']['gusarba']='kakatua'
-db['thx1138.dsic.upv.es']['jpalanca']='kakatua'
-db['thx1138.dsic.upv.es']['test']='test'
-db['thx1138.dsic.upv.es']['acc']='secret'
-db['thx1138.dsic.upv.es']['ams']='secret'
-db['thx1138.dsic.upv.es']['df']='secret'
-db['thx1138.dsic.upv.es']['rma']='secret'
-db['thx1138.dsic.upv.es']['ping']='secret'
-db['__admin__'] = ['gusarba']
+#db['localhost']={}
+#db['thx1138.dsic.upv.es']={}
+#db['__admin__']={}
+#db['localhost']['test']='test'
+#db['localhost']['test2']='test'
+#db['localhost']['gusarba']='kakatua'
+#db['localhost']['jpalanca']='kakatua'
+#db['localhost']['acc']='secret'
+#db['localhost']['ams']='secret'
+#db['localhost']['df']='secret'
+#db['localhost']['rma']='secret'
+#db['localhost']['ping']='secret'
+#db['thx1138.dsic.upv.es']['gusarba']='kakatua'
+#db['thx1138.dsic.upv.es']['jpalanca']='kakatua'
+#db['thx1138.dsic.upv.es']['test']='test'
+#db['thx1138.dsic.upv.es']['acc']='secret'
+#db['thx1138.dsic.upv.es']['ams']='secret'
+#db['thx1138.dsic.upv.es']['df']='secret'
+#db['thx1138.dsic.upv.es']['rma']='secret'
+#db['thx1138.dsic.upv.es']['ping']='secret'
+#db['__admin__'] = ['gusarba']
 
 class AUTH(PlugIn):
     NS=''
@@ -60,43 +60,60 @@ class DB(PlugIn):
     NS=''
     def store(self,domain,node,stanza,id='next_unique_id'): pass
     def plugin(self, server):
+	global db
 	try:
-		self.loaddb()
-		#pass
+		if self.loaddb():
+			print '#### DB: User database loaded.'
+		else:
+			print '#### DB: Could NOT load user database. Building own.'
+			try:
+				for name in server.servernames:
+					db[name] = {}
+				db['__admin__'] = {}
+				self.savedb()
+				print '#### DB: User database built and saved.'
+			except:
+				print '#### DB: Could not build user database. We are all doomed!'
+
 	except:
-		print '#### Could NOT load user database'
+		pass
+
     def registeruser(self,domain,username,password):
 	try:
 		db[domain][str(username)] = str(password)
 		self.savedb()
-		print "#### Trying to save database"
+		#print "#### Trying to save database"
 		return True
 	except:
 		return False
+
     def printdb(self):
 	print db
+
     def savedb(self):
 	try:
 		global db
 		fh = open('user_db.xml', 'w')
 		marshal.dump(db, fh)
 		fh.close()
-		print '#### User database saved!'
+		print '#### savedb: User database saved!'
 		return True
 	except:
-		print 'Could not save user database'
+		print '#### savedb: Could not save user database'
 		return False
+
     def loaddb(self):
 	try:
 		global db
 		fh = open('user_db.xml', 'r')
 		db = unmarshal.load(fh)
 		fh.close()
-		print '##### User database loaded'
+		print '#### loaddb: User database loaded'
 		return True
 	except:
-		print 'Could not load user database'
+		print '#### loaddb: Could not load user database'
 		return False
+
     def listdb(self):
 	try:
 		global db
