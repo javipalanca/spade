@@ -111,14 +111,14 @@ class rma(Agent.Agent):
 			
 			
 		def on_updateagents_clicked(self,k):
-			print "Update Agents!"
+			#print "Update Agents!"
 			aad = AMS.AmsAgentDescription()
 			agents = self.myAgent.searchAgent(aad, debug=True)
 			self.agentsliststore.clear()
 			if (agents != None):
 				for i in agents:
 					aad = AMS.AmsAgentDescription(i)
-					print str(aad)
+					#print str(aad)
 					aid = aad.getAID()
 					self.agentsliststore.append([aid.getName(), str(aid.getAddresses())])
 			
@@ -318,7 +318,7 @@ class rma(Agent.Agent):
 						
 			
 		def on_cancel_clicked(self,data):
-			self.win.destroy()		
+			self.win.destroy()
 		def on_send_clicked(self,data):
 			msg = ACLMessage.ACLMessage()
 			msg.setPerformative(self.glade.get_widget("performative").get_active_text())
@@ -326,12 +326,12 @@ class rma(Agent.Agent):
 			iter = self.receiversliststore.get_iter_first()
 			while (iter != None):
 				k = pickle.loads(self.receiversliststore.get_value(iter,1))
-				print type(k),k
+				#print type(k),k
 				msg.addReceiver(k)
 				iter = self.receiversliststore.iter_next(iter)
 			buf = self.glade.get_widget("content").get_buffer()
 			t=buf.get_text(*buf.get_bounds())
-			msg.setContent(t)			
+			msg.setContent(t)
 			#t=self.glade.get_widget("reply_to").get_text()
 			#if t !="": msg.addReplyTo(t)
 			t=self.glade.get_widget("reply_with").get_text()
@@ -349,28 +349,28 @@ class rma(Agent.Agent):
 			t=self.glade.get_widget("protocol").get_text()
 			if t !="": msg.setProtocol(t)
 			
-			print str(msg)
+			#print str(msg)
 			self.myAgent.send(msg)
 			self.win.destroy()
 
 
 	class GUIBehaviour(Behaviour.PeriodicBehaviour):
 		def __init__(self):
-			print "GUIBehaviour init..."
+			#print "GUIBehaviour init..."
 			Behaviour.PeriodicBehaviour.__init__(self,1)
 
 		def onStart(self):
-			print "MainWindow onstart..."
+			#print "MainWindow onstart..."
 			win = rma.MainWindow(self.myAgent)
 			gobject.idle_add(rma.GUIBehaviour.idle,self)
 			import thread
-			thread.start_new_thread(updateScreen,("Thread No:1",2))
+			self.myAgent.update=thread.start_new_thread(self.updateScreen,tuple())
 
 		#def process(self):
 		def onTick(self):
 			#time.sleep(1)
 			#gtk.main_iteration(block=False)
-			print "rma: onTick()..."
+			#print "rma: onTick()..."
 			pass
 			
 		def idle(self):
@@ -379,11 +379,15 @@ class rma(Agent.Agent):
 			if (msg != None):
 				win = rma.ACLMessageViewer(msg)
 			return True
-				
+
+		def updateScreen(self):
+			while True:
+				gtk.main_iteration()
+
 		
 	def setup(self):
 		self.setDefaultBehaviour(rma.GUIBehaviour())
-		print "GUIBehaviour anyadido como default bahaviour..."
+		#print "GUIBehaviour anyadido como default bahaviour..."
 		#self.addBehaviour(rma.TestBehaviour(5))
 		#self.addBehaviour(rma.TestBehaviour(10))
 	
@@ -407,19 +411,20 @@ class RMALogin(GTKWindow):
 		self.win.show()
 		
 	def on_cancel_clicked(self, data):
-		print "cancel"
+		#print "cancel"
 		gtk.main_quit()
 		
 	def on_ok_clicked(self, data):
-		print "ME ESCONDO"
+		#print "ME ESCONDO"
 		self.win.hide()
-		print "ME HE ESCONDIDO"
+		#print "ME HE ESCONDIDO"
 		username = self.glade.get_widget("entry_username").get_text()
 		password = self.glade.get_widget("entry_passwd").get_text()
-		print "Got '%s' and '%s' ..." % (username,password)
+		#print "Got '%s' and '%s' ..." % (username,password)
 		rma_instance=rma(username, password)
-		print "Sent authentication data ..."
+		#print "Sent authentication data ..."
 		rma_instance.start_and_wait()
+		#rma_instance.update.exit()
 		rma_instance.kill()
 		gtk.main_quit()
 		
@@ -427,15 +432,10 @@ class RMALogin(GTKWindow):
 		gtk.main_quit()
 		return False
 
-def updateScreen(one,two):
-	while True:
-		gtk.main_iteration()
 
 if __name__ == "__main__":
 	login = RMALogin()
 	#rma_instance=rma('rma@localhost', 'secret')
 	#rma_instance.start()
-	#print rma_instance
-	print "VOY A LLAMAR A GTK:MAIN()"
 	gtk.main()
 
