@@ -3,6 +3,7 @@
 import os, signal
 import sys
 import time
+import thread
 import ConfigParser
 from optparse import OptionParser
 
@@ -56,11 +57,11 @@ def main():
   """
 
   configfilename = "/etc/spade/spade.xml"
-  jabberxml = "/usr/share/spade/jabberd/jabber.xml"
+  jabberxml = "/etc/spade/xmppd.xml"
 
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
 	 configfilename = "./etc" + os.sep + "spade.xml"
-	 jabberxml = "jabber.xml"
+	 jabberxml = "./etc" + os.sep + "jabber.xml"
 	
 
   for opt, arg in getopt(sys.argv[1:],
@@ -75,30 +76,33 @@ def main():
 
   configfile = SpadeConfigParser.ConfigParser(configfilename)
 
-  workpath = "/usr/share/spade/jabberd/" #configfile.get("jabber","workpath")
-  if not os.path.exists(workpath):
-	workpath = "./usr/share/spade/jabberd/"
+  #workpath = "/usr/share/spade/jabberd/" #configfile.get("jabber","workpath")
+  #if not os.path.exists(workpath):
+  #	workpath = "./usr/share/spade/jabberd/"
 
-  if os.name == "posix":
-	  jabberpath = workpath + "jabberd"
-	  spool = os.environ['HOME'] + "/.spade"
-	  if not os.path.exists(spool):
-		os.mkdir(spool)
-  else:
-	  jabberpath = workpath + "jabberd.exe"
-	  spool = workpath + "spool"
+  #if os.name == "posix":
+  #	  jabberpath = workpath + "jabberd"
+  #	  spool = os.environ['HOME'] + "/.spade"
+  #	  if not os.path.exists(spool):
+  #		os.mkdir(spool)
+  #else:
+  #	  jabberpath = workpath + "jabberd.exe"
+  #	  spool = workpath + "spool"
 
-  if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
+  #if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
 	#print "JABBERPATH: " + jabberpath
 	#print "JABBERXML: "+ jabberxml
 	####jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
 	#print "PID: " + str(jabberpid)
-	pass
+  #	pass
+
+  server = xmppd.Server(jabberxml)
+  thread.start_new_thread(server.run,tuple())
 
   try:
-  	print "Esperando...."
-  	time.sleep(2)
-  	print "Lanzando..."
+  	#print "Esperando...."
+  	#time.sleep(2)
+  	#print "Lanzando..."
 
   	platform = spade_backend.SpadeBackend(configfilename)
 	platform.start()
@@ -109,13 +113,14 @@ def main():
 	while True:
 		time.sleep(1)
   except KeyboardInterrupt:
+    server.shutdown()
     pass
  
   del platform
 
-  if os.name == "posix":
-  	######os.kill(jabberpid, signal.SIGTERM)
-  	time.sleep(2)
+  #if os.name == "posix":
+  #	######os.kill(jabberpid, signal.SIGTERM)
+  #	time.sleep(2)
 
   print "Jabber server terminated..."
 
