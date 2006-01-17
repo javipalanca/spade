@@ -300,7 +300,8 @@ class Server:
 		self.cfgfile = cfgfile
 	if not os.path.exists(self.cfgfile):
 		print 'Fatal Error: Could not load configuration file for xmppd. Quiting...'
-		self.shutdown()
+		self.shutdown(STREAM_SYSTEM_SHUTDOWN)
+		sys.exit(1)
 
         self.SESS_LOCK=thread.allocate_lock()
         self.Dispatcher=dispatcher.Dispatcher()
