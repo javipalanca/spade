@@ -13,7 +13,6 @@ class SpadePlatform(Agent.PlatformAgent):
 		def __init__(self):
 			Behaviour.Behaviour.__init__(self)
 		def process(self):
-			print "ACC::WAITING FOR A MESSAGE>>>>>>>>>>>>>>>>>>>>>>>>>>"
 			msg = self.blockingReceive()
 			if (msg != None):
 				print "ACC::A MESSAGE!!!!"
@@ -22,7 +21,7 @@ class SpadePlatform(Agent.PlatformAgent):
 					# Reenviamos el msg a todos los destinatarios
 					# Deberiamos de comprobar si el destinatario estaen otro servidor y reenviarselo a la plataforma en vez de a el.
 					# Tambien deberiamos comprobar el protocolo y usar una pasarela en el caso de que sea necesario.
-					print "Message to", to.getName(), "... Posting!"
+					#print "Message to", to.getName(), "... Posting!"
 					self.myAgent.sendTo(msg, to.getName())
 			else:
 				print "ACC::dying... it shouldn't happen"
