@@ -22,7 +22,8 @@ from xmpp import *
 #    print "Firing up PsyCo"
 #    from psyco.classes import *
 
-import socket,select,random,os,thread,errno
+import socket,select,random,os,thread,errno,sys
+from getopt import getopt
 """
 _socket_state live/dead
 _session_state   no/in-process/yes
@@ -281,7 +282,7 @@ class Session:
         if self._stream_state<newstate: self._stream_state=newstate
 
 class Server:
-    def __init__(self,debug=['always']):
+    def __init__(self,debug=['always'],cfgfile=None):
         self.sockets={}
         self.sockpoll=select.poll()
         self.ID=`random.random()`[2:]
@@ -292,6 +293,14 @@ class Server:
         self.debug_flags.append('session')
         self.debug_flags.append('dispatcher')
         self.debug_flags.append('server')
+
+	if cfgfile == None:
+		self.cfgfile = './xmppd.xml'
+	else:
+		self.cfgfile = cfgfile
+	if not os.path.exists(self.cfgfile):
+		print 'Fatal Error: Could not load configuration file for xmppd. Quiting...'
+		self.shutdown()
 
         self.SESS_LOCK=thread.allocate_lock()
         self.Dispatcher=dispatcher.Dispatcher()
@@ -439,10 +448,32 @@ def testrun():
     modules.stream.thread.start_new_thread=start_new_thread_fake
     return Server()
 
+def print_help():
+    print "xmppd Jabber Server Help"
+    print "========================\n\n"
+    print "Usage: xmppd.py -c configfile\n\n"
+
 if __name__=='__main__':
-    s=Server()
     #print "Firing up PsyCo"
     import psyco
     #psyco.log()
     psyco.full()
-    s.run()
+   
+    cfgfile = None 
+    for opt, arg in getopt(sys.argv[1:], "hvc:", ["help", "configfile="])[0]:
+	    if opt in ["-h", "--help"]:
+		print_help()
+		sys.exit(0)
+	    elif opt in ["-v", "--version"]:
+		print Revision + "\n"
+		sys.exit(0)
+	    elif opt in ["-c", "--configfile"]:
+		cfgfile=arg
+
+    if cfgfile:
+	    s=Server(cfgfile=cfgfile)
+	    s.run()
+    else:
+	    s=Server()
+	    s.run()
+

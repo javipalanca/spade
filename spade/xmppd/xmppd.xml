@@ -1,0 +1,7 @@
+<server>
+	<servernames>
+		<name>thx1138.dsic.upv.es</name>
+	</servernames>
+	<certificate file="xmppd.pem"/>
+	<spool path="/tmp"/>
+</server>
