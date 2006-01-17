@@ -295,7 +295,7 @@ class Server:
         self.debug_flags.append('server')
 
 	if cfgfile == None:
-		self.cfgfile = './xmppd.xml'
+		self.cfgfile = '.' + os.sep + 'xmppd.xml'
 	else:
 		self.cfgfile = cfgfile
 	if not os.path.exists(self.cfgfile):

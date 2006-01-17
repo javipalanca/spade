@@ -36,6 +36,8 @@ class xmppdXMLHandler(ContentHandler):
                 self.current_tag = ""
 
         def startElement(self, name, attrs):
+		global certificatefile
+		global spoolpath
                 self.chars = ""
                 self.tag_name = name
                 if name == "server":
@@ -102,4 +104,7 @@ class Config(PlugIn):
 		server.sslkeyfile = server.sslcertfile
 	else:
 		server.sslkeyfile = sslkeyfile
+	
+	server.spoolpath = spoolpath
+	print "$$$$$$ SPOOLPATH = " + str(server.spoolpath)
 

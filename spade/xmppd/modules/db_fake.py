@@ -5,6 +5,7 @@
 # $Id: db_fake.py,v 1.4 2004/10/24 04:49:09 snakeru Exp $
 
 from xmpp import *
+import os
 
 try:
 	from xml.marshal.generic import *
@@ -61,6 +62,7 @@ class DB(PlugIn):
     def store(self,domain,node,stanza,id='next_unique_id'): pass
     def plugin(self, server):
 	global db
+	self.userdbfile = server.spoolpath + os.sep + 'user_db.xml'
 	try:
 		if self.loaddb():
 			print '#### DB: User database loaded.'
@@ -93,7 +95,7 @@ class DB(PlugIn):
     def savedb(self):
 	try:
 		global db
-		fh = open('user_db.xml', 'w')
+		fh = open(self.userdbfile, 'w')
 		marshal.dump(db, fh)
 		fh.close()
 		print '#### savedb: User database saved!'
@@ -105,7 +107,7 @@ class DB(PlugIn):
     def loaddb(self):
 	try:
 		global db
-		fh = open('user_db.xml', 'r')
+		fh = open(self.userdbfile, 'r')
 		db = unmarshal.load(fh)
 		fh.close()
 		print '#### loaddb: User database loaded'
