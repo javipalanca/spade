@@ -10,6 +10,7 @@ from optparse import OptionParser
 from getopt import getopt
 from spade import spade_backend
 from spade import SpadeConfigParser
+from spade.xmppd import Server
 #import spade
 
 VERSION = "1.9.3"
@@ -96,7 +97,7 @@ def main():
 	#print "PID: " + str(jabberpid)
   #	pass
 
-  server = xmppd.Server(jabberxml)
+  server = spade.xmppd.Server(jabberxml)
   thread.start_new_thread(server.run,tuple())
 
   try:
