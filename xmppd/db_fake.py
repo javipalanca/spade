@@ -103,10 +103,10 @@ class DB(PlugIn):
 		if not os.path.exists(self.spoolpath):
 			print "#### SpoolPath does no exist!!!"
 			p = self.spoolpath.split(os.sep)
-			tmpitem=""
+			tmpitem=''
 			print "#### p = " + str(p)
 			for item in p:
-				tmpitem+=str(item)
+				tmpitem+=os.sep+str(item)
 				if not os.path.exists(tmpitem):
 					print "#### mkdir " + str(tmpitem)
 					os.mkdir(tmpitem)
