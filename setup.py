@@ -14,7 +14,7 @@ if os.name == "posix":
 	author_email='jpalanca@dsic.upv.es',
 	url='http://gti-ia.dsic.upv.es/projects/magentix/',
 	package_dir={'spade': 'spade'},
-	packages=['spade', 'spade.xmpp', 'spade.xmppd.modules'],
+	packages=['spade', 'spade.xmpp', 'spade.xmppd', 'spade.xmppd.modules'],
 	scripts=['spade-rma.py', 'runspade.py'],
 	data_files=[
 		('/etc/spade',['etc/spade.xml']),
