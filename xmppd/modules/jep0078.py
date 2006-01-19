@@ -5,7 +5,7 @@
 # $Id: jep0078.py,v 1.6 2004/10/23 09:22:44 snakeru Exp $
 
 from xmpp import *
-from xmppd import SESSION_OPENED
+#from xmppd import SESSION_OPENED
 import sha
 
 class NSA(PlugIn):

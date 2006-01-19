@@ -30,19 +30,19 @@ _session_state   no/in-process/yes
 _stream_state not-opened/opened/closing/closed
 """
 # Transport-level flags
-SOCKET_UNCONNECTED  =0
-SOCKET_ALIVE        =1
-SOCKET_DEAD         =2
+#SOCKET_UNCONNECTED  =0
+#SOCKET_ALIVE        =1
+#SOCKET_DEAD         =2
 # XML-level flags
-STREAM__NOT_OPENED =1
-STREAM__OPENED     =2
-STREAM__CLOSING    =3
-STREAM__CLOSED     =4
+#STREAM__NOT_OPENED =1
+#STREAM__OPENED     =2
+#STREAM__CLOSING    =3
+#STREAM__CLOSED     =4
 # XMPP-session flags
-SESSION_NOT_AUTHED =1
-SESSION_AUTHED     =2
-SESSION_BOUND      =3
-SESSION_OPENED     =4
+#SESSION_NOT_AUTHED =1
+#SESSION_AUTHED     =2
+#SESSION_BOUND      =3
+#SESSION_OPENED     =4
 
 class Session:
     def __init__(self,socket,server,xmlns,peer=None):
