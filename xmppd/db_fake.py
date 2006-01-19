@@ -65,15 +65,17 @@ class DB(PlugIn):
 	self.userdbfile = server.spoolpath + os.sep + 'user_db.xml'
 	try:
 		if self.loaddb():
-			print '#### DB: User database loaded.'
+			print '#### DB: User database loaded'
 		else:
-			print '#### DB: Could NOT load user database. Building own.'
+			print '#### DB: Could NOT load user database. Building own'
 			try:
 				for name in server.servernames:
 					db[name] = {}
 				db['__admin__'] = {}
-				self.savedb()
-				print '#### DB: User database built and saved.'
+				if self.savedb():
+					print '#### DB: User database built and saved'
+				else:
+					print '#### DB: Could not save built database'
 			except:
 				print '#### DB: Could not build user database. We are all doomed!'
 
@@ -95,6 +97,19 @@ class DB(PlugIn):
     def savedb(self):
 	try:
 		global db
+		print "#### userdbfile = " + str(self.userdbfile)
+		print "#### spoolpath = " + str(server.spoolpath)
+		if not os.path.exists(server.spoolpath):
+			print "#### SpoolPath does no exist!!!"
+			p = server.spoolpath.split(os.sep)
+			tmpitem=""
+			print "#### p = " + str(p)
+			for item in p:
+				tmpitem+=str(item)
+				if not os.path.exists(tmpitem):
+					print "#### mkdir " + str(tmpitem)
+					os.mkdir(tmpitem)
+		print "#### open " + str(self.userdbfile)
 		fh = open(self.userdbfile, 'w')
 		marshal.dump(db, fh)
 		fh.close()
