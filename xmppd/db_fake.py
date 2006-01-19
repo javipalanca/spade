@@ -62,6 +62,7 @@ class DB(PlugIn):
     def store(self,domain,node,stanza,id='next_unique_id'): pass
     def plugin(self, server):
 	global db
+	self.spoolpath = server.spoolpath
 	self.userdbfile = server.spoolpath + os.sep + 'user_db.xml'
 	try:
 		if self.loaddb():
@@ -98,10 +99,10 @@ class DB(PlugIn):
 	try:
 		global db
 		print "#### userdbfile = " + str(self.userdbfile)
-		print "#### spoolpath = " + str(server.spoolpath)
-		if not os.path.exists(server.spoolpath):
+		print "#### spoolpath = " + str(self.spoolpath)
+		if not os.path.exists(self.spoolpath):
 			print "#### SpoolPath does no exist!!!"
-			p = server.spoolpath.split(os.sep)
+			p = self.spoolpath.split(os.sep)
 			tmpitem=""
 			print "#### p = " + str(p)
 			for item in p:
