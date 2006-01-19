@@ -1,4 +1,4 @@
-import xmppd
+import server
 from  modules import *
 
 addons = [
