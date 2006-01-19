@@ -6,6 +6,7 @@
 
 from xmpp import *
 from xmppd import *
+from constants import *
 
 class Router(PlugIn):
     """ The first entity that gets access to arrived stanza. """

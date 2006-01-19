@@ -8,6 +8,7 @@ from xmpp import *
 from xmppd import *
 import socket,thread
 from tlslite.api import *
+from constants import *
 
 class TLS(PlugIn):
     """ 3.                        <features/>

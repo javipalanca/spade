@@ -10,7 +10,7 @@ from optparse import OptionParser
 from getopt import getopt
 from spade import spade_backend
 from spade import SpadeConfigParser
-from spade.xmppd import Server
+import xmppd
 #import spade
 
 VERSION = "1.9.3"
@@ -97,13 +97,13 @@ def main():
 	#print "PID: " + str(jabberpid)
   #	pass
 
-  server = spade.xmppd.Server(jabberxml)
-  thread.start_new_thread(server.run,tuple())
+  s = xmppd.server.Server(cfgfile=jabberxml)
+  thread.start_new_thread(s.run,tuple())
 
   try:
   	#print "Esperando...."
   	#time.sleep(2)
-  	#print "Lanzando..."
+  	print "Lanzando..."
 
   	platform = spade_backend.SpadeBackend(configfilename)
 	platform.start()
@@ -114,16 +114,15 @@ def main():
 	while True:
 		time.sleep(1)
   except KeyboardInterrupt:
-    server.shutdown()
     pass
  
   del platform
+  s.shutdown("Jabber server terminated...")
 
   #if os.name == "posix":
   #	######os.kill(jabberpid, signal.SIGTERM)
   #	time.sleep(2)
 
-  print "Jabber server terminated..."
 
 if __name__ == '__main__': main()
 

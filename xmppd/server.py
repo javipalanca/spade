@@ -17,6 +17,45 @@
 Revision="$Id: xmppd.py,v 1.10 2004/10/24 04:37:19 snakeru Exp $"[5:41].replace(',v',' Rev:')
 
 from xmpp import *
+from xmppd import *
+from constants import *
+
+import ch
+import config
+import db_fake
+import dialback
+import dummy
+import jep0077
+import jep0078
+import router
+import stream
+
+addons = [
+# System stuff
+    config.Config,
+    db_fake.AUTH,
+    db_fake.DB,
+
+# XMPP-Core
+    #stream.TLS,
+    stream.SASL,
+    dialback.Dialback,
+
+
+# XMPP-IM
+    stream.Bind,
+    stream.Session,
+    router.Router,
+#    privacy.Privacy,
+
+# JEPs
+    jep0077.IBR,
+    jep0078.NSA,
+
+# Mine
+    #ch.CH,
+    #dummy.dummyClass,
+    ]
 
 #if __name__=='__main__':
 #    print "Firing up PsyCo"
@@ -311,7 +350,7 @@ class Server:
 
         self.features=[]
         import modules
-        for addon in modules.addons:
+        for addon in addons:
             if issubclass(addon,PlugIn): addon().PlugIn(self)
             else: self.__dict__[addon.__class__.__name__]=addon()
             self.feature(addon.NS)
