@@ -349,7 +349,7 @@ class Server:
         self.Dispatcher._init()
 
         self.features=[]
-        import modules
+        #import modules
         for addon in addons:
             if issubclass(addon,PlugIn): addon().PlugIn(self)
             else: self.__dict__[addon.__class__.__name__]=addon()
