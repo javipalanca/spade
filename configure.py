@@ -323,7 +323,7 @@ def generateCode():
 	                	<name>'''+hostname+'''</name>
 		        </servernames>
 		        <certificate file="xmppd.pem"/>
-	        	<spool path="~/.spade/spool"/>
+	        	<spool path="'''+str(os.environ['HOME'])+'''/.spade/spool"/>
 		</server>
 		'''
 	else:

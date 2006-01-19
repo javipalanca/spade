@@ -40,6 +40,8 @@ $source_dir/readme.txt
 $source_dir/doc
 $source_dir/spade
 $source_dir/usr
+$source_dir/xmpp
+$source_dir/xmppd
 EOF
 
 [Prepare]
