@@ -331,7 +331,9 @@ class PeriodicBehaviour(Behaviour):
 			while (self._nextActivation <= time.time()):
 				self._nextActivation += self._period
 		else:
-			time.sleep(self._nextActivation - time.time())
+			t = self._nextActivation - time.time()
+			if t > 0:
+				time.sleep(t)
 			
 	def onTick(self):
 		"""

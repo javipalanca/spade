@@ -6,6 +6,7 @@ import random
 import os
 import socket
 
+
 # jabber.xml template
 jabber_template = """
 <jabber>
@@ -313,6 +314,34 @@ def generateCode():
 	file = open("etc/spade.xml", "w+")
 	file.write(spadexml)
 	file.close()
+
+	# Generating real xmppd.xml
+	if os.name == 'posix':
+		xmppdxml = '''
+		<server>
+	        	<servernames>
+	                	<name>'''+hostname+'''</name>
+		        </servernames>
+		        <certificate file="xmppd.pem"/>
+	        	<spool path="~/.spade/spool"/>
+		</server>
+		'''
+	else:
+		xmppdxml = '''
+		<server>
+	        	<servernames>
+	                	<name>'''+hostname+'''</name>
+		        </servernames>
+		        <certificate file="xmppd.pem"/>
+	        	<spool path="usr/share/spade/xmppd/spool"/>
+		</server>
+		'''
+
+	file = open("etc/xmppd.xml", "w+")
+	file.write(xmppdxml)
+	file.close()
+
+
 
 if __name__ == '__main__':
     # We look for a command line parameter
