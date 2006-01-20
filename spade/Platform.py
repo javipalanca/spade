@@ -23,7 +23,7 @@ class SpadePlatform(Agent.PlatformAgent):
 				for k,v in d.items():
 					newmsg = msg
 					newmsg.to = v
-					if k != "xmpp://acc."+self.myAgent._serverplatform:
+					if k != self.myAgent.getSpadePlatformJID():
 						self.myAgent.sendTo(newmsg, k)
 					else:
 						for recv in v:
