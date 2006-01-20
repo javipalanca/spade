@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 import os
-from distutils.core import setup
+from distutils.core import setup, Extension
 import glob
-if os.name != "posix":
-	import py2exe
+#if os.name != "posix":
+#	import py2exe
+
+if sys.platform == "win32":
+    ext = Extension("tlslite.utils.win32prng",
+                    sources=["tlslite/utils/win32prng.c"],
+                    libraries=["advapi32"])
+    exts = [ext]
+else:
+    exts = None
+
 
 
 if os.name == "posix":
@@ -14,8 +23,8 @@ if os.name == "posix":
 	author_email='jpalanca@dsic.upv.es',
 	url='http://gti-ia.dsic.upv.es/projects/magentix/',
 	package_dir={'spade': 'spade'},
-	packages=['spade', 'xmpp', 'xmppd'],
-	scripts=['spade-rma.py', 'runspade.py'],
+	packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+	scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 	data_files=[
 		('/etc/spade',['etc/spade.xml']),
 		('/etc/spade',['etc/xmppd.xml']),
@@ -36,9 +45,9 @@ else:
 	author_email='jpalanca@dsic.upv.es',
 	url='http://gti-ia.dsic.upv.es/projects/magentix/',
 	package_dir={'spade': 'spade'},
-	packages=['spade', 'xmpp', 'xmppd'],
+	packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
 	#scripts=['spade-rma.py', 'runspade.py'],
-	console=['spade-rma.py', 'runspade.py','configure.py'],
+	console=['spade-rma.py', 'runspade.py','configure.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 	data_files=[
 		('etc',[]),
 		('usr/share/spade',['usr/share/spade/rma.glade']),
@@ -50,7 +59,8 @@ else:
 		#('usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.dll')),
 		#('usr/share/spade/jabberd/spool',[])
 		('usr/share/spade/xmppd/spool',[])
-	]
+	],
+        ext_modules=exts
 	)
 	
 	
