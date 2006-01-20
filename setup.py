@@ -18,7 +18,7 @@ else:
 
 if os.name == "posix":
 	setup(name='SPADE',
-	version='1.9.3',
+	version='1.9.4',
 	description='Smart Python multi-Agent Development Environment',
 	author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
 	author_email='jpalanca@dsic.upv.es',
@@ -40,7 +40,7 @@ if os.name == "posix":
 
 else:
 	setup(name='SPADE',
-	version='1.9.3',
+	version='1.9.4',
 	description='Smart Python multi-Agent Development Environment',
 	author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
 	author_email='jpalanca@dsic.upv.es',

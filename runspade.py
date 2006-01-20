@@ -13,7 +13,7 @@ from spade import SpadeConfigParser
 import xmppd
 #import spade
 
-VERSION = "1.9.3"
+VERSION = "1.9.4"
 
 
 def print_help():
