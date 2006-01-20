@@ -15,14 +15,23 @@ class SpadePlatform(Agent.PlatformAgent):
 		def process(self):
 			msg = self.blockingReceive()
 			if (msg != None):
-				print "ACC::A MESSAGE!!!!"
 				to_list = msg.getReceivers()
+				d = {}
 				for to in to_list:
+					if not to.getAddresses()[0] in d: d[to.getAddresses()[0]]=list()
+					d[to.getAddresses()[0]].append(to)
+				for k,v in d.items():
+					newmsg = msg
+					newmsg.to = v
+					if k != "xmpp://acc."+self.myAgent._serverplatform:
+						self.myAgent.sendTo(newmsg, k)
+					else:
+						for recv in v:
+							self.myAgent.sendTo(newmsg, recv.getName())
 					# Reenviamos el msg a todos los destinatarios
 					# Deberiamos de comprobar si el destinatario estaen otro servidor y reenviarselo a la plataforma en vez de a el.
 					# Tambien deberiamos comprobar el protocolo y usar una pasarela en el caso de que sea necesario.
 					#print "Message to", to.getName(), "... Posting!"
-					self.myAgent.sendTo(msg, to.getName())
 			else:
 				print "ACC::dying... it shouldn't happen"
 			
