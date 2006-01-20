@@ -1,5 +1,6 @@
 #!/bin/sh
 
+svn ci -m "packaging"
 svn export . tmp
 cd tmp
 rm usr/share/spade/jabberd/*.exe -f
