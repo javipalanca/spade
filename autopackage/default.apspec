@@ -42,6 +42,7 @@ $source_dir/spade
 $source_dir/usr
 $source_dir/xmpp
 $source_dir/xmppd
+$source_dir/tlslite
 EOF
 
 [Prepare]
