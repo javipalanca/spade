@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 from distutils.core import setup, Extension
 import glob
 #if os.name != "posix":
