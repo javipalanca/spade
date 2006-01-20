@@ -24,8 +24,8 @@ class SpadePlatform(Agent.PlatformAgent):
 					newmsg = msg
 					newmsg.to = v
 					print "############# k != plat?"
-					print " k>>"+k + "    plat>>"+self.myAgent.getSpadePlatformJID()
-					if k != self.myAgent.getSpadePlatformJID():
+					print " k>>"+k[7:] + "    plat>>"+self.myAgent.getSpadePlatformJID()
+					if k[7:] != self.myAgent.getSpadePlatformJID():
 						self.myAgent.sendTo(newmsg, k[7:])
 					else:
 						for recv in v:
