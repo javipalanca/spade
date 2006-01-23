@@ -36,10 +36,10 @@ def main():
   print "SPADE", VERSION, "<jpalanca@dsic.upv.es> - http://magentix.gti-ia.dsic.upv.es/"
   
   try:
-  	import psyco
+  	#import psyco
 	print "Psyco optimizing compiler found. Using psyco.full()."
-	psyco.log()
-	psyco.full()
+	#psyco.log()
+	#psyco.full()
   except ImportError: print "W: Psyco optimizing compiler not found."
   
   gui = False
