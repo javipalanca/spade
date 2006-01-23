@@ -159,13 +159,13 @@ class Session:
         """ Takes Protocol instance as argument. """
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
-	    print ">>>> Session" + str(self)+  ": append stanza"
+	    #print ">>>> Session" + str(self)+  ": append stanza"
         else: 
 	    self.sendbuffer+=stanza
-	    print ">>>> Session" + str(self)+  ": sendbuffer"
+	    #print ">>>> Session" + str(self)+  ": sendbuffer"
         if self._socket_state>=SOCKET_ALIVE:
 	    self.push_queue()
-	    print ">>>> Session" + str(self)+  ": queue pushed"
+	    #print ">>>> Session" + str(self)+  ": queue pushed"
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
@@ -316,7 +316,7 @@ class Session:
             self._session_state=newstate
             if newstate==SESSION_OPENED:
 		self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
-		print "### SENT WELCOME MESSAGE TO PEER: " + str(self.peer)
+		self.DEBUG('session', "Sent Welcome message to peer %s"%(str(self.peer)),'info')
     def set_stream_state(self,newstate):
         if self._stream_state<newstate: self._stream_state=newstate
 
@@ -338,7 +338,7 @@ class Server:
 	else:
 		self.cfgfile = cfgfile
 	if not os.path.exists(self.cfgfile):
-		print 'Fatal Error: Could not load configuration file for xmppd. Quiting...'
+		self.DEBUG('server','Could not load configuration file for xmppd. Bye', 'error')
 		self.shutdown(STREAM_SYSTEM_SHUTDOWN)
 		sys.exit(1)
 
@@ -397,7 +397,7 @@ class Server:
         alt_s=self.getsession(peer)
         if s==alt_s: return
         elif alt_s: self.deactivatesession(peer)
-	print "### ACTIVATING SESSION %s WITH PEER %s" % (str(s),str(peer))
+	self.DEBUG('session', 'Activating session %s with peer %s' % (str(s),str(peer)))
         self.routes[peer]=s
 
     def getsession(self, jid):
@@ -434,7 +434,7 @@ class Server:
             else: raise "Unknown instance type: %s"%sock
 
     def run(self):
-	print "SERVER ON THE RUN!!"
+	self.DEBUG('server', "SERVER ON THE RUN", 'info')
         try:
             while 1: self.handle()
         except KeyboardInterrupt:
