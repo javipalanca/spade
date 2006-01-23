@@ -179,6 +179,7 @@ class Router(PlugIn):
             if not node: return
             self._owner.Privacy(session.peer,stanza) # it will raise NodeProcessed if needed
             bareto=node+'@'+domain
+	    print ">>>>>>>>>>>>>>>>node: %s  domain: %s"% (node,domain)
 	    dbg_msg='BARETO: ' + bareto
 	    self.DEBUG(dbg_msg, 'info')
             resource=to.getResource()
