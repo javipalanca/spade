@@ -495,9 +495,9 @@ def print_help():
 
 if __name__=='__main__':
     #print "Firing up PsyCo"
-    import psyco
+    #import psyco
     #psyco.log()
-    psyco.full()
+    #psyco.full()
    
     cfgfile = None 
     for opt, arg in getopt(sys.argv[1:], "hvc:", ["help", "configfile="])[0]:

@@ -38,6 +38,7 @@ def main():
   try:
   	import psyco
 	print "Psyco optimizing compiler found. Using psyco.full()."
+	psyco.log()
 	psyco.full()
   except ImportError: print "W: Psyco optimizing compiler not found."
   
