@@ -316,7 +316,7 @@ class Session:
             self._session_state=newstate
             if newstate==SESSION_OPENED:
 		self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
-		self.DEBUG(str('Sent Welcome message to peer '+str(self.peer)), 'sent')
+		self.DEBUG('info',str('Sent Welcome message to peer '+str(self.peer)), prefix='sent')
     def set_stream_state(self,newstate):
         if self._stream_state<newstate: self._stream_state=newstate
 
@@ -438,7 +438,7 @@ class Server:
         try:
             while 1: self.handle()
         except KeyboardInterrupt:
-            self.DEBUG('server','Shutting down on user\'s behalf','info')
+            self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
             self.shutdown(STREAM_SYSTEM_SHUTDOWN)
 #        except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
 
