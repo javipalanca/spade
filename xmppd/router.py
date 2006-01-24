@@ -142,7 +142,7 @@ class Router(PlugIn):
 		if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 			# Fake the namespace. Pose as a client
 			stanza.setNamespace(NS_CLIENT)
-			print ">>>> Router: namespace faked: " + str(stanza.getNamespace())
+			self.DEBUG("NS faked: " + str(stanza.getNamespace(), 'info'))
 
 	# Measure for component-destinated stanzas
 	simple_to = str(to)
@@ -151,15 +151,15 @@ class Router(PlugIn):
 		# SPECIAL CASE: message directed to the server itself
 		if (simple_to in self._owner.servernames) and (stanza.getName()=='message'):
 			# Process message
-			print ">>>>> Message for the server"
+			self.DEBUG("Message for the server", 'info')
 			self.servercommandHandler(session, stanza)
 			raise NodeProcessed
 	        else:
 			s=self._owner.getsession(to)
-		print "ROUTE::COMPONENT getsession("+str(to)+") ->" + str(s)
+		self.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 	if s:
 		s.enqueue(stanza)
-		print ">>>> Router: there was a message for a component and it has been delivered"
+		self.DEBUG("There was a message for a component and it has been delivered", 'info')
 		raise NodeProcessed
 # Non-components from here
 
@@ -179,7 +179,6 @@ class Router(PlugIn):
             if not node: return
             self._owner.Privacy(session.peer,stanza) # it will raise NodeProcessed if needed
             bareto=node+'@'+domain
-	    print ">>>>>>>>>>>>>>>>node: %s  domain: %s"% (node,domain)
 	    dbg_msg='BARETO: ' + bareto
 	    self.DEBUG(dbg_msg, 'info')
             resource=to.getResource()
@@ -273,15 +272,13 @@ class Router(PlugIn):
         else:
             s=getsession(domain)
             if not s:
+		self.DEBUG("S2S: Message to another server", 'info')
                 s=self._owner.S2S(session.ourname,domain)
             s.enqueue(stanza)
             raise NodeProcessed
 
 
     def componentHandler(self, session, stanza):
-                print "Component Handler called"
-                print "Server Routes:"
-                print self.server.routes
                 name = stanza.getName()
                 if name == 'handshake':
                         # Reply handshake
@@ -313,21 +310,18 @@ class Router(PlugIn):
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
                 elif name == 'message':
-                        print "Component sends a MESSAGE"
+                        #"Component sends a MESSAGE"
                         to=stanza['to']
                         simple_to = str(to)
                         #if not('@' in simple_to):  # Component name
                         s=self._owner.getsession(to)
                         if s:
-                                print "Found session for to: %s %d" % (str(to), s._session_state)
+                                self.DEBUG( "Found session for to: %s %d" % (str(to), s._session_state),'info')
                                 s.enqueue(stanza)
-                                print "Stanza going to component enqueue"
-                                print s.stanza_queue
                         raise NodeProcessed
                 else:
                         if session._session_state >= SESSION_AUTHED:
-                                print "COMPONENT SENDS:"
-                                print str(stanza)
+                                self.DEBUG( str(stanza), 'send')
 
     def servercommandHandler(self, session, stanza):
 		#print ">>>>> stanza = " + str(stanza)

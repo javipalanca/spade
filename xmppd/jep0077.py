@@ -40,8 +40,7 @@ class IBR(PlugIn):
 			if reg_ok:
 				iq=stanza.buildReply('result')
 				sess.send(iq)
-				print "DATABASE"
-				self._owner.DB.printdb()
+				self.DEBUG(str(self._owner.DB.printdb()),'info')
 			else:
 				sess.send(Error(stanza,ERR_CONFLICT))	    
 	    else:

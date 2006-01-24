@@ -23,15 +23,6 @@ class CH(PlugIn):
 			self.names.append(name)
 		
  
-	def do(self, session, stanza):
-		print "####################################"
-		print "####################################"
-		print "####################################"
-		print "DO THE KUNG FU " + str(session) + " " + str(stanza)
-		print "####################################"
-		print "####################################"
-		print "####################################"
-
         def plugin(self,server):
         	self._data = {}
 		self.configureCH(server)
@@ -39,9 +30,6 @@ class CH(PlugIn):
         	server.Dispatcher.RegisterNamespaceHandler('jabber:component:accept',self.componentHandler)
 
 	def componentHandler(self, session, stanza):
-		print "Component Handler called"
-		print "Server Routes:"
-		print self.server.routes
 		name = stanza.getName()
 		if name == 'handshake':
 			# Reply handshake
@@ -73,19 +61,15 @@ class CH(PlugIn):
 				session.set_session_state(SESSION_OPENED)
 				raise NodeProcessed				
 		elif name == 'message':
-			print "Component sends a MESSAGE"
 			to=stanza['to']
 			simple_to = str(to)
         		#if not('@' in simple_to):  # Component name
                 	s=self._owner.getsession(to)
         		if s:
-				print "Found session for to: %s %d" % (str(to), s._session_state)
+				self.DEBUG("Found session for to: %s %d" % (str(to), s._session_state), 'info')
                 		s.enqueue(stanza)
-                		print "Stanza going to component enqueue"
-				print s.stanza_queue
                 	raise NodeProcessed
 		else:
 			if session._session_state >= SESSION_AUTHED:
-				print "COMPONENT SENDS:"
-				print str(stanza)
+				self.DEBUG(str(stanza), 'send')
 

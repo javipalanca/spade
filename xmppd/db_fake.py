@@ -66,19 +66,19 @@ class DB(PlugIn):
 	self.userdbfile = server.spoolpath + os.sep + 'user_db.xml'
 	try:
 		if self.loaddb():
-			print '#### DB: User database loaded'
+			self.DEBUG('DB: User database loaded', 'info')
 		else:
-			print '#### DB: Could NOT load user database. Building own'
+			self.DEBUG('DB: Could NOT load user database. Building own', 'error')
 			try:
 				for name in server.servernames:
 					db[name] = {}
 				db['__admin__'] = {}
 				if self.savedb():
-					print '#### DB: User database built and saved'
+					self.DEBUG('DB: User database built and saved', 'info')
 				else:
-					print '#### DB: Could not save built database'
+					self.DEBUG('DB: Could not save built database', 'error')
 			except:
-				print '#### DB: Could not build user database. We are all doomed!'
+				self.DEBUG('DB: Could not build user database. We are all doomed!', 'error')
 
 	except:
 		pass
@@ -93,31 +93,29 @@ class DB(PlugIn):
 		return False
 
     def printdb(self):
-	print db
+	return str(db)
 
     def savedb(self):
 	try:
 		global db
-		print "#### userdbfile = " + str(self.userdbfile)
-		print "#### spoolpath = " + str(self.spoolpath)
+		#print "#### userdbfile = " + str(self.userdbfile)
+		#print "#### spoolpath = " + str(self.spoolpath)
 		if not os.path.exists(self.spoolpath):
-			print "#### SpoolPath does no exist!!!"
+			self.DEBUG("SpoolPath does no exist!!!", 'warn')
 			p = self.spoolpath.split(os.sep)
 			tmpitem=''
-			print "#### p = " + str(p)
 			for item in p:
 				tmpitem+=os.sep+str(item)
 				if not os.path.exists(tmpitem):
-					print "#### mkdir " + str(tmpitem)
+					self.DEBUG("mkdir " + str(tmpitem), 'info')
 					os.mkdir(tmpitem)
-		print "#### open " + str(self.userdbfile)
 		fh = open(self.userdbfile, 'w')
 		marshal.dump(db, fh)
 		fh.close()
-		print '#### savedb: User database saved!'
+		self.DEBUG('savedb: User database saved!', 'info')
 		return True
 	except:
-		print '#### savedb: Could not save user database'
+		self.DEBUG('savedb: Could not save user database', 'error')
 		return False
 
     def loaddb(self):
@@ -126,10 +124,10 @@ class DB(PlugIn):
 		fh = open(self.userdbfile, 'r')
 		db = unmarshal.load(fh)
 		fh.close()
-		print '#### loaddb: User database loaded'
+		self.DEBUG('loaddb: User database loaded', 'info')
 		return True
 	except:
-		print '#### loaddb: Could not load user database'
+		self.DEBUG('loaddb: Could not load user database', 'error')
 		return False
 
     def listdb(self):
