@@ -142,7 +142,7 @@ class Router(PlugIn):
 		if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 			# Fake the namespace. Pose as a client
 			stanza.setNamespace(NS_CLIENT)
-			self.DEBUG("NS faked: " + str(stanza.getNamespace(), 'info'))
+			self.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
 
 	# Measure for component-destinated stanzas
 	simple_to = str(to)
