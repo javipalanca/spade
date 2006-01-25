@@ -106,5 +106,4 @@ class Config(PlugIn):
 		server.sslkeyfile = sslkeyfile
 	
 	server.spoolpath = spoolpath
-	print "$$$$$$ SPOOLPATH = " + str(server.spoolpath)
 

@@ -193,7 +193,7 @@ class Session:
         if self.sendbuffer and select.select([],[self._sock],[])[1]:
             try:
                 # LOCK_QUEUE
-                sent=self._send(self.sendbuffer)    # Блокирующая штучка!
+                sent=self._send(self.sendbuffer)
             except:
                 # UNLOCK_QUEUE
                 self.set_socket_state(SOCKET_DEAD)
@@ -326,7 +326,10 @@ class Server:
         self.sockpoll=select.poll()
         self.ID=`random.random()`[2:]
 
-        self._DEBUG=Debug.Debug(debug)
+        # if debug == None:
+	#	self._DEBUG = Debug.NoDebug()
+	#else:
+	self._DEBUG=Debug.Debug(debug)
         self.DEBUG=self._DEBUG.Show
         self.debug_flags=self._DEBUG.debug_flags
         self.debug_flags.append('session')
@@ -500,7 +503,8 @@ if __name__=='__main__':
     #psyco.full()
    
     cfgfile = None 
-    for opt, arg in getopt(sys.argv[1:], "hvc:", ["help", "configfile="])[0]:
+    debug = None
+    for opt, arg in getopt(sys.argv[1:], "hvdc:", ["help", "configfile="])[0]:
 	    if opt in ["-h", "--help"]:
 		print_help()
 		sys.exit(0)
@@ -509,11 +513,13 @@ if __name__=='__main__':
 		sys.exit(0)
 	    elif opt in ["-c", "--configfile"]:
 		cfgfile=arg
+	    elif opt in ["-d", "--debug"]:
+		debug=['always']
 
     if cfgfile:
-	    s=Server(cfgfile=cfgfile)
+	    s=Server(cfgfile=cfgfile, debug=debug)
 	    s.run()
     else:
-	    s=Server()
+	    s=Server(debug=debug)
 	    s.run()
 
