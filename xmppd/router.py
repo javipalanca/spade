@@ -95,7 +95,7 @@ class Router(PlugIn):
 
 	# This is ugly and unorthodox, but it works: bypass security for handshakes
 	if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='handshake':
-		print ">>>> Router: safeguard: handshake received, calling handler"
+		self.DEBUG("safeguard: handshake received, calling handler", 'info')
 		return
 
 	if session._session_state<SESSION_AUTHED: # NOT AUTHED yet (stream's stuff already done)
