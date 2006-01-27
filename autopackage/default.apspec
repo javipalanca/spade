@@ -62,7 +62,7 @@ if [ -z $hostname ]; then
 	#S3="Your choice: "
 	#OPTIONS="localhost $HOSTNAME"
 	if [ -e /usr/bin/dialog ]; then
-		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 $HOSTNAME`
+		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 "localhost"`
 		#OPTIONS="$OPTIONS Other..."
 	else
 		hostname=$HOSTNAME
