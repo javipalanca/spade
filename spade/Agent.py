@@ -42,6 +42,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	message callback
 	read the message envelope and post the message to the agent
 	"""
+	print "MESSAGE RECEIVED: " + str(mess.getBody())
         if (mess.getError() == None):
             envxml=None
             payload=mess.getBody()
@@ -72,6 +73,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
+	print "NON-FIPA MESSAGE RECEIVED: " + str(mess)
         pass
 
     

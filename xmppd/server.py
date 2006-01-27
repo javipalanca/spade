@@ -139,8 +139,7 @@ class Session:
 
     def receive(self):
         """Reads all pending incoming data. Raises IOError on disconnect."""
-        #try: received = self._recv(10240)
-        try: received = self._recv(20480)
+        try: received = self._recv(10240)
         except: received = ''
 
         if len(received): # length of 0 means disconnect
