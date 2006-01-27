@@ -81,7 +81,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            self.jabber.Process(1)
+	            self.jabber.Process(0.3)
 	    except:
 		    pass
 
