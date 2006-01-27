@@ -55,9 +55,11 @@ testForPythonModule distutils
 # Put your installation script here
 #installExe bin/*
 outputTest "hostname"
+hostname = "";
 if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
-else
+fi;
+if [ $hostname == "" ]; then
 	#S3="Your choice: "
 	#OPTIONS="localhost $HOSTNAME"
 	if [ -e /usr/bin/dialog ]; then
