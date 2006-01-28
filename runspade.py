@@ -13,7 +13,7 @@ from spade import SpadeConfigParser
 import xmppd
 #import spade
 
-VERSION = "1.9.4"
+VERSION = "1.9.5"
 
 
 def print_help():
@@ -21,6 +21,7 @@ def print_help():
   print "Usage: %s [options]" % sys.argv[0]
   print " -h, --help         display this help text and exit"
   print " -v, --version      display the version and exit"
+  print " -d, --debug        enables the debug execution"
   print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
   print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
   raise SystemExit
@@ -106,7 +107,7 @@ def main():
   try:
   	#print "Esperando...."
   	#time.sleep(2)
-  	print "Lanzando..."
+  	#print "Lanzando..."
 
   	platform = spade_backend.SpadeBackend(configfilename)
 	platform.start()
