@@ -31,6 +31,11 @@ class MessageList(Queue):
     
 class MessageReceiver(threading.Thread):
 	def __init__(self):
+		try:
+			import psyco
+			pysco.full()
+		except ImportError:
+			pass
 		threading.Thread.__init__(self)
 		self.__messages = MessageList()
 		self.setDaemon(True)
