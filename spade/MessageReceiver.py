@@ -33,7 +33,7 @@ class MessageReceiver(threading.Thread):
 	def __init__(self):
 		try:
 			import psyco
-			pysco.full()
+			psyco.full()
 		except ImportError:
 			pass
 		threading.Thread.__init__(self)
