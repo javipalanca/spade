@@ -83,7 +83,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            self.jabber.Process(0.4)
+	            self.jabber.Process(2)
 	    except:
 		    print "PERIODIC JABBER UPDATE"
 		    pass
