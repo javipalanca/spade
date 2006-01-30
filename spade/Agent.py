@@ -73,7 +73,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
-	#print "NON-FIPA MESSAGE RECEIVED: " + str(mess)
+	print "NON-FIPA MESSAGE RECEIVED: " + str(mess)
         pass
 
     
@@ -85,6 +85,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	    try:
 	            self.jabber.Process(0.4)
 	    except:
+		    print "PERIODIC JABBER UPDATE"
 		    pass
 
 
@@ -237,6 +238,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             #DeInit the Agent
             self.takeDown()
         except:
+	    print "AGENT IS NOT ALIVE!!!!!"
             pass
             
     def start_and_wait(self):
@@ -249,6 +251,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		while(self.isAlive()):
 			time.sleep(1)
 	except:
+		print "start_and_wait: AGENT IS NOT ALIVE!!!"
 		pass
 
         
@@ -280,6 +283,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
+	    print "removeBehaviour: KeyError"
             pass
         behaviour.kill()
 
