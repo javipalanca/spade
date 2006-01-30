@@ -105,5 +105,7 @@ class Config(PlugIn):
 	else:
 		server.sslkeyfile = sslkeyfile
 	
-	server.spoolpath = spoolpath
+	# This was good ... for a time
+	#server.spoolpath = spoolpath
+	server.spoolpath = os.environ['HOME'] + '.xmppd'
 
