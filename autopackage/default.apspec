@@ -92,7 +92,7 @@ outputTest "SPADE platform installation"
 python setup.py install
 outputTestPass
 
-installDesktop "Applications" spade.desktop
+#installDesktop "Applications" spade.desktop
 
 [Uninstall]
 # Usually just the following line is enough to uninstall everything
