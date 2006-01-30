@@ -20,7 +20,7 @@ def print_help():
   print "Usage: %s [options]" % sys.argv[0]
   print " -h, --help         display this help text and exit"
   print " -v, --version      display the version and exit"
-  print " -d, --debug        enables the debug execution"
+  print " -d, --debug        enable the debug execution"
   print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
   print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
   raise SystemExit
@@ -32,7 +32,7 @@ def print_version():
 
 # Actually start the program running.
 def main():
-  global gui
+
   print "SPADE", VERSION, "<jpalanca@dsic.upv.es> - http://magentix.gti-ia.dsic.upv.es/"
   
   try:

@@ -83,7 +83,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            self.jabber.Process(0.1)
+	            self.jabber.Process(0.02)
 	    except:
 		    pass
 
@@ -213,7 +213,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #Check for queued messages
                 time.sleep(0)
                 proc = False
-                msg = self.blockingReceive(0.1)
+                msg = self.blockingReceive(0.02)
                 if (msg != None):
                     for b in self._behaviourList:
                         t = self._behaviourList[b]
