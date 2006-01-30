@@ -775,14 +775,14 @@ class Agent(AbstractAgent):
             #raise NotImplementedError
 	    
 	    if (autoregister == True):
-                #xmpp.features.getRegInfo(self.jabber,jid.getDomain())
-                b = xmpp.features.register(self.jabber,jid.getDomain(),\
+                xmpp.features.getRegInfo(self.jabber,jid.getDomain())
+                xmpp.features.register(self.jabber,jid.getDomain(),\
 		{'username':name, 'password':str(password)})
 
 		#self.jabber.reconnectAndReauth()
 		self.jabber.disconnect()
 		del self.jabber
-        	self.jabber = xmpp.Client(self.server, self.port, debug=[])
+        	self.jabber = xmpp.Client(self.server, self.port, debug=['always'])
 		self.jabber.connect()
 
                 if (self.jabber.auth(name,password,"spade") == None):
