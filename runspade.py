@@ -4,8 +4,7 @@ import os, signal
 import sys
 import time
 import thread
-import ConfigParser
-from optparse import OptionParser
+#import ConfigParser
 
 from getopt import getopt
 from spade import spade_backend
@@ -49,16 +48,7 @@ def main():
   elif sys.argv[1] in ["--version", "-v"]: print_version()
   elif sys.argv[1] in ["--gui", "-g"]: gui = True
 
-  """
-  parser = OptionParser()
-
-  parser.add_option("-c", "--config", dest="config", help="load the configuration file (default /etc/spade/spade.xml)")
-  parser.add_option("-j", "--jabber", dest="jabber", help="load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)")
-  parser.add_option("-v", "--version", action="store_true", dest="version", help="display the version and exit")
-  parser.add_option("-g", "--gui", action="store_true", dest="gui", help="run the SPADE RMA")
-
-  """
-
+  
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/etc/spade/xmppd.xml"
   debug = None
