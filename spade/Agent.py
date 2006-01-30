@@ -42,15 +42,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	message callback
 	read the message envelope and post the message to the agent
 	"""
-	#print "MESSAGE RECEIVED: " + str(mess.getBody())
         if (mess.getError() == None):
             envxml=None
             payload=mess.getBody()
             children = mess.getChildren()
             for child in children:
-                if (child.getNamespace() == "jabber:x:fipa"):
+                if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                     envxml = child.getData()
             if (envxml != None):
+		print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
                 xc = XMLCodec.XMLCodec()
                 ac =ACLParser.ACLParser()
                 envelope = xc.parse(str(envxml))
@@ -83,7 +83,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            self.jabber.Process(2)
+	            v = self.jabber.Process(2)
+		    print "jabber_process: " + str(v)
 	    except:
 		    print "PERIODIC JABBER UPDATE"
 		    pass
