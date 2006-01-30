@@ -108,5 +108,5 @@ class Config(PlugIn):
 	
 	# This was good ... for a time
 	#server.spoolpath = spoolpath
-	server.spoolpath = os.environ['HOME'] + '.xmppd'
+	server.spoolpath = os.environ['HOME'] + os.sep + '.xmppd'
 
