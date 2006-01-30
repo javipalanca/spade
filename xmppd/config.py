@@ -12,6 +12,7 @@ from xml.sax import ContentHandler
 from xml.sax import parseString
 from xml.sax import make_parser
 from xml.sax.handler import *
+import os
 
 servernames = []
 certificatefile = ''
