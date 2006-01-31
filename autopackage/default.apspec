@@ -55,7 +55,7 @@ testForPythonModule distutils
 # Put your installation script here
 #installExe bin/*
 echo 'OPTIONS'
-echo $_
+echo $0 $1
 outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
