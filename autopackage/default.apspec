@@ -69,7 +69,7 @@ else
 		#OPTIONS="$OPTIONS Other..."
 	elif [ -e /usr/bin/whiptail ]; then
 		echo 'Using whiptail'
-		hostname=(whiptail --inputbox "Please type the hostname" 10 50 "localhost")
+		hostname=$(whiptail --inputbox "Please type the hostname" 10 50 "localhost")
 	else
 		echo 'Found HOSTNAME environment variable'
 		hostname=$HOSTNAME
