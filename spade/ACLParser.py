@@ -464,11 +464,12 @@ class ACLxmlParser(handler.ContentHandler):
 			sb = sb + self.encodeTag( self.URL_TAG, "", self.HREF_TAG, addr )
 		sb = sb + self.ET + self.ADDRESSES_TAG + self.CT
 
-		sb = sb + self.OT + self.RESOLVERS_TAG + self.CT
 		resolvers = aid.getResolvers()
-		for res in resolvers:
-			sb = sb + self.encodeAid( res )
-		sb = sb + self.ET + self.RESOLVERS_TAG + self.CT
+		if len(resolvers) > 0:
+			sb = sb + self.OT + self.RESOLVERS_TAG + self.CT
+			for res in resolvers:
+				sb = sb + self.encodeAid( res )
+			sb = sb + self.ET + self.RESOLVERS_TAG + self.CT
 
 		sb = sb + self.ET + self.AGENT_ID_TAG + self.CT
 
