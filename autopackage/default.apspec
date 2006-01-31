@@ -66,11 +66,10 @@ else
 	if [ -e /usr/bin/dialog ]; then
 		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 "localhost"`
 		#OPTIONS="$OPTIONS Other..."
-	else if [ -e /usr/bin/whiptail ]; then
-		hostname=`whiptail --clear --inputbox "Please type the hostname" 10 50 "localhost"`
+	elif [ -e /usr/bin/whiptail ]; then
+		hostname=whiptail --clear --inputbox "Please type the hostname" 10 50 "localhost"
 	else
 		hostname=$HOSTNAME
-	fi;
 	fi;
 	#echo -n "Please select hostname: "
 	#select opt in $OPTIONS; do
