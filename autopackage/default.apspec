@@ -55,6 +55,7 @@ testForPythonModule distutils
 # Put your installation script here
 #installExe bin/*
 #echo $AUTOPACKAGE_FRONTEND
+whiptail --inputbox "Please FUCK" 10 50 "localhost"
 outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $AUTOPACKAGE_FRONTEND != "apkg-ttyfe" ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
@@ -69,7 +70,7 @@ else
 		#OPTIONS="$OPTIONS Other..."
 	elif [ -e /usr/bin/whiptail ]; then
 		echo 'Using whiptail'
-		hostname=$(whiptail --inputbox "Please type the hostname" 10 50 "localhost")
+		hostname=`whiptail --inputbox "Please type the hostname" 10 50 "localhost"`
 	else
 		echo 'Found HOSTNAME environment variable'
 		hostname=$HOSTNAME
