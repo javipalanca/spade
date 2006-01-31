@@ -5,6 +5,11 @@ from distutils.core import setup, Extension
 import glob
 #if os.name != "posix":
 #	import py2exe
+try:
+	import py2app
+except:
+	# This is not a mac
+	pass
 
 if sys.platform == "win32":
     ext = Extension("tlslite.utils.win32prng",
@@ -17,26 +22,49 @@ else:
 
 
 if os.name == "posix":
-	setup(name='SPADE',
-	version='1.9.4',
-	description='Smart Python multi-Agent Development Environment',
-	author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
-	author_email='jpalanca@dsic.upv.es',
-	url='http://gti-ia.dsic.upv.es/projects/magentix/',
-	package_dir={'spade': 'spade'},
-	packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
-	scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
-	data_files=[
-		('/etc/spade',['etc/spade.xml']),
-		('/etc/spade',['etc/xmppd.xml']),
-		('/usr/share/spade',['usr/share/spade/rma.glade']),
-		('/usr/share/doc/spade',['readme.txt']),
-		('/usr/share/doc/spade/',['doc/api.tar.gz']),
-		#('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
-		#('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
-		#('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
-	]
-	)
+	if sys.platform != "darwin":
+		setup(name='SPADE',
+		version='1.9.4',
+		description='Smart Python multi-Agent Development Environment',
+		author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
+		author_email='jpalanca@dsic.upv.es',
+		url='http://gti-ia.dsic.upv.es/projects/magentix/',
+		package_dir={'spade': 'spade'},
+		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+		scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
+		data_files=[
+			('/etc/spade',['etc/spade.xml']),
+			('/etc/spade',['etc/xmppd.xml']),
+			('/usr/share/spade',['usr/share/spade/rma.glade']),
+			('/usr/share/doc/spade',['readme.txt']),
+			('/usr/share/doc/spade/',['doc/api.tar.gz']),
+			#('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
+			#('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
+			#('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
+		]
+		)
+	elif sys.platform == "darwin":
+		setup(app=['runspade.py'],
+		name='SPADE',
+		version='1.9.4',
+		description='Smart Python multi-Agent Development Environment',
+		author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
+		author_email='jpalanca@dsic.upv.es',
+		url='http://gti-ia.dsic.upv.es/projects/magentix/',
+		package_dir={'spade': 'spade'},
+		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+		scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
+		data_files=[
+			('/etc/spade',['etc/spade.xml']),
+			#('/etc/spade',['etc/xmppd.xml']),
+			('/usr/share/spade',['usr/share/spade/rma.glade']),
+			('/usr/share/doc/spade',['readme.txt']),
+			('/usr/share/doc/spade/',['doc/api.tar.gz']),
+			#('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
+			#('/usr/share/spade/jabberd/libs',glob.glob('usr/share/spade/jabberd/libs/*.so')),
+			#('/usr/share/spade/jabberd/spool',['usr/share/spade/jabberd/spool/.spool'])
+		]
+		)
 
 else:
 	setup(name='SPADE',

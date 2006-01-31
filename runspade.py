@@ -60,9 +60,10 @@ def main():
 	
 
   for opt, arg in getopt(sys.argv[1:],
-                         "hvdgc:j:", ["help", "version", "debug", "gui", "configfile=",
+                         "phvdgc:j:", ["p", "help", "version", "debug", "gui", "configfile=",
                                       "jabber="])[0]:
     if opt in ["-h", "--help"]: print_help()
+    elif opt in ["-p", "--p"]: pass
     elif opt in ["-v", "--version"]: print_version()
     elif opt in ["-c", "--configfile"]: configfilename = arg
     elif opt in ["-j", "--jabber"]: jabberxml = arg
