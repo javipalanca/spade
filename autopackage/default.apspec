@@ -67,7 +67,7 @@ else
 		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 "localhost"`
 		#OPTIONS="$OPTIONS Other..."
 	elif [ -e /usr/bin/whiptail ]; then
-		hostname=`whiptail --inputbox "Please type the hostname" 10 50 "localhost"`
+		hostname='whiptail --inputbox "Please type the hostname" 10 50 "localhost"'
 	else
 		hostname=$HOSTNAME
 	fi;
