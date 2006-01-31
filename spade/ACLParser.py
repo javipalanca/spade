@@ -316,7 +316,7 @@ class ACLxmlParser(handler.ContentHandler):
 		self.ENCODING_TAG = "encoding"
 		self.ONTOLOGY_TAG = "ontology"
 		self.PROTOCOL_TAG = "protocol"
-		self.REPLY_WITH_TAG "reply-with"
+		self.REPLY_WITH_TAG =  "reply-with"
 		self.IN_REPLY_TO_TAG = "in-reply-to"
 		self.REPLY_BY_TAG = "reply-by"
 		self.REPLY_TO_TAG = "reply-to"
