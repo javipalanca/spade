@@ -492,7 +492,7 @@ class ACLxmlParser(handler.ContentHandler):
 		if len(msg.getReceivers()) > 0:
 			sb += self.OT + self.RECEIVER_TAG + self.CT
 			for r in msg.getReceivers():
-				sb += encodeAid(r)
+				sb += self.encodeAid(r)
 			sb += self.ET + self.RECEIVER_TAG + self.CT
 
 		
