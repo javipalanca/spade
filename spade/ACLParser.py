@@ -554,10 +554,10 @@ class ACLxmlParser(handler.ContentHandler):
 #msg = p.parse("message3.acl")
 #print msg
 
-p = ACLxmlParser()
-m= p.parseFile("message3.xml")
-print m
-print p.encodeXML(m)
+#p = ACLxmlParser()
+#m= p.parseFile("message3.xml")
+#print m
+#print p.encodeXML(m)
 
 
 
