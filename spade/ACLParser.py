@@ -355,7 +355,7 @@ class ACLxmlParser(handler.ContentHandler):
 
 		self.accumulator = ""
 
-		if self.FIPA_MESSAGE_TAG == localName.lower()
+		if self.FIPA_MESSAGE_TAG == localName.lower():
 			self.msg.setPerformative(attributes.getValue(self.ACT_TAG))
 			try:
 				self.msg.setConversationId(attributes.getValue(self.CONVERSATION_ID_TAG))
