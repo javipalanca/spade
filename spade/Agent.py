@@ -841,6 +841,8 @@ class Agent(AbstractAgent):
 
 	msg = self.blockingReceive(20)
 	if msg == None or msg.getPerformative() is not u'agree':
+		print str(type (msg.getPerformative()))
+		print str(type(u'agree'))
 		print "There was an error registering the Agent. (not agree)" + str(msg.getPerformative())
 		#if debug and msg != None:
 		print str(msg)
