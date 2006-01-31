@@ -54,12 +54,13 @@ testForPythonModule distutils
 [Install]
 # Put your installation script here
 #installExe bin/*
-echo $AUTOPACKAGE_FRONTEND
+#echo $AUTOPACKAGE_FRONTEND
 outputTest "hostname"
-if [ -e /usr/bin/zenity ] && [ $DISPLAY != ""  ]; then
+if [ -e /usr/bin/zenity ] && [ $AUTOPACKAGE_FRONTEND != "apkg-ttyfe" ]; then
 	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
-fi;
-if [ -z $hostname ]; then
+#fi;
+#if [ -z $hostname ]; then
+else
 	#S3="Your choice: "
 	#OPTIONS="localhost $HOSTNAME"
 	if [ -e /usr/bin/dialog ]; then
