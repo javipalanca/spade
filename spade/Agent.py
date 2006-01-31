@@ -50,7 +50,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                     envxml = child.getData()
             if (envxml != None):
-		print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
+		#print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
                 xc = XMLCodec.XMLCodec()
                 envelope = xc.parse(str(envxml))
 
@@ -92,7 +92,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         while 1:
 	    try:
 	            v = self.jabber.Process(2)
-		    print "jabber_process: " + str(v)
+		    #print "jabber_process: " + str(v)
 	    except:
 		    print "PERIODIC JABBER UPDATE"
 		    pass
