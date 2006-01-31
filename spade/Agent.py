@@ -63,6 +63,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			print "NO TENGO PARSER!"
 
 		print ">>>>a parsear " + str(type(ac))
+		print str(payload)
                 ACLmsg = ac.parse(payload)
 		print ">>>> parseado " + str(type(ac))
                 ACLmsg = ac.parse(payload)

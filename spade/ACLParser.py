@@ -550,14 +550,18 @@ class ACLxmlParser(handler.ContentHandler):
 
 
 
+
+
 #p = ACLParser()
 #msg = p.parse("message3.acl")
 #print msg
 
-#p = ACLxmlParser()
-#m= p.parseFile("message3.xml")
-#print m
-#print p.encodeXML(m)
+if __name__ == "__main__":
+
+	p = ACLxmlParser()
+	m= p.parseFile("m.xml")
+	print m
+	print p.encodeXML(m)
 
 
 
