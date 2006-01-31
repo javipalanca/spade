@@ -53,6 +53,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
                 xc = XMLCodec.XMLCodec()
                 envelope = xc.parse(str(envxml))
+		print "TU PUTA MADREEEEEEEEEEEEEEEEEEEEEE"
 
 		if   env.getAclRepresentation().lower() == "fipa.acl.rep.string.std":
 			ac = ACLParser.ACLParser()
