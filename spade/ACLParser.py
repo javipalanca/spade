@@ -364,19 +364,19 @@ class ACLxmlParser(handler.ContentHandler):
 				pass
 
 		if self.SENDER_TAG == localName.lower():
-			self.aid = aid()
+			self.aid = AID.aid()
 			self.aidTag = self.SENDER_TAG
 
 		if self.RECEIVER_TAG == localName.lower():
-			self.aid = aid()
+			self.aid = AID.aid()
 			self.aidTag = self.RECEIVER_TAG
 
 		if self.REPLY_TO_TAG == localName.lower():
-			self.aid = aid()
+			self.aid = AID.aid()
 			self.aidTag = self.REPLY_TO_TAG
 
 		if self.RESOLVERS_TAG == localName.lower():
-			self.aid = aid()
+			self.aid = AID.aid()
 			self.aidTag = self.RESOLVERS_TAG
 
 		if self.REPLY_BY_TAG == localName.lower():
@@ -544,11 +544,20 @@ class ACLxmlParser(handler.ContentHandler):
             xml.sax.parseString(_in, self)
             return self.msg
 
+	def parseFile(self, file):
+		xml.sax.parse(file,self)
+		return self.msg
+
 
 
 #p = ACLParser()
 #msg = p.parse("message3.acl")
 #print msg
+
+p = ACLxmlParser()
+m= p.parseFile("message3.xml")
+print m
+print p.encodeXML(m)
 
 
 
