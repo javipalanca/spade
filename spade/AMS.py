@@ -23,7 +23,7 @@ class AMS(Agent.PlatformAgent):
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
 						if msg.getLanguage().lower() == "fipa-sl0":
-							print str(msg.getContent())
+							#print str(msg.getContent())
 							content = self.sl0parser.parse(msg.getContent())
 							ACLtemplate = Behaviour.ACLTemplate()
 							ACLtemplate.setConversationId(msg.getConversationId())
