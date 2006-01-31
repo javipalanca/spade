@@ -456,7 +456,7 @@ class ACLxmlParser(handler.ContentHandler):
 	def encodeAid(self, aid):
 
 		sb = self.OT + self.AGENT_ID_TAG + self.CT
-		sb = sb + self.encodeTag( self.AGENT_ID_TAG, aid.getName() )
+		sb = sb + self.encodeTag( self.NAME_TAG, None, self.ID_TAG, aid.getName() )
 
 		sb = sb + self.OT + self.ADDRESSES_TAG + self.CT
 		addresses = aid.getAddresses()
