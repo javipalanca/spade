@@ -18,6 +18,7 @@ class AMS(Agent.PlatformAgent):
 		def process(self):
 			error = False
 			msg = self.blockingReceive()
+			print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
@@ -31,6 +32,7 @@ class AMS(Agent.PlatformAgent):
 							if "action" in content:
 								if "register" in content.action \
 								or "deregister" in content.action:
+									print ">>>>>>>>AMS REGISTER REQUEST"
 									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
 								elif "get-description" in content.action:
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
