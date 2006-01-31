@@ -52,8 +52,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if (envxml != None):
 		print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
                 xc = XMLCodec.XMLCodec()
-                ac =ACLParser.ACLParser()
                 envelope = xc.parse(str(envxml))
+
+		if   env.getAclRepresentation().lower() == "fipa.acl.rep.string.std":
+			ac = ACLParser.ACLParser()
+		elif env.getAclRepresentation().lower() == "fipa.acl.rep.xml.std":
+			ac = ACLParser.ACLxmlParser()
 
                 ACLmsg = ac.parse(payload)
 	        content = ACLmsg.getContent()
@@ -137,13 +141,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         payload_esc = mtmp2
         ACLmsg.setContent(payload_esc)
         
-        payload = str(ACLmsg)
+	ap = ACLParser.ACLxmlParser();
+        payload = ap.encodeXML(ACLmsg)
         
         envelope = Envelope.Envelope()
         envelope.setFrom(ACLmsg.getSender())
         for i in ACLmsg.getReceivers():
             envelope.addTo(i)
-        envelope.setAclRepresentation("fipa.acl.rep.string.std")
+        envelope.setAclRepresentation("fipa.acl.rep.xml.std")
         envelope.setPayloadLength(len(payload))
         envelope.setPayloadEncoding("US-ASCII")
         envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())

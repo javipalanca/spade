@@ -5,6 +5,9 @@ from ACLMessage import *
 import AID
 from BasicFipaDateTime import *
 
+import xml.sax
+from xml.sax import handler
+
 class ACLParser:
 	"""
 	Parser for the ACL language
@@ -297,6 +300,248 @@ class ACLParser:
 
 		
 		return msg
+
+class ACLxmlParser(handler.ContentHandler):
+
+	def __init__(self):
+
+		#constants
+		self.FIPA_MESSAGE_TAG = "fipa-message"
+		self.ACT_TAG = "act"
+		self.CONVERSATION_ID_TAG = "conversation-id"
+		self.SENDER_TAG = "sender"
+		self.RECEIVER_TAG = "receiver"
+		self.CONTENT_TAG = "content"
+		self.LANGUAGE_TAG = "language"
+		self.ENCODING_TAG = "encoding"
+		self.ONTOLOGY_TAG = "ontology"
+		self.PROTOCOL_TAG = "protocol"
+		self.REPLY_WITH_TAG "reply-with"
+		self.IN_REPLY_TO_TAG = "in-reply-to"
+		self.REPLY_BY_TAG = "reply-by"
+		self.REPLY_TO_TAG = "reply-to"
+		self.CONVERSATION_ID_TAG = "conversation-id"
+		self.AGENT_ID_TAG = "agent-identifier"
+		self.NAME_TAG = "name"
+		self.ADDRESSES_TAG = "addresses"
+		self.URL_TAG = "url"
+		self.RESOLVERS_TAG = "resolvers"
+		self.USER_DEFINED_TAG = "user-defined"
+		self.TIME_TAG = "time"
+		self.ID_TAG = "id"
+		self.HREF_TAG = "href"
+		self.OT = "<"
+		self.ET = "</"
+		self.CT = ">"
+		self.NULL = ""
+
+	"""
+	***************************************************
+	*               Decoding methods                  *
+	***************************************************
+	"""
+
+	def startDocument(self):
+		self.msg = ACLMessage()
+
+	def endDocument(self):
+		pass
+
+	#This method is called when exist characters in the elements
+	def characters(self, buff):
+		self.accumulator = self.accumulator + buff
+
+	def startElement(self, localName, attributes):
+
+		self.accumulator = ""
+
+		if self.FIPA_MESSAGE_TAG == localName.lower()
+			self.msg.setPerformative(attributes.getValue(self.ACT_TAG))
+			try:
+				self.msg.setConversationId(attributes.getValue(self.CONVERSATION_ID_TAG))
+				
+			except:
+				pass
+
+		if self.SENDER_TAG == localName.lower():
+			self.aid = aid()
+			self.aidTag = self.SENDER_TAG
+
+		if self.RECEIVER_TAG == localName.lower():
+			self.aid = aid()
+			self.aidTag = self.RECEIVER_TAG
+
+		if self.REPLY_TO_TAG == localName.lower():
+			self.aid = aid()
+			self.aidTag = self.REPLY_TO_TAG
+
+		if self.RESOLVERS_TAG == localName.lower():
+			self.aid = aid()
+			self.aidTag = self.RESOLVERS_TAG
+
+		if self.REPLY_BY_TAG == localName.lower():
+			self.msg.setReplyBy(BasicFipaDateTime(attributes.getValue(self.TIME_TAG)))
+
+		if self.NAME_TAG == localName.lower():
+			self.aid.setName(attributes.getValue(self.ID_TAG))
+
+		if self.URL_TAG == localName.lower():
+			self.aid.addAddress(attributes.getValue(self.HREF_TAG))
+
+
+	def endElement(self, localName):
+
+		if self.CONTENT_TAG == localName.lower():
+			self.msg.setContent(self.accumulator)
+
+		if self.LANGUAGE_TAG == localName.lower():
+			self.msg.setLanguage(self.accumulator)
+
+		if self.ENCODING_TAG == localName.lower():
+			self.msg.setEncoding(self.accumulator)
+
+		if self.ONTOLOGY_TAG == localName.lower():
+			self.msg.setOntology(self.accumulator)
+
+		if self.PROTOCOL_TAG == localName.lower():
+			self.msg.setProtocol(self.accumulator)
+
+		if self.REPLY_WITH_TAG == localName.lower():
+			self.msg.setReplyWith(self.accumulator)
+
+		if self.IN_REPLY_TO_TAG == localName.lower():
+			self.msg.setInReplyTo(self.accumulator)
+
+		if self.REPLY_TO_TAG == localName.lower() or \
+		   self.SENDER_TAG == localName.lower() or \
+		   self.RECEIVER_TAG == localName.lower() or \
+		   self.RESOLVERS_TAG == localName.lower():
+			self.aidTag = ""
+
+		if self.CONVERSATION_ID_TAG == localName.lower():
+			self.msg.setConversationId(self.accumulator)
+
+		if self.AGENT_ID_TAG == localName.lower():
+			if self.aidTag == self.SENDER_TAG:
+				self.msg.setSender(self.aid)
+			elif self.aidTag == self.RECEIVER_TAG:
+				self.msg.addReceiver(self.aid)
+			elif self.aidTag == self.REPLY_TO_TAG:
+				self.msg.addReplyTo(self.aid)
+			elif self.aidTag == self.RESOLVERS_TAG:
+				self.msg.addResolvers(self.aid)
+
+
+	"""
+	  This does the following:
+	  < tag >
+	     content
+	  </ tag >
+	"""
+	def encodeTag( self, tag, content, proptag=None, propcontent=None):
+		sb = self.OT + tag 
+		if proptag != None:
+			sb = sb + " " + proptag + '="' + str(propcontent) + '"'
+
+		if content == None or content == "":
+			sb = sb + "/" + self.CT
+			return sb
+		sb = sb + self.CT
+		sb = sb + content
+		sb = sb + self.ET + tag + self.CT
+
+		return sb
+
+	""" Encode the information of Agent, Tags To and From """ 
+	def encodeAid(self, aid):
+
+		sb = self.OT + self.AGENT_ID_TAG + self.CT
+		sb = sb + self.encodeTag( self.AID_NAME, aid.getName() )
+
+		sb = sb + self.OT + self.ADDRESSES_TAG + self.CT
+		addresses = aid.getAddresses()
+		for addr in addresses:
+			sb = sb + self.encodeTag( self.URL_TAG, "", HREF_TAG, addr )
+		sb = sb + self.ET + self.ADDRESSES_TAG + self.CT
+
+		sb = sb + self.OT + self.RESOLVERS_TAG + self.CT
+		resolvers = aid.getResolvers()
+		for res in resolvers:
+			sb = sb + self.encodeAid( res )
+		sb = sb + self.ET + self.RESOLVERS_TAG + self.CT
+
+		sb = sb + self.ET + self.AGENT_ID_TAG + self.CT
+
+		return sb
+
+
+	def encodeXML(self, msg):
+
+		sb = self.OT + self.FIPA_MESSAGE_TAG
+		if msg.getPerformative():
+			sb += " " + self.ACT_TAG + '="' + msg.getPerformative() + '"'
+		sb += self.CT
+
+		#sender
+		if msg.getSender():
+			sb += self.OT + self.SENDER_TAG + self.CT
+			sb += self.encodeAid(msg.getSender())
+			sb += self.ET + self.SENDER_TAG + self.CT
+
+		#receivers
+		if len(msg.getReceivers()) > 0:
+			sb += self.OT + self.RECEIVER_TAG + self.CT
+			for r in msg.getReceivers():
+				sb += encodeAid(r)
+			sb += self.ET + self.RECEIVER_TAG + self.CT
+
+		
+		if msg.getContent():
+			sb += self.encodeTag(self.CONTENT_TAG, str(msg.getContent()))
+
+		if msg.getLanguage():
+			sb += self.encodeTag(self.LANGUAGE_TAG, msg.getLanguage())
+
+		if msg.getEncoding():
+			sb += self.encodeTag(self.ENCODING_TAG, msg.getEncoding())
+
+		if msg.getOntology():
+			sb += self.encodeTag(self.ONTOLOGY_TAG, msg.getOntology())
+
+		if msg.getProtocol():
+			sb += self.encodeTag(self.PROTOCOL_TAG, msg.getProtocol())
+
+		if msg.getReplyWith():
+			sb += self.encodeTag(self.REPLY_WITH_TAG, msg.getReplyWith())
+
+		if msg.getInReplyTo():
+			sb += self.encodeTag(self.IN_REPLY_TO_TAG, msg.getInReplyTo())
+
+		if msg.getReplyBy():
+			date = BasicFipaDateTime()
+			date.fromString( str(msg.getReplyBy()) )
+			sb += self.encodeTag(self.REPLY_BY_TAG, str(date))
+
+		if len(msg.getReplyTo()) > 0:
+			sb += self.OT + self.REPLY_TO_TAG + self.CT
+			for e in msg.getReplyTo():
+				sb += self.encodeAid(e)
+			sb += self.ET + self.REPLY_TO_TAG + self.CT
+
+		if msg.getConversationId():
+			sb += self.encodeTag(self.CONVERSATION_ID_TAG, msg.getConversationId())
+
+		sb += self.ET + self.FIPA_MESSAGE_TAG + self.CT
+
+		return sb
+			
+
+	def parse(self, _in):
+	    """
+	    parses the xml input
+	    """
+            xml.sax.parseString(_in, self)
+            return self.msg
 
 
 
