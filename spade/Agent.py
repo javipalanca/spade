@@ -840,13 +840,13 @@ class Agent(AbstractAgent):
 	self.send(self._msg)
 
 	msg = self.blockingReceive(20)
-	if (msg == None) or (str(msg.getPerformative()) is not 'agree'):
-		print "There was an error registering the Agent. (not agree)" + str(msg.getPerformative())
-		#if debug and msg != None:
-		print str(msg)
+	if (msg == None) or (str(msg.getPerformative()) != 'agree'):
+		print "There was an error registering the Agent. (not agree)"
+		if debug and msg != None:
+			print str(msg)
 		return -1
 	msg = self.blockingReceive(20)
-	if (msg == None) or (msg.getPerformative() is not 'inform'):
+	if (msg == None) or (msg.getPerformative() != 'inform'):
 		print "There was an error registering the Agent. (not inform)"
 		if debug and msg != None:
 			print str(msg)
