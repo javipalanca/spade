@@ -110,7 +110,7 @@ class ACLMessage:
 		"""
 		returns the message performative (string)
 		"""
-		return self.performative
+		return str(self.performative)
 
 	def setContent(self,c):
 		"""
@@ -122,7 +122,7 @@ class ACLMessage:
 		"""
 		returns the message content
 		"""
-		return self.content
+		return str(self.content)
 
 	def setReplyWith(self,rw):
 		self.reply_with = rw
@@ -140,18 +140,20 @@ class ACLMessage:
 		self.encoding = e
 
 	def getEncoding(self):
-		return self.encoding
+		return str(self.encoding)
 
 	def setLanguage(self,e):
 		self.language = e
 
 	def getLanguage(self):
-		return self.language
+		return str(self.language)
+
 	def setOntology(self,e):
 		self.ontology = e
 
 	def getOntology(self):
-		return self.ontology
+		return str(self.ontology)
+
 	def setReplyBy(self,e):
 		self.reply_by = e
 
@@ -162,12 +164,13 @@ class ACLMessage:
 		self.protocol = e
 
 	def getProtocol(self):
-		return self.protocol
+		return str(self.protocol)
+
 	def setConversationId(self,e):
 		self.conversation_id = e
 
 	def getConversationId(self):
-		return self.conversation_id
+		return str(self.conversation_id)
 
 	def createReply(self):
 		"""
