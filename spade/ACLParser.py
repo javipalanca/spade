@@ -461,7 +461,7 @@ class ACLxmlParser(handler.ContentHandler):
 		sb = sb + self.OT + self.ADDRESSES_TAG + self.CT
 		addresses = aid.getAddresses()
 		for addr in addresses:
-			sb = sb + self.encodeTag( self.URL_TAG, "", HREF_TAG, addr )
+			sb = sb + self.encodeTag( self.URL_TAG, "", self.HREF_TAG, addr )
 		sb = sb + self.ET + self.ADDRESSES_TAG + self.CT
 
 		sb = sb + self.OT + self.RESOLVERS_TAG + self.CT
