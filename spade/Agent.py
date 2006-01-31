@@ -57,16 +57,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		
 		if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
 			ac = ACLParser.ACLParser()
-			print "ACL PARSER SELECCIONADO"
 		elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
 			ac = ACLParser.ACLxmlParser()
-			print "XML PARSER SELECCIONADO"
 		else:
 			print "NO TENGO PARSER!"
 
 		print ">>>>a parsear " + str(type(ac))
 		print str(payload)
-                ACLmsg = ac.parse(payload)
+                ACLmsg = ac.parse(str(payload))
 		print ">>>> parseado " + str(type(ac))
                 ACLmsg = ac.parse(payload)
 	        content = ACLmsg.getContent()
