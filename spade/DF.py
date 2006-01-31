@@ -144,7 +144,7 @@ class DF(Agent.PlatformAgent):
 					
 
 					reply.setPerformative("inform")
-					reply.setContent("(done "+msg.getContent() + ")")
+					reply.setContent("(done "+self.msg.getContent() + ")")
 					self.myAgent.send(reply)
 
 					return 1
@@ -184,7 +184,7 @@ class DF(Agent.PlatformAgent):
 				reply = self.msg.createReply()
 				reply.setSender(self.myAgent.getAID())
 				reply.setPerformative("failure")
-				reply.setContent("( "+msg.getContent() + error+")")
+				reply.setContent("( "+self.msg.getContent() + error+")")
 				self.myAgent.send(reply)
 				return -1
 

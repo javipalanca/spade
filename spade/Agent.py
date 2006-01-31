@@ -59,6 +59,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		elif env.getAclRepresentation().lower() == "fipa.acl.rep.xml.std":
 			ac = ACLParser.ACLxmlParser()
 
+		print ">>>>a parsear " + type(ac)
+                ACLmsg = ac.parse(payload)
+		print ">>>> parseado " + type(ac)
                 ACLmsg = ac.parse(payload)
 	        content = ACLmsg.getContent()
         	comillas_esc = '"'
