@@ -322,14 +322,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._msg.setContent(content)
             self.myAgent.send(self._msg)
             msg = self.blockingReceive(10)
-            if msg == None or msg.getPerformative() is not 'agree':
+            if msg == None or str(msg.getPerformative()) != 'agree':
                 print "There was an error searching the Agent. (not agree)"
                 if self.debug:
                     print str(msg)
                 self.finished = True
                 return None
             msg = self.blockingReceive(20)
-            if msg == None or msg.getPerformative() is not 'inform':
+            if msg == None or msg.getPerformative() != 'inform':
                 print "There was an error searching the Agent. (not inform)"
                 if self.debug:
                     print str(msg)
@@ -389,14 +389,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.myAgent.send(self._msg)
 
             msg = self.blockingReceive(20)
-            if msg == None or msg.getPerformative() is not 'agree':
+            if msg == None or msg.getPerformative() != 'agree':
                 print "There was an error modifying the Agent. (not agree)"
                 if self.debug:
                     print str(msg)
                 self.result = False
                 return -1
             msg = self.blockingReceive(20)
-            if msg == None or msg.getPerformative() is not 'inform':
+            if msg == None or msg.getPerformative() != 'inform':
                 print "There was an error modifying the Agent. (not inform)"
                 if self.debug:
                     print str(msg)
@@ -445,13 +445,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.myAgent.send(msg)
 
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'agree':
+		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error modifying the Agent. (not agree)"
 			if self.debug:
 				print str(msg)
 			return -1
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'inform':
+		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Agent. (not inform)"
 			if self.debug:
 				print str(msg)
@@ -502,14 +502,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.myAgent.send(self._msg)
 
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'agree':
+		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error registering the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result = False
 			return
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'inform':
+		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error registering the Service. (not inform)"
 			if self.debug:
 				print str(msg)
@@ -561,14 +561,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.myAgent.send(self._msg)
 
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'agree':
+		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error deregistering the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result = False
 			return
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'inform':
+		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error deregistering the Service. (not inform)"
 			if self.debug:
 				print str(msg)
@@ -624,13 +624,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.myAgent.send(self._msg)
 	
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'agree':
+		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error searching the Agent. (not agree)"
 			if self.debug:
 				print str(msg)
 			return
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'inform':
+		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error searching the Agent. (not inform)"
 			if self.debug:
 				print str(msg)
@@ -691,14 +691,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self.myAgent.send(self._msg)
 
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'agree':
+		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error modifying the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result=False
 			return
 		msg = self.blockingReceive(20)
-		if msg == None or msg.getPerformative() is not 'inform':
+		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Service. (not inform)"
 			if self.debug:
 				print str(msg)
@@ -879,13 +879,13 @@ class Agent(AbstractAgent):
 	self.send(self._msg)
 
 	msg = self.blockingReceive(20)
-	if msg == None or msg.getPerformative() is not 'agree':
+	if msg == None or msg.getPerformative() != 'agree':
 		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:
 			sys.stdout.write(str(msg))
 		return -1
 	msg = self.blockingReceive(20)
-	if msg == None or msg.getPerformative() is not 'inform':
+	if msg == None or msg.getPerformative() != 'inform':
 		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:
 			sys.stdout.write(str(msg))
