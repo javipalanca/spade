@@ -54,15 +54,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 xc = XMLCodec.XMLCodec()
                 envelope = xc.parse(str(envxml))
 
-		print "TU PUTA MADREEEEEEEE"
-		print str(envelope)
-		print str(envelope.getAclRepresentation())
-		print "Y TU PADREEEEEEEEEEEEEEEEE"
-
-		if   envelope.getAclRepresentation().lower() == "fipa.acl.rep.string.std":
+		
+		if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
 			ac = ACLParser.ACLParser()
-		elif envelope.getAclRepresentation().lower() == "fipa.acl.rep.xml.std":
+		elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
 			ac = ACLParser.ACLxmlParser()
+		else:
+			print "NO TENGO PARSER!"
 
 		print ">>>>a parsear " + type(ac)
                 ACLmsg = ac.parse(payload)
