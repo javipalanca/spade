@@ -226,7 +226,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0)
                 proc = False
                 #msg = self.blockingReceive(0.04)
-                msg = self.blockingReceive()
+                msg = self.blockingReceive(1)
                 if (msg != None):
                     for b in self._behaviourList:
                         t = self._behaviourList[b]
@@ -242,7 +242,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (self._defaultbehaviour != None):
                             self._defaultbehaviour.postMessage(msg)
 		else:
-			print ">>>>>>>>NUNCA DEBERIA PASAR ESTO"
+			print ">>>>>>>>NO HAY MSG"
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
