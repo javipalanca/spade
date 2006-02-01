@@ -70,7 +70,7 @@ class MessageReceiver(threading.Thread):
 
 	def postMessage(self, message):
 		if (message != None):
-			self.__messages.put(message)
+			self.__messages.put(message,block=True)
 
 	def putBackMessage(self, message):
 		if (message != None):
