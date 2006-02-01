@@ -1,6 +1,7 @@
 import threading
+import sys
 from Queue import *
-
+"""
 class MessageList(Queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
@@ -27,7 +28,7 @@ class MessageList(Queue):
 
     def _putAfter(self, item):
         self.queue.appendleft(item)
-
+"""
     
 class MessageReceiver(threading.Thread):
 	def __init__(self):
@@ -37,8 +38,9 @@ class MessageReceiver(threading.Thread):
 		except ImportError:
 			pass
 		threading.Thread.__init__(self)
-		self.__messages = MessageList(0)
-		self.setDaemon(True)
+		#self.__messages = MessageList(0)
+		self.__messages = Queue(0)
+		#self.setDaemon(True)
 
 	def __getMessage(self, block, tout):
 		try:
@@ -49,17 +51,15 @@ class MessageReceiver(threading.Thread):
 		except:
 			message = None
 			#time.sleep(1)
-			#print "MESSAGE = None - otra"
+			print "MESSAGE = None - otra.", sys.exc_info()[0] 
 
 		return message
-		
+	"""	
 	def receive(self):
-		"""
-		returns a message if available
-		else returns None
-		"""
+		#returns a message if available
+		#else returns None
 		return self.__getMessage(False, None)
-	
+	"""
 	def blockingReceive(self, time_seg = None):
 		"""
 		waits for a message during time_seg
@@ -74,8 +74,8 @@ class MessageReceiver(threading.Thread):
 			self.kk()
 	def kk(self, s=""):
 		print s + "QSIZE: " + str(self.__messages.qsize())
-
+	"""
 	def putBackMessage(self, message):
 		if (message != None):
 			self.__messages.putAfter(message)
-
+	"""
