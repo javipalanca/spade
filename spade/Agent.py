@@ -223,10 +223,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #Check for new Messages form the server
                 #self.jabber.Process(1)
                 #Check for queued messages
-                #time.sleep(0)
+                time.sleep(0.1)
                 proc = False
                 #msg = self.blockingReceive(0.04)
-                msg = self.blockingReceive(1)
+                msg = self.receive()
                 if (msg != None):
                     for b in self._behaviourList:
                         t = self._behaviourList[b]
