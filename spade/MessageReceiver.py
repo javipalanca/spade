@@ -1,14 +1,14 @@
 import threading
 import sys
 from Queue import *
-"""
+
 try:
 	from munkware.mwQueue import *  # munkware
 except:
 	# NO MUNKWARE
 	pass
 
-class MWMessageList(BaseTransactionalQueue):
+class MessageList(BaseTransactionalQueue):
     def putAfter(self, item, block=True, timeout=None):
 	self.avail_q_mutex.acquire()
 	try:
@@ -36,7 +36,7 @@ class MWMessageList(BaseTransactionalQueue):
         #self.queue.appendleft(item)
 	self.put_commit(self.put(item))
 	    
-
+"""
 class MessageList(Queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
