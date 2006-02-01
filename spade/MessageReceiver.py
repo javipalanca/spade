@@ -2,13 +2,17 @@ import threading
 import sys
 from Queue import *
 
+"""
+
 try:
 	from munkware.mwQueue import *  # munkware
 except:
 	# NO MUNKWARE
 	pass
 
-class MessageList(BaseTransactionalQueue):
+# Esto es un prototipo de MessageList implementado con munkware,
+# pero creo que no va, hay que mirarlo bien
+class MWMessageList(BaseTransactionalQueue):
     def putAfter(self, item, block=True, timeout=None):
 	self.avail_q_mutex.acquire()
 	try:
@@ -36,7 +40,7 @@ class MessageList(BaseTransactionalQueue):
         #self.queue.appendleft(item)
 	self.put_commit(self.put(item))
 	    
-"""
+
 class MessageList(Queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
