@@ -241,6 +241,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if (proc == False):
                         if (self._defaultbehaviour != None):
                             self._defaultbehaviour.postMessage(msg)
+		else:
+			print ">>>>>>>>NUNCA DEBERIA PASAR ESTO"
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
