@@ -44,7 +44,7 @@ class MessageReceiver(threading.Thread):
 
 	def __getMessage(self, block, tout):
 		try:
-			message = self.__messages.get(block, tout)
+			message = self.__messages.get(block)#, tout)
 		except Empty:
 			message = None
 			self.kk("VACIO")
@@ -67,7 +67,7 @@ class MessageReceiver(threading.Thread):
 		if time_seg == None waits until a message is received
 		if no message is received returns None
 		"""
-		return self.__getMessage(True) #, time_seg)
+		return self.__getMessage(True, time_seg)
 
 	def postMessage(self, message):
 		if (message != None):
