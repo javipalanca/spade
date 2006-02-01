@@ -730,9 +730,10 @@ class PlatformAgent(AbstractAgent):
     A PlatformAgent is a SPADE component.
     Examples: AMS, DF, ACC, ...
     """
-    def __init__(self, node, password, server="localhost", port=5347):
+    def __init__(self, node, password, server="localhost", port=5347, debug = []):
         AbstractAgent.__init__(self, node, server)
-        self.jabber = xmpp.Component(server, port, debug=[])
+	self.debug = debug
+        self.jabber = xmpp.Component(server, port, self.debug)
         self._register(password)
 
     def _register(self, password, autoregister=True):
@@ -758,12 +759,13 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
-    def __init__(self, agentjid, password, port=5222):
+    def __init__(self, agentjid, password, port=5222, debug=[]):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
 	self.port = port
+	self.debug = debug
         AbstractAgent.__init__(self, agentjid, self.server)
-        self.jabber = xmpp.Client(self.server, self.port, debug=['always'])
+        self.jabber = xmpp.Client(self.server, self.port, self.debug)
         self._register(password)
         self.jabber.sendInitPresence()
 
@@ -792,7 +794,7 @@ class Agent(AbstractAgent):
 		#self.jabber.reconnectAndReauth()
 		self.jabber.disconnect()
 		del self.jabber
-        	self.jabber = xmpp.Client(self.server, self.port, debug=['always'])
+        	self.jabber = xmpp.Client(self.server, self.port, self.debug)
 		self.jabber.connect()
 
                 if (self.jabber.auth(name,password,"spade") == None):

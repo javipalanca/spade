@@ -42,7 +42,8 @@ class error:
         """Serialise exception into pre-cached descriptive string."""
         return self._comment
 
-BUFLEN=1024
+BUFLEN=2048
+#BUFLEN=1024
 class TCPsocket(PlugIn):
     """ This class defines direct TCP connection method. """
     def __init__(self, server=None):
