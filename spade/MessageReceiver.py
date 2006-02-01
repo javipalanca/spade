@@ -72,8 +72,8 @@ class MessageReceiver(threading.Thread):
 		if (message != None):
 			self.__messages.put(message,block=True)
 			self.kk()
-	def kk(self):
-		print "QSIZE: " + str(self.__messages.qsize())
+	def kk(self, s=""):
+		print s + "QSIZE: " + str(self.__messages.qsize())
 
 	def putBackMessage(self, message):
 		if (message != None):
