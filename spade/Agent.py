@@ -241,8 +241,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if (proc == False):
                         if (self._defaultbehaviour != None):
                             self._defaultbehaviour.postMessage(msg)
-		else:
-			print ">>>>>>>>NO HAY MSG"
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
