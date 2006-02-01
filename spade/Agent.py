@@ -763,7 +763,7 @@ class Agent(AbstractAgent):
         self.server = jid.getDomain()
 	self.port = port
         AbstractAgent.__init__(self, agentjid, self.server)
-        self.jabber = xmpp.Client(self.server, self.port, debug=[])
+        self.jabber = xmpp.Client(self.server, self.port, debug=['always'])
         self._register(password)
         self.jabber.sendInitPresence()
 
@@ -792,7 +792,7 @@ class Agent(AbstractAgent):
 		#self.jabber.reconnectAndReauth()
 		self.jabber.disconnect()
 		del self.jabber
-        	self.jabber = xmpp.Client(self.server, self.port, debug=[])
+        	self.jabber = xmpp.Client(self.server, self.port, debug=['always'])
 		self.jabber.connect()
 
                 if (self.jabber.auth(name,password,"spade") == None):
