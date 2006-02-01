@@ -73,6 +73,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		ACLmsg.setContent(payload_esc)
 
                 self.postMessage(ACLmsg)
+		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getSender().getName())
             else:
                 self.other_messageCB(conn,mess)
 
