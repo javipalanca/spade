@@ -52,7 +52,7 @@ def main():
   
   configfilename = "/etc/spade/spade.xml"
   jabberxml = "/etc/spade/xmppd.xml"
-  debug = None
+  dbg = []
 
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
 	 configfilename = "./etc" + os.sep + "spade.xml"
@@ -67,7 +67,7 @@ def main():
     		elif opt in ["-c", "--configfile"]: configfilename = arg
     		elif opt in ["-j", "--jabber"]: jabberxml = arg
     		elif opt in ["-g", "--gui"]: gui = True
-    		elif opt in ["-d", "--debug"]: debug = []
+    		elif opt in ["-d", "--debug"]: dbg = ['always']
   except:
 	pass
 
@@ -93,7 +93,7 @@ def main():
 	#print "PID: " + str(jabberpid)
   #	pass
 
-  s = xmppd.server.Server(cfgfile=jabberxml, debug = debug)
+  s = xmppd.server.Server(cfgfile=jabberxml, debug = dbg)
   thread.start_new_thread(s.run,tuple())
 
   try:
