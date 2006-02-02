@@ -225,9 +225,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #Check for queued messages
                 #time.sleep(0.1)
                 proc = False
-		self.kk("ANTES")
+		#self.kk("ANTES")
                 msg = self.blockingReceive(0.04)
-		self.kk("DESPUES")
+		#self.kk("DESPUES")
                 #msg = self.receive()
                 if (msg != None):
                     for b in self._behaviourList:
