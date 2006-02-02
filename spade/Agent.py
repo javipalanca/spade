@@ -73,9 +73,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		ACLmsg.setContent(payload_esc)
 
                 self.postMessage(ACLmsg)
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getSender().getName())
+		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getContent())
             else:
                 self.other_messageCB(conn,mess)
+
+	    return True
 
 
     def other_messageCB(self, conn, mess):
@@ -92,7 +94,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            v = self.jabber.Process(2)
+	            v = self.jabber.Process(0.4)
 		    #print "jabber_process: " + str(v)
 	    except:
 		    print "PERIODIC JABBER UPDATE"
@@ -226,7 +228,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0.1)
                 proc = False
 		#self.kk("ANTES")
-                msg = self.blockingReceive(0.04)
+                msg = self.blockingReceive(0.4)
 		#self.kk("DESPUES")
                 #msg = self.receive()
                 if (msg != None):
@@ -235,6 +237,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (t != None):
                             if (t.match(msg) == True):
                                 b.postMessage(msg)
+				print ">>>>MSG posteado al comportamiento " + str(b.__class__)
 
                                 #if (b.done() == True):
                                 #    self.removeBehaviour(b)

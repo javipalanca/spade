@@ -114,7 +114,8 @@ class MessageReceiver(threading.Thread):
 	def postMessage(self, message):
 		if (message != None):
 			self.__messages.put_commit(self.__messages.put(message,block=True))
-			print ">>>>>MSG posteado DE VERDAD: " + str(message)
+			print ">>>>>MSG posteado DE VERDAD: " + str(message.getContent())
+		return True
 
 	"""
 	def kk(self, s=""):
