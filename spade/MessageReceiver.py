@@ -1,8 +1,8 @@
 import threading
 import sys
-#from queue import *
+from queue import *
 
-from munkware.mwQueue import *
+#from munkware.mwQueue import *
 
 """
 
@@ -80,18 +80,19 @@ class MessageReceiver(threading.Thread):
 			pass
 		threading.Thread.__init__(self)
 		#self.__messages = MessageList(0)
-		self.__messages = BaseTransactionalQueue()
+		self.__messages = Queue(0)
 		#self.setDaemon(True)
 
 	def __getMessage(self, block, tout):
 		try:
-			if block:
-				block_int = 1
-			else:
-				block_int = 0
-			item = self.__messages.get(block_int)#, tout)
-			self.__messages.get_commit(item[0])
-			message = item[1]
+			#if block:
+			#	block_int = 1
+			#else:
+			#	block_int = 0
+			#item = self.__messages.get(block_int)#, tout)
+			item = self.__messages.get(block, tout)
+			#self.__messages.get_commit(item[0])
+			#message = item[1]
 			print ">>> __getMessage: SUCCESS " + str(item)
 		except Empty:
 			message = None
@@ -121,7 +122,8 @@ class MessageReceiver(threading.Thread):
 
 	def postMessage(self, message):
 		if (message != None):
-			self.__messages.put_commit(self.__messages.put(message,block=True))
+			#self.__messages.put_commit(self.__messages.put(message,block=True))
+			self.__messages.put(message,block=True)
 			print ">>>>>MSG posteado DE VERDAD: " + str(message.getContent())
 		return True
 

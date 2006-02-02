@@ -83,7 +83,9 @@ class Queue:
                     raise Full
             elif timeout is None:
                 while self._full():
+		    print ">>> queue put: ME DUERMO 1"
                     self.not_full.wait()
+		    print ">>> queue put: ME DESPIERTO 1"
             else:
                 if timeout < 0:
                     raise ValueError("'timeout' must be a positive number")
@@ -92,9 +94,12 @@ class Queue:
                     remaining = endtime - _time()
                     if remaining <= 0.0:
                         raise Full
+		    print ">>> queue put: ME DUERMO 2"
                     self.not_full.wait(remaining)
+		    print ">>> queue put: ME DESPIERTO 2"
             self._put(item)
             self.not_empty.notify()
+	    print ">>> queue put: NOTIFY ENVIADO"
         finally:
             self.not_full.release()
 
@@ -124,7 +129,9 @@ class Queue:
                     raise Empty
             elif timeout is None:
                 while self._empty():
+		    print ">>> queue get: ME DUERMO 1"
                     self.not_empty.wait()
+		    print ">>> queue get: ME DESPIERTO !!! 1"
             else:
                 if timeout < 0:
                     raise ValueError("'timeout' must be a positive number")
@@ -133,9 +140,12 @@ class Queue:
                     remaining = endtime - _time()
                     if remaining <= 0.0:
                         raise Empty
+		    print ">>> queue get: ME DUERMO 2"
                     self.not_empty.wait(remaining)
+		    print ">>> queue get: ME DESPIERTO !!!! 2"
             item = self._get()
             self.not_full.notify()
+	    print ">>> queue get: NOTIFY ENVIADO"
             return item
         finally:
             self.not_empty.release()
