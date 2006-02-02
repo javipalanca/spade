@@ -73,7 +73,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		ACLmsg.setContent(payload_esc)
 
                 self.postMessage(ACLmsg)
-		print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getContent())
+		#print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getContent())
             else:
                 self.other_messageCB(conn,mess)
 
@@ -228,7 +228,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0.1)
                 proc = False
 		#self.kk("ANTES")
-                msg = self.blockingReceive()
+                msg = self.blockingReceive(0.1)
 		#self.kk("DESPUES")
                 #msg = self.receive()
                 if (msg != None):
