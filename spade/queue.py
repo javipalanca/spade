@@ -2,6 +2,7 @@
 
 from time import time as _time
 from collections import deque
+import mutex
 
 __all__ = ['Empty', 'Full', 'Queue']
 
@@ -12,6 +13,12 @@ class Empty(Exception):
 class Full(Exception):
     "Exception raised by Queue.put(block=0)/put_nowait()."
     pass
+
+class lock(mutex.mutex):
+	def acquire(self):
+		self.lock()
+	def release(self):
+		self.unlock()
 
 class Queue:
     def __init__(self, maxsize=0):
@@ -28,7 +35,8 @@ class Queue:
         # that acquire mutex must release it before returning.  mutex
         # is shared between the two conditions, so acquiring and
         # releasing the conditions also acquires and releases mutex.
-        self.mutex = threading.Lock()
+        """self.mutex = threading.Lock()"""
+        self.mutex = lock()
         # Notify not_empty whenever an item is added to the queue; a
         # thread waiting to get is notified then.
         self.not_empty = threading.Condition(self.mutex)
