@@ -83,7 +83,7 @@ class MessageReceiver(threading.Thread):
 		if time_seg == None waits until a message is received
 		if no message is received returns None
 		"""
-		print ">>> blockingReceive time_seg = " + str(time_seg)
+		#print ">>> blockingReceive time_seg = " + str(time_seg)
 		return self.__getMessage(True, time_seg)
 
 	def postMessage(self, message):

@@ -236,9 +236,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = self._behaviourList[b]
                         if (t != None):
                             if (t.match(msg) == True):
-				print "soy un B y voy a postear"
+				#print "soy un B y voy a postear"
                                 b.postMessage(msg)
-				print ">>>>MSG posteado al comportamiento "
+				#print ">>>>MSG posteado al comportamiento "
 
                                 #if (b.done() == True):
                                 #    self.removeBehaviour(b)
@@ -246,9 +246,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 break
                     if (proc == False):
                         if (self._defaultbehaviour != None):
-				print "soy el B por defecto"
+				#print "soy el B por defecto"
                        		self._defaultbehaviour.postMessage(msg)
-				print ">>>>MSG posteado al B por defecto "
+				#print ">>>>MSG posteado al B por defecto "
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
