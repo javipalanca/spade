@@ -236,6 +236,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = self._behaviourList[b]
                         if (t != None):
                             if (t.match(msg) == True):
+				print "soy un B y voy a postear"
                                 b.postMessage(msg)
 				print ">>>>MSG posteado al comportamiento " + str(b.__class__)
 
