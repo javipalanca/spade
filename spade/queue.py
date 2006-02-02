@@ -94,7 +94,7 @@ class Queue:
                         raise Full
                     self.not_full.wait(remaining)
             self._put(item)
-            self.not_empty.notifyAll()
+            self.not_empty.notify()
         finally:
             self.not_full.release()
 
@@ -135,7 +135,7 @@ class Queue:
                         raise Empty
                     self.not_empty.wait(remaining)
             item = self._get()
-            self.not_full.notifyAll()
+            self.not_full.notify()
             return item
         finally:
             self.not_empty.release()
