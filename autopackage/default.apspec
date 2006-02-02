@@ -43,6 +43,7 @@ $source_dir/usr
 $source_dir/xmpp
 $source_dir/xmppd
 $source_dir/tlslite
+$source_dir/munkware
 EOF
 
 [Prepare]
