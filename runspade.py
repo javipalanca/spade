@@ -60,17 +60,14 @@ def main():
 	
   try:
   	for opt, arg in getopt(sys.argv[1:],
-                         "nsphvdgc:j:", ["n", "s", "p", "help", "version", "debug", "gui", "configfile=",
+                         "hvdgc:j:", ["help", "version", "debug", "gui", "configfile=",
                                       "jabber="])[0]:
     		if opt in ["-h", "--help"]: print_help()
-    		elif opt in ["-n", "--n"]: pass
-    		elif opt in ["-s", "--s"]: pass
-    		elif opt in ["-p", "--p"]: pass
     		elif opt in ["-v", "--version"]: print_version()
     		elif opt in ["-c", "--configfile"]: configfilename = arg
     		elif opt in ["-j", "--jabber"]: jabberxml = arg
     		elif opt in ["-g", "--gui"]: gui = True
-    		elif opt in ["-d", "--debug"]: debug = ['always']
+    		elif opt in ["-d", "--debug"]: debug = []
   except:
 	pass
 
