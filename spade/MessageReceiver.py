@@ -80,7 +80,7 @@ class MessageReceiver(threading.Thread):
 			pass
 		threading.Thread.__init__(self)
 		#self.__messages = MessageList(0)
-		self.__messages = BaseTransactionalQueue(0)
+		self.__messages = BaseTransactionalQueue()
 		#self.setDaemon(True)
 
 	def __getMessage(self, block, tout):
@@ -114,9 +114,10 @@ class MessageReceiver(threading.Thread):
 		if (message != None):
 			self.__messages.put_commit(self.__messages.put(message,block=True))
 			#self.kk()
+	"""
 	def kk(self, s=""):
 		print s + "QSIZE: " + str(self.__messages.qsize())
-	"""
+
 	def putBackMessage(self, message):
 		if (message != None):
 			self.__messages.putAfter(message)
