@@ -85,10 +85,11 @@ class MessageReceiver(threading.Thread):
 
 	def __getMessage(self, block, tout):
 		try:
-			message = self.__messages.get_commit(self.__messages.get(block, tout))
+			item = self.__messages.get(block)#, tout)
+			self.__messages.get_commit(item[0])
+			message = item[1]
 		except Empty:
 			message = None
-			#self.kk("VACIO")
 			#print "MESSAGE = None - Empty "+str(tout)
 		except:
 			message = None
@@ -113,7 +114,7 @@ class MessageReceiver(threading.Thread):
 	def postMessage(self, message):
 		if (message != None):
 			self.__messages.put_commit(self.__messages.put(message,block=True))
-			#self.kk()
+
 	"""
 	def kk(self, s=""):
 		print s + "QSIZE: " + str(self.__messages.qsize())
