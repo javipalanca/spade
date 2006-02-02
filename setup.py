@@ -30,7 +30,7 @@ if os.name == "posix":
 		author_email='jpalanca@dsic.upv.es',
 		url='http://gti-ia.dsic.upv.es/projects/magentix/',
 		package_dir={'spade': 'spade'},
-		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration', 'munkware'],
+		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration', 'munkware', 'munkware.network'],
 		scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 		data_files=[
 			('/etc/spade',['etc/spade.xml']),
