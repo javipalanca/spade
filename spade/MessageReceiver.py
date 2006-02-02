@@ -85,16 +85,22 @@ class MessageReceiver(threading.Thread):
 
 	def __getMessage(self, block, tout):
 		try:
-			item = self.__messages.get(block)#, tout)
+			if block:
+				block_int = 1
+			else:
+				block_int = 0
+			item = self.__messages.get(block_int)#, tout)
 			self.__messages.get_commit(item[0])
 			message = item[1]
 		except Empty:
 			message = None
 			#print "MESSAGE = None - Empty "+str(tout)
+			print ">>> __getMessage: EMPTY"
 		except:
 			message = None
 			#time.sleep(1)
 			#print "MESSAGE = None - otra.", sys.exc_info()[0] 
+			print ">>> __getMessage: FUCKING EXCEPTION"
 
 		return message
 	"""	
