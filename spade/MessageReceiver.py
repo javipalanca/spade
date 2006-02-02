@@ -4,45 +4,8 @@ from queue import *
 
 #from munkware.mwQueue import *
 
+    
 """
-
-try:
-	from munkware.mwQueue import *  # munkware
-except:
-	# NO MUNKWARE
-	pass
-
-# Esto es un prototipo de MessageList implementado con munkware,
-# pero creo que no va, hay que mirarlo bien
-class MWMessageList(BaseTransactionalQueue):
-    def putAfter(self, item, block=True, timeout=None):
-	self.avail_q_mutex.acquire()
-	try:
-	    if not block:
-		if self._full():
-		    raise Full
-	    elif timeout is None:
-		while self._full():
-		    self.avail_q_mutex.wait()
-	    else:
-		if timeout < 0:
-		    raise ValueError("'timeout' must be a positive number")
-		endtime = _time() + timeout
-		while self._full():
-		    remaining = endtime - _time()
-                    if remaining <= 0.0:
-                        raise Full
-                    self.avail_q_mutex.wait(remaining)
-	    self._putAfter(item)
-            self.avail_q_mutex.notify()
-        finally:
-            self.avail_q_mutex.release() 
-		    
-    def _putAfter(self, item):
-        #self.queue.appendleft(item)
-	self.put_commit(self.put(item))
-	    
-
 class MessageList(queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
@@ -93,7 +56,7 @@ class MessageReceiver(threading.Thread):
 			message = self.__messages.get(block, tout)
 			#self.__messages.get_commit(item[0])
 			#message = item[1]
-			print ">>> __getMessage: SUCCESS " + str(message)
+			print ">>> __getMessage: SUCCESS "
 		except Empty:
 			message = None
 			#print "MESSAGE = None - Empty "+str(tout)
