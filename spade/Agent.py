@@ -228,7 +228,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0.1)
                 proc = False
 		#self.kk("ANTES")
-                msg = self.blockingReceive(0.1)
+                msg = self.blockingReceive()
 		#self.kk("DESPUES")
                 #msg = self.receive()
                 if (msg != None):
