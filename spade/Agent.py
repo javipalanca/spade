@@ -246,7 +246,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 break
                     if (proc == False):
                         if (self._defaultbehaviour != None):
-                            self._defaultbehaviour.postMessage(msg)
+				print "soy el B por defecto"
+                       		self._defaultbehaviour.postMessage(msg)
+				print ">>>>MSG posteado al B por defecto " + str(b.__class__)
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
