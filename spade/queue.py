@@ -77,6 +77,7 @@ class Queue:
         is ignored in that case).
         """
         self.not_full.acquire()
+	print "put: Cojo mutex"
         try:
             if not block:
                 if self._full():
@@ -100,9 +101,10 @@ class Queue:
             self._put(item)
             self.not_empty.notify()
 	    print ">>> queue put: NOTIFY ENVIADO"
-	except:
-		print "EXCEPCION EN put"
+	#except:
+	#	print "EXCEPCION EN put,", sys.exc_info()[0]
         finally:
+	    print "put: Libero mutex"
             self.not_full.release()
 
     def put_nowait(self, item):
@@ -125,6 +127,7 @@ class Queue:
         in that case).
         """
         self.not_empty.acquire()
+	print "get: Cojo mutex"
         try:
             if not block:
                 if self._empty():
@@ -149,9 +152,10 @@ class Queue:
             self.not_full.notify()
 	    print ">>> queue get: NOTIFY ENVIADO"
             return item
-	except:
-		print "EXCEPCION EN get"
+	#except:
+	#	print "EXCEPCION EN get ", sys.exc_info()[0]
         finally:
+	    print "get: Libero mutex"
             self.not_empty.release()
 
     def get_nowait(self):
