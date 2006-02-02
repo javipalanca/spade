@@ -321,7 +321,7 @@ class Session:
         if self._stream_state<newstate: self._stream_state=newstate
 
 class Server:
-    def __init__(self,debug=['always'],cfgfile=None):
+    def __init__(self,debug=[],cfgfile=None):
         self.sockets={}
         self.sockpoll=select.poll()
         self.ID=`random.random()`[2:]
