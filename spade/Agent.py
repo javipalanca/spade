@@ -238,7 +238,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             if (t.match(msg) == True):
 				print "soy un B y voy a postear"
                                 b.postMessage(msg)
-				print ">>>>MSG posteado al comportamiento " + str(b.__class__)
+				print ">>>>MSG posteado al comportamiento "
 
                                 #if (b.done() == True):
                                 #    self.removeBehaviour(b)
@@ -248,7 +248,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (self._defaultbehaviour != None):
 				print "soy el B por defecto"
                        		self._defaultbehaviour.postMessage(msg)
-				print ">>>>MSG posteado al B por defecto " + str(b.__class__)
+				print ">>>>MSG posteado al B por defecto "
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
@@ -257,7 +257,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             #DeInit the Agent
             self.takeDown()
         except:
-	    print "AGENT IS NOT ALIVE!!!!!"
+	    print "AGENT IS NOT ALIVE!!!!!" + str(self)
             pass
             
     def start_and_wait(self):
