@@ -35,8 +35,8 @@ class Queue:
         # that acquire mutex must release it before returning.  mutex
         # is shared between the two conditions, so acquiring and
         # releasing the conditions also acquires and releases mutex.
-        """self.mutex = threading.Lock()"""
-        self.mutex = lock()
+        self.mutex = threading.Lock()
+        """self.mutex = lock()"""
         # Notify not_empty whenever an item is added to the queue; a
         # thread waiting to get is notified then.
         self.not_empty = threading.Condition(self.mutex)
