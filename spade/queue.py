@@ -100,6 +100,8 @@ class Queue:
             self._put(item)
             self.not_empty.notify()
 	    print ">>> queue put: NOTIFY ENVIADO"
+	except:
+		print "EXCEPCION EN put"
         finally:
             self.not_full.release()
 
@@ -147,6 +149,8 @@ class Queue:
             self.not_full.notify()
 	    print ">>> queue get: NOTIFY ENVIADO"
             return item
+	except:
+		print "EXCEPCION EN get"
         finally:
             self.not_empty.release()
 
