@@ -92,6 +92,7 @@ class MessageReceiver(threading.Thread):
 			item = self.__messages.get(block_int)#, tout)
 			self.__messages.get_commit(item[0])
 			message = item[1]
+			print ">>> __getMessage: SUCCESS"
 		except Empty:
 			message = None
 			#print "MESSAGE = None - Empty "+str(tout)
