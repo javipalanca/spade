@@ -77,16 +77,16 @@ class Queue:
         is ignored in that case).
         """
         self.not_full.acquire()
-	print "put: Cojo mutex"
+	print "put: Cojo mutex "+ str(self)
         try:
             if not block:
                 if self._full():
                     raise Full
             elif timeout is None:
                 while self._full():
-		    print ">>> queue put: ME DUERMO 1"
+		    print ">>> queue put: ME DUERMO 1" + str(self)
                     self.not_full.wait()
-		    print ">>> queue put: ME DESPIERTO 1"
+		    print ">>> queue put: ME DESPIERTO 1" + str(self)
             else:
                 if timeout < 0:
                     raise ValueError("'timeout' must be a positive number")
@@ -95,16 +95,16 @@ class Queue:
                     remaining = endtime - _time()
                     if remaining <= 0.0:
                         raise Full
-		    print ">>> queue put: ME DUERMO 2"
+		    print ">>> queue put: ME DUERMO 2" + str(self)
                     self.not_full.wait(remaining)
-		    print ">>> queue put: ME DESPIERTO 2"
+		    print ">>> queue put: ME DESPIERTO 2" + str(self)
             self._put(item)
             self.not_empty.notify()
-	    print ">>> queue put: NOTIFY ENVIADO"
+	    print ">>> queue put: NOTIFY ENVIADO" + str(self)
 	#except:
 	#	print "EXCEPCION EN put,", sys.exc_info()[0]
         finally:
-	    print "put: Libero mutex"
+	    print "put: Libero mutex" + str(self)
             self.not_full.release()
 
     def put_nowait(self, item):
@@ -127,7 +127,7 @@ class Queue:
         in that case).
         """
         self.not_empty.acquire()
-	print "get: Cojo mutex"
+	print "get: Cojo mutex" + str(self)
         try:
             if not block:
                 if self._empty():
@@ -150,12 +150,12 @@ class Queue:
 		    print ">>> queue get: ME DESPIERTO !!!! 2" + str(self)
             item = self._get()
             self.not_full.notify()
-	    print ">>> queue get: NOTIFY ENVIADO"
+	    print ">>> queue get: NOTIFY ENVIADO" + str(self)
             return item
 	#except:
 	#	print "EXCEPCION EN get ", sys.exc_info()[0]
         finally:
-	    print "get: Libero mutex"
+	    print "get: Libero mutex" + str(self)
             self.not_empty.release()
 
     def get_nowait(self):
