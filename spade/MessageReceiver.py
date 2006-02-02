@@ -46,6 +46,9 @@ class MessageReceiver(threading.Thread):
 		self.__messages = Queue(0)
 		#self.setDaemon(True)
 
+	def getQueue(self):
+		return self.__messages
+
 	def __getMessage(self, block, tout):
 		try:
 			#if block:
