@@ -288,7 +288,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		self.onStart()
 		while (not(( self.done() | self._forceKill.isSet() ))):
 			self.process()
-			time.sleep(0)
+			#time.sleep(0)
 		self.onEnd()
 		self.myAgent.removeBehaviour(self)
 		
