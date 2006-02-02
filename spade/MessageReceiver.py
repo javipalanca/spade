@@ -1,6 +1,8 @@
 import threading
 import sys
-from queue import *
+#from queue import *
+
+from munkware.mwQueue import *
 
 """
 
@@ -78,7 +80,7 @@ class MessageReceiver(threading.Thread):
 			pass
 		threading.Thread.__init__(self)
 		#self.__messages = MessageList(0)
-		self.__messages = Queue(0)
+		self.__messages = BaseTransactionalQueue(0)
 		#self.setDaemon(True)
 
 	def __getMessage(self, block, tout):
