@@ -86,7 +86,7 @@ class MessageReceiver(threading.Thread):
 			message = self.__messages.get(block, tout)
 		except Empty:
 			message = None
-			self.kk("VACIO")
+			#self.kk("VACIO")
 			#print "MESSAGE = None - Empty "+str(tout)
 		except:
 			message = None
