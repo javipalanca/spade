@@ -87,7 +87,7 @@ class MessageReceiver(threading.Thread):
 		if (message != None):
 			#self.__messages.put_commit(self.__messages.put(message,block=True))
 			self.__messages.put(message,block=True)
-			print ">>>>>MSG posteado DE VERDAD: " + str(message.getContent())
+			#print ">>>>>MSG posteado DE VERDAD: " + str(message.getContent())
 		return True
 
 	"""
