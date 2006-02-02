@@ -503,7 +503,7 @@ if __name__=='__main__':
     #psyco.full()
    
     cfgfile = None 
-    debug = None
+    debug = []
     for opt, arg in getopt(sys.argv[1:], "hvdc:", ["help", "configfile="])[0]:
 	    if opt in ["-h", "--help"]:
 		print_help()
@@ -511,10 +511,8 @@ if __name__=='__main__':
 	    elif opt in ["-v", "--version"]:
 		print Revision + "\n"
 		sys.exit(0)
-	    elif opt in ["-c", "--configfile"]:
-		cfgfile=arg
-	    elif opt in ["-d", "--debug"]:
-		debug=['always']
+	    elif opt in ["-c", "--configfile"]: cfgfile=arg
+	    elif opt in ["-d", "--debug"]: debug=['always']
 
     if cfgfile:
 	    s=Server(cfgfile=cfgfile, debug=debug)
