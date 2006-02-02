@@ -37,7 +37,7 @@ class SpadeBackend:
 		server = configfile.get("domain",'hostname')
 		port = int(configfile.get(section,'port'))
 		jid = section + "." + server
-		agent = agentClass(jid, passwd, server, port, debug=[])
+		agent = agentClass(jid, passwd, server, port)
 		agent.start()
 		return agent
     

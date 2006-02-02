@@ -38,7 +38,7 @@ class SpadePlatform(Agent.PlatformAgent):
 				print "ACC::dying... it shouldn't happen"
 			
 	def __init__(self, node, password, server, port):
-		Agent.PlatformAgent.__init__(self, node, password, server, port)
+		Agent.PlatformAgent.__init__(self, node, password, server, port, debug=[])
 
 	def setup(self):
 		self.setDefaultBehaviour(self.RouteBehaviour())
