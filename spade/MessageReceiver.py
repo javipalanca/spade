@@ -91,7 +91,7 @@ class MessageReceiver(threading.Thread):
 		except:
 			message = None
 			#time.sleep(1)
-			print "MESSAGE = None - otra.", sys.exc_info()[0] 
+			#print "MESSAGE = None - otra.", sys.exc_info()[0] 
 
 		return message
 	"""	
