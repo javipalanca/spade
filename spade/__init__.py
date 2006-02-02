@@ -1,6 +1,7 @@
 import ACLMessage
 import Behaviour
 import Envelope
+import queue
 import MessageReceiver
 import SL0Parser
 import XMLCodec

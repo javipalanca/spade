@@ -1,6 +1,6 @@
 import threading
 import sys
-from Queue import *
+from queue import *
 
 """
 
@@ -41,7 +41,7 @@ class MWMessageList(BaseTransactionalQueue):
 	self.put_commit(self.put(item))
 	    
 
-class MessageList(Queue):
+class MessageList(queue):
     def putAfter(self, item, block=True, timeout=None):
         self.not_full.acquire()
         try:
@@ -83,7 +83,7 @@ class MessageReceiver(threading.Thread):
 
 	def __getMessage(self, block, tout):
 		try:
-			message = self.__messages.get(block)#, tout)
+			message = self.__messages.get(block, tout)
 		except Empty:
 			message = None
 			self.kk("VACIO")
@@ -111,7 +111,7 @@ class MessageReceiver(threading.Thread):
 	def postMessage(self, message):
 		if (message != None):
 			self.__messages.put(message,block=True)
-			self.kk()
+			#self.kk()
 	def kk(self, s=""):
 		print s + "QSIZE: " + str(self.__messages.qsize())
 	"""
