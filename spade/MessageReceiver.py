@@ -44,7 +44,7 @@ class MessageReceiver(threading.Thread):
 		#else returns None
 		return self.__getMessage(False, None)
 	"""
-	def __receive(self, block = False, timeout = None):
+	def _receive(self, block = False, timeout = None):
 		"""
 		waits for a message during time_seg
 		if time_seg == None waits until a message is received

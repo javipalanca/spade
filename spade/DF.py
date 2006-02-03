@@ -16,9 +16,9 @@ class DF(Agent.PlatformAgent):
 			Behaviour.Behaviour.__init__(self)
 			self.sl0parser = SL0Parser()
 
-		def __process(self):
+		def _process(self):
 			error = False
-			msg = self.__receive(True)
+			msg = self._receive(True)
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
@@ -72,7 +72,7 @@ class DF(Agent.PlatformAgent):
 			self.content = content
 			#print "Constructor"
 
-		def __process(self):
+		def _process(self):
 
 			#The DF agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -163,7 +163,7 @@ class DF(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			error = False
 
@@ -226,7 +226,7 @@ class DF(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -295,7 +295,7 @@ class DF(Agent.PlatformAgent):
 		Agent.PlatformAgent.__init__(self,node,passw,server,port)
 
 
-	def __setup(self):
+	def _setup(self):
 		self.servicedb = dict()
 
 		self.setDefaultBehaviour(self.DefaultBehaviour())

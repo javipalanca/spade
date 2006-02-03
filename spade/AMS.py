@@ -15,9 +15,9 @@ class AMS(Agent.PlatformAgent):
 			Behaviour.Behaviour.__init__(self)
 			self.sl0parser = SL0Parser()
 
-		def __process(self):
+		def _process(self):
 			error = False
-			msg = self.__receive(True)
+			msg = self._receive(True)
 			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
@@ -76,7 +76,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -166,7 +166,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
@@ -209,7 +209,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			error = False
 
@@ -276,7 +276,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def __process(self):
+		def _process(self):
 
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -340,7 +340,7 @@ class AMS(Agent.PlatformAgent):
 		Agent.PlatformAgent.__init__(self,node,passw,server,port)
 
 
-	def __setup(self):
+	def _setup(self):
 		self.agentdb = dict()
 
 		AAD = AmsAgentDescription()
