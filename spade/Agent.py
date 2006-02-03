@@ -88,7 +88,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         pass
 
     
-    def __jabber_process(self):
+    def jabber_process(self):
 	"""
 	periodic jabber update
 	"""
@@ -762,7 +762,7 @@ class PlatformAgent(AbstractAgent):
 
         #print "auth ok", name
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
-        thread.start_new_thread(self.__jabber_process, tuple())
+        thread.start_new_thread(self.jabber_process, tuple())
 
 class Agent(AbstractAgent):
     """
@@ -812,7 +812,7 @@ class Agent(AbstractAgent):
                 raise NotImplementedError
 	    
 
-        thread.start_new_thread(self.__jabber_process, tuple())
+        thread.start_new_thread(self.jabber_process, tuple())
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
     def run(self):
