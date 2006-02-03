@@ -12,8 +12,8 @@ class SpadePlatform(Agent.PlatformAgent):
 	class RouteBehaviour(Behaviour.Behaviour):
 		def __init__(self):
 			Behaviour.Behaviour.__init__(self)
-		def process(self):
-			msg = self.blockingReceive()
+		def __process(self):
+			msg = self.__receive(True)
 			if (msg != None):
 				to_list = msg.getReceivers()
 				d = {}
@@ -40,7 +40,7 @@ class SpadePlatform(Agent.PlatformAgent):
 	def __init__(self, node, password, server, port):
 		Agent.PlatformAgent.__init__(self, node, password, server, port, debug=[])
 
-	def setup(self):
+	def __setup(self):
 		self.setDefaultBehaviour(self.RouteBehaviour())
 
 

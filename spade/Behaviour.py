@@ -255,7 +255,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		return False
 	
-	def process(self):
+	def __process(self):
 		"""
 		main loop
 		must be overridden
@@ -284,10 +284,10 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		return 0
 		
-	def run(self):
+	def __run(self):
 		self.onStart()
 		while (not(( self.done() | self._forceKill.isSet() ))):
-			self.process()
+			self.__process()
 			#time.sleep(0)
 		self.onEnd()
 		self.myAgent.removeBehaviour(self)
@@ -325,7 +325,7 @@ class PeriodicBehaviour(Behaviour):
 	def setPeriod(self, period):
 		self._period = period
 		
-	def process(self):
+	def __process(self):
 		if (time.time() >= self._nextActivation):
 			self.onTick()
 			while (self._nextActivation <= time.time()):
@@ -335,7 +335,7 @@ class PeriodicBehaviour(Behaviour):
 			if t > 0:
 				time.sleep(t)
 			
-	def onTick(self):
+	def __onTick(self):
 		"""
 		this method is executed every period
 		must be overridden
@@ -361,7 +361,7 @@ class TimeOutBehaviour(PeriodicBehaviour):
 	def done(self):
 		return self._stop
 	
-	def onTick(self):
+	def __onTick(self):
 		if (self._stop == False):
 			self.timeOut()
 		self.stop()
@@ -461,13 +461,13 @@ class FSMBehaviour(Behaviour):
 		except KeyError:
 			pass
 	
-	def process(self):
+	def __process(self):
 		if (self._actualState == None):
 			self._transitionTo(self._firstStateName)
-		msg = self.blockingReceive()
+		msg = self.__receive(True)
 		b = self._states[self._actualState]
 		b.postMessage(msg)
-		b.process()
+		b.__process()
 		if (b.done() == True):
 			self._lastexitcode = b.exitCode()
 			self._transitionTo(self._transitions[b][self._lastexitcode])
@@ -480,7 +480,7 @@ if __name__ == "__main__":
 	class TestBehaviour(PeriodicBehaviour):
 		def __init__(self, time):
 			PeriodicBehaviour.__init__(self, time)
-		def onTick(self):
+		def __onTick(self):
 			print "Tick: " + str(time.time())
 	
 	a = TestBehaviour(5)

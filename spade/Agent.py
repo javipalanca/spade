@@ -37,7 +37,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def jabber_messageCB(self, conn, mess):
+    def __jabber_messageCB(self, conn, mess):
 	"""
 	message callback
 	read the message envelope and post the message to the agent
@@ -75,12 +75,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.postMessage(ACLmsg)
 		#print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getContent())
             else:
-                self.other_messageCB(conn,mess)
+                self.__other_messageCB(conn,mess)
 
 	    return True
 
 
-    def other_messageCB(self, conn, mess):
+    def __other_messageCB(self, conn, mess):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
@@ -88,7 +88,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         pass
 
     
-    def jabber_process(self):
+    def __jabber_process(self):
 	"""
 	periodic jabber update
 	"""
@@ -131,9 +131,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	sends an ACLMessage
 	"""
-        self.sendTo(ACLmsg, self.getSpadePlatformJID())
+        self.__sendTo(ACLmsg, self.getSpadePlatformJID())
 
-    def sendTo(self, ACLmsg, tojid):
+    def __sendTo(self, ACLmsg, tojid):
 	"""
 	sends an ACLMessage to a specific JabberID
 	"""
@@ -196,7 +196,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         return self._isAlive
         
-    def setup(self):
+    def __setup(self):
 	"""
 	setup agent method. configures the agent
 	must be overridden
@@ -210,12 +210,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         pass
 
-    def run(self):
+    def __run(self):
 	"""
 	periodic agent execution
 	"""
         #Init The agent
-        self.setup()
+        self.__setup()
         #Start the Behaviours
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
@@ -228,7 +228,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0.1)
                 proc = False
 		#self.kk("ANTES")
-                msg = self.blockingReceive()
+                msg = self.__receive(block=True)
 		#self.kk("DESPUES")
                 #msg = self.receive()
                 if (msg != None):
@@ -315,7 +315,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.finished = False
             self._msg = msg
 
-        def process(self):
+        def __process(self):
             p = SL0Parser.SL0Parser()
             self._msg.addReceiver( self.myAgent.getAMS() )
             self._msg.setPerformative('request')
@@ -330,14 +330,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             
             self._msg.setContent(content)
             self.myAgent.send(self._msg)
-            msg = self.blockingReceive(10)
+            msg = self.__receive(True,10)
             if msg == None or str(msg.getPerformative()) != 'agree':
                 print "There was an error searching the Agent. (not agree)"
                 if self.debug:
                     print str(msg)
                 self.finished = True
                 return None
-            msg = self.blockingReceive(20)
+            msg = self.__receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
                 print "There was an error searching the Agent. (not inform)"
                 if self.debug:
@@ -380,7 +380,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.finished = False
             self._msg = ACLMessage()
 
-        def process(self):
+        def __process(self):
             p = SL0Parser.SL0Parser()
             self._msg.addReceiver( self.myAgent.getAMS() )
             self._msg.setPerformative('request')
@@ -397,14 +397,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             	
             self.myAgent.send(self._msg)
 
-            msg = self.blockingReceive(20)
+            msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'agree':
                 print "There was an error modifying the Agent. (not agree)"
                 if self.debug:
                     print str(msg)
                 self.result = False
                 return -1
-            msg = self.blockingReceive(20)
+            msg = self.__receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
                 print "There was an error modifying the Agent. (not inform)"
                 if self.debug:
@@ -436,7 +436,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.result = None
             self.finished = False
 
-	def process(self):
+	def __process(self):
 		msg = self._msg
 		msg.addReceiver( self.myAgent.getAMS() )
 		msg.setPerformative('request')
@@ -453,13 +453,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		
 		self.myAgent.send(msg)
 
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error modifying the Agent. (not agree)"
 			if self.debug:
 				print str(msg)
 			return -1
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Agent. (not inform)"
 			if self.debug:
@@ -494,7 +494,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.result = None
             self.finished = False
 
-	def process(self):
+	def __process(self):
 		self._msg.addReceiver( self.myAgent.getDF() )
 		self._msg.setPerformative('request')
 		self._msg.setLanguage('fipa-sl0')
@@ -510,14 +510,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		
 		self.myAgent.send(self._msg)
 
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error registering the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result = False
 			return
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error registering the Service. (not inform)"
 			if self.debug:
@@ -553,7 +553,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.result = None
             self.finished = False
 
-	def process(self):
+	def __process(self):
 		self._msg.addReceiver( self.myAgent.getDF() )
 		self._msg.setPerformative('request')
 		self._msg.setLanguage('fipa-sl0')
@@ -569,14 +569,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		
 		self.myAgent.send(self._msg)
 
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error deregistering the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result = False
 			return
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error deregistering the Service. (not inform)"
 			if self.debug:
@@ -615,7 +615,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.finished = False
 
 
-	def process(self):	
+	def __process(self):	
 
 		self._msg.addReceiver( self.myAgent.getDF() )
 		self._msg.setPerformative('request')
@@ -632,13 +632,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		self.myAgent.send(self._msg)
 	
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error searching the Agent. (not agree)"
 			if self.debug:
 				print str(msg)
 			return
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error searching the Agent. (not inform)"
 			if self.debug:
@@ -679,7 +679,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.debug = debug
             self.result = None
 
-	def process(self):
+	def __process(self):
 
 		#p = SL0Parser.SL0Parser()
 	
@@ -699,14 +699,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		
 		self.myAgent.send(self._msg)
 
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error modifying the Service. (not agree)"
 			if self.debug:
 				print str(msg)
 			self.result=False
 			return
-		msg = self.blockingReceive(20)
+		msg = self.__receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Service. (not inform)"
 			if self.debug:
@@ -762,7 +762,7 @@ class PlatformAgent(AbstractAgent):
 
         #print "auth ok", name
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
-        thread.start_new_thread(self.jabber_process, tuple())
+        thread.start_new_thread(self.__jabber_process, tuple())
 
 class Agent(AbstractAgent):
     """
@@ -812,7 +812,7 @@ class Agent(AbstractAgent):
                 raise NotImplementedError
 	    
 
-        thread.start_new_thread(self.jabber_process, tuple())
+        thread.start_new_thread(self.__jabber_process, tuple())
         self.jabber.RegisterHandler('message',self.jabber_messageCB)
 
     def run(self):
@@ -850,13 +850,13 @@ class Agent(AbstractAgent):
 		
 	self.send(self._msg)
 
-	msg = self.blockingReceive(20)
+	msg = self.__receive(True,20)
 	if (msg == None) or (str(msg.getPerformative()) != 'agree'):
 		print "There was an error registering the Agent. (not agree)"
 		if debug and msg != None:
 			print str(msg)
 		return -1
-	msg = self.blockingReceive(20)
+	msg = self.__receive(True,20)
 	if (msg == None) or (msg.getPerformative() != 'inform'):
 		print "There was an error registering the Agent. (not inform)"
 		if debug and msg != None:
@@ -889,13 +889,13 @@ class Agent(AbstractAgent):
 		
 	self.send(self._msg)
 
-	msg = self.blockingReceive(20)
+	msg = self.__receive(True,20)
 	if msg == None or msg.getPerformative() != 'agree':
 		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:
 			sys.stdout.write(str(msg))
 		return -1
-	msg = self.blockingReceive(20)
+	msg = self.__receive(True,20)
 	if msg == None or msg.getPerformative() != 'inform':
 		sys.stdout.write("There was an error deregistering the Agent.\n")
 		if debug:

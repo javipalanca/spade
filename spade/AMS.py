@@ -9,15 +9,15 @@ class AMS(Agent.PlatformAgent):
 	Agent Management System
 	"""
 
-	class DefaultBehaviour(Behaviour.PeriodicBehaviour):
+	class DefaultBehaviour(Behaviour.Behaviour):
 
 		def __init__(self):
 			Behaviour.Behaviour.__init__(self)
 			self.sl0parser = SL0Parser()
 
-		def process(self):
+		def __process(self):
 			error = False
-			msg = self.blockingReceive()
+			msg = self.__receive(True)
 			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
@@ -76,7 +76,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def process(self):
+		def __process(self):
 
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -166,7 +166,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def process(self):
+		def __process(self):
 
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
@@ -209,7 +209,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def process(self):
+		def __process(self):
 
 			error = False
 
@@ -276,7 +276,7 @@ class AMS(Agent.PlatformAgent):
 			self.msg = msg
 			self.content = content
 
-		def process(self):
+		def __process(self):
 
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
@@ -340,7 +340,7 @@ class AMS(Agent.PlatformAgent):
 		Agent.PlatformAgent.__init__(self,node,passw,server,port)
 
 
-	def setup(self):
+	def __setup(self):
 		self.agentdb = dict()
 
 		AAD = AmsAgentDescription()
@@ -358,7 +358,7 @@ class AMS(Agent.PlatformAgent):
 			self.agentdb[self.getDF().getName()] = AAD
 
 		db = self.DefaultBehaviour()
-		db.setPeriod(0.25)
+		#db.setPeriod(0.25)
 		self.setDefaultBehaviour(db)
 
 
