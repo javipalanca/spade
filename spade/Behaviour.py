@@ -284,7 +284,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		return 0
 		
-	def _run(self):
+	def run(self):
 		self.onStart()
 		while (not(( self.done() | self._forceKill.isSet() ))):
 			self._process()

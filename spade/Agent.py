@@ -210,7 +210,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         pass
 
-    def _run(self):
+    def run(self):
 	"""
 	periodic agent execution
 	"""
@@ -816,7 +816,7 @@ class Agent(AbstractAgent):
         thread.start_new_thread(self._jabber_process, tuple())
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
 
-    def _run(self):
+    def run(self):
 	"""
 	Main loop of the agent
 	registers in AMS, runs the agent and, finally, deregisters it from the AMS
