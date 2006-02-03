@@ -824,7 +824,7 @@ class Agent(AbstractAgent):
 	#print "Registrando...."
         self.__register_in_AMS()
 	#print "Agent Registred!!!"
-	AbstractAgent._run(self)
+	AbstractAgent.run(self)
 	#print "Des-Registrando...."
         self.__deregister_from_AMS()
 
