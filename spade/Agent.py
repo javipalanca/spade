@@ -761,7 +761,7 @@ class PlatformAgent(AbstractAgent):
                 raise NotImplementedError
 
         #print "auth ok", name
-        self.jabber.RegisterHandler('message',self.jabber_messageCB)
+        self.jabber.RegisterHandler('message',self.__jabber_messageCB)
         thread.start_new_thread(self.__jabber_process, tuple())
 
 class Agent(AbstractAgent):
@@ -813,7 +813,7 @@ class Agent(AbstractAgent):
 	    
 
         thread.start_new_thread(self.__jabber_process, tuple())
-        self.jabber.RegisterHandler('message',self.jabber_messageCB)
+        self.jabber.RegisterHandler('message',self.__jabber_messageCB)
 
     def run(self):
 	"""
