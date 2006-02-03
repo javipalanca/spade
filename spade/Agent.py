@@ -228,6 +228,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #time.sleep(0.1)
                 proc = False
 		#self.kk("ANTES")
+		print self.getAID().getName() + " waits for a msg"
                 msg = self._receive(block=True)
 		#self.kk("DESPUES")
                 #msg = self.receive()
