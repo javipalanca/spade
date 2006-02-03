@@ -41,6 +41,7 @@ class SpadePlatform(Agent.PlatformAgent):
 		Agent.PlatformAgent.__init__(self, node, password, server, port, debug=[])
 
 	def _setup(self):
+		print ">>>>>>>>>>>>>>SETUP PLATFORM"
 		self.setDefaultBehaviour(self.RouteBehaviour())
 
 
