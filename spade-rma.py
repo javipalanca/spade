@@ -367,7 +367,7 @@ class rma(Agent.Agent):
 			self.myAgent.update=thread.start_new_thread(self.updateScreen,tuple())
 
 		#def process(self):
-		def __onTick(self):
+		def _onTick(self):
 			#time.sleep(1)
 			#gtk.main_iteration(block=False)
 			#print "rma: onTick()..."
@@ -375,7 +375,7 @@ class rma(Agent.Agent):
 			
 		def idle(self):
 			#MIGUEL
-			msg = self.__receive(True,0.2)
+			msg = self._receive(True,0.2)
 			if (msg != None):
 				win = rma.ACLMessageViewer(msg)
 			return True
@@ -385,7 +385,7 @@ class rma(Agent.Agent):
 				gtk.main_iteration()
 
 		
-	def __setup(self):
+	def _setup(self):
 		self.setDefaultBehaviour(rma.GUIBehaviour())
 		#print "GUIBehaviour anyadido como default bahaviour..."
 		#self.addBehaviour(rma.TestBehaviour(5))
