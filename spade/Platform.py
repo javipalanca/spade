@@ -26,10 +26,10 @@ class SpadePlatform(Agent.PlatformAgent):
 					#print "############# k != plat?"
 					#print " k>>"+k[7:] + "    plat>>"+self.myAgent.getSpadePlatformJID()
 					if k[7:] != self.myAgent.getSpadePlatformJID():
-						self.myAgent.sendTo(newmsg, k[7:])
+						self.myAgent._sendTo(newmsg, k[7:])
 					else:
 						for recv in v:
-							self.myAgent.sendTo(newmsg, recv.getName())
+							self.myAgent._sendTo(newmsg, recv.getName())
 					# Reenviamos el msg a todos los destinatarios
 					# Deberiamos de comprobar si el destinatario estaen otro servidor y reenviarselo a la plataforma en vez de a el.
 					# Tambien deberiamos comprobar el protocolo y usar una pasarela en el caso de que sea necesario.
