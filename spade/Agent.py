@@ -83,7 +83,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	non jabber:x:fipa chat messages callback
 	"""
-	print "NON-FIPA MESSAGE RECEIVED: " + str(mess)
+	#print "NON-FIPA MESSAGE RECEIVED: " + str(mess)
         pass
 
     
