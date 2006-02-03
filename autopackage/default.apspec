@@ -9,7 +9,7 @@ Packager: Gustavo Aranda <garanda@dsic.upv.es>
 Summary: SPADE (Smart Python multi-Agent Development Environment)
 URL: http://magentix.gti-ia.dsic.upv.es
 License: GNU General Public License, Version 2
-SoftwareVersion: 1.9.4
+SoftwareVersion: 1.9.6
 AutopackageTarget: 1.0
 
 # Only uncomment InterfaceVersion if your package exposes interfaces to other software,
@@ -43,7 +43,6 @@ $source_dir/usr
 $source_dir/xmpp
 $source_dir/xmppd
 $source_dir/tlslite
-$source_dir/munkware
 EOF
 
 [Prepare]

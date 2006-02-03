@@ -86,7 +86,8 @@ class PlugIn:
 import transports,dispatcher,auth,roster
 class CommonClient:
     """ Base for Client and Component classes."""
-    def __init__(self,server,port=5222,debug=['always', 'nodebuilder']):
+    #def __init__(self,server,port=5222,debug=['always', 'nodebuilder']):
+    def __init__(self,server,port=5222,debug=[]):
         """ Caches server name and (optionally) port to connect to. "debug" parameter specifies
             the debug IDs that will go into debug output. You can either specifiy an "include"
             or "exclude" list. The latter is done via adding "always" pseudo-ID to the list.
@@ -98,7 +99,8 @@ class CommonClient:
         self.disconnect_handlers=[]
         self.Server=server
         self.Port=port
-        if debug and type(debug)<>list: debug=['always', 'nodebuilder']
+        #if debug and type(debug)<>list: debug=['always', 'nodebuilder']
+        if debug and type(debug)<>list: debug=[]
         self._DEBUG=Debug.Debug(debug)
         self.DEBUG=self._DEBUG.Show
         self.debug_flags=self._DEBUG.debug_flags
@@ -224,7 +226,8 @@ class Client(CommonClient):
 
 class Component(CommonClient):
     """ Component class. The only difference from CommonClient is ability to perform component authentication. """
-    def __init__(self,server,port=5347,typ=None,debug=['always', 'nodebuilder']):
+    #def __init__(self,server,port=5347,typ=None,debug=['always', 'nodebuilder']):
+    def __init__(self,server,port=5347,typ=None,debug=[]):
         """ Init function for Components.
             As components use a different auth mechanism which includes the namespace of the component.
             Jabberd1.4 and Ejabberd use the default namespace then for all client messages.

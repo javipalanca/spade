@@ -3,6 +3,9 @@ import os
 import sys
 from distutils.core import setup, Extension
 import glob
+
+from runspade import VERSION
+
 #if os.name != "posix":
 #	import py2exe
 try:
@@ -24,7 +27,7 @@ else:
 if os.name == "posix":
 	#if sys.platform != "darwin":
 		setup(name='SPADE',
-		version='1.9.4',
+		version=VERSION,
 		description='Smart Python multi-Agent Development Environment',
 		author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
 		author_email='jpalanca@dsic.upv.es',
@@ -46,7 +49,7 @@ if os.name == "posix":
 
 else:
 	setup(name='SPADE',
-	version='1.9.4',
+	version=VERSION,
 	description='Smart Python multi-Agent Development Environment',
 	author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
 	author_email='jpalanca@dsic.upv.es',
