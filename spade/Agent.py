@@ -73,7 +73,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		ACLmsg.setContent(payload_esc)
 
                 self.postMessage(ACLmsg)
-		#print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MSG POSTEADO:" + str(ACLmsg.getContent())
             else:
                 self._other_messageCB(conn,mess)
 
@@ -94,8 +93,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         while 1:
 	    try:
-	            v = self.jabber.Process(0.4)
-		    #print "jabber_process: " + str(v)
+	            self.jabber.Process(0.4)
 	    except:
 		    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
 		    pass
@@ -223,33 +221,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             while(self.isAlive()):
                 #Check for new Messages form the server
-                #self.jabber.Process(1)
                 #Check for queued messages
-                #time.sleep(0.1)
                 proc = False
-		#self.kk("ANTES")
-		print self.getAID().getName() + " waits for a msg"
                 msg = self._receive(block=True)
-		#self.kk("DESPUES")
-                #msg = self.receive()
                 if (msg != None):
                     for b in self._behaviourList:
                         t = self._behaviourList[b]
                         if (t != None):
                             if (t.match(msg) == True):
-				#print "soy un B y voy a postear"
                                 b.postMessage(msg)
-				#print ">>>>MSG posteado al comportamiento "
-
                                 #if (b.done() == True):
                                 #    self.removeBehaviour(b)
                                 proc = True
                                 break
                     if (proc == False):
                         if (self._defaultbehaviour != None):
-				#print "soy el B por defecto"
                        		self._defaultbehaviour.postMessage(msg)
-				#print ">>>>MSG posteado al B por defecto "
             #Stop the Behaviours
             for b in self._behaviourList:
                 self.removeBehaviour(b)
@@ -300,12 +287,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	removes a behavior from the agent
 	"""
+        behaviour.kill()
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
-	    print "removeBehaviour: KeyError"
+	    #print "removeBehaviour: KeyError"
             pass
-        behaviour.kill()
 
     class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
         def __init__(self, msg, AAD, debug = False):
