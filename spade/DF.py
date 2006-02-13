@@ -234,14 +234,11 @@ class DF(Agent.PlatformAgent):
 			#print self.content.action.modify[0][1]
 			try:
 					dad = DF.DfAgentDescription(self.content.action.modify[0][1])
-					print "fuego el 1"
 			except Exception,err:
 				error = "(missing-argument ams-agent-description)" 
-				print "fuego el 1.5"
 
 			if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
 				error = "(unauthorised)"
-				print "fuego el 1.6"
 
 			if error:
 				reply = self.msg.createReply()
@@ -249,19 +246,16 @@ class DF(Agent.PlatformAgent):
 				reply.setPerformative("refuse")
 				reply.setContent("( "+self.msg.getContent() + error + ")")
 				self.myAgent.send(reply)
-				print "fuego el 1.7"
 
 				return -1
 
 			else:
 	
-				print "fuego el 2"
 				reply = self.msg.createReply()
 				reply.setSender(self.myAgent.getAID())
 				reply.setPerformative("agree")
 				reply.setContent("(" + str(self.msg.getContent()) + " true)")
 				self.myAgent.send(reply)
-				print "fuego el 2"
 
 
 
@@ -358,19 +352,24 @@ class DfAgentDescription:
 		and len(self.scope)>0 and len(y.getScope())>0:
 			return False
 
-		return True
+		if len(self.services)>0 and len(y.getServices())>0:
+			for i in self.services:
+				for j in y.getServices():
+					if i == j:
+						return True
+			return False
+		else:
+			return True
 
 	def __ne__(self,y):
 		return not self == y
 
 
 	def loadSL0(self,content):
-		print content.keys()
 		if content != None:
 			if "name" in content:
 				self.name.loadSL0(content.name)
 
-			print "OK 1"
 
 			if "services" in content:
 				#TODO: el parser solo detecta 1 service-description!!!
@@ -379,29 +378,23 @@ class DfAgentDescription:
 				for i in content.services.set:
 					sd = ServiceDescription(i[1])
 					self.services.append(sd)
-			print "OK 2"
 
 			if "protocols" in content:
 				self.protocols = content.protocols.set.asList()
 
-			print "OK 3"
 			if "ontologies" in content:
 				self.ontologies = content.ontologies.set.asList()
-			print "OK 4"
 
 			if "languages" in content:
 				self.languages = content.languages.set.asList()
-			print "OK 5"
 
 			if "lease-time" in content:
 				self.lease_time = BasicFipaDateTime.BasicFipaDateTime()
 				#self.lease_time.fromString(content["lease-time"])
 				self.lease_time = content["lease-time"][0]
-			print "OK 6"
 
 			if "scope" in content:
 				self.scope = content.scope.set.asList()
-			print "OK 7"
 
 	def __str__(self):
 
