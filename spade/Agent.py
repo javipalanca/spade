@@ -722,6 +722,26 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	##################################
 
+class jabberProcess(threading.Thread):
+
+	def __init__(self, socket):
+		self.jabber = socket
+		threading.Thread.__init__(self)
+		
+
+	def run(self):
+		"""
+		periodic jabber update
+		"""
+		while 1:
+		    try:
+		            self.jabber.Process(0.4)
+		    except:
+			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
+			    pass
+
+		
+
 class PlatformAgent(AbstractAgent):
     """
     A PlatformAgent is a SPADE component.
@@ -750,7 +770,10 @@ class PlatformAgent(AbstractAgent):
 
         #print "auth ok", name
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
-        thread.start_new_thread(self._jabber_process, tuple())
+
+	jabber_process = jabberProcess(self.jabber)
+	jabber_process.start()
+        #thread.start_new_thread(self._jabber_process, tuple())
 
 class Agent(AbstractAgent):
     """
@@ -799,9 +822,12 @@ class Agent(AbstractAgent):
             else:
                 raise NotImplementedError
 	    
-
-        thread.start_new_thread(self._jabber_process, tuple())
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
+
+        #thread.start_new_thread(self._jabber_process, tuple())
+	jabber_process = jabberProcess(self.jabber)
+	jabber_process.start()
+
 
     def run(self):
 	"""
