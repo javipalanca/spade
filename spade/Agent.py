@@ -35,6 +35,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._behaviourList = dict()
         self._isAlive = True
 
+	self.setName(str(agentjid)
+
 
 
     def _jabber_messageCB(self, conn, mess):
@@ -258,8 +260,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		while(self.isAlive()):
 			time.sleep(1)
 	except:
-		print "start_and_wait: AGENT IS NOT ALIVE!!!"
-		pass
+            #Stop the Behaviours
+            for b in self._behaviourList:
+                self.removeBehaviour(b)
+            if (self._defaultbehaviour != None):
+                self._defaultbehaviour.kill()
+            #DeInit the Agent
+            self.takeDown()
 
         
     def setDefaultBehaviour(self, behaviour):
