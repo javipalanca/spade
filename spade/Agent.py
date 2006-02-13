@@ -35,8 +35,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._behaviourList = dict()
         self._isAlive = True
 
-	self.setName(str(agentjid)
-
+	self.setName(str(agentjid))
 
 
     def _jabber_messageCB(self, conn, mess):
