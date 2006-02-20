@@ -412,8 +412,35 @@ class Server:
         if self.routes.has_key(peer): del self.routes[peer]
         return s
 
+    def process_socket(self, fileno, ev):
+        sock=self.sockets[fileno]
+        if isinstance(sock,Session):
+            sess=sock
+            try: data=sess.receive()
+            except IOError: # client closed the connection
+               sess.terminate_stream()
+               data=''
+            if data:
+               try:
+                   sess.Parse(data)
+               except simplexml.xml.parsers.expat.ExpatError:
+                   sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+        elif isinstance(sock,socket.socket):
+                conn, addr = sock.accept()
+                host,port=sock.getsockname()
+                if port in [5222,5223]: sess=Session(conn,self,NS_CLIENT)
+		elif port in [9000,9001,9002]: sess=Session(conn, self, NS_COMPONENT_ACCEPT)  # It is a component
+                else: sess=Session(conn,self,NS_SERVER)
+                self.registersession(sess)
+                if port==5223: self.TLS.startservertls(sess)
+        else: raise "Unknown instance type: %s"%sock
+	
+
     def handle(self):
-        for fileno,ev in self.sockpoll.poll(1000):
+        #for fileno,ev in self.sockpoll.poll(1000):
+        for fileno,ev in self.sockpoll.poll(10):
+	    process_socket(fileno, ev)
+	    '''
             sock=self.sockets[fileno]
             if isinstance(sock,Session):
                 sess=sock
@@ -435,11 +462,13 @@ class Server:
                 self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
             else: raise "Unknown instance type: %s"%sock
+	    '''
 
     def run(self):
 	self.DEBUG('server', "SERVER ON THE RUN", 'info')
         try:
-            while 1: self.handle()
+            while 1: 
+		self.handle()
         except KeyboardInterrupt:
             self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
             self.shutdown(STREAM_SYSTEM_SHUTDOWN)
