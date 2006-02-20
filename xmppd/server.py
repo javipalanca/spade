@@ -439,7 +439,7 @@ class Server:
     def handle(self):
         #for fileno,ev in self.sockpoll.poll(1000):
         for fileno,ev in self.sockpoll.poll(10):
-	    process_socket(fileno, ev)
+	    self.process_socket(fileno, ev)
 	    '''
             sock=self.sockets[fileno]
             if isinstance(sock,Session):
