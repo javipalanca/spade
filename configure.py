@@ -278,9 +278,9 @@ def generateCode():
 	jabber_template = jabber_template.replace('$DNSRV$', dnsrv)
 	jabber_template = jabber_template.replace('$ERRORLOG$', errorlog)
 
-	file = open("usr/share/spade/jabberd/jabber.xml", "w+b")
-	file.write(jabber_template)
-	file.close()
+	#file = open("usr/share/spade/jabberd/jabber.xml", "w+b")
+	#file.write(jabber_template)
+	#file.close()
 
 	spadexml = """
 	<spade>
