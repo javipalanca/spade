@@ -93,10 +93,12 @@ class DB(PlugIn):
 		# We only accept server domains, not every domain
 		if domain in server.servernames:
 			db[domain][str(username)] = str(password)
+			self.DEBUG('registeruser: User registered in domain ' + str(domain) , 'info')
 			self.savedb()
 			#print "#### Trying to save database"
 			return True
 		else:
+			self.DEBUG('registeruser: User NOT registered in domain ' + str(domain) , 'error')
 			return False
 	except:
 		return False
