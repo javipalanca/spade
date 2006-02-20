@@ -91,7 +91,7 @@ class DB(PlugIn):
     def registeruser(self,domain,username,password):
 	try:
 		# We only accept server domains, not every domain
-		if domain in server.servernames:
+		if domain in self._owner.servernames:
 			db[domain][str(username)] = str(password)
 			self.DEBUG('registeruser: User registered in domain ' + str(domain) , 'info')
 			self.savedb()
