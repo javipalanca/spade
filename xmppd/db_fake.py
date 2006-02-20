@@ -67,6 +67,10 @@ class DB(PlugIn):
 	try:
 		if self.loaddb():
 			self.DEBUG('DB: User database loaded', 'info')
+			# Create a dict for every servername
+			for name in server.servernames:
+				if name not in db.keys():
+					db[name] = {}
 		else:
 			self.DEBUG('DB: Could NOT load user database. Building own', 'error')
 			try:
@@ -85,10 +89,14 @@ class DB(PlugIn):
 
     def registeruser(self,domain,username,password):
 	try:
-		db[domain][str(username)] = str(password)
-		self.savedb()
-		#print "#### Trying to save database"
-		return True
+		# We only accept server domains, not every domain
+		if domain in server.servernames:
+			db[domain][str(username)] = str(password)
+			self.savedb()
+			#print "#### Trying to save database"
+			return True
+		else:
+			return False
 	except:
 		return False
 
