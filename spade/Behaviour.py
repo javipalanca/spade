@@ -330,7 +330,7 @@ class PeriodicBehaviour(Behaviour):
 		
 	def _process(self):
 		if (time.time() >= self._nextActivation):
-			self.onTick()
+			self._onTick()
 			while (self._nextActivation <= time.time()):
 				self._nextActivation += self._period
 		else:
