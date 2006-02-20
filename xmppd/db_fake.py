@@ -71,6 +71,7 @@ class DB(PlugIn):
 			for name in server.servernames:
 				if name not in db.keys():
 					db[name] = {}
+			self.savedb()
 		else:
 			self.DEBUG('DB: Could NOT load user database. Building own', 'error')
 			try:
