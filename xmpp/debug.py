@@ -407,8 +407,11 @@ class Debug:
         prefix= self.prefix+prefixcolor+(flag+' '*12)[:12]+' '+(prefix+' '*6)[:6]
 
         self.show(msg, flag, prefix)
-
-	self.debug_mutex.release()
+	
+	try:
+		self.debug_mutex.release()
+	except:
+		pass
 
         #self.debug_mutex.lock(self.show,(msg, flag, prefix))
 	#self.debug_mutex.unlock()
