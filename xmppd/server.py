@@ -371,8 +371,8 @@ class Server:
 	#	self._DEBUG = Debug.NoDebug()
 	#else:
 	self._DEBUG=Debug.Debug(debug)
-        #self.DEBUG=self._DEBUG.Show
-        self.DEBUG=self.DEBUG_ts
+        self.DEBUG=self._DEBUG.Show
+        #self.DEBUG=self.DEBUG_ts
         self.debug_flags=self._DEBUG.debug_flags
         self.debug_flags.append('session')
         self.debug_flags.append('dispatcher')
