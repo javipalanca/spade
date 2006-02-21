@@ -8,6 +8,7 @@ import jep0077
 import jep0078
 import router
 import stream
+import stanza_queue
 
 #addons = [
 # System stuff
