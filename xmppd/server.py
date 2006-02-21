@@ -336,7 +336,9 @@ class Socket_Process(threading.Thread):
 
 	def run(self):
 		while 1:
+		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
 			t = self.__owner.data_queue.get()
+		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
 			sess=t[0]
 			data = t[1]
 			try:
@@ -437,7 +439,7 @@ class Server:
         except KeyError: pass
 
     def deactivatesession(self, peer):
-        s=self.getsession(peer)
+        s=self.getsession(peer
         if self.routes.has_key(peer): del self.routes[peer]
         return s
 
@@ -454,7 +456,9 @@ class Server:
                     sess.terminate_stream()
                     data=''
                 if data:
+		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
 		    self.data_queue.put((sess,data))
+		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
 		    """
                     try:
                         sess.Parse(data)
