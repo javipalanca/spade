@@ -475,7 +475,7 @@ class Server:
     def run(self):
 	self.DEBUG('server', "SERVER ON THE RUN", 'info')
 
-	for i in self.max_threads:
+	for i in range(0,self.max_threads):
 		th = Socket_Process(self)
 		th.start()
 		self.thread_pull.append(th)
