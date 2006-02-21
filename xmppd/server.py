@@ -439,7 +439,7 @@ class Server:
         except KeyError: pass
 
     def deactivatesession(self, peer):
-        s=self.getsession(peer
+        s=self.getsession(peer)
         if self.routes.has_key(peer): del self.routes[peer]
         return s
 
