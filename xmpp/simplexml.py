@@ -358,7 +358,6 @@ class NodeBuilder:
         else: self.xmlns=uri
     def DEBUG(self, level, text, comment=None):
         """ Gets all NodeBuilder walking events. Can be used for debugging if redefined."""
-	pass
     def getDom(self):
         """ Returns just built Node. """
         return self._mini_dom
