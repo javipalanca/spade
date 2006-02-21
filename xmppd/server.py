@@ -349,7 +349,7 @@ class Socket_Process(threading.Thread):
 				sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 class Server:
 
-    def DEBUG_ts(self, orig, msg, type=None):
+    def DEBUG_ts(self, orig, msg, type=''):
 	self.debug_mutex.acquire()
 	self._DEBUG.Show(orig, msg, type)
 	self.debug_mutex.release()
