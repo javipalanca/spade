@@ -404,9 +404,10 @@ class Debug:
         
         prefix= self.prefix+prefixcolor+(flag+' '*12)[:12]+' '+(prefix+' '*6)[:6]
 
+        self.show(msg, flag, prefix)
 
-        self.debug_mutex.lock(self.show,(msg, flag, prefix))
-	self.debug_mutex.unlock()
+        #self.debug_mutex.lock(self.show,(msg, flag, prefix))
+	#self.debug_mutex.unlock()
 
     def is_active( self, flag ):
         if not self.active: return 0
