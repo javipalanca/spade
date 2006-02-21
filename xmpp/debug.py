@@ -159,7 +159,7 @@ class Debug:
                   welcome = -1
                   ):
         
-	self.debug_mutex = threading.Lock()
+	self.debug_mutex = threading.RLock()
 
         self.debug_flags = []
         if welcome == -1:
@@ -396,7 +396,8 @@ class Debug:
 
     colors={}
     def Show(self, flag, msg, prefix=''):
-	self.debug_mutex.acquire(0)
+
+	self.debug_mutex.acquire()
 
         msg=msg.replace('\r','\\r').replace('\n','\\n')
         if self.colors.has_key(prefix): msg=self.colors[prefix]+msg+color_none
