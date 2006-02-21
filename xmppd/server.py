@@ -20,6 +20,8 @@ from xmpp import *
 from xmppd import *
 from constants import *
 
+from stanza_queue import StanzaQueue
+
 import ch
 import config
 import db_fake
@@ -113,7 +115,8 @@ class Session:
         self._stream_pos_sent=0
         self.deliver_key_queue=[]
         self.deliver_queue_map={}
-        self.stanza_queue=[]
+        #self.stanza_queue=[]
+	self.stanza_queue = StanzaQueue()
 
         self._session_state=SESSION_NOT_AUTHED
         self.waiting_features=[]
@@ -176,7 +179,9 @@ class Session:
                 self.dispatch(Error(self.deliver_queue_map[key],failreason))                                          # should simply re-dispatch it?
             for stanza in self.stanza_queue:                              # But such action can invoke
                 self.dispatch(Error(stanza,failreason))                                          # Infinite loops in case of S2S connection...
-            self.deliver_queue_map,self.deliver_key_queue,self.stanza_queue={},[],[]
+            #self.deliver_queue_map,self.deliver_key_queue,self.stanza_queue={},[],[]
+            self.deliver_queue_map,self.deliver_key_queue={},[]
+	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
             #### LOCK_QUEUE
@@ -187,7 +192,8 @@ class Session:
                 self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
                 self.deliver_queue_map[self._stream_pos_queued]=stanza     # position of the stream when stanza will be successfully and fully sent
                 self.deliver_key_queue.append(self._stream_pos_queued)
-            self.stanza_queue=[]
+            #self.stanza_queue=[]
+            self.stanza_queue.init()
             #### UNLOCK_QUEUE
 
         if self.sendbuffer and select.select([],[self._sock],[])[1]:
