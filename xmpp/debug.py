@@ -45,7 +45,7 @@ from string import join
 
 import types
 
-import mutex
+import threading
 
 
 
@@ -159,6 +159,8 @@ class Debug:
                   welcome = -1
                   ):
         
+	self.debug_mutex = threading.Lock()
+
         self.debug_flags = []
         if welcome == -1:
             if active_flags and len(active_flags):
@@ -207,7 +209,6 @@ class Debug:
             raise 'Invalid type for flag_show!', msg2
 
 
-	self.mutex = mutex.mutex()        
 
 
     def show( self, msg, flag = None, prefix = None, sufix = None,
@@ -225,7 +226,7 @@ class Debug:
         lf = 1 means add linefeed if not pressent
         """
         
-	self.mutex.lock()
+	self.debug_mutex.acquire()
 
         if self.validate_flags:
             self._validate_flag( flag )
@@ -284,7 +285,7 @@ class Debug:
             self._fh.write( '%s%s%s' % ( pre, s, suf ))
         self._fh.flush()
 
-	self.mutex.unlock()
+	self.debug_mutex.release()
             
                 
     def is_active( self, flag ):
