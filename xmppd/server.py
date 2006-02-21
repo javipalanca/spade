@@ -21,6 +21,7 @@ from xmppd import *
 from constants import *
 
 from stanza_queue import StanzaQueue
+from Queue import Queue
 
 import ch
 import config
@@ -63,7 +64,7 @@ addons = [
 #    print "Firing up PsyCo"
 #    from psyco.classes import *
 
-import socket,select,random,os,thread,errno,sys
+import socket,select,random,os,thread,errno,sys,threading
 from getopt import getopt
 """
 _socket_state live/dead
@@ -326,11 +327,35 @@ class Session:
     def set_stream_state(self,newstate):
         if self._stream_state<newstate: self._stream_state=newstate
 
+
 class Server:
-    def __init__(self,debug=[],cfgfile=None):
+
+	class Socket_Process(threading.Thread):
+
+		def __init__(self, owner):
+			self.__owner = owner
+			threading.Thread.__init__(self)
+
+		def run(self):
+			while 1:
+				t = self._owner.data_queue.get()
+				sess=t[0]
+				data = t[1]
+				try:
+                        		sess.Parse(data)
+				except simplexml.xml.parsers.expat.ExpatError:
+		                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+
+
+    def __init__(self,debug=[],cfgfile=None, max_threads=10):
         self.sockets={}
         self.sockpoll=select.poll()
         self.ID=`random.random()`[2:]
+
+	self.data_queue = Queue()
+
+	self.thread_pull = []
+	self.max_threads = max_threads
 
         # if debug == None:
 	#	self._DEBUG = Debug.NoDebug()
@@ -418,35 +443,11 @@ class Server:
         if self.routes.has_key(peer): del self.routes[peer]
         return s
 
-    def process_socket(self, fileno, ev):
-        sock=self.sockets[fileno]
-        if isinstance(sock,Session):
-            sess=sock
-            try: data=sess.receive()
-            except IOError: # client closed the connection
-               sess.terminate_stream()
-               data=''
-            if data:
-               try:
-                   sess.Parse(data)
-               except simplexml.xml.parsers.expat.ExpatError:
-                   sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
-        elif isinstance(sock,socket.socket):
-                conn, addr = sock.accept()
-                host,port=sock.getsockname()
-                if port in [5222,5223]: sess=Session(conn,self,NS_CLIENT)
-		elif port in [9000,9001,9002]: sess=Session(conn, self, NS_COMPONENT_ACCEPT)  # It is a component
-                else: sess=Session(conn,self,NS_SERVER)
-                self.registersession(sess)
-                if port==5223: self.TLS.startservertls(sess)
-        else: raise "Unknown instance type: %s"%sock
-	
-
     def handle(self):
         #for fileno,ev in self.sockpoll.poll(1000):
         for fileno,ev in self.sockpoll.poll(10):
-	    self.process_socket(fileno, ev)
-	    '''
+	    #self.process_socket(fileno, ev)
+	    
             sock=self.sockets[fileno]
             if isinstance(sock,Session):
                 sess=sock
@@ -455,10 +456,13 @@ class Server:
                     sess.terminate_stream()
                     data=''
                 if data:
+		    self.data_queue.put((sess,data))
+		    """
                     try:
                         sess.Parse(data)
                     except simplexml.xml.parsers.expat.ExpatError:
                         sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+		    """
             elif isinstance(sock,socket.socket):
                 conn, addr = sock.accept()
                 host,port=sock.getsockname()
@@ -468,10 +472,16 @@ class Server:
                 self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
             else: raise "Unknown instance type: %s"%sock
-	    '''
+	    
 
     def run(self):
 	self.DEBUG('server', "SERVER ON THE RUN", 'info')
+
+	for i in self.max_threads:
+		th = Socket_Process()
+		th.start()
+		self.thread_pull.append(th)
+
         try:
             while 1: 
 		self.handle()
