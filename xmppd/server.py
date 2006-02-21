@@ -444,8 +444,7 @@ class Server:
         return s
 
     def handle(self):
-        #for fileno,ev in self.sockpoll.poll(1000):
-        for fileno,ev in self.sockpoll.poll(10):
+        for fileno,ev in self.sockpoll.poll(1000):
 	    #self.process_socket(fileno, ev)
 	    
             sock=self.sockets[fileno]
