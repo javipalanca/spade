@@ -336,7 +336,7 @@ class Socket_Process(threading.Thread):
 
 	def run(self):
 		while 1:
-			t = self._owner.data_queue.get()
+			t = self.__owner.data_queue.get()
 			sess=t[0]
 			data = t[1]
 			try:
