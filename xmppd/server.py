@@ -33,6 +33,8 @@ import jep0078
 import router
 import stream
 
+import threading
+
 addons = [
 # System stuff
     config.Config,
@@ -347,7 +349,15 @@ class Socket_Process(threading.Thread):
 				sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 class Server:
 
+    def DEBUG_ts(self, orig, msg, type=None):
+	self.debug_mutex.acquire()
+	self._DEBUG.Show(orig, msg, type)
+	self.debug_mutex.release()
+	
+
     def __init__(self,debug=[],cfgfile=None, max_threads=10):
+	self.debug_mutex = threading.Lock()
+
         self.sockets={}
         self.sockpoll=select.poll()
         self.ID=`random.random()`[2:]
@@ -361,7 +371,8 @@ class Server:
 	#	self._DEBUG = Debug.NoDebug()
 	#else:
 	self._DEBUG=Debug.Debug(debug)
-        self.DEBUG=self._DEBUG.Show
+        #self.DEBUG=self._DEBUG.Show
+        self.DEBUG=self.DEBUG_ts
         self.debug_flags=self._DEBUG.debug_flags
         self.debug_flags.append('session')
         self.debug_flags.append('dispatcher')
