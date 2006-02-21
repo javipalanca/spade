@@ -396,7 +396,7 @@ class Debug:
 
     colors={}
     def Show(self, flag, msg, prefix=''):
-	self.debug_mutex.acquire()
+	self.debug_mutex.acquire(blocking = 0)
 
         msg=msg.replace('\r','\\r').replace('\n','\\n')
         if self.colors.has_key(prefix): msg=self.colors[prefix]+msg+color_none
