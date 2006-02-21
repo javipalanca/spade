@@ -336,9 +336,9 @@ class Socket_Process(threading.Thread):
 
 	def run(self):
 		while 1:
-		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
+		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
 			t = self.__owner.data_queue.get()
-		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
+		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
 			sess=t[0]
 			data = t[1]
 			try:
@@ -455,9 +455,9 @@ class Server:
                     sess.terminate_stream()
                     data=''
                 if data:
-		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
+		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
 		    self.data_queue.put((sess,data))
-		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
+		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
 		    """
                     try:
                         sess.Parse(data)
