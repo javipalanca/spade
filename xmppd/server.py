@@ -332,19 +332,19 @@ class Server:
 
 	class Socket_Process(threading.Thread):
 
-		def __init__(self, owner):
-			self.__owner = owner
-			threading.Thread.__init__(self)
+	     def __init__(self, owner):
+		     self.__owner = owner
+		     threading.Thread.__init__(self)
 
-		def run(self):
-			while 1:
-				t = self._owner.data_queue.get()
-				sess=t[0]
-				data = t[1]
-				try:
-                        		sess.Parse(data)
-				except simplexml.xml.parsers.expat.ExpatError:
-		                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+	     def run(self):
+		     while 1:
+			     t = self._owner.data_queue.get()
+			     sess=t[0]
+			     data = t[1]
+			     try:
+                        	  sess.Parse(data)
+			     except simplexml.xml.parsers.expat.ExpatError:
+		                  sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 
 
     def __init__(self,debug=[],cfgfile=None, max_threads=10):
