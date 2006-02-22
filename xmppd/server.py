@@ -467,14 +467,14 @@ class Server:
                     data=''
                 if data:
 		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
-		    self.data_queue.put((sess,data))
+		    #self.data_queue.put((sess,data))
 		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
-		    """
+		    
                     try:
                         sess.Parse(data)
                     except simplexml.xml.parsers.expat.ExpatError:
                         sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
-		    """
+		    
             elif isinstance(sock,socket.socket):
                 conn, addr = sock.accept()
                 host,port=sock.getsockname()
