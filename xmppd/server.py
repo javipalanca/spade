@@ -350,9 +350,9 @@ class Socket_Process(threading.Thread):
 class Server:
 
     def DEBUG_ts(self, orig, msg, type=''):
-	self.debug_mutex.acquire()
+	#self.debug_mutex.acquire()
 	self._DEBUG.Show(orig, msg, type)
-	self.debug_mutex.release()
+	#self.debug_mutex.release()
 	
 
     def __init__(self,debug=[],cfgfile=None, max_threads=10):
