@@ -332,21 +332,74 @@ class Session:
 
 class Socket_Process(threading.Thread):
 
-	def __init__(self, owner):
-		self.__owner = owner
+	def __init__(self, s):
+		#self.__owner = owner
+		self.session = s
+        	self.__sockpoll=select.poll()
+		self.sockets = {}
+        	#self.SESS_LOCK=thread.allocate_lock()
 		threading.Thread.__init__(self)
+		
+		self.isAlive = True
+
+	def registersession(self):
+	        #self.SESS_LOCK.acquire()
+	        if isinstance(self.session,Session):
+	            if self.session._registered:
+	                #self.SESS_LOCK.release()
+	                if self._DEBUG.active: raise "Twice session Registration!"
+	                else: return
+	            self.session._registered=1
+	            self.sockets[self.session.fileno()]=self.session
+	            self.__sockpoll.register(self.session,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+ 	            self.DEBUG('server','registered %s (%s)'%(self.session.fileno(),self.session))
+	            #self.SESS_LOCK.release()
+
+	def unregistersession(self):
+		#self.SESS_LOCK.acquire()
+		if isinstance(self.session,Session):
+			if not self.session._registered:
+				#self.SESS_LOCK.release()
+				if self._DEBUG.active: raise "Twice session UNregistration!"
+				else: return
+			self.session._registered=0
+			self.__sockpoll.unregister(self.session)
+			del self.sockets[self.session.fileno()]
+			self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
+			#self.SESS_LOCK.release()
+			self.isAlive = False
+
+
 
 	def run(self):
-		while 1:
-		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
-			t = self.__owner.data_queue.get()
-		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
-			sess=t[0]
-			data = t[1]
-			try:
-                        	sess.Parse(data)
-			except simplexml.xml.parsers.expat.ExpatError:
-				sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+		while self.isAlive:
+
+		        for fileno,ev in self.__sockpoll.poll():
+	    
+		            sock=self.sockets[fileno]
+
+		            if isinstance(sock,Session):
+		                sess=sock
+                		try: data=sess.receive()
+		                except IOError: # client closed the connection
+		                    sess.terminate_stream()
+                		    data=''
+		                if data:
+                    		try:
+		                        sess.Parse(data)
+                 	        except simplexml.xml.parsers.expat.ExpatError:
+		                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+		    
+
+		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
+			#t = self.__owner.data_queue.get()
+		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
+			#sess=t[0]
+			#data = t[1]
+			#try:
+                        # 	sess.Parse(data)
+			#except simplexml.xml.parsers.expat.ExpatError:
+			#	sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 class Server:
 
     def DEBUG_ts(self, orig, msg, type=''):
@@ -456,9 +509,10 @@ class Server:
 
     def handle(self):
         for fileno,ev in self.sockpoll.poll(1000):
-	    #self.process_socket(fileno, ev)
 	    
             sock=self.sockets[fileno]
+
+	    """
             if isinstance(sock,Session):
                 sess=sock
                 try: data=sess.receive()
@@ -466,23 +520,30 @@ class Server:
                     sess.terminate_stream()
                     data=''
                 if data:
-		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
-		    self.data_queue.put((sess,data))
-		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
-		    """
+		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
+		    #self.data_queue.put((sess,data))
+		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
+		    
                     try:
                         sess.Parse(data)
                     except simplexml.xml.parsers.expat.ExpatError:
                         sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
-		    """
+		    
 		    
             elif isinstance(sock,socket.socket):
+	    """
+            if isinstance(sock,socket.socket):
                 conn, addr = sock.accept()
                 host,port=sock.getsockname()
                 if port in [5222,5223]: sess=Session(conn,self,NS_CLIENT)
 		elif port in [9000,9001,9002]: sess=Session(conn, self, NS_COMPONENT_ACCEPT)  # It is a component
                 else: sess=Session(conn,self,NS_SERVER)
-                self.registersession(sess)
+
+		t = Socket_Process(sess)
+		t.registersession()
+		t.start()
+		self.thread_pull.append(t)
+                #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
             else: raise "Unknown instance type: %s"%sock
 	    
@@ -490,10 +551,10 @@ class Server:
     def run(self):
 	self.DEBUG('server', "SERVER ON THE RUN", 'info')
 
-	for i in range(0,self.max_threads):
-		th = Socket_Process(self)
-		th.start()
-		self.thread_pull.append(th)
+	#for i in range(0,self.max_threads):
+	#	th = Socket_Process(self)
+	#	th.start()
+	#	self.thread_pull.append(th)
 
         try:
             while 1: 
@@ -504,6 +565,11 @@ class Server:
 #        except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
 
     def shutdown(self,reason):
+
+	for th in self.thread_pull:
+		th.unregistersession()
+		
+
         socklist=self.sockets.keys()
         for fileno in socklist:
             s=self.sockets[fileno]
