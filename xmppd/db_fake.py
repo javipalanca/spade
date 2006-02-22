@@ -100,6 +100,8 @@ class DB(PlugIn):
 		else:
 			self.DEBUG('registeruser: User NOT registered in domain ' + str(domain) , 'error')
 			return False
+
+		self.loaddb()
 	except:
 		return False
 
@@ -112,7 +114,7 @@ class DB(PlugIn):
 		#print "#### userdbfile = " + str(self.userdbfile)
 		#print "#### spoolpath = " + str(self.spoolpath)
 		if not os.path.exists(self.spoolpath):
-			self.DEBUG("SpoolPath does no exist!!!", 'warn')
+			self.DEBUG("spoolpath does no exist.", 'warn')
 			p = self.spoolpath.split(os.sep)
 			tmpitem=''
 			for item in p:
