@@ -385,10 +385,10 @@ class Socket_Process(threading.Thread):
 		                    sess.terminate_stream()
                 		    data=''
 		                if data:
-                    		try:
-		                        sess.Parse(data)
-                 	        except simplexml.xml.parsers.expat.ExpatError:
-		                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+                    			try:
+		                        	sess.Parse(data)
+	                 	        except simplexml.xml.parsers.expat.ExpatError:
+			                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 		    
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
