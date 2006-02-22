@@ -338,9 +338,9 @@ class Socket_Process(threading.Thread):
 
 	def run(self):
 		while 1:
-		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
+		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
 			t = self.__owner.data_queue.get()
-		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
+		        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leido " + str(self)
 			sess=t[0]
 			data = t[1]
 			try:
@@ -350,12 +350,12 @@ class Socket_Process(threading.Thread):
 class Server:
 
     def DEBUG_ts(self, orig, msg, type=''):
-	#self.debug_mutex.acquire()
+	self.debug_mutex.acquire()
 	self._DEBUG.Show(orig, msg, type)
-	#self.debug_mutex.release()
+	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=10):
+    def __init__(self,debug=[],cfgfile=None, max_threads=1):
 	self.debug_mutex = threading.Lock()
 
         self.sockets={}
@@ -466,14 +466,15 @@ class Server:
                     sess.terminate_stream()
                     data=''
                 if data:
-		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
-		    #self.data_queue.put((sess,data))
-		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
-		    
+		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
+		    self.data_queue.put((sess,data))
+		    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
+		    """
                     try:
                         sess.Parse(data)
                     except simplexml.xml.parsers.expat.ExpatError:
                         sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+		    """
 		    
             elif isinstance(sock,socket.socket):
                 conn, addr = sock.accept()
