@@ -281,7 +281,12 @@ class Session:
         self.send('</stream:stream>')
         self.set_stream_state(STREAM__CLOSED)
         self.push_queue()       # decompose queue really since STREAM__CLOSED
-        if unregister: self._owner.unregistersession(self)
+        if unregister: 
+		if self._owner.thread_pull.has_key(self):
+			self._owner.thread_pull[self].unregistersession()
+			del self._owner.thread_pull[self]
+		else:
+			self._owner.unregistersession(self)
         self._destroy_socket()
 
     def terminate_stream(self,error=None,unregister=1):
@@ -419,7 +424,7 @@ class Server:
 
 	self.data_queue = Queue()
 
-	self.thread_pull = []
+	self.thread_pull = {}
 	self.max_threads = max_threads
 
         # if debug == None:
@@ -544,7 +549,7 @@ class Server:
 		t = Socket_Process(sess)
 		t.registersession()
 		t.start()
-		self.thread_pull.append(t)
+		self.thread_pull[sess] = t
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
             else: raise "Unknown instance type: %s"%sock
@@ -568,7 +573,7 @@ class Server:
 
     def shutdown(self,reason):
 
-	for th in self.thread_pull:
+	for th in self.thread_pull.values():
 		th.unregistersession()
 		
 
