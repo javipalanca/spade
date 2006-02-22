@@ -347,12 +347,13 @@ class Socket_Process(threading.Thread):
 	        if isinstance(self.session,Session):
 	            if self.session._registered:
 	                #self.SESS_LOCK.release()
-	                if self._DEBUG.active: raise "Twice session Registration!"
-	                else: return
+	                #if self._DEBUG.active: raise "Twice session Registration!"
+	                return
+	                #else: return
 	            self.session._registered=1
 	            self.sockets[self.session.fileno()]=self.session
 	            self.__sockpoll.register(self.session,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
- 	            self.DEBUG('server','registered %s (%s)'%(self.session.fileno(),self.session))
+ 	            #self.DEBUG('server','registered %s (%s)'%(self.session.fileno(),self.session))
 	            #self.SESS_LOCK.release()
 
 	def unregistersession(self):
@@ -360,12 +361,13 @@ class Socket_Process(threading.Thread):
 		if isinstance(self.session,Session):
 			if not self.session._registered:
 				#self.SESS_LOCK.release()
-				if self._DEBUG.active: raise "Twice session UNregistration!"
-				else: return
+				#if self._DEBUG.active: raise "Twice session UNregistration!"
+				return
+				#else: return
 			self.session._registered=0
 			self.__sockpoll.unregister(self.session)
 			del self.sockets[self.session.fileno()]
-			self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
+			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
 			#self.SESS_LOCK.release()
 			self.isAlive = False
 
