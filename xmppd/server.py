@@ -407,6 +407,7 @@ class Socket_Process(threading.Thread):
                         # 	sess.Parse(data)
 			#except simplexml.xml.parsers.expat.ExpatError:
 			#	sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+
 class Server:
 
     def DEBUG_ts(self, orig, msg, type=''):
