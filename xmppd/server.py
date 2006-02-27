@@ -187,7 +187,8 @@ class Session:
 	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-            #### LOCK_QUEUE
+            lock = threading.Lock()
+	    lock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		#print "PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
@@ -197,14 +198,14 @@ class Session:
                 self.deliver_key_queue.append(self._stream_pos_queued)
             #self.stanza_queue=[]
             self.stanza_queue.init()
-            #### UNLOCK_QUEUE
+            lock.release()#### UNLOCK_QUEUE
 
         if self.sendbuffer and select.select([],[self._sock],[])[1]:
             try:
-                # LOCK_QUEUE
+                lock.acquire()# LOCK_QUEUE
                 sent=self._send(self.sendbuffer)
             except:
-                # UNLOCK_QUEUE
+                lock.release()# UNLOCK_QUEUE
                 self.set_socket_state(SOCKET_DEAD)
                 self.DEBUG("Socket error while sending data",'error')
                 return self.terminate_stream()
@@ -215,7 +216,7 @@ class Session:
             while self.deliver_key_queue and self._stream_pos_delivered>self.deliver_key_queue[0]:
                 del self.deliver_queue_map[self.deliver_key_queue[0]]
                 self.deliver_key_queue.remove(self.deliver_key_queue[0])
-            # UNLOCK_QUEUE
+            lock.release()# UNLOCK_QUEUE
 
     def dispatch(self,stanza):
         if self._stream_state==STREAM__OPENED:                  # if the server really should reject all stanzas after he is closed stream (himeself)?
