@@ -175,6 +175,7 @@ class Session:
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
+        lock = threading.Lock()
         if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
             self._owner.deactivatesession(self)
             self.trusted=1
@@ -187,7 +188,6 @@ class Session:
 	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-            lock = threading.Lock()
 	    lock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		#print "PUSHING STANZA: " + str(stanza)
