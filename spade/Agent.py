@@ -34,6 +34,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._defaultbehaviour = None
         self._behaviourList = dict()
         self._alive = True
+	self._forceKill = threading.Event()
+	self._forceKill.clear()
 
 	self.setName(str(agentjid))
 
@@ -186,14 +188,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	kills the agent
 	"""
-        self._alive = False
+        #self._alive = False
+	self._forceKill.set()
 
+    """
     def alive(self):
 	"""
 	returns True if alive
 	else False
 	"""
         return self._alive
+    """
+
+    def forceKill(self):
+            return self._forceKill.isSet()
         
     def _setup(self):
 	"""
@@ -235,7 +243,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._defaultbehaviour.start()
         #Main Loop
         try:
-            while(self.alive()):
+            while(not self.forceKill()):
                 #Check for new Messages form the server
                 #Check for queued messages
                 proc = False
@@ -265,7 +273,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.start()
 	try:
-		while(self.alive()):
+		while(not self.forceKill()):
 			time.sleep(1)
 	except:
 		self.shutdown()
@@ -735,17 +743,23 @@ class jabberProcess(threading.Thread):
 
 	def __init__(self, socket):
 		self.jabber = socket
-		self._alive = True
+		#self._alive = True
+		self._forceKill = threading.Event()
+		self._forceKill.clear()
 		threading.Thread.__init__(self)
 		
 	def kill(self):
-		self._alive=False
+		#self._alive=False
+		self._forceKill.set()
+
+	def forceKill(self):
+		return self._forceKill.isSet()
 
 	def run(self):
 		"""
 		periodic jabber update
 		"""
-		while self._alive:
+		while not self.forceKill():
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
