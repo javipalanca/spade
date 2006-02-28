@@ -874,6 +874,9 @@ class Agent(AbstractAgent):
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
 
+	color_red          = chr(27) + "[31m"
+	color_green        = chr(27) + "[32m"
+
 	self._msg = ACLMessage.ACLMessage()
 	self._msg.addReceiver( self.getAMS() )
 	self._msg.setPerformative('request')
@@ -897,13 +900,13 @@ class Agent(AbstractAgent):
 	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-		print "There was an error initiating the register of agent: " + str(self.getAID().getName()) + " (refuse)"
+		print color_red + "There was an error initiating the register of agent: " + str(self.getAID().getName()) + " (refuse)"
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-		print "Agent: " + str(self.getAID().getName()) + " initiating registering process (agree)"
+		print color_green + "Agent: " + str(self.getAID().getName()) + " initiating registering process (agree)"
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
-		print "There was an error initiating the register of agent: " + str(self.getAID().getName())
+		print color_red + "There was an error initiating the register of agent: " + str(self.getAID().getName())
 		return False
 			
 	# Now we expect the real informative answer from the AMS

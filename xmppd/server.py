@@ -570,6 +570,7 @@ class Server:
 		self.handle()
         except KeyboardInterrupt:
             self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
+	    print "Server: Shuting down ..."
             self.shutdown(STREAM_SYSTEM_SHUTDOWN)
 #        except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
 
