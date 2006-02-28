@@ -932,7 +932,7 @@ class Agent(AbstractAgent):
 		print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (failure)" + color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-		print color_green + "Agent: " color_yellow + + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+		print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
 	else:
 		# There was no real answer from the AMS or it answered something weird, so error
 		print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
