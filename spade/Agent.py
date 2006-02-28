@@ -191,14 +191,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #self._alive = False
 	self._forceKill.set()
 
-    """
+    
     def alive(self):
 	"""
 	returns True if alive
 	else False
 	"""
         return self._alive
-    """
+    
 
     def forceKill(self):
             return self._forceKill.isSet()
