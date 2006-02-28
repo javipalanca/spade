@@ -33,7 +33,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._serverplatform = serverplatform
         self._defaultbehaviour = None
         self._behaviourList = dict()
-        self._isAlive = True
+        self._alive = True
 
 	self.setName(str(agentjid))
 
@@ -186,14 +186,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	kills the agent
 	"""
-        self._isAlive = False
+        self._alive = False
 
-    def isAlive(self):
+    def alive(self):
 	"""
 	returns True if alive
 	else False
 	"""
-        return self._isAlive
+        return self._alive
         
     def _setup(self):
 	"""
@@ -235,7 +235,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._defaultbehaviour.start()
         #Main Loop
         try:
-            while(self.isAlive()):
+            while(self.alive()):
                 #Check for new Messages form the server
                 #Check for queued messages
                 proc = False
@@ -265,7 +265,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.start()
 	try:
-		while(self.isAlive()):
+		while(self.alive()):
 			time.sleep(1)
 	except:
 		self.shutdown()
@@ -735,17 +735,17 @@ class jabberProcess(threading.Thread):
 
 	def __init__(self, socket):
 		self.jabber = socket
-		self.isAlive = True
+		self._alive = True
 		threading.Thread.__init__(self)
 		
 	def kill(self):
-		self.isAlive=False
+		self._alive=False
 
 	def run(self):
 		"""
 		periodic jabber update
 		"""
-		while self.isAlive:
+		while self._alive:
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
