@@ -917,10 +917,10 @@ class Agent(AbstractAgent):
 	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + " (refuse)" + color_none
+		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (refuse)" + color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-		print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + " initiating registering process (agree)" + color_none
+		print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " initiating registering process (agree)" + color_none
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
 		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
@@ -929,13 +929,13 @@ class Agent(AbstractAgent):
 	# Now we expect the real informative answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (msg.getPerformative() == 'failure'):
-		print "There was an error with the register of agent: " + str(self.getAID().getName()) + " (failure)"
+		print color_red + "There was an error with the register of agent: " color_yellow + str(self.getAID().getName()) + color_red + " (failure)" + color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-		print "Agent: " + str(self.getAID().getName()) + " registered correctly (inform)"
+		print color_green + "Agent: " color_yellow + + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
 	else:
 		# There was no real answer from the AMS or it answered something weird, so error
-		print "There was an error with the register of agent: " + str(self.getAID().getName())
+		print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
 		return False
 	
 	return True
