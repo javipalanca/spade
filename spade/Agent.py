@@ -929,7 +929,7 @@ class Agent(AbstractAgent):
 	# Now we expect the real informative answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (msg.getPerformative() == 'failure'):
-		print color_red + "There was an error with the register of agent: " color_yellow + str(self.getAID().getName()) + color_red + " (failure)" + color_none
+		print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (failure)" + color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
 		print color_green + "Agent: " color_yellow + + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
