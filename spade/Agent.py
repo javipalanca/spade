@@ -209,6 +209,21 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         pass
 
+    def shutdown(self):
+
+	self.kill()
+
+	self.jabber_process.kill()
+
+	#Stop the Behaviours
+        for b in self._behaviourList:
+            self.removeBehaviour(b)
+        if (self._defaultbehaviour != None):
+            self._defaultbehaviour.kill()
+        #DeInit the Agent
+        self.takeDown()
+
+
     def run(self):
 	"""
 	periodic agent execution
@@ -238,14 +253,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if (proc == False):
                         if (self._defaultbehaviour != None):
                        		self._defaultbehaviour.postMessage(msg)
-            #Stop the Behaviours
-            for b in self._behaviourList:
-                self.removeBehaviour(b)
-            if (self._defaultbehaviour != None):
-                self._defaultbehaviour.kill()
-            #DeInit the Agent
-            self.takeDown()
-        except:
+	    self.shutdown()
+         except:
 	    print "AGENT IS NOT ALIVE!!!!!" + str(self)
             pass
             
@@ -259,13 +268,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		while(self.isAlive()):
 			time.sleep(1)
 	except:
-            #Stop the Behaviours
-            for b in self._behaviourList:
-                self.removeBehaviour(b)
-            if (self._defaultbehaviour != None):
-                self._defaultbehaviour.kill()
-            #DeInit the Agent
-            self.takeDown()
+		self.shutdown()
 
         
     def setDefaultBehaviour(self, behaviour):
@@ -732,14 +735,17 @@ class jabberProcess(threading.Thread):
 
 	def __init__(self, socket):
 		self.jabber = socket
+		self.isAlive = True
 		threading.Thread.__init__(self)
 		
+	def kill(self):
+		self.isAlive=False
 
 	def run(self):
 		"""
 		periodic jabber update
 		"""
-		while 1:
+		while self.isAlive:
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
@@ -777,8 +783,8 @@ class PlatformAgent(AbstractAgent):
         #print "auth ok", name
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
 
-	jabber_process = jabberProcess(self.jabber)
-	jabber_process.start()
+	self.jabber_process = jabberProcess(self.jabber)
+	self.jabber_process.start()
         #thread.start_new_thread(self._jabber_process, tuple())
 
 class Agent(AbstractAgent):
@@ -831,8 +837,8 @@ class Agent(AbstractAgent):
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
 
         #thread.start_new_thread(self._jabber_process, tuple())
-	jabber_process = jabberProcess(self.jabber)
-	jabber_process.start()
+	self.jabber_process = jabberProcess(self.jabber)
+	self.jabber_process.start()
 
 
     def run(self):
@@ -841,11 +847,15 @@ class Agent(AbstractAgent):
 	registers in AMS, runs the agent and, finally, deregisters it from the AMS
 	"""
 	#print "Registrando...."
-        self.__register_in_AMS()
-	#print "Agent Registred!!!"
+        if not self.__register_in_AMS():
+		print "Agent " + str(self.getAID().getName()) + " dying ..."
+		sys.exit(-1)
+	#print "Agent Registered!!!"
 	AbstractAgent.run(self)
 	#print "Des-Registrando...."
-        self.__deregister_from_AMS()
+        if not self.__deregister_from_AMS():
+		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+		sys.exit(-1)
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
@@ -870,22 +880,31 @@ class Agent(AbstractAgent):
 		
 	self.send(self._msg)
 
+	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
-	if (msg == None) or (str(msg.getPerformative()) != 'agree'):
-		print "There was an error registering the Agent. (not agree)"
-		if debug and msg != None:
-			print str(msg)
-		return -1
+	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
+		print "There was an error initiating the register of agent: " + str(self.getAID().getName()) + " (refuse)"
+		return False
+	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
+		print "Agent: " + str(self.getAID().getName()) + " initiating registering process (agree)"
+	else:
+		# There was no answer from the AMS or it answered something weird, so error
+		print "There was an error initiating the register of agent: " + str(self.getAID().getName())
+		return False
+			
+	# Now we expect the real informative answer from the AMS
 	msg = self._receive(True,20)
-	if (msg == None) or (msg.getPerformative() != 'inform'):
-		print "There was an error registering the Agent. (not inform)"
-		if debug and msg != None:
-			print str(msg)
-		return -1
+	if (msg != None) and (msg.getPerformative() == 'failure'):
+		print "There was an error with the register of agent: " + str(self.getAID().getName()) + " (failure)"
+		return False
+	elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
+		print "Agent: " + str(self.getAID().getName()) + " registered correctly (inform)"
+	else:
+		# There was no real answer from the AMS or it answered something weird, so error
+		print "There was an error with the register of agent: " + str(self.getAID().getName())
+		return False
 	
-	if debug and msg != None:
-		print str(msg)
-	return 1
+	return True
 
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
 	self._msg = ACLMessage.ACLMessage()
@@ -909,22 +928,30 @@ class Agent(AbstractAgent):
 		
 	self.send(self._msg)
 
+	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
-	if msg == None or msg.getPerformative() != 'agree':
-		sys.stdout.write("There was an error deregistering the Agent.\n")
-		if debug:
-			sys.stdout.write(str(msg))
-		return -1
+	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
+		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName()) + " (refuse)"
+		return False
+	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
+		print "Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)"
+	else:
+		# There was no answer from the AMS or it answered something weird, so error
+		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName())
+		return False
+			
+	# Now we expect the real informative answer from the AMS
 	msg = self._receive(True,20)
-	if msg == None or msg.getPerformative() != 'inform':
-		sys.stdout.write("There was an error deregistering the Agent.\n")
-		if debug:
-			sys.stdout.write(str(msg))
-		return -1
+	if (msg != None) and (msg.getPerformative() == 'failure'):
+		print "There was an error with the deregister of agent: " + str(self.getAID().getName()) + " (failure)"
+		return False
+	elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
+		print "Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)"
+	else:
+		# There was no real answer from the AMS or it answered something weird, so error
+		print "There was an error with the deregister of agent: " + str(self.getAID().getName())
+		return False
 	
-	if debug:
-		sys.stdout.write(str(msg))
-	return 1
-
+	return True
 
 

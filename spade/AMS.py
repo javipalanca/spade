@@ -55,8 +55,10 @@ class AMS(Agent.PlatformAgent):
 						else: error = "(unsupported-language "+msg.getLanguage()+")"
 					else: error = "(unsupported-ontology "+msg.getOntology()+")"
 
-	
-				elif msg.getPerformative().lower() not in ['failure','refuse']:
+				
+				# By adding 'not-understood' to the following list of unsupported acts, we prevent an
+				# infinite loop of counter-answers between the AMS and the registering agents
+				elif msg.getPerformative().lower() not in ['failure','refuse','not-understood']:
 						error = "(unsupported-act " + msg.getPerformative() + ")"
 				if error:
 					reply = msg.createReply()
