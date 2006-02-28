@@ -759,6 +759,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	##################################
 
+# Changed to be a 'daemonic' python Thread
 class jabberProcess(threading.Thread):
 
 	def __init__(self, socket):
@@ -767,6 +768,7 @@ class jabberProcess(threading.Thread):
 		self._forceKill = threading.Event()
 		self._forceKill.clear()
 		threading.Thread.__init__(self)
+		self.setDaemon(True)
 		
 	def kill(self):
 		#self._alive=False
