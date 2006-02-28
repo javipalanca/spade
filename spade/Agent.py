@@ -254,7 +254,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (self._defaultbehaviour != None):
                        		self._defaultbehaviour.postMessage(msg)
 	    self.shutdown()
-         except:
+        except:
 	    print "AGENT IS NOT ALIVE!!!!!" + str(self)
             pass
             
