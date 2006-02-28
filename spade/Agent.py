@@ -16,6 +16,26 @@ import Behaviour
 import SL0Parser
 #from AMS import AmsAgentDescription
 
+# Taken from xmpp debug
+color_none         = chr(27) + "[0m"
+color_black        = chr(27) + "[30m"
+color_red          = chr(27) + "[31m"
+color_green        = chr(27) + "[32m"
+color_brown        = chr(27) + "[33m"
+color_blue         = chr(27) + "[34m"
+color_magenta      = chr(27) + "[35m"
+color_cyan         = chr(27) + "[36m"
+color_light_gray   = chr(27) + "[37m"
+color_dark_gray    = chr(27) + "[30;1m"
+color_bright_red   = chr(27) + "[31;1m"
+color_bright_green = chr(27) + "[32;1m"
+color_yellow       = chr(27) + "[33;1m"
+color_bright_blue  = chr(27) + "[34;1m"
+color_purple       = chr(27) + "[35;1m"
+color_bright_cyan  = chr(27) + "[36;1m"
+color_white        = chr(27) + "[37;1m"
+
+
 class AbstractAgent(MessageReceiver.MessageReceiver):
     """
     Abstract Agent
@@ -874,9 +894,6 @@ class Agent(AbstractAgent):
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
 
-	color_red          = chr(27) + "[31m"
-	color_green        = chr(27) + "[32m"
-
 	self._msg = ACLMessage.ACLMessage()
 	self._msg.addReceiver( self.getAMS() )
 	self._msg.setPerformative('request')
@@ -900,13 +917,13 @@ class Agent(AbstractAgent):
 	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-		print color_red + "There was an error initiating the register of agent: " + str(self.getAID().getName()) + " (refuse)"
+		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + " (refuse)" + color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-		print color_green + "Agent: " + str(self.getAID().getName()) + " initiating registering process (agree)"
+		print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + " initiating registering process (agree)" + color_none
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
-		print color_red + "There was an error initiating the register of agent: " + str(self.getAID().getName())
+		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
 		return False
 			
 	# Now we expect the real informative answer from the AMS
