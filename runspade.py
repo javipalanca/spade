@@ -112,14 +112,15 @@ def main():
  	s.shutdown("Jabber server terminated...")
 	
 
-	while True:
-		try:
-			time.sleep(1)
+  while True:
+	  try:
+		time.sleep(1)
 		#except KeyboardInterrupt:
 		#  pass
-		except:
-			del platform
-		 	s.shutdown("Jabber server terminated...")
+	  except KeyboardInterrupt:
+		del platform
+		s.shutdown("Jabber server terminated...")
+		sys.exit(0)
 
   #if os.name == "posix":
   #	######os.kill(jabberpid, signal.SIGTERM)
