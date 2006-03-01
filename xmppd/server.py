@@ -348,6 +348,8 @@ class Socket_Process(threading.Thread):
 		
 		self.isAlive = True
 
+		self.setDaemon(True)
+
 	def registersession(self):
 	        #self.SESS_LOCK.acquire()
 	        if isinstance(self.session,Session):
@@ -568,7 +570,8 @@ class Server:
         try:
             while 1: 
 		self.handle()
-        except KeyboardInterrupt:
+        #except KeyboardInterrupt:
+	finally:
             self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
 	    print "Server: Shuting down ..."
             self.shutdown(STREAM_SYSTEM_SHUTDOWN)
