@@ -570,15 +570,15 @@ class Server:
 	#	th.start()
 	#	self.thread_pull.append(th)
 
-        try:
-            while 1: 
-		self.handle()
-        #except KeyboardInterrupt:
-	finally:
-            self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
-	    print "Server: Shuting down ..."
-            self.shutdown(STREAM_SYSTEM_SHUTDOWN)
-#        except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
+        while 1: 
+        	try:
+			self.handle()
+		        #except KeyboardInterrupt:
+		except:
+			self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
+			#print "Server: Shuting down ..."
+       	    		self.shutdown(STREAM_SYSTEM_SHUTDOWN)
+	     		#except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
 
     def shutdown(self,reason):
 

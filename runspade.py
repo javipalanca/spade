@@ -122,6 +122,11 @@ def main():
 		s.shutdown("Jabber server terminated...")
 		sys.exit(0)
 
+  
+  #del platform
+  #s.shutdown("Jabber server terminated...")
+  #sys.exit(0)
+
   #if os.name == "posix":
   #	######os.kill(jabberpid, signal.SIGTERM)
   #	time.sleep(2)
