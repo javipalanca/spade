@@ -383,22 +383,25 @@ class Socket_Process(threading.Thread):
 
 	def run(self):
 		while self.isAlive:
+			try:
+				for fileno,ev in self.__sockpoll.poll():
+		    
+				    sock=self.sockets[fileno]
 
-		        for fileno,ev in self.__sockpoll.poll():
-	    
-		            sock=self.sockets[fileno]
-
-		            if isinstance(sock,Session):
-		                sess=sock
-                		try: data=sess.receive()
-		                except IOError: # client closed the connection
-		                    sess.terminate_stream()
-                		    data=''
-		                if data:
-                    			try:
-		                        	sess.Parse(data)
-	                 	        except simplexml.xml.parsers.expat.ExpatError:
-			                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+				    if isinstance(sock,Session):
+					sess=sock
+					try: data=sess.receive()
+					except IOError: # client closed the connection
+					    sess.terminate_stream()
+					    data=''
+					if data:
+						try:
+							sess.Parse(data)
+						except simplexml.xml.parsers.expat.ExpatError:
+							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
+							self.isAlive=False
+			except:
+				self.isAlive=False
 		    
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
