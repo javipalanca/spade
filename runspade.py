@@ -107,13 +107,19 @@ def main():
 	if gui:
 		os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
 
+  except:
+	del platform
+ 	s.shutdown("Jabber server terminated...")
+	
+
 	while True:
-		time.sleep(1)
-  except KeyboardInterrupt:
-    pass
- 
-  del platform
-  s.shutdown("Jabber server terminated...")
+		try:
+			time.sleep(1)
+		#except KeyboardInterrupt:
+		#  pass
+		except:
+			del platform
+		 	s.shutdown("Jabber server terminated...")
 
   #if os.name == "posix":
   #	######os.kill(jabberpid, signal.SIGTERM)

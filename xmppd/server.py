@@ -120,6 +120,7 @@ class Session:
         self.deliver_queue_map={}
         #self.stanza_queue=[]
 	self.stanza_queue = StanzaQueue()
+        self.pushlock = threading.Lock()
 
         self._session_state=SESSION_NOT_AUTHED
         self.waiting_features=[]
@@ -175,7 +176,6 @@ class Session:
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
-        lock = threading.Lock()
         if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
             self._owner.deactivatesession(self)
             self.trusted=1
@@ -188,7 +188,7 @@ class Session:
 	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-	    lock.acquire() #### LOCK_QUEUE
+	    self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		#print "PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
@@ -198,14 +198,14 @@ class Session:
                 self.deliver_key_queue.append(self._stream_pos_queued)
             #self.stanza_queue=[]
             self.stanza_queue.init()
-            lock.release()#### UNLOCK_QUEUE
+            self.pushlock.release()#### UNLOCK_QUEUE
 
         if self.sendbuffer and select.select([],[self._sock],[])[1]:
             try:
-                lock.acquire()# LOCK_QUEUE
+                self.pushlock.acquire()# LOCK_QUEUE
                 sent=self._send(self.sendbuffer)
             except:
-                lock.release()# UNLOCK_QUEUE
+                self.pushlock.release()# UNLOCK_QUEUE
                 self.set_socket_state(SOCKET_DEAD)
                 self.DEBUG("Socket error while sending data",'error')
                 return self.terminate_stream()
@@ -216,7 +216,7 @@ class Session:
             while self.deliver_key_queue and self._stream_pos_delivered>self.deliver_key_queue[0]:
                 del self.deliver_queue_map[self.deliver_key_queue[0]]
                 self.deliver_key_queue.remove(self.deliver_key_queue[0])
-            lock.release()# UNLOCK_QUEUE
+            self.pushlock.release()# UNLOCK_QUEUE
 
     def dispatch(self,stanza):
         if self._stream_state==STREAM__OPENED:                  # if the server really should reject all stanzas after he is closed stream (himeself)?
