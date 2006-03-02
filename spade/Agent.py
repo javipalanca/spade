@@ -977,7 +977,8 @@ class Agent(AbstractAgent):
 		print "Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)"
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
-		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName())
+		print "There was an error deregistering of agent: " + str(self.getAID().getName())
+		print str(msg)
 		return False
 			
 	# Now we expect the real informative answer from the AMS
