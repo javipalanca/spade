@@ -873,6 +873,11 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
+	try:
+		del self._defaultbehaviour
+	except:
+		pass
+
 	if not self.forceKill() and not self.__deregister_from_AMS():
 		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
 
