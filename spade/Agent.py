@@ -868,11 +868,11 @@ class Agent(AbstractAgent):
 		sys.exit(-1)
 	try:
 		AbstractAgent.run(self)
-		AbstractAgent.shutdown(self)
 	finally:
         	if not self.__deregister_from_AMS():
 			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
-			sys.exit(-1)
+			#sys.exit(-1)
+	AbstractAgent.shutdown(self)
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
