@@ -856,23 +856,25 @@ class Agent(AbstractAgent):
         #thread.start_new_thread(self._jabber_process, tuple())
 	self.jabber_process = jabberProcess(self.jabber)
 	self.jabber_process.start()
+        
+	if not self.__register_in_AMS():
+		print "Agent " + str(self.getAID().getName()) + " dying ..."
+		sys.exit(-1)
+
+    def shutdown(self):
+        if not self.__deregister_from_AMS():
+		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+	AbstractAgent.shutdown(self)
 
 
     def run(self):
 	"""
 	Main loop of the agent
-	registers in AMS, runs the agent and, finally, deregisters it from the AMS
 	"""
-        if not self.__register_in_AMS():
-		print "Agent " + str(self.getAID().getName()) + " dying ..."
-		sys.exit(-1)
 	try:
 		AbstractAgent.run(self)
 	finally:
-        	if not self.__deregister_from_AMS():
-			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
-			#sys.exit(-1)
-	AbstractAgent.shutdown(self)
+		AbstractAgent.shutdown(self)
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
