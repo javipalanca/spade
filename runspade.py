@@ -4,14 +4,12 @@ import os, signal
 import sys
 import time
 import thread
-#import ConfigParser
 
 from getopt import getopt
 from spade import spade_backend
 from spade import SpadeConfigParser
 from spade import colors
 import xmppd
-#import spade
 
 VERSION = "1.9.7"
 
@@ -38,9 +36,9 @@ def main():
   
   try:
   	import psyco
-	print "Psyco optimizing compiler found. Using psyco.full()."
+	print "Using Psyco optimizing compiler."
 	#psyco.log(logfile='/tmp/psyco.log')
-	#######psyco.full()
+	psyco.full()
 	#psyco.profile()
   except ImportError: print "W: Psyco optimizing compiler not found."
   
@@ -72,40 +70,19 @@ def main():
   except:
 	pass
 
+  sys.stdout.write("Launching SPADE")
+
   configfile = SpadeConfigParser.ConfigParser(configfilename)
 
-  #workpath = "/usr/share/spade/jabberd/" #configfile.get("jabber","workpath")
-  #if not os.path.exists(workpath):
-  #	workpath = "./usr/share/spade/jabberd/"
-
-  #if os.name == "posix":
-  #	  jabberpath = workpath + "jabberd"
-  #	  spool = os.environ['HOME'] + "/.spade"
-  #	  if not os.path.exists(spool):
-  #		os.mkdir(spool)
-  #else:
-  #	  jabberpath = workpath + "jabberd.exe"
-  #	  spool = workpath + "spool"
-
-  #if os.path.exists(jabberpath): # and os.path.exists(jabberxml):
-	#print "JABBERPATH: " + jabberpath
-	#print "JABBERXML: "+ jabberxml
-	####jabberpid = os.spawnl(os.P_NOWAIT, jabberpath, jabberpath, '-c', str(jabberxml), '-H', str(workpath), '-s', str(spool))
-	#print "PID: " + str(jabberpid)
-  #	pass
-
-  sys.stdout.write("Launching spade")
+  sys.stdout.write(".")
 
   s = xmppd.server.Server(cfgfile=jabberxml, debug = dbg)
+
   sys.stdout.write(".")
+
   thread.start_new_thread(s.run,tuple())
 
   try:
-  	#print "Esperando...."
-  	#time.sleep(2)
-  	#print "Lanzando..."
-
-
 	sys.stdout.write(".")
   	platform = spade_backend.SpadeBackend(configfilename)
 	sys.stdout.write(".")
@@ -122,11 +99,11 @@ def main():
  	s.shutdown("Jabber server terminated...")
 	
   print colors.color_green + " [done]" + colors.color_none
+
+
   while True:
 	  try:
 		time.sleep(1)
-		#except KeyboardInterrupt:
-		#  pass
 	  except KeyboardInterrupt:
 		del platform
 		s.shutdown("Jabber server terminated...")
@@ -136,11 +113,6 @@ def main():
   #del platform
   #s.shutdown("Jabber server terminated...")
   #sys.exit(0)
-
-  #if os.name == "posix":
-  #	######os.kill(jabberpid, signal.SIGTERM)
-  #	time.sleep(2)
-
 
 if __name__ == '__main__': main()
 

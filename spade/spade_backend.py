@@ -42,20 +42,10 @@ class SpadeBackend:
 		return agent
     
 	def __init__(self, configfilename="/etc/spade/spade.xml"):
-		#print "SPADE started."
-		#self.configfile = ConfigParser.ConfigParser()
 		self.configfile = SpadeConfigParser.ConfigParser(configfilename)
 
-		#try:
-		#    cffile = open(configfilename,'r')
-		#except IOError:
-		#    print "SPADE requires configuration file, please supply spade.xml"
-		#    sys.exit(1)
-
-		#self.configfile.readfp(cffile)
-		#cffile.close()
-
 	def start(self):
+		#TODO: this should be configurable
 		self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
 		self.runAgent(self.configfile, "ams", AMS.AMS)
 		self.runAgent(self.configfile, "df", DF.DF)
