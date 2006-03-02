@@ -239,29 +239,29 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
         #Main Loop
-        try:
-            while not self.forceKill():
-                #Check for new Messages form the server
-                #Check for queued messages
-                proc = False
-                msg = self._receive(block=True, timeout=2)
-                if (msg != None):
-                    for b in self._behaviourList:
-                        t = self._behaviourList[b]
-                        if (t != None):
-                            if (t.match(msg) == True):
-                                b.postMessage(msg)
-                                #if (b.done() == True):
-                                #    self.removeBehaviour(b)
-                                proc = True
-                                break
-                    if (proc == False):
-                        if (self._defaultbehaviour != None):
-                       		self._defaultbehaviour.postMessage(msg)
-	    self.shutdown()
-        except:
-	    print "AGENT IS NOT ALIVE!!!!!" + str(self)
-            self.shutdown()
+        while not self.forceKill():
+        	try:
+               		#Check for queued messages
+	                proc = False
+        	        msg = self._receive(block=True, timeout=2)
+	                if (msg != None):
+        	            for b in self._behaviourList:
+                	        t = self._behaviourList[b]
+                        	if (t != None):
+	                            if (t.match(msg) == True):
+        	                        b.postMessage(msg)
+                	                #if (b.done() == True):
+                        	        #    self.removeBehaviour(b)
+	                                proc = True
+        	                        break
+                	    if (proc == False):
+                        	if (self._defaultbehaviour != None):
+	                       		self._defaultbehaviour.postMessage(msg)
+	        except:
+		    #print "AGENT IS NOT ALIVE!!!!!" + str(self)
+	            self.shutdown()
+
+	self.shutdown()
             
     def start_and_wait(self):
 	"""
@@ -270,7 +270,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.start()
 
-	while(not self.forceKill()):
+	while not self.forceKill():
 		try:
 			time.sleep(1)
 		except:
