@@ -89,6 +89,8 @@ python configure.py $hostname
 outputTestPass
 outputTest "SPADE platform installation"
 python setup.py install
+chmod +x /usr/bin/spade
+chmod +x /usr/bin/gspade
 outputTestPass
 
 #installDesktop "Applications" spade.desktop
