@@ -240,7 +240,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._defaultbehaviour.start()
         #Main Loop
         try:
-            while(not self.forceKill()):
+            while not self.forceKill():
                 #Check for new Messages form the server
                 #Check for queued messages
                 proc = False

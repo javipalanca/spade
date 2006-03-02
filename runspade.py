@@ -110,7 +110,6 @@ def main():
   while True:
 	  try:
 		time.sleep(1)
-		print colors.color_yellow + "Cicle..." + colors.color_none
 	  except KeyboardInterrupt:
 		del platform
 		s.shutdown("Jabber server terminated...")
