@@ -98,8 +98,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             else:
                 self._other_messageCB(conn,mess)
 
-	else:
-		print "error! " + self.getAID().getName()
 	return True
 
 
@@ -218,7 +216,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def shutdown(self):
 
-	print "apagando agente " + self.getAID().getName()
+	#print "apagando agente " + self.getAID().getName()
 	self.jabber_process.kill()
 
 	#Stop the Behaviours
@@ -865,10 +863,20 @@ class Agent(AbstractAgent):
         
 
     def shutdown(self):
+
+        #Stop the Behaviours
+        for b in self._behaviourList:
+            self.removeBehaviour(b)
+        if (self._defaultbehaviour != None):
+            self._defaultbehaviour.kill()
+        #DeInit the Agent
+
+        self.takeDown()
+
         if not self.__deregister_from_AMS():
 		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
-	AbstractAgent.shutdown(self)
 
+	self.jabber_process.kill()
 
     def run(self):
 	"""
@@ -877,7 +885,7 @@ class Agent(AbstractAgent):
 	try:
 		AbstractAgent.run(self)
 	finally:
-		AbstractAgent.shutdown(self)
+		self.shutdown()
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
