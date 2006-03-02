@@ -42,7 +42,7 @@ class SpadeBackend:
 		return agent
     
 	def __init__(self, configfilename="/etc/spade/spade.xml"):
-		print "SPADE started."
+		#print "SPADE started."
 		#self.configfile = ConfigParser.ConfigParser()
 		self.configfile = SpadeConfigParser.ConfigParser(configfilename)
 

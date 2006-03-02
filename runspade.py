@@ -9,6 +9,7 @@ import thread
 from getopt import getopt
 from spade import spade_backend
 from spade import SpadeConfigParser
+from spade import colors
 import xmppd
 #import spade
 
@@ -93,7 +94,10 @@ def main():
 	#print "PID: " + str(jabberpid)
   #	pass
 
+  sys.stdout.write("Launching spade")
+
   s = xmppd.server.Server(cfgfile=jabberxml, debug = dbg)
+  sys.stdout.write(".")
   thread.start_new_thread(s.run,tuple())
 
   try:
@@ -101,17 +105,23 @@ def main():
   	#time.sleep(2)
   	#print "Lanzando..."
 
+
+	sys.stdout.write(".")
   	platform = spade_backend.SpadeBackend(configfilename)
+	sys.stdout.write(".")
 	platform.start()
+	sys.stdout.write(".")
 
 	if gui:
 		os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
+	sys.stdout.write(".")
 
   except:
+	print colors.color_red + " [failed]" + colors.color_none
 	del platform
  	s.shutdown("Jabber server terminated...")
 	
-
+  print colors.color_green + " [done]" + colors.color_none
   while True:
 	  try:
 		time.sleep(1)
