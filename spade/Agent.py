@@ -763,7 +763,7 @@ class jabberProcess(threading.Thread):
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
-			    #print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
+			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
 			    pass
 
 		
@@ -794,7 +794,7 @@ class PlatformAgent(AbstractAgent):
         if (self.jabber.auth(name,password,"spade") == None):
                 raise NotImplementedError
 
-        print "auth ok", name
+        #print "auth ok", name
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
 
 	self.jabber_process = jabberProcess(self.jabber)
