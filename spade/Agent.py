@@ -863,16 +863,15 @@ class Agent(AbstractAgent):
 	Main loop of the agent
 	registers in AMS, runs the agent and, finally, deregisters it from the AMS
 	"""
-	#print "Registrando...."
         if not self.__register_in_AMS():
 		print "Agent " + str(self.getAID().getName()) + " dying ..."
 		sys.exit(-1)
-	#print "Agent Registered!!!"
-	AbstractAgent.run(self)
-	#print "Des-Registrando...."
-        if not self.__deregister_from_AMS():
-		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
-		sys.exit(-1)
+	try:
+		AbstractAgent.run(self)
+	finally:
+        	if not self.__deregister_from_AMS():
+			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+			sys.exit(-1)
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
