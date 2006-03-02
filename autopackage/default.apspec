@@ -59,14 +59,14 @@ testForPythonModule distutils
 #echo $AUTOPACKAGE_FRONTEND
 outputTest "hostname"
 if [ -e /usr/bin/zenity ] && [ $AUTOPACKAGE_FRONTEND != "apkg-ttyfe" ]; then
-	hostname=`zenity --entry --text "Please type the hostname" --entry-text "localhost"`
+	hostname=`zenity --entry --text "Please type the hostname" --entry-text $HOSTNAME`
 #fi;
 #if [ -z $hostname ]; then
 else
 	#S3="Your choice: "
 	#OPTIONS="localhost $HOSTNAME"
 	if [ -e /usr/bin/dialog ]; then
-		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 "localhost"`
+		hostname=`dialog --clear --stdout --inputbox "Please type the hostname" 10 50 $HOSTNAME`
 		#OPTIONS="$OPTIONS Other..."
 	else
 		hostname=$HOSTNAME
