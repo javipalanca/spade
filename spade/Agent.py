@@ -216,7 +216,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def shutdown(self):
 
-
+	print "apagando agente " + self.getAID().getName()
 	self.jabber_process.kill()
 
 	#Stop the Behaviours
@@ -868,6 +868,7 @@ class Agent(AbstractAgent):
 		sys.exit(-1)
 	try:
 		AbstractAgent.run(self)
+		AbstractAgent.shutdown(self)
 	finally:
         	if not self.__deregister_from_AMS():
 			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
