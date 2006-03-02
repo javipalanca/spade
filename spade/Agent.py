@@ -98,7 +98,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             else:
                 self._other_messageCB(conn,mess)
 
-	    return True
+	else:
+		print "error!"
+	return True
 
 
     def _other_messageCB(self, conn, mess):
