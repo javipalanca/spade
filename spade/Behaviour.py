@@ -269,7 +269,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		stops the behavior
 		"""
-		self._forceKill.set()
+		try:
+			self._forceKill.set()
+		except:
+			#Behavior is already dead
+			pass
 		
 	def onStart(self):
 		"""

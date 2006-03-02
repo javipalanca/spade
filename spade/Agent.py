@@ -752,6 +752,7 @@ class jabberProcess(threading.Thread):
 		try:
 			self._forceKill.set()
 		except:
+			#Agent is already dead
 			pass
 
 	def forceKill(self):
