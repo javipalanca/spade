@@ -73,7 +73,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                     envxml = child.getData()
             if (envxml != None):
-		#print "FIPA MESSAGE RECEIVED: " + str(mess.getBody())
                 xc = XMLCodec.XMLCodec()
                 envelope = xc.parse(str(envxml))
 
@@ -262,7 +261,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	    self.shutdown()
         except:
 	    print "AGENT IS NOT ALIVE!!!!!" + str(self)
-            pass
+            self.shutdown()
             
     def start_and_wait(self):
 	"""
@@ -270,11 +269,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 
 	self.start()
-	try:
-		while(not self.forceKill()):
+
+	while(not self.forceKill()):
+		try:
 			time.sleep(1)
-	except:
-		self.shutdown()
+		except:
+			self.shutdown()
 
         
     def setDefaultBehaviour(self, behaviour):
