@@ -33,7 +33,7 @@ SPADE (Smart Python multi-Agent Development Environment)
 import << EOF
 $source_dir/configure.py
 $source_dir/setup.py
-$source_dir/spade.py
+$source_dir/runspade.py
 $source_dir/gspade.py
 $source_dir/spade
 $source_dir/gspade
@@ -95,6 +95,6 @@ outputTestPass
 
 [Uninstall]
 # Usually just the following line is enough to uninstall everything
-rm -rf /etc/spade /usr/share/spade /usr/bin/runspade.py /usr/bin/spade-rma.py /usr/share/doc/spade
+rm -rf /etc/spade /usr/share/spade /usr/bin/runspade.py /usr/bin/gspade.py /usr/share/doc/spade /usr/bin/spade /usr/bin/gspade
 #uninstallFromLog
 
