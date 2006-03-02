@@ -298,10 +298,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
 			#time.sleep(0)
 		self.onEnd()
 		self.myAgent.removeBehaviour(self)
+		print "behav finished " + self.getName()
 		
 class OneShotBehaviour(Behaviour):
 	"""
-	this behavior is only executed one time
+	this behavior is only executed once
 	"""
 	def __init__(self):
 		Behaviour.__init__(self)
