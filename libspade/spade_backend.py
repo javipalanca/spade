@@ -50,7 +50,7 @@ class SpadeBackend:
 		#self.runAgent(self.configfile, "ams", AMS.AMS)
 		#self.runAgent(self.configfile, "df", DF.DF)
 		pass
-	
+
 
 if __name__ ==  "__main__":
 	p = SpadeBackend()
