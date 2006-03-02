@@ -49,6 +49,7 @@ class SpadeBackend:
 		#self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
 		#self.runAgent(self.configfile, "ams", AMS.AMS)
 		#self.runAgent(self.configfile, "df", DF.DF)
+		pass
 	
 
 if __name__ ==  "__main__":
