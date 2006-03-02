@@ -749,8 +749,10 @@ class jabberProcess(threading.Thread):
 		self.setDaemon(True)
 		
 	def kill(self):
-		#self._alive=False
-		self._forceKill.set()
+		try:
+			self._forceKill.set()
+		except:
+			pass
 
 	def forceKill(self):
 		return self._forceKill.isSet()
