@@ -33,8 +33,10 @@ SPADE (Smart Python multi-Agent Development Environment)
 import << EOF
 $source_dir/configure.py
 $source_dir/setup.py
-$source_dir/runspade.py
-$source_dir/spade-rma.py
+$source_dir/spade.py
+$source_dir/gspade.py
+$source_dir/spade
+$source_dir/gspade
 $source_dir/etc
 $source_dir/readme.txt
 $source_dir/doc
