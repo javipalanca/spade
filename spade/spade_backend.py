@@ -46,7 +46,7 @@ class SpadeBackend:
 
 	def start(self):
 		#TODO: this should be configurable
-		#self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
+		self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
 		#self.runAgent(self.configfile, "ams", AMS.AMS)
 		#self.runAgent(self.configfile, "df", DF.DF)
 		pass
