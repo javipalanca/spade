@@ -6,9 +6,15 @@ import time
 import thread
 
 from getopt import getopt
-from spade import spade_backend
-from spade import SpadeConfigParser
-from spade import colors
+try:
+	from spade import spade_backend
+	from spade import SpadeConfigParser
+	from spade import colors
+except ImportError:
+	from libspade import spade_backend
+	from libspade import SpadeConfigParser
+	from libspade import colors
+
 import xmppd
 
 VERSION = "1.9.7"
