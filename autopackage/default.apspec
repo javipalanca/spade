@@ -85,11 +85,6 @@ outputTestPass
 outputTest "SPADE pre-configuration"
 python configure.py $hostname
 outputTestPass
-#outputTest "Python-XMPP installation"
-#cd spade
-#python xmpp-setup.py install
-#cd ..
-#outputTestPass
 outputTest "SPADE platform installation"
 python setup.py install
 outputTestPass

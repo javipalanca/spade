@@ -32,7 +32,7 @@ if os.name == "posix":
 		author='Javi Palanca, Miguel Escriva, Gustavo Aranda',
 		author_email='jpalanca@dsic.upv.es',
 		url='http://gti-ia.dsic.upv.es/projects/magentix/',
-		package_dir={'spade': 'spade'},
+		package_dir={'spade': 'libspade'},
 		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
 		scripts=['spade-rma.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 		data_files=[
