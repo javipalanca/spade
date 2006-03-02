@@ -1,3 +1,3 @@
 #! /bin/sh
 
-/usr/bin/runspade.py
+/usr/bin/runspade.py "$@"

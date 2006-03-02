@@ -900,6 +900,7 @@ class Agent(AbstractAgent):
 	self.send(self._msg)
 
 	# We expect the initial answer from the AMS
+	print "going to receive"
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
 		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (refuse)" + color_none
