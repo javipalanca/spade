@@ -244,7 +244,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #Check for new Messages form the server
                 #Check for queued messages
                 proc = False
-                msg = self._receive(block=False, timeout=2)
+                msg = self._receive(block=True, timeout=2)
                 if (msg != None):
                     for b in self._behaviourList:
                         t = self._behaviourList[b]
@@ -763,7 +763,7 @@ class jabberProcess(threading.Thread):
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
-			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
+			    #print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
 			    pass
 
 		
