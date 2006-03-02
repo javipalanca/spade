@@ -35,8 +35,8 @@ $source_dir/configure.py
 $source_dir/setup.py
 $source_dir/runspade.py
 $source_dir/gspade.py
-$source_dir/spade
-$source_dir/gspade
+$source_dir/spade.sh
+$source_dir/gspade.sh
 $source_dir/etc
 $source_dir/readme.txt
 $source_dir/doc
@@ -89,7 +89,9 @@ python configure.py $hostname
 outputTestPass
 outputTest "SPADE platform installation"
 python setup.py install
+mv /usr/bin/spade.sh /usr/bin/spade
 chmod +x /usr/bin/spade
+mv /usr/bin/gspade.sh /usr/bin/gspade
 chmod +x /usr/bin/gspade
 outputTestPass
 

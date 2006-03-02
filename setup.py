@@ -34,7 +34,7 @@ if os.name == "posix":
 		url='http://gti-ia.dsic.upv.es/projects/magentix/',
 		package_dir={'spade': 'libspade'},
 		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
-		scripts=['spade','gspade','gspade.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
+		scripts=['spade.sh','gspade.sh','gspade.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 		data_files=[
 			('/etc/spade',['etc/spade.xml']),
 			('/etc/spade',['etc/xmppd.xml']),
