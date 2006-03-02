@@ -116,6 +116,7 @@ class AMS(Agent.PlatformAgent):
 	
 					try:
 						self.myAgent.agentdb[aad.getAID().getName()] = aad
+						print "REGISTRADO " + str(aad)
 					except Exception, err:
 						reply.setPerformative("failure")
 						reply.setContent("("+self.msg.getContent() + "(internal-error))")
@@ -141,6 +142,7 @@ class AMS(Agent.PlatformAgent):
 				if self.myAgent.agentdb.has_key(aad.getAID().getName()):
 					try:
 						del self.myAgent.agentdb[aad.getAID().getName()]
+						print "DESREGISTRADO " + str(aad)
 					except Exception, err:
 						reply.setPerformative("failure")
 						reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
