@@ -875,6 +875,7 @@ class Agent(AbstractAgent):
 
 	try:
 		del self._defaultbehaviour
+		self._defaultbehaviour = None
 	except:
 		pass
 
