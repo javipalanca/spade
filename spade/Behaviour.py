@@ -293,7 +293,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		
 	def run(self):
 		self.onStart()
-		while (not(( self.done() | self._forceKill.isSet() ))):
+		while (not self.done()) and (not self._forceKill.isSet()):
 			self._process()
 			#time.sleep(0)
 		self.onEnd()
