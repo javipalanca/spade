@@ -873,10 +873,12 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
-        if not self.__deregister_from_AMS():
+	if not self.forceKill() and not self.__deregister_from_AMS():
 		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
 
 	self.jabber_process.kill()
+
+	self.kill()
 
     def run(self):
 	"""
