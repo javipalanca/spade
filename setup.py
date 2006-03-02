@@ -4,7 +4,7 @@ import sys
 from distutils.core import setup, Extension
 import glob
 
-from runspade import VERSION
+from spade import VERSION
 
 #if os.name != "posix":
 #	import py2exe
