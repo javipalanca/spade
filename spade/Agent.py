@@ -99,7 +99,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self._other_messageCB(conn,mess)
 
 	else:
-		print "error!"
+		print "error! " + self.getAID().getName()
 	return True
 
 
