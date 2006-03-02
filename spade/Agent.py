@@ -819,6 +819,10 @@ class Agent(AbstractAgent):
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
         self._register(password)
         self.jabber.sendInitPresence()
+	
+	if not self.__register_in_AMS():
+		print "Agent " + str(self.getAID().getName()) + " dying ..."
+		sys.exit(-1)
 
     def _register(self, password, autoregister=True):
 	"""
@@ -859,9 +863,6 @@ class Agent(AbstractAgent):
 	self.jabber_process = jabberProcess(self.jabber)
 	self.jabber_process.start()
         
-	if not self.__register_in_AMS():
-		print "Agent " + str(self.getAID().getName()) + " dying ..."
-		sys.exit(-1)
 
     def shutdown(self):
         if not self.__deregister_from_AMS():
