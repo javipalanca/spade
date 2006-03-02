@@ -970,6 +970,7 @@ class Agent(AbstractAgent):
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
 		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName()) + " (refuse)"
+		print str(msg)
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
 		print "Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)"
