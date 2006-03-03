@@ -215,8 +215,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #DeInit the Agent
         self.takeDown()
 
-	self.kill()
-
     def run(self):
 	"""
 	periodic agent execution
@@ -918,6 +916,7 @@ class Agent(AbstractAgent):
 	return True
 
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
+	print "DEREGISTER: " + str(self) + " " + str(ACLMessage)
 	_msg = ACLMessage.ACLMessage()
 	_msg.addReceiver( self.getAMS() )
 	_msg.setPerformative('request')
