@@ -243,8 +243,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         	try:
                		#Check for queued messages
 	                proc = False
-        	        msg = self._receive(block=True, timeout=0.1)
-	                if (msg != None):
+        	        msg = self._receive(block=True, timeout=2)
+	                if msg != None and not self.forceKill():
         	            for b in self._behaviourList:
                 	        t = self._behaviourList[b]
                         	if (t != None):
@@ -257,6 +257,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 	    if (proc == False):
                         	if (self._defaultbehaviour != None):
 	                       		self._defaultbehaviour.postMessage(msg)
+			elif msg != None:
+				self.postMessage(msg)
 	        except:
 		    #print "AGENT IS NOT ALIVE!!!!!" + str(self)
 	            self.shutdown()
