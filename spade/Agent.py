@@ -243,7 +243,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         	try:
                		#Check for queued messages
 	                proc = False
-        	        msg = self._receive(block=True, timeout=2)
+        	        msg = self._receive(block=True, timeout=0.1)
 	                if (msg != None):
         	            for b in self._behaviourList:
                 	        t = self._behaviourList[b]
@@ -883,7 +883,7 @@ class Agent(AbstractAgent):
         self.takeDown()
 
 	print "esperando"
-	time.sleep(5)
+	#time.sleep(5)
 
 	if self._alive:
 		self._alive = False
