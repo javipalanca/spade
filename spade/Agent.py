@@ -188,6 +188,21 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #self._alive = False
 	self._forceKill.set()
 
+    def stop(self, timeout=0):
+	"""
+	Stops the agent execution and blocks until the agent dies
+	"""
+	self.kill()
+	if timeout > 0:
+		to = time.now() + timeout
+		while self._alive and time.now() < to:
+			time.sleep(0.1)
+	# No timeout (true blocking)
+	else:
+		while self._alive:
+			time.sleep(0.1)
+
+	return True
    
     def forceKill(self):
             return self._forceKill.isSet()
