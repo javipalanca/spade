@@ -863,16 +863,13 @@ class Agent(AbstractAgent):
 
 	self.jabber_process.kill()
 
-
+    """
     def run(self):
-	"""
-	Main loop of the agent
-	"""
 	try:
-		AbstractAgent.run(self)
+	AbstractAgent.run(self)
 	finally:
 		self.shutdown()
-
+    """
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
 
