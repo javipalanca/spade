@@ -766,8 +766,6 @@ class PlatformAgent(AbstractAgent):
 
     def shutdown(self):
 	
-	print "Shutdown del platform-agent: " + str(self)
-
 	self.jabber_process.kill()
 
 	#Stop the Behaviours
@@ -839,8 +837,6 @@ class Agent(AbstractAgent):
 
     def shutdown(self):
 
-	print "Shutdown del agente: " + str(self)
-
         #Stop the Behaviours
         for b in self._behaviourList:
             self.removeBehaviour(b)
@@ -860,8 +856,6 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
-	print "ESTA VIVO, HAY QUE MATARLO!!!! "  + str(self)
-	
 	if self._alive:
 		self._alive = False
 		if not self.__deregister_from_AMS():
@@ -926,7 +920,6 @@ class Agent(AbstractAgent):
 	return True
 
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
-	print "DEREGISTER: " + str(self) + " " + str(ACLMessage)
 	_msg = ACLMessage.ACLMessage()
 	_msg.addReceiver( self.getAMS() )
 	_msg.setPerformative('request')
@@ -951,13 +944,13 @@ class Agent(AbstractAgent):
 	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName()) + " (refuse)"
+		print colors.color_red + "There was an error initiating the deregister of agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_red + " (refuse)" + colors.color_none
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-		print "Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)"
+		print colors.color_green + "Agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_green + " initiating deregistering process (agree)" + colors.color_none
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
-		print "There was an error deregistering of agent: " + str(self.getAID().getName())
+		print colors.color_red + "There was an error deregistering of agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_none
 		return False
 			
 	# Now we expect the real informative answer from the AMS
