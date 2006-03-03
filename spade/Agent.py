@@ -923,12 +923,12 @@ class Agent(AbstractAgent):
 	return True
 
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
-	self._msg = ACLMessage.ACLMessage()
-	self._msg.addReceiver( self.getAMS() )
-	self._msg.setPerformative('request')
-	self._msg.setLanguage('fipa-sl0')
-	self._msg.setProtocol('fipa-request')
-	self._msg.setOntology('FIPA-Agent-Management')
+	_msg = ACLMessage.ACLMessage()
+	_msg.addReceiver( self.getAMS() )
+	_msg.setPerformative('request')
+	_msg.setLanguage('fipa-sl0')
+	_msg.setProtocol('fipa-request')
+	_msg.setOntology('FIPA-Agent-Management')
 				
 	content = "((action "
 	content += str(self.getAID())
@@ -940,9 +940,9 @@ class Agent(AbstractAgent):
 		content += " :ownership " + ownership
 	content +=" ) ) ))"
 
-	self._msg.setContent(content)
+	_msg.setContent(content)
 		
-	self.send(self._msg)
+	self.send(_msg)
 
 	# We expect the initial answer from the AMS
 	msg = self._receive(True,20)
