@@ -84,7 +84,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		else:
 			print "NO TENGO PARSER!"
 
-		#print str(payload)
                 ACLmsg = ac.parse(str(payload))
 	        content = ACLmsg.getContent()
         	comillas_esc = '"'
@@ -178,16 +177,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         jabber_msg.addChild(node=xenv)
         jabber_msg["from"]=self.getAID().getName()
         self.jabber.send(jabber_msg)
-        #jabber_msg.setNamespace("jabber:component:accept")
-        #print str(jabber_msg.getNamespace())
-        #print str(jabber_msg.getAttrs())
-        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        #print jabber_msg
-        #print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-        
- 
-
-
     
     def kill(self):
 	"""
@@ -216,7 +205,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def shutdown(self):
 
-	#print "apagando agente " + self.getAID().getName()
 	self.jabber_process.kill()
 
 	#Stop the Behaviours
@@ -260,25 +248,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			elif msg != None:
 				self.postMessage(msg)
 	        except:
-		    #print "AGENT IS NOT ALIVE!!!!!" + str(self)
 	            self.shutdown()
 
 	self.shutdown()
             
-    def start_and_wait(self):
-	"""
-	starts the agent and remains until the agent finishes
-	"""
-
-	self.start()
-
-	while not self.forceKill():
-		try:
-			time.sleep(1)
-		except:
-			self.shutdown()
-
-        
     def setDefaultBehaviour(self, behaviour):
 	"""
 	sets a Behavior as Default
@@ -866,7 +839,6 @@ class Agent(AbstractAgent):
 
     def shutdown(self):
 
-
         #Stop the Behaviours
         for b in self._behaviourList:
             self.removeBehaviour(b)
@@ -883,9 +855,6 @@ class Agent(AbstractAgent):
 	self.kill()
 
         self.takeDown()
-
-	print "esperando"
-	#time.sleep(5)
 
 	if self._alive:
 		self._alive = False
@@ -928,7 +897,6 @@ class Agent(AbstractAgent):
 	self.send(self._msg)
 
 	# We expect the initial answer from the AMS
-	print "going to receive"
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
 		print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (refuse)" + color_none
@@ -980,14 +948,12 @@ class Agent(AbstractAgent):
 	msg = self._receive(True,20)
 	if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
 		print "There was an error initiating the deregister of agent: " + str(self.getAID().getName()) + " (refuse)"
-		print str(msg)
 		return False
 	elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
 		print "Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)"
 	else:
 		# There was no answer from the AMS or it answered something weird, so error
 		print "There was an error deregistering of agent: " + str(self.getAID().getName())
-		print str(msg)
 		return False
 			
 	# Now we expect the real informative answer from the AMS
