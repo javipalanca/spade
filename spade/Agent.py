@@ -864,6 +864,8 @@ class Agent(AbstractAgent):
 
     def shutdown(self):
 
+	self.kill()
+
         #Stop the Behaviours
         for b in self._behaviourList:
             self.removeBehaviour(b)
@@ -884,7 +886,6 @@ class Agent(AbstractAgent):
 
 	self.jabber_process.kill()
 
-	self.kill()
 
     def run(self):
 	"""
