@@ -882,6 +882,9 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
+	print "esperando"
+	time.sleep(5)
+
 	if self._alive:
 		self._alive = False
 		if not self.__deregister_from_AMS():
