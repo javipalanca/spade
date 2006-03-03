@@ -844,11 +844,13 @@ class Agent(AbstractAgent):
             self._defaultbehaviour.kill()
         #DeInit the Agent
 
+	"""
 	try:
 		del self._defaultbehaviour
 		self._defaultbehaviour = None
 	except:
 		pass
+	"""
 
 	#self.kill()
 
