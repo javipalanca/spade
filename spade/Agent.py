@@ -203,17 +203,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         pass
 
-    def shutdown(self):
-
-	self.jabber_process.kill()
-
-	#Stop the Behaviours
-        for b in self._behaviourList:
-            self.removeBehaviour(b)
-        if (self._defaultbehaviour != None):
-            self._defaultbehaviour.kill()
-        #DeInit the Agent
-        self.takeDown()
 
     def run(self):
 	"""
@@ -774,6 +763,19 @@ class PlatformAgent(AbstractAgent):
 	self.jabber_process = jabberProcess(self.jabber)
 	self.jabber_process.start()
         #thread.start_new_thread(self._jabber_process, tuple())
+
+    def shutdown(self):
+
+	self.jabber_process.kill()
+
+	#Stop the Behaviours
+        for b in self._behaviourList:
+            self.removeBehaviour(b)
+        if (self._defaultbehaviour != None):
+            self._defaultbehaviour.kill()
+        #DeInit the Agent
+        self.takeDown()
+
 
 class Agent(AbstractAgent):
     """
