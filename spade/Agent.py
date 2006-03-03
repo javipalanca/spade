@@ -852,8 +852,9 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
+	print "ESTA VIVO, HAY QUE MATARLO!!!! "  + str(self)
+	
 	if self._alive:
-		print "ESTA VIVO, HAY QUE MATARLO!!!! "  + str(self)
 		self._alive = False
 		if not self.__deregister_from_AMS():
 			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
