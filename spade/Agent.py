@@ -852,7 +852,7 @@ class Agent(AbstractAgent):
 	except:
 		pass
 
-	self.kill()
+	#self.kill()
 
         self.takeDown()
 
