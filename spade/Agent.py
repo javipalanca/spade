@@ -885,7 +885,7 @@ class Agent(AbstractAgent):
 	if self._alive:
 		self._alive = False
 		if not self.__deregister_from_AMS():
-			rint "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
 
 	self.jabber_process.kill()
 
