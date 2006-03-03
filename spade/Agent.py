@@ -14,6 +14,7 @@ import ACLMessage
 import BasicFipaDateTime
 import Behaviour
 import SL0Parser
+import colors
 #from AMS import AmsAgentDescription
 
 # Taken from xmpp debug
