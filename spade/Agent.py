@@ -15,6 +15,7 @@ import BasicFipaDateTime
 import Behaviour
 import SL0Parser
 import colors
+import mutex
 #from AMS import AmsAgentDescription
 
 # Taken from xmpp debug
@@ -55,6 +56,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._defaultbehaviour = None
         self._behaviourList = dict()
         self._alive = True
+	self._alivemutex = mutex.mutex()
 	self._forceKill = threading.Event()
 	self._forceKill.clear()
 
@@ -857,10 +859,11 @@ class Agent(AbstractAgent):
 
         self.takeDown()
 
-	if self._alive:
-		self._alive = False
+	if self._alivemutex.testandset():
 		if not self.__deregister_from_AMS():
 			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+		self._alive = False
+	self._alivemutex.unlock()
 
 	self.jabber_process.kill()
 
