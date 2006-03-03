@@ -13,7 +13,7 @@ class MessageReceiver(threading.Thread):
 		except ImportError:
 			pass
 		threading.Thread.__init__(self)
-		self.setDaemon(True)
+		self.setDaemon(False)
 		#self.__messages = MessageList(0)
 		self.__messages = Queue(0)
 		#self.setDaemon(True)
