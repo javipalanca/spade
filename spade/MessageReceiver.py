@@ -13,10 +13,9 @@ class MessageReceiver(threading.Thread):
 		except ImportError:
 			pass
 		threading.Thread.__init__(self)
-		self.setDaemon(False)
+		self.setDaemon(True)
 		#self.__messages = MessageList(0)
 		self.__messages = Queue(0)
-		#self.setDaemon(True)
 
 	def __getMessage(self, block, tout):
 		try:
