@@ -872,20 +872,23 @@ class Agent(AbstractAgent):
             self._defaultbehaviour.kill()
         #DeInit the Agent
 
-        self.takeDown()
-
 	try:
 		del self._defaultbehaviour
 		self._defaultbehaviour = None
 	except:
 		pass
 
-	if not self.forceKill() and not self.__deregister_from_AMS():
-		print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+	self.kill()
+
+        self.takeDown()
+
+	if self._alive:
+		self._alive = False
+		if not self.__deregister_from_AMS():
+			rint "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
 
 	self.jabber_process.kill()
 
-	self.kill()
 
     def run(self):
 	"""
