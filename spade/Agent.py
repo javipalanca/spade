@@ -765,6 +765,8 @@ class PlatformAgent(AbstractAgent):
         #thread.start_new_thread(self._jabber_process, tuple())
 
     def shutdown(self):
+	
+	print "Shutdown del platform-agent: " + str(self)
 
 	self.jabber_process.kill()
 
@@ -836,6 +838,8 @@ class Agent(AbstractAgent):
         
 
     def shutdown(self):
+
+	print "Shutdown del agente: " + str(self)
 
         #Stop the Behaviours
         for b in self._behaviourList:
