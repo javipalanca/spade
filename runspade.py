@@ -101,7 +101,7 @@ def main():
 
   except:
 	print colors.color_red + " [failed]" + colors.color_none
-	del platform
+	platform.shutdown()
  	s.shutdown("Jabber server terminated...")
 	
   print colors.color_green + " [done]" + colors.color_none
@@ -112,18 +112,15 @@ def main():
 	  try:
 		time.sleep(1)
 	  except KeyboardInterrupt:
+		sys.stdout.write("Exiting...")
 		platform.shutdown()
 		s.shutdown("Jabber server terminated...")
 		time.sleep(5)
-		print colors.color_green + "Bye." + colors.color_none
+		print colors.color_green + " Bye." + colors.color_none
 		alive=False
 		#sys.exit(0)
   #sys.exit(0)
   raise SystemExit
   
-  #del platform
-  #s.shutdown("Jabber server terminated...")
-  #sys.exit(0)
-
 if __name__ == '__main__': main()
 
