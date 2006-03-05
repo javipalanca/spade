@@ -201,7 +201,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	else:
 		while self._alive:
 			time.sleep(0.1)
-
+	print self.getName() + " dead."
 	return True
   
  
