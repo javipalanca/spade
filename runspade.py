@@ -107,14 +107,19 @@ def main():
   print colors.color_green + " [done]" + colors.color_none
 
 
-  while True:
+  alive=True
+  while alive:
 	  try:
 		time.sleep(1)
 	  except KeyboardInterrupt:
-		del platform
+		platform.shutdown()
 		s.shutdown("Jabber server terminated...")
-		sys.exit(0)
-
+		time.sleep(5)
+		print colors.color_green + "Bye." + colors.color_none
+		alive=False
+		#sys.exit(0)
+  #sys.exit(0)
+  raise SystemExit
   
   #del platform
   #s.shutdown("Jabber server terminated...")
