@@ -76,33 +76,41 @@ def main():
   except:
 	pass
 
-  sys.stdout.write("Launching SPADE")
+  sys.stdout.write("Starting SPADE")
+  sys.stdout.flush()
 
   configfile = SpadeConfigParser.ConfigParser(configfilename)
 
   sys.stdout.write(".")
+  sys.stdout.flush()
 
   s = xmppd.server.Server(cfgfile=jabberxml, debug = dbg)
 
   sys.stdout.write(".")
+  sys.stdout.flush()
 
   thread.start_new_thread(s.run,tuple())
 
   try:
 	sys.stdout.write(".")
+  	sys.stdout.flush()
   	platform = spade_backend.SpadeBackend(configfilename)
 	sys.stdout.write(".")
+  	sys.stdout.flush()
 	platform.start()
 	sys.stdout.write(".")
+  	sys.stdout.flush()
 
 	if gui:
 		os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
 	sys.stdout.write(".")
+  	sys.stdout.flush()
 
   except:
 	print colors.color_red + " [failed]" + colors.color_none
 	platform.shutdown()
  	s.shutdown("Jabber server terminated...")
+	raise SystemExit
 	
   print colors.color_green + " [done]" + colors.color_none
 
@@ -113,13 +121,14 @@ def main():
 		time.sleep(1)
 	  except KeyboardInterrupt:
 		sys.stdout.write("Exiting...")
+		sys.stdout.flush()
 		platform.shutdown()
 		s.shutdown("Jabber server terminated...")
-		time.sleep(5)
+		time.sleep(1)
 		print colors.color_green + " Bye." + colors.color_none
 		alive=False
 		#sys.exit(0)
-  #sys.exit(0)
+  sys.exit(0)
   raise SystemExit
   
 if __name__ == '__main__': main()
