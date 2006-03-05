@@ -795,6 +795,8 @@ class PlatformAgent(AbstractAgent):
         #DeInit the Agent
         self.takeDown()
 
+	self._alive = False
+
 
 class Agent(AbstractAgent):
     """
