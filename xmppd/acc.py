@@ -3,8 +3,8 @@ from spade import *
 from spade.ACLMessage import *
 
 class accPlugIn(PlugIn):
-	NS='jabber:x:fipa'
-        #NS=''
+	#NS='jabber:x:fipa'
+        NS=''
         def do(self, uno, dos):
                 print "####################################"
                 print "####################################"
@@ -43,6 +43,6 @@ class accPlugIn(PlugIn):
                 	else:
                         	print "NO TENGO PARSER!"
 	
-		print ">> ACC: getRealTo = " + str(envelope.getReceivers())	
+		self.DEBUG(">> ACC: getRealTo = " + str(envelope.getReceivers()), "info")
 		return envelope.getReceivers()
 

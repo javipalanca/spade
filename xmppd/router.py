@@ -158,11 +158,14 @@ class Router(PlugIn):
 		elif simple_to[0:4] == "acc.":
 			self.DEBUG("ACC MESSAGE MUST BE TUNNELED", "info")
 			# We must find the real "to" of the message
-			receivers = self._owner.accPlugIn.getRealTo(stanza)
-			to = receivers[0]  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
-			s = False
-			self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
-			# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
+			try:
+				receivers = self._owner.accPlugIn.getRealTo(stanza)
+				to = receivers[0]  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
+				s = False
+				self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
+				# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
+			except:
+				self.DEBUG("ACC FAILED", "info")
 	        else:
 			s=self._owner.getsession(to)
 		self.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
