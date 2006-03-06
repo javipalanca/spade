@@ -41,6 +41,7 @@ class accPlugIn(PlugIn):
                         	ac = ACLParser.ACLxmlParser()
                 	else:
                         	print "NO TENGO PARSER!"
-		
+	
+		print ">> ACC: getRealTo = " + str(envelope.getReceivers())	
 		return envelope.getReceivers()
 
