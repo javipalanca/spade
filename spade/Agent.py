@@ -203,7 +203,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			time.sleep(0.1)
 	return True
   
- 
     def forceKill(self):
             return self._forceKill.isSet()
         
