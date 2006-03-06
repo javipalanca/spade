@@ -49,5 +49,8 @@ class accPlugIn(PlugIn):
 
 		ACLmsg = ac.parse(str(payload))	
 		self.DEBUG("ACC PLUGIN: getRealTo = " + str(ACLmsg.getReceivers()), "info")
-		return ACLmsg.getReceivers()
+		receiver_names = []
+		for item in ACLmsg.getReceivers():
+			receiver_names.append(str(item.getName()))
+		return receiver_names
 
