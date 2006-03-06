@@ -29,7 +29,11 @@ class accPlugIn(PlugIn):
 		self.DEBUG("ACC PLUGIN: received " + str(type(mess)), "info")
 		self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
-            	payload=mess.getBody()
+		try:
+	            	payload=mess.getBody()
+		except:
+			payload=str(mess)
+			self.DEBUG("ACC PLUGIN: getBody FAILED. Trying alternate method")
 		self.DEBUG("ACC PLUGIN: mess Body got", "info")
             	children = mess.getChildren()
 		self.DEBUG("ACC PLUGIN: analyzing message structure", "info")
