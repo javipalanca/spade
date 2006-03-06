@@ -15,15 +15,11 @@ class accPlugIn(PlugIn):
 
         def plugin(self,server):
                 self._data = {}
-                server.Dispatcher.RegisterNamespaceHandler("jabber:x:fipa", self.fipaHandler)
                 #server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
                 #server.Dispatcher.RegisterHandler('polla',self.do)
 		#print "#################"
 		#print "ACC PLUGIN LOADED"
 		#print "#################"
-
-	def fipaHandler(self, session, stanza):
-		print ">> FIPAHANDLER >> " + str(stanza)
 
 	def getRealTo(self, msg):
 		"""
@@ -46,5 +42,5 @@ class accPlugIn(PlugIn):
                 	else:
                         	print "NO TENGO PARSER!"
 		
-		print str(envelope.getReceivers())
+		return envelope.getReceivers()
 

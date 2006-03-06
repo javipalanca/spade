@@ -154,6 +154,13 @@ class Router(PlugIn):
 			self.DEBUG("Message for the server", 'info')
 			self.servercommandHandler(session, stanza)
 			raise NodeProcessed
+		# SPADE CASE: message directed to the ACC component
+		elif simple_to[0:4] == "acc.":
+			# We must find the real "to" of the message
+			receivers = self._owner.accPlugIn.getRealTo(stanza)
+			simple_to = receivers[0]  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
+			s = False
+			# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
 	        else:
 			s=self._owner.getsession(to)
 		self.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
@@ -161,6 +168,7 @@ class Router(PlugIn):
 		s.enqueue(stanza)
 		self.DEBUG("There was a message for a component and it has been delivered", 'info')
 		raise NodeProcessed
+
 # Non-components from here
 
         if stanza.getNamespace()==NS_CLIENT and \
