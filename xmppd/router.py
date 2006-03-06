@@ -155,6 +155,7 @@ class Router(PlugIn):
 			# We must find the real "to" of the message
 			try:
 				receivers = self._owner.accPlugIn.getRealTo(stanza)
+				self.DEBUG("router: getRealTo returned " + str(receivers), "info")
 				to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
 				s = False
 				self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
