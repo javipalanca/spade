@@ -22,10 +22,11 @@ class accPlugIn(PlugIn):
 		#print "ACC PLUGIN LOADED"
 		#print "#################"
 
-	def getRealTo(self, msg):
+	def getRealTo(self, mess):
 		"""
 		return the real JID of the receiver of a "jabber:x:fipa" message
 		"""
+		self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
             	payload=mess.getBody()
             	children = mess.getChildren()
