@@ -423,9 +423,11 @@ class RMALogin(GTKWindow):
 		#print "Got '%s' and '%s' ..." % (username,password)
 		rma_instance=rma(username, password)
 		#print "Sent authentication data ..."
-		rma_instance.start_and_wait()
+		rma_instance.start()
+		while rma_instance._alive:
+			time.sleep(1)
 		#rma_instance.update.exit()
-		rma_instance.kill()
+		rma_instance.stop()
 		gtk.main_quit()
 		
 	def on_window_delete_event(self, widget, event, data=None):

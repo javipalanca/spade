@@ -120,11 +120,17 @@ def main():
 	  try:
 		time.sleep(1)
 	  except KeyboardInterrupt:
-		sys.stdout.write("Exiting...")
+		sys.stdout.write("Exiting")
 		sys.stdout.flush()
 		platform.shutdown()
-		s.shutdown("Jabber server terminated...")
+		sys.stdout.write(".")
+		sys.stdout.flush()
+		s.shutdown("SPADE Jabber server terminated...")
+		sys.stdout.write(".")
+		sys.stdout.flush()
 		time.sleep(1)
+		sys.stdout.write(".")
+		sys.stdout.flush()
 		print colors.color_green + " Bye." + colors.color_none
 		alive=False
 		#sys.exit(0)
