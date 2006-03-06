@@ -32,6 +32,7 @@ import jep0077
 import jep0078
 import router
 import stream
+import acc
 
 import threading
 
@@ -60,6 +61,7 @@ addons = [
 # Mine
     #ch.CH,
     #dummy.dummyClass,
+    acc.accPlugIn
     ]
 
 #if __name__=='__main__':
