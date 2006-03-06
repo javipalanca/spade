@@ -29,8 +29,9 @@ class accPlugIn(PlugIn):
 		self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
             	payload=mess.getBody()
+		self.DEBUG("ACC PLUGIN: mess Body got", "info")
             	children = mess.getChildren()
-		self.DEBUG("ACC PLUGIN: analyzing message", "info")
+		self.DEBUG("ACC PLUGIN: analyzing message structure", "info")
             	for child in children:
                 	if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                     		envxml = child.getData()
