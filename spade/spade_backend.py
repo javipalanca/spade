@@ -53,7 +53,7 @@ class SpadeBackend:
 	def shutdown(self):
 		self.df.stop()
 		self.ams.stop()
-		self.acc.stop()
+		#self.acc.stop()
 
 
 if __name__ ==  "__main__":

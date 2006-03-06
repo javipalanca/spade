@@ -156,11 +156,12 @@ class Router(PlugIn):
 			raise NodeProcessed
 		# SPADE CASE: message directed to the ACC component
 		elif simple_to[0:4] == "acc.":
+			self.DEBUG("ACC MESSAGE MUST BE TUNNELED", "info")
 			# We must find the real "to" of the message
 			receivers = self._owner.accPlugIn.getRealTo(stanza)
 			to = receivers[0]  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
 			s = False
-			print ">> ACC MESSAGED TUNNELED: " + str(to)
+			self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
 			# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
 	        else:
 			s=self._owner.getsession(to)
