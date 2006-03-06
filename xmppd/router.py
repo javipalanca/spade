@@ -160,7 +160,7 @@ class Router(PlugIn):
 			# We must find the real "to" of the message
 			try:
 				receivers = self._owner.accPlugIn.getRealTo(stanza)
-				to = receivers[0]  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
+				to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
 				s = False
 				self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
 				# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
