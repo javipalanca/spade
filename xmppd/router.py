@@ -148,14 +148,8 @@ class Router(PlugIn):
 	simple_to = str(to)
 	s = False
 	if not('@' in simple_to):  # Component name
-		# SPECIAL CASE: message directed to the server itself
-		if (simple_to in self._owner.servernames) and (stanza.getName()=='message'):
-			# Process message
-			self.DEBUG("Message for the server", 'info')
-			self.servercommandHandler(session, stanza)
-			raise NodeProcessed
 		# SPADE CASE: message directed to the ACC component
-		elif simple_to[0:4] == "acc.":
+		if simple_to[0:4] == "acc.":
 			self.DEBUG("ACC MESSAGE MUST BE TUNNELED", "info")
 			# We must find the real "to" of the message
 			try:
@@ -166,6 +160,12 @@ class Router(PlugIn):
 				# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
 			except:
 				self.DEBUG("ACC FAILED", "info")
+		# SPECIAL CASE: message directed to the server itself
+		if (simple_to in self._owner.servernames) and (stanza.getName()=='message'):
+			# Process message
+			self.DEBUG("Message for the server", 'info')
+			self.servercommandHandler(session, stanza)
+			raise NodeProcessed
 	        else:
 			s=self._owner.getsession(to)
 		self.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
