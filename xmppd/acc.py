@@ -26,6 +26,7 @@ class accPlugIn(PlugIn):
 		"""
 		return the real JID of the receiver of a "jabber:x:fipa" message
 		"""
+		self.DEBUG("ACC PLUGIN: received " + str(type(mess)), "info")
 		self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
             	payload=mess.getBody()
