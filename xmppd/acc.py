@@ -1,4 +1,5 @@
 from xmpp import *
+import spade
 
 class accPlugIn(PlugIn):
 	NS='jabber:x:fipa'
@@ -14,10 +15,36 @@ class accPlugIn(PlugIn):
 
         def plugin(self,server):
                 self._data = {}
-                #server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
+                server.Dispatcher.RegisterNamespaceHandler("jabber:x:fipa", self.fipaHandler)
                 #server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
                 #server.Dispatcher.RegisterHandler('polla',self.do)
-		print "#################"
-		print "ACC PLUGIN LOADED"
-		print "#################"
+		#print "#################"
+		#print "ACC PLUGIN LOADED"
+		#print "#################"
+
+	def fipaHandler(self, session, stanza):
+		print ">> FIPAHANDLER >> " + str(stanza)
+
+	def getRealTo(self, msg):
+		"""
+		return the real JID of the receiver of a "jabber:x:fipa" message
+		"""
+		envxml=None
+            	payload=mess.getBody()
+            	children = mess.getChildren()
+            	for child in children:
+                	if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
+                    		envxml = child.getData()
+            	if (envxml != None):
+                	xc = XMLCodec.XMLCodec()
+                	envelope = xc.parse(str(envxml))
+
+                	if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
+                        	ac = ACLParser.ACLParser()
+                	elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
+                        	ac = ACLParser.ACLxmlParser()
+                	else:
+                        	print "NO TENGO PARSER!"
+		
+		print str(envelope.getReceivers())
 
