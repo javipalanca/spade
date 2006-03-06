@@ -45,8 +45,9 @@ class accPlugIn(PlugIn):
                 	elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
                         	ac = ACLParser.ACLxmlParser()
                 	else:
-                        	print "NO TENGO PARSER!"
-	
-		self.DEBUG("ACC PLUGIN: getRealTo = " + str(envelope.getReceivers()), "info")
-		return envelope.getReceivers()
+                        	self.DEBUG("ACC PLUGIN: NO PARSER!", "info")
+
+		ACLmsg = ac.parse(str(payload))	
+		self.DEBUG("ACC PLUGIN: getRealTo = " + str(ACLmsg.getReceivers()), "info")
+		return ACLmsg.getReceivers()
 
