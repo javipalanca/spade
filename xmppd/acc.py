@@ -30,10 +30,12 @@ class accPlugIn(PlugIn):
 		envxml=None
             	payload=mess.getBody()
             	children = mess.getChildren()
+		self.DEBUG("ACC PLUGIN: analyzing message", "info")
             	for child in children:
                 	if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                     		envxml = child.getData()
             	if (envxml != None):
+			self.DEBUG("ACC PLUGIN: found envelope", "info")
                 	xc = XMLCodec.XMLCodec()
                 	envelope = xc.parse(str(envxml))
 
@@ -44,6 +46,6 @@ class accPlugIn(PlugIn):
                 	else:
                         	print "NO TENGO PARSER!"
 	
-		self.DEBUG(">> ACC: getRealTo = " + str(envelope.getReceivers()), "info")
+		self.DEBUG("ACC PLUGIN: getRealTo = " + str(envelope.getReceivers()), "info")
 		return envelope.getReceivers()
 
