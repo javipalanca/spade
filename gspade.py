@@ -57,6 +57,7 @@ class rma(Agent.Agent):
 			self.win.destroy()
 		def on_cancel_clicked(self, data):
 			self.win.destroy()
+			self.stop()
 
 	class MainWindow(GTKWindow):
 		def __init__(self, agent):
@@ -425,7 +426,10 @@ class RMALogin(GTKWindow):
 		#print "Sent authentication data ..."
 		rma_instance.start()
 		while rma_instance._alive:
-			time.sleep(1)
+			try:
+				time.sleep(1)
+			except:
+				rma_instance.stop()
 		#rma_instance.update.exit()
 		rma_instance.stop()
 		gtk.main_quit()
