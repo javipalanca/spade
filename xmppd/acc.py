@@ -27,13 +27,19 @@ class accPlugIn(PlugIn):
 		return the real JID of the receiver of a "jabber:x:fipa" message
 		"""
 		self.DEBUG("ACC PLUGIN: received " + str(dir(mess)), "info")
-		self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
+		#self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
+		payload = None
 		try:
 	            	payload=mess.getBody()
 		except:
-			payload=mess.getTagData['body']
 			self.DEBUG("ACC PLUGIN: getBody FAILED. Trying alternate method")
+		try:
+			if payload == None:
+				payload=mess.getTagData['body']
+		except:
+			self.DEBUG("ACC PLUGIN: getTagData FAILED.")
+			
 		self.DEBUG("ACC PLUGIN: mess Body got", "info")
             	children = mess.getChildren()
 		self.DEBUG("ACC PLUGIN: analyzing message structure", "info")
