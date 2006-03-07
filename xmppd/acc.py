@@ -55,7 +55,8 @@ class accPlugIn(PlugIn):
                 	envelope = xc.parse(str(envxml))
 			self.DEBUG("ACC PLUGIN: envelope decoded: " + str(envelope), "info")
 			self.DEBUG("ACC PLUGIN: envelope decoded: " + str(dir(envelope)), "info")
-			to = envelope
+			for aid in envelope.getTo():
+				receiver_names.append(str(aid.getName()))
 
                 	'''
 			if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
@@ -68,7 +69,7 @@ class accPlugIn(PlugIn):
 
 		#ACLmsg = ac.parse(str(payload))	
 		#self.DEBUG("ACC PLUGIN: getRealTo = " + str(ACLmsg.getReceivers()), "info")
-		for item in ACLmsg.getReceivers():
-			receiver_names.append(str(item.getName()))
+		#for item in ACLmsg.getReceivers():
+		#	receiver_names.append(str(item.getName()))
 		return receiver_names
 
