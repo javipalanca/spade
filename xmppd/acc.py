@@ -2,6 +2,7 @@ from xmpp import *
 from spade import *
 from spade.ACLMessage import *
 
+
 class accPlugIn(PlugIn):
 	#NS='jabber:x:fipa'
         NS=''
