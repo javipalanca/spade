@@ -32,7 +32,7 @@ class accPlugIn(PlugIn):
 		try:
 	            	payload=mess.getBody()
 		except:
-			payload=str(mess)
+			payload=mess.getTagData['body']
 			self.DEBUG("ACC PLUGIN: getBody FAILED. Trying alternate method")
 		self.DEBUG("ACC PLUGIN: mess Body got", "info")
             	children = mess.getChildren()
