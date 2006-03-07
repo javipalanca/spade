@@ -29,6 +29,8 @@ class accPlugIn(PlugIn):
 		self.DEBUG("ACC PLUGIN: received " + str(dir(mess)), "info")
 		#self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
+		receiver_names = []
+		'''
 		payload = None
 		try:
 	            	payload=mess.getBody()
@@ -39,6 +41,7 @@ class accPlugIn(PlugIn):
 				payload=mess.getTagData['body']
 		except:
 			self.DEBUG("ACC PLUGIN: getTagData FAILED.")
+		'''
 			
 		self.DEBUG("ACC PLUGIN: mess Body got", "info")
             	children = mess.getChildren()
@@ -51,17 +54,20 @@ class accPlugIn(PlugIn):
                 	xc = XMLCodec.XMLCodec()
                 	envelope = xc.parse(str(envxml))
 			self.DEBUG("ACC PLUGIN: envelope decoded: " + str(envelope), "info")
+			self.DEBUG("ACC PLUGIN: envelope decoded: " + str(dir(envelope)), "info")
+			to = envelope
 
-                	if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
+                	'''
+			if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
                         	ac = ACLParser.ACLParser()
                 	elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
                         	ac = ACLParser.ACLxmlParser()
                 	else:
                         	self.DEBUG("ACC PLUGIN: NO PARSER!", "info")
+			'''
 
-		ACLmsg = ac.parse(str(payload))	
-		self.DEBUG("ACC PLUGIN: getRealTo = " + str(ACLmsg.getReceivers()), "info")
-		receiver_names = []
+		#ACLmsg = ac.parse(str(payload))	
+		#self.DEBUG("ACC PLUGIN: getRealTo = " + str(ACLmsg.getReceivers()), "info")
 		for item in ACLmsg.getReceivers():
 			receiver_names.append(str(item.getName()))
 		return receiver_names
