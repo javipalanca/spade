@@ -50,7 +50,7 @@ class accPlugIn(PlugIn):
 			self.DEBUG("ACC PLUGIN: found envelope", "info")
                 	xc = XMLCodec.XMLCodec()
                 	envelope = xc.parse(str(envxml))
-			self.DEBUG("ACC PLUGIN: envelope decoded", "info")
+			self.DEBUG("ACC PLUGIN: envelope decoded: " + str(envelope), "info")
 
                 	if   str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
                         	ac = ACLParser.ACLParser()
