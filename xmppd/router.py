@@ -7,6 +7,8 @@
 from xmpp import *
 from xmppd import *
 from constants import *
+from types import *
+from filter import *
 
 
 class Router(PlugIn):
@@ -26,6 +28,24 @@ class Router(PlugIn):
 	self.server = server
         
 	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
+
+
+	for name in server.router_filter_names:
+		if name[-3:] == ".py":
+			name = name[:-3]
+		try:
+			module = __import__(name)
+		except:
+			self.DEBUG("Could not import filter module "+str(name),"error")
+			break
+		for f in vars(module).itervalues():
+			if type(f)==ClassType and issubclass(f, Filter):
+				try:
+					filter = f()
+				except:
+					self.DEBUG("Could not load filter "+str(name),"error")
+				server.router_filters.append(filter)
+				self.DEBUG("Filter "+ name + " loaded","ok")
         
 
     def presenceHandler(self,session,stanza):
@@ -132,6 +152,13 @@ class Router(PlugIn):
         self.DEBUG('Router handler called','info')
 	#print "With stanza:"
 	#print stanza
+
+
+	#Apply filters
+	for f in server.router_filters:
+		if f.test(stanza):
+			stanza = f.filter(stanza)
+
 
         to=stanza['to']
 

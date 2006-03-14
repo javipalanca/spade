@@ -462,6 +462,10 @@ class Server:
 	self.defaultNamespace = NS_CLIENT
         self.Dispatcher._init()
 
+	self.router_filters = list()
+	#this is for test
+	self.router_filter_names = ['mifiltro.py']
+
         self.features=[]
         #import modules
         for addon in addons:
@@ -476,6 +480,7 @@ class Server:
             sock.bind(('', port))
             sock.listen(1)
             self.registersession(sock)
+
 
     def feature(self,feature):
         if feature and feature not in self.features: self.features.append(feature)
@@ -581,6 +586,7 @@ class Server:
 			#print "Server: Shuting down ..."
        	    		self.shutdown(STREAM_SYSTEM_SHUTDOWN)
 	     		#except: self.shutdown(STREAM_INTERNAL_SERVER_ERROR); raise
+			break
 
     def shutdown(self,reason):
 
