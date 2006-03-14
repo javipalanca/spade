@@ -364,7 +364,7 @@ class RDF0Parser(handler.ContentHandler):
 			self.content[self.s][self.ACT] = self.accumulator
 		
 		elif self.ARGUMENT == name[1]:
-			if len(self.accumulator) > 0 :
+			if self.content[self.s][self.ARGUMENT].keys() == []:
 				self.content[self.s][self.ARGUMENT] = self.accumulator
 
 		elif self.BAG == name[1] or self.SEQ == name[1] or self.ALT == name[1]:
