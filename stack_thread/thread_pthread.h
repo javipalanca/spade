@@ -121,11 +121,21 @@ __init_thread(void)
 
 long
 //_start_new_thread(void (*func)(void *), void *arg, int stacksize)
-_start_new_thread(PyObject *func, PyObject *arg, int stacksize)
+//_start_new_thread(PyObject *func, PyObject *arg, int stacksize)
+_start_new_thread(PyObject *func, int stacksize)
 {
 	pthread_t th;
 	int status;
 	pthread_attr_t attrs;
+
+	//start pyobject conversions
+	void *my_func;
+	void *args;
+	PyArg_Parse(func, "0", &my_func);
+	//PyArg_ParseTuple();
+	//end pyobject conversions
+
+	
 
 	if (!initialized)
 		_init_thread();
@@ -140,8 +150,9 @@ _start_new_thread(PyObject *func, PyObject *arg, int stacksize)
 
 	status = pthread_create(&th, 
 				 &attrs,
-				 (void* (*)(void *))func,
-				 (void *)arg
+				 (void* (*)(void *))my_func,
+				 //(void *)arg
+				 NULL
 				 );
 
 	pthread_attr_destroy(&attrs);
