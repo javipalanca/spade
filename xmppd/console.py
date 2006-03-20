@@ -56,6 +56,3 @@ class Console(filter.Filter):
                                 except:
                                         pass
 
-                                                                                                           410,0-1     Final
-
-

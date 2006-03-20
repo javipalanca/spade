@@ -43,8 +43,8 @@ class Router(PlugIn):
 			if type(f)==ClassType and issubclass(f, Filter):
 				try:
 					filter = f(self)
-					server.router_filters.append(filter)
 					self.DEBUG("Filter "+ str(name) + " loaded","info")
+					server.router_filters.append(filter)
 				except:
 					self.DEBUG("Could not load filter "+str(name),"error")
         
