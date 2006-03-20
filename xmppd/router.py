@@ -30,6 +30,7 @@ class Router(PlugIn):
 	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
 
 
+	#Init filters
 	for name in server.router_filter_names:
 		if name[-3:] == ".py":
 			name = name[:-3]
@@ -41,11 +42,11 @@ class Router(PlugIn):
 		for f in vars(module).itervalues():
 			if type(f)==ClassType and issubclass(f, Filter):
 				try:
-					filter = f()
+					filter = f(self)
+					server.router_filters.append(filter)
+					self.DEBUG("Filter "+ str(name) + " loaded","info")
 				except:
 					self.DEBUG("Could not load filter "+str(name),"error")
-				server.router_filters.append(filter)
-				self.DEBUG("Filter "+ name + " loaded","ok")
         
 
     def presenceHandler(self,session,stanza):
@@ -157,12 +158,12 @@ class Router(PlugIn):
 	#Apply filters
 	for f in server.router_filters:
 		if f.test(stanza):
-			stanza = f.filter(stanza)
+			stanza = f.filter(session,stanza)
 
 
         to=stanza['to']
-
-# 0. Surprise! It's a component
+	"""
+# 0. It's a component
 	# Counter measure for component originated messages
 	the_from = stanza['from']
 	simple_from = str(the_from)
@@ -204,6 +205,8 @@ class Router(PlugIn):
 		raise NodeProcessed
 
 # Non-components from here
+	"""
+
 
         if stanza.getNamespace()==NS_CLIENT and \
             (not to or to==session.ourname) and \

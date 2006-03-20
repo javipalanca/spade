@@ -32,7 +32,7 @@ import jep0077
 import jep0078
 import router
 import stream
-import acc
+import accPlugin
 
 import threading
 
@@ -61,7 +61,7 @@ addons = [
 # Mine
     #ch.CH,
     #dummy.dummyClass,
-    acc.accPlugIn
+    accPlugin.accPlugIn
     ]
 
 #if __name__=='__main__':
@@ -425,6 +425,10 @@ class Server:
 	
 
     def __init__(self,debug=[],cfgfile=None, max_threads=1):
+
+	
+	self.alive = True
+
 	self.debug_mutex = threading.Lock()
 
         self.sockets={}
@@ -464,7 +468,7 @@ class Server:
 
 	self.router_filters = list()
 	#this is for test
-	self.router_filter_names = ['mifiltro.py']
+	self.router_filter_names = ['mifiltro.py','console','acc','component']
 
         self.features=[]
         #import modules
@@ -577,7 +581,7 @@ class Server:
 	#	th.start()
 	#	self.thread_pull.append(th)
 
-        while 1: 
+        while self.alive: 
         	try:
 			self.handle()
 		        #except KeyboardInterrupt:
@@ -602,6 +606,8 @@ class Server:
                 s.shutdown(2)
                 s.close()
             elif isinstance(s,Session): s.terminate_stream(reason)
+
+	self.alive = False
 
     def S2S(self,ourname,domain,slave_session=None):
         s=Session(socket.socket(socket.AF_INET, socket.SOCK_STREAM),self,NS_SERVER,domain)
