@@ -1,7 +1,6 @@
 from xmppd import filter
 from xmpp  import *
 from spade import *
-from constants import *
 
 class Component(filter.Filter):
 
