@@ -1,13 +1,13 @@
 from xmppd import filter
+from xmpp  import *
 
 class Component(filter.Filter):
 
 	def test(self,stanza):
 		self._router.DEBUG("TESTING component",'error')
 		#Counter measure for component originated messages
-		#the_from = stanza['from']
-		#simple_from = str(the_from)
-		simple_from="PUTA"
+		the_from = stanza['from']
+		simple_from = str(the_from)
 		if not('@' in simple_from):  # Component-originated
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 				self._router.DEBUG("Message for a component",'info')
