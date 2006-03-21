@@ -33,7 +33,7 @@ if os.name == "posix":
 		author_email='jpalanca@dsic.upv.es',
 		url='http://gti-ia.dsic.upv.es/projects/magentix/',
 		package_dir={'spade': 'spade'},
-		packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+		packages=['spade', 'xmpp', 'xmppd', 'xmppd.filters', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
 		scripts=['spade.sh','gspade.sh','gspade.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 		data_files=[
 			('/etc/spade',['etc/spade.xml']),
@@ -55,7 +55,7 @@ else:
 	author_email='jpalanca@dsic.upv.es',
 	url='http://gti-ia.dsic.upv.es/projects/magentix/',
 	package_dir={'spade': 'spade'},
-	packages=['spade', 'xmpp', 'xmppd', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+	packages=['spade', 'xmpp', 'xmppd', 'xmppd.filters', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
 	#scripts=['spade-rma.py', 'runspade.py'],
 	console=['gspade.py', 'runspade.py','configure.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 	data_files=[
