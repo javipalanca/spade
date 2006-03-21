@@ -170,9 +170,12 @@ class Router(PlugIn):
 	#Apply filters
 	for f in server.router_filters:
 		if f.test(stanza):
+			print str(f)+": TRUE"
 			stanza = f.filter(session,stanza)
 			if stanza == None:
 				raise NodeProcessed
+		else:
+			print str(f)+": FALSE"
 
 
         to=stanza['to']
