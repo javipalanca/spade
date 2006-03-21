@@ -1,6 +1,7 @@
 from xmppd import filter
 from xmpp  import *
 from spade import *
+from constants import *
 
 class Component(filter.Filter):
 
@@ -20,7 +21,7 @@ class Component(filter.Filter):
 
 			to = stanza['to']
 			s=self._router.getsession(to)
-			#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
+			self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 			if s:
                         	# Fake the namespace. Pose as a client
 	                        stanza.setNamespace(NS_CLIENT)
