@@ -171,6 +171,8 @@ class Router(PlugIn):
 	for f in server.router_filters:
 		if f.test(stanza):
 			stanza = f.filter(session,stanza)
+			if stanza == None:
+				raise NodeProcessed
 
 
         to=stanza['to']

@@ -22,7 +22,7 @@ class Component(filter.Filter):
         	                self._router.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
 				s.enqueue(stanza)
 				self.DEBUG("There was a message for a component and it has been delivered", 'info')
-				raise NodeProcessed
+				return None	
 			else:
 				return stanza
 

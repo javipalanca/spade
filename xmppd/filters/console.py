@@ -16,7 +16,7 @@ class Console(filter.Filter):
 		# Process message
 		self._router.DEBUG("Message for the server", 'info')
 		self.servercommandHandler(session, stanza)
-		raise NodeProcessed
+		return None
 
 
 	def servercommandHandler(self, session, stanza):
