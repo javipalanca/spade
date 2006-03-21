@@ -37,6 +37,7 @@ class Router(PlugIn):
 			name = name[:-3]
 			#name = name + ".py"
 		#name = 'xmppd' + '.' + name
+		"""
 		try:
 			module = __import__(name, fromlist="xmppd")
 		except:
@@ -50,7 +51,14 @@ class Router(PlugIn):
 					server.router_filters.append(filter)
 				except:
 					self.DEBUG("Could not load filter "+str(name),"error")
-        
+        	"""
+		if issubclass(name,Filter):
+			try:
+				filter = name(self)
+				self.DEBUG("Filter "+ str(name) + " loaded","info")
+				server.router_filters.append(filter)
+			except:
+				self.DEBUG("Could not load filter "+str(name),"error")
 
     def presenceHandler(self,session,stanza):
 #       filter out presences that should not influate our 'roster'
