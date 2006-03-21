@@ -19,7 +19,7 @@ class Component(filter.Filter):
 	def filter(self,session,stanza):
 
 			s = False
-				to = stanza['to']
+			to = stanza['to']
 			try:
 				s=self._router._owner.getsession(to)
 			except:
