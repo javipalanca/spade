@@ -1,4 +1,4 @@
-import filter
+import xmppd.filter
 
 
 class miFiltro(filter.Filter):
