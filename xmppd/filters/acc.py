@@ -1,4 +1,4 @@
-import xmppd.filter
+from xmpdd import filter
 
 class ACC(filter.Filter):
 

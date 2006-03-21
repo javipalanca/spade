@@ -1,4 +1,4 @@
-import xmppd.filter
+from xmppd import filter
 
 class Component(filter.Filter):
 
