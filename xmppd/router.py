@@ -168,6 +168,7 @@ class Router(PlugIn):
 
 
 	#Apply filters
+	print "LA PUTA LISTA " + str(server.router_filters)
 	for f in server.router_filters:
 		if f.test(stanza):
 			print str(f)+": TRUE"
