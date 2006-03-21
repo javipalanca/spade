@@ -10,6 +10,7 @@ from constants import *
 from types import *
 from filter import *
 
+import os
 
 class Router(PlugIn):
     """ The first entity that gets access to arrived stanza. """
@@ -34,6 +35,7 @@ class Router(PlugIn):
 	for name in server.router_filter_names:
 		if name[-3:] == ".py":
 			name = name[:-3]
+		name = 'xmppd' + os.sep + name
 		try:
 			module = __import__(name)
 		except:

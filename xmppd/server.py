@@ -468,7 +468,7 @@ class Server:
 
 	self.router_filters = list()
 	#this is for test
-	self.router_filter_names = ['xmppd.acc','component','console','mifiltro']
+	self.router_filter_names = ['acc','component','console','mifiltro']
 
         self.features=[]
         #import modules
