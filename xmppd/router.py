@@ -163,6 +163,7 @@ class Router(PlugIn):
         """ XMPP-Core 9.1.1 rules """
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
+        self.DEBUG('THIS IS DEBUG','info')
 	#print "With stanza:"
 	#print stanza
 
