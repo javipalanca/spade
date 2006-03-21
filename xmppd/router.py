@@ -172,9 +172,11 @@ class Router(PlugIn):
 	for f in self._owner.router_filters:
 		if f.test(stanza):
 			print str(f)+": TRUE"
-			stanza = f.filter(session,stanza)
-			if stanza == None:
+			result = f.filter(session,stanza)
+			if result == None:
 				raise NodeProcessed
+			else:
+				stanza = result
 		else:
 			print str(f)+": FALSE"
 
