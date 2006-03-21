@@ -163,14 +163,13 @@ class Router(PlugIn):
         """ XMPP-Core 9.1.1 rules """
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
-        self.DEBUG('THIS IS DEBUG','info')
 	#print "With stanza:"
 	#print stanza
 
 
 	#Apply filters
-	print "LA PUTA LISTA " + str(server.router_filters)
-	for f in server.router_filters:
+	print "LA PUTA LISTA " + str(self._owner.router_filters)
+	for f in self._owner.router_filters:
 		if f.test(stanza):
 			print str(f)+": TRUE"
 			stanza = f.filter(session,stanza)
