@@ -8,6 +8,7 @@ class Component(filter.Filter):
 		simple_from = str(the_from)
 		if not('@' in simple_from):  # Component-originated
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
+				self._router.DEBUG("Message for a component",'info')
 				return True
 		return False
 
@@ -21,7 +22,7 @@ class Component(filter.Filter):
 	                        stanza.setNamespace(NS_CLIENT)
         	                self._router.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
 				s.enqueue(stanza)
-				self.DEBUG("There was a message for a component and it has been delivered", 'info')
+				self._router.DEBUG("There was a message for a component and it has been delivered", 'info')
 				return None	
 			else:
 				return stanza
