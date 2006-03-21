@@ -17,6 +17,7 @@ class Component(filter.Filter):
 
 	def filter(self,session,stanza):
 
+			to = stanza['to']
 			s=self._owner.getsession(to)
 			#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 			if s:
