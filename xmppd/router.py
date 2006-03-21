@@ -33,8 +33,9 @@ class Router(PlugIn):
 
 	#Init filters
 	for name in server.router_filter_names:
-		if name[-3:] == ".py":
-			name = name[:-3]
+		if name[-3:] != ".py":
+			#name = name[:-3]
+			name = name + ".py"
 		name = 'xmppd' + os.sep + name
 		try:
 			module = __import__(name)
