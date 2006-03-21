@@ -172,7 +172,12 @@ class Router(PlugIn):
 	for f in self._owner.router_filters:
 		if f.test(stanza):
 			print str(f)+": TRUE"
-			result = f.filter(session,stanza)
+			try:
+				result = f.filter(session,stanza)
+			except:
+				self.DEBUG("Filter "+str(f)+ " failed",'warn')
+				result=stanza
+
 			if result == None:
 				raise NodeProcessed
 			else:
