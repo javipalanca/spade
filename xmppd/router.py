@@ -36,9 +36,9 @@ class Router(PlugIn):
 		if name[-3:] == ".py":
 			name = name[:-3]
 			#name = name + ".py"
-		name = 'xmppd' + '.' + name
+		#name = 'xmppd' + '.' + name
 		try:
-			module = __import__(name)
+			module = __import__(name, fromlist="xmppd")
 		except:
 			self.DEBUG("Could not import filter module "+str(name),"error")
 			break
