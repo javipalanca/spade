@@ -18,8 +18,11 @@ class Component(filter.Filter):
 
 	def filter(self,session,stanza):
 
-			to = stanza['to']
-			s=self._router.getsession(to)
+			try:
+				to = stanza['to']
+				s=self._router.getsession(to)
+			except:
+				print "MERDA PA MI"
 			self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 			if s:
                         	# Fake the namespace. Pose as a client
