@@ -19,9 +19,9 @@ class ACC(filter.Filter):
 		receivers = self.getRealTo(stanza)
 		to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
 		# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
-		self._router.DEBUG("ya tengo receiver: "+ to,"info")
+		#self._router.DEBUG("ya tengo receiver: "+ to,"info")
 		stanza['to'] = to
-		self._router.DEBUG("retorno stanza","info")
+		#self._router.DEBUG("retorno stanza","info")
 		return stanza
 
 	def getRealTo(self, mess):

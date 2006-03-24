@@ -23,9 +23,10 @@ class Router(PlugIn):
 	server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
         server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
         
-	server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT,self.routerHandler) # Mine
-	server.Dispatcher.RegisterHandler('handshake',self.componentHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
-	server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+	#server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT,self.routerHandler) # Mine
+	#server.Dispatcher.RegisterHandler('handshake',self.componentHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+	#server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+	
 	self.server = server
         
 	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
@@ -168,10 +169,8 @@ class Router(PlugIn):
 
 
 	#Apply filters
-	print "LA PUTA LISTA " + str(self._owner.router_filters)
 	for f in self._owner.router_filters:
 		if f.test(stanza):
-			print str(f)+": TRUE"
 			try:
 				result = f.filter(session,stanza)
 			except:
@@ -182,8 +181,6 @@ class Router(PlugIn):
 				raise NodeProcessed
 			else:
 				stanza = result
-		else:
-			print str(f)+": FALSE"
 
 
         to=stanza['to']
@@ -348,7 +345,7 @@ class Router(PlugIn):
             raise NodeProcessed
 
 
-    def componentHandler(self, session, stanza):
+    """def componentHandler(self, session, stanza):
                 name = stanza.getName()
                 if name == 'handshake':
                         # Reply handshake
@@ -391,9 +388,9 @@ class Router(PlugIn):
                         raise NodeProcessed
                 else:
                         if session._session_state >= SESSION_AUTHED:
-                                self.DEBUG( str(stanza), 'send')
+                                self.DEBUG( str(stanza), 'send')"""
 
-    def servercommandHandler(self, session, stanza):
+    """def servercommandHandler(self, session, stanza):
 		#print ">>>>> stanza = " + str(stanza)
 		#simple_from = stanza['from']
 		simple_from = ''
@@ -431,5 +428,5 @@ class Router(PlugIn):
 					rep = Message(simple_from,content,frm=simple_to)
 					session.enqueue(rep)
 				except:
-					pass					
+					pass"""
 
