@@ -23,7 +23,7 @@ class Component(filter.Filter):
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 				self._router.DEBUG("Message for a component",'info')
 				return True
-		if not ('@' in to): return True
+		if not ('@' in to) and (to not in self._router._owner.servernames): return True
 		self._router.DEBUG("Message NOT for a component",'error')
 		return False
 
