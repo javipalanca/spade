@@ -31,15 +31,15 @@ class Component(filter.Filter):
 	def filter(self,session,stanza):
 
 			s = False
-			to = stanza['to']
-			ffrom = stanza['from']
+			to = str(stanza['to'])
+			ffrom = str(stanza['from'])
 
-			if not '@' in ffrom:
+			if not('@' in ffrom):
                         	# Fake the namespace. Pose as a client
 	                        stanza.setNamespace(NS_CLIENT)
         	                #self._router.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
 
-			if not '@' in to:
+			if not('@' in to):
 				s=self._router._owner.getsession(to)
 				#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 				if s:
