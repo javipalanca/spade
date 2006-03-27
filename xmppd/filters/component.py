@@ -47,7 +47,8 @@ class Component(filter.Filter):
 				#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
 				if s:
 					s.enqueue(stanza)
-					self._router.DEBUG("message for a component delivered", 'info')
+					s.push_queue()
+					self._router.DEBUG("message for a component delivered to "+ str(s), 'info')
 					return None
 
 
