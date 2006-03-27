@@ -171,6 +171,7 @@ class Router(PlugIn):
 				result=stanza
 
 			if result == None:
+				self.DEBUG("stanza treated by filter "+ str(f) +". NodeProcessed", "warn")
 				raise NodeProcessed
 			else:
 				stanza = result
