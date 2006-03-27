@@ -203,7 +203,8 @@ class Session:
             self.stanza_queue.init()
             self.pushlock.release()#### UNLOCK_QUEUE
 
-        if self.sendbuffer and select.select([],[self._sock],[])[1]:
+        #if self.sendbuffer and select.select([],[self._sock],[])[1]:
+        if self.sendbuffer:
             try:
                 self.pushlock.acquire()# LOCK_QUEUE
                 sent=self._send(self.sendbuffer)
