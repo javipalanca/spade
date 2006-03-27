@@ -39,5 +39,13 @@ void _init_thread(void)
 
 #include "thread_pthread.h"
 
+static PyMethodDef st_methods[] = {
+	{"_start_new_thread", (PyCFunction)_start_new_thread, METH_VARARGS, "Imprimeix ttid.\n"},
+	{NULL, NULL, 0, NULL}
+};
 
+DL_EXPORT(void) initstack_thread(void)
+{
+	Py_InitModule3("stack_thread", st_methods, "Mola mogollon\n");   
+}
 

@@ -119,7 +119,8 @@ __init_thread(void)
  */
 
 
-long
+PyObject *
+//long
 //_start_new_thread(void (*func)(void *), void *arg, int stacksize)
 //_start_new_thread(PyObject *func, PyObject *arg, int stacksize)
 _start_new_thread(PyObject *func, int stacksize)
@@ -127,6 +128,7 @@ _start_new_thread(PyObject *func, int stacksize)
 	pthread_t th;
 	int status;
 	pthread_attr_t attrs;
+	long th_l;
 
 	//start pyobject conversions
 	void *my_func;
@@ -134,8 +136,6 @@ _start_new_thread(PyObject *func, int stacksize)
 	PyArg_Parse(func, "0", &my_func);
 	//PyArg_ParseTuple();
 	//end pyobject conversions
-
-	
 
 	if (!initialized)
 		_init_thread();
@@ -155,16 +155,23 @@ _start_new_thread(PyObject *func, int stacksize)
 				 NULL
 				 );
 
+	printf("STATUS: %d\n");
 	pthread_attr_destroy(&attrs);
 
 	if (status != 0)
-            return -1;
+            return Py_BuildValue("l",-1);
 
         pthread_detach(th);
 
+	printf("_start_new_thread QUASI FINALIZED\n");
+
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
-	return (long) th;
+	printf("_start_new_thread PRIMERO\n");
+	th_l = (long) th;
+	return Py_BuildValue("l", th_l);
+	//return (long) th;
 #else
+	printf("_start_new_thread SEGUNDO\n");
 	return (long) *(long *) &th;
 #endif
 }
