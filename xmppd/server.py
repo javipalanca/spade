@@ -191,7 +191,7 @@ class Session:
 	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-	    self.pushlock.acquire() #### LOCK_QUEUE
+	    #self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		#print "PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
@@ -201,7 +201,7 @@ class Session:
                 self.deliver_key_queue.append(self._stream_pos_queued)
             #self.stanza_queue=[]
             self.stanza_queue.init()
-            self.pushlock.release()#### UNLOCK_QUEUE
+            #self.pushlock.release()#### UNLOCK_QUEUE
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
