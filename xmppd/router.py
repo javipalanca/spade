@@ -25,8 +25,8 @@ class Router(PlugIn):
         
 	server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT,self.routerHandler) # Mine
 	try:
-		from filter import Component
-		server.Dispatcher.RegisterHandler('handshake',Component.componentHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
+		from filter import component
+		server.Dispatcher.RegisterHandler('handshake',component.Component.componentHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
 	except:
 		print "NO HANDSHAKE"
 	server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_COMPONENT_ACCEPT)  # Mine
