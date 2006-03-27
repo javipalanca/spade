@@ -10,9 +10,9 @@ class ACC(filter.Filter):
 		if not('@' in simple_to):  # Component name
 			# SPADE CASE: message directed to the ACC component
 			if simple_to[0:4] == "acc.":
-				self._router.DEBUG("Message for the ACC",'ok')
+				#self._router.DEBUG("Message for the ACC",'ok')
 				return True
-		self._router.DEBUG("Message NOT for the ACC",'error')
+		#self._router.DEBUG("Message NOT for the ACC",'error')
 		return False
 
 
@@ -24,8 +24,8 @@ class ACC(filter.Filter):
 		#self._router.DEBUG("ya tengo receiver: "+ to,"info")
 		#stanza['to'] = to
 		stanza.setTo(to)
-		self._router.DEBUG("retorno stanza","info")
-		print str(stanza)
+		#self._router.DEBUG("retorno stanza","info")
+		#print str(stanza)
 		return stanza
 
 	def getRealTo(self, mess):
