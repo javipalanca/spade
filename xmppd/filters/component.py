@@ -9,7 +9,7 @@ class Component(filter.Filter):
 		filter.Filter.__init__(self,router)
 
 		router.server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT, router.routerHandler)
-	        router.server.Dispatcher.RegisterHandler('handshake', self.componentHandler)#, xmlns=NS_COMPONENT_ACCEPT)
+	        router.server.Dispatcher.RegisterHandler('handshake', self.componentHandler, xmlns=NS_COMPONENT_ACCEPT)
         	router.server.Dispatcher.RegisterHandler('message', router.routerHandler, xmlns=NS_COMPONENT_ACCEPT)
 
 
@@ -55,6 +55,7 @@ class Component(filter.Filter):
 
 	def componentHandler(self, session, stanza):
                 name = stanza.getName()
+		print "COMPONENT HANDLER"
                 if name == 'handshake':
 			#self._router.DEBUG("HANDSHAKE received", 'info')
                         # Reply handshake
