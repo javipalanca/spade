@@ -18,7 +18,7 @@ class Component(filter.Filter):
 		the_from = stanza['from']
 		simple_from = str(the_from)
 		#print simple_from+":"+ str(stanza.getNamespace())
-		print str(stanza.getName())
+		print simple_from + ": " + str(stanza.getName())
 		if not('@' in simple_from):  # Component-originated
 			#if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 			if stanza.getName()=='message':
