@@ -17,13 +17,13 @@ class Component(filter.Filter):
 		#Counter measure for component originated messages
 		the_from = stanza['from']
 		simple_from = str(the_from)
-		#print simple_from+":"+ str(stanza.getNamespace())
-		print simple_from + ": " + str(stanza.getName())
+		to = str(stanza['to'])
+
 		if not('@' in simple_from):  # Component-originated
-			#if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
-			if stanza.getName()=='message':
+			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 				self._router.DEBUG("Message for a component",'info')
 				return True
+		if not ('@' in to): return True
 		self._router.DEBUG("Message NOT for a component",'error')
 		return False
 
@@ -32,17 +32,23 @@ class Component(filter.Filter):
 
 			s = False
 			to = stanza['to']
-			s=self._router._owner.getsession(to)
-			#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
-			if s:
+			ffrom = stanza['from']
+
+			if not '@' in ffrom:
                         	# Fake the namespace. Pose as a client
 	                        stanza.setNamespace(NS_CLIENT)
         	                #self._router.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
-				s.enqueue(stanza)
-				self._router.DEBUG("There was a message for a component and it has been delivered", 'info')
-				return None	
-			else:
-				return stanza
+
+			if not '@' in to:
+				s=self._router._owner.getsession(to)
+				#self._router.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
+				if s:
+					s.enqueue(stanza)
+					self._router.DEBUG("message for a component delivered", 'info')
+					return None
+
+
+			return stanza
 
 
 
