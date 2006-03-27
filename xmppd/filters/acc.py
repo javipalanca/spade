@@ -25,6 +25,7 @@ class ACC(filter.Filter):
 		#stanza['to'] = to
 		stanza.setTo(to)
 		self._router.DEBUG("retorno stanza","info")
+		print str(stanza)
 		return stanza
 
 	def getRealTo(self, mess):
