@@ -24,7 +24,7 @@ class ACC(filter.Filter):
 		#self._router.DEBUG("ya tengo receiver: "+ to,"info")
 		#stanza['to'] = to
 		stanza.setTo(to)
-		#self._router.DEBUG("retorno stanza","info")
+		self._router.DEBUG("ACC: retorno stanza con nuevo to: " + str(to),"info")
 		#print str(stanza)
 		return stanza
 
