@@ -19,9 +19,9 @@ class Component(filter.Filter):
 		simple_from = str(the_from)
 		if not('@' in simple_from):  # Component-originated
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
-				#self._router.DEBUG("Message for a component",'info')
+				self._router.DEBUG("Message for a component",'info')
 				return True
-		#self._router.DEBUG("Message NOT for a component",'error')
+		self._router.DEBUG("Message NOT for a component",'error')
 		return False
 
 
@@ -46,7 +46,7 @@ class Component(filter.Filter):
 	def componentHandler(self, session, stanza):
                 name = stanza.getName()
                 if name == 'handshake':
-			self._router.DEBUG("HANDSHAKE received", 'info')
+			#self._router.DEBUG("HANDSHAKE received", 'info')
                         # Reply handshake
                         rep = Node('handshake')
                         session.send(rep)
