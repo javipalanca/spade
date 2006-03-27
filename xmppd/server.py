@@ -203,10 +203,12 @@ class Session:
             self.stanza_queue.init()
             self.pushlock.release()#### UNLOCK_QUEUE
 
-        #if self.sendbuffer and select.select([],[self._sock],[])[1]:
+        #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
             try:
+		print "pushlock.acquire in this yera forever and ever this is green"
                 self.pushlock.acquire()# LOCK_QUEUE
+		print "pushlock.acquire in this yera forever and ever this is blue"
                 sent=self._send(self.sendbuffer)
             except:
                 self.pushlock.release()# UNLOCK_QUEUE
