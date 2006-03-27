@@ -8,11 +8,11 @@ class Component(filter.Filter):
 
 		filter.Filter.__init__(self,router)
 
-		#router.server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT, router.routerHandler)
 		router.DEBUG("Registering handshake", "info")
 	        router.server.Dispatcher.RegisterHandler('handshake', self.componentHandler, xmlns=NS_COMPONENT_ACCEPT)
 		router.DEBUG("handshake registered", "info")
         	router.server.Dispatcher.RegisterHandler('message', router.routerHandler, xmlns=NS_COMPONENT_ACCEPT)
+		router.server.Dispatcher.RegisterNamespaceHandler(NS_COMPONENT_ACCEPT, router.routerHandler)
 
 
 	def test(self,stanza):
