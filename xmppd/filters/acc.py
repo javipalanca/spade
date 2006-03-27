@@ -10,7 +10,9 @@ class ACC(filter.Filter):
 		if not('@' in simple_to):  # Component name
 			# SPADE CASE: message directed to the ACC component
 			if simple_to[0:4] == "acc.":
+				self._router.DEBUG("Message for the ACC",'ok')
 				return True
+		self._router.DEBUG("Message NOT for the ACC",'error')
 		return False
 
 
@@ -21,7 +23,7 @@ class ACC(filter.Filter):
 		# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
 		#self._router.DEBUG("ya tengo receiver: "+ to,"info")
 		stanza['to'] = to
-		#self._router.DEBUG("retorno stanza","info")
+		self._router.DEBUG("retorno stanza","info")
 		return stanza
 
 	def getRealTo(self, mess):
