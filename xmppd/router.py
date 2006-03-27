@@ -164,9 +164,6 @@ class Router(PlugIn):
         """ XMPP-Core 9.1.1 rules """
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
-	#print "With stanza:"
-	#print stanza
-
 
 	#Apply filters
 	for f in self._owner.router_filters:
@@ -182,65 +179,16 @@ class Router(PlugIn):
 			else:
 				stanza = result
 
-
         to=stanza['to']
-	"""
-# 0. It's a component
-	# Counter measure for component originated messages
-	the_from = stanza['from']
-	simple_from = str(the_from)
-	if not('@' in simple_from):  # Component-originated
-		if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
-			# Fake the namespace. Pose as a client
-			stanza.setNamespace(NS_CLIENT)
-			self.DEBUG("NS faked: " + str(stanza.getNamespace()), 'info')
-
-	# Measure for component-destinated stanzas
-	simple_to = str(to)
-	s = False
-	if not('@' in simple_to):  # Component name
-		# SPADE CASE: message directed to the ACC component
-		if simple_to[0:4] == "acc.":
-			self.DEBUG("ACC MESSAGE MUST BE TUNNELED", "info")
-			# We must find the real "to" of the message
-			try:
-				receivers = self._owner.accPlugIn.getRealTo(stanza)
-				self.DEBUG("router: getRealTo returned " + str(receivers), "info")
-				to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
-				s = False
-				self.DEBUG(">> ACC MESSAGE TUNNELED: " + str(to) , "info")
-				# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
-			except:
-				self.DEBUG("ACC FAILED", "info")
-		# SPECIAL CASE: message directed to the server itself
-		if (simple_to in self._owner.servernames) and (stanza.getName()=='message'):
-			# Process message
-			self.DEBUG("Message for the server", 'info')
-			self.servercommandHandler(session, stanza)
-			raise NodeProcessed
-	        else:
-			s=self._owner.getsession(to)
-		self.DEBUG("Component getsession("+str(to)+") ->" + str(s), 'info')
-	if s:
-		s.enqueue(stanza)
-		self.DEBUG("There was a message for a component and it has been delivered", 'info')
-		raise NodeProcessed
-
-# Non-components from here
-	"""
-
 
         if stanza.getNamespace()==NS_CLIENT and \
             (not to or to==session.ourname) and \
             stanza.props in ( [NS_AUTH], [NS_REGISTER], [NS_BIND], [NS_SESSION] ):
-	      self.DEBUG("FUEGO EL 1",'error')
               return
 
         if not session.trusted:	self.safeguard(session,stanza)
 	
-        if not to:
-		self.DEBUG("FUEGO EL 2",'error')
-		return # stanza.setTo(session.ourname)
+        if not to: return # stanza.setTo(session.ourname)
 
         domain=to.getDomain()
 
@@ -348,89 +296,4 @@ class Router(PlugIn):
             s.enqueue(stanza)
             raise NodeProcessed
 
-
-    """def componentHandler(self, session, stanza):
-                name = stanza.getName()
-                if name == 'handshake':
-                        # Reply handshake
-                        rep = Node('handshake')
-                        session.send(rep)
-                        # Identify component
-                        host,port = session._sock.getsockname()
-                        #print "HOST: " + str(host) + " PORT: " + str(port)
-                        primary_name = self.server.servernames[0]
-                        if port == 9000:  # ACC
-                                component_name = 'acc.' + primary_name
-                                session.peer = component_name
-                                self.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
-                                session.set_session_state(SESSION_OPENED)
-                                raise NodeProcessed
-                        elif port == 9001:  # AMS
-                                component_name = 'ams.' + primary_name
-                                session.peer = component_name
-                                self.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
-                                session.set_session_state(SESSION_OPENED)
-                                raise NodeProcessed
-                        elif port == 9002:  # DF
-                                component_name = 'df.' + primary_name
-                                session.peer = component_name
-                                self.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
-                                session.set_session_state(SESSION_OPENED)
-                                raise NodeProcessed
-                elif name == 'message':
-                        #"Component sends a MESSAGE"
-                        to=stanza['to']
-                        simple_to = str(to)
-                        #if not('@' in simple_to):  # Component name
-                        s=self._owner.getsession(to)
-                        if s:
-                                self.DEBUG( "Found session for to: %s %d" % (str(to), s._session_state),'info')
-                                s.enqueue(stanza)
-                        raise NodeProcessed
-                else:
-                        if session._session_state >= SESSION_AUTHED:
-                                self.DEBUG( str(stanza), 'send')"""
-
-    """def servercommandHandler(self, session, stanza):
-		#print ">>>>> stanza = " + str(stanza)
-		#simple_from = stanza['from']
-		simple_from = ''
-		for k, v in self._owner.routes.items():
-			if v == session:
-				simple_from = k
-		if simple_from == '':
-			# Bizarre situation when a command has arrived from a non-existent session
-			return
-		username = simple_from.split('@')[0]
-		print ">>>>> Command from " + str(username)
-            	if self._owner.AUTH.isadmin(str(username)):
-			# An admin has sent a command
-			body = stanza.getBody()
-			if body == 'SAVEDB':
-				try:
-					if self._owner.DB.savedb():
-						simple_to = str(stanza['to'])
-						rep = Message(simple_from,'Database Saved Succesfully', frm=simple_to)
-						session.enqueue(rep)
-				except:
-					pass
-			elif body == 'LOADDB':
-				try:
-					if self._owner.DB.loaddb():
-						simple_to = str(stanza['to'])
-						rep = Message(simple_from,'Database Loaded Succesfully', frm=simple_to)
-						session.enqueue(rep)						
-				except:
-					pass
-			elif body == 'DB':
-				try:
-					content = str(self._owner.DB.listdb())
-					simple_to = str(stanza['to'])
-					rep = Message(simple_from,content,frm=simple_to)
-					session.enqueue(rep)
-				except:
-					pass"""
 
