@@ -22,7 +22,8 @@ class ACC(filter.Filter):
 		to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
 		# We do NOT raise the NodeProcessed exception, the message follows its normal course from here
 		#self._router.DEBUG("ya tengo receiver: "+ to,"info")
-		stanza['to'] = to
+		#stanza['to'] = to
+		stanza.setTo(to)
 		self._router.DEBUG("retorno stanza","info")
 		return stanza
 
