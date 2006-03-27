@@ -17,6 +17,7 @@ class Component(filter.Filter):
 		#Counter measure for component originated messages
 		the_from = stanza['from']
 		simple_from = str(the_from)
+		print simple_from+":"+ str(stanza.getNamespace())
 		if not('@' in simple_from):  # Component-originated
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 				self._router.DEBUG("Message for a component",'info')
