@@ -37,9 +37,9 @@ class RDF0Parser(handler.ContentHandler):
 		self.SUBJECT = "subject"
 		self.PREDICATE = "predicate"
 		self.OBJECT = "object"
-		self.BAG = "bag"
-		self.SEQ = "seq"
-		self.ALT = "alt"
+		self.BAG = "Bag"
+		self.SEQ = "Seq"
+		self.ALT = "Alt"
 		self.LI	= "li"
 		self.DATATYPE = "datatype"
 		
@@ -278,7 +278,7 @@ class RDF0Parser(handler.ContentHandler):
 		self.accumulator = ""
    		
 		#fipa Actions 
-		if btag(self.prefixs.fipa,self.ACTION) == qname:
+		if btag(self.prefixs.fipa,self.ACTION).lower() == qname.lower():
 			self.content[self.ACTION] = Newdict()
 			self.s = self.ACTION
 			if btag(self.prefixs.rdf,self.ID) in attributes.getQNames():
@@ -287,38 +287,38 @@ class RDF0Parser(handler.ContentHandler):
 				self.content[self.ACTION][self.ABOUT] = attributes.getValueByQName(btag(self.prefixs.rdf,self.ABOUT))
 
 
-		elif btag(self.prefixs.fipa,self.ARGUMENT) == qname:
+		elif btag(self.prefixs.fipa,self.ARGUMENT).lower() == qname.lower():
 			self.content[self.s][self.ARGUMENT] = Newdict()
 			self.p = self.ARGUMENT
 
 		
-		elif btag(self.prefixs.fipa,self.IMPLBY) == qname:
+		elif btag(self.prefixs.fipa,self.IMPLBY).lower() == qname.lower():
 			self.content[self.s][self.IMPLBY] = Newdict()
 			self.p = self.IMPLBY
 				
-		elif btag(self.prefixs.fipa,self.CODE) == qname:
+		elif btag(self.prefixs.fipa,self.CODE).lower() == qname.lower():
 			self.code = Newdict()
 
-		elif btag(self.prefixs.rdf,self.BAG) == qname:
+		elif btag(self.prefixs.rdf,self.BAG).lower() == qname.lower():
 			self.content[self.s][self.p][self.BAG] = []
 			self.container = self.BAG
 
-		elif btag(self.prefixs.rdf,self.SEQ) == qname:
+		elif btag(self.prefixs.rdf,self.SEQ).lower() == qname.lower():
 			self.content[self.s][self.p][self.SEQ] = []
 			self.container = self.SEQ
 
-		elif btag(self.prefixs.rdf,self.ALT) == qname:
+		elif btag(self.prefixs.rdf,self.ALT).lower() == qname.lower():
 			self.content[self.s][self.p][self.ALT] = []
 			self.container = self.ALT
 		
 
 		#fipa Propositions	
-		elif btag(self.prefixs.fipa,self.PROPOSITION) == qname:
+		elif btag(self.prefixs.fipa,self.PROPOSITION).lower() == qname.lower():
 			self.content[self.PROPOSITION]=Newdict()
 			self.s = self.PROPOSITION
 
 		#rdf Descriptions
-		elif btag(self.prefixs.rdf,self.DESCRIPTION) == qname:
+		elif btag(self.prefixs.rdf,self.DESCRIPTION).lower() == qname.lower():
 			self.content[self.DESCRIPTION]=Newdict()
 			self.s = self.DESCRIPTION
 			if btag(self.prefixs.rdf,self.ABOUT) in attributes.getQNames():
@@ -357,58 +357,58 @@ class RDF0Parser(handler.ContentHandler):
 
 		# start name check
 	
-		if self.ACTOR == name[1]:
+		if self.ACTOR.lower() == name[1].lower():
 			self.content[self.s][self.ACTOR] = self.accumulator
 
-		elif self.ACT == name[1]:
+		elif self.ACT.lower() == name[1].lower():
 			self.content[self.s][self.ACT] = self.accumulator
 		
-		elif self.ARGUMENT == name[1]:
+		elif self.ARGUMENT.lower() == name[1].lower():
 			if self.content[self.s][self.ARGUMENT].keys() == []:
 				self.content[self.s][self.ARGUMENT] = self.accumulator
 
-		elif self.BAG == name[1] or self.SEQ == name[1] or self.ALT == name[1]:
+		elif self.BAG.lower() == name[1].lower() or self.SEQ.lower() == name[1].lower() or self.ALT.lower() == name[1].lower():
 			self.container = None
 
 		
-		elif self.LI == name[1]:
+		elif self.LI.lower() == name[1].lower():
 			if self.container != None:
 				self.content[self.s][self.p][self.container].append(self.accumulator)
 			else: pass 
 
-		elif self.SUBJECT == name[1]:
+		elif self.SUBJECT.lower() == name[1].lower():
 			self.content[self.s][self.SUBJECT] = self.accumulator
 
-		elif self.PREDICATE == name[1]:
+		elif self.PREDICATE.lower() == name[1].lower():
 			self.content[self.s][self.PREDICATE] = self.accumulator
 
-		elif self.OBJECT == name[1]:
+		elif self.OBJECT.lower() == name[1].lower():
 			self.content[self.s][self.OBJECT] = self.accumulator
 
-		elif self.BELIEF == name[1]:
+		elif self.BELIEF.lower() == name[1].lower():
 			self.content[self.s][self.BELIEF] = self.accumulator
 
-		elif self.DONE == name[1]:
+		elif self.DONE.lower() == name[1].lower():
 			self.content[self.s][self.DONE] = self.accumulator
 
-		elif self.RESULT == name[1]:
+		elif self.RESULT.lower() == name[1].lower():
 			self.content[self.s][self.RESULT] = self.accumulator
 
-		elif self.CODE == name[1]:
+		elif self.CODE.lower() == name[1].lower():
 			if self.container != None:
 				self.content[self.s][self.p][self.container].append({self.CODE:self.code})
 			else: self.content[self.s][self.p][self.CODE] = self.code
 	
-		elif self.LANGUAGE == name[1]:
+		elif self.LANGUAGE.lower() == name[1].lower():
 			self.code[self.LANGUAGE] = self.accumulator
 
-		elif self.BINDING == name[1]:
+		elif self.BINDING.lower() == name[1].lower():
 			self.code[self.BINDING] = self.accumulator
 
-		elif self.CODE_URI == name[1]:
+		elif self.CODE_URI.lower() == name[1].lower():
 			self.code[self.CODE_URI] = self.accumulator
 
-		elif self.SCRIPT == name[1]:
+		elif self.SCRIPT.lower() == name[1].lower():
 			self.code[self.SCRIPT] = self.accumulator
 
 		
@@ -453,7 +453,6 @@ if __name__ == "__main__":
 
 """
 TODO
-- no Case-sensitive (si te sentit)
 - RDF Collections
 - Description namespace
 """
