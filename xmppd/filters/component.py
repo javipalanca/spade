@@ -55,8 +55,8 @@ class Component(filter.Filter):
 
 	def componentHandler(self, session, stanza):
                 name = stanza.getName()
-		print "COMPONENT HANDLER"
-                if name == 'handshake':
+		self._router.DEBUG("Component Handler called", "info")
+                if name == 'handshake' or name == u'handshake':
 			#self._router.DEBUG("HANDSHAKE received", 'info')
                         # Reply handshake
                         rep = Node('handshake')
