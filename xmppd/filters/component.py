@@ -46,6 +46,7 @@ class Component(filter.Filter):
 	def componentHandler(self, session, stanza):
                 name = stanza.getName()
                 if name == 'handshake':
+			self._router.DEBUG("HANDSHAKE received", 'info')
                         # Reply handshake
                         rep = Node('handshake')
                         session.send(rep)
