@@ -233,11 +233,15 @@ class Router(PlugIn):
         if stanza.getNamespace()==NS_CLIENT and \
             (not to or to==session.ourname) and \
             stanza.props in ( [NS_AUTH], [NS_REGISTER], [NS_BIND], [NS_SESSION] ):
+	      self.DEBUG("FUEGO EL 1",'error')
               return
 
-        if not session.trusted: self.safeguard(session,stanza)
+        if not session.trusted:	self.safeguard(session,stanza)
 	
-        if not to: return # stanza.setTo(session.ourname)
+        if not to:
+		self.DEBUG("FUEGO EL 2",'error')
+		return # stanza.setTo(session.ourname)
+
         domain=to.getDomain()
 
         getsession=self._owner.getsession
