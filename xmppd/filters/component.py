@@ -19,7 +19,8 @@ class Component(filter.Filter):
 		simple_from = str(the_from)
 		to = str(stanza['to'])
 
-		if not('@' in simple_from):  # Component-originated
+		# Component-originated
+		if not('@' in simple_from) and (simple_from not in self._router._owner.servernames):
 			if stanza.getNamespace()==NS_COMPONENT_ACCEPT and stanza.getName()=='message':
 				self._router.DEBUG("Message for a component",'info')
 				return True
