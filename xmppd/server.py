@@ -189,6 +189,7 @@ class Session:
             #self.deliver_queue_map,self.deliver_key_queue,self.stanza_queue={},[],[]
             self.deliver_queue_map,self.deliver_key_queue={},[]
 	    self.stanza_queue.init()
+	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
 	    self.pushlock.acquire() #### LOCK_QUEUE
