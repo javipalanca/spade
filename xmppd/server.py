@@ -174,8 +174,8 @@ class Session:
 	    self.sendbuffer+=stanza
 	    print ">>>> Session" + str(self)+  ": sendbuffer"
         if self._socket_state>=SOCKET_ALIVE:
-	    self.push_queue()
-	    print ">>>> Session" + str(self)+  ": queue pushed"
+	    qp = self.push_queue()
+	    print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
@@ -192,7 +192,8 @@ class Session:
 	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-	    self.pushlock.acquire() #### LOCK_QUEUE
+	    print "push_queue: Session is SESSION_AUTHED"
+	    #self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		print ">>>>push_queue: PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
@@ -202,7 +203,7 @@ class Session:
                 self.deliver_key_queue.append(self._stream_pos_queued)
             #self.stanza_queue=[]
             self.stanza_queue.init()
-            self.pushlock.release()#### UNLOCK_QUEUE
+            #self.pushlock.release()#### UNLOCK_QUEUE
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
