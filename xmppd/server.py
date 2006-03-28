@@ -178,8 +178,10 @@ class Session:
 	    print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
+	print "push_queu: called"
 
         if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
+	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
             self._owner.deactivatesession(self)
             self.trusted=1
             for key in self.deliver_key_queue:                            # Not sure. May be I
@@ -189,7 +191,6 @@ class Session:
             #self.deliver_queue_map,self.deliver_key_queue,self.stanza_queue={},[],[]
             self.deliver_queue_map,self.deliver_key_queue={},[]
 	    self.stanza_queue.init()
-	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
 	    print "push_queue: Session is SESSION_AUTHED"
@@ -207,6 +208,7 @@ class Session:
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
+	    print "push_queue: sendbuffer has DATA"
             try:
 		print "pushlock.acquire in this yera forever and ever this is green"
                 self.pushlock.acquire()# LOCK_QUEUE
