@@ -63,7 +63,11 @@ class Component(filter.Filter):
                         # Reply handshake
                         rep = Node('handshake')
                         session.send(rep)
+			session.set_session_state(SESSION_OPENED)
+			self._router.DEBUG('Session ' + str(session) + ' has been OPENED', 'warn')
+			raise NodeProcessed
                         # Identify component
+			'''
                         host,port = session._sock.getsockname()
                         #print "HOST: " + str(host) + " PORT: " + str(port)
                         primary_name = self._router.server.servernames[0]
@@ -71,23 +75,24 @@ class Component(filter.Filter):
                                 component_name = 'acc.' + primary_name
                                 session.peer = component_name
                                 self._router.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
+                                #session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
                         elif port == 9001:  # AMS
                                 component_name = 'ams.' + primary_name
                                 session.peer = component_name
                                 self._router.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
+                                #session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
                         elif port == 9002:  # DF
                                 component_name = 'df.' + primary_name
                                 session.peer = component_name
                                 self._router.server.activatesession(session, component_name)
-                                session.set_session_state(SESSION_AUTHED)
+                                #session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
+			'''
                 elif name == 'message':
                         #"Component sends a MESSAGE"
                         to=stanza['to']
