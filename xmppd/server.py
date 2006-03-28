@@ -178,7 +178,7 @@ class Session:
 	    print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
-	print "push_queu: called"
+	print "push_queue: called"
 
         if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
 	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
@@ -205,6 +205,9 @@ class Session:
             #self.stanza_queue=[]
             self.stanza_queue.init()
             #self.pushlock.release()#### UNLOCK_QUEUE
+	else:
+		print "push_queue: ELSE happened"
+		print "push_queue: stream_state = " + str(self._stream_state) + " socket_state = " + str(self._socket_state) + " session_state = " + str(self._session_state)
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
