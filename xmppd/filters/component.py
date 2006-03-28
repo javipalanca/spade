@@ -50,7 +50,6 @@ class Component(filter.Filter):
 					self._router.DEBUG("message for a component delivered to "+ str(s), 'info')
 					return None
 
-
 			return stanza
 
 
@@ -59,6 +58,7 @@ class Component(filter.Filter):
                 name = stanza.getName()
 		self._router.DEBUG("Component Handler called", "info")
                 if name == 'handshake' or name == u'handshake':
+			print "cH: A FUCKING HANDSHAKE!!!"
 			#self._router.DEBUG("HANDSHAKE received", 'info')
                         # Reply handshake
                         rep = Node('handshake')
@@ -77,6 +77,7 @@ class Component(filter.Filter):
                                 raise NodeProcessed
 			'''
                         if port == 9001:  # AMS
+				print "cH: IT SEEMS A FUCKING AMS!!!"
                                 component_name = 'ams.' + primary_name
                                 session.peer = component_name
                                 self._router.server.activatesession(session, component_name)
@@ -85,6 +86,7 @@ class Component(filter.Filter):
 				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) +' has been OPENED', 'warn')
                                 raise NodeProcessed
                         elif port == 9002:  # DF
+				print "cH: IT SEEMS A FUCKING AMS!!!"
                                 component_name = 'df.' + primary_name
                                 session.peer = component_name
                                 self._router.server.activatesession(session, component_name)
