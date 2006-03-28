@@ -533,8 +533,8 @@ class Server:
         alt_s=self.getsession(peer)
         if s==alt_s: return
         elif alt_s: self.deactivatesession(peer)
-	self.DEBUG('session', 'Activating session %s with peer %s' % (str(s),str(peer)))
         self.routes[peer]=s
+	self.DEBUG('session', 'Activating session %s with peer %s' % (str(s),str(peer)))
 
     def getsession(self, jid):
         try: return self.routes[jid]
