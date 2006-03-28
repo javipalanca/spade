@@ -82,7 +82,6 @@ class Component(filter.Filter):
                                 self._router._owner.activatesession(session, component_name)
                                 session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
-				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) + ' has been OPENED', 'warn')
                                 raise NodeProcessed
                         elif port == 9002:  # DF
                                 component_name = 'df.' + primary_name
@@ -90,7 +89,6 @@ class Component(filter.Filter):
                                 self._router._owner.activatesession(session, component_name)
                                 session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
-				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) + ' has been OPENED', 'warn')
                                 raise NodeProcessed
                 elif name == 'message':
                         #"Component sends a MESSAGE"
