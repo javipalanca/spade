@@ -1,4 +1,5 @@
 from xmppd import filter
+from xmppd.constants import *
 from xmpp  import *
 from spade import *
 
