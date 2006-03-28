@@ -194,7 +194,7 @@ class Session:
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
 	    self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
-		#print "PUSHING STANZA: " + str(stanza)
+		print "push_queue: PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
                 self.sendbuffer+=txt
                 self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
