@@ -83,8 +83,9 @@ class Component(filter.Filter):
                                 self._router._owner.activatesession(session, component_name)
 				print "cH: SESSION ACTIVATED!!!"
                                 session.set_session_state(SESSION_AUTHED)
+				print "cH: SESSION AUTHED!!!"
                                 session.set_session_state(SESSION_OPENED)
-				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) +' has been OPENED', 'warn')
+				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) + ' has been OPENED', 'warn')
                                 raise NodeProcessed
                         elif port == 9002:  # DF
 				print "cH: IT SEEMS A FUCKING DF!!!"
@@ -93,6 +94,7 @@ class Component(filter.Filter):
                                 self._router._owner.activatesession(session, component_name)
 				print "cH: SESSION ACTIVATED!!!"
                                 session.set_session_state(SESSION_AUTHED)
+				print "cH: SESSION AUTHED!!!"
                                 session.set_session_state(SESSION_OPENED)
 				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) +' has been OPENED', 'warn')
                                 raise NodeProcessed
