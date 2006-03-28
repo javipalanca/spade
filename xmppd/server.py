@@ -169,19 +169,18 @@ class Session:
         """ Takes Protocol instance as argument. """
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
-	    print ">>>> Session" + str(self)+  ": append stanza"
+	    #print ">>>> Session" + str(self)+  ": append stanza"
         else: 
 	    self.sendbuffer+=stanza
-	    print ">>>> Session" + str(self)+  ": sendbuffer"
+	    #print ">>>> Session" + str(self)+  ": sendbuffer"
         if self._socket_state>=SOCKET_ALIVE:
 	    qp = self.push_queue()
-	    print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
+	    #print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
-	print "push_queue: called"
 
         if self._stream_state>=STREAM__CLOSED or self._socket_state>=SOCKET_DEAD: # the stream failed. Return all stanzas that are still waiting for delivery.
-	    print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
+	    #print "push_queue: STREAM CLOSED or SOCKET DEAD!!"
             self._owner.deactivatesession(self)
             self.trusted=1
             for key in self.deliver_key_queue:                            # Not sure. May be I
@@ -193,10 +192,10 @@ class Session:
 	    self.stanza_queue.init()
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
-	    print "push_queue: Session is SESSION_AUTHED"
+	    #print "push_queue: Session is SESSION_AUTHED"
 	    #self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
-		print ">>>>push_queue: PUSHING STANZA: " + str(stanza)
+		#print ">>>>push_queue: PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
                 self.sendbuffer+=txt
                 self._stream_pos_queued+=len(txt)       # should be re-evaluated for SSL connection.
@@ -205,19 +204,14 @@ class Session:
             #self.stanza_queue=[]
             self.stanza_queue.init()
             #self.pushlock.release()#### UNLOCK_QUEUE
-	else:
-		print "push_queue: ELSE happened"
-		print "push_queue: stream_state = " + str(self._stream_state) + " socket_state = " + str(self._socket_state) + " session_state = " + str(self._session_state)
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
-	    print "push_queue: sendbuffer has DATA"
+	    #print "push_queue: sendbuffer has DATA"
             try:
-		print "pushlock.acquire in this yera forever and ever this is green"
+		#print "pushlock.acquire in this yera forever and ever this is green"
                 self.pushlock.acquire()# LOCK_QUEUE
-		print "pushlock.acquire in this yera forever and ever this is blue"
                 sent=self._send(self.sendbuffer)
-		print "push_queue: sent " + str(sent) + " bytes"
             except:
                 self.pushlock.release()# UNLOCK_QUEUE
                 self.set_socket_state(SOCKET_DEAD)
