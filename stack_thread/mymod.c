@@ -1,6 +1,6 @@
 #include "Python.h"
 
-long creahilo(void *func, int stacksize) {
+long creahilo(void *func, void *args, int stacksize) {
 	pthread_t th;
         int status;
         pthread_attr_t attrs;
@@ -40,20 +40,103 @@ int cosa(int x) {
 	return x;
 };
 
-PyObject *mymod_snt(PyObject *self, PyObject *args) {
-	long sz;
-	PyObject *obj;
-	PyObject *tupla;
 
-	if (! PyArg_ParseTuple(args, "O", &obj)) {
-		Py_INCREF(Py_None);
-		return Py_None;
-	};
+struct bootstate {
+	PyInterpreterState *interp;
+	PyObject *func;
+	PyObject *args;
+	int ssize;
+};
+
+static void
+t_bootstrap(void *boot_raw)
+{
+	struct bootstate *boot = (struct bootstate *) boot_raw;
+	PyThreadState *tstate;
+	PyObject *res;
+
+	tstate = PyThreadState_New(boot->interp);
+
+	PyEval_AcquireThread(tstate);
+	res = PyEval_CallObjectWithKeywords(
+			boot->func, boot->args, NULL);
+	if (res == NULL) {
+		if (PyErr_ExceptionMatches(PyExc_SystemExit))
+			PyErr_Clear();
+		else {
+			PyObject *file;
+			PySys_WriteStderr(
+					"Unhandled exception in thread started by ");
+			file = PySys_GetObject("stderr");
+			if (file)
+				PyFile_WriteObject(boot->func, file, 0);
+			else
+				PyObject_Print(boot->func, stderr, 0);
+			PySys_WriteStderr("\n");
+			PyErr_PrintEx(0);
+		}
+	}
+	else
+		Py_DECREF(res);
+	Py_DECREF(boot->func);
+	Py_DECREF(boot->args);
+	//Py_DECREF(boot->ssize);
+	PyMem_DEL(boot_raw);
+	PyThreadState_Clear(tstate);
+	PyThreadState_DeleteCurrent();
+	PyThread_exit_thread();
+}
+
+
+
+PyObject *mymod_snt(PyObject *self, PyObject *fargs) {
+
+	PyObject *func, *args = NULL;
+	int ssize = 1024;
+	struct bootstate *boot;
+	long ident;
+
+	if (!PyArg_ParseTuple(fargs, "OO|i:start_new_thread", &func, &args, &ssize))
+		return NULL;
+	if (!PyCallable_Check(func)) {
+		PyErr_SetString(PyExc_TypeError,
+				"first arg must be callable");
+		return NULL;
+	}
+	if (!PyTuple_Check(args)) {
+		PyErr_SetString(PyExc_TypeError,
+				"2nd arg must be a tuple");
+		return NULL;
+	}
 	
-	sz = creahilo((void *)obj, 1024);
-	printf("sz = %d\n", sz);
-	Py_INCREF(Py_None);
-	return Py_None;
+
+	boot = PyMem_NEW(struct bootstate, 1);
+	if (boot == NULL)
+		return PyErr_NoMemory();
+	boot->interp = PyThreadState_GET()->interp;
+	boot->func = func;
+	boot->args = args;
+	boot->ssize = ssize;
+	Py_INCREF(func);
+	Py_INCREF(args);
+	//Py_XINCREF(ssize);
+	PyEval_InitThreads(); /* Start the interpreter's thread-awareness */
+	ident = creahilo(t_bootstrap, (void *) boot, boot->ssize);
+	//ident = PyThread_start_new_thread(t_bootstrap, (void*) boot);
+	if (ident == -1) {
+		//PyErr_SetString(ThreadError, "can't start new thread\n");
+		printf("can't start new thread\n");
+		Py_DECREF(func);
+		Py_DECREF(args);
+		//Py_XDECREF(ssize);
+		PyMem_DEL(boot);
+		return NULL;
+	}
+	return PyInt_FromLong(ident);
+
+
+	
+	
 };
 
 PyObject *mymod_nada(PyObject *self) {

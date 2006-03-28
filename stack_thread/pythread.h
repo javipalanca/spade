@@ -13,10 +13,8 @@ extern "C" {
 #endif
 
 void _init_thread(void);
-PyObject *_start_new_thread(PyObject *, int);
-//long _start_new_thread(PyObject *, int);
-//long _start_new_thread(PyObject *, PyObject *, int);
-//long _start_new_thread(void(*)(void*), void*, int);
+//PyObject *_start_new_thread(PyObject *, int);
+long _start_new_thread(void(*)(void*), void*, int);
 void _exit_thread(void);
 void __exit_thread(void);
 long _get_thread_ident(void);

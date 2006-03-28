@@ -123,25 +123,20 @@ PyObject *
 //long
 //_start_new_thread(void (*func)(void *), void *arg, int stacksize)
 //_start_new_thread(PyObject *func, PyObject *arg, int stacksize)
-_start_new_thread(PyObject *func, int stacksize)
+//_start_new_thread(PyObject *func, int stacksize)
+_start_new_thread(void (*func)(void *), void *arg, int stacksize)
 {
 	pthread_t th;
 	int status;
 	pthread_attr_t attrs;
 	long th_l;
 
-	//start pyobject conversions
-	void *my_func;
-	void *args;
-	PyArg_Parse(func, "0", &my_func);
-	//PyArg_ParseTuple();
-	//end pyobject conversions
-
 	if (!initialized)
 		_init_thread();
 
 	pthread_attr_init(&attrs);
 
+	//pthread_attr_setstacksize(&attrs, THREAD_STACK_SIZE);
 	if(stacksize>0)	pthread_attr_setstacksize(&attrs, stacksize);
 	
 #if defined(PTHREAD_SYSTEM_SCHED_SUPPORTED) && !defined(__FreeBSD__)
@@ -150,9 +145,9 @@ _start_new_thread(PyObject *func, int stacksize)
 
 	status = pthread_create(&th, 
 				 &attrs,
-				 (void* (*)(void *))my_func,
-				 //(void *)arg
-				 NULL
+				 (void* (*)(void *))func,
+				 (void *)arg
+				 //NULL
 				 );
 
 	printf("STATUS: %d\n");
@@ -167,9 +162,9 @@ _start_new_thread(PyObject *func, int stacksize)
 
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
 	printf("_start_new_thread PRIMERO\n");
-	th_l = (long) th;
-	return Py_BuildValue("l", th_l);
-	//return (long) th;
+	//th_l = (long) th;
+	//return Py_BuildValue("l", th_l);
+	return (long) th;
 #else
 	printf("_start_new_thread SEGUNDO\n");
 	return (long) *(long *) &th;
