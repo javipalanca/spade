@@ -346,6 +346,9 @@ class Session:
             if newstate==SESSION_OPENED:
 		self.enqueue(Message(self.peer,Revision,frm=self.ourname))     # Remove in prod. quality server
 		self.DEBUG(str('Sent Welcome message to peer '+str(self.peer)))
+	else:
+		print "sss: Mi estado es " + str(self._session_state) + " y me pasan " + str(newstate)
+
     def set_stream_state(self,newstate):
         if self._stream_state<newstate: self._stream_state=newstate
 
