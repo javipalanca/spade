@@ -80,16 +80,16 @@ class Component(filter.Filter):
 				print "cH: IT SEEMS A FUCKING AMS!!!"
                                 component_name = 'ams.' + primary_name
                                 session.peer = component_name
-                                self._router.server.activatesession(session, component_name)
+                                self._router._owner.activatesession(session, component_name)
                                 #session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
 				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) +' has been OPENED', 'warn')
                                 raise NodeProcessed
                         elif port == 9002:  # DF
-				print "cH: IT SEEMS A FUCKING AMS!!!"
+				print "cH: IT SEEMS A FUCKING DF!!!"
                                 component_name = 'df.' + primary_name
                                 session.peer = component_name
-                                self._router.server.activatesession(session, component_name)
+                                self._router._owner.activatesession(session, component_name)
                                 #session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
 				self._router.DEBUG('Session ' + str(session) + ' for ' + str(component_name) +' has been OPENED', 'warn')
