@@ -2,6 +2,7 @@
 import stack_thread
 import thread
 import time
+import mymod
 
 def run():
 	print "0run"
@@ -11,7 +12,8 @@ def run():
 
 #print thread.start_new_thread(run,())
 #print stack_thread._start_new_thread(run,(),1024)
-print stack_thread._start_new_thread(run,10240)
+print mymod.snt(run)
+#print stack_thread._start_new_thread(run,10240)
 print "HOLA DESPUES"
 
 while 1:
