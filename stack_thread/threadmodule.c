@@ -11,7 +11,7 @@
 //#endif
 
 //#include "pythread.h"
-#include "pythread.h"
+#include "stackthread.c"
 
 static PyObject *ThreadError;
 
@@ -501,7 +501,7 @@ thread_PyThread_start_new_thread(PyObject *self, PyObject *fargs)
 	Py_XINCREF(keyw);
 	PyEval_InitThreads(); /* Start the interpreter's thread-awareness */
 	//ident = PyThread_start_new_thread(t_bootstrap, (void*) boot);
-	ident = PyThread_start_new_thread(t_bootstrap, (void*) boot, ssize);
+	ident = _start_new_thread(t_bootstrap, (void*) boot, ssize);
 	if (ident == -1) {
 		PyErr_SetString(ThreadError, "can't start new thread\n");
 		Py_DECREF(func);

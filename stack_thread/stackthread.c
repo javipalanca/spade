@@ -2,6 +2,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+
+#include "stackthread.h"
+
 #if defined(__APPLE__) || defined(HAVE_PTHREAD_DESTRUCTOR)
 #define destructor xxdestructor
 #endif
@@ -24,6 +27,8 @@
 #include <errno.h>
 #endif
 #endif
+
+
 
 #if !defined(pthread_attr_default)
 #  define pthread_attr_default ((pthread_attr_t *)NULL)
@@ -86,6 +91,8 @@ typedef struct {
  * Initialization.
  */
 
+static int initialized = 0;
+
 #ifdef _HAVE_BSDI
 static
 void _noop(void)
@@ -114,13 +121,19 @@ __init_thread(void)
 
 #endif /* !_HAVE_BSDI */
 
+void
+_init_thread(void)
+{
+}
+
 /*
  * Thread support.
  */
 
 
-PyObject *
-//long
+
+//PyObject *
+long
 //_start_new_thread(void (*func)(void *), void *arg, int stacksize)
 //_start_new_thread(PyObject *func, PyObject *arg, int stacksize)
 //_start_new_thread(PyObject *func, int stacksize)
@@ -151,18 +164,19 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 				 //NULL
 				 );
 
-	printf("STATUS: %d\n");
+	printf("STATUS: %li\n");
 	pthread_attr_destroy(&attrs);
 
 	if (status != 0)
-            return Py_BuildValue("l",-1);
+            //return Py_BuildValue("l",-1);
+	    return (long) -1;
 
         pthread_detach(th);
 
-	printf("_start_new_thread QUASI FINALIZED\n");
+	//printf("_start_new_thread QUASI FINALIZED\n");
 
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
-	printf("_start_new_thread PRIMERO\n");
+	//printf("_start_new_thread PRIMERO\n");
 	//th_l = (long) th;
 	//return Py_BuildValue("l", th_l);
 	return (long) th;

@@ -6,7 +6,7 @@ import time
 
 def run():
 	while 1:
-		#print "run"
+		print "run"
 		time.sleep(1)
 
 #print thread.start_new_thread(run,())
@@ -14,7 +14,7 @@ def run():
 #print mymod.snt(run,(), 10204)
 i = 0
 while 1:
-	stack_thread.start_new_thread(run,(),1024)
+	stack_thread.start_new_thread(run,(),256)
 	print i
 	i = i+1
 
