@@ -137,6 +137,7 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 	pthread_attr_init(&attrs);
 
 	//pthread_attr_setstacksize(&attrs, THREAD_STACK_SIZE);
+	printf("C: stacksize = %d\n", stacksize);
 	if(stacksize>0)	pthread_attr_setstacksize(&attrs, stacksize);
 	
 #if defined(PTHREAD_SYSTEM_SCHED_SUPPORTED) && !defined(__FreeBSD__)

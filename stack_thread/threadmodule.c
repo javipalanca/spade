@@ -467,10 +467,13 @@ thread_PyThread_start_new_thread(PyObject *self, PyObject *fargs)
 	PyObject *func, *args, *keyw = NULL;
 	struct bootstate *boot;
 	long ident;
-	int ssize = 1024;
+	int ssize = 10240;
 
 	if (!PyArg_ParseTuple(fargs, "OO|iO:start_new_thread", &func, &args, &ssize, &keyw))
 		return NULL;
+
+	printf("_start_new_thread: ssize = %d\n", ssize);
+	
 	if (!PyCallable_Check(func)) {
 		PyErr_SetString(PyExc_TypeError,
 				"first arg must be callable");
