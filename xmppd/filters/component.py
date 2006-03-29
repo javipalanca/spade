@@ -90,6 +90,14 @@ class Component(filter.Filter):
                                 session.set_session_state(SESSION_AUTHED)
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
+			elif port == 9003:  # SIMBA
+                                component_name = 'simba.' + primary_name
+                                session.peer = component_name
+                                self._router._owner.activatesession(session, component_name)
+                                session.set_session_state(SESSION_AUTHED)
+                                session.set_session_state(SESSION_OPENED)
+                                raise NodeProcessed
+
                 elif name == 'message':
                         #"Component sends a MESSAGE"
                         to=stanza['to']
