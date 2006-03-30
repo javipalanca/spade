@@ -141,8 +141,8 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 {
 	pthread_t th;
 	int status;
+	size_t ssize;
 	pthread_attr_t attrs;
-	long th_l;
 
 	if (!initialized)
 		_init_thread();
@@ -150,8 +150,10 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 	pthread_attr_init(&attrs);
 
 	//pthread_attr_setstacksize(&attrs, THREAD_STACK_SIZE);
-	printf("C: stacksize = %d\n", stacksize);
-	if(stacksize>0)	pthread_attr_setstacksize(&attrs, stacksize);
+	//printf("C: stacksize = %d\n", stacksize);
+	//if(stacksize>0)
+	pthread_attr_setstacksize(&attrs, (size_t)stacksize);
+	pthread_attr_getstacksize(&attrs, &ssize);
 	
 #if defined(PTHREAD_SYSTEM_SCHED_SUPPORTED) && !defined(__FreeBSD__)
         pthread_attr_setscope(&attrs, PTHREAD_SCOPE_SYSTEM);
@@ -164,8 +166,9 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 				 //NULL
 				 );
 
-	printf("STATUS: %li\n");
-	pthread_attr_destroy(&attrs);
+	printf ("STACKSIZE: %d==%d\n",(size_t)stacksize,ssize);
+	//printf("STATUS: %li\n",status);
+	//pthread_attr_destroy(&attrs);
 
 	if (status != 0)
             //return Py_BuildValue("l",-1);
@@ -173,15 +176,9 @@ _start_new_thread(void (*func)(void *), void *arg, int stacksize)
 
         pthread_detach(th);
 
-	//printf("_start_new_thread QUASI FINALIZED\n");
-
 #if SIZEOF_PTHREAD_T <= SIZEOF_LONG
-	//printf("_start_new_thread PRIMERO\n");
-	//th_l = (long) th;
-	//return Py_BuildValue("l", th_l);
 	return (long) th;
 #else
-	printf("_start_new_thread SEGUNDO\n");
 	return (long) *(long *) &th;
 #endif
 }

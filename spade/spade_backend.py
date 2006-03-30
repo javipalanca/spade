@@ -28,32 +28,33 @@ class SpadeBackend:
 	Inits the platform components (AMS, DF, ...)
 	"""
 
-	def runAgent(self, configfile, section, agentClass):
+	def runAgent(self, config, section, agentClass):
 		"""
 		starts an agent
 		"""
 		#jid = configfile.get(section,'JID')
-		passwd = configfile.get(section,'password')
-		server = configfile.get("domain",'hostname')
-		port = int(configfile.get(section,'port'))
+		passwd = config[section]['password']
+		server = config["platform"]['hostname']
+		port = int( config[section]['port'] )
 		jid = section + "." + server
 		agent = agentClass(jid, passwd, server, port)
 		agent.start()
 		return agent
     
 	def __init__(self, configfilename="/etc/spade/spade.xml"):
-		self.configfile = SpadeConfigParser.ConfigParser(configfilename)
+		parser = SpadeConfigParser.ConfigParser()
+		self.config = parser.parse(configfilename)
 
 	def start(self):
 		#TODO: this should be configurable
 		#self.acc = self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
-		self.ams = self.runAgent(self.configfile, "ams", AMS.AMS)
-		self.df = self.runAgent(self.configfile, "df", DF.DF)
+		self.ams = self.runAgent(self.config, "ams", AMS.AMS)
+		self.df = self.runAgent(self.config, "df", DF.DF)
 		#self.simba = self.runAgent(self.configfile, "simba", SIMBA.SIMBA)
 
 	def shutdown(self):
-		self.df.stop()
-		self.ams.stop()
+		if self.df: self.df.stop()
+		if self.ams: self.ams.stop()
 		#self.acc.stop()
 
 
