@@ -43,6 +43,7 @@ def generateCode():
                </platform>
 
                <acc>
+	       #MTPS#
                </acc>
 
                <ams>
@@ -59,6 +60,8 @@ def generateCode():
 	       
         </spade>
 	"""
+	
+	
 
 	file = open("etc/spade.xml", "w+")
 	file.write(spadexml)
