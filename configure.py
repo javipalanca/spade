@@ -307,6 +307,12 @@ def generateCode():
                       <password>"""+df_passwd+"""</password>
                       <port>9002</port>
                </df>
+		
+	       <simba>
+                      <hostname>simba."""+hostname+"""</hostname>
+                      <password>secret</password>
+                      <port>9003</port>
+               </simba>
 
         </spade>
 	"""
