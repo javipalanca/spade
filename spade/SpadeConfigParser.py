@@ -89,7 +89,7 @@ class spadeXMLHandler(ContentHandler):
 			elif self.current_tag == "df":
 				self.content.df['hostname'] = self.chars
 		elif name == "password":
-			elif self.current_tag == "ams":
+			if self.current_tag == "ams":
 				self.content.ams['password'] = self.chars
 			elif self.current_tag == "df":
 				self.content.df['password'] = self.chars
