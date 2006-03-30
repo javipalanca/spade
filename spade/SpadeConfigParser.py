@@ -102,6 +102,7 @@ class spadeXMLHandler(ContentHandler):
 				self.content.df['port'] = self.chars
 
 			else:
+				print self.current_tag
 				self.content.acc[self.current_tag]['port'] = self.chars
 
 		elif name == "protocol":
