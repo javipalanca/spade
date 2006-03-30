@@ -133,17 +133,17 @@ class ConfigParser:
     		self.parser.setFeature(feature_namespaces, 0)
 
     		# Create the handler
-    		dh = spadeXMLHandler()
+    		self.dh = spadeXMLHandler()
 
     		# Tell the parser to use our handler
-    		self.parser.setContentHandler(dh)
+    		self.parser.setContentHandler(self.dh)
 
 	def parse(self,fn):
 
     		# Parse the input
     		self.parser.parse(fn)
 
-		return dh.content
+		return self.dh.content
 
 		"""
     		# Manage the results
