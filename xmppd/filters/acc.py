@@ -3,9 +3,38 @@ from xmpp import *
 from spade import *
 from spade.ACLMessage import *
 
+import os
+
 class ACC(filter.Filter):
 
+	def __init__(self,router):
+
+		filter.Filter.__init__(self,router)
+
+		if os.name == "posix":
+			configfile = "/etc/spade/spade.xml"
+		else:
+			configfile = "etc/spade.xml"
+
+		parser = SpadeConfigParser.ConfigParser()
+		config = parser.parse(configfile)
+
+		mtps = {}
+		for mtp in config.acc:
+			mtps[mtp.protocol] = mtp.instance(str(mtp))
+
 	def test(self,stanza):
+
+            	children = stanza.getChildren()
+		#self._router.DEBUG("ACC PLUGIN: analyzing message structure", "info")
+            	for child in children:
+                	if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
+				self.envelope = child.getData()
+				return True
+
+		return False
+
+		"""
 		simple_to = str(stanza['to'])
 		if not('@' in simple_to):  # Component name
 			# SPADE CASE: message directed to the ACC component
@@ -14,9 +43,26 @@ class ACC(filter.Filter):
 				return True
 		#self._router.DEBUG("Message NOT for the ACC",'error')
 		return False
+		"""
 
 
 	def filter(self,session,stanza):
+
+		mess = stanza
+
+		if (stanza.getError() == None):
+			envxml = self.envelope
+			payload = stanza.getBody()
+			xc = XMLCodec.XMLCodec()
+			envelope = xc.parse(str(envxml))
+
+		
+
+
+
+
+
+	"""
 
 		receivers = self.getRealTo(stanza)
 		to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
@@ -29,9 +75,9 @@ class ACC(filter.Filter):
 		return stanza
 
 	def getRealTo(self, mess):
-		"""
-		return the real JID of the receiver of a "jabber:x:fipa" message
-		"""
+		
+		#return the real JID of the receiver of a "jabber:x:fipa" message
+		
 		#self._router.DEBUG("ACC PLUGIN: received " + str(dir(mess)), "info")
 		#self.DEBUG("ACC PLUGIN: received " + str(mess), "info")
 		envxml=None
@@ -78,4 +124,5 @@ class ACC(filter.Filter):
 		#for item in ACLmsg.getReceivers():
 		#	receiver_names.append(str(item.getName()))
 		return receiver_names
+	"""
 
