@@ -45,6 +45,9 @@ class SpadeBackend:
 		parser = SpadeConfigParser.ConfigParser()
 		self.config = parser.parse(configfilename)
 
+		self.ams=None
+		self.df =None
+
 	def start(self):
 		#TODO: this should be configurable
 		#self.acc = self.runAgent(self.configfile, "acc", Platform.SpadePlatform)
