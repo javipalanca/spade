@@ -37,10 +37,10 @@ def generateCode():
 	spadexml = """
 	<spade>
 
-               <domain>
+               <platform>
                        <hostname>""" + hostname + """</hostname>
-                       <jabberport>5222</jabberport>
-               </domain>
+                       <port>5222</port>
+               </platform>
 
                <acc>
                </acc>
