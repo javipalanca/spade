@@ -126,21 +126,21 @@ class ConfigParser:
 
 	def __init__(self):
     		# Create a parser
-    		parser = make_parser()
+    		self.parser = make_parser()
 
     		# Tell the parser we are not interested in XML namespaces
-    		parser.setFeature(feature_namespaces, 0)
+    		self.parser.setFeature(feature_namespaces, 0)
 
     		# Create the handler
     		dh = spadeXMLHandler()
 
     		# Tell the parser to use our handler
-    		parser.setContentHandler(dh)
+    		self.parser.setContentHandler(dh)
 
 	def parse(self,fn):
 
     		# Parse the input
-    		parser.parse(fn)
+    		self.parser.parse(fn)
 
 		return dh.content
 
