@@ -40,7 +40,7 @@ class spadeXMLHandler(ContentHandler):
 		self.current_tag = ""
 		pass
 
-	def startDocument(self, name attrs):
+	def startDocument(self):
 
 		self.content = ParseObject()
 		
