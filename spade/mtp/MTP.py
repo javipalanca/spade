@@ -17,4 +17,12 @@ class MTP:
 		self.protocol = self.config.acc[name].protocol
 		self.instance = self.config.acc[name].instance
 
+		self.__setup()
+
+	def __setup(self):
+		pass
 		#other parameters must be overloaded
+
+	def send(self, msg, to=None):
+		pass
+
