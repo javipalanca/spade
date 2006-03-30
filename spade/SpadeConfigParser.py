@@ -234,6 +234,7 @@ acc = dict()
 ams = dict()
 df = dict()
 jabber = dict()
+simba = dict()
 
 class spadeXML:
 	'''Analizador de cadenas XML especificamente configurado
@@ -272,6 +273,9 @@ class spadeXMLHandler(ContentHandler):
 			#print "Current Tag: " + name
 		elif name == "jabber":
 			self.current_tag = "jabber"
+			#print "Current Tag: " + name
+		elif name == "simba":
+			self.current_tag = "simba"
 			#print "Current Tag: " + name
 		else:
 			self.chars = ""
@@ -314,6 +318,8 @@ class spadeXMLHandler(ContentHandler):
 				ams['hostname'] = self.chars
 			elif self.current_tag == "df":
 				df['hostname'] = self.chars
+			elif self.current_tag == "simba":
+				simba['hostname'] = self.chars
 		elif name == "password":
 			if self.current_tag == "domain":
 				domain['password'] = self.chars
@@ -323,6 +329,8 @@ class spadeXMLHandler(ContentHandler):
 				ams['password'] = self.chars
 			elif self.current_tag == "df":
 				df['password'] = self.chars
+			elif self.current_tag == "simba":
+				simba['password'] = self.chars
 		elif name == "port":
 			if self.current_tag == "domain":
 				domain['port'] = self.chars
@@ -332,6 +340,8 @@ class spadeXMLHandler(ContentHandler):
 				ams['port'] = self.chars
 			elif self.current_tag == "df":
 				df['port'] = self.chars
+			elif self.current_tag == "simba":
+				simba['port'] = self.chars
 		elif name == "binpath":
 			jabber['binpath'] = self.chars
 		elif name == "libpath":
@@ -402,6 +412,7 @@ class ConfigParser:
     		spade['ams'] = ams
     		spade['df'] = df
     		spade['jabber'] = jabber
+		spade['simba'] = simba
     		#print spade
 
     		#generateCode('jabber.xml')

@@ -308,17 +308,14 @@ def generateCode():
                       <port>9002</port>
                </df>
 
-        </spade>
-	"""
-
-	"""
 	       <simba>
                       <hostname>simba."""+hostname+"""</hostname>
                       <password>secret</password>
                       <port>9003</port>
                </simba>
-	"""
 
+        </spade>
+	"""
 
 	file = open("etc/spade.xml", "w+")
 	file.write(spadexml)
