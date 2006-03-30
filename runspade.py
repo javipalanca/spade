@@ -84,7 +84,8 @@ def main():
   sys.stdout.write("Starting SPADE")
   sys.stdout.flush()
 
-  configfile = SpadeConfigParser.ConfigParser(configfilename)
+  parser = SpadeConfigParser.ConfigParser()
+  config = parser.parse(configfilename)
 
   sys.stdout.write(".")
   sys.stdout.flush()
