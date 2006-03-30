@@ -91,6 +91,7 @@ class Component(filter.Filter):
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
 			elif port == 9003:  # SIMBA
+				print "REGISTERING SIMBA COMPONENT"
                                 component_name = 'simba.' + primary_name
                                 session.peer = component_name
                                 self._router._owner.activatesession(session, component_name)
