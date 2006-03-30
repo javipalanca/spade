@@ -13,9 +13,10 @@ SIMBAPORT = 20001
 
 class SIMBA(Agent.PlatformAgent):
 	class OutboxBehaviour(Behaviour.Behaviour):
-	'''
-	Behaviour that routes outgoing SIMBA messages
-	'''
+		'''
+		Behaviour that routes outgoing SIMBA messages
+		'''
+	
 		def __init__(self):
 			Behaviour.Behaviour.__init__(self)
 
@@ -43,13 +44,14 @@ class SIMBA(Agent.PlatformAgent):
 				print "SIMBA::dying... it shouldn't happen"
 			
 	class InboxBehaviour(Behaviour.Behaviour):
-	'''
-	Behaviour that routes incoming SIMBA messages
-	'''
+		'''
+		Behaviour that routes incoming SIMBA messages
+		'''
+	
 		class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
-		'''
-		Request handler for SIMBA messages
-		'''
+			'''
+			Request handler for SIMBA messages
+			'''
 			def handle(self):
 				print "SIMBA SS: New incoming message"
 
