@@ -48,28 +48,20 @@ class ACC(filter.Filter):
 
 	def filter(self,session,stanza):
 
-		print ">>>ACC: CALLED"
-		
 		xmpp_processed = False
 
 		if (stanza.getError() == None):
 			envxml = self.envelope
-			print ">>>ACC: GETTING BODY"
-			print ">>>ACC: STANZA OF TYPE " + str(type(stanza))
-			print ">>>ACC: STANZA DIR " + str(dir(stanza))
 			#payload = stanza.getBody()
 			payload = stanza.getTag("body")
-			print ">>>ACC: BODY GOT"
 			xc = XMLCodec.XMLCodec()
 			self.envelope = xc.parse(str(envxml))
-			print ">>>ACC: ALL PARSED"
 
 			for aid in self.envelope.getTo():
 				for addr in aid.getAddresses():
 					protocol = addr.split("://")[0]
 
 					if protocol == "xmpp":
-						print ">>>ACC: XMPP ADDRESS"
 						#FIXME: only supports 1 xmpp sender
 						receivers = self.getRealTo(stanza)
 						to = str(receivers[0])  # FIX THIS TO ALLOW MULTIPLE RECEIVERS
@@ -80,7 +72,6 @@ class ACC(filter.Filter):
 
 
 					elif protocol in self.mtps.keys():
-						print "ACC: ADDITIONAL MTP"
 						mtp = self.mtps[protocol]
 						#envelope is in Envelope format
 						#payload is in string format (with escaped characters)
