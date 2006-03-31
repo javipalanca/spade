@@ -57,7 +57,8 @@ class ACC(filter.Filter):
 			print ">>>ACC: GETTING BODY"
 			print ">>>ACC: STANZA OF TYPE " + str(type(stanza))
 			print ">>>ACC: STANZA DIR " + str(dir(stanza))
-			payload = stanza.getBody()
+			#payload = stanza.getBody()
+			payload = stanza.getTag("body")
 			print ">>>ACC: BODY GOT"
 			xc = XMLCodec.XMLCodec()
 			self.envelope = xc.parse(str(envxml))
