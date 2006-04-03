@@ -23,7 +23,8 @@ class ACC(filter.Filter):
 		self.mtps = {}
 		for name,mtp in config.acc.items():
 			print ">>>ACC: NAME MTP " + str(name) + "  " + str(mtp)
-			self.mtps[mtp.protocol] = mtp.instance(name)
+			#self.mtps[mtp.protocol] = mtp.instance(name)
+			self.mtps[mtp['protocol']] = mtp['instance']
 		print ">>>ACC: My MTPs: " + str(self.mtps)
 
 	def test(self,stanza):
