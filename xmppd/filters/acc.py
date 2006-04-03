@@ -77,6 +77,9 @@ class ACC(filter.Filter):
 						#payload is in string format (with escaped characters)
 						mtp.send(self.envelope,payload)
 
+					else:
+						print ">>>ACC: Could not find suitable MTP for protocol: " + str(protocol)
+
 
 		if xmpp_processed: return stanza
 		else: return None
