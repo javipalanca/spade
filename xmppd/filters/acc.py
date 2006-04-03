@@ -18,6 +18,7 @@ class ACC(filter.Filter):
 
 		parser = SpadeConfigParser.ConfigParser()
 		config = parser.parse(configfile)
+		print ">>>ACC: My CONFIG: " + str(config)
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
