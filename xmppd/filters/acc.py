@@ -75,6 +75,7 @@ class ACC(filter.Filter):
 					elif protocol in self.mtps.keys():
 						print ">>>ACC: Message for external MTP: " + str(protocol)
 						mtp = self.mtps[protocol]
+						print ">>>ACC: MTP found: " + str(mtp)
 						#envelope is in Envelope format
 						#payload is in string format (with escaped characters)
 						mtp.send(self.envelope,payload)
