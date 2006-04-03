@@ -18,14 +18,11 @@ class ACC(filter.Filter):
 
 		parser = SpadeConfigParser.ConfigParser()
 		config = parser.parse(configfile)
-		print ">>>ACC: My CONFIG: " + str(config)
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
-			print ">>>ACC: NAME MTP " + str(name) + "  " + str(mtp)
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			self.mtps[mtp['protocol']] = mtp['instance']
-		print ">>>ACC: My MTPs: " + str(self.mtps)
 
 	def test(self,stanza):
 
@@ -76,10 +73,12 @@ class ACC(filter.Filter):
 
 
 					elif protocol in self.mtps.keys():
+						print ">>>ACC: Message for external MTP: " + str(protocol)
 						mtp = self.mtps[protocol]
 						#envelope is in Envelope format
 						#payload is in string format (with escaped characters)
 						mtp.send(self.envelope,payload)
+						print ">>>ACC: External MTP message sent"
 
 					else:
 						print ">>>ACC: Could not find suitable MTP for protocol: " + str(protocol)
