@@ -40,6 +40,7 @@ class simba(MTP.MTP):
 		'''
 		Send a message to a SIMBA agent
 		'''
+		print ">>>SIMBA TRANSPORT: A MESSAGE ARRIVED FOR ME"
 		if to == None:
 			to = envelope.getTo()
 
@@ -63,6 +64,7 @@ class simba(MTP.MTP):
 						# FORCE ACL WITH PARENTHESIS
 						s.send(str(payload))  # ACL with parenthesis, oh no!
 						s.close()
+						print "SIMBA message succesfully sent"				
 					except:
 						print "Could not send SIMBA message"				
 
