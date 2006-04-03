@@ -10,6 +10,9 @@ except:
 
 CONFIGFILE = "/etc/spade/spade.xml"
 
+# Required
+protocol = "simba"
+#port = "20001"
 
 class simba(MTP.MTP):
 	class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
