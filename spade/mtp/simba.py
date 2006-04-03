@@ -11,7 +11,7 @@ except:
 CONFIGFILE = "/etc/spade/spade.xml"
 
 
-class Simba(MTP.MTP):
+class simba(MTP.MTP):
 	class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
                         '''
                         Request handler for SIMBA messages
