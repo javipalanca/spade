@@ -68,7 +68,7 @@ def generateCode():
 			# If its a python script
 			if file[-3:] == ".py":
 				fname = file[:-3]
-				mtp_str = mtp_str + """<mtp name = """ + fname + """><instance>""" + fname + """</instance>"""
+				mtp_str = mtp_str + '''<mtp name = "''' + fname + '''><instance>''' + fname + '''</instance>'''
 				mtp_str = mtp_str + """<protocol>""" + fname + """</protocol>"""
 				mtp_str = mtp_str + """</mtp>"""
 		except:
