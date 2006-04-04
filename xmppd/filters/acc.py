@@ -22,18 +22,17 @@ class ACC(filter.Filter):
 
 		path = str(config.platform.path)
 
-		try:
-			mod = __import__("/usr/share/spade/mtp/simba")
-		except Exception, e:
-			print "ACC: HARDCODE IMPORT FAILED : ", str(e)
+		#try:
+		#	mod = __import__("/usr/share/spade/mtp/simba")
+		#except Exception, e:
+		#	print "ACC: HARDCODE IMPORT FAILED : ", str(e)
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
 				#mod = __import__(str(path + os.sep + "mtp" + os.sep + name))
-				modules = map(__import__, [str(path + os.sep + "mtp" + os.sep + name)])
-				mod = modules[0]
+				mod = __import__("/usr/share/spade/mtp/simba")
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name) + ":" + str(e)
 				print os.path.realpath(os.path.curdir)
