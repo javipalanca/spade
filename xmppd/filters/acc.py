@@ -1,3 +1,5 @@
+# -*- coding: cp1252 -*-
+
 from xmppd import filter
 from xmpp import *
 from spade import *
