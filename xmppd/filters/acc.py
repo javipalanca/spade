@@ -26,7 +26,7 @@ class ACC(filter.Filter):
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
-				mod = __import__(path + os.sep + "mtp" + os.sep + name)
+				mod = __import__(str(path + os.sep + "mtp" + os.sep + name))
 			except:
 				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name)
 			try:
