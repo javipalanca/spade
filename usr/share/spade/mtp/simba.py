@@ -1,8 +1,11 @@
 
 from spade import MTP
 from spade import AID
+from spade import ACLParser
 import socket
 import SocketServer
+import xmpp
+
 try:
 	import stack_thread as thread
 except:
@@ -38,6 +41,10 @@ class simba(MTP.MTP):
 		Send a message to a SIMBA agent
 		'''
 		print ">>>SIMBA TRANSPORT: A MESSAGE TO SEND FOR ME"
+
+		payload = str(payload.getPayload())
+		aclmsg = ACLParser.parse(payload)
+
 		if to == None:
 			to = envelope.getTo()
 			print ">>>SIMBA TRANSPORT: TO = " + str(to)
@@ -63,7 +70,7 @@ class simba(MTP.MTP):
 					try:
     						s.connect((ip, port))
 						# FORCE ACL WITH PARENTHESIS
-						s.send(str(payload))  # ACL with parenthesis, oh no!
+						s.send(str(aclmsg))  # ACL with parenthesis, oh no!
 						s.close()
 						print ">>>SIMBA message succesfully sent"				
 					except:
