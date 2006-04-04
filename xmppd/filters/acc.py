@@ -18,10 +18,7 @@ class ACC(filter.Filter):
 
 		parser = SpadeConfigParser.ConfigParser()
 
-		try:
-			config = parser.parse(configfile)
-		except:
-			print "PETO AL PARSEAR"
+		config = parser.parse(configfile)
 
 		path = str(config.platform.path)
 
@@ -31,7 +28,7 @@ class ACC(filter.Filter):
 			try:
 				mod = __import__(path + os.sep + "mtp" + os.sep + name)
 			except:
-				print "PETO AL IMPORTAR"
+				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name)
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
