@@ -68,7 +68,7 @@ class simba(MTP.MTP):
 						ip, port = ad.split(':')
 					else:
 						ip = ad
-						port = 20001
+						port = 2001
 
 					# Set up a SIMBA socket to send the message
 					s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -85,4 +85,4 @@ class simba(MTP.MTP):
 # Required
 PROTOCOL = "simba"
 INSTANCE = simba
-#port = "20001"
+#port = "2001"
