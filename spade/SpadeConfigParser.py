@@ -1,7 +1,6 @@
 #! python
 
 #import sys
-#import SocketServer
 from string import *
 
 from xml.sax import ContentHandler

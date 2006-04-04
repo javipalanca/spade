@@ -18,10 +18,9 @@ class MTP:
 
 	def __setup(self):
 		pass
-		#other parameters must be overloaded
 
 	def send(self, envelope, payload, to=None):
-		pass
+		raise NotImplemented
 
 
 PROTOCOL = None  #This must be overriden

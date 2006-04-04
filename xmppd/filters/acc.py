@@ -36,6 +36,7 @@ class ACC(filter.Filter):
 				mod = modules[0]
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name) + ":" + str(e)
+				print os.path.realpath(os.path.curdir)
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
