@@ -27,15 +27,12 @@ class ACC(filter.Filter):
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
 				mod = __import__(str(path + os.sep + "mtp" + os.sep + name))
-			except Exception, inst:
-				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name)
-				print type(inst)
-				print inst.args
-				print str(inst)
+			except Exception, e:
+				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name) + ":" + str(e)
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
-				print "Y MI INSTANCIA? " + str(name) + str(config)
+				print "Y MI INSTANCIA? " + str(name)
 
 	def test(self,stanza):
 
