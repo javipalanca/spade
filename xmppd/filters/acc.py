@@ -27,7 +27,9 @@ class ACC(filter.Filter):
 		self.mtps = {}
 		curdir = os.path.curdir
 		#os.chdir(str(path + os.sep +"mtp" + os.sep))
-		os.chroot(str(path + os.sep + "mtp" + os.sep))
+		os.chdir(str("/tmp"))
+		#os.chroot(str(path + os.sep + "mtp" + os.sep))
+
 		print "ACC: ESTOYN EN EL PUTO "+ str(os.path.realpath(os.path.curdir))
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
