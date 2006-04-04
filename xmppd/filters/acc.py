@@ -26,13 +26,13 @@ class ACC(filter.Filter):
 
 		self.mtps = {}
 		curdir = os.path.curdir
-		os.chdir(path+ os.sep +"mtp")
+		os.chdir(str(path + os.sep +"mtp" + os.sep))
 		print "ACC: ESTOYN EN EL PUTO "+ str(os.path.realpath(os.path.curdir))
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
 				#mod = __import__(str(name))
-				mod = __import__("simba")
+				#mod = __import__("simba")
 				mod = __import__("./simba")
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(name) + ":" + str(e)
