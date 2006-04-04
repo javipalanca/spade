@@ -45,6 +45,7 @@ class simba(MTP.MTP):
 		for receiver in to:
 			print ">>>SIMBA TRANSPORT: RECEIVER = " + str(receiver)
 			for ad in receiver.getAddresses():
+				print ">>>SIMBA TRANSPORT: ADDRESS = " + str(ad)
 				# SIMBA URI = simba://address:port
 				if ad[0:7] == "simba://":
 					ad = str(ad)
