@@ -25,21 +25,19 @@ class ACC(filter.Filter):
 		path = str(config.platform.path)
 
 		self.mtps = {}
-		curdir = os.path.curdir
-		if os.name == "posix":
-			os.chroot(str(path + os.sep + "mtp" + os.sep))
-		else:
-			os.chdir(str(path + os.sep +"mtp" + os.sep))
+		curdir = os.curdir
+		os.chdir(path + os.sep +"mtp" + os.sep)
+		#os.chroot(str(path + os.sep + "mtp" + os.sep))
+		print "ACC: ESTOY EN EL PUTO "+ str(os.realpath(os.curdir))
 
-		print "ACC: ESTOYN EN EL PUTO "+ str(os.path.realpath(os.path.curdir))
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
-				#mod = __import__(str(name))
-				mod = __import__("simba")
+				mod = __import__(name)
+				#mod = __import__("simba")
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(name) + ":" + str(e)
-				print os.path.realpath(os.path.curdir)
+				print os.realpath(os.curdir)
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
