@@ -26,7 +26,7 @@ class ACC(filter.Filter):
 
 		self.mtps = {}
 		curdir = os.path.curdir
-		os.chdir(path)
+		os.chdir(path+ os.sep +"mtp")
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
