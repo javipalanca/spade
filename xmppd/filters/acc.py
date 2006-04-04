@@ -22,10 +22,10 @@ class ACC(filter.Filter):
 
 		path = str(config.platform.path)
 
-		#try:
-		#	mod = __import__("/usr/share/spade/mtp/simba")
-		#except Exception, e:
-		#	print "ACC: HARDCODE IMPORT FAILED : ", str(e)
+		try:
+			mod = __import__("/usr/share/spade/mtp/simba")
+		except:
+			print "ACC: HARDCODE IMPORT FAILED"
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
