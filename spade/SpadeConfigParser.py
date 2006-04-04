@@ -113,6 +113,9 @@ class spadeXMLHandler(ContentHandler):
 		elif name == "instance":
 				self.content.acc[self.current_tag]['instance'] = self.chars
 
+		elif name == "path":
+				self.content.platform["path"] = self.chars
+
 class ConfigParser:
 	
 	"""def get(self, section, keyword):

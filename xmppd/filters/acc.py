@@ -19,10 +19,13 @@ class ACC(filter.Filter):
 		parser = SpadeConfigParser.ConfigParser()
 		config = parser.parse(configfile)
 
+		path = str(config.platform.path)
+
 		self.mtps = {}
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
-			self.mtps[mtp['protocol']] = mtp['instance']
+			mod = __import__(path + os.sep + "mtp" + os.sep + name))
+			self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 
 	def test(self,stanza):
 

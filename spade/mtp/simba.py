@@ -8,10 +8,11 @@ try:
 except:
 	import thread
 
-CONFIGFILE = "/etc/spade/spade.xml"
+#CONFIGFILE = "/etc/spade/spade.xml"
 
 # Required
-protocol = "simba"
+PROTOCOL = "simba"
+INSTANCE = simba
 #port = "20001"
 
 class simba(MTP.MTP):

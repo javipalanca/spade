@@ -21,13 +21,15 @@ def generateCode():
 			hostname = socket.gethostname()
 		else:
 			hostname = globalhostname
-		errorlog = "/dev/null"
+
+		path = os.sep+"usr"+os.sep+"share"+os.sep+"spade"
 	else:
 		# If no hostname was previously specified, get one from the system
 		if globalhostname == "":	
 			hostname = socket.gethostbyaddr(socket.gethostname())[0]
 		else:
 			hostname = globalhostname
+		path = "usr"+os.sep+"share"+os.sep+"spade"
 
 	#acc_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
 	ams_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
@@ -40,6 +42,7 @@ def generateCode():
                <platform>
                        <hostname>""" + hostname + """</hostname>
                        <port>5222</port>
+		       <path>"""+path+"""</path>
                </platform>
 
                <acc>

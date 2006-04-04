@@ -1,20 +1,24 @@
 
 from spade import SpadeConfigParser
 
-CONFIGFILE = "/etc/spade/spade.xml"
+#CONFIGFILE = "/etc/spade/spade.xml"
+
+PROTOCOL = None  #This must be overriden
+INSTANCE = None  #This must be overriden
 
 
 class MTP:
 
-	def __init__(self, name):
+	def __init__(self, name, config):
 
-		parser = SpadeConfigParser.ConfifParser()
-		self.config = parser.parse(CONFIGFILE)
+		#parser = SpadeConfigParser.ConfifParser()
+		#self.config = parser.parse(CONFIGFILE)
 
 		self.name = name
+		self.config = config
 
 		self.protocol = self.config.acc[name].protocol
-		self.instance = self.config.acc[name].instance
+		#self.instance = self.config.acc[name].instance
 
 		self.__setup()
 
