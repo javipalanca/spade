@@ -1,12 +1,6 @@
 
 from spade import SpadeConfigParser
 
-#CONFIGFILE = "/etc/spade/spade.xml"
-
-PROTOCOL = None  #This must be overriden
-INSTANCE = None  #This must be overriden
-
-
 class MTP:
 
 	def __init__(self, name, config):
@@ -28,4 +22,8 @@ class MTP:
 
 	def send(self, envelope, payload, to=None):
 		pass
+
+
+PROTOCOL = None  #This must be overriden
+INSTANCE = None  #This must be overriden
 

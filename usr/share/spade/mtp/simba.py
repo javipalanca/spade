@@ -8,13 +8,6 @@ try:
 except:
 	import thread
 
-#CONFIGFILE = "/etc/spade/spade.xml"
-
-# Required
-PROTOCOL = "simba"
-INSTANCE = simba
-#port = "20001"
-
 class simba(MTP.MTP):
 	class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
                         '''
@@ -73,3 +66,7 @@ class simba(MTP.MTP):
 						print "Could not send SIMBA message"				
 
 
+# Required
+PROTOCOL = "simba"
+INSTANCE = simba
+#port = "20001"
