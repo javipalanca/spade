@@ -48,7 +48,7 @@ class simba(MTP.MTP):
 				ad = str(ad)  # Type change
 				print ">>>SIMBA TRANSPORT: ADDRESS = " + ad
 				# SIMBA URI = simba://address:port
-				if ad[0:7] == "simba://":
+				if ad[0:8] == "simba://":
 					ad = ad[8:]
 					print ">>>SIMBA TRANSPORT: ADDRESS FINAL = " + ad
 					# Check for the presence of a port
