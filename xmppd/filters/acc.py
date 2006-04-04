@@ -26,7 +26,7 @@ class ACC(filter.Filter):
 			mod = __import__("/usr/share/spade/mtp/simba")
 		except Exception, e:
 			print "ACC: HARDCODE IMPORT FAILED"
-			dir(e)
+			print dir(e)
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
