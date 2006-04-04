@@ -26,24 +26,17 @@ class ACC(filter.Filter):
 		path = str(config.platform.path)
 
 		self.mtps = {}
-		#curdir = os.curdir
-		#os.chdir(path + os.sep +"mtp" + os.sep)
+
 		sys.path.append(path+os.sep+"mtp")
-		#os.chroot(str(path + os.sep + "mtp" + os.sep))
 
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
 				mod = __import__(name)
-				#mod = __import__("simba")
 			except Exception, e:
-				print "PETO AL IMPORTAR " + str(name) + ":" + str(e)
-				#print os.realpath(os.curdir)
-			try:
-				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
-			except:
-				print "Y MI INSTANCIA? " + str(name)
-		#os.chdir(curdir)
+				print str(e)
+
+			self.mtps[mtp['protocol']] = mod.INSTANCE(name,config,self)
 
 	def test(self,stanza):
 
