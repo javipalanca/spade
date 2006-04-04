@@ -43,6 +43,7 @@ class simba(MTP.MTP):
 		print ">>>SIMBA TRANSPORT: A MESSAGE TO SEND FOR ME"
 
 		payload = str(payload.getPayload())
+		print ">>>SIMBA: PAYLOAD = " + payload
 		try:
 			aclmsg = ACLParser.parse(payload)
 		except:
