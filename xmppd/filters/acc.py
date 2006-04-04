@@ -29,6 +29,7 @@ class ACC(filter.Filter):
 				mod = __import__(str(path + os.sep + "mtp" + os.sep + name))
 			except:
 				print "PETO AL IMPORTAR " + str(path + os.sep + "mtp" + os.sep + name)
+				print sys.exc_info()[0]
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
