@@ -66,7 +66,7 @@ def generateCode():
 
 	# Now fill the MTPs information
 	mtp_str = ""
-	for file in os.listdir("spade/mtp"):
+	for file in os.listdir("usr/share/spade/mtp"):
 		try:
 			# If its a python script
 			if file[-3:] == ".py":
