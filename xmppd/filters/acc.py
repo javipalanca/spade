@@ -32,8 +32,7 @@ class ACC(filter.Filter):
 			#self.mtps[mtp.protocol] = mtp.instance(name)
 			try:
 				#mod = __import__(str(name))
-				#mod = __import__("simba")
-				mod = __import__("./simba")
+				mod = __import__("simba")
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(name) + ":" + str(e)
 				print os.path.realpath(os.path.curdir)
