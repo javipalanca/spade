@@ -2,7 +2,6 @@
 from spade import MTP
 from spade import AID
 from spade import ACLParser
-from spade import ACLxmlParser
 import socket
 import SocketServer
 import xmpp
