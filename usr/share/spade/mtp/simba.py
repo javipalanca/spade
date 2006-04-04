@@ -45,7 +45,7 @@ class simba(MTP.MTP):
 		payload = str(payload.getPayload()[0])
 		print ">>>SIMBA: PAYLOAD = " + payload
 		try:
-			p = ACLxmlParser()
+			p = ACLParser.ACLxmlParser()
 			aclmsg = p.parse(payload)
 		except:
 			print ">>>SIMBA: COULD NOT BUILD ACL"
