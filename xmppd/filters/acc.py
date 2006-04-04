@@ -6,6 +6,7 @@ from spade import *
 from spade.ACLMessage import *
 
 import os, os.path
+import sys
 
 class ACC(filter.Filter):
 
@@ -25,10 +26,10 @@ class ACC(filter.Filter):
 		path = str(config.platform.path)
 
 		self.mtps = {}
-		curdir = os.curdir
-		os.chdir(path + os.sep +"mtp" + os.sep)
+		#curdir = os.curdir
+		#os.chdir(path + os.sep +"mtp" + os.sep)
+		sys.path.append(path+os.sep+"mtp")
 		#os.chroot(str(path + os.sep + "mtp" + os.sep))
-		print "ACC: ESTOY EN EL PUTO "+ str(os.realpath(os.curdir))
 
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
@@ -37,12 +38,12 @@ class ACC(filter.Filter):
 				#mod = __import__("simba")
 			except Exception, e:
 				print "PETO AL IMPORTAR " + str(name) + ":" + str(e)
-				print os.realpath(os.curdir)
+				#print os.realpath(os.curdir)
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
 				print "Y MI INSTANCIA? " + str(name)
-		os.chdir(curdir)
+		#os.chdir(curdir)
 
 	def test(self,stanza):
 
