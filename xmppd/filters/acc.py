@@ -17,14 +17,21 @@ class ACC(filter.Filter):
 			configfile = "etc/spade.xml"
 
 		parser = SpadeConfigParser.ConfigParser()
-		config = parser.parse(configfile)
+
+		try:
+			config = parser.parse(configfile)
+		except:
+			print "PETO AL PARSEAR"
 
 		path = str(config.platform.path)
 
 		self.mtps = {}
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
-			mod = __import__(path + os.sep + "mtp" + os.sep + name)
+			try:
+				mod = __import__(path + os.sep + "mtp" + os.sep + name)
+			except:
+				print "PETO AL IMPORTAR"
 			try:
 				self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 			except:
