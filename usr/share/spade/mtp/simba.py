@@ -43,7 +43,10 @@ class simba(MTP.MTP):
 		print ">>>SIMBA TRANSPORT: A MESSAGE TO SEND FOR ME"
 
 		payload = str(payload.getPayload())
-		aclmsg = ACLParser.parse(payload)
+		try:
+			aclmsg = ACLParser.parse(payload)
+		except:
+			print ">>>SIMBA: COULD NOT BUILD ACL"
 
 		if to == None:
 			to = envelope.getTo()
