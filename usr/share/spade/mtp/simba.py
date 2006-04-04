@@ -50,6 +50,7 @@ class simba(MTP.MTP):
 				# SIMBA URI = simba://address:port
 				if ad[0:7] == "simba://":
 					ad = ad[8:]
+					print ">>>SIMBA TRANSPORT: ADDRESS FINAL = " + ad
 					# Check for the presence of a port
 					if ':' in ad:
 						ip, port = ad.split(':')
