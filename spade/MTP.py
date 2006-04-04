@@ -19,6 +19,8 @@ class MTP:
 	def __setup(self):
 		pass
 
+	# Envelope = Envelope Class
+	# Payload = raw text
 	def send(self, envelope, payload, to=None):
 		raise NotImplemented
 

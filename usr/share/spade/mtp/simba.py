@@ -19,8 +19,8 @@ class simba(MTP.MTP):
 
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
-                print "SIMBA SS listening on port ", self.port
-                self.SS.serve_forever()
+                #print "SIMBA SS listening on port ", self.port
+                #self.SS.serve_forever()
 
 	def __setup(self):
 		'''
@@ -65,7 +65,7 @@ class simba(MTP.MTP):
 						# FORCE ACL WITH PARENTHESIS
 						s.send(str(payload))  # ACL with parenthesis, oh no!
 						s.close()
-						print "SIMBA message succesfully sent"				
+						print ">>>SIMBA message succesfully sent"				
 					except:
 						print "Could not send SIMBA message"				
 

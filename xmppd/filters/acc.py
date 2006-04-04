@@ -75,7 +75,10 @@ class ACC(filter.Filter):
 		if (stanza.getError() == None):
 			envxml = self.envelope
 			#payload = stanza.getBody()
-			payload = stanza.getTag("body")
+			payload = stanza.getTagData("body")
+			payload = payload.getPayload()
+			payload = str(payload)
+			
 			xc = XMLCodec.XMLCodec()
 			self.envelope = xc.parse(str(envxml))
 
