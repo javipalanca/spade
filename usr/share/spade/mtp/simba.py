@@ -2,6 +2,7 @@
 from spade import MTP
 from spade import AID
 from spade import ACLParser
+from spade import ACLxmlParser
 import socket
 import SocketServer
 import xmpp
@@ -45,7 +46,7 @@ class simba(MTP.MTP):
 		payload = str(payload.getPayload()[0])
 		print ">>>SIMBA: PAYLOAD = " + payload
 		try:
-			aclmsg = ACLParser.parse(payload)
+			aclmsg = ACLxmlParser.parse(payload)
 		except:
 			print ">>>SIMBA: COULD NOT BUILD ACL"
 
