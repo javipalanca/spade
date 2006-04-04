@@ -42,7 +42,7 @@ class simba(MTP.MTP):
 		'''
 		print ">>>SIMBA TRANSPORT: A MESSAGE TO SEND FOR ME"
 
-		payload = str(payload.getPayload())
+		payload = str(payload.getPayload()[0])
 		print ">>>SIMBA: PAYLOAD = " + payload
 		try:
 			aclmsg = ACLParser.parse(payload)
