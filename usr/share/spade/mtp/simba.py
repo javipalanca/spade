@@ -37,11 +37,13 @@ class simba(MTP.MTP):
 		'''
 		Send a message to a SIMBA agent
 		'''
-		print ">>>SIMBA TRANSPORT: A MESSAGE ARRIVED FOR ME"
+		print ">>>SIMBA TRANSPORT: A MESSAGE TO SEND FOR ME"
 		if to == None:
 			to = envelope.getTo()
+			print ">>>SIMBA TRANSPORT: TO = " + str(to)
 
 		for receiver in to:
+			print ">>>SIMBA TRANSPORT: RECEIVER = " + str(receiver)
 			for ad in receiver.getAddresses():
 				# SIMBA URI = simba://address:port
 				if ad[0:7] == "simba://":
