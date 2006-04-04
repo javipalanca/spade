@@ -24,7 +24,7 @@ class ACC(filter.Filter):
 		self.mtps = {}
 		for name,mtp in config.acc.items():
 			#self.mtps[mtp.protocol] = mtp.instance(name)
-			mod = __import__(path + os.sep + "mtp" + os.sep + name))
+			mod = __import__(path + os.sep + "mtp" + os.sep + name)
 			self.mtps[mtp['protocol']] = mod.INSTANCE(name,config)
 
 	def test(self,stanza):

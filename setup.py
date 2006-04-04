@@ -39,6 +39,7 @@ if os.name == "posix":
 			('/etc/spade',['etc/spade.xml']),
 			('/etc/spade',['etc/xmppd.xml']),
 			('/usr/share/spade',['usr/share/spade/rma.glade']),
+			('/usr/share/spade/mtp',glob.glob('/usr/share/spade/mtp/*.py')),
 			('/usr/share/doc/spade',['readme.txt']),
 			('/usr/share/doc/spade/',['doc/api.tar.gz']),
 			#('/usr/share/spade/jabberd',['usr/share/spade/jabberd/jabberd','usr/share/spade/jabberd/jabber.xml']),
