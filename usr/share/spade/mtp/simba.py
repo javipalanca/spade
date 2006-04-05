@@ -23,7 +23,7 @@ class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
 		msg = str(self.request[0])
        		print "SIMBA SS: New incoming message: " + msg
 		acl = self.server.parser.parse(msg)
-		envelope = Envelope(_from=acl.getSender(), to=acl.getReceivers(), aclRepresentation="fipa.acl.rep.string.std")
+		envelope = Envelope.Envelope(_from=acl.getSender(), to=acl.getReceivers(), aclRepresentation="fipa.acl.rep.string.std")
 		self.server.dispatch(envelope, msg)
        		print "SIMBA SS: Message dispatched"
 
