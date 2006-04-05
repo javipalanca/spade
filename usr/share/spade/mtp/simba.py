@@ -33,7 +33,7 @@ class simba(MTP.MTP):
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
 		self.SS.dispatch = self.dispatch
-		self.parser = ACLParser.ACLParser()
+		self.SS.parser = ACLParser.ACLParser()
                 print "SIMBA SS listening on port " + str(self.port)
                 self.SS.serve_forever()
 
