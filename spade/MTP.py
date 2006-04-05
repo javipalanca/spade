@@ -46,6 +46,7 @@ class MTP:
 			s = self.acc._router._owner.getsession(to.getName())
 			if s:
 				s.enqueue(stanza)
+				s.push_queue()
 		
 
 
