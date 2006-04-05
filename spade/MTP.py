@@ -33,13 +33,13 @@ class MTP:
 		xc = XMLCodec.XMLCodec()
 		envxml = xc.encodeXML(envelope)
 
-		xenv = Protocol.Node('jabber:x:fipa x')
+		xenv = protocol.Node('jabber:x:fipa x')
 		xenv['content-type']='fipa.mts.env.rep.xml.std'
 		xenv.addData(envxml)
 
 		for to in envelope.getTo():
 
-			stanza = Protocol.Message(to.getName(),payload, xmlns="")
+			stanza = protocol.Message(to.getName(),payload, xmlns="")
 			stanza.addChild(node=xenv)
 
 			s=None
