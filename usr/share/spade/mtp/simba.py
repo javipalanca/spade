@@ -6,10 +6,12 @@ import socket
 import SocketServer
 import xmpp
 
-try:
-	import stack_thread as thread
-except:
-	import thread
+#try:
+#	import stack_thread as thread
+#except:
+#	import thread
+
+import thread
 
 class simba(MTP.MTP):
 	class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
@@ -34,7 +36,9 @@ class simba(MTP.MTP):
 		self.port = self.config.acc[self.name].port		
 
 		# Launch receive thread
-		thread.start_new_thread(self.receiveThread, ())	
+		print ">>>SIMBA: Going to start new thread"
+		tid = thread.start_new_thread(self.receiveThread, ())	
+		print ">>>SIMBA: Started new thread " + str(tid)
 			
 
 	def send(self, envelope, payload, to=None):
