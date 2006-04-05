@@ -13,15 +13,15 @@ import xmpp
 
 import thread
 
-class simba(MTP.MTP):
-	class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
-                        '''
-                        Request handler for SIMBA messages
-                        '''
-                        def handle(self):
-                                print "SIMBA SS: New incoming message: " + str(self.request)
-				
+class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
+       	'''
+       	Request handler for SIMBA messages
+       	'''
+       	def handle(self):
+       		print "SIMBA SS: New incoming message: " + str(self.request)
 
+
+class simba(MTP.MTP):
 
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
