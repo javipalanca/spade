@@ -25,7 +25,7 @@ class simba(MTP.MTP):
 
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
-                print "SIMBA SS listening on port ", self.port
+                print "SIMBA SS listening on port " + str(self.port)
                 self.SS.serve_forever()
 
 	def __setup(self):
@@ -33,8 +33,9 @@ class simba(MTP.MTP):
 		Secondary constructor
 		'''
 		print ">>>SIMBA: __setup"
-		self.address = self.config.acc[self.name].address		
-		self.port = self.config.acc[self.name].port		
+		#self.address = self.config.acc[self.name].address		
+		#self.port = self.config.acc[self.name].port
+		self.port = 2001
 
 		# Launch receive thread
 		print ">>>SIMBA: Going to start new thread"
