@@ -2,6 +2,8 @@
 from spade import MTP
 from spade import AID
 from spade import ACLParser
+from spade import Envelope
+
 import socket
 import SocketServer
 import xmpp
@@ -18,8 +20,12 @@ class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
        	Request handler for SIMBA messages
        	'''
        	def handle(self):
-       		print "SIMBA SS: New incoming message: " + str(self.request[0])
-		print self.server.dispatch
+		msg = str(self.request[0])
+       		print "SIMBA SS: New incoming message: " + msg
+		acl = self.server.parser.parse(msg)
+		envelope = Envelope(_from=acl.getSender(), to=acl.getReceivers(), aclRepresentation="fipa.acl.rep.string.std")
+		self.server.dispatch(envelope, msg)
+       		print "SIMBA SS: Message dispatched"
 
 
 class simba(MTP.MTP):
@@ -27,6 +33,7 @@ class simba(MTP.MTP):
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
 		self.SS.dispatch = self.dispatch
+		self.parser = ACLParser.ACLParser()
                 print "SIMBA SS listening on port " + str(self.port)
                 self.SS.serve_forever()
 
