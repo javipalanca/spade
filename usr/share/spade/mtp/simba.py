@@ -18,7 +18,7 @@ class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
        	Request handler for SIMBA messages
        	'''
        	def handle(self):
-       		print "SIMBA SS: New incoming message: " + str(self.request)
+       		print "SIMBA SS: New incoming message: " + str(self.request[0])
 
 
 class simba(MTP.MTP):
