@@ -32,6 +32,7 @@ class simba(MTP.MTP):
 		'''
 		Secondary constructor
 		'''
+		print ">>>SIMBA: __setup"
 		self.address = self.config.acc[self.name].address		
 		self.port = self.config.acc[self.name].port		
 
