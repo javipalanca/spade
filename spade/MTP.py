@@ -20,6 +20,7 @@ class MTP:
 		self.__setup()
 
 	def __setup(self):
+		print "This must be OVERRIDEN!!!!"
 		pass
 
 	# Envelope = Envelope Class
