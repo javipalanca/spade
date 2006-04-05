@@ -17,7 +17,7 @@ class MTP:
 		self.protocol = self.config.acc[name].protocol
 		#self.instance = self.config.acc[name].instance
 
-		self.__setup()
+		self.setup()
 
 	def setup(self):
 		raise NotImplemented
