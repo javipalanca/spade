@@ -39,7 +39,7 @@ class MTP:
 
 		for to in envelope.getTo():
 
-			stanza = xmpp.protocol.Message(to.getName(),payload, xmlns="")
+			stanza = Protocol.Message(to.getName(),payload, xmlns="")
 			stanza.addChild(node=xenv)
 
 			s=None
