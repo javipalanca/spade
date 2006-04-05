@@ -30,7 +30,7 @@ class MTP:
 
 	def dispatch(self, envelope, payload):
 
-		xc = XMLCodec()
+		xc = XMLCodec.XMLCodec()
 		envxml = xc.encodeXML(envelope)
 
 		xenv = xmpp.protocol.Node('jabber:x:fipa x')
