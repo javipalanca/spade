@@ -19,7 +19,7 @@ class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
        	'''
        	def handle(self):
        		print "SIMBA SS: New incoming message: " + str(self.request[0])
-		print self.server.
+		print self.server.dispatch
 
 
 class simba(MTP.MTP):
