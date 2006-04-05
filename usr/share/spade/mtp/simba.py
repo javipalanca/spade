@@ -28,7 +28,7 @@ class simba(MTP.MTP):
                 print "SIMBA SS listening on port " + str(self.port)
                 self.SS.serve_forever()
 
-	def __setup(self):
+	def setup(self):
 		'''
 		Secondary constructor
 		'''

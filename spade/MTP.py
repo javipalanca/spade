@@ -19,9 +19,8 @@ class MTP:
 
 		self.__setup()
 
-	def __setup(self):
-		print "This must be OVERRIDEN!!!!"
-		pass
+	def setup(self):
+		raise NotImplemented
 
 	# Envelope = Envelope Class
 	# Payload = raw text
