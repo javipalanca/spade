@@ -43,7 +43,7 @@ class MTP:
 			stanza.addChild(node=xenv)
 
 			s=None
-			s = self.acc._router.getsession(to.getName())
+			s = self.acc._router._owner.getsession(to.getName())
 			if s:
 				s.enqueue(stanza)
 		

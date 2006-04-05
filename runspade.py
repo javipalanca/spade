@@ -21,7 +21,7 @@ except ImportError:
 
 import xmppd
 
-VERSION = "1.9.88888888"
+VERSION = "1.9.8"
 
 
 def print_help():

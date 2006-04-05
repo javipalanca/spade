@@ -17,13 +17,14 @@ class simba(MTP.MTP):
                         Request handler for SIMBA messages
                         '''
                         def handle(self):
-                                print "SIMBA SS: New incoming message"
+                                print "SIMBA SS: New incoming message: " + str(self.request)
+				
 
 
 	def receiveThread(self):
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
-                #print "SIMBA SS listening on port ", self.port
-                #self.SS.serve_forever()
+                print "SIMBA SS listening on port ", self.port
+                self.SS.serve_forever()
 
 	def __setup(self):
 		'''
