@@ -33,7 +33,7 @@ class MTP:
 		xc = XMLCodec.XMLCodec()
 		envxml = xc.encodeXML(envelope)
 
-		xenv = xmpp.protocol.Node('jabber:x:fipa x')
+		xenv = Protocol.Node('jabber:x:fipa x')
 		xenv['content-type']='fipa.mts.env.rep.xml.std'
 		xenv.addData(envxml)
 
