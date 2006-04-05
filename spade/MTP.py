@@ -44,6 +44,7 @@ class MTP:
 
 			s=None
 			s = self.acc._router._owner.getsession(to.getName())
+			print ">>>MTP: found session " + str(s) + "for " + str(to.getName())
 			if s:
 				s.enqueue(stanza)
 				s.push_queue()
