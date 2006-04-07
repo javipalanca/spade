@@ -225,7 +225,6 @@ class XMLCodec(handler.ContentHandler):
 			#Date  
 			value = BasicFipaDateTime( ro.getDate() )
 			if value != None:
-				#sb = sb + self.encodeOneLineTag( self.RECEIVED_DATE, self.RECEIVED_ATTR, value ) --- bug ???
 				sb = sb + self.encodeOneLineTag( self.RECEIVED_DATE, self.RECEIVED_ATTR, str( value ) )
 			#By
 			value = ro.getBy()
@@ -294,7 +293,6 @@ class XMLCodec(handler.ContentHandler):
 		elif self.RECEIVED_TAG.lower() == localName.lower():
 			self.env.setReceived(ReceivedObject())
     
-		#elif self.RECEIVED_BY.lower == localName.lower(): -- bug
 		elif self.RECEIVED_BY.lower() == localName.lower():
 			self.env.received.setBy( attributes.getValue(self.RECEIVED_ATTR) )
 
