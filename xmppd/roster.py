@@ -30,7 +30,7 @@ class rosterPlugIn(PlugIn):
 		if type(jid) == types.InstanceType:
 			# Transform jid to string representation (faster?)
 			jid = jid.getStripped()
-		if jid not in self.rosters.keys()
+		if not jid in self.rosters.keys()
 			# Particular rosters are lists
 			self.rosters[jid] = {}
 		return self.rosters[jid]
