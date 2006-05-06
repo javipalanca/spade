@@ -87,7 +87,7 @@ class rosterPlugIn(PlugIn):
 				print frm
 				ros = self.getRoster(frm)
 				print "### Got roster: ", str(ros)
-				for key, value in ros:
+				for key, value in ros.items():
 					print key, value
 					attrs={'jid':key}
 					if 'name' in value.keys():
