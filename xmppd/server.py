@@ -30,10 +30,10 @@ import dialback
 import dummy
 import jep0077
 import jep0078
+import roster
 import router
 import stream
 #import accPlugin
-import roster
 
 import threading
 import os
@@ -48,6 +48,8 @@ addons = [
     #stream.TLS,
     stream.SASL,
     dialback.Dialback,
+    
+    roster.rosterPlugIn,
 
 
 # XMPP-IM
@@ -58,13 +60,12 @@ addons = [
 
 # JEPs
     jep0077.IBR,
-    jep0078.NSA,
+    jep0078.NSA
 
 # Mine
     #ch.CH,
     #dummy.dummyClass,
     #accPlugin.accPlugIn
-    roster.rosterPlugIn
     ]
 
 #if __name__=='__main__':
