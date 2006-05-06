@@ -29,12 +29,14 @@ class rosterPlugIn(PlugIn):
 
 	
 	def getRoster(self, jid):
+		print "### getRoster: ", jid
 		if type(jid) == types.InstanceType:
 			# Transform jid to string representation (faster?)
 			jid = jid.getStripped()
 		elif type(jid) == types.StringType:
 			# Remove resource
 			jid = jid.split('/')[0]
+			print "### Resource Removed: ", jid
 
 		if not (self.rosters.has_key(jid)):
 			# Particular rosters are dicts
