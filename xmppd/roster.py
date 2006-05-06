@@ -7,8 +7,8 @@ class rosterPlugIn(PlugIn):
         #NS='jabber:x:fipa'
         NS=''
 	def plugin(self, server):
-		server.Dispatcher.RegisterNamespaceHandler(NS_ROSTER,self.rosterHandler)
-		server.Dispatcher.RegisterNamespaceHandler(u'jabber:iq:roster',self.rosterHandler)
+		server.Dispatcher.RegisterHandler('iq', self.rosterHandler, ns=NS_ROSTER)
+		server.Dispatcher.RegisterHandler('iq', self.rosterHandler, ns=u'jabber:iq:roster')
 		self.DEBUG("Roster manager loaded", "warn")
 
         def rosterHandler(self, session, stanza):
