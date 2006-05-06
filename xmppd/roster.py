@@ -48,7 +48,7 @@ class rosterPlugIn(PlugIn):
 			# Particular rosters are dicts
 			# Create one
 			print "### Create roster for: ", jid
-			self.rosters[jid] = {}
+			self.rosters[jid] = dict()
 		print "### getRoster returning: ", str(self.rosters[jid])
 		return self.rosters[jid]
 
@@ -86,6 +86,7 @@ class rosterPlugIn(PlugIn):
 				frm = stanza.getAttr('from')
 				print frm
 				ros = self.getRoster(frm)
+				print "### Got roster: ", str(ros)
 				for key, value in ros:
 					print key, value
 					attrs={'jid':key}
