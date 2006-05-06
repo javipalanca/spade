@@ -32,9 +32,13 @@ class rosterPlugIn(PlugIn):
 		if type(jid) == types.InstanceType:
 			# Transform jid to string representation (faster?)
 			jid = jid.getStripped()
+		elif type(jid) == types.StringType:
+			# Remove resource
+			jid = jid.split('/')[0]
 
 		if not (self.rosters.has_key(jid)):
-			# Particular rosters are lists
+			# Particular rosters are dicts
+			# Create one
 			self.rosters[jid] = {}
 		return self.rosters[jid]
 
@@ -73,7 +77,9 @@ class rosterPlugIn(PlugIn):
 					if 'name' in value.keys():
 						attrs['name'] = value['name']
 					if 'subscription' in value.keys():
-						attrs['subscription'] = value['name']						
+						attrs['subscription'] = value['subscription']
+					if 'ask' in value.keys():
+						attrs['ask'] = value['ask']
 					item=query.setTag('item',attrs)
 				session.enqueue(iq)	
                 		print "####################################"
