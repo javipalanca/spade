@@ -63,13 +63,33 @@ class rosterPlugIn(PlugIn):
 	}
 	"""
 
+	def sendRoster(self, frm, session):
+		ros = self.getRoster(frm)
+		iq = Iq('result', NS_ROSTER)
+		query=iq.getTag('query')
+		print "### Got roster: ", str(ros)
+		for key, value in ros.items():
+			print key, value
+			attrs={'jid':key}
+			if 'name' in value.keys():
+				attrs['name'] = value['name']
+			if 'subscription' in value.keys():
+				attrs['subscription'] = value['subscription']
+			if 'ask' in value.keys():
+				attrs['ask'] = value['ask']
+			item=query.setTag('item',attrs)
+		session.enqueue(iq)	
+
+
+
+
         def rosterHandler(self, session, stanza):
                 print "####################################"
 		print "ROSTER HANDLER CALLED"
                 print "####################################"
 		print "STANZA: ", str(stanza)
                 print "####################################"
-		# Client is asking for something
+		# Client is asking for the roster
 		if stanza.getAttr('type') == 'get':
                 	print "####################################"
 			print "IT IS A GET"
@@ -77,34 +97,58 @@ class rosterPlugIn(PlugIn):
 			query = stanza.getTag('query', namespace=NS_ROSTER)
 			if query != None:
 				# The whole roster was requested
-                		print "####################################"
-				print "THE ROSTER WAS REQUESTED"
-		                print "####################################"
-				iq = Iq('result', NS_ROSTER)
-				query=iq.getTag('query')
+                		#print "####################################"
+				#print "THE ROSTER WAS REQUESTED"
+		                #print "####################################"
+				#iq = Iq('result', NS_ROSTER)
+				#query=iq.getTag('query')
 				# Fill the roster
-				print "FILL THE ROSTER"
-		                print "####################################"
+				#print "FILL THE ROSTER"
+		                #print "####################################"
 				frm = stanza.getAttr('from')
-				print frm
-				ros = self.getRoster(frm)
-				print "### Got roster: ", str(ros)
-				for key, value in ros.items():
-					print key, value
-					attrs={'jid':key}
-					if 'name' in value.keys():
-						attrs['name'] = value['name']
-					if 'subscription' in value.keys():
-						attrs['subscription'] = value['subscription']
-					if 'ask' in value.keys():
-						attrs['ask'] = value['ask']
-					item=query.setTag('item',attrs)
-				session.enqueue(iq)	
+				self.sendRoster(frm, sesion)
+				#print frm
+				#ros = self.getRoster(frm)
+				#print "### Got roster: ", str(ros)
+				#for key, value in ros.items():
+				#	print key, value
+				#	attrs={'jid':key}
+				#	if 'name' in value.keys():
+				#		attrs['name'] = value['name']
+				#	if 'subscription' in value.keys():
+				#		attrs['subscription'] = value['subscription']
+				#	if 'ask' in value.keys():
+				#		attrs['ask'] = value['ask']
+				#	item=query.setTag('item',attrs)
+				#session.enqueue(iq)	
                 		print "####################################"
 				print "THE ROSTER WAS SENT:"
-				print str(iq)
+				#print str(iq)
 		                print "####################################"
-		
+		# Client is modifying the roster
+		elif stanza.getAttr('type') == 'set':
+                	print "####################################"
+			print "IT IS A SET"
+                	print "####################################"
+			query = stanza.getTag('query', namespace=NS_ROSTER)
+			if query != None:
+				frm = stanza.getAttr('from')
+				ros = self.getRoster(frm)
+				for item in stanza.getTag('query').getTags('item'):
+					jid=item.getAttr('jid')
+					jid=jid.split('/')[0]
+					name=item.getAttr('name')
+					subscription=item.getAttr('subscription')
+					ask=item.getAttr('ask')
+					values = dict()
+					if name:
+						values['name'] = name
+					if subscription:
+						values['subscription'] = subscription
+					is ask:
+						values['ask'] = ask
+					ros[jid] = values
+				self.sendRoster(frm, session)
 
 		raise NodeProcessed
 
