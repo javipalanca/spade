@@ -15,4 +15,15 @@ class rosterPlugIn(PlugIn):
                 print "####################################"
 		print "ROSTER HANDLER CALLED"
                 print "####################################"
+		# Client is asking for something
+		if stanza[type] == 'get':
+			query = stanza.getTag('query', namespace=NS_ROSTER)
+			if query <> None:
+				# The whole roster was requested
+                		print "####################################"
+				print "THE ROSTER WAS REQUESTED"
+		                print "####################################"
+		
+
+		raise NodeProcessed
 
