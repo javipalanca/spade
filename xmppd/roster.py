@@ -3,6 +3,7 @@ from spade import *
 from spade.ACLMessage import *
 import types
 
+
 class rosterPlugIn(PlugIn):
         #NS='jabber:x:fipa'
         NS=''
