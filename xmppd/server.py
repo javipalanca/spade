@@ -64,6 +64,7 @@ addons = [
     #ch.CH,
     #dummy.dummyClass,
     #accPlugin.accPlugIn
+    roster.rosterPlugIn
     ]
 
 #if __name__=='__main__':
