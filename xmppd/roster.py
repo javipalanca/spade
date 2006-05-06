@@ -13,7 +13,7 @@ class rosterPlugIn(PlugIn):
 		# Initialize the roster management system
 		self.rosters = {}
 		dummy = {'friend@localhost': {'name':'Friend', 'subscription':'none'} }
-		self.rosters[receptor0@localhost] = dummy
+		self.rosters['receptor0@localhost'] = dummy
 		
 		self.DEBUG("Roster manager loaded", "warn")
 
