@@ -71,8 +71,11 @@ class rosterPlugIn(PlugIn):
 				iq = Iq('result', NS_ROSTER)
 				query=iq.getTag('query')
 				# Fill the roster
+				print "FILL THE ROSTER"
+		                print "####################################"
 				ros = self.getRoster(stanza.getAttr('from'))
 				for key, value in ros:
+					print key, value
 					attrs={'jid':key}
 					if 'name' in value.keys():
 						attrs['name'] = value['name']
