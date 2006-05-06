@@ -34,16 +34,18 @@ class rosterPlugIn(PlugIn):
 			# Transform jid to string representation (faster?)
 			print "### Got instance:", str(jid)
 			jid = jid.getStripped()
-			print "### Turned in:", str(jid)
+			print "### Turned in:", jid
 		elif type(jid) == types.StringType:
 			# Remove resource
 			jid = jid.split('/')[0]
 			print "### Resource Removed: ", jid
 
-		if not (self.rosters.has_key(jid)):
+		if jid not in self.rosters.keys():
 			# Particular rosters are dicts
 			# Create one
+			print "### Create roster for: ", jid
 			self.rosters[jid] = {}
+		print "### getRoster returning: ", str(self.rosters[jid])
 		return self.rosters[jid]
 
 
