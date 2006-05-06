@@ -32,7 +32,9 @@ class rosterPlugIn(PlugIn):
 		print "### getRoster: ", jid
 		if type(jid) == types.InstanceType:
 			# Transform jid to string representation (faster?)
+			print "### Got instance:", str(jid)
 			jid = jid.getStripped()
+			print "### Turned in:", str(jid)
 		elif type(jid) == types.StringType:
 			# Remove resource
 			jid = jid.split('/')[0]
