@@ -28,6 +28,14 @@ class rosterPlugIn(PlugIn):
                 		print "####################################"
 				print "THE ROSTER WAS REQUESTED"
 		                print "####################################"
+				iq = Iq('result', NS_ROSTER)
+				query=iq.getTag('query')
+				attrs={'jid':'friend@localhost'}
+				item=query.setTag('item',attrs)
+				session.enqueue(iq)	
+                		print "####################################"
+				print "THE ROSTER WAS SENT"
+		                print "####################################"
 		
 
 		raise NodeProcessed
