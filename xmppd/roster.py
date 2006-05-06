@@ -18,6 +18,7 @@ class rosterPlugIn(PlugIn):
 		dummy['friend@localhost']['name'] = 'Friend'
 		dummy['friend@localhost']['subscription'] = 'none'
 		self.rosters['receptor0@localhost'] = dummy
+		self.rosters['test@localhost'] = dummy
 		
 		self.DEBUG("Roster manager loaded", "warn")
 
