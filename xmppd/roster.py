@@ -145,7 +145,7 @@ class rosterPlugIn(PlugIn):
 						values['name'] = name
 					if subscription:
 						values['subscription'] = subscription
-					is ask:
+					if ask:
 						values['ask'] = ask
 					ros[jid] = values
 				self.sendRoster(frm, session)
