@@ -73,7 +73,9 @@ class rosterPlugIn(PlugIn):
 				# Fill the roster
 				print "FILL THE ROSTER"
 		                print "####################################"
-				ros = self.getRoster(stanza.getAttr('from'))
+				frm = stanza.getAttr('from')
+				print frm
+				ros = self.getRoster(frm)
 				for key, value in ros:
 					print key, value
 					attrs={'jid':key}
