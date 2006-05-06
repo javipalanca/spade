@@ -63,9 +63,9 @@ class rosterPlugIn(PlugIn):
 	}
 	"""
 
-	def sendRoster(self, frm, session):
+	def sendRoster(self, frm, session, type='result'):
 		ros = self.getRoster(frm)
-		iq = Iq('result', NS_ROSTER)
+		iq = Iq(type, NS_ROSTER, to=frm)
 		query=iq.getTag('query')
 		print "### Got roster: ", str(ros)
 		for key, value in ros.items():
@@ -148,7 +148,10 @@ class rosterPlugIn(PlugIn):
 					if ask:
 						values['ask'] = ask
 					ros[jid] = values
-				self.sendRoster(frm, session)
+				# Send the roster back
+				self.sendRoster(frm, session, type='set')
+				# TODO: Send the roster to every resource
+				iq = Iq('result', NS_ROSTER, to=frm)
 
 		raise NodeProcessed
 
