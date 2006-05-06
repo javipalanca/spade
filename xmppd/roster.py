@@ -19,8 +19,11 @@ class rosterPlugIn(PlugIn):
                 print "####################################"
 		# Client is asking for something
 		if stanza[type] == 'get':
+                	print "####################################"
+			print "IT IS A GET"
+                	print "####################################"
 			query = stanza.getTag('query', namespace=NS_ROSTER)
-			if query <> None:
+			if query != None:
 				# The whole roster was requested
                 		print "####################################"
 				print "THE ROSTER WAS REQUESTED"
