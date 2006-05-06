@@ -33,6 +33,7 @@ import jep0078
 import router
 import stream
 #import accPlugin
+import roster
 
 import threading
 import os
