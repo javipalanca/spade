@@ -8,6 +8,7 @@ class rosterPlugIn(PlugIn):
         NS=NS_ROSTER
 	def plugin(self, server):
 		server.Dispatcher.RegisterNamespaceHandler(NS_ROSTER,self.rosterHandler)
+		server.DEBUG("Roster manager loaded", "info")
 
         def rosterHandler(self, session, stanza):
                 print "####################################"
