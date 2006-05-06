@@ -18,7 +18,7 @@ class rosterPlugIn(PlugIn):
 		print "STANZA: ", str(stanza)
                 print "####################################"
 		# Client is asking for something
-		if stanza[type] == 'get':
+		if stanza.getAttr('type') == 'get':
                 	print "####################################"
 			print "IT IS A GET"
                 	print "####################################"
