@@ -106,7 +106,7 @@ class rosterPlugIn(PlugIn):
 				#print "FILL THE ROSTER"
 		                #print "####################################"
 				frm = stanza.getAttr('from')
-				self.sendRoster(frm, sesion)
+				self.sendRoster(frm, session)
 				#print frm
 				#ros = self.getRoster(frm)
 				#print "### Got roster: ", str(ros)
