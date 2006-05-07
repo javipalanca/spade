@@ -20,6 +20,8 @@ class Router(PlugIn):
         # For the common folk
 	#server.Dispatcher.RegisterNamespace(NS_COMPONENT_ACCEPT)
 	
+	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
+	
 	server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
         server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
         
@@ -29,7 +31,6 @@ class Router(PlugIn):
 	
 	self.server = server
         
-	server.Dispatcher.RegisterHandler('presence',self.presenceHandler)
 
 
 	#Init filters
@@ -169,6 +170,11 @@ class Router(PlugIn):
         """ XMPP-Core 9.1.1 rules """
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
+
+	# Safeguard for dispatcher mistakes - rererouting of presence stanzas
+	if name == 'presence'
+	self.presenceHandler(session, stanza)
+	# We hope that presenceHandler will raise a NodeProcessed exception
 
 	#Apply filters
 	for f in self._owner.router_filters:
