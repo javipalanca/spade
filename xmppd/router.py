@@ -70,9 +70,8 @@ class Router(PlugIn):
 	self.DEBUG("Presence handler called", "info")
 
         to=stanza['to']
-        if  to and (
-            to.getDomain() not in self._owner.servernames or
-            to.getNode() ):
+        if to and ( to.getDomain() not in self._owner.servernames ):
+		# or to.getNode() ):
                 return
 
         typ=stanza.getType()
