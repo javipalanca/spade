@@ -173,7 +173,7 @@ class Router(PlugIn):
 
 	# Safeguard for dispatcher mistakes - rererouting of presence stanzas
 	if name == 'presence':
-	self.presenceHandler(session, stanza)
+		self.presenceHandler(session, stanza)
 	# We hope that presenceHandler will raise a NodeProcessed exception
 
 	#Apply filters
