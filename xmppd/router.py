@@ -67,6 +67,8 @@ class Router(PlugIn):
 #       This is presences, that's addressed:
 #        1) any other server
 #        2) any user
+	self.DEBUG("Presence handler called", "info")
+
         to=stanza['to']
         if  to and (
             to.getDomain() not in self._owner.servernames or

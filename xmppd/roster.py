@@ -159,6 +159,8 @@ class rosterPlugIn(PlugIn):
 				# Send a confirmation 'result'-type iq
 				iq = Iq('result', NS_ROSTER, to=frm)
 				session.enqueue(iq)
+				# Make the changes persistent in the DB
+				self.server.DB.savedb()
 
 		raise NodeProcessed
 
