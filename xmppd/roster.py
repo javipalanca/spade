@@ -59,7 +59,7 @@ class rosterPlugIn(PlugIn):
 			
 		#print "### getRoster returning: ", str(self.rosters[jid])
 		#return self.rosters[jid]
-		ros = server.DB.getRoster(jid)
+		ros = self.server.DB.getRoster(jid)
 		print "### Got roster from DB: ", str(ros)
 		return ros
 
