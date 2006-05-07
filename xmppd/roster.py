@@ -155,7 +155,9 @@ class rosterPlugIn(PlugIn):
 				# Send the roster back
 				self.sendRoster(frm, session, type='set')
 				# TODO: Send the roster to every resource
+				# Send a confirmation 'result'-type iq
 				iq = Iq('result', NS_ROSTER, to=frm)
+				session.enqueue(iq)
 
 		raise NodeProcessed
 
