@@ -95,7 +95,9 @@ class DB(PlugIn):
 	try:
 		# We only accept server domains, not every domain
 		if domain in self._owner.servernames:
+			db[domain][str(username)] = dict()
 			db[domain][str(username)]['password'] = str(password)
+			db[domain][str(username)]['roster'] = dict()
 			self.DEBUG('registeruser: User registered in domain ' + str(domain) , 'info')
 			self.savedb()
 			#print "#### Trying to save database"
