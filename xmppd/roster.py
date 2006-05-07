@@ -28,16 +28,6 @@ class rosterPlugIn(PlugIn):
 		
 		self.DEBUG("Roster manager loaded", "warn")
 
-	"""
-	def createRoster(self, jid):
-		'''Create a roster for a given jid'''
-		if type(jid) == types.InstanceType:
-			# Transform jid to string representation (faster?)
-			jid = jid.getStripped()	
-		if jid not in self.rosters.keys():
-			self.rosters[jid] = []
-	"""
-
 	
 	def getRoster(self, jid):
 		print "### getRoster: ", jid
