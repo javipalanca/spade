@@ -144,14 +144,20 @@ class rosterPlugIn(PlugIn):
 					name=item.getAttr('name')
 					subscription=item.getAttr('subscription')
 					ask=item.getAttr('ask')
-					values = dict()
-					if name:
-						values['name'] = name
-					if subscription:
-						values['subscription'] = subscription
-					if ask:
-						values['ask'] = ask
-					ros[jid] = values
+					if subscription == 'remove':
+						try:
+							del ros[jid]
+						except:	
+							print "Could not delete item from roster"
+					else:
+						values = dict()
+						if name:
+							values['name'] = name
+						if subscription:
+							values['subscription'] = subscription
+						if ask:
+							values['ask'] = ask
+						ros[jid] = values
 				# Send the roster back
 				self.sendRoster(frm, session, type='set')
 				# TODO: Send the roster to every resource
