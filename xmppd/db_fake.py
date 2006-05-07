@@ -42,11 +42,13 @@ class AUTH(PlugIn):
     NS=''
     def getpassword(self, username, domain):
         try: return db[domain][username]['password']
-        except KeyError: pass
+        except KeyError:
+		print "### DB: Key Error"
 
     def isuser(self, username, domain):
         try: return db[domain].has_key(username)
-        except KeyError: pass
+        except KeyError:
+		print "### DB: Key Error"
 
     def isadmin(self, username):
 	try:
@@ -56,7 +58,7 @@ class AUTH(PlugIn):
 		else:
 			return False
 	except:
-		pass
+		print "### DB: Key Error"
 
 class DB(PlugIn):
     NS=''
@@ -103,7 +105,9 @@ class DB(PlugIn):
 			return False
 
 		self.loaddb()
+		print "### DB: User registered: ", username
 	except:
+		print "### DB: User NOT registered: ", username
 		return False
 
     def printdb(self):
