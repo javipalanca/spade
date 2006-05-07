@@ -78,7 +78,11 @@ class Router(PlugIn):
         try: barejid,resource=jid.split('/')
         except: raise NodeProcessed # Closure of not yet bound session
 
-        if not typ or typ=='available':
+	if typ=='subscribe':
+	    # Presence Subscription
+	    self.DEBUG("Presence subscription found from "+barejid+" to "+str(to), "warn")
+ 
+        elif not typ or typ=='available':
             if not self._data.has_key(barejid): self._data[barejid]={}
             if not self._data[barejid].has_key(resource): self._data[barejid][resource]=Presence(frm=jid,typ=typ)
             bp=self._data[barejid][resource]
