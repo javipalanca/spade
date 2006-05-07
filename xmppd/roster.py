@@ -167,4 +167,3 @@ class rosterPlugIn(PlugIn):
 
 		raise NodeProcessed
 
-
