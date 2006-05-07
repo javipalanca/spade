@@ -134,8 +134,8 @@ class rosterPlugIn(PlugIn):
 				frm = stanza.getAttr('from')
 				ros = self.getRoster(frm)
 				for item in stanza.getTag('query').getTags('item'):
-					jid=item.getAttr('jid')
-					jid=jid.split('/')[0]
+					jid=str(item.getAttr('jid'))
+					jid=str(jid.split('/')[0])
 					name=item.getAttr('name')
 					subscription=item.getAttr('subscription')
 					ask=item.getAttr('ask')
@@ -147,11 +147,11 @@ class rosterPlugIn(PlugIn):
 					else:
 						values = dict()
 						if name:
-							values['name'] = name
+							values['name'] = str(name)
 						if subscription:
-							values['subscription'] = subscription
+							values['subscription'] = str(subscription)
 						if ask:
-							values['ask'] = ask
+							values['ask'] = str(ask)
 						ros[jid] = values
 				# Send the roster back
 				self.sendRoster(frm, session, type='set')
