@@ -18,6 +18,10 @@ class rosterPlugIn(PlugIn):
 		dummy['friend@localhost'] = dict()
 		dummy['friend@localhost']['name'] = 'Friend'
 		dummy['friend@localhost']['subscription'] = 'none'
+		dummy['amiga@localhost'] = dict()
+		dummy['amiga@localhost']['name'] = 'Amiga One'
+		dummy['amiga@localhost']['subscription'] = 'none'
+		dummy['amiga@localhost']['ask'] = 'none'
 		self.rosters['receptor0@localhost'] = dummy
 		self.rosters['test@localhost'] = dummy
 		
