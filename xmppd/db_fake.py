@@ -15,6 +15,7 @@ except:
 	pass
 
 db={}
+# OLD STRUCTURE
 #db['localhost']={}
 #db['thx1138.dsic.upv.es']={}
 #db['__admin__']={}
@@ -40,7 +41,7 @@ db={}
 class AUTH(PlugIn):
     NS=''
     def getpassword(self, username, domain):
-        try: return db[domain][username]
+        try: return db[domain][username]['password']
         except KeyError: pass
 
     def isuser(self, username, domain):
@@ -92,7 +93,7 @@ class DB(PlugIn):
 	try:
 		# We only accept server domains, not every domain
 		if domain in self._owner.servernames:
-			db[domain][str(username)] = str(password)
+			db[domain][str(username)]['password'] = str(password)
 			self.DEBUG('registeruser: User registered in domain ' + str(domain) , 'info')
 			self.savedb()
 			#print "#### Trying to save database"
