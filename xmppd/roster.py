@@ -8,6 +8,7 @@ class rosterPlugIn(PlugIn):
         #NS='jabber:x:fipa'
         NS=''
 	def plugin(self, server):
+		self.server = server
 		server.Dispatcher.RegisterHandler('iq', self.rosterHandler, ns=NS_ROSTER)
 		server.Dispatcher.RegisterHandler('iq', self.rosterHandler, ns=u'jabber:iq:roster')
 
@@ -50,13 +51,15 @@ class rosterPlugIn(PlugIn):
 			jid = jid.split('/')[0]
 			print "### Resource Removed: ", jid
 
-		if jid not in self.rosters.keys():
+		'''if jid not in self.rosters.keys():
 			# Particular rosters are dicts
 			# Create one
 			print "### Create roster for: ", jid
-			self.rosters[jid] = dict()
-		print "### getRoster returning: ", str(self.rosters[jid])
-		return self.rosters[jid]
+			self.rosters[jid] = dict()'''
+			
+		#print "### getRoster returning: ", str(self.rosters[jid])
+		#return self.rosters[jid]
+		return server.DB.getRoster(jid)
 
 
 	"""

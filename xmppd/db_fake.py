@@ -107,10 +107,19 @@ class DB(PlugIn):
 			return False
 
 		self.loaddb()
-		print "### DB: User registered: ", username
 	except:
 		print "### DB: User NOT registered: ", username
 		return False
+
+    def getRoster(self, jid):
+	# Try split the username from the domain
+	if '@' in jid:
+		# Regular client
+		username, domain = jid.split('@')
+	else:
+		# Component or similar
+		username, domain = jid.split('.', 1)
+	return db[domain][str(username)]['roster']
 
     def printdb(self):
 	return str(db)
