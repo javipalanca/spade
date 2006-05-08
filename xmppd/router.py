@@ -87,6 +87,10 @@ class Router(PlugIn):
 	    try:
 	    	self.server.rosterPlugIn.makeSubscription(barejid, str(to), session)
 	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
+		s = self.server.getsession(to)
+		if s:
+			s.enqueue(stanza)
+		
 	    except:
 		self.DEBUG('Could NOT update roster from ' + barejid, 'error')
 	    
