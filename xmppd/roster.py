@@ -84,7 +84,10 @@ class rosterPlugIn(PlugIn):
 		# Subscribe the contact 'to' to the roster of client 'frm'
 		ros = self.getRoster(frm)
 		to=str(to.split('/')[0])  # In case there was a resource
-		contact = ros[to]
+		try:
+			contact = ros[to]
+		else:
+			contact = False
 		if contact:
 			contact['subscription'] = subs
 			if subs == 'none':
