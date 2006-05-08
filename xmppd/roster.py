@@ -79,7 +79,22 @@ class rosterPlugIn(PlugIn):
 			item=query.setTag('item',attrs)
 		session.enqueue(iq)	
 
+	def makeSubscription(self, frm, to, session):
+		# Subscribe the contact 'to' to the roster of client 'frm'
+		ros = self.getRoster(frm)
+		to=str(to.split('/')[0])  # In case there was a resource
+		contact = ros[to]
+		if contact:
+			# Add the subscription state
+			contact['ask'] = 'subscribe'
+		else:
+			# There was no such contact in the roster. Let's create its entry
+			values = dict()
+			values['subscription'] = 'none'
+			values['ask'] = 'subscribe'
+			ros[to] = values
 
+		self.sendRoster(frm, session, type='set')
 
 
         def rosterHandler(self, session, stanza):
