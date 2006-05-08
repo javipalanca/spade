@@ -50,7 +50,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
 	"""
         MessageReceiver.MessageReceiver.__init__(self)
-        self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://acc."+serverplatform ])
+        self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://"+agentjid ])
         self._jabber = None
         self._serverplatform = serverplatform
         self._defaultbehaviour = None
