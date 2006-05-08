@@ -95,6 +95,21 @@ class Router(PlugIn):
 	    except:
 		self.DEBUG('Could NOT update roster from ' + barejid, 'error')
 	    
+	if typ=='subscribed':
+	    # Presence Subscription confirmation
+	    self.DEBUG("Presence subscription confirmation found from "+barejid+" to "+str(to), "warn")
+	    # Modify rosters
+	    ###
+	    try:
+		# Route stanza
+		s = self.server.getsession(to)
+		if s:
+			stanza.setFrom(barejid)
+			s.enqueue(stanza)
+	    except:
+		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
+		
+	    
  
         elif not typ or typ=='available':
             if not self._data.has_key(barejid): self._data[barejid]={}
