@@ -84,8 +84,11 @@ class Router(PlugIn):
 	    # Presence Subscription
 	    self.DEBUG("Presence subscription found from "+barejid+" to "+str(to), "warn")
 	    # Modify sender's roster to reflect the subscription
-	    ros = self.server.rosterPlugIn.makeSubscription(frm=barejid, to=to)
-	    self.DEBUG('Roster of client '+barejid+' updated', 'warn')
+	    try:
+	    	self.server.rosterPlugIn.makeSubscription(frm=barejid, to=to)
+	    except:
+		self.DEBUG("Could NOT update roster from '+barejid", 'error')
+	    self.DEBUG('Roster of client '+barejid+' updated', 'ok')
 	    
  
         elif not typ or typ=='available':
