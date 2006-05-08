@@ -89,6 +89,7 @@ class Router(PlugIn):
 	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
 		s = self.server.getsession(to)
 		if s:
+			stanza.setFrom(barejid)
 			s.enqueue(stanza)
 		
 	    except:
