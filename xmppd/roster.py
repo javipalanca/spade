@@ -86,7 +86,7 @@ class rosterPlugIn(PlugIn):
 		to=str(to.split('/')[0])  # In case there was a resource
 		try:
 			contact = ros[to]
-		else:
+		except:
 			contact = False
 		if contact:
 			contact['subscription'] = subs
