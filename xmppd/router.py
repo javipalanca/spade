@@ -98,9 +98,10 @@ class Router(PlugIn):
 	if typ=='subscribed':
 	    # Presence Subscription confirmation
 	    self.DEBUG("Presence subscription confirmation found from "+barejid+" to "+str(to), "warn")
-	    # Modify rosters
-	    ###
+	    # Modify sender's roster to reflect the subscription confirmation
 	    try:
+	    	self.server.rosterPlugIn.makeSubscription(barejid, str(to), session, subs='to')
+	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
 		# Route stanza
 		s = self.server.getsession(to)
 		if s:
