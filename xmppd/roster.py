@@ -80,6 +80,7 @@ class rosterPlugIn(PlugIn):
 		session.enqueue(iq)	
 
 	def makeSubscription(self, frm, to, session):
+		print "### makeSubscription called: ", str(frm), str(to)
 		# Subscribe the contact 'to' to the roster of client 'frm'
 		ros = self.getRoster(frm)
 		to=str(to.split('/')[0])  # In case there was a resource
