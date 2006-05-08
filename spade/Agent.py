@@ -62,6 +62,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.setName(str(agentjid))
 
+    def _jabber_presenceCB(self, conn, mess):
+	"""
+	presence callback
+	manages jabber stanzas of the 'presence' type
+	"""
+	typ = mess.getAttr('type')
+	if typ == 'subscribe':
+		# Answer the subscription affirmatively
+		reply = xmpp.Presence(mess.getFrom(), 'subscribed')
+		conn.send(reply)
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -776,6 +786,7 @@ class PlatformAgent(AbstractAgent):
 
         #print "auth ok", name
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
+        self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
 	self.jabber_process = jabberProcess(self.jabber)
 	self.jabber_process.start()
@@ -849,6 +860,7 @@ class Agent(AbstractAgent):
                 raise NotImplementedError
 	    
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
+        self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
         #thread.start_new_thread(self._jabber_process, tuple())
 	self.jabber_process = jabberProcess(self.jabber)
