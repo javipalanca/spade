@@ -107,7 +107,7 @@ class Router(PlugIn):
 		s = self.server.getsession(to)
 		if s:
 			stanza.setFrom(barejid)
-			s.enqueue(stanza)
+			#s.enqueue(stanza)
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
 	    raise NodeProcessed
