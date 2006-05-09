@@ -91,10 +91,10 @@ class Router(PlugIn):
 		if s:
 			stanza.setFrom(barejid)
 			s.enqueue(stanza)
-			raise NodeProcessed
 		
 	    except:
 		self.DEBUG('Could NOT update roster from ' + barejid, 'error')
+	    raise NodeProcessed
 	    
 	elif typ=='subscribed':
 	    # Presence Subscription confirmation
@@ -108,9 +108,9 @@ class Router(PlugIn):
 		if s:
 			stanza.setFrom(barejid)
 			s.enqueue(stanza)
-			raise NodeProcessed
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
+	    raise NodeProcessed
 		
 	    
  
