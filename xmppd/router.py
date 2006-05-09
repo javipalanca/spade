@@ -105,16 +105,15 @@ class Router(PlugIn):
 
 	    # Modify sender's roster to reflect the subscription confirmation
 	    try:
-	    	self.server.rosterPlugIn.makeSubscription(str(to), barejid, session, subs='to')
+	    	#raise NodeProcessed  # TEMPORARILY
 
-	    	raise NodeProcessed  # TEMPORARILY
-
-	        self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
 		# Route stanza
 		s = self.server.getsession(to)
 		if s:
 			stanza.setFrom(barejid)
-			#s.enqueue(stanza)
+			s.enqueue(stanza)
+	    		self.server.rosterPlugIn.makeSubscription(str(to), barejid, session, subs='to')
+	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
 	    raise NodeProcessed
