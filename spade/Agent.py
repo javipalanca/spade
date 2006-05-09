@@ -72,7 +72,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		# Answer the subscription affirmatively
 		reply = xmpp.Presence(mess.getFrom(), 'subscribed', frm=mess.getTo())
 		conn.send(reply)
-		print "Presence subscription answered"
+		print "Presence subscription answered to ", str(mess.getTo()), str(reply)
 
     def _jabber_messageCB(self, conn, mess):
 	"""
