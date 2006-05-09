@@ -94,7 +94,10 @@ class rosterPlugIn(PlugIn):
 				# Add the subscription state
 				contact['ask'] = 'subscribe'
 			elif subs == 'to':
-				del contact['ask']
+				try:
+					del contact['ask']
+				except:
+					pass
 		else:
 			# There was no such contact in the roster. Let's create its entry
 			values = dict()
