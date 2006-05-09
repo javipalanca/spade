@@ -99,6 +99,9 @@ class Router(PlugIn):
 	elif typ=='subscribed':
 	    # Presence Subscription confirmation
 	    self.DEBUG("Presence subscription confirmation found from "+barejid+" to "+str(to), "warn")
+
+	    raise NodeProcessed  # TEMPORARILY
+
 	    # Modify sender's roster to reflect the subscription confirmation
 	    try:
 	    	self.server.rosterPlugIn.makeSubscription(str(to), barejid, session, subs='to')
