@@ -114,11 +114,25 @@ class Router(PlugIn):
 			s.enqueue(stanza)
 	    		self.server.rosterPlugIn.makeSubscription(str(to), barejid, s, subs='to')
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
-			# Check for availability of subscribed client
-			print "### self._data "
+			'''print "### self._data "
 			for key, value in self._data.items():
 				for k, v in value.items():
-					print str(k), str(v)
+					print str(k), str(v)'''
+			# Check for the availability information of the subscribed client and send a Presence probe
+			if self._data.has_key(barejid):
+				if self._data[barejid].has_key(resource):
+					pres = self._data[barejid][resource]
+					probe = Presence(node = pres)
+					# If it doesn't feature a <status> element, we put it (to 'Available')
+					if not probe.getTag('status'):
+						status=Node('status')
+						status.setData('Available')
+						probe.addChild(node=status)
+					# Fill the probe with the 'from' and 'to' fields and send it
+					probe.setAttr('from', jid)
+					probe.setAttr('to', to)
+					s.enqueue(probe)
+	        			self.DEBUG('Presence probe sent to '+str(to)+': '+str(probe), 'ok')
 			
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
