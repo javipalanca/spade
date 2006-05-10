@@ -115,7 +115,10 @@ class Router(PlugIn):
 	    		self.server.rosterPlugIn.makeSubscription(str(to), barejid, s, subs='to')
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
 			# Check for availability of subscribed client
-			print "### self._data ", str(self._data)
+			print "### self._data "
+			for key in self.data.keys():
+				for k, v in key.items():
+					print str(k), str(v)
 			
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
