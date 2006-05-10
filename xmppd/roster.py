@@ -109,7 +109,7 @@ class rosterPlugIn(PlugIn):
 				# No 'ask' entry
 				pass
 			ros[to] = values
-			self.sendRoster(to, session, type='set')
+			self.sendRoster(frm, session, type='set')
 
 
 
