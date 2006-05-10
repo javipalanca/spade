@@ -105,8 +105,6 @@ class Router(PlugIn):
 
 	    # Modify sender's roster to reflect the subscription confirmation
 	    try:
-	    	#raise NodeProcessed  # TEMPORARILY
-
 		# Route stanza
 		s = self.server.getsession(to)
 		if s:
