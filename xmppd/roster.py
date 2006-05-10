@@ -98,6 +98,7 @@ class rosterPlugIn(PlugIn):
 					del contact['ask']
 				except:
 					pass
+			self.sendRoster(frm, session, type='set')
 		else:
 			# There was no such contact in the roster. Let's create its entry
 			values = dict()
@@ -108,8 +109,8 @@ class rosterPlugIn(PlugIn):
 				# No 'ask' entry
 				pass
 			ros[to] = values
+			self.sendRoster(to, session, type='set')
 
-		self.sendRoster(frm, session, type='set')
 
 
         def rosterHandler(self, session, stanza):
