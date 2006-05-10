@@ -58,6 +58,7 @@ class rma(Agent.Agent):
 		def on_cancel_clicked(self, data):
 			self.win.destroy()
 			self.stop()
+			gtk.main_quit()
 
 	class MainWindow(GTKWindow):
 		def __init__(self, agent):
