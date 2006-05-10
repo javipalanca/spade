@@ -114,6 +114,9 @@ class Router(PlugIn):
 			s.enqueue(stanza)
 	    		self.server.rosterPlugIn.makeSubscription(str(to), barejid, s, subs='to')
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
+			# Check for availability of subscribed client
+			print "### self._data ", str(self._data)
+			
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
 	    raise NodeProcessed

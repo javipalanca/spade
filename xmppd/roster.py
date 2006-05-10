@@ -110,6 +110,8 @@ class rosterPlugIn(PlugIn):
 				pass
 			ros[to] = values
 			self.sendRoster(frm, session, type='set')
+			# Make the changes persistent in the DB
+			#self.server.DB.savedb()
 
 
 
