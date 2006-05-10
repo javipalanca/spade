@@ -116,7 +116,7 @@ class Router(PlugIn):
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
 			# Check for availability of subscribed client
 			print "### self._data "
-			for key, value in self._data.keys():
+			for key, value in self._data.items():
 				for k, v in value.items():
 					print str(k), str(v)
 			
