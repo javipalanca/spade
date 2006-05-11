@@ -28,7 +28,7 @@ class Component(filter.Filter):
 				self._router.DEBUG("Message for a component",'info')
 				return True
 		if not ('@' in to) and (to not in self._router._owner.servernames): return True
-		self._router.DEBUG("Message NOT for a component",'error')
+		self._router.DEBUG("Message NOT for a component",'info')
 		return False
 
 

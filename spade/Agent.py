@@ -150,7 +150,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	sends an ACLMessage
 	"""
-        self._sendTo(ACLmsg, self.getSpadePlatformJID())
+        #self._sendTo(ACLmsg, self.getSpadePlatformJID())
+        self._sendTo(ACLmsg, ACLmsg.getReceivers())
 
     def _sendTo(self, ACLmsg, tojid):
 	"""
@@ -187,7 +188,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv['content-type']='fipa.mts.env.rep.xml.std'
         xenv.addData(envxml)
         
-        jabber_msg = xmpp.protocol.Message(tojid,payload, xmlns="")
+	to = tojid[0]:
+	jabber_msg = xmpp.protocol.Message(to,payload, xmlns="")
         jabber_msg.addChild(node=xenv)
         jabber_msg["from"]=self.getAID().getName()
         self.jabber.send(jabber_msg)
