@@ -188,7 +188,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv['content-type']='fipa.mts.env.rep.xml.std'
         xenv.addData(envxml)
         
-	to = tojid[0]:
+	to = tojid[0]
 	jabber_msg = xmpp.protocol.Message(to,payload, xmlns="")
         jabber_msg.addChild(node=xenv)
         jabber_msg["from"]=self.getAID().getName()
