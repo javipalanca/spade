@@ -189,7 +189,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv.addData(envxml)
         
 	to = tojid[0]
-	jabber_msg = xmpp.protocol.Message(to.getAddresses()[0],payload, xmlns="")
+	jabber_msg = xmpp.protocol.Message(to.getName(),payload, xmlns="")
         jabber_msg.addChild(node=xenv)
         jabber_msg["from"]=self.getAID().getName()
         self.jabber.send(jabber_msg)
