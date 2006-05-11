@@ -155,13 +155,13 @@ class Router(PlugIn):
             bp.setTimestamp()
             self.update(barejid)
         elif typ=='unavailable' or typ=='error':
-	    self.DEBUG('Client '+baejid+' has become unavailable', 'warn')
+	    self.DEBUG('Client '+barejid+' has become unavailable', 'warn')
 	    status = stanza.getTag('status')
 	    if status:
 		# Get the textual status data
 		status = status.getData()
 	    self.server.rosterPlugIn.broadcastUnavailable(barejid, status)
-	    self.DEBUG('Unavailability of '+baejid+' broadcasted', 'ok')
+	    self.DEBUG('Unavailability of '+barejid+' broadcasted', 'ok')
             if not self._data.has_key(barejid): raise NodeProcessed
             if self._data[barejid].has_key(resource): del self._data[barejid][resource]
             self.update(barejid)
