@@ -83,9 +83,9 @@ class rosterPlugIn(PlugIn):
 		print "### sendUnavailable ", frm, to, str(status)
 		# Generate a Presence node
 		if status:
-			p = Presence(to = to, frm = frm, typ = 'unavailable', status = status)
+			p = Presence(to, 'unavailable', frm = frm, status = status)
 		else:
-			p = Presence(to = to, frm = frm, type = 'unavailable')
+			p = Presence(to, 'unavailable', frm = frm)
 		print "### p = ", str(p)
 		# Find the receiver's session and send the presence information through it
 		s = self.server.getsession(to)
