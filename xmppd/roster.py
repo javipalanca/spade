@@ -98,9 +98,13 @@ class rosterPlugIn(PlugIn):
 			for contact in ros.keys():
 				print "### for ", contact
 				# If a contact is subscribed to our presence
-				if contact['subscription'] == 'from' or contact['subscription'] == 'both':
-					print "### sU ", barejid, contact, status
-					self.sendUnavailable(barejid, contact, status)
+				try:
+					if ros[contact]['subscription'] == 'from' or ros[contact]['subscription'] == 'both':
+						print "### sU ", barejid, contact, status
+						self.sendUnavailable(barejid, contact, status)
+				except:
+					# Contact does not have subscription
+					pass
 
 	def makeSubscription(self, frm, to, session, subs='none'):
 		print "### makeSubscription called: ", str(frm), str(to)
