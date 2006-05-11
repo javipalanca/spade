@@ -89,27 +89,40 @@ class rosterPlugIn(PlugIn):
 		except:
 			contact = False
 		if contact:
-			contact['subscription'] = subs
+			# Check wether there is already a subscription
+			if contact['subscription'] == 'from' and subs == 'to':
+				contact['subscription'] = 'both'
+			elif contact['subscription'] == 'to' and subs == 'from':
+				contact['subscription'] = 'both'
+			elif contact['subscription'] == 'none' and subs == 'from':
+				contact['subscription'] = 'from'
+			elif contact['subscription'] == 'none' and subs == 'to':
+				contact['subscription'] = 'to'
+			# For the rest of cases, contact['subscription'] equals 'both'
+			# so, it should not be touched
+
+			# Specific actions for each type of subscription
 			if subs == 'none':
 				# Add the subscription state
 				contact['ask'] = 'subscribe'
+				self.sendRoster(frm, session, type='set')
 			elif subs == 'to':
 				try:
 					del contact['ask']
 				except:
 					pass
-			self.sendRoster(frm, session, type='set')
+				self.sendRoster(frm, session, type='set')
 		else:
 			# There was no such contact in the roster. Let's create its entry
 			values = dict()
 			values['subscription'] = subs
 			if subs == 'none':
 				values['ask'] = 'subscribe'
+				self.sendRoster(frm, session, type='set')
 			elif subs == 'to':
 				# No 'ask' entry
-				pass
+				self.sendRoster(frm, session, type='set')
 			ros[to] = values
-			self.sendRoster(frm, session, type='set')
 			# Make the changes persistent in the DB
 			#self.server.DB.savedb()
 

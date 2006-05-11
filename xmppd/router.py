@@ -110,7 +110,11 @@ class Router(PlugIn):
 		if s:
 			stanza.setFrom(barejid)
 			s.enqueue(stanza)
+			# Update roster of the requester
 	    		self.server.rosterPlugIn.makeSubscription(str(to), barejid, s, subs='to')
+	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
+			# Update roster of the accepter
+	    		self.server.rosterPlugIn.makeSubscription(barejid, str(to), session, subs='from')
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
 			'''print "### self._data "
 			for key, value in self._data.items():
