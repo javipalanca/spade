@@ -80,19 +80,15 @@ class rosterPlugIn(PlugIn):
 		session.enqueue(iq)	
 
 	def sendUnavailable(self, frm, to, status):
-		print "### sendUnavailable ", frm, to, str(status)
 		# Generate a Presence node
 		if status:
 			p = Presence(to, 'unavailable', frm = frm, status = status)
 		else:
 			p = Presence(to, 'unavailable', frm = frm)
-		print "### p = ", str(p)
 		# Find the receiver's session and send the presence information through it
 		s = self.server.getsession(to)
 		if s:
 			s.enqueue(p)
-			print " ### p sent"
-		
 
 	def broadcastUnavailable(self, barejid, status=None):
 		ros = self.getRoster(barejid)
