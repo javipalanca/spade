@@ -80,6 +80,7 @@ class rosterPlugIn(PlugIn):
 		session.enqueue(iq)	
 
 	def sendUnavailable(self, frm, to, status):
+		print "### sendUnavailable ", frm, to, str(status)
 		# Generate a Presence node
 		if status:
 			p = Presence(to = to, frm = frm, typ = 'unavailable', status = status)
