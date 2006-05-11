@@ -116,10 +116,6 @@ class Router(PlugIn):
 			# Update roster of the accepter
 	    		self.server.rosterPlugIn.makeSubscription(barejid, str(to), session, subs='from')
 	        	self.DEBUG('Roster of client '+str(to)+' updated', 'ok')
-			'''print "### self._data "
-			for key, value in self._data.items():
-				for k, v in value.items():
-					print str(k), str(v)'''
 			# Check for the availability information of the subscribed client and send a Presence probe
 			if self._data.has_key(barejid):
 				if self._data[barejid].has_key(resource):
@@ -159,11 +155,17 @@ class Router(PlugIn):
             bp.setTimestamp()
             self.update(barejid)
         elif typ=='unavailable' or typ=='error':
+	    status = stanza.getTag('status')
+	    if status:
+		# Get the textual status data
+		status = status.getData()
+	    self.server.rosterPlugIn.broadcastUnavailable(barejid, status)
             if not self._data.has_key(barejid): raise NodeProcessed
             if self._data[barejid].has_key(resource): del self._data[barejid][resource]
             self.update(barejid)
             if not self._data[barejid]: del self._data[barejid]
             self._owner.deactivatesession(session.peer)
+	    
         elif typ=='probe':
             try:
                 resources=[stanza.getTo().getResource()]
