@@ -86,25 +86,25 @@ class rosterPlugIn(PlugIn):
 			p = Presence(to = to, frm = frm, typ = 'unavailable', status = status)
 		else:
 			p = Presence(to = to, frm = frm, type = 'unavailable')
+		print "### p = ", str(p)
 		# Find the receiver's session and send the presence information through it
 		s = self.server.getsession(to)
 		if s:
 			s.enqueue(p)
+			print " ### p sent"
 		
 
 	def broadcastUnavailable(self, barejid, status=None):
 		ros = self.getRoster(barejid)
 		if ros:
 			for contact in ros.keys():
-				print "### for ", contact
 				# If a contact is subscribed to our presence
 				try:
 					if ros[contact]['subscription'] == 'from' or ros[contact]['subscription'] == 'both':
-						print "### sU ", barejid, contact, status
 						self.sendUnavailable(barejid, contact, status)
 				except:
 					# Contact does not have subscription
-					pass
+					print "### Contact does not have subscription item"
 
 	def makeSubscription(self, frm, to, session, subs='none'):
 		print "### makeSubscription called: ", str(frm), str(to)
