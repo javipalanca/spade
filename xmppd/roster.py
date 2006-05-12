@@ -91,6 +91,9 @@ class rosterPlugIn(PlugIn):
 			s.enqueue(p)
 
 	def broadcastUnavailable(self, barejid, status=None):
+		'''
+		Broadcasts an 'unavailable' presence to all contacts
+		'''
 		ros = self.getRoster(barejid)
 		if ros:
 			for contact in ros.keys():
@@ -101,6 +104,42 @@ class rosterPlugIn(PlugIn):
 				except:
 					# Contact does not have subscription
 					print "### Contact does not have subscription item"
+	def cancelSubscription(self, frm, to, session):
+		print "### cancelSubscription called: ", str(frm), str(to)
+		# Cancel the subscription of the client 'to' 
+		ros = self.getRoster(frm)
+		to=str(to.split('/')[0])  # In case there was a resource
+		try:
+			contact = ros[to]
+		except:
+			# There was no contact, so there was no subscription. We're done
+			return
+		if contact:
+			# Check what type of subscription there was and change it
+			if contact['subscription'] == 'from':
+				contact['subscription'] = 'none'
+			elif contact['subscription'] == 'both':
+				contact['subscription'] = 'to'
+			self.sendRoster(frm, session, type='set')
+
+
+	def makeUnsubscription(self, frm, to, session):
+		print "### makeUnsubscription called: ", str(frm), str(to)
+		# Unsubscribe the contact 'to' from the roster of client 'frm'
+		ros = self.getRoster(frm)
+		to=str(to.split('/')[0])  # In case there was a resource
+		try:
+			contact = ros[to]
+		except:
+			# There was no contact, so there was no subscription. We're done
+			return
+		if contact:
+			# Check what type of subscription there was and change it
+			if contact['subscription'] == 'to':
+				contact['subscription'] = 'none'
+			elif contact['subscription'] == 'both':
+				contact['subscription'] = 'from'
+			self.sendRoster(frm, session, type='set')
 
 	def makeSubscription(self, frm, to, session, subs='none'):
 		print "### makeSubscription called: ", str(frm), str(to)

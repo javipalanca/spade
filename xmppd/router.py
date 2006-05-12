@@ -99,10 +99,6 @@ class Router(PlugIn):
 	elif typ=='subscribed':
 	    # Presence Subscription confirmation
 	    self.DEBUG("Presence subscription confirmation found from "+barejid+" to "+str(to), "warn")
-	    
-	    # Until here, all ok
-
-
 	    # Modify sender's roster to reflect the subscription confirmation
 	    try:
 		# Route stanza
@@ -131,13 +127,39 @@ class Router(PlugIn):
 					probe.setAttr('to', to)
 					s.enqueue(probe)
 	        			self.DEBUG('Presence probe sent to '+str(to)+': '+str(probe), 'ok')
-			
 	    except:
 		self.DEBUG('Could NOT route back presence subscription confirmation from ' + barejid, 'error')
 	    raise NodeProcessed
-		
-	    
- 
+	elif typ == 'unsubscribe':
+	    # Remove Presence Subscription
+	    self.DEBUG("Presence unsubscription from "+barejid+" to "+str(to), "warn")
+	    # Modify sender's roster to reflect the unsubscription
+	    try:
+	    	#self.server.rosterPlugIn.makeUnsubscription(barejid, str(to), session)
+	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
+		s = self.server.getsession(to)
+		if s:
+			stanza.setFrom(barejid)
+			s.enqueue(stanza)
+	    except:
+		self.DEBUG('Could NOT update roster from ' + barejid, 'error')
+	    raise NodeProcessed
+	elif typ == 'unsubscribed':
+	    # Presence subscription cancellation
+	    self.DEBUG("Presence subscription cancellation found from "+barejid+" to "+str(to), "warn")
+	    # Modify sender's roster to reflect the subscription cancellation
+	    try:
+		# Route stanza
+		s = self.server.getsession(to)
+		if s:
+			stanza.setFrom(barejid)
+			s.enqueue(stanza)
+			# Update roster of the requester
+	    		#self.server.rosterPlugIn.cancelSubscription(barejid, str(to), session)
+	        	self.DEBUG('Roster of client '+barejid+' updated', 'ok')
+	    except:
+		self.DEBUG('Could NOT route back presence subscription cancellation from ' + barejid, 'error')
+	    raise NodeProcessed
         elif not typ or typ=='available':
             if not self._data.has_key(barejid): self._data[barejid]={}
             if not self._data[barejid].has_key(resource): self._data[barejid][resource]=Presence(frm=jid,typ=typ)
