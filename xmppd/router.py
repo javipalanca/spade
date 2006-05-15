@@ -135,7 +135,7 @@ class Router(PlugIn):
 	    self.DEBUG("Presence unsubscription from "+barejid+" to "+str(to), "warn")
 	    # Modify sender's roster to reflect the unsubscription
 	    try:
-	    	#self.server.rosterPlugIn.makeUnsubscription(barejid, str(to), session)
+	    	self.server.rosterPlugIn.makeUnsubscription(barejid, str(to), session)
 	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
 		s = self.server.getsession(to)
 		if s:
@@ -155,7 +155,7 @@ class Router(PlugIn):
 			stanza.setFrom(barejid)
 			s.enqueue(stanza)
 			# Update roster of the requester
-	    		#self.server.rosterPlugIn.cancelSubscription(barejid, str(to), session)
+	    		self.server.rosterPlugIn.cancelSubscription(barejid, str(to), session)
 	        	self.DEBUG('Roster of client '+barejid+' updated', 'ok')
 	    except:
 		self.DEBUG('Could NOT route back presence subscription cancellation from ' + barejid, 'error')
@@ -176,6 +176,12 @@ class Router(PlugIn):
             if status: bp.T.show=status
             bp.setTimestamp()
             self.update(barejid)
+
+	    if not typ and not to:
+		# Initial presence
+		# Send a presence probe to all contacts with the 'to' or 'both' subscription
+		# Send a presence to all contacts with the 'from' or 'both' subscription
+		#self.server.rosterPlugIn.initialPresence(barejid)
         elif typ=='unavailable' or typ=='error':
 	    self.DEBUG('Client '+barejid+' has become unavailable', 'warn')
 	    status = stanza.getTag('status')

@@ -79,6 +79,24 @@ class rosterPlugIn(PlugIn):
 			item=query.setTag('item',attrs)
 		session.enqueue(iq)	
 
+	def initialPresence(self, frm):
+		ros = self.getRoster(frm)
+		probe = Presence(typ='probe', frm=frm)
+		pres = Presence(frm=frm)
+		for contact in ros.keys():
+			try:
+				# Send a presence probe to all contacts with the 'to' or 'both' subscription
+				if ros[contact]['subscription']	== 'to' or ros[contact]['subscription'] == 'both':
+					s = self.server.getsession(contact)
+					s.enqueue(probe)
+                		# Send a presence to all contacts with the 'from' or 'both' subscription
+				if ros[contact]['subscription']	== 'from' or ros[contact]['subscription'] == 'both':
+					s = self.server.getsession(contact)
+					s.enqueue(pres)
+			except:
+				pass
+				
+
 	def sendUnavailable(self, frm, to, status):
 		# Generate a Presence node
 		if status:
