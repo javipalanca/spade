@@ -182,6 +182,7 @@ class Router(PlugIn):
 		# Send a presence probe to all contacts with the 'to' or 'both' subscription
 		# Send a presence to all contacts with the 'from' or 'both' subscription
 		self.server.rosterPlugIn.initialPresence(barejid)
+
         elif typ=='unavailable' or typ=='error':
 	    self.DEBUG('Client '+barejid+' has become unavailable', 'warn')
 	    status = stanza.getTag('status')
