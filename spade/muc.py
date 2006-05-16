@@ -1,5 +1,5 @@
 from xmpp import *
-
+import types
 
 class Participant:
 	"""
@@ -124,7 +124,7 @@ class Room:
 		if not subject:
 			self.subject = jid.split('@')[0]
 		else:
-			self.subject = ""
+			self.subject = subject
 		# If there was a template, change values by default
 		if template:
 			print "TODO: Implement room templates"
@@ -141,7 +141,7 @@ class Room:
 		self.blacklist = blacklist
 
 	def __str__(self):
-		s = "Room: " + str(self.jid) + self.subject
+		s = str(self.jid) + ": " + self.subject
 		s = s + " Hidden = " + str(self.hidden) + " Open = " + str(self.open) + " Moderated = " + str(self.moderated) + " Semi-Anonymous = " + str(self.semi_anonymous) + " Unsecured = " + str(self.unsecured) + " Persistent = " + str(self.persistent)
 		s = s + " Role Privileges = " + str(self.role_privileges)
 		s = s + " Participants = " + str(self.participants.keys())
@@ -154,10 +154,14 @@ class Room:
 		"""
 		Add a participant to a room
 		"""
+		# fulljid must be a string
+		if isinstance(fulljid, JID):
+			fulljid = str(fulljid)
+
 		# If a participant object has been passed here, copy all its attributes into the new participant
 		if participant:
 			# Copy another object
-			p = Participant(participant.getFullJID, participant.getBareJid(), participant.getNick(), participant.getRole(), participant.getAffiliation())
+			p = Participant(participant.getFullJID(), participant.getBareJID(), participant.getNick(), participant.getRole(), participant.getAffiliation())
 		elif fulljid not in self.participants.keys():
 			# Instantiate a new participant
 			p = Participant(fulljid)
@@ -171,7 +175,7 @@ class Room:
 
 		# See wether the participant can be added to the room depending on the room's type
 		# Case 0: The participant is blacklisted
-		if p.getBareJid() in self.blacklist:
+		if p.getBareJID() in self.blacklist:
 			# "I told you not to come back! Get the f**k out of here!"
 			return False
 		# Case 1: Open and without password. Free way
@@ -230,10 +234,34 @@ class Room:
 				# Not a member. Get lost
 				return False
 
+	def setAffiliation(self, participant, affiliation):
+		"""
+		Set the affiliation of a participant
+		"""
+		# If 'participant' is a string
+		if type(participant) == types.StringType:
+			jid = participant
+		# If its an instance of JID or Participant
+		elif type(participant) == types.InstanceType:
+			if isinstance(participant, JID):
+				jid = str(participant)
+			elif isinstance(participant, Participant): 
+				jid = participant.getFullJID()
+
+		# Change affiliation in the participants dict
+		try:
+			self.participants[jid].setAffiliation(affiliation)
+		except:
+			print "No such participant " + str(jid)
+
 
 # Debug main code
 if __name__ == "__main__":
 	p1 = Participant('p1@localhost/res', nick="PlayerOne")
+	p2 = Participant('p2@localhost/Gaim', nick="PlayerTwo")
 	r1 = Room('house@muc.localhost', "My House", creator=p1)
+	r1.addParticipant(participant=p2)
+	
 	print p1
+	print p2
 	print r1
