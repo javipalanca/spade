@@ -1,4 +1,4 @@
-import xmpp *
+from xmpp import *
 
 
 class Participant:
@@ -11,18 +11,26 @@ class Participant:
 		# If there was no barejid, build it
 		if not barejid:
 			 self.barejid = str(fulljid).split('/')[0]
+		else:
+			self.barejid = barejid
 		# If there was no nick, take the barejid instead
 		if not nick:
 			self.nick = self.barejid
+		else:
+			self.nick = nick
 		# If there was no role, take the 'none' role
 		if not role:
 			self.role = 'none'
+		else:
+			self.role = role
 		# Same as role
 		if not affiliation:
 			self.affiliation = 'none'
+		else:
+			self.affiliation = affiliation
 
 	def __str__(self):
-		print '<' + str(self.fulljid) + ' barejid="' + self.barejid + '" nick="' + self.nick + '" role="' + self.role + '" affiliation="' + self.affiliation + '">'
+		return '<' + str(self.fulljid) + ' barejid="' + self.barejid + '" nick="' + self.nick + '" role="' + self.role + '" affiliation="' + self.affiliation + '">'
 
 	def getFullJID(self):
 		"""
@@ -115,6 +123,8 @@ class Room:
 		# If there was no subject, take the first part of the jid instead
 		if not subject:
 			self.subject = jid.split('@')[0]
+		else:
+			self.subject = ""
 		# If there was a template, change values by default
 		if template:
 			print "TODO: Implement room templates"
@@ -131,13 +141,14 @@ class Room:
 		self.blacklist = blacklist
 
 	def __str__(self):
-		print "Room: ", str(self.jid), self.subject
-		print "Hidden = ", str(self.hidden), "Open = ", str(self.open), "Moderated = ", str(self.moderated), "Semi-Anonymous = ", str(self.semi_anonymous), "Unsecured = ", str(self.unsecured), "Persistent = ", str(self.persistent)
-		print "Role Privileges = ", str(self.role_privileges)
-		print "Participants = ", str(self.participants.keys())
-		print "Creator = ", str(self.creator.getFullJID())
-		print "Whitelist = ", str(self.whitelist)
-		print "Blacklist = ", str(self.blacklist)
+		s = "Room: " + str(self.jid) + self.subject
+		s = s + " Hidden = " + str(self.hidden) + " Open = " + str(self.open) + " Moderated = " + str(self.moderated) + " Semi-Anonymous = " + str(self.semi_anonymous) + " Unsecured = " + str(self.unsecured) + " Persistent = " + str(self.persistent)
+		s = s + " Role Privileges = " + str(self.role_privileges)
+		s = s + " Participants = " + str(self.participants.keys())
+		s = s + " Creator = " + str(self.creator.getFullJID())
+		s = s + " Whitelist = " + str(self.whitelist)
+		s = s + " Blacklist = " + str(self.blacklist)
+		return s
 
 	def addParticipant(self, fulljid=None, barejid=None, nick=None, role=None, affiliation=None, participant=None, password=None):
 		"""
@@ -218,4 +229,11 @@ class Room:
 			else:
 				# Not a member. Get lost
 				return False
-			
+
+
+# Debug main code
+if __name__ == "__main__":
+	p1 = Participant('p1@localhost/res', nick="PlayerOne")
+	r1 = Room('house@muc.localhost', "My House", creator=p1)
+	print p1
+	print r1
