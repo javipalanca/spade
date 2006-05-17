@@ -255,13 +255,92 @@ class Room:
 			print "No such participant " + str(jid)
 
 
+class Conference:
+	"""
+	The conference component. Composed of multiple rooms
+	"""
+	def __init__(self, jid, name):
+		self.jid = jid
+		self.name = name
+		self.rooms = dict()
+		print "Created conference " + str(self.jid)
+
+	def __str__(self):
+		return str(self.jid) + ": " + str(self.rooms)
+
+	def addRoom(self, room = None, jid = None):
+		if room:
+			# Add the given room
+			self.rooms[str(room.jid)] = room
+			return True
+		elif jid:
+			# Create a new (empty) default room with given jid
+			self.rooms[str(jid)] = Room(jid)
+		else:
+			# Error: no room and no jid. Don't know what to do
+			return False
+
+	def dispatch(self, stanza, session):
+		"""
+		Mini-dispatcher for the jabber stanzas that arrive to the Conference
+		"""
+		try:
+			to = stanza['to']
+			room = to.getNode()
+			domain = to.getDomain()
+		except:
+			# There was no 'to'
+			pass
+
+		# No room name. Stanza directed to the Conference
+		if room == '' and domain == str(self.jid):
+			if stanza.getName() == 'iq':
+				self.IQ_cb(stanza, session)
+			# TODO: Implement the rest of protocols
+
+
+	def IQ_cb(self, iq, session):
+		"""
+		Manages IQ stanzas directed to the Conference itself
+		"""
+		# Look for the query xml namespace
+		query =  iq.getTag('query')
+		if query:
+			try:
+				ns = query.getAttr('xmlns')
+				# Discovery Info
+				if ns == NS_DISCO_INFO:
+					# Build reply
+					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+					id = iq.getAttr('id')
+					if id:
+						reply.setAttr('id', id)
+					identity = Node('identity', { 'category': 'conference', 'type': 'text', 'name':self.name })
+					feature = Node('feature', { 'var': 'http://jabber.org/protocol/muc' }
+					reply.getQuerynode().addChild(node = identity)
+					reply.getQuerynode().addChild(node = feature)
+					session.enqueue(reply)
+					
+			except:
+				# No xmlns, don't know what to do
+				pass
+			
+		
+
+
 # Debug main code
 if __name__ == "__main__":
+	conf = Conference("muc.localhost")
 	p1 = Participant('p1@localhost/res', nick="PlayerOne")
 	p2 = Participant('p2@localhost/Gaim', nick="PlayerTwo")
 	r1 = Room('house@muc.localhost', "My House", creator=p1)
+	r2 = Room('auction@muc.localhost', "Auction House", creator=p2)
 	r1.addParticipant(participant=p2)
+
+	conf.addRoom(r1)
+	conf.addRoom(r2)
 	
 	print p1
 	print p2
 	print r1
+	print conf
