@@ -280,7 +280,7 @@ class Conference:
 			# Error: no room and no jid. Don't know what to do
 			return False
 
-	def dispatch(self, stanza, session):
+	def dispatch(self, session, stanza):
 		"""
 		Mini-dispatcher for the jabber stanzas that arrive to the Conference
 		"""

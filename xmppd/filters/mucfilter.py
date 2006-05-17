@@ -1,19 +1,27 @@
 from xmppd import filter
 
 class MUCFilter(filter.Filter):
+	def __init__(self):
+		# Build list of MUC names
+		self.mucnames = []
+		for name in self._router._owner.servernames:
+			self.mucnames.append('muc.' + name)
 
 	def test(self,stanza):
-		simple_to = str(stanza['to'])
-		
-		if not('@' in simple_to) and \
-		(simple_to in self._router._owner.servernames) and \
-		(stanza.getName()=='message'):
+		to = stanza['to']
+		try:
+			domain = to.getDomain()
+			if domain in self.mucnames:
 				return True
-		return False
+			else:
+				return False
+		except:
+			return False
 
 
 	def filter(self,session,stanza):
 		# Process message
-		self._router.DEBUG("Message for the server", 'info')
+		self._router.DEBUG("Message for MUC component", 'info')
+		self._router._owner.MUC.dispatch(session, stanza)
 		return None
 
