@@ -176,10 +176,11 @@ class Room:
 		room = to.getNode()
 		domain = to.getDomain()
 		nick = to.getResource()
+		frm = session.peer
 		if nick == '':
 			# There is no nick, we must send back an error 400
 			print "### There is no nick, we must send back an error 400"
-			reply = Presence(stanza.getFrom(), 'error', frm=self.fullJID())
+			reply = Presence(frm, 'error', frm=self.fullJID())
 			error = Node('error', { 'code': 400, 'type': 'modify' } )
 			error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
 			reply.addChild(node=error)
@@ -189,7 +190,7 @@ class Room:
 			# For now, all clients can enter
 			print "For now, all clients can enter"
 			# Conform first standard reply
-			reply = Presence( stanza.getFrom(), frm=self.fullJID() )
+			reply = Presence( frm, frm=self.fullJID() )
 			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
 			reply.addChild(node=x)
 			print "reply: " + str(reply)
@@ -198,18 +199,18 @@ class Room:
 			print "### Send presence information from existing participants to the new participant"
 			for participant in self.participants.values():
 				relative_frm = self.fullJID() + '/' + self.participant.getNick()
-				reply = Presence( stanza.getFrom(), frm=relative_frm )
+				reply = Presence( frm, frm=relative_frm )
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
 				x.addChild(node=item)
 				reply.addChild(x)
 				session.enqueue(reply)
-			if self.addParticipant(stanza.getFrom(), nick=nick):
+			if self.addParticipant(frm, nick=nick):
 				# Send new participant's presence to all participants
 				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
 				print self.participants
-				newcomer = self.participants[stanza.getFrom()]
+				newcomer = self.participants[frm]
 				print "### newcomer: "
 				print newcomer
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
