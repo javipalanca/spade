@@ -266,7 +266,7 @@ class MUC(PlugIn):
 		self.jid = server.mucjid
 		self.name = server.mucname
 		self.rooms = dict()
-		print "Created conference " + str(self.jid)
+		self.DEBUG("Created MUC Conference " + str(self.jid), "warn")
 
 	def printMUC(self):
 		return str(self.jid) + ": " + str(self.rooms)
