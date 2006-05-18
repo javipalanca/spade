@@ -345,6 +345,7 @@ class MUC(PlugIn):
 						item = Node('item', { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) })
 						print "### item done = " + str(item)
 						reply.getQuerynode().addChild(node = item)
+						print "### reply = " + str(reply)
 					session.enqueue(reply)
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
 					
