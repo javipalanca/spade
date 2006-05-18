@@ -190,13 +190,12 @@ class Room:
 			print "For now, all clients can enter"
 			# Conform first standard reply
 			reply = Presence( stanza.getFrom(), frm=self.fullJID() )
-			print "reply: " + str(reply)
 			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
-			print "x: " + str(x)
 			reply.addChild(node=x)
 			print "reply: " + str(reply)
 			session.enqueue(reply)
 			# Send presence information from existing participants to the new participant
+			print "### Send presence information from existing participants to the new participant"
 			for participant in self.participants.values():
 				relative_frm = self.fullJID() + '/' + self.participant.getNick()
 				reply = Presence( stanza.getFrom(), frm=relative_frm )
@@ -207,6 +206,7 @@ class Room:
 				session.enqueue(reply)
 			if self.addParticipant(stanza.getFrom(), nick=nick):
 				# Send new participant's presence to all participants
+				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
 				newcomer = self.participants[stanza.getFrom()]
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
