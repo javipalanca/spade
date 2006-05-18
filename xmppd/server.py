@@ -50,6 +50,7 @@ addons = [
     dialback.Dialback,
     
     roster.rosterPlugIn,
+    muc.MUC,
 
 
 # XMPP-IM
