@@ -206,9 +206,10 @@ class Room:
 			try:
 				ns = str(iq.getQueryNS())
 				typ = str(iq.getType())
+				nod = iq.getQuerynode()
 				print "ns = " + ns
 				# Discovery Info
-				if ns == NS_DISCO_INFO and typ == 'get':
+				if ns == NS_DISCO_INFO and typ == 'get' not nod:
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
 					rquery=reply.getTag('query')
@@ -241,6 +242,28 @@ class Room:
 						feature =  { 'var': 'muc_passwordprotected' }
 						rquery.setTag('feature', feature)
 					session.enqueue(reply)
+
+				# Traffic is not supported at this time
+				if ns == NS_DISCO_INFO and typ == 'get' and nod == 'http://jabber.org/protocol/muc#traffic':
+				# Generate an error 501
+				"""
+		<iq xmlns="jabber:client" to="test@thx1138.dsic.upv.es/Gaim" type="error" id="gaime9f319d" from="thx1138.dsic.upv.es"><query xmlns="http://jabber.org/protocol/disco#items" /><error code="501" type="cancel"><feature-not-implemented xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" /><text xmlns="urn:ietf:params:xml:ns:xmpp-stanzas">The feature requested is not implemented by the recipient or server and therefore cannot be processed.</text></error></iq>
+				"""
+				reply = Iq('error', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+				rquery=reply.getTag('query')
+				id = iq.getAttr('id')
+                                if id:
+                                	reply.setAttr('id', id)
+				error = Node('error', { 'code': 501, 'type': 'cancel'})
+				error.setTag('feature-not-implemented', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'})
+				text = Node('text', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'})
+				text.addData('The feature requested is not implemented by the recipient or server and therefore cannot be processed.')
+				error.addChild(node=text)
+				reply.addChild(node=error)
+				print "### reply: " + str(reply)
+				
+
+	
 				# Discovery Items, i.e., the rooms
 				elif ns == NS_DISCO_ITEMS and typ == 'get':
 					# Return a list of participants in the rooms
