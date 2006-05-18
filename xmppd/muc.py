@@ -159,6 +159,7 @@ class Room:
 		"""
 		Mini-dispatcher for the jabber stanzas that arrive to the room
 		"""
+		self.muc.DEBUG("Room "+self.name+" dispatcher called")
 		if stanza.getName() == 'iq':
 			self.IQ_cb(session, stanza)
 		elif stanza.getName() == 'presence':
@@ -402,7 +403,7 @@ class MUC(PlugIn):
 			room = to.getNode()
 			domain = to.getDomain()
 		except:
-			# There was no 'to'
+			print "### There was no 'to'"
 			pass
 
 		# No room name. Stanza directed to the Conference
