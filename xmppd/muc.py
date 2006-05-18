@@ -323,6 +323,18 @@ class MUC(PlugIn):
 					reply.getQuerynode().addChild(node = identity)
 					reply.getQuerynode().addChild(node = feature)
 					session.enqueue(reply)
+				# Discovery Items, i.e., the rooms
+				elif ns == NS_DISCO_ITEMS:
+					# Build reply
+					reply = Iq('result', NS_DISCO_ITEMS, to=iq.getFrom(), frm=str(self.jid))
+					id = iq.getAttr('id')
+                                        if id:
+                                        	reply.setAttr('id', id)
+					# For each room in the conference, generate an 'item' element with info about the room
+					for room in self.rooms.keys():
+						item = Node('item', { 'jid': room, 'name': self.rooms[room].subject })
+						reply.getQuerynode().addChild(node = item)
+					session.enqueue(reply)
 					
 			except:
 				# No xmlns, don't know what to do

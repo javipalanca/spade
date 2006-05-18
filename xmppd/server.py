@@ -482,7 +482,7 @@ class Server:
 	self.router_filters = list()
 	#this is for test
 	from filters import *
-	self.router_filter_names = [acc.ACC,component.Component,console.Console]
+	self.router_filter_names = [acc.ACC,component.Component,console.Console,mucfilter.MUCFilter]
 
         self.features=[]
         #import modules
