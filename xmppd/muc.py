@@ -153,7 +153,7 @@ class Room:
 		return s
 
 	def fullJID(self):
-		return str(self.name+'@'+self.muc)
+		return str(self.name) + '@' + str(self.muc.jid)
 
 	def dispatch(self, session, stanza):
 		"""
