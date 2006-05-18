@@ -208,6 +208,7 @@ class Room:
 				# Send new participant's presence to all participants
 				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
+				print self.participants
 				newcomer = self.participants[stanza.getFrom()]
 				print "### newcomer: "
 				print newcomer
