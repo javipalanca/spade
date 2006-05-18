@@ -97,7 +97,7 @@ class Room:
 	"""
 	A MUC room
 	"""
-	def __init__(self, name, subject=None, template=None, creator=None, whitelist=[], blacklist=[], password=None):
+	def __init__(self, name, muc, subject=None, template=None, creator=None, whitelist=[], blacklist=[], password=None):
 		# Initialize default room specific values
 		self.hidden = False
 		self.open = True
@@ -118,6 +118,8 @@ class Room:
 		self.role_privileges['send'] = 'participant'
 		self.role_privileges['subject'] = 'participant'
 
+		# The Conference that owns the room
+		self.muc = muc
 		# Get data from constructor
 		self.name = name
 		# If there was no subject, take the first part of the jid instead
@@ -150,27 +152,52 @@ class Room:
 		s = s + " Blacklist = " + str(self.blacklist)
 		return s
 
+	def fullJID(self):
+		return str(self.name+'@'+self.muc)
+
 	def dispatch(self, session, stanza):
 		"""
 		Mini-dispatcher for the jabber stanzas that arrive to the room
 		"""
 		if stanza.getName() == 'iq':
 			self.IQ_cb(session, stanza)
+		elif stanza.getName() == 'presence':
+			self.Presence_cb(session, stanza)
 		# TODO: Implement the rest of protocols
 
-	def IQ_cb(self, session, stanza):
+	def Presence_cb(self, session, presence):
+		"""
+		Manages presence stanzas directed to a room
+		"""
+		# Analyze the 'to' element from the stanza
+		to = stanza['to']
+		room = to.getNode()
+		domain = to.getDomain()
+		nick = to.getResource()
+		if nick == '':
+			# There is no nick, we must send back an error 400
+			reply = Presence(presence.getFrom(), 'error', frm=self.fullJID())
+			error = Node('error', { 'code': 400, 'type': 'modify' } )
+			error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
+			reply.addChild(node=error)
+			session.enqueue(reply)
+		else:
+			# Process a client's request to join the room
+		
+
+	def IQ_cb(self, session, iq):
 		"""
 		Manages IQ stanzas directed to a room
 		"""
 		# Look for the query xml namespace
 		query = iq.getTag('query')
-		print "### query = " + str(query)
 		if query:
 			try:
 				ns = str(iq.getQueryNS())
+				typ = str(iq.getType())
 				print "ns = " + ns
 				# Discovery Info
-				if ns == NS_DISCO_INFO:
+				if ns == NS_DISCO_INFO and typ == 'get':
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
 					rquery=reply.getTag('query')
@@ -204,8 +231,9 @@ class Room:
 						rquery.setTag('feature', feature)
 					session.enqueue(reply)
 				# Discovery Items, i.e., the rooms
-				elif ns == NS_DISCO_ITEMS:
-					# NOT EXACTLY THIS
+				elif ns == NS_DISCO_ITEMS and typ == 'get':
+					# Return a list of participants in the rooms
+					# We leave it in TODO, for the moment, we return an empty list
 					self.DEBUG("NS_DISCO_ITEMS requested", "warn")
 					# Build reply
 					reply = Iq('result', NS_DISCO_ITEMS, to=iq.getFrom(), frm=str(self.jid))
@@ -213,12 +241,7 @@ class Room:
 					id = iq.getAttr('id')
                                         if id:
                                         	reply.setAttr('id', id)
-					# For each room in the conference, generate an 'item' element with info about the room
-					for room in self.rooms.keys():
-						attrs = { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) }
-						rquery.setTag('item', attrs)
 					session.enqueue(reply)
-					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
 					
 			except:
 				print " ### No xmlns, don't know what to do"
@@ -344,7 +367,7 @@ class MUC(PlugIn):
 		self.name = server.mucname
 		self.rooms = dict()
 
-		general = Room('general', 'General Discussion')
+		general = Room('general', self, 'General Discussion')
 		self.addRoom(general)
 
 		self.DEBUG("Created MUC Conference " + str(self.jid), "warn")
@@ -355,11 +378,12 @@ class MUC(PlugIn):
 	def addRoom(self, room = None, jid = None):
 		if room:
 			# Add the given room
+			room.muc = self
 			self.rooms[str(room.name)] = room
 			return True
 		elif name:
 			# Create a new (empty) default room with given jid
-			self.rooms[str(name)] = Room(name)
+			self.rooms[str(name)] = Room(name, self)
 		else:
 			# Error: no room and no jid. Don't know what to do
 			return False
@@ -399,8 +423,9 @@ class MUC(PlugIn):
 			try:
 				ns = str(iq.getQueryNS())
 				print "ns = " + ns
+				typ = str(iq.getType())
 				# Discovery Info
-				if ns == NS_DISCO_INFO:
+				if ns == NS_DISCO_INFO and typ == 'get':
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
 					rquery=reply.getTag('query')
@@ -440,8 +465,8 @@ if __name__ == "__main__":
 	conf = Conference("muc.localhost")
 	p1 = Participant('p1@localhost/res', nick="PlayerOne")
 	p2 = Participant('p2@localhost/Gaim', nick="PlayerTwo")
-	r1 = Room('house@muc.localhost', "My House", creator=p1)
-	r2 = Room('auction@muc.localhost', "Auction House", creator=p2)
+	r1 = Room('house@muc.localhost', conf, "My House", creator=p1)
+	r2 = Room('auction@muc.localhost', conf, "Auction House", creator=p2)
 	r1.addParticipant(participant=p2)
 
 	conf.addRoom(r1)
