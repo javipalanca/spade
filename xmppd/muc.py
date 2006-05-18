@@ -313,7 +313,7 @@ class MUC(PlugIn):
 		"""
 		self.DEBUG("MUC Iq callback called", "warn")
 		# Look for the query xml namespace
-		query =  iq.getTag('query')
+		query = iq.getTag('query')
 		print "### query = " + str(query)
 		if query:
 			try:
@@ -344,6 +344,7 @@ class MUC(PlugIn):
 						print "### room = " + str(room)
 						item = Node('item', { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) })
 						print "### item done = " + str(item)
+						print "### reply = " + str(reply)
 						reply.getQuerynode().addChild(node = item)
 						print "### reply = " + str(reply)
 					session.enqueue(reply)
