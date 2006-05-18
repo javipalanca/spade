@@ -97,7 +97,7 @@ class Room:
 	"""
 	A MUC room
 	"""
-	def __init__(self, jid, subject=None, template=None, creator=None, whitelist=[], blacklist=[], password=None):
+	def __init__(self, name, subject=None, template=None, creator=None, whitelist=[], blacklist=[], password=None):
 		# Initialize default room specific values
 		self.hidden = False
 		self.open = True
@@ -119,10 +119,10 @@ class Room:
 		self.role_privileges['subject'] = 'participant'
 
 		# Get data from constructor
-		self.jid = jid
+		self.name = name
 		# If there was no subject, take the first part of the jid instead
 		if not subject:
-			self.subject = jid.split('@')[0]
+			self.subject = name
 		else:
 			self.subject = subject
 		# If there was a template, change values by default
@@ -141,7 +141,7 @@ class Room:
 		self.blacklist = blacklist
 
 	def __str__(self):
-		s = str(self.jid) + ": " + self.subject
+		s = str(self.name) + ": " + self.subject
 		s = s + " Hidden = " + str(self.hidden) + " Open = " + str(self.open) + " Moderated = " + str(self.moderated) + " Semi-Anonymous = " + str(self.semi_anonymous) + " Unsecured = " + str(self.unsecured) + " Persistent = " + str(self.persistent)
 		s = s + " Role Privileges = " + str(self.role_privileges)
 		s = s + " Participants = " + str(self.participants.keys())
@@ -278,11 +278,11 @@ class MUC(PlugIn):
 	def addRoom(self, room = None, jid = None):
 		if room:
 			# Add the given room
-			self.rooms[str(room.jid)] = room
+			self.rooms[str(room.name)] = room
 			return True
-		elif jid:
+		elif name:
 			# Create a new (empty) default room with given jid
-			self.rooms[str(jid)] = Room(jid)
+			self.rooms[str(name)] = Room(name)
 		else:
 			# Error: no room and no jid. Don't know what to do
 			return False
@@ -341,7 +341,7 @@ class MUC(PlugIn):
                                         	reply.setAttr('id', id)
 					# For each room in the conference, generate an 'item' element with info about the room
 					for room in self.rooms.keys():
-						item = Node('item', { 'jid': room, 'name': self.rooms[room].subject })
+						item = Node('item', { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) })
 						reply.getQuerynode().addChild(node = item)
 					session.enqueue(reply)
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
