@@ -212,12 +212,13 @@ class Room:
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
 				x.addChild(node=item)
-				print "### before for"
 				for participant in self.participants.values():
 					reply = Presence( participant.getFullJID(), frm=relative_frm )
 					reply.addChild(x)				
 					s = self.muc.server.getsession(participant.getFullJID())
-					s.enqueue(reply)
+					print "### Session " + str(s) + " found for client " + participant.getFullJID()
+					if s:
+						s.enqueue(reply)
 				
 
 	def IQ_cb(self, session, iq):
