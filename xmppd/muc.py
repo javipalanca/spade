@@ -212,6 +212,7 @@ class Room:
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
 				x.addChild(node=item)
+				print "### before for"
 				for participant in self.participants.values():
 					reply = Presence( participant.getFullJID(), frm=relative_frm )
 					reply.addChild(x)				
