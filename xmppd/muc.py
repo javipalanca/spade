@@ -209,6 +209,8 @@ class Room:
 				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
 				newcomer = self.participants[stanza.getFrom()]
+				print "### newcomer: "
+				print newcomer
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
 				x.addChild(node=item)
