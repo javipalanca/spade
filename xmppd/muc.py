@@ -266,6 +266,10 @@ class MUC(PlugIn):
 		self.jid = server.mucjid
 		self.name = server.mucname
 		self.rooms = dict()
+
+		general = Room('general', 'General Discussion')
+		self.addRoom(general)
+
 		self.DEBUG("Created MUC Conference " + str(self.jid), "warn")
 
 	def printMUC(self):
