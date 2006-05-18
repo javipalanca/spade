@@ -1,17 +1,12 @@
 from xmppd import filter
 
 class MUCFilter(filter.Filter):
-	def __init__(self):
-		# Build list of MUC names
-		self.mucnames = []
-		for name in self._router._owner.servernames:
-			self.mucnames.append('muc.' + name)
 
 	def test(self,stanza):
 		to = stanza['to']
 		try:
 			domain = to.getDomain()
-			if domain in self.mucnames:
+			if domain == self_router._owner.mucjid:
 				return True
 			else:
 				return False
