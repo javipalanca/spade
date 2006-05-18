@@ -436,6 +436,10 @@ class MUC(PlugIn):
 
 		general = Room('general', self, 'General Discussion')
 		self.addRoom(general)
+		coffee = Room('coffee', self, 'Coffee Room')
+		self.addRoom(coffee)
+		spade_room = Room('spade', self, 'SPADE Agents')
+		self.addRoom(spade_room)
 
 		self.DEBUG("Created MUC Conference " + str(self.jid), "warn")
 
