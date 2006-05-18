@@ -159,17 +159,18 @@ class Room:
 		"""
 		Mini-dispatcher for the jabber stanzas that arrive to the room
 		"""
-		self.muc.DEBUG("Room "+self.name+" dispatcher called")
+		self.muc.DEBUG("Room '"+self.name+"' dispatcher called")
 		if stanza.getName() == 'iq':
 			self.IQ_cb(session, stanza)
 		elif stanza.getName() == 'presence':
 			self.Presence_cb(session, stanza)
 		# TODO: Implement the rest of protocols
 
-	def Presence_cb(self, session, presence):
+	def Presence_cb(self, session, stanza):
 		"""
 		Manages presence stanzas directed to a room
 		"""
+		self.muc.DEBUG("Room '"+self.name+"' presence handler called")
 		# Analyze the 'to' element from the stanza
 		to = stanza['to']
 		room = to.getNode()
