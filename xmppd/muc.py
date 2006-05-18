@@ -310,6 +310,7 @@ class MUC(PlugIn):
 		self.DEBUG("MUC Iq callback called", "warn")
 		# Look for the query xml namespace
 		query =  iq.getTag('query')
+		print "### query = " + str(query)
 		if query:
 			try:
 				ns = query.getAttr('xmlns')
@@ -341,7 +342,7 @@ class MUC(PlugIn):
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
 					
 			except:
-				# No xmlns, don't know what to do
+				print " ### No xmlns, don't know what to do"
 				pass
 			
 		
