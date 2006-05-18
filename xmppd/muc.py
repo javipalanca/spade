@@ -183,7 +183,11 @@ class Room:
 			session.enqueue(reply)
 		else:
 			# Process a client's request to join the room
-		
+			# For now, all clients can enter
+			reply = Presence( presence.getFrom(), frm=self.fullJID() )
+			x = Node( 'x', { 'xmlns': 'http://jabber.org/protocol/muc' } )
+			reply.addChild(node=x)
+			session.enqueue(reply)
 
 	def IQ_cb(self, session, iq):
 		"""
