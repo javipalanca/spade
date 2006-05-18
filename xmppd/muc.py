@@ -267,7 +267,7 @@ class MUC(PlugIn):
 		self.rooms = dict()
 		print "Created conference " + str(self.jid)
 
-	def __str__(self):
+	def printMUC(self):
 		return str(self.jid) + ": " + str(self.rooms)
 
 	def addRoom(self, room = None, jid = None):
