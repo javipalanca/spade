@@ -203,20 +203,20 @@ class Room:
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
 				x.addChild(node=item)
-				reply.addChild(x)
+				reply.addChild(node=x)
 				session.enqueue(reply)
 			if self.addParticipant(frm, nick=nick):
 				# Send new participant's presence to all participants
 				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
-				print self.participants
 				newcomer = self.participants[frm]
+				print self.participants
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
+				item = Node('item', {'affiliation': str(newcomer.getAffiliation()), 'role': str(newcomer.getRole()) } )
 				x.addChild(node=item)
 				for participant in self.participants.values():
 					reply = Presence( participant.getFullJID(), frm=relative_frm )
-					reply.addChild(x)				
+					reply.addChild(node=x)
 					s = self.muc.server.getsession(participant.getFullJID())
 					print "### Session " + str(s) + " found for client " + participant.getFullJID()
 					if s:
