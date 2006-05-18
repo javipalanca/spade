@@ -178,16 +178,15 @@ class Room:
 		nick = to.getResource()
 		if nick == '':
 			# There is no nick, we must send back an error 400
-			reply = Presence(presence.getFrom(), 'error', frm=self.fullJID())
+			reply = Presence(stanza.getFrom(), 'error', frm=self.fullJID())
 			error = Node('error', { 'code': 400, 'type': 'modify' } )
 			error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
-			print "### before addChild"
 			reply.addChild(node=error)
 			session.enqueue(reply)
 		else:
 			# Process a client's request to join the room
 			# For now, all clients can enter
-			reply = Presence( presence.getFrom(), frm=self.fullJID() )
+			reply = Presence( stanza.getFrom(), frm=self.fullJID() )
 			x = Node( 'x', { 'xmlns': 'http://jabber.org/protocol/muc' } )
 			reply.addChild(node=x)
 			session.enqueue(reply)
