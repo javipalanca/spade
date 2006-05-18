@@ -188,6 +188,7 @@ class Room:
 			# Process a client's request to join the room
 			# For now, all clients can enter
 			print "For now, all clients can enter"
+			# Conform first standard reply
 			reply = Presence( stanza.getFrom(), frm=self.fullJID() )
 			print "reply: " + str(reply)
 			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
@@ -195,6 +196,28 @@ class Room:
 			reply.addChild(node=x)
 			print "reply: " + str(reply)
 			session.enqueue(reply)
+			# Send presence information from existing participants to the new participant
+			for participant in self.participants.values():
+				relative_frm = self.fullJID() + '/' + self.participant.getNick()
+				reply = Presence( stanza.getFrom(), frm=relative_frm )
+				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+				item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
+				x.addChild(node=item)
+				reply.addChild(x)
+				session.enqueue(reply)
+			if self.addParticipant(stanza.getFrom(), nick=nick):
+				# Send new participant's presence to all participants
+				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
+				newcomer = self.participants[stanza.getFrom()]
+				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
+				x.addChild(node=item)
+				for participant in self.participants.values():
+					reply = Presence( participant.getFullJID(), frm=relative_frm )
+					reply.addChild(x)				
+					s = self.muc.server.getsession(participant.getFullJID())
+					s.enqueue(reply)
+				
 
 	def IQ_cb(self, session, iq):
 		"""
@@ -261,7 +284,6 @@ class Room:
 					print "### reply: " + str(reply)
 					session.enqueue(reply)
 	
-				# Discovery Items, i.e., the rooms
 				elif ns == NS_DISCO_ITEMS and typ == 'get':
 					# Return a list of participants in the rooms
 					# We leave it in TODO, for the moment, we return an empty list
