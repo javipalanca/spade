@@ -9,6 +9,7 @@ import jep0078
 import router
 import stream
 import stanza_queue
+import muc
 
 
 #addons = [
