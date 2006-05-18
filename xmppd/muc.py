@@ -336,16 +336,15 @@ class MUC(PlugIn):
 					self.DEBUG("NS_DISCO_ITEMS requested", "warn")
 					# Build reply
 					reply = Iq('result', NS_DISCO_ITEMS, to=iq.getFrom(), frm=str(self.jid))
+					rquery=reply.getTag('query')
 					id = iq.getAttr('id')
                                         if id:
                                         	reply.setAttr('id', id)
 					# For each room in the conference, generate an 'item' element with info about the room
 					for room in self.rooms.keys():
 						print "### room = " + str(room)
-						item = Node('item', { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) })
-						print "### item done = " + str(item)
-						print "### reply = " + str(reply)
-						reply.getQuerynode().addChild(node = item)
+						attrs = { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) }
+						rquery.setTag('item',attrs)
 						print "### reply = " + str(reply)
 					session.enqueue(reply)
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
