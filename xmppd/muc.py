@@ -313,7 +313,8 @@ class MUC(PlugIn):
 		print "### query = " + str(query)
 		if query:
 			try:
-				ns = query.getAttr('xmlns')
+				ns = str(query.getAttr('xmlns'))
+				print "ns = " + ns
 				# Discovery Info
 				if ns == NS_DISCO_INFO:
 					# Build reply
