@@ -344,6 +344,7 @@ class Room:
 			elif not self.moderated and not role:
 				p.setRole('participant')
 			self.participants[p.getFullJID()] = p
+			print "### Participant " + str(p.getFullJID()) + " has been granted the role of " + str(p.getRole()) + " at room " + self.name
 			return True
 		# Case 2: Open but with password. "Say say say say the password"
 		elif self.open and not self.unsecured:
