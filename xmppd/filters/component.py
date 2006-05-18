@@ -76,6 +76,7 @@ class Component(filter.Filter):
                                 session.set_session_state(SESSION_OPENED)
                                 raise NodeProcessed
 			'''
+			# TODO: Activate session only ONCE
                         if port == 9001:  # AMS
                                 component_name = 'ams.' + primary_name
                                 session.peer = component_name
