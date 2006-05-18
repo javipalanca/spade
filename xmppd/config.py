@@ -18,6 +18,8 @@ servernames = []
 certificatefile = ''
 spoolpath = ''
 sslkeyfile = ''
+mucjid = ''
+mucname = ''
 
 class xmppdXML:
 	'''XML streams parser for xmppd'''
@@ -39,6 +41,8 @@ class xmppdXMLHandler(ContentHandler):
         def startElement(self, name, attrs):
 		global certificatefile
 		global spoolpath
+		global mucjid
+		global mucname
                 self.chars = ""
                 self.tag_name = name
                 if name == "server":
@@ -64,6 +68,16 @@ class xmppdXMLHandler(ContentHandler):
 			except:
 				spoolpath = '.'
                         #print "Current Tag: " + name
+		elif name == "muc":
+			self.section = "muc"
+			try:
+				mucjid = attrs['jid']
+			except:
+				mucjid = ''
+			try:
+				mucname = attrs['name']
+			except:
+				mucname = 'MUC Service'
                 else:
                         self.chars = ""
                         self.tag_name = name
@@ -72,10 +86,17 @@ class xmppdXMLHandler(ContentHandler):
                 self.chars = str(self.chars + ch)
 
         def endElement(self, name):
+		global mucjid
                 #print 'Final de: ' + name + ' con current_tag: ' + self.current_tag
                 #print 'Caracteres : ' + self.chars
                 if name == "name":
-			servernames.append(self.chars)	
+			servernames.append(self.chars)
+		elif name == "server":
+			# Try to guess muc jid
+			try:
+				mucjid = "muc." + servernames[0]
+			except:
+				print "ERROR: Could not find suitable JID for MUC component."
                 self.message = self.chars
 
 
@@ -109,4 +130,7 @@ class Config(PlugIn):
 	# This was good ... for a time
 	#server.spoolpath = spoolpath
 	server.spoolpath = os.environ['HOME'] + os.sep + '.xmppd'
+
+	server.mucjid = mucjid
+	server.mucname = mucname
 

@@ -93,6 +93,7 @@ def generateCode():
 		        </servernames>
 		        <certificate file="xmppd.pem"/>
 	        	<spool path="'''+str(os.environ['HOME'])+'''/.spade/spool"/>
+			<muc jid="muc.'''+hostname+'''" name="SPADE MUC Component"/>
 		</server>
 		'''
 	else:
@@ -103,6 +104,7 @@ def generateCode():
 		        </servernames>
 		        <certificate file="xmppd.pem"/>
 	        	<spool path="usr/share/spade/xmppd/spool"/>
+			<muc jid="muc.'''+hostname+'''" name="SPADE MUC Component"/>
 		</server>
 		'''
 

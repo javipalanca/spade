@@ -255,13 +255,15 @@ class Room:
 			print "No such participant " + str(jid)
 
 
-class Conference:
+class MUC(PlugIn):
 	"""
 	The conference component. Composed of multiple rooms
 	"""
-	def __init__(self, jid, name):
-		self.jid = jid
-		self.name = name
+	#def __init__(self, jid, name):
+	def plugin(self, server)
+		self.server = server
+		self.jid = server.mucjid
+		self.name = server.mucname
 		self.rooms = dict()
 		print "Created conference " + str(self.jid)
 
