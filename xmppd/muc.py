@@ -318,7 +318,7 @@ class MUC(PlugIn):
 					if id:
 						reply.setAttr('id', id)
 					identity = Node('identity', { 'category': 'conference', 'type': 'text', 'name':self.name })
-					feature = Node('feature', { 'var': 'http://jabber.org/protocol/muc' }
+					feature = Node('feature', { 'var': 'http://jabber.org/protocol/muc' })
 					reply.getQuerynode().addChild(node = identity)
 					reply.getQuerynode().addChild(node = feature)
 					session.enqueue(reply)
