@@ -242,7 +242,7 @@ class Room:
 				typ = str(iq.getType())
 				nod = iq.getQuerynode()
 				print "ns = " + ns
-				print "node = "  + nod
+				print "node = "  + str(nod)
 				# Discovery Info
 				if ns == NS_DISCO_INFO and typ == 'get' and not nod:
 					print "### NS_DISCO_INFO and get"
