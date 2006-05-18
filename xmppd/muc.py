@@ -341,7 +341,9 @@ class MUC(PlugIn):
                                         	reply.setAttr('id', id)
 					# For each room in the conference, generate an 'item' element with info about the room
 					for room in self.rooms.keys():
+						print "### room = " + str(room)
 						item = Node('item', { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) })
+						print "### item done = " + str(item)
 						reply.getQuerynode().addChild(node = item)
 					session.enqueue(reply)
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
