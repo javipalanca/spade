@@ -211,8 +211,6 @@ class Room:
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
 				print self.participants
 				newcomer = self.participants[frm]
-				print "### newcomer: "
-				print newcomer
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': newcomer.getAffiliation(), 'role': newcomer.getRole() } )
 				x.addChild(node=item)
