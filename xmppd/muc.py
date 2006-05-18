@@ -209,7 +209,7 @@ class Room:
 				nod = iq.getQuerynode()
 				print "ns = " + ns
 				# Discovery Info
-				if ns == NS_DISCO_INFO and typ == 'get' not nod:
+				if ns == NS_DISCO_INFO and typ == 'get' and not nod:
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
 					rquery=reply.getTag('query')
