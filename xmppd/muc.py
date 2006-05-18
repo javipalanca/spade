@@ -245,8 +245,9 @@ class Room:
 				print "node = "  + nod
 				# Discovery Info
 				if ns == NS_DISCO_INFO and typ == 'get' and not nod:
+					print "### NS_DISCO_INFO and get"
 					# Build reply
-					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+					reply = Iq('result', NS_DISCO_INFO, to=frm, frm=str(self.fullJID()))
 					rquery=reply.getTag('query')
 					id = iq.getAttr('id')
 					if id:
