@@ -259,6 +259,7 @@ class MUC(PlugIn):
 	"""
 	The conference component. Composed of multiple rooms
 	"""
+	NS = ''
 	#def __init__(self, jid, name):
 	def plugin(self, server):
 		self.server = server
