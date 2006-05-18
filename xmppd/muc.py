@@ -170,7 +170,27 @@ class Room:
 			self.IQ_cb(session, stanza)
 		elif stanza.getName() == 'presence':
 			self.Presence_cb(session, stanza)
+		elif stanza.getName() == 'message':
+			self.Message_cb(session, stanza)
 		# TODO: Implement the rest of protocols
+
+	def Message_cb(self, session, stanza):
+		"""
+		Manages messages directed to a room
+		"""
+		frm = str(session.peer)
+		typ = stanza.getAttr('type')
+		if type == 'groupchat':
+			# General message to everyone
+			if self.participants.has_key(frm):
+				# Change the 'from'
+				messenger = self.participants[frm]
+				stanza.setFrom(self.fullJID()+'/'+messenger.getNick())
+				for participant in self.participants.values():
+					stanza.setTo(participant.getFullJID())
+					s = self.muc.server.getsession(participant.getFullJID())
+					s.enqueue(stanza)
+		
 
 	def Presence_cb(self, session, stanza):
 		"""
@@ -216,7 +236,6 @@ class Room:
 				print "### Send new participant's presence to all participants"
 				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
 				newcomer = self.participants[frm]
-				print self.participants
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': str(newcomer.getAffiliation()), 'role': str(newcomer.getRole()) } )
 				x.addChild(node=item)
