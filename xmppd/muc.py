@@ -181,6 +181,7 @@ class Room:
 			reply = Presence(presence.getFrom(), 'error', frm=self.fullJID())
 			error = Node('error', { 'code': 400, 'type': 'modify' } )
 			error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
+			print "### before addChild"
 			reply.addChild(node=error)
 			session.enqueue(reply)
 		else:
