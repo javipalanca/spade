@@ -176,7 +176,7 @@ class Room:
 		room = to.getNode()
 		domain = to.getDomain()
 		nick = to.getResource()
-		frm = session.peer
+		frm = str(session.peer)
 		if nick == '':
 			# There is no nick, we must send back an error 400
 			print "### There is no nick, we must send back an error 400"
