@@ -287,6 +287,7 @@ class MUC(PlugIn):
 		"""
 		Mini-dispatcher for the jabber stanzas that arrive to the Conference
 		"""
+		self.DEBUG("MUC dispatcher called", "warn")
 		try:
 			to = stanza['to']
 			room = to.getNode()
@@ -306,6 +307,7 @@ class MUC(PlugIn):
 		"""
 		Manages IQ stanzas directed to the Conference itself
 		"""
+		self.DEBUG("MUC Iq callback called", "warn")
 		# Look for the query xml namespace
 		query =  iq.getTag('query')
 		if query:
@@ -325,6 +327,7 @@ class MUC(PlugIn):
 					session.enqueue(reply)
 				# Discovery Items, i.e., the rooms
 				elif ns == NS_DISCO_ITEMS:
+					self.DEBUG("NS_DISCO_ITEMS requested", "warn")
 					# Build reply
 					reply = Iq('result', NS_DISCO_ITEMS, to=iq.getFrom(), frm=str(self.jid))
 					id = iq.getAttr('id')
@@ -335,6 +338,7 @@ class MUC(PlugIn):
 						item = Node('item', { 'jid': room, 'name': self.rooms[room].subject })
 						reply.getQuerynode().addChild(node = item)
 					session.enqueue(reply)
+					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
 					
 			except:
 				# No xmlns, don't know what to do

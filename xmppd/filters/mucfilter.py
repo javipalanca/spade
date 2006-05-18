@@ -18,7 +18,8 @@ class MUCFilter(filter.Filter):
 
 	def filter(self,session,stanza):
 		# Process message
-		self._router.DEBUG("Message for MUC component", 'info')
+		self._router.DEBUG("Stanza for MUC component", 'info')
 		self._router._owner.MUC.dispatch(session, stanza)
+		self._router.DEBUG("Stanza dispatched by MUC component", 'info')
 		return None
 
