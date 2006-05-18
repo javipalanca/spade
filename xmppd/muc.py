@@ -312,6 +312,7 @@ class Room:
 		"""
 		Add a participant to a room
 		"""
+		print "### addParticipant called with: ", fulljid, nick
 		# fulljid must be a string
 		if isinstance(fulljid, JID):
 			fulljid = str(fulljid)
