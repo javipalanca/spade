@@ -54,13 +54,19 @@ class Participant:
 		"""
 		Get the participant's role
 		"""
-		return self.role
+		if self.role:
+			return self.role
+		else:
+			return 'none'
 
 	def getAffiliation(self):
 		"""
 		Get the participant's affiliation
 		"""
-		return self.affiliation
+		if self.affiliation:
+			return self.affiliation
+		else:
+			return 'none'
 
 	def setFullJID(self, fulljid):
 		"""
@@ -229,6 +235,7 @@ class Room:
 		"""
 		# Look for the query xml namespace
 		query = iq.getTag('query')
+		frm = str(session.peer)
 		if query:
 			try:
 				ns = str(iq.getQueryNS())
@@ -273,13 +280,14 @@ class Room:
 
 				# Traffic is not supported at this time
 				elif ns == NS_DISCO_INFO and typ == 'get' and nod == 'http://jabber.org/protocol/muc#traffic':
+					print "### TRAFFIC IQ REQUEST"
 					# Generate an error 501
-					reply = Iq('error', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+					reply = Iq('error', NS_DISCO_INFO, to=frm, frm=self.fullJID() )
 					rquery=reply.getTag('query')
 					id = iq.getAttr('id')
                 	                if id:
                         	        	reply.setAttr('id', id)
-					error = Node('error', { 'code': 501, 'type': 'cancel'})
+					error = Node('error', { 'code': 501, 'type': 'cancel' })
 					error.setTag('feature-not-implemented', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'})
 					text = Node('text', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'})
 					text.addData('The feature requested is not implemented by the recipient or server and therefore cannot be processed.')
