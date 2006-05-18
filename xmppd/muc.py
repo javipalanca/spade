@@ -208,6 +208,7 @@ class Room:
 				typ = str(iq.getType())
 				nod = iq.getQuerynode()
 				print "ns = " + ns
+				print "node = "  + nod
 				# Discovery Info
 				if ns == NS_DISCO_INFO and typ == 'get' and not nod:
 					# Build reply
@@ -244,7 +245,7 @@ class Room:
 					session.enqueue(reply)
 
 				# Traffic is not supported at this time
-				if ns == NS_DISCO_INFO and typ == 'get' and nod == 'http://jabber.org/protocol/muc#traffic':
+				elif ns == NS_DISCO_INFO and typ == 'get' and nod == 'http://jabber.org/protocol/muc#traffic':
 					# Generate an error 501
 					reply = Iq('error', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
 					rquery=reply.getTag('query')
@@ -258,8 +259,7 @@ class Room:
 					error.addChild(node=text)
 					reply.addChild(node=error)
 					print "### reply: " + str(reply)
-				
-
+					session.enqueue(reply)
 	
 				# Discovery Items, i.e., the rooms
 				elif ns == NS_DISCO_ITEMS and typ == 'get':
