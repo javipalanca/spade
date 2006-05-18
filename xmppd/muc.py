@@ -150,6 +150,83 @@ class Room:
 		s = s + " Blacklist = " + str(self.blacklist)
 		return s
 
+	def dispatch(self, session, stanza):
+		"""
+		Mini-dispatcher for the jabber stanzas that arrive to the room
+		"""
+		if stanza.getName() == 'iq':
+			self.IQ_cb(session, stanza)
+		# TODO: Implement the rest of protocols
+
+	def IQ_cb(self, session, stanza):
+		"""
+		Manages IQ stanzas directed to a room
+		"""
+		# Look for the query xml namespace
+		query = iq.getTag('query')
+		print "### query = " + str(query)
+		if query:
+			try:
+				ns = str(iq.getQueryNS())
+				print "ns = " + ns
+				# Discovery Info
+				if ns == NS_DISCO_INFO:
+					# Build reply
+					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+					rquery=reply.getTag('query')
+					id = iq.getAttr('id')
+					if id:
+						reply.setAttr('id', id)
+					# Fill 'identity' item
+					identity = { 'category': 'conference', 'type': 'text', 'name':self.name }
+					rquery.setTag('identity', identity)
+					# Fill 'feature' items, representing the features that the room supports
+					feature =  { 'var': 'http://jabber.org/protocol/muc' }
+					rquery.setTag('feature', feature)
+					# See the specific features of the room
+					if self.hidden:
+						feature =  { 'var': 'muc_hidden' }
+						rquery.setTag('feature', feature)
+					if self.open:
+						feature =  { 'var': 'muc_open' }
+						rquery.setTag('feature', feature)
+					if not self.moderated:
+						feature =  { 'var': 'muc_unmoderated' }
+						rquery.setTag('feature', feature)
+					if not self.semi_anonymous:
+						feature =  { 'var': 'muc_nonanonymous' }
+						rquery.setTag('feature', feature)
+					if not self.persistent:
+						feature =  { 'var': 'muc_temporary' }
+						rquery.setTag('feature', feature)
+					if not self.unsecured:
+						feature =  { 'var': 'muc_passwordprotected' }
+						rquery.setTag('feature', feature)
+					session.enqueue(reply)
+				# Discovery Items, i.e., the rooms
+				elif ns == NS_DISCO_ITEMS:
+					# NOT EXACTLY THIS
+					self.DEBUG("NS_DISCO_ITEMS requested", "warn")
+					# Build reply
+					reply = Iq('result', NS_DISCO_ITEMS, to=iq.getFrom(), frm=str(self.jid))
+					rquery=reply.getTag('query')
+					id = iq.getAttr('id')
+                                        if id:
+                                        	reply.setAttr('id', id)
+					# For each room in the conference, generate an 'item' element with info about the room
+					for room in self.rooms.keys():
+						attrs = { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) }
+						rquery.setTag('item', attrs)
+					session.enqueue(reply)
+					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
+					
+			except:
+				print " ### No xmlns, don't know what to do"
+				pass
+
+
+
+
 	def addParticipant(self, fulljid=None, barejid=None, nick=None, role=None, affiliation=None, participant=None, password=None):
 		"""
 		Add a participant to a room
@@ -303,11 +380,14 @@ class MUC(PlugIn):
 		# No room name. Stanza directed to the Conference
 		if room == '' and domain == str(self.jid):
 			if stanza.getName() == 'iq':
-				self.IQ_cb(stanza, session)
+				self.IQ_cb(session, stanza)
 			# TODO: Implement the rest of protocols
+		# Stanza directed to a speceific room
+		if room in self.rooms.keys() and domain == str(self.jid):
+			self.rooms[room].dispatch(session, stanza)
 
 
-	def IQ_cb(self, iq, session):
+	def IQ_cb(self, session, iq):
 		"""
 		Manages IQ stanzas directed to the Conference itself
 		"""
@@ -323,13 +403,14 @@ class MUC(PlugIn):
 				if ns == NS_DISCO_INFO:
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=iq.getFrom(), frm=str(self.jid))
+					rquery=reply.getTag('query')
 					id = iq.getAttr('id')
 					if id:
 						reply.setAttr('id', id)
-					identity = Node('identity', { 'category': 'conference', 'type': 'text', 'name':self.name })
-					feature = Node('feature', { 'var': 'http://jabber.org/protocol/muc' })
-					reply.getQuerynode().addChild(node = identity)
-					reply.getQuerynode().addChild(node = feature)
+					identity = { 'category': 'conference', 'type': 'text', 'name':self.name }
+					feature =  { 'var': 'http://jabber.org/protocol/muc' }
+					rquery.setTag('identity', identity)
+					rquery.setTag('feature', feature)
 					session.enqueue(reply)
 				# Discovery Items, i.e., the rooms
 				elif ns == NS_DISCO_ITEMS:
@@ -342,10 +423,8 @@ class MUC(PlugIn):
                                         	reply.setAttr('id', id)
 					# For each room in the conference, generate an 'item' element with info about the room
 					for room in self.rooms.keys():
-						print "### room = " + str(room)
 						attrs = { 'jid': str(room+'@'+self.jid), 'name': str(self.rooms[room].subject) }
-						rquery.setTag('item',attrs)
-						print "### reply = " + str(reply)
+						rquery.setTag('item', attrs)
 					session.enqueue(reply)
 					self.DEBUG("NS_DISCO_ITEMS sent", "warn")
 					
