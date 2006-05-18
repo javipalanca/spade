@@ -244,7 +244,7 @@ class Room:
 				print "ns = " + ns
 				print "node = "  + str(nod)
 				# Discovery Info
-				if ns == NS_DISCO_INFO and typ == 'get' and not nod:
+				if ns == NS_DISCO_INFO and typ == 'get' and nod == None:
 					print "### NS_DISCO_INFO and get"
 					# Build reply
 					reply = Iq('result', NS_DISCO_INFO, to=frm, frm=str(self.fullJID()))
