@@ -439,7 +439,7 @@ class Server:
 	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=100):
+    def __init__(self,debug=[],cfgfile=None, max_threads=10):
 
 	
 	self.alive = True
