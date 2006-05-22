@@ -376,7 +376,7 @@ class Socket_Process(threading.Thread):
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
- 	            self.DEBUG('Socket_Process','registered %s (%s)'%(sess.fileno(),sess))
+ 	            #self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 	            #self.SESS_LOCK.release()
 
 	def unregistersession(self, sess):
@@ -450,9 +450,6 @@ class Server:
 
 	self.data_queue = Queue()
 
-	self.thread_pull = []
-	self.max_threads = max_threads
-
         # if debug == None:
 	#	self._DEBUG = Debug.NoDebug()
 	#else:
@@ -464,6 +461,9 @@ class Server:
         self.debug_flags.append('dispatcher')
         self.debug_flags.append('server')
 
+	self.thread_pull = []
+	self.max_threads = max_threads
+
 	# Key: session fileno , Value = Socket_Process managing the session
 	self.session_locator = {}
 
@@ -471,7 +471,7 @@ class Server:
 		t = Socket_Process()
 		t.start()
 		self.thread_pull.append(t)
-	self.DEBUG('server', 'Created succesfully '+str(i)+' Socket Process Threads', 'ok')
+	self.DEBUG('server', 'Created succesfully '+str(i+1)+' Socket Process Threads', 'ok')
 
 	if cfgfile == None:
 		self.cfgfile = '.' + os.sep + 'xmppd.xml'
@@ -602,6 +602,7 @@ class Server:
 		t = self.getSocketProcess()
 		self.DEBUG('server', 'Socket_Process found for session: '+str(sess), 'info')
 		t.registersession(sess)
+ 	        self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 		self.session_locator[sess.fileno()] = t
 		self.DEBUG('server', 'Thread located: '+str(t), 'info')
 
