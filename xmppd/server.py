@@ -376,7 +376,6 @@ class Socket_Process(threading.Thread):
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
-		    print "### SESS " + str(sess.fileno()) + " REGISTERED"
  	            #self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 	            #self.SESS_LOCK.release()
 
@@ -391,7 +390,6 @@ class Socket_Process(threading.Thread):
 			sess._registered=0
 			self.__sockpoll.unregister(sess)
 			del self.sockets[sess.fileno()]
-		        print "### SESS " + str(sess.fileno()) + " UNREGISTERED"
 			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
 			#self.SESS_LOCK.release()
 			#self.isAlive = False
@@ -401,9 +399,7 @@ class Socket_Process(threading.Thread):
 	def run(self):
 		while self.isAlive:
 			try:
-				print "### Thread "+str(self)+" RUNNING! "
 				for fileno,ev in self.__sockpoll.poll(1000):
-				    print "### Thread "+str(self)+" POLLING! "
 		    
 				    sock=self.sockets[fileno]
 
@@ -411,7 +407,6 @@ class Socket_Process(threading.Thread):
 					sess=sock
 					try:
 					    data=sess.receive()
-					    print "### RECEIVED: " + data
 					except IOError: # client closed the connection
 					    sess.terminate_stream()
 					    data=''
@@ -422,7 +417,6 @@ class Socket_Process(threading.Thread):
 							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 							self.isAlive=False
 			except:
-				print "### Thread " + str(self) + "dying . . ."
 				self.isAlive=False
 		    
 
@@ -444,7 +438,7 @@ class Server:
 	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=2):
+    def __init__(self,debug=[],cfgfile=None, max_threads=100):
 
 	
 	self.alive = True
@@ -607,11 +601,9 @@ class Server:
 
 		#t = Socket_Process(sess)
 		t = self.getSocketProcess()
-		self.DEBUG('server', 'Socket_Process found for session: '+str(sess), 'info')
 		t.registersession(sess)
  	        self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 		self.session_locator[sess.fileno()] = t
-		self.DEBUG('server', 'Thread located: '+str(t), 'info')
 
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
