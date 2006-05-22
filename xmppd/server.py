@@ -453,17 +453,6 @@ class Server:
 	self.thread_pull = []
 	self.max_threads = max_threads
 
-	self.session_locator = {}
-
-	for i in range(1, self.max_threads):
-		t = Socket_Process()
-		t.start()
-		self.thread_pull.append(t)
-
-	self.DEBUG('server', 'Created succesfully '+str(i)+' Socket Process Threads', 'ok')
-
-	# Key: session fileno , Value = Socket_Process managing the session
-
         # if debug == None:
 	#	self._DEBUG = Debug.NoDebug()
 	#else:
@@ -474,6 +463,15 @@ class Server:
         self.debug_flags.append('session')
         self.debug_flags.append('dispatcher')
         self.debug_flags.append('server')
+
+	# Key: session fileno , Value = Socket_Process managing the session
+	self.session_locator = {}
+
+	for i in range(1, self.max_threads):
+		t = Socket_Process()
+		t.start()
+		self.thread_pull.append(t)
+	self.DEBUG('server', 'Created succesfully '+str(i)+' Socket Process Threads', 'ok')
 
 	if cfgfile == None:
 		self.cfgfile = '.' + os.sep + 'xmppd.xml'
