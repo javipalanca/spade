@@ -296,8 +296,9 @@ class Session:
         self.push_queue()       # decompose queue really since STREAM__CLOSED
         if unregister: 
 		if self._owner.thread_pull.has_key(self):
-			self._owner.thread_pull[self].unregistersession()
-			del self._owner.thread_pull[self]
+			t = self._owner.session_locator[self.fileno()]
+			t.unregistersession(self)
+			del self._owner.session_locator[self]
 		else:
 			self._owner.unregistersession(self)
         self._destroy_socket()
@@ -353,9 +354,8 @@ class Session:
 
 class Socket_Process(threading.Thread):
 
-	def __init__(self, s):
+	def __init__(self):
 		#self.__owner = owner
-		self.session = s
         	self.__sockpoll=select.poll()
 		self.sockets = {}
         	#self.SESS_LOCK=thread.allocate_lock()
@@ -365,34 +365,34 @@ class Socket_Process(threading.Thread):
 
 		self.setDaemon(True)
 
-	def registersession(self):
+	def registersession(self, sess):
 	        #self.SESS_LOCK.acquire()
-	        if isinstance(self.session,Session):
-	            if self.session._registered:
+	        if isinstance(sess,Session):
+	            if sess._registered:
 	                #self.SESS_LOCK.release()
 	                #if self._DEBUG.active: raise "Twice session Registration!"
 	                return
 	                #else: return
-	            self.session._registered=1
-	            self.sockets[self.session.fileno()]=self.session
-	            self.__sockpoll.register(self.session,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+	            sess._registered=1
+	            self.sockets[sess.fileno()]=sess
+	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
  	            #self.DEBUG('server','registered %s (%s)'%(self.session.fileno(),self.session))
 	            #self.SESS_LOCK.release()
 
-	def unregistersession(self):
+	def unregistersession(self, sess):
 		#self.SESS_LOCK.acquire()
-		if isinstance(self.session,Session):
-			if not self.session._registered:
+		if isinstance(sess,Session):
+			if not sess._registered:
 				#self.SESS_LOCK.release()
 				#if self._DEBUG.active: raise "Twice session UNregistration!"
 				return
 				#else: return
-			self.session._registered=0
-			self.__sockpoll.unregister(self.session)
-			del self.sockets[self.session.fileno()]
+			sess._registered=0
+			self.__sockpoll.unregister(sess)
+			del self.sockets[sess.fileno()]
 			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
 			#self.SESS_LOCK.release()
-			self.isAlive = False
+			#self.isAlive = False
 
 
 
@@ -437,7 +437,7 @@ class Server:
 	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=1):
+    def __init__(self,debug=[],cfgfile=None, max_threads=100):
 
 	
 	self.alive = True
@@ -450,8 +450,19 @@ class Server:
 
 	self.data_queue = Queue()
 
-	self.thread_pull = {}
+	self.thread_pull = []
 	self.max_threads = max_threads
+
+	self.session_locator = {}
+
+	for i in range(1, self.max_threads):
+		t = Socket_Process()
+		t.start()
+		self.thread_pull.append(t)
+
+	self.DEBUG('server', 'Created succesfully '+str(i)+' Socket Process Threads', 'ok')
+
+	# Key: session fileno , Value = Socket_Process managing the session
 
         # if debug == None:
 	#	self._DEBUG = Debug.NoDebug()
@@ -546,6 +557,9 @@ class Server:
         if self.routes.has_key(peer): del self.routes[peer]
         return s
 
+    def getSocketProcess(self):
+	return random.choice(self.thread_pull)
+
     def handle(self):
         for fileno,ev in self.sockpoll.poll(1000):
 	    
@@ -578,10 +592,19 @@ class Server:
 		elif port in [9000,9001,9002]: sess=Session(conn, self, NS_COMPONENT_ACCEPT)  # It is a component
                 else: sess=Session(conn,self,NS_SERVER)
 
-		t = Socket_Process(sess)
-		t.registersession()
-		t.start()
-		self.thread_pull[sess] = t
+		'''
+		1. Select a 't' from a pool of 'Socket_Process's
+		    t = self.getSocketProcess()
+		2.  t.registersession(sess)
+		3. Add 't' to the session_locator dictionary, indexed by its session's fileno
+		    self.session_locator[sess.fileno()] = t
+		'''
+
+		#t = Socket_Process(sess)
+		t = self.getSocketProcess()
+		t.registersession(sess)
+		self.session_locator[sess.fileno()] = t
+
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
             else: raise "Unknown instance type: %s"%sock
@@ -609,7 +632,8 @@ class Server:
     def shutdown(self,reason):
 
 	for th in self.thread_pull.values():
-		th.unregistersession()
+		for sess in th.sockets.values():
+			th.unregistersession(sess)
 		
 
         socklist=self.sockets.keys()
