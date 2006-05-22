@@ -629,7 +629,7 @@ class Server:
 
     def shutdown(self,reason):
 
-	for th in self.thread_pull.values():
+	for th in self.thread_pull:
 		for sess in th.sockets.values():
 			th.unregistersession(sess)
 		
