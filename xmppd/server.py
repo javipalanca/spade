@@ -401,7 +401,7 @@ class Socket_Process(threading.Thread):
 	def run(self):
 		while self.isAlive:
 			try:
-				print "### Thread "+str(self)+" RUNNING!"
+				print "### Thread "+str(self)+" RUNNING! " + str(self.__sockpoll)
 				for fileno,ev in self.__sockpoll.poll():
 		    
 				    sock=self.sockets[fileno]
@@ -410,7 +410,7 @@ class Socket_Process(threading.Thread):
 					sess=sock
 					try:
 					    data=sess.receive()
-					    print "RECEIVED: " + data
+					    print "### RECEIVED: " + data
 					except IOError: # client closed the connection
 					    sess.terminate_stream()
 					    data=''
