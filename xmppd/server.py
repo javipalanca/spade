@@ -623,7 +623,9 @@ class Server:
 
         while self.alive: 
         	try:
-			print "### thread_pull: " + str(self.thread_pull)
+			active_th = []
+			for th in self.thread_pull: if th.isAlive: active_th.append(th)
+			print "### thread_pull: " + str(active_th)
 			self.handle()
 		        #except KeyboardInterrupt:
 		except:
