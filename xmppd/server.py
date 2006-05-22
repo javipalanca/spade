@@ -295,7 +295,7 @@ class Session:
         self.set_stream_state(STREAM__CLOSED)
         self.push_queue()       # decompose queue really since STREAM__CLOSED
         if unregister: 
-		if self._owner.thread_pull.has_key(self):
+		if self.fileno() in self._owner.thread_pull:
 			t = self._owner.session_locator[self.fileno()]
 			t.unregistersession(self)
 			del self._owner.session_locator[self]
@@ -623,6 +623,7 @@ class Server:
 
         while self.alive: 
         	try:
+			print "### thread_pull: " + str(self.thread_pull)
 			self.handle()
 		        #except KeyboardInterrupt:
 		except:
