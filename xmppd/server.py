@@ -401,6 +401,7 @@ class Socket_Process(threading.Thread):
 	def run(self):
 		while self.isAlive:
 			try:
+				print "### Thread "+str(self)+" RUNNING!"
 				for fileno,ev in self.__sockpoll.poll():
 		    
 				    sock=self.sockets[fileno]
@@ -440,7 +441,7 @@ class Server:
 	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=3):
+    def __init__(self,debug=[],cfgfile=None, max_threads=2):
 
 	
 	self.alive = True
