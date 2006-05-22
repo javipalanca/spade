@@ -376,6 +376,7 @@ class Socket_Process(threading.Thread):
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+		    print "### SESS " + str(sess.fileno()) + " REGISTERED"
  	            #self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 	            #self.SESS_LOCK.release()
 
@@ -416,6 +417,7 @@ class Socket_Process(threading.Thread):
 							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
 							self.isAlive=False
 			except:
+				print "### Thread " + str(self) + "dying . . ."
 				self.isAlive=False
 		    
 
