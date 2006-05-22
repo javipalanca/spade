@@ -376,7 +376,7 @@ class Socket_Process(threading.Thread):
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
- 	            #self.DEBUG('server','registered %s (%s)'%(self.session.fileno(),self.session))
+ 	            self.DEBUG('server','Socket_Process: registered %s (%s)'%(sess.fileno(),sess))
 	            #self.SESS_LOCK.release()
 
 	def unregistersession(self, sess):
@@ -467,7 +467,7 @@ class Server:
 	# Key: session fileno , Value = Socket_Process managing the session
 	self.session_locator = {}
 
-	for i in range(1, self.max_threads):
+	for i in range(0, self.max_threads):
 		t = Socket_Process()
 		t.start()
 		self.thread_pull.append(t)
@@ -600,10 +600,10 @@ class Server:
 
 		#t = Socket_Process(sess)
 		t = self.getSocketProcess()
-		self.DEBUG('server', 'Socket_Process found: '+str(t), 'info')
+		self.DEBUG('server', 'Socket_Process found for session: '+str(sess), 'info')
 		t.registersession(sess)
 		self.session_locator[sess.fileno()] = t
-		self.DEBUG('server', 'Thread located', 'info')
+		self.DEBUG('server', 'Thread located: '+str(t), 'info')
 
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
