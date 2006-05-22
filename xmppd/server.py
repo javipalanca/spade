@@ -399,7 +399,8 @@ class Socket_Process(threading.Thread):
 	def run(self):
 		while self.isAlive:
 			try:
-				for fileno,ev in self.__sockpoll.poll(1000):
+				# We MUST put a timeout here, believe me
+				for fileno,ev in self.__sockpoll.poll(500):
 		    
 				    sock=self.sockets[fileno]
 
@@ -636,10 +637,12 @@ class Server:
 
     def shutdown(self,reason):
 
+	self.DEBUG('server', 'Deregistering sessions ...', 'info')
 	for th in self.thread_pull:
 		for sess in th.sockets.values():
 			th.unregistersession(sess)
-		
+	self.DEBUG('server', 'Sessions deregistered...', 'info')
+
 
         socklist=self.sockets.keys()
         for fileno in socklist:
