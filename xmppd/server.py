@@ -604,7 +604,6 @@ class Server:
 		t = self.getSocketProcess()
 		self.DEBUG('server', 'Socket_Process found for session: '+str(sess), 'info')
 		t.registersession(sess)
-		t.start()
  	        self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
 		self.session_locator[sess.fileno()] = t
 		self.DEBUG('server', 'Thread located: '+str(t), 'info')
