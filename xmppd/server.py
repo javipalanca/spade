@@ -600,8 +600,10 @@ class Server:
 
 		#t = Socket_Process(sess)
 		t = self.getSocketProcess()
+		self.DEBUG('server', 'Socket_Process found: '+str(t), 'info')
 		t.registersession(sess)
 		self.session_locator[sess.fileno()] = t
+		self.DEBUG('server', 'Thread located', 'info')
 
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
