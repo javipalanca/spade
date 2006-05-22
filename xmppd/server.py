@@ -402,7 +402,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				print "### Thread "+str(self)+" RUNNING! "
-				for fileno,ev in self.__sockpoll.poll():
+				for fileno,ev in self.__sockpoll.poll(1000):
 				    print "### Thread "+str(self)+" POLLING! "
 		    
 				    sock=self.sockets[fileno]
