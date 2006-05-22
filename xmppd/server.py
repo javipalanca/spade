@@ -408,7 +408,9 @@ class Socket_Process(threading.Thread):
 
 				    if isinstance(sock,Session):
 					sess=sock
-					try: data=sess.receive()
+					try:
+					    data=sess.receive()
+					    print "RECEIVED: " + data
 					except IOError: # client closed the connection
 					    sess.terminate_stream()
 					    data=''
@@ -625,11 +627,11 @@ class Server:
 
         while self.alive: 
         	try:
-			active_th = []
-			for th in self.thread_pull:
-				if th.isAlive:
-					active_th.append(th)
-			print "### thread_pull: " + str(active_th)
+			#active_th = []
+			#for th in self.thread_pull:
+			#	if th.isAlive:
+			#		active_th.append(th)
+			#print "### thread_pull: " + str(active_th)
 			self.handle()
 		        #except KeyboardInterrupt:
 		except:
