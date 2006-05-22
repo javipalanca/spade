@@ -376,7 +376,7 @@ class Socket_Process(threading.Thread):
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
- 	            self.DEBUG('server','Socket_Process: registered %s (%s)'%(sess.fileno(),sess))
+ 	            self.DEBUG('Socket_Process','registered %s (%s)'%(sess.fileno(),sess))
 	            #self.SESS_LOCK.release()
 
 	def unregistersession(self, sess):
