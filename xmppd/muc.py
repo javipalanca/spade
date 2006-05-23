@@ -207,7 +207,7 @@ class Room:
 		typ = stanza.getType()
 
 
-		if typ == '' or typ == 'available':  # Not sure about the 'available' part
+		if typ == None or typ == 'available':  # Not sure about the 'available' part
 			# Process a client's request to join the room
 			
 			# If there is no nick, we must send back an error 400
