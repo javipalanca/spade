@@ -225,7 +225,7 @@ class Room:
 			# Send presence information from existing participants to the new participant
 			print "### Send presence information from existing participants to the new participant"
 			for participant in self.participants.values():
-				relative_frm = self.fullJID() + '/' + self.participant.getNick()
+				relative_frm = self.fullJID() + '/' + participant.getNick()
 				reply = Presence( frm, frm=relative_frm )
 				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 				item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
