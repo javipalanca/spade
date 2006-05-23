@@ -400,7 +400,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(500):
+				for fileno,ev in self.__sockpoll.poll(100):
 		    
 				    sock=self.sockets[fileno]
 
