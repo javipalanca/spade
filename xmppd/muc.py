@@ -178,10 +178,20 @@ class Room:
 		"""
 		Manages messages directed to a room
 		"""
-		print "### MESSAGE_CB CALLED"
 		frm = str(session.peer)
+		to = stanza['to']
 		typ = stanza.getAttr('type')
 		if typ == 'groupchat':
+			# Message to the room itself
+			if str(to) == self.fullJID():
+				subject = stanza.getTag('subject')
+				# A 'subject'-change message
+				if subject:
+					if not self.moderated:
+						# Unmoderated room, change the subject
+						pass
+
+					
 			# General message to everyone
 			if self.participants.has_key(frm):
 				# Change the 'from'
