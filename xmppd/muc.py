@@ -204,23 +204,28 @@ class Room:
 		domain = to.getDomain()
 		nick = to.getResource()
 		frm = str(session.peer)
-		if nick == '':
-			# There is no nick, we must send back an error 400
-			print "### There is no nick, we must send back an error 400"
-			reply = Presence(frm, 'error', frm=self.fullJID())
-			error = Node('error', { 'code': 400, 'type': 'modify' } )
-			error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
-			reply.addChild(node=error)
-			session.enqueue(reply)
-		else:
+		typ = stanza.getType()
+
+
+		if typ == '' or typ == 'available':  # Not sure about the 'available' part
 			# Process a client's request to join the room
+			
+			# If there is no nick, we must send back an error 400
+			if nick == '':
+				print "### There is no nick, we must send back an error 400"
+				reply = Presence(frm, 'error', frm=self.fullJID())
+				error = Node('error', { 'code': 400, 'type': 'modify' } )
+				error.setTag('jid-malformed', { 'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas' } )
+				reply.addChild(node=error)
+				session.enqueue(reply)
+				return
+
 			# For now, all clients can enter
 			print "For now, all clients can enter"
 			# Conform first standard reply
 			reply = Presence( frm, frm=self.fullJID() )
 			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
 			reply.addChild(node=x)
-			print "reply: " + str(reply)
 			session.enqueue(reply)
 			# Send presence information from existing participants to the new participant
 			print "### Send presence information from existing participants to the new participant"
@@ -247,6 +252,36 @@ class Room:
 					print "### Session " + str(s) + " found for client " + participant.getFullJID()
 					if s:
 						s.enqueue(reply)
+				# If the room is non-anonymous, send a warning message to the new occupant
+				if self.semi_anonymous == False:
+					warning = Message(frm, "This room is not anonymous.", frm=self.fullJID())
+					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+					status = Node('status', {'code': 100} )
+					x.addChild(node=status)
+					warning.addChild(node=x)
+					session.enqueue(warning)
+			return
+
+		elif typ == 'unavailable':
+			try:
+				participant = self.participants[frm]
+			except:
+				return
+			relative_frm = self.fullJID() + '/' + participant.getNick():
+			# If 'to' equals the 'relative from' of the sender, exit the room
+			if str(to) == relative_frm:
+				print "### Send leaving participant's presence to all participants"
+				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+				item = Node('item', {'affiliation': str(participant.getAffiliation()), 'role': str(participant.getRole()) } )
+				x.addChild(node=item)
+				for other in self.participants.values():
+					reply = Presence( other.getFullJID(), 'unavailable', frm=relative_frm )
+					reply.addChild(node=x)
+					s = self.muc.server.getsession(other.getFullJID())
+					print "### Session " + str(s) + " found for client " + other.getFullJID()
+					if s:
+						s.enqueue(reply)
+			return
 				
 
 	def IQ_cb(self, session, iq):
