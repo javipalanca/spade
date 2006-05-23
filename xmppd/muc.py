@@ -267,7 +267,7 @@ class Room:
 				participant = self.participants[frm]
 			except:
 				return
-			relative_frm == self.fullJID() + '/' + participant.getNick():
+			relative_frm = self.fullJID() + '/' + participant.getNick()
 			# If 'to' equals the 'relative from' of the sender, exit the room
 			if str(to) == relative_frm:
 				print "### Send leaving participant's presence to all participants"
