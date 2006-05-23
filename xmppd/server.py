@@ -641,6 +641,7 @@ class Server:
 	for th in self.thread_pull:
 		for sess in th.sockets.values():
 			th.unregistersession(sess)
+		th.isAlive = False  # Kill the thread
 	self.DEBUG('server', 'Sessions deregistered...', 'info')
 
 
