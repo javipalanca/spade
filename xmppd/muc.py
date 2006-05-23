@@ -178,9 +178,10 @@ class Room:
 		"""
 		Manages messages directed to a room
 		"""
+		print "### MESSAGE_CB CALLED"
 		frm = str(session.peer)
 		typ = stanza.getAttr('type')
-		if type == 'groupchat':
+		if typ == 'groupchat':
 			# General message to everyone
 			if self.participants.has_key(frm):
 				# Change the 'from'
