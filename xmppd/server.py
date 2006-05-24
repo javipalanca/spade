@@ -424,6 +424,7 @@ class Socket_Process(threading.Thread):
 							self.isAlive=False
 			except:
 				self.isAlive=False
+				self.setDaemon(False)
 		    
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
@@ -624,6 +625,7 @@ class Server:
 	self.DEBUG('server', 'Deregistering sessions ...', 'info')
 	for th in self.thread_pull:
 		for sess in th.sockets.values():
+			sess.terminate_stream(reason)
 			th.unregistersession(sess)
 		th.isAlive = False  # Kill the thread
 	self.DEBUG('server', 'Sessions deregistered...', 'info')
