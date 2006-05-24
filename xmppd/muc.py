@@ -296,7 +296,8 @@ class Room:
 						s = self.muc.server.getsession(participant.getFullJID())
 						if s:
 							s.enqueue(pres)
-						
+					# Change the nick in the participant instance
+					p.setNick(nick)
 
 			# For now, all clients can enter
 			print "### For now, all clients can enter"
@@ -359,6 +360,7 @@ class Room:
 					print "### Session " + str(s) + " found for client " + other.getFullJID()
 					if s:
 						s.enqueue(reply)
+			#self.deleteParticipant(frm)
 			return
 				
 
