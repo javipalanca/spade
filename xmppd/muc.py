@@ -189,11 +189,40 @@ class Room:
 				if subject:
 					if not self.moderated:
 						# Unmoderated room, change the subject
-						pass
+						try:
+							# Get the participant who changes the subject
+							p = self.participants[frm]
+							self.subject = subject.getData()
+						except:
+							# Not a participant of this room
+							return
+					else:
+						# Moderated room, check permissions
+						try:
+							p = self.participants[frm]
+							if p.getRole() == 'moderator':
+								#Change the subject
+								self.subject = subject.getData()
+							else:
+								# Not enough permissions
+								return
+						except:
+							# Error changing the subject
+							return
+					# Notify the change of subject
+					try:
+						relative_frm = self.fullJID() + '/' + p.getNick()
+						stanza.setFrom(relative_frm)
+						for participant in self.participants.values():
+							stanza.setTo(participant.getFullJID())
+							s = self.muc.server.getsession(participant.getFullJID())
+							s.enqueue(stanza)
+					except:
+						# Error sending the subject change
+						return
 
-					
 			# General message to everyone
-			if self.participants.has_key(frm):
+			elif self.participants.has_key(frm):
 				# Change the 'from'
 				messenger = self.participants[frm]
 				stanza.setFrom(self.fullJID()+'/'+messenger.getNick())
