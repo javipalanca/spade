@@ -858,8 +858,10 @@ class Agent(AbstractAgent):
 		self.jabber.connect()
 
                 if (self.jabber.auth(name,password,"spade") == None):
+		    print "Agent could not re-connect. Dying"
                     raise NotImplementedError
             else:
+		print "Agent could not connect. Dying"
                 raise NotImplementedError
 	    
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
