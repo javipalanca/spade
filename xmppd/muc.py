@@ -249,7 +249,6 @@ class Room:
 
 		if typ == None or typ == 'available':  # Not sure about the 'available' part
 			# Process a client's request to join the room
-			
 			# If there is no nick, we must send back an error 400
 			if nick == '':
 				print "### There is no nick, we must send back an error 400"
@@ -260,8 +259,41 @@ class Room:
 				session.enqueue(reply)
 				return
 
+			# Check if its a nick change
+			if self.participants.has_key(frm):
+				oldnick = self.participants[frm].getNick()
+				if nick <> oldnick:
+					# It is indeed a nick change 
+					# Check wether the new nick is available
+					for p in self.participants.values():
+						if nick == p.getNick():
+							# Nickname conflict, report back to the changer
+							reply = Presence(frm, frm=self.fullJID(), type='error')
+							err = Node('error', {'code': '409', 'type': 'cancel'} )
+							conflict = Node('conflict', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'} )
+							err.addChild(node=conflict)
+							reply.addChild(node=err)
+							session.enqueue(reply)
+							return
+					# Now we must send an 'unavailable' Presence to everyone (in this room)
+					# with status code 303 on behalf of the changer
+					p = self.participants[frm]
+					relative_frm = self.fullJID + '/' + p.getNick()
+					pres = Presence(frm=relative_frm, type='unavailable')
+					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+					item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
+					status = Node('status', {'code': '303'})
+					x.addChild(node=item)
+					x.addChild(node=status)
+					pres.addChild(node=x)
+					for participant in self.participants.values():
+						s = self.muc.server.getsession(participant.getFullJID())
+						if s:
+							s.enqueue(pres)
+						
+
 			# For now, all clients can enter
-			print "For now, all clients can enter"
+			print "### For now, all clients can enter"
 			# Conform first standard reply
 			reply = Presence( frm, frm=self.fullJID() )
 			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
