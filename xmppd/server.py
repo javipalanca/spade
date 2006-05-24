@@ -388,8 +388,13 @@ class Socket_Process(threading.Thread):
 				return
 				#else: return
 			sess._registered=0
-			self.__sockpoll.unregister(sess)
-			del self.sockets[sess.fileno()]
+			try:
+				self.__sockpoll.unregister(sess)
+				del self.sockets[sess.fileno()]
+				print "### SP UNregister session " + str(sess)
+			except:
+				# Session wasn't here
+				pass
 			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
 			#self.SESS_LOCK.release()
 			#self.isAlive = False
