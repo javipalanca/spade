@@ -265,6 +265,7 @@ class Room:
 				if nick <> oldnick:
 					# It is indeed a nick change 
 					# Check wether the new nick is available
+					print "### Nick change"
 					for p in self.participants.values():
 						if nick == p.getNick():
 							# Nickname conflict, report back to the changer
@@ -278,7 +279,7 @@ class Room:
 					# Now we must send an 'unavailable' Presence to everyone (in this room)
 					# with status code 303 on behalf of the changer
 					p = self.participants[frm]
-					relative_frm = self.fullJID + '/' + p.getNick()
+					relative_frm = self.fullJID() + '/' + p.getNick()
 					pres = Presence(frm=relative_frm, type='unavailable')
 					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 					item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
