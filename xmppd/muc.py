@@ -184,6 +184,7 @@ class Room:
 		if typ == 'groupchat':
 			# Message to the room itself
 			if str(to) == self.fullJID():
+				print "### Message directed to the room itself: " + str(self.name)
 				subject = stanza.getTag('subject')
 				# A 'subject'-change message
 				if subject:
@@ -223,6 +224,7 @@ class Room:
 
 			# General message to everyone
 			elif self.participants.has_key(frm):
+				print "### General message to everyone in room " + str(self.name)
 				# Change the 'from'
 				messenger = self.participants[frm]
 				stanza.setFrom(self.fullJID()+'/'+messenger.getNick())
