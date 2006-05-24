@@ -389,6 +389,7 @@ class Socket_Process(threading.Thread):
 				#else: return
 			sess._registered=0
 			try:
+				sess.terminate_stream()
 				self.__sockpoll.unregister(sess)
 				del self.sockets[sess.fileno()]
 				print "### SP UNregister session " + str(sess)
