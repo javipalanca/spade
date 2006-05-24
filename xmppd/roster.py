@@ -209,16 +209,9 @@ class rosterPlugIn(PlugIn):
 
 
         def rosterHandler(self, session, stanza):
-                print "####################################"
-		print "ROSTER HANDLER CALLED"
-                print "####################################"
-		print "STANZA: ", str(stanza)
-                print "####################################"
+		return  # DEACTIVATED
 		# Client is asking for the roster
 		if stanza.getAttr('type') == 'get':
-                	print "####################################"
-			print "IT IS A GET"
-                	print "####################################"
 			query = stanza.getTag('query', namespace=NS_ROSTER)
 			if query != None:
 				# The whole roster was requested
@@ -246,15 +239,10 @@ class rosterPlugIn(PlugIn):
 				#		attrs['ask'] = value['ask']
 				#	item=query.setTag('item',attrs)
 				#session.enqueue(iq)	
-                		print "####################################"
-				print "THE ROSTER WAS SENT:"
+				print " ### THE ROSTER WAS SENT TO: " + str(frm)
 				#print str(iq)
-		                print "####################################"
 		# Client is modifying the roster
 		elif stanza.getAttr('type') == 'set':
-                	print "####################################"
-			print "IT IS A SET"
-                	print "####################################"
 			query = stanza.getTag('query', namespace=NS_ROSTER)
 			if query != None:
 				frm = stanza.getAttr('from')
