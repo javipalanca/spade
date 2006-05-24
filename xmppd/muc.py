@@ -282,13 +282,15 @@ class Room:
 					# with status code 303 on behalf of the changer
 					p = self.participants[frm]
 					relative_frm = self.fullJID() + '/' + p.getNick()
+					print "### Relative From: " + str(relative_frm)
 					pres = Presence(frm=relative_frm, typ='unavailable')
 					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-					item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
+					item = Node('item', {'affiliation': p.getAffiliation(), 'role': p.getRole() } )
 					status = Node('status', {'code': '303'})
 					x.addChild(node=item)
 					x.addChild(node=status)
 					pres.addChild(node=x)
+					print "### Pres: " + str(pres)
 					for participant in self.participants.values():
 						pres.setTo(participant.getFullJID())
 						s = self.muc.server.getsession(participant.getFullJID())
