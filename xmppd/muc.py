@@ -222,16 +222,16 @@ class Room:
 						# Error sending the subject change
 						return
 
-			# General message to everyone
-			elif self.participants.has_key(frm):
-				print "### General message to everyone in room " + str(self.name)
-				# Change the 'from'
-				messenger = self.participants[frm]
-				stanza.setFrom(self.fullJID()+'/'+messenger.getNick())
-				for participant in self.participants.values():
-					stanza.setTo(participant.getFullJID())
-					s = self.muc.server.getsession(participant.getFullJID())
-					s.enqueue(stanza)
+				# General message to everyone
+				elif self.participants.has_key(frm):
+					print "### General message to everyone in room " + str(self.name)
+					# Change the 'from'
+					messenger = self.participants[frm]
+					stanza.setFrom(self.fullJID()+'/'+messenger.getNick())
+					for participant in self.participants.values():
+						stanza.setTo(participant.getFullJID())
+						s = self.muc.server.getsession(participant.getFullJID())
+						s.enqueue(stanza)
 		
 
 	def Presence_cb(self, session, stanza):
