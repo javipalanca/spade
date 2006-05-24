@@ -270,7 +270,7 @@ class Room:
 						if nick == p.getNick():
 							# Nickname conflict, report back to the changer
 							print "### Nickname conflict !!!"
-							reply = Presence(frm, frm=self.fullJID(), type='error')
+							reply = Presence(frm, frm=self.fullJID(), typ='error')
 							err = Node('error', {'code': '409', 'type': 'cancel'} )
 							conflict = Node('conflict', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'} )
 							err.addChild(node=conflict)
@@ -282,7 +282,7 @@ class Room:
 					# with status code 303 on behalf of the changer
 					p = self.participants[frm]
 					relative_frm = self.fullJID() + '/' + p.getNick()
-					pres = Presence(frm=relative_frm, type='unavailable')
+					pres = Presence(frm=relative_frm, typ='unavailable')
 					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
 					item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
 					status = Node('status', {'code': '303'})
@@ -290,6 +290,7 @@ class Room:
 					x.addChild(node=status)
 					pres.addChild(node=x)
 					for participant in self.participants.values():
+						pres.setTo(participant.getFullJID())
 						s = self.muc.server.getsession(participant.getFullJID())
 						if s:
 							s.enqueue(pres)
