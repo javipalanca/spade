@@ -440,8 +440,6 @@ class Server:
 	
 
     def __init__(self,debug=[],cfgfile=None, max_threads=100):
-
-	
 	self.alive = True
 
 	self.debug_mutex = threading.Lock()
@@ -565,26 +563,6 @@ class Server:
 	    
             sock=self.sockets[fileno]
 
-	    """
-            if isinstance(sock,Session):
-                sess=sock
-                try: data=sess.receive()
-                except IOError: # client closed the connection
-                    sess.terminate_stream()
-                    data=''
-                if data:
-		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRIBIENDO"
-		    #self.data_queue.put((sess,data))
-		    #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>ESCRITO"
-		    
-                    try:
-                        sess.Parse(data)
-                    except simplexml.xml.parsers.expat.ExpatError:
-                        sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
-		    
-		    
-            elif isinstance(sock,socket.socket):
-	    """
             if isinstance(sock,socket.socket):
                 conn, addr = sock.accept()
                 host,port=sock.getsockname()
@@ -678,7 +656,8 @@ class Server:
             return
         session.set_socket_state(SOCKET_ALIVE)
         session.push_queue()
-        self.registersession(session)
+	t = self.getSocketProcess()
+        t.registersession(session)
 
     def Privacy(self,peer,stanza): pass
     def Dialback(self,session):
