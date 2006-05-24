@@ -537,6 +537,16 @@ class Room:
 				# Not a member. Get lost
 				return False
 
+	def deleteParticipant(self, fulljid):
+		"""
+		Delete a participant from a room
+		"""
+		try:
+			del self.participants[fulljid]
+		except:
+			# Participant not really in room
+			pass
+
 	def setAffiliation(self, participant, affiliation):
 		"""
 		Set the affiliation of a participant
