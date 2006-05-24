@@ -295,10 +295,10 @@ class Session:
         self.set_stream_state(STREAM__CLOSED)
         self.push_queue()       # decompose queue really since STREAM__CLOSED
         if unregister: 
-		if self.fileno() in self._owner.thread_pull:
+		if self.fileno() in self._owner.session_locator.keys():
 			t = self._owner.session_locator[self.fileno()]
 			t.unregistersession(self)
-			del self._owner.session_locator[self]
+			del self._owner.session_locator[self.fileno()]
 		else:
 			self._owner.unregistersession(self)
         self._destroy_socket()

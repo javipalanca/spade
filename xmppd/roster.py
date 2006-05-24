@@ -209,7 +209,6 @@ class rosterPlugIn(PlugIn):
 
 
         def rosterHandler(self, session, stanza):
-		return  # DEACTIVATED
 		# Client is asking for the roster
 		if stanza.getAttr('type') == 'get':
 			query = stanza.getTag('query', namespace=NS_ROSTER)
