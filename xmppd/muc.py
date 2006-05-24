@@ -279,13 +279,13 @@ class Room:
 							return
 					print "### No nick conflict"
 					# Now we must send an 'unavailable' Presence to everyone (in this room)
-					# with status code 303 on behalf of the changer
+					# with status code 303 (and the new nick) on behalf of the changer
 					p = self.participants[frm]
 					relative_frm = self.fullJID() + '/' + p.getNick()
 					print "### Relative From: " + str(relative_frm)
 					pres = Presence(frm=relative_frm, typ='unavailable')
 					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-					item = Node('item', {'affiliation': p.getAffiliation(), 'role': p.getRole() } )
+					item = Node('item', {'affiliation': p.getAffiliation(), 'role': p.getRole(), 'nick': nick } )
 					status = Node('status', {'code': '303'})
 					x.addChild(node=item)
 					x.addChild(node=status)
