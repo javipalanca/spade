@@ -269,6 +269,7 @@ class Room:
 					for p in self.participants.values():
 						if nick == p.getNick():
 							# Nickname conflict, report back to the changer
+							print "### Nickname conflict !!!"
 							reply = Presence(frm, frm=self.fullJID(), type='error')
 							err = Node('error', {'code': '409', 'type': 'cancel'} )
 							conflict = Node('conflict', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'} )
@@ -276,6 +277,7 @@ class Room:
 							reply.addChild(node=err)
 							session.enqueue(reply)
 							return
+					print "### No nick conflict"
 					# Now we must send an 'unavailable' Presence to everyone (in this room)
 					# with status code 303 on behalf of the changer
 					p = self.participants[frm]
