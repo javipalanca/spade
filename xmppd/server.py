@@ -628,7 +628,8 @@ class Server:
 			#print "### thread_pull: " + str(active_th)
 			self.handle()
 		        #except KeyboardInterrupt:
-		except:
+		except Exception, e:
+			print "### UNKNOWN EXCEPTION: " + str(e)
 			self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
 			#print "Server: Shuting down ..."
        	    		self.shutdown(STREAM_SYSTEM_SHUTDOWN)
