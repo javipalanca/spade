@@ -328,7 +328,6 @@ class Session:
         self.Stream.destroy()
         self._sock.close()
         self.set_socket_state(SOCKET_DEAD)
-	print "### Socket dead: " + str(self._sock)
 
     def start_feature(self,f):
         if self.feature_in_process: raise "Starting feature %s over %s !"%(f,self.feature_in_process)
@@ -393,6 +392,7 @@ class Socket_Process(threading.Thread):
 				self.__sockpoll.unregister(sess)
 				del self.sockets[sess.fileno()]
 				print "### SP UNregister session " + str(sess)
+				del sess
 			except:
 				# Session wasn't here
 				pass
