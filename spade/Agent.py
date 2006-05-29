@@ -851,6 +851,7 @@ class Agent(AbstractAgent):
                 xmpp.features.register(self.jabber,jid.getDomain(),\
 		{'username':name, 'password':str(password)})
 
+		print "Going to disconnect"
 		#self.jabber.reconnectAndReauth()
 		self.jabber.disconnect()
 		print "Disconnected"
