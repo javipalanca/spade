@@ -117,7 +117,6 @@ class Dispatcher(PlugIn):
             except IOError: return
             self.Stream.Parse(data)
             if data: return len(data)
-	else: print "No pending data"
         return '0'      # It means that nothing is received but link is alive.
         
     def RegisterNamespace(self,xmlns,order='info'):

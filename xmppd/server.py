@@ -409,10 +409,9 @@ class Socket_Process(threading.Thread):
 				# We MUST put a timeout here, believe me
 				for fileno,ev in self.__sockpoll.poll(100):
 		    
-				    sock=self.sockets[fileno]
+				    sess=self.sockets[fileno]
 
-				    if isinstance(sock,Session):
-					sess=sock
+				    if isinstance(sess,Session):
 					try:
 					    data=sess.receive()
 					except IOError: # client closed the connection
@@ -423,7 +422,9 @@ class Socket_Process(threading.Thread):
 							sess.Parse(data)
 						except simplexml.xml.parsers.expat.ExpatError:
 							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
-							self.isAlive=False
+							self.__sockpoll.unregister(sess)
+							del self.sockets[fileno]
+							#self.isAlive=False
 			except:
 				self.isAlive=False
 				#self.setDaemon(False)
@@ -627,8 +628,8 @@ class Server:
 	self.DEBUG('server', 'Deregistering sessions ...', 'info')
 	for th in self.thread_pull:
 		for sess in th.sockets.values():
-			sess.terminate_stream(reason)
 			th.unregistersession(sess)
+			sess.terminate_stream(reason)
 		th.isAlive = False  # Kill the thread
 	self.DEBUG('server', 'Sessions deregistered...', 'info')
 
