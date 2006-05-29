@@ -425,7 +425,7 @@ class Socket_Process(threading.Thread):
 							self.isAlive=False
 			except:
 				self.isAlive=False
-				self.setDaemon(False)
+				#self.setDaemon(False)
 		    
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
