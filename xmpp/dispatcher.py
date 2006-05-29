@@ -336,5 +336,6 @@ class Dispatcher(PlugIn):
 	t = self.Process(1)
 	while t:
 		print t
+		print type(t)
 		t = self.Process(1)
         #while self.Process(1): pass
