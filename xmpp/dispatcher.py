@@ -333,4 +333,8 @@ class Dispatcher(PlugIn):
     def disconnect(self):
         """ Send a stream terminator and and handle all incoming stanzas before stream closure. """
         self._owner_send('</stream:stream>')
-        while self.Process(1): pass
+	t = self.Process(1)
+	while t:
+		print t
+		t = self.Process(1)
+        #while self.Process(1): pass
