@@ -160,6 +160,8 @@ class Router(PlugIn):
 	    except:
 		self.DEBUG('Could NOT route back presence subscription cancellation from ' + barejid, 'error')
 	    raise NodeProcessed
+
+
         elif not typ or typ=='available':
             if not self._data.has_key(barejid): self._data[barejid]={}
             if not self._data[barejid].has_key(resource): self._data[barejid][resource]=Presence(frm=jid,typ=typ)
