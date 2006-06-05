@@ -755,6 +755,7 @@ class jabberProcess(threading.Thread):
 		while not self.forceKill():
 		    try:
 		            self.jabber.Process(0.4)
+			    print "JABBER PROCESS"
 		    except:
 			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
 			    time.sleep(2)
