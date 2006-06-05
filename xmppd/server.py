@@ -419,6 +419,7 @@ class Socket_Process(threading.Thread):
 					try:
 					    data=sess.receive()
 					except IOError: # client closed the connection
+					    print "### IOError"
 					    sess.terminate_stream()
 					    self.__sockpoll.unregister(sess)
 					    del self.sockets[fileno]
