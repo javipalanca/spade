@@ -30,16 +30,16 @@ class rosterPlugIn(PlugIn):
 
 	
 	def getRoster(self, jid):
-		print "### getRoster: ", jid
+		#print "### getRoster: ", jid
 		if type(jid) == types.InstanceType:
 			# Transform jid to string representation (faster?)
-			print "### Got instance:", str(jid)
+			#print "### Got instance:", str(jid)
 			jid = jid.getStripped()
-			print "### Turned in:", jid
+			#print "### Turned in:", jid
 		elif type(jid) == types.StringType:
 			# Remove resource
 			jid = jid.split('/')[0]
-			print "### Resource Removed: ", jid
+			#print "### Resource Removed: ", jid
 
 		'''if jid not in self.rosters.keys():
 			# Particular rosters are dicts
@@ -50,7 +50,7 @@ class rosterPlugIn(PlugIn):
 		#print "### getRoster returning: ", str(self.rosters[jid])
 		#return self.rosters[jid]
 		ros = self.server.DB.getRoster(jid)
-		print "### Got roster from DB: ", str(ros)
+		#print "### Got roster from DB: ", str(ros)
 		return ros
 
 
@@ -66,9 +66,9 @@ class rosterPlugIn(PlugIn):
 		ros = self.getRoster(frm)
 		iq = Iq(type, NS_ROSTER, to=frm)
 		query=iq.getTag('query')
-		print "### Got roster: ", str(ros)
+		#print "### Got roster: ", str(ros)
 		for key, value in ros.items():
-			print key, value
+			#print key, value
 			attrs={'jid':key}
 			if 'name' in value.keys():
 				attrs['name'] = value['name']
@@ -123,7 +123,7 @@ class rosterPlugIn(PlugIn):
 					# Contact does not have subscription
 					print "### Contact does not have subscription item"
 	def cancelSubscription(self, frm, to, session):
-		print "### cancelSubscription called: ", str(frm), str(to)
+		#print "### cancelSubscription called: ", str(frm), str(to)
 		# Cancel the subscription of the client 'to' 
 		ros = self.getRoster(frm)
 		to=str(to.split('/')[0])  # In case there was a resource
@@ -142,7 +142,7 @@ class rosterPlugIn(PlugIn):
 
 
 	def makeUnsubscription(self, frm, to, session):
-		print "### makeUnsubscription called: ", str(frm), str(to)
+		#print "### makeUnsubscription called: ", str(frm), str(to)
 		# Unsubscribe the contact 'to' from the roster of client 'frm'
 		ros = self.getRoster(frm)
 		to=str(to.split('/')[0])  # In case there was a resource
@@ -160,7 +160,7 @@ class rosterPlugIn(PlugIn):
 			self.sendRoster(frm, session, type='set')
 
 	def makeSubscription(self, frm, to, session, subs='none'):
-		print "### makeSubscription called: ", str(frm), str(to)
+		#print "### makeSubscription called: ", str(frm), str(to)
 		# Subscribe the contact 'to' to the roster of client 'frm'
 		ros = self.getRoster(frm)
 		to=str(to.split('/')[0])  # In case there was a resource
@@ -238,7 +238,7 @@ class rosterPlugIn(PlugIn):
 				#		attrs['ask'] = value['ask']
 				#	item=query.setTag('item',attrs)
 				#session.enqueue(iq)	
-				print " ### THE ROSTER WAS SENT TO: " + str(frm)
+				#print " ### THE ROSTER WAS SENT TO: " + str(frm)
 				#print str(iq)
 		# Client is modifying the roster
 		elif stanza.getAttr('type') == 'set':
