@@ -730,13 +730,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 # Changed to be a 'daemonic' python Thread
 class jabberProcess(threading.Thread):
 
-	def __init__(self, socket):
+	def __init__(self, socket, owner):
 		self.jabber = socket
 		#self._alive = True
 		self._forceKill = threading.Event()
 		self._forceKill.clear()
 		threading.Thread.__init__(self)
 		self.setDaemon(True)
+		self._owner = owner
 		
 	def kill(self):
 		try:
@@ -760,8 +761,7 @@ class jabberProcess(threading.Thread):
 			    time.sleep(2)
 			    pass
 		    if err == 0:  # zero the integer, socket closed
-		    	self.setDaemon(False)
-		    	self.kill()
+		    	self._owner.stop()
 
 		
 
@@ -795,7 +795,7 @@ class PlatformAgent(AbstractAgent):
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
-	self.jabber_process = jabberProcess(self.jabber)
+	self.jabber_process = jabberProcess(self.jabber, owner=self)
 	self.jabber_process.start()
         #thread.start_new_thread(self._jabber_process, tuple())
 
@@ -876,7 +876,7 @@ class Agent(AbstractAgent):
         self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
         #thread.start_new_thread(self._jabber_process, tuple())
-	self.jabber_process = jabberProcess(self.jabber)
+	self.jabber_process = jabberProcess(self.jabber, owner=self)
 	self.jabber_process.start()
         
 
