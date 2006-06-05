@@ -3,6 +3,7 @@
 ##   XMPP server
 ##
 ##   Copyright (C) 2004 Alexey "Snake" Nezhdanov
+##   Copyright (C) 2005 Gustavo Aranda & Javier Palanca
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
@@ -416,6 +417,8 @@ class Socket_Process(threading.Thread):
 					    data=sess.receive()
 					except IOError: # client closed the connection
 					    sess.terminate_stream()
+					    self.__sockpoll.unregister(sess)
+					    del self.sockets[fileno]
 					    data=''
 					if data:
 						try:
