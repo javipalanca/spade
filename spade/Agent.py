@@ -761,6 +761,8 @@ class jabberProcess(threading.Thread):
 			    time.sleep(2)
 			    pass
 		    if err == 0:  # zero the integer, socket closed
+			print "PROCESS FAILED. STOPPING AGENT"
+			self.setDaemon(False)
 		    	self._owner.stop()
 
 		
