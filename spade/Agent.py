@@ -760,7 +760,8 @@ class jabberProcess(threading.Thread):
 			    time.sleep(2)
 			    pass
 		    if err == 0:  # zero the integer, socket closed
-		    	self.forceKill()
+		    	self.setDaemon(False)
+		    	self.kill()
 
 		
 
