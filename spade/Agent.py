@@ -754,12 +754,13 @@ class jabberProcess(threading.Thread):
 		"""
 		while not self.forceKill():
 		    try:
-		            self.jabber.Process(0.4)
-			    print "JABBER PROCESS"
+		            err = self.jabber.Process(0.4)
 		    except:
 			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
 			    time.sleep(2)
 			    pass
+		    if err == 0:  # zero the integer, socket closed
+		    	self.forceKill()
 
 		
 
