@@ -851,6 +851,7 @@ class Agent(AbstractAgent):
                 xmpp.features.register(self.jabber,jid.getDomain(),\
 		{'username':name, 'password':str(password)})
 
+		"""
 		print "Going to disconnect"
 		#self.jabber.reconnectAndReauth()
 		self.jabber.disconnect()
@@ -859,7 +860,8 @@ class Agent(AbstractAgent):
 		print "socket deleted"
         	self.jabber = xmpp.Client(self.server, self.port, self.debug)
 		self.jabber.connect()
-		print "REconnected"
+		print 'REconnected'
+		"""
 
                 if (self.jabber.auth(name,password,"spade") == None):
                     raise NotImplementedError

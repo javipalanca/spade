@@ -395,7 +395,6 @@ class Socket_Process(threading.Thread):
 				self.__sockpoll.unregister(sess)
 				del self.sockets[sess.fileno()]
 				print "### SocketProcess UNregister session " + str(sess)
-				os.close(self.fileno())  # Force fill socket, by the way
 			except:
 				# Session wasn't here
 				pass
