@@ -303,9 +303,9 @@ class Session:
 			print "### Before closing session"
 		else:
 			self._owner.unregistersession(self)
-        self._destroy_socket()
 	print "### Stream close: session " + str(self)
 	try:
+        	self._destroy_socket()
 		os.close(self.fileno())  # Force fill socket, by the way
 	except:
 		pass
