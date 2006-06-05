@@ -304,11 +304,7 @@ class Session:
 		else:
 			self._owner.unregistersession(self)
 	print "### Stream close: session " + str(self)
-	try:
-        	self._destroy_socket()
-		os.close(self.fileno())  # Force fill socket, by the way
-	except:
-		pass
+        self._destroy_socket()
 
     def terminate_stream(self,error=None,unregister=1):
         if self._stream_state>=STREAM__CLOSING: return
@@ -399,6 +395,7 @@ class Socket_Process(threading.Thread):
 				self.__sockpoll.unregister(sess)
 				del self.sockets[sess.fileno()]
 				print "### SocketProcess UNregister session " + str(sess)
+				os.close(self.fileno())  # Force fill socket, by the way
 			except:
 				# Session wasn't here
 				pass
