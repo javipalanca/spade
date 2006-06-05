@@ -756,7 +756,8 @@ class jabberProcess(threading.Thread):
 		    try:
 		            self.jabber.Process(0.4)
 		    except:
-			    #print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
+			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
+			    time.sleep(2)
 			    pass
 
 		
