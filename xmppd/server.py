@@ -158,7 +158,8 @@ class Session:
     def receive(self):
         """Reads all pending incoming data. Raises IOError on disconnect."""
         try: received = self._recv(10240)
-	except timeout:
+	except socket.timeout:
+		print "TIMEOUT in socket %s"%(self.fileno())
 		return ''
         except:
 		received = ''
@@ -470,7 +471,6 @@ class Socket_Process(threading.Thread):
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
 				#self.setDaemon(False)
-		    
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
 			#t = self.__owner.data_queue.get()
