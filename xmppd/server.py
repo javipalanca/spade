@@ -526,6 +526,8 @@ class Server:
 	self.session_locator = {}
 	self.session_locator_lock = threading.Lock()  # Lock for protecting session_locator
 
+	self.dispatch_lock = thread.allocate_lock()  # Lock for dispatching
+
 	for i in range(0, self.max_threads):
 		t = Socket_Process(self)
 		t.start()
@@ -546,8 +548,6 @@ class Server:
         self.Dispatcher._owner=self
 	self.defaultNamespace = NS_CLIENT
         self.Dispatcher._init()
-
-	self.dispatch_lock = thread.allocate_lock()  # Lock for dispatching
 
 	self.router_filters = list()
 	#this is for test
