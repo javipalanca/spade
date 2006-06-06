@@ -158,7 +158,10 @@ class Session:
     def receive(self):
         """Reads all pending incoming data. Raises IOError on disconnect."""
         try: received = self._recv(10240)
-        except: received = ''
+	except timeout:
+		return ''
+        except:
+		received = ''
 
         if len(received): # length of 0 means disconnect
             self.DEBUG(`self._sock.fileno()`+' '+received,'got')
