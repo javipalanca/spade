@@ -180,10 +180,10 @@ class Session:
         else: 
 	    self.sendbuffer+=stanza
 	    #print ">>>> Session" + str(self)+  ": sendbuffer"
-	self.enqueuelock.release()
         if self._socket_state>=SOCKET_ALIVE:
 	    qp = self.push_queue()
 	    #print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
+	self.enqueuelock.release()
 
     def push_queue(self,failreason=ERR_RECIPIENT_UNAVAILABLE):
 
@@ -201,7 +201,7 @@ class Session:
             return
         elif self._session_state>=SESSION_AUTHED:       # FIXME!
 	    #print "push_queue: Session is SESSION_AUTHED"
-	    #self.pushlock.acquire() #### LOCK_QUEUE
+	    self.pushlock.acquire() #### LOCK_QUEUE
             for stanza in self.stanza_queue:
 		#print ">>>>push_queue: PUSHING STANZA: " + str(stanza)
                 txt=stanza.__str__().encode('utf-8')
@@ -211,7 +211,7 @@ class Session:
                 self.deliver_key_queue.append(self._stream_pos_queued)
             #self.stanza_queue=[]
             self.stanza_queue.init()
-            #self.pushlock.release()#### UNLOCK_QUEUE
+            self.pushlock.release()#### UNLOCK_QUEUE
 
         #if self.sendbuffer and select.select([],[self._sock],[])[1]:  # Gus
         if self.sendbuffer:
@@ -221,9 +221,9 @@ class Session:
                 self.pushlock.acquire()# LOCK_QUEUE
                 sent=self._send(self.sendbuffer)
             except:
-                self.pushlock.release()# UNLOCK_QUEUE
                 self.set_socket_state(SOCKET_DEAD)
                 self.DEBUG("Socket error while sending data",'error')
+                self.pushlock.release()# UNLOCK_QUEUE
                 return self.terminate_stream()
             self.DEBUG(`self._sock.fileno()`+' '+self.sendbuffer[:sent],'sent')
             self._stream_pos_sent+=sent
@@ -298,7 +298,8 @@ class Session:
         self.send('</stream:stream>')
         self.set_stream_state(STREAM__CLOSED)
         self.push_queue()       # decompose queue really since STREAM__CLOSED
-        if unregister: 
+        if unregister:
+		self._owner.session_locator_lock.acquire()
 		if self.fileno() in self._owner.session_locator.keys():
 			t = self._owner.session_locator[self.fileno()]
 			t.unregistersession(self)
@@ -306,6 +307,7 @@ class Session:
 			print "### Before closing session"
 		else:
 			self._owner.unregistersession(self)
+		self._owner.session_locator_lock.release()
 	print "### Stream close: session " + str(self)
         self._destroy_socket()
 
@@ -411,7 +413,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(1):
+				for fileno,ev in self.__sockpoll.poll(100):
 		    		
 				    try:
 					sess=self.sockets[fileno]
@@ -485,6 +487,7 @@ class Server:
 
 	# Key: session fileno , Value = Socket_Process managing the session
 	self.session_locator = {}
+	self.session_locator_lock = threading.Lock()  # Lock for protecting session_locator
 
 	for i in range(0, self.max_threads):
 		t = Socket_Process()
@@ -519,6 +522,7 @@ class Server:
             else: self.__dict__[addon.__class__.__name__]=addon()
             self.feature(addon.NS)
         self.routes={}
+	self.routes_lock = threading.Lock()
 
         for port in [5222,5223,5269,9000,9001,9002]:
             sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -562,16 +566,27 @@ class Server:
         alt_s=self.getsession(peer)
         if s==alt_s: return
         elif alt_s: self.deactivatesession(peer)
+	self.routes_lock.acquire()
         self.routes[peer]=s
+	self.routes_lock.release()
 	self.DEBUG('session', 'Activating session %s with peer %s' % (str(s),str(peer)))
 
     def getsession(self, jid):
-        try: return self.routes[jid]
-        except KeyError: pass
+        try:
+		self.routes_lock.acquire()
+		s = self.routes[jid]
+		self.routes_lock.release()
+		return s
+        except KeyError:
+		self.routes_lock.release()
+		pass
 
     def deactivatesession(self, peer):
         s=self.getsession(peer)
-        if self.routes.has_key(peer): del self.routes[peer]
+	self.routes_lock.acquire()	
+        if self.routes.has_key(peer):
+		del self.routes[peer]
+	self.routes_lock.release()
         return s
 
     def getSocketProcess(self):
@@ -601,7 +616,9 @@ class Server:
 		t = self.getSocketProcess()
 		t.registersession(sess)
  	        self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
+		self.session_locator_lock.acquire()
 		self.session_locator[sess.fileno()] = t
+		self.session_locator_lock.release()
 
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
