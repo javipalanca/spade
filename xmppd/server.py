@@ -385,6 +385,14 @@ class Socket_Process(threading.Thread):
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
+		    try:
+			# Receive initial data
+			data = ''
+			data=sess.receive()
+			if data:
+				sess.Parse(data)
+		    except:
+			pass
 	            self.SESS_LOCK.release()
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 
