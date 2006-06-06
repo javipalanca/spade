@@ -376,18 +376,24 @@ class Socket_Process(threading.Thread):
 		self.setDaemon(True)
 
 	def registersession(self, sess):
-	        self.SESS_LOCK.acquire()
 	        if isinstance(sess,Session):
 	            if sess._registered:
-	                self.SESS_LOCK.release()
 	                #if self._DEBUG.active: raise "Twice session Registration!"
+	                print "Twice session Registration %s !"%(sess.fileno())
 	                return
 	                #else: return
 	            sess._registered=1
-	            self.sockets[sess.fileno()]=sess
-	            ###self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
-	            self.__sockpoll.append(sess.fileno())
+		    try:
+	            	self.SESS_LOCK.acquire()
+	            	self.sockets[sess.fileno()]=sess
+	            	###self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+	            	self.__sockpoll.append(sess.fileno())
+	            	self.SESS_LOCK.release()
+		    except:
+			print "Could not register session %s"%(sess.fileno())
+			return
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
+ 	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 		    try:
 			print " Trying initial data receive: %s"%(sess.fileno())
 			# Receive initial data
@@ -398,8 +404,6 @@ class Socket_Process(threading.Thread):
 				print "Initial data received for %s: %s"%(sess.fileno(),data)
 		    except:
 			pass
-	            self.SESS_LOCK.release()
- 	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 
 	def unregistersession(self, sess):
 		self.SESS_LOCK.acquire()
@@ -457,7 +461,7 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 				if fileno == None:
-					time.sleep(0.5)
+					time.sleep(0.4)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
