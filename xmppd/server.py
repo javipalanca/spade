@@ -371,7 +371,7 @@ class Session:
 class Socket_Process(threading.Thread):
 
 	def __init__(self, owner):
-		self.__owner = owner
+		self._owner = owner
         	###self.__sockpoll=select.poll()
         	self.__sockpoll=[]
 		self.sockets = {}
