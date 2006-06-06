@@ -442,7 +442,7 @@ class Socket_Process(threading.Thread):
 				# We MUST put a timeout here, believe me
 				###for fileno,ev in self.__sockpoll.poll(100):
 				fileno = None
-				SESS_LOCK.acquire()
+				self.SESS_LOCK.acquire()
 				for fileno in self.__sockpoll:
 				    #print "### Choosing fileno %s"%(fileno)
 		    		
@@ -470,7 +470,7 @@ class Socket_Process(threading.Thread):
 							self.__sockpoll.unregister(sess)
 							del self.sockets[fileno]
 							#self.isAlive=False
-				SESS_LOCK.release()
+				self.SESS_LOCK.release()
 				if fileno == None:
 					time.sleep(SOCK_TIMEOUT)
 			except:
