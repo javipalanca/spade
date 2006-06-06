@@ -96,7 +96,7 @@ _stream_state not-opened/opened/closing/closed
 #SESSION_BOUND      =3
 #SESSION_OPENED     =4
 
-SOCK_TIMEOUT = 0.1
+SOCK_TIMEOUT = 0.01
 
 class Session:
     def __init__(self,socket,server,xmlns,peer=None):
@@ -402,18 +402,6 @@ class Socket_Process(threading.Thread):
 			return
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
-		    '''
-		    try:
-			print "### Trying initial data reception for %s"%(sess.fileno())
-			# Receive initial data
-			data = ''
-			data=sess.receive()
-			if data:
-				sess.Parse(data)
-				print "Initial data received for %s: %s"%(sess.fileno(),data)
-		    except:
-			pass
-		    '''
 
 	def unregistersession(self, sess):
 		self.SESS_LOCK.acquire()
@@ -441,7 +429,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(100):
+				for fileno,ev in self.__sockpoll.poll(10):
 				###fileno = None
 				###for fileno in self.__sockpoll:
 		    		
