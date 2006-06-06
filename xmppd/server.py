@@ -401,6 +401,7 @@ class Socket_Process(threading.Thread):
 			return
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
+		    '''
 		    try:
 			print "### Trying initial data reception for %s"%(sess.fileno())
 			# Receive initial data
@@ -411,6 +412,7 @@ class Socket_Process(threading.Thread):
 				print "Initial data received for %s: %s"%(sess.fileno(),data)
 		    except:
 			pass
+		    '''
 
 	def unregistersession(self, sess):
 		self.SESS_LOCK.acquire()
@@ -440,6 +442,7 @@ class Socket_Process(threading.Thread):
 				# We MUST put a timeout here, believe me
 				###for fileno,ev in self.__sockpoll.poll(100):
 				fileno = None
+				SESS_LOCK.acquire()
 				for fileno in self.__sockpoll:
 				    #print "### Choosing fileno %s"%(fileno)
 		    		
@@ -467,6 +470,7 @@ class Socket_Process(threading.Thread):
 							self.__sockpoll.unregister(sess)
 							del self.sockets[fileno]
 							#self.isAlive=False
+				SESS_LOCK.release()
 				if fileno == None:
 					time.sleep(SOCK_TIMEOUT)
 			except:
