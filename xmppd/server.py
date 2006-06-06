@@ -401,7 +401,7 @@ class Socket_Process(threading.Thread):
 			#print "Could not register session %s"%(sess.fileno())
 			return
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
- 	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
+ 	            #print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 
 	def unregistersession(self, sess):
 		self.SESS_LOCK.acquire()
@@ -422,7 +422,7 @@ class Socket_Process(threading.Thread):
 				pass
 			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
 			self.SESS_LOCK.release()
- 	            	print 'SocketProcess','succesfully UNregistered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
+ 	            	#print 'SocketProcess','succesfully UNregistered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 			#self.isAlive = False
 
 	def run(self):
