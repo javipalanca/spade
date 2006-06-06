@@ -457,7 +457,7 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 				if fileno == None:
-					time.sleep(0.1)
+					time.sleep(0.5)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
