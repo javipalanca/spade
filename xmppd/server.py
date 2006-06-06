@@ -428,6 +428,7 @@ class Socket_Process(threading.Thread):
 			try:
 				# We MUST put a timeout here, believe me
 				###for fileno,ev in self.__sockpoll.poll(100):
+				fileno = None
 				for fileno in self.__sockpoll:
 				    print "### Choosing fileno %s"%(fileno)
 		    		
@@ -455,6 +456,8 @@ class Socket_Process(threading.Thread):
 							self.__sockpoll.unregister(sess)
 							del self.sockets[fileno]
 							#self.isAlive=False
+				if fileno == None:
+					time.sleep(0.1)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
