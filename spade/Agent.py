@@ -873,7 +873,7 @@ class Agent(AbstractAgent):
         if (self.jabber.auth(name,password,"spade") == None):
             #raise NotImplementedError
 	   
-	    print "### Agent %s: First auth attempt failed"
+	    print "### Agent %s: First auth attempt failed"%(self._aid.getName())
  
 	    if (autoregister == True):
                 xmpp.features.getRegInfo(self.jabber,jid.getDomain())
@@ -898,6 +898,8 @@ class Agent(AbstractAgent):
             else:
                 raise NotImplementedError
 	    
+	print "### Agent %s got authed"%(self._aid.getName())
+
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
