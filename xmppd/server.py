@@ -110,6 +110,7 @@ class Session:
         self._sock=socket
         self._send=socket.send
         self._recv=socket.recv
+	self._sock.settimeout(0.5)
         self._registered=0
         self.trusted=0
 
@@ -394,7 +395,7 @@ class Socket_Process(threading.Thread):
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 		    try:
-			print " Trying initial data receive: %s"%(sess.fileno())
+			print "### Trying initial data reception for %s"%(sess.fileno())
 			# Receive initial data
 			data = ''
 			data=sess.receive()
@@ -460,7 +461,8 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 				if fileno == None:
-					time.sleep(0.4)
+					print "### fileno == None"
+					time.sleep(0.5)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
