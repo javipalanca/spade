@@ -385,14 +385,14 @@ class Socket_Process(threading.Thread):
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
- 	            print 'SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self)
 	            self.SESS_LOCK.release()
+ 	            print 'SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self)
 
 	def unregistersession(self, sess):
-		#self.SESS_LOCK.acquire()
+		self.SESS_LOCK.acquire()
 		if isinstance(sess,Session):
 			if not sess._registered:
-				#self.SESS_LOCK.release()
+				self.SESS_LOCK.release()
 				#if self._DEBUG.active: raise "Twice session UNregistration!"
 				return
 				#else: return
@@ -405,10 +405,9 @@ class Socket_Process(threading.Thread):
 				# Session wasn't here
 				pass
 			#self.DEBUG('server','UNregistered %s (%s)'%(self.session.fileno(),self.session))
-			#self.SESS_LOCK.release()
+			self.SESS_LOCK.release()
+ 	            	print 'SocketProcess','succesfully UNregistered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self)
 			#self.isAlive = False
-
-
 
 	def run(self):
 		while self.isAlive:
@@ -423,6 +422,7 @@ class Socket_Process(threading.Thread):
 
 				    if isinstance(sess,Session):
 					try:
+					    print "Trying to receive from session %s . . ."%(sess)
 					    data=sess.receive()
 					except IOError: # client closed the connection
 					    print "### IOError"
