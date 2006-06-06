@@ -413,7 +413,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(100):
+				for fileno,ev in self.__sockpoll.poll(1000):
 				    print "### Choosing fileno %s"%(fileno)
 		    		
 				    try:
