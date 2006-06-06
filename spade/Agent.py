@@ -787,8 +787,11 @@ class PlatformAgent(AbstractAgent):
         name = jid.getNode()
 
         #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
-	self.jabber.connect()
-        
+	c = ''
+	while not c:
+		# Try to connect. Wait if it fails
+	        c = self.jabber.connect()
+		time.sleep(1)
 
         if (self.jabber.auth(name,password,"spade") == None):
                 raise NotImplementedError
@@ -843,9 +846,11 @@ class Agent(AbstractAgent):
         jid = xmpp.protocol.JID(self._aid.getName())
         name = jid.getNode()
 
-        #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
-        self.jabber.connect()
-        
+	c = ''
+	while not c:
+		# Try to connect. Wait if it fails
+	        c = self.jabber.connect()
+		time.sleep(1)
 
         #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
         #       Registrarse automaticamente o algo..
