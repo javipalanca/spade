@@ -792,7 +792,7 @@ class PlatformAgent(AbstractAgent):
 		# Try to connect. Wait if it fails
 	        c = self.jabber.connect()
 		if not c:
-			time.sleep(0.1)
+			time.sleep(0.005)
 
         if (self.jabber.auth(name,password,"spade") == None):
                 raise NotImplementedError
@@ -834,19 +834,19 @@ class Agent(AbstractAgent):
 
 	# Try to register
 	try:
-		print "### Trying to register agent %s"%(agentjid)
+		#print "### Trying to register agent %s"%(agentjid)
         	self._register(password)
         except NotImplementedError:
-		print "### NotImplementedError: Could not register agent %s"%(agentjid)
+		#print "### NotImplementedError: Could not register agent %s"%(agentjid)
 		self.stop()
 		return
 	except:
-		print "### Could not register agent %s"%(agentjid)
+		#print "### Could not register agent %s"%(agentjid)
 		self.stop()
 		return
 		
 
-	print "### Agent %s registered"%(agentjid)
+	#print "### Agent %s registered"%(agentjid)
 	#self.roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
 	
@@ -867,15 +867,15 @@ class Agent(AbstractAgent):
 		# Try to connect. Wait if it fails
 	        c = self.jabber.connect()
 		if not c:
-			time.sleep(0.1)
-	print "### Agent %s got connected to the server"%(self._aid.getName())
+			time.sleep(0.005)
+	#print "### Agent %s got connected to the server"%(self._aid.getName())
 
         #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
         #       Registrarse automaticamente o algo..
         if (self.jabber.auth(name,password,"spade") == None):
             #raise NotImplementedError
 	   
-	    print "### Agent %s: First auth attempt failed"%(self._aid.getName())
+	    #print "### Agent %s: First auth attempt failed"%(self._aid.getName())
  
 	    if (autoregister == True):
                 xmpp.features.getRegInfo(self.jabber,jid.getDomain())
@@ -900,7 +900,7 @@ class Agent(AbstractAgent):
             else:
                 raise NotImplementedError
 	    
-	print "### Agent %s got authed"%(self._aid.getName())
+	#print "### Agent %s got authed"%(self._aid.getName())
 
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
@@ -908,7 +908,7 @@ class Agent(AbstractAgent):
         #thread.start_new_thread(self._jabber_process, tuple())
 	self.jabber_process = jabberProcess(self.jabber, owner=self)
 	self.jabber_process.start()
-	print "### Agent %s: Started jabber process"%(self._aid.getName())
+	#print "### Agent %s: Started jabber process"%(self._aid.getName())
         
 
     def shutdown(self):

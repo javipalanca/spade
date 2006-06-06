@@ -398,7 +398,7 @@ class Socket_Process(threading.Thread):
 	            	###self.__sockpoll.append(sess.fileno())
 	            	self.SESS_LOCK.release()
 		    except:
-			print "Could not register session %s"%(sess.fileno())
+			#print "Could not register session %s"%(sess.fileno())
 			return
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
@@ -416,7 +416,7 @@ class Socket_Process(threading.Thread):
 				self.__sockpoll.unregister(sess)
 				###self.__sockpoll.remove(sess.fileno())
 				del self.sockets[sess.fileno()]
-				print "### SocketProcess UNregister session " + str(sess)
+				#print "### SocketProcess UNregister session " + str(sess)
 			except:
 				# Session wasn't here
 				pass
@@ -443,7 +443,7 @@ class Socket_Process(threading.Thread):
 					    #print "Trying to receive from session %s . . ."%(sess)
 					    data=sess.receive()
 					except IOError: # client closed the connection
-					    print "### IOError"
+					    #print "### IOError"
 					    sess.terminate_stream()
 					    self.__sockpoll.unregister(sess)
 					    ###self.__sockpoll.remove(sess)
@@ -452,7 +452,7 @@ class Socket_Process(threading.Thread):
 					if data:
 						self.dispatch_lock.acquire()
 						try:
-							print "### Going to Parse from sess %s"%(sess.fileno())
+							#print "### Going to Parse from sess %s"%(sess.fileno())
 							sess.Parse(data)
 						except simplexml.xml.parsers.expat.ExpatError:
 							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
@@ -464,7 +464,7 @@ class Socket_Process(threading.Thread):
 				###	time.sleep(SOCK_TIMEOUT)
 			except:
 				pass
-				print "### EXCEPTION in SocketProcess %s run"%(self)
+				#print "### EXCEPTION in SocketProcess %s run"%(self)
 				# DON'T PANIC
 				#self.isAlive=False
 				#self.setDaemon(False)
