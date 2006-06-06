@@ -659,6 +659,7 @@ class Server:
 		self.session_locator_lock.acquire()
 		self.session_locator[sess.fileno()] = t
 		self.session_locator_lock.release()
+		t.start()  # Start the thread if it wasn't already so
  	        self.DEBUG('server','session %s assigned to SocketProcess %s'%(sess, t))
 
                 #self.registersession(sess)
