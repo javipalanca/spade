@@ -414,6 +414,7 @@ class Socket_Process(threading.Thread):
 			try:
 				# We MUST put a timeout here, believe me
 				for fileno,ev in self.__sockpoll.poll(100):
+				    print "### Choosing fileno %s"%(fileno)
 		    		
 				    try:
 					sess=self.sockets[fileno]
