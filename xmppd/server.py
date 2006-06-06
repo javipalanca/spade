@@ -96,6 +96,8 @@ _stream_state not-opened/opened/closing/closed
 #SESSION_BOUND      =3
 #SESSION_OPENED     =4
 
+SOCK_TIMEOUT = 0.1
+
 class Session:
     def __init__(self,socket,server,xmlns,peer=None):
         self.xmlns=xmlns
@@ -111,7 +113,7 @@ class Session:
         self._send=socket.send
         self._recv=socket.recv
 	self._sock.setblocking(0)
-	self._sock.settimeout(0.1)
+	self._sock.settimeout(SOCK_TIMEOUT)
         self._registered=0
         self.trusted=0
 
@@ -159,7 +161,7 @@ class Session:
         """Reads all pending incoming data. Raises IOError on disconnect."""
         try: received = self._recv(10240)
 	except socket.timeout:
-		print "TIMEOUT in socket %s"%(self.fileno())
+		#print "TIMEOUT in socket %s"%(self.fileno())
 		return ''
         except:
 		received = ''
@@ -466,7 +468,7 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 				if fileno == None:
-					time.sleep(0.5)
+					time.sleep(SOCK_TIMEOUT)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
