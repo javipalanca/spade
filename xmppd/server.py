@@ -366,7 +366,7 @@ class Socket_Process(threading.Thread):
 		#self.__owner = owner
         	self.__sockpoll=select.poll()
 		self.sockets = {}
-        	#self.SESS_LOCK=thread.allocate_lock()
+        	self.SESS_LOCK=thread.allocate_lock()
 		threading.Thread.__init__(self)
 		
 		self.isAlive = True
@@ -374,18 +374,18 @@ class Socket_Process(threading.Thread):
 		self.setDaemon(True)
 
 	def registersession(self, sess):
-	        #self.SESS_LOCK.acquire()
+	        self.SESS_LOCK.acquire()
 	        if isinstance(sess,Session):
 	            if sess._registered:
-	                #self.SESS_LOCK.release()
+	                self.SESS_LOCK.release()
 	                #if self._DEBUG.active: raise "Twice session Registration!"
 	                return
 	                #else: return
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
 	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
- 	            #self.DEBUG('server','registered %s (%s)'%(sess.fileno(),sess))
-	            #self.SESS_LOCK.release()
+ 	            self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
+	            self.SESS_LOCK.release()
 
 	def unregistersession(self, sess):
 		#self.SESS_LOCK.acquire()
@@ -619,6 +619,7 @@ class Server:
 		self.session_locator_lock.acquire()
 		self.session_locator[sess.fileno()] = t
 		self.session_locator_lock.release()
+ 	        self.DEBUG('server','session %s assigned to SocketProcess %s'%(sess, t))
 
                 #self.registersession(sess)
                 if port==5223: self.TLS.startservertls(sess)
