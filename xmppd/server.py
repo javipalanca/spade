@@ -391,6 +391,7 @@ class Socket_Process(threading.Thread):
 			data=sess.receive()
 			if data:
 				sess.Parse(data)
+				print "Initial data received: %s"%(data)
 		    except:
 			pass
 	            self.SESS_LOCK.release()
