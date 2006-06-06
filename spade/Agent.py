@@ -830,7 +830,20 @@ class Agent(AbstractAgent):
 	self.debug = debug
         AbstractAgent.__init__(self, agentjid, self.server)
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
-        self._register(password)
+
+	# Try to register
+	try:
+        	self._register(password)
+        except NotImplementedError:
+		print "### NotImplementedError: Could not register agent %s"%(agentjid)
+		self.stop()
+		return
+	except:
+		print "### Could not register agent %s"%(agentjid)
+		self.stop()
+		return
+		
+
 	print "### Agent %s registered"%(agentjid)
 	#self.roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
