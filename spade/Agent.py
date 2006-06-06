@@ -893,7 +893,7 @@ class Agent(AbstractAgent):
 		"""
 
                 if (self.jabber.auth(name,password,"spade") == None):
-	    	    print "### Agent %s: Second auth attempt failed"
+	    	    print "### Agent %s: Second auth attempt failed"%(self._aid.getName())
                     raise NotImplementedError
             else:
                 raise NotImplementedError
@@ -904,7 +904,7 @@ class Agent(AbstractAgent):
         #thread.start_new_thread(self._jabber_process, tuple())
 	self.jabber_process = jabberProcess(self.jabber, owner=self)
 	self.jabber_process.start()
-	print "### Agent %s: Started jabber process"
+	print "### Agent %s: Started jabber process"%(self._aid.getName())
         
 
     def shutdown(self):
