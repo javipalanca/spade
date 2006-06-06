@@ -442,7 +442,6 @@ class Socket_Process(threading.Thread):
 				# We MUST put a timeout here, believe me
 				###for fileno,ev in self.__sockpoll.poll(100):
 				fileno = None
-				self.SESS_LOCK.acquire()
 				for fileno in self.__sockpoll:
 				    #print "### Choosing fileno %s"%(fileno)
 		    		
@@ -463,6 +462,7 @@ class Socket_Process(threading.Thread):
 					    del self.sockets[fileno]
 					    data=''
 					if data:
+						self.SESS_LOCK.acquire()
 						try:
 							sess.Parse(data)
 						except simplexml.xml.parsers.expat.ExpatError:
@@ -470,7 +470,7 @@ class Socket_Process(threading.Thread):
 							self.__sockpoll.unregister(sess)
 							del self.sockets[fileno]
 							#self.isAlive=False
-				self.SESS_LOCK.release()
+						self.SESS_LOCK.release()
 				if fileno == None:
 					time.sleep(SOCK_TIMEOUT)
 			except:
