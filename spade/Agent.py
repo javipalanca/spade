@@ -791,7 +791,8 @@ class PlatformAgent(AbstractAgent):
 	while not c:
 		# Try to connect. Wait if it fails
 	        c = self.jabber.connect()
-		time.sleep(1)
+		if not c:
+			time.sleep(0.1)
 
         if (self.jabber.auth(name,password,"spade") == None):
                 raise NotImplementedError
@@ -865,7 +866,8 @@ class Agent(AbstractAgent):
 	while not c:
 		# Try to connect. Wait if it fails
 	        c = self.jabber.connect()
-		time.sleep(1)
+		if not c:
+			time.sleep(0.1)
 	print "### Agent %s got connected to the server"%(self._aid.getName())
 
         #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
