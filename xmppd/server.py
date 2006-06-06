@@ -96,7 +96,7 @@ _stream_state not-opened/opened/closing/closed
 #SESSION_BOUND      =3
 #SESSION_OPENED     =4
 
-SOCK_TIMEOUT = 0.01
+SOCK_TIMEOUT = 0.005
 
 class Session:
     def __init__(self,socket,server,xmlns,peer=None):
@@ -429,7 +429,7 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(10):
+				for fileno,ev in self.__sockpoll.poll(5):
 				###fileno = None
 				###for fileno in self.__sockpoll:
 		    		
@@ -622,7 +622,7 @@ class Server:
 	return random.choice(self.thread_pull)
 
     def handle(self):
-        for fileno,ev in self.sockpoll.poll(1000):
+        for fileno,ev in self.sockpoll.poll(100):
 	    
             sock=self.sockets[fileno]
 
