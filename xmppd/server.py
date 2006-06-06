@@ -110,7 +110,8 @@ class Session:
         self._sock=socket
         self._send=socket.send
         self._recv=socket.recv
-	self._sock.settimeout(0.5)
+	self._sock.setblocking(0)
+	self._sock.settimeout(0.1)
         self._registered=0
         self.trusted=0
 
@@ -461,7 +462,6 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 				if fileno == None:
-					print "### fileno == None"
 					time.sleep(0.5)
 			except:
 				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
