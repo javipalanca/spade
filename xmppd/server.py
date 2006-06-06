@@ -445,7 +445,7 @@ class Socket_Process(threading.Thread):
 					    print "### IOError"
 					    sess.terminate_stream()
 					    ###self.__sockpoll.unregister(sess)
-					    self.__sockpoll.unregister(sess)
+					    self.__sockpoll.remove(sess)
 					    del self.sockets[fileno]
 					    data=''
 					if data:
