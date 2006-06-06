@@ -465,6 +465,7 @@ class Socket_Process(threading.Thread):
 					if data:
 						self.dispatch_lock.acquire()
 						try:
+							print "### Going to Parse from sess %s"%(sess.fileno())
 							sess.Parse(data)
 						except simplexml.xml.parsers.expat.ExpatError:
 							sess.terminate_stream(STREAM_XML_NOT_WELL_FORMED)
