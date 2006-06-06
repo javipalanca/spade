@@ -364,7 +364,8 @@ class Socket_Process(threading.Thread):
 
 	def __init__(self):
 		#self.__owner = owner
-        	self.__sockpoll=select.poll()
+        	###self.__sockpoll=select.poll()
+        	self.__sockpoll=[]
 		self.sockets = {}
         	self.SESS_LOCK=thread.allocate_lock()
 		threading.Thread.__init__(self)
@@ -383,8 +384,10 @@ class Socket_Process(threading.Thread):
 	                #else: return
 	            sess._registered=1
 	            self.sockets[sess.fileno()]=sess
-	            self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+	            ###self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+	            self.__sockpoll.append(sess.fileno())
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
+		    '''
 		    try:
 			# Receive initial data
 			data = ''
@@ -394,6 +397,7 @@ class Socket_Process(threading.Thread):
 				print "Initial data received: %s"%(data)
 		    except:
 			pass
+		    '''
 	            self.SESS_LOCK.release()
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 
@@ -407,7 +411,8 @@ class Socket_Process(threading.Thread):
 				#else: return
 			sess._registered=0
 			try:
-				self.__sockpoll.unregister(sess)
+				###self.__sockpoll.unregister(sess)
+				self.__sockpoll.remove(sess.fileno())
 				del self.sockets[sess.fileno()]
 				print "### SocketProcess UNregister session " + str(sess)
 			except:
@@ -422,7 +427,8 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				for fileno,ev in self.__sockpoll.poll(100):
+				###for fileno,ev in self.__sockpoll.poll(100):
+				for fileno in self.__sockpoll:
 				    print "### Choosing fileno %s"%(fileno)
 		    		
 				    try:
@@ -437,6 +443,7 @@ class Socket_Process(threading.Thread):
 					except IOError: # client closed the connection
 					    print "### IOError"
 					    sess.terminate_stream()
+					    ###self.__sockpoll.unregister(sess)
 					    self.__sockpoll.unregister(sess)
 					    del self.sockets[fileno]
 					    data=''
