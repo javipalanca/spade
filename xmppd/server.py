@@ -372,8 +372,8 @@ class Socket_Process(threading.Thread):
 
 	def __init__(self, owner):
 		self._owner = owner
-        	###self.__sockpoll=select.poll()
-        	self.__sockpoll=[]
+        	self.__sockpoll=select.poll()
+        	###self.__sockpoll=[]
 		self.sockets = {}
         	self.SESS_LOCK=thread.allocate_lock()
 		self.dispatch_lock = self._owner.dispatch_lock
@@ -394,8 +394,8 @@ class Socket_Process(threading.Thread):
 		    try:
 	            	self.SESS_LOCK.acquire()
 	            	self.sockets[sess.fileno()]=sess
-	            	###self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
-	            	self.__sockpoll.append(sess.fileno())
+	            	self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
+	            	###self.__sockpoll.append(sess.fileno())
 	            	self.SESS_LOCK.release()
 		    except:
 			print "Could not register session %s"%(sess.fileno())
@@ -425,8 +425,8 @@ class Socket_Process(threading.Thread):
 				#else: return
 			sess._registered=0
 			try:
-				###self.__sockpoll.unregister(sess)
-				self.__sockpoll.remove(sess.fileno())
+				self.__sockpoll.unregister(sess)
+				###self.__sockpoll.remove(sess.fileno())
 				del self.sockets[sess.fileno()]
 				print "### SocketProcess UNregister session " + str(sess)
 			except:
@@ -441,10 +441,9 @@ class Socket_Process(threading.Thread):
 		while self.isAlive:
 			try:
 				# We MUST put a timeout here, believe me
-				###for fileno,ev in self.__sockpoll.poll(100):
-				fileno = None
-				for fileno in self.__sockpoll:
-				    #print "### Choosing fileno %s"%(fileno)
+				for fileno,ev in self.__sockpoll.poll(100):
+				###fileno = None
+				###for fileno in self.__sockpoll:
 		    		
 				    try:
 					sess=self.sockets[fileno]
@@ -458,8 +457,8 @@ class Socket_Process(threading.Thread):
 					except IOError: # client closed the connection
 					    print "### IOError"
 					    sess.terminate_stream()
-					    ###self.__sockpoll.unregister(sess)
-					    self.__sockpoll.remove(sess)
+					    self.__sockpoll.unregister(sess)
+					    ###self.__sockpoll.remove(sess)
 					    del self.sockets[fileno]
 					    data=''
 					if data:
@@ -473,8 +472,8 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 						self.dispatch_lock.release()
-				if fileno == None:
-					time.sleep(SOCK_TIMEOUT)
+				###if fileno == None:
+				###	time.sleep(SOCK_TIMEOUT)
 			except:
 				pass
 				print "### EXCEPTION in SocketProcess %s run"%(self)
