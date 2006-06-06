@@ -476,8 +476,10 @@ class Socket_Process(threading.Thread):
 				if fileno == None:
 					time.sleep(SOCK_TIMEOUT)
 			except:
-				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
-				self.isAlive=False
+				pass
+				print "### EXCEPTION in SocketProcess %s run"%(self)
+				# DON'T PANIC
+				#self.isAlive=False
 				#self.setDaemon(False)
 
 		        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>leyendo " + str(self)
