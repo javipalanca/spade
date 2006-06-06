@@ -440,6 +440,7 @@ class Socket_Process(threading.Thread):
 							del self.sockets[fileno]
 							#self.isAlive=False
 			except:
+				print "### EXCEPTION in SocketProcess %s run. Dying . . ."%(self)
 				self.isAlive=False
 				#self.setDaemon(False)
 		    
