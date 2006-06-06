@@ -129,6 +129,7 @@ class Session:
         #self.stanza_queue=[]
 	self.stanza_queue = StanzaQueue()
         self.pushlock = threading.Lock()
+        self.enqueuelock = threading.Lock()
 
         self._session_state=SESSION_NOT_AUTHED
         self.waiting_features=[]
@@ -172,12 +173,14 @@ class Session:
 
     def enqueue(self,stanza):
         """ Takes Protocol instance as argument. """
+	self.enqueuelock.acquire()
         if isinstance(stanza,Protocol):
             self.stanza_queue.append(stanza)
 	    #print ">>>> Session" + str(self)+  ": append stanza"
         else: 
 	    self.sendbuffer+=stanza
 	    #print ">>>> Session" + str(self)+  ": sendbuffer"
+	self.enqueuelock.release()
         if self._socket_state>=SOCKET_ALIVE:
 	    qp = self.push_queue()
 	    #print ">>>> Session" + str(self)+  ": queue pushed: " + str(qp)
@@ -214,7 +217,7 @@ class Session:
         if self.sendbuffer:
 	    #print "push_queue: sendbuffer has DATA"
             try:
-		#print "pushlock.acquire in this yera forever and ever this is green"
+		#print "pushlock.acquire"
                 self.pushlock.acquire()# LOCK_QUEUE
                 sent=self._send(self.sendbuffer)
             except:
