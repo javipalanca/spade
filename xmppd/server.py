@@ -370,12 +370,13 @@ class Session:
 
 class Socket_Process(threading.Thread):
 
-	def __init__(self):
-		#self.__owner = owner
+	def __init__(self, owner):
+		self.__owner = owner
         	###self.__sockpoll=select.poll()
         	self.__sockpoll=[]
 		self.sockets = {}
         	self.SESS_LOCK=thread.allocate_lock()
+		self.dispatch_lock = self._owner.dispatch_lock
 		threading.Thread.__init__(self)
 		
 		self.isAlive = True
@@ -462,7 +463,7 @@ class Socket_Process(threading.Thread):
 					    del self.sockets[fileno]
 					    data=''
 					if data:
-						self.SESS_LOCK.acquire()
+						self.dispatch_lock.acquire()
 						try:
 							sess.Parse(data)
 						except simplexml.xml.parsers.expat.ExpatError:
@@ -470,7 +471,7 @@ class Socket_Process(threading.Thread):
 							self.__sockpoll.unregister(sess)
 							del self.sockets[fileno]
 							#self.isAlive=False
-						self.SESS_LOCK.release()
+						self.dispatch_lock.release()
 				if fileno == None:
 					time.sleep(SOCK_TIMEOUT)
 			except:
@@ -526,7 +527,7 @@ class Server:
 	self.session_locator_lock = threading.Lock()  # Lock for protecting session_locator
 
 	for i in range(0, self.max_threads):
-		t = Socket_Process()
+		t = Socket_Process(self)
 		t.start()
 		self.thread_pull.append(t)
 	self.DEBUG('server', 'Created succesfully '+str(i+1)+' Socket Process Threads', 'ok')
@@ -545,6 +546,8 @@ class Server:
         self.Dispatcher._owner=self
 	self.defaultNamespace = NS_CLIENT
         self.Dispatcher._init()
+
+	self.dispatch_lock = thread.allocate_lock()  # Lock for dispatching
 
 	self.router_filters = list()
 	#this is for test
