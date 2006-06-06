@@ -441,7 +441,7 @@ class Socket_Process(threading.Thread):
 				###for fileno,ev in self.__sockpoll.poll(100):
 				fileno = None
 				for fileno in self.__sockpoll:
-				    print "### Choosing fileno %s"%(fileno)
+				    #print "### Choosing fileno %s"%(fileno)
 		    		
 				    try:
 					sess=self.sockets[fileno]
@@ -450,7 +450,7 @@ class Socket_Process(threading.Thread):
 
 				    if isinstance(sess,Session):
 					try:
-					    print "Trying to receive from session %s . . ."%(sess)
+					    #print "Trying to receive from session %s . . ."%(sess)
 					    data=sess.receive()
 					except IOError: # client closed the connection
 					    print "### IOError"
