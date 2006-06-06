@@ -388,17 +388,16 @@ class Socket_Process(threading.Thread):
 	            ###self.__sockpoll.register(sess,select.POLLIN | select.POLLPRI | select.POLLERR | select.POLLHUP)
 	            self.__sockpoll.append(sess.fileno())
  	            #self.DEBUG('SocketProcess','succesfully registered %s (%s) at SocketProcess %s'%(sess.fileno(),sess,self))
-		    '''
 		    try:
+			print " Trying initial data receive: %s"%(sess.fileno())
 			# Receive initial data
 			data = ''
 			data=sess.receive()
 			if data:
 				sess.Parse(data)
-				print "Initial data received: %s"%(data)
+				print "Initial data received for %s: %s"%(sess.fileno(),data)
 		    except:
 			pass
-		    '''
 	            self.SESS_LOCK.release()
  	            print 'SocketProcess','succesfully registered %s (%s,%s) at SocketProcess %s'%(sess.fileno(),sess,sess.peer,self)
 
