@@ -847,7 +847,7 @@ class Agent(AbstractAgent):
 		
 
 	#print "### Agent %s registered"%(agentjid)
-	#self.roster = self.jabber.getRoster()
+	self.roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():
