@@ -312,11 +312,11 @@ class Session:
 			t = self._owner.session_locator[self.fileno()]
 			t.unregistersession(self)
 			del self._owner.session_locator[self.fileno()]
-			print "### Before closing session"
+			#print "### Before closing session"
 		else:
 			self._owner.unregistersession(self)
 		self._owner.session_locator_lock.release()
-	print "### Stream close: session " + str(self)
+	#print "### Stream close: session " + str(self)
         self._destroy_socket()
 
     def terminate_stream(self,error=None,unregister=1):
