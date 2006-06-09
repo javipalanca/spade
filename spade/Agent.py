@@ -764,11 +764,11 @@ class jabberProcess(threading.Thread):
 		            err = self.jabber.Process(0.4)
 			    #print "Process returns " + str(err) + " " + str(type(err))
 		    except:
-			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
-			    #self.setDaemon(False)
+			    print color_red + "Jabber connection failed: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
+			    self._kill()
 		    	    self._owner.stop()
 		    if err == None or err == 0:  # None or zero the integer, socket closed
-		    	    print "PROCESS FAILED. STOPPING AGENT"
+			    print color_red + "Agent disconnected: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
 			    self._kill()
 		    	    self._owner.stop()
 
@@ -857,6 +857,7 @@ class Agent(AbstractAgent):
 
 	#print "### Agent %s registered"%(agentjid)
 	self.roster = self.jabber.getRoster()
+	print "Agent %s got roster %s"%(self.getName(), str(self.roster))
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():
