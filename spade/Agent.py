@@ -194,18 +194,24 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         jabber_msg["from"]=self.getAID().getName()
         self.jabber.send(jabber_msg)
     
-    def kill(self):
+    def _kill(self):
 	"""
 	kills the agent
 	"""
         #self._alive = False
 	self._forceKill.set()
 
+    def isRunning(self):
+	"""
+	returns wether an agent is running or not
+	"""
+	return self._alive
+
     def stop(self, timeout=0):
 	"""
 	Stops the agent execution and blocks until the agent dies
 	"""
-	self.kill()
+	self._kill()
 	if timeout > 0:
 		to = time.now() + timeout
 		while self._alive and time.now() < to:
@@ -263,9 +269,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         	if (self._defaultbehaviour != None):
 	                       		self._defaultbehaviour.postMessage(msg)
 	        except:
-	            self.kill()
+	            self._kill()
 
-	self.shutdown()
+	self._shutdown()
             
     def setDefaultBehaviour(self, behaviour):
 	"""
@@ -736,10 +742,10 @@ class jabberProcess(threading.Thread):
 		self._forceKill = threading.Event()
 		self._forceKill.clear()
 		threading.Thread.__init__(self)
-		self.setDaemon(True)
+		self.setDaemon(False)
 		self._owner = owner
 		
-	def kill(self):
+	def _kill(self):
 		try:
 			self._forceKill.set()
 		except:
@@ -756,14 +762,15 @@ class jabberProcess(threading.Thread):
 		while not self.forceKill():
 		    try:
 		            err = self.jabber.Process(0.4)
+			    #print "Process returns " + str(err) + " " + str(type(err))
 		    except:
 			    print ">>> EXCEPTION IN PERIODIC JABBER UPDATE"
-			    time.sleep(2)
-			    pass
-		    if err == 0:  # zero the integer, socket closed
-			print "PROCESS FAILED. STOPPING AGENT"
-			self.setDaemon(False)
-		    	self._owner.stop()
+			    #self.setDaemon(False)
+		    	    self._owner.stop()
+		    if err == None or err == 0:  # None or zero the integer, socket closed
+		    	    print "PROCESS FAILED. STOPPING AGENT"
+			    self._kill()
+		    	    self._owner.stop()
 
 		
 
@@ -805,9 +812,11 @@ class PlatformAgent(AbstractAgent):
 	self.jabber_process.start()
         #thread.start_new_thread(self._jabber_process, tuple())
 
-    def shutdown(self):
-	
-	self.jabber_process.kill()
+    def _shutdown(self):
+
+	self._kill()  # Doublecheck death	
+
+	self.jabber_process._kill()
 
 	#Stop the Behaviours
         for b in self._behaviourList:
@@ -911,7 +920,7 @@ class Agent(AbstractAgent):
 	#print "### Agent %s: Started jabber process"%(self._aid.getName())
         
 
-    def shutdown(self):
+    def _shutdown(self):
 
         #Stop the Behaviours
         for b in self._behaviourList:
@@ -933,12 +942,14 @@ class Agent(AbstractAgent):
         self.takeDown()
 
 	if self._alivemutex.testandset():
-		if not self.__deregister_from_AMS():
-			print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+		if not self.jabber_process.forceKill():
+			if not self.__deregister_from_AMS():
+				print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+			self.jabber_process._kill()  # Kill jabber thread
 		self._alive = False
 	self._alivemutex.unlock()
 
-	self.jabber_process.kill()
+	self._kill()  # Doublecheck death
 
     """
     def run(self):
