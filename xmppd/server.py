@@ -186,7 +186,8 @@ class Session:
             self.stanza_queue.append(stanza)
 	    #print ">>>> Session" + str(self)+  ": append stanza"
         else: 
-	    self.sendbuffer+=stanza
+	    #self.sendbuffer+=stanza   # THIS IS THE ORIGINAL
+	    self.sendbuffer+=str(stanza)
 	    #print ">>>> Session" + str(self)+  ": sendbuffer"
         if self._socket_state>=SOCKET_ALIVE:
 	    qp = self.push_queue()
@@ -677,7 +678,7 @@ class Server:
 			self.handle()
 		        #except KeyboardInterrupt:
 		except Exception, e:
-			print "### UNKNOWN EXCEPTION: " + str(e)
+			#print "### EXCEPTION: " + str(e)
 			self.DEBUG('server','Shutting down on user\'s behalf', prefix='info')
 			#print "Server: Shuting down ..."
        	    		self.shutdown(STREAM_SYSTEM_SHUTDOWN)

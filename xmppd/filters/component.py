@@ -59,10 +59,14 @@ class Component(filter.Filter):
                 name = stanza.getName()
 		self._router.DEBUG("Component Handler called", "info")
                 if name == 'handshake' or name == u'handshake':
-			#self._router.DEBUG("HANDSHAKE received", 'info')
-                        # Reply handshake
-                        rep = Node('handshake')
-                        session.send(rep)
+			try:
+				#self._router.DEBUG("HANDSHAKE received", 'info')
+        	                # Reply handshake
+                	        rep = Node('handshake')
+                        	session.send(rep)
+			except:
+				self._router.DEBUG("Component Handler could not send reply", "error")
+				return
                         # Identify component
                         host,port = session._sock.getsockname()
                         #print "HOST: " + str(host) + " PORT: " + str(port)

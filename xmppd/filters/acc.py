@@ -14,19 +14,18 @@ class ACC(filter.Filter):
 
 		filter.Filter.__init__(self,router)
 
-		if os.name == "posix":
-			configfile = "/etc/spade/spade.xml"
-		else:
-			configfile = "etc/spade.xml"
+	def loadConfig(self, configfile=None):
+
+		if configfile == None:
+			if os.name == "posix":
+				configfile = "/etc/spade/spade.xml"
+			else:
+				configfile = "etc/spade.xml"
 
 		parser = SpadeConfigParser.ConfigParser()
-
 		config = parser.parse(configfile)
-
 		path = str(config.platform.path)
-
 		self.mtps = {}
-
 		sys.path.append(path+os.sep+"mtp")
 
 		for name,mtp in config.acc.items():

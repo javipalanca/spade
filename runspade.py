@@ -14,6 +14,7 @@ try:
 	from spade import spade_backend
 	from spade import SpadeConfigParser
 	from spade import colors
+	from xmppd.filters import acc
 except ImportError:
 	from libspade import spade_backend
 	from libspade import SpadeConfigParser
@@ -80,16 +81,21 @@ def main():
   except:
 	pass
 
+  print "Using config file " + str(configfilename)
+  print "Using jabber file " + str(jabberxml)
   sys.stdout.write("Starting SPADE")
   sys.stdout.flush()
 
   parser = SpadeConfigParser.ConfigParser()
-  config = parser.parse(configfilename)
+  #config = parser.parse(configfilename)
 
   sys.stdout.write(".")
   sys.stdout.flush()
 
   s = xmppd.server.Server(cfgfile=jabberxml, debug = dbg)
+  for filter in s.router_filters:
+  	if isinstance(filter, acc.ACC):
+		filter.loadConfig(configfilename)
 
   sys.stdout.write(".")
   sys.stdout.flush()
