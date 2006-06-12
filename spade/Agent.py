@@ -62,6 +62,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.setName(str(agentjid))
 
+	self._friend_list = []
+
     def _jabber_presenceCB(self, conn, mess):
 	"""
 	presence callback
@@ -70,6 +72,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	typ = mess.getAttr('type')
 	if typ == 'subscribe':
 		# Answer the subscription affirmatively
+		if mess.getFrom() not in self._friend_list:
+			self._friend_list.append(mess.getFrom())
 		reply = xmpp.Presence(mess.getFrom(), 'subscribed')
 		conn.send(reply)
 		print "Presence subscription answered to ", str(mess.getFrom()), str(reply)
@@ -857,7 +861,6 @@ class Agent(AbstractAgent):
 
 	#print "### Agent %s registered"%(agentjid)
 	self.roster = self.jabber.getRoster()
-	print "Agent %s got roster %s"%(self.getName(), str(self.roster))
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():

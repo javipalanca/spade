@@ -85,12 +85,13 @@ class Router(PlugIn):
 	    self.DEBUG("Presence subscription found from "+barejid+" to "+str(to), "warn")
 	    # Modify sender's roster to reflect the subscription
 	    try:
-	    	self.server.rosterPlugIn.makeSubscription(barejid, str(to), session)
-	        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
-		s = self.server.getsession(to)
-		if s:
-			stanza.setFrom(barejid)
-			s.enqueue(stanza)
+		if not self.server.rosterPlugIn.isSubscribed(barejid, str(to)):
+		    	self.server.rosterPlugIn.makeSubscription(barejid, str(to), session)
+		        self.DEBUG('Roster of client '+barejid+' updated', 'ok')
+			s = self.server.getsession(to)
+			if s:
+				stanza.setFrom(barejid)
+				s.enqueue(stanza)
 		
 	    except:
 		self.DEBUG('Could NOT update roster from ' + barejid, 'error')
@@ -180,10 +181,12 @@ class Router(PlugIn):
             self.update(barejid)
 
 	    if not typ and not to:
+		pass
 		# Initial presence
 		# Send a presence probe to all contacts with the 'to' or 'both' subscription
 		# Send a presence to all contacts with the 'from' or 'both' subscription
-		self.server.rosterPlugIn.initialPresence(barejid)
+		self.server.rosterPlugIn.initialPresence(barejid, session, self._data)
+		# Get the presence from all contacts with the 'to' or 'both' subscription
 
         elif typ=='unavailable' or typ=='error':
 	    self.DEBUG('Client '+barejid+' has become unavailable', 'warn')
@@ -191,8 +194,8 @@ class Router(PlugIn):
 	    if status:
 		# Get the textual status data
 		status = status.getData()
-	    self.server.rosterPlugIn.broadcastUnavailable(barejid, status)
-	    self.DEBUG('Unavailability of '+barejid+' broadcasted', 'ok')
+	    self.server.rosterPlugIn.broadcastUnavailable(str(jid), status)
+	    self.DEBUG('Unavailability of '+jid+' broadcasted', 'ok')
             if not self._data.has_key(barejid): raise NodeProcessed
             if self._data[barejid].has_key(resource): del self._data[barejid][resource]
             self.update(barejid)

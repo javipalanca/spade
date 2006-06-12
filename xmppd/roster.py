@@ -79,33 +79,45 @@ class rosterPlugIn(PlugIn):
 			item=query.setTag('item',attrs)
 		session.enqueue(iq)	
 
-	def initialPresence(self, frm):
+	def initialPresence(self, frm, session, data):
 		ros = self.getRoster(frm)
 		probe = Presence(typ='probe', frm=frm)
 		pres = Presence(frm=frm)
 		for contact in ros.keys():
 			try:
-				# Send a presence probe to all contacts with the 'to' or 'both' subscription
 				if ros[contact]['subscription']	== 'to' or ros[contact]['subscription'] == 'both':
+					# Send a presence probe to all contacts with the 'to' or 'both' subscription
 					s = self.server.getsession(contact)
-					s.enqueue(probe)
+					if s:
+						s.enqueue(probe)
+					# Get and send back the presence from this contact
+					if data.has_key(contact):
+						for resource in data[contact].keys():
+							p = data[contact][resource]
+							session.enqueue(p)
+					
                 		# Send a presence to all contacts with the 'from' or 'both' subscription
 				if ros[contact]['subscription']	== 'from' or ros[contact]['subscription'] == 'both':
 					s = self.server.getsession(contact)
-					s.enqueue(pres)
+					if s:
+						s.enqueue(pres)
 			except:
+				print "### Error treating inital presence"
 				pass
 				
 
 	def sendUnavailable(self, frm, to, status):
+		status = "Me cago en tus muelas"
 		# Generate a Presence node
+		p0 = Presence(to, frm = frm, xmlns=None)
 		if status:
-			p = Presence(to, 'unavailable', frm = frm, status = status)
+			p = Presence(to, 'unavailable', frm = frm, status = status, xmlns=None)
 		else:
-			p = Presence(to, 'unavailable', frm = frm)
+			p = Presence(to, 'unavailable', frm = frm, xmlns=None)
 		# Find the receiver's session and send the presence information through it
 		s = self.server.getsession(to)
 		if s:
+			s.enqueue(p0)
 			s.enqueue(p)
 
 	def broadcastUnavailable(self, barejid, status=None):
@@ -122,6 +134,7 @@ class rosterPlugIn(PlugIn):
 				except:
 					# Contact does not have subscription
 					print "### Contact does not have subscription item"
+
 	def cancelSubscription(self, frm, to, session):
 		#print "### cancelSubscription called: ", str(frm), str(to)
 		# Cancel the subscription of the client 'to' 
@@ -159,6 +172,17 @@ class rosterPlugIn(PlugIn):
 				contact['subscription'] = 'from'
 			self.sendRoster(frm, session, type='set')
 
+	def isSubscribed(self, frm, to):
+		ros = self.getRoster(frm)
+		print "### isSubscribed: ros = " + str(ros)
+		try:
+			if ros[to]['subscription'] in ['to', 'both']:
+				print "### isSubscribed True"
+				return True
+		except:
+			print "### isSubscribed False"
+			return False	
+
 	def makeSubscription(self, frm, to, session, subs='none'):
 		#print "### makeSubscription called: ", str(frm), str(to)
 		# Subscribe the contact 'to' to the roster of client 'frm'
@@ -168,7 +192,7 @@ class rosterPlugIn(PlugIn):
 			contact = ros[to]
 		except:
 			contact = False
-		if contact:
+		if contact and contact.has_key('subscription'):
 			# Check wether there is already a subscription
 			if contact['subscription'] == 'from' and subs == 'to':
 				contact['subscription'] = 'both'
@@ -203,8 +227,8 @@ class rosterPlugIn(PlugIn):
 				# No 'ask' entry
 				self.sendRoster(frm, session, type='set')
 			ros[to] = values
-			# Make the changes persistent in the DB
-			#self.server.DB.savedb()
+		# Make the changes persistent in the DB
+		self.server.DB.savedb()
 
 
 
