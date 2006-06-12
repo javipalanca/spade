@@ -309,6 +309,36 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	    #print "removeBehaviour: KeyError"
             pass
 
+    def subscribeToFriend(self, aid):
+	"""
+	presence subscription to another agent
+	"""
+	pass
+
+    def unsubscribeToFriend(self, aid):
+	"""
+	presence unsubscription to another agent
+	"""
+	pass
+
+    def getRoster(self):
+	"""
+	get roster of friends
+	"""
+	pass
+
+   def registerSubscribeHandler(self, handler):
+	"""
+	register the handler that will manage incoming presence subscriptions (agent level)
+	"""
+	pass
+
+   def registerUnsubscribeHandler(self, handler):
+	"""
+	register the handler that will manage incoming presence unsubscriptions (agent level)
+	"""
+	pass
+
     class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
         def __init__(self, msg, AAD, debug = False):
             Behaviour.OneShotBehaviour.__init__(self)

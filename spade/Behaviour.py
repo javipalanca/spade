@@ -298,6 +298,12 @@ class Behaviour(MessageReceiver.MessageReceiver):
 			#time.sleep(0)
 		self.onEnd()
 		self.myAgent.removeBehaviour(self)
+
+	def registerPresenceHandler(self, template, handler):
+		"""
+		register a handler that will manage all incoming presence notifications matching the given presence template
+		"""
+		pass
 		
 class OneShotBehaviour(Behaviour):
 	"""
