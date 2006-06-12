@@ -212,12 +212,17 @@ class MessageTemplate(BehaviourTemplate):
 		if (self.template.conversation_id != None): 
 			if (self.template.conversation_id != message.conversation_id): return False
 		return True
-	
-	
-	
 
 
-
+class PresenceTemplate(MessageTemplate):
+	"""
+	Template for presence notifications
+	"""
+	def __init__(self):
+		ACLTemplate.__init__(self)
+		self.performative = "inform"
+		self.ontology = "presence"
+		self.protocol = "spade-presence"
 
 
 
@@ -227,6 +232,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		self.myParent = None
 		self.myAgent = None
 		self._forceKill = threading.Event()
+		self._presenceHandlers = dict()
 	
 	def setParent(self, parent):
 		self.myParent = parent
@@ -303,8 +309,20 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		register a handler that will manage all incoming presence notifications matching the given presence template
 		"""
-		pass
-		
+		self._presenceHandlers[handler] = template
+
+	def managePresence(self, msg):
+		"""
+		manage a FIPA-formed presence message
+		"""
+		# Check every handler template to see which ones match
+		for handler in self._presenceHandlers:
+			t = self._presenceHandlers[handler]
+			if t:
+				if t.match(msg):
+					handler(msg)	
+
+	
 class OneShotBehaviour(Behaviour):
 	"""
 	this behavior is only executed once
@@ -489,6 +507,7 @@ class FSMBehaviour(Behaviour):
 
 
 
+
 if __name__ == "__main__":
 	class TestBehaviour(PeriodicBehaviour):
 		def __init__(self, time):
@@ -498,3 +517,6 @@ if __name__ == "__main__":
 	
 	a = TestBehaviour(5)
 	a.start()
+
+
+

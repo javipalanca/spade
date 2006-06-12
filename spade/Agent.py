@@ -63,11 +63,50 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	self.setName(str(agentjid))
 
 	self._friend_list = []
+	self._subscribeHandler = None
+	self._unsubscribeHandler = None
+
 
     def _jabber_presenceCB(self, conn, mess):
 	"""
 	presence callback
 	manages jabber stanzas of the 'presence' type
+	"""
+	# Create the translation into FIPA-message from the presence notification
+	ACLmsg = ACLMessage()
+	ACLmsg.setPerformative("inform")
+	ACLmsg.setOntology("presence")
+	ACLmsg.setProtocol("spade-presence")
+	if mess.getFrom():
+		ACLmsg.setSender(AID.aid(mess.getFrom()))
+	if mess.getTo():
+		ACLmsg.addReceiver(AID.aid(mess.getTo()))
+	content = ""
+	typ = mess.getAttr('type')
+	if typ == 'available' or not typ:
+		content = content + "available"
+	elif typ == 'unavailable':
+		content = content + "unavailable"
+	elif typ in ['subscribe', 'subscribed']:
+		# Call the subscribe handler
+		if self._subscribeHandler:
+			content = content + "subscribe"
+			self._subscribeHandler(ACLmsg)
+			return
+	elif typ in ['unsubscribe', 'unsubscribed']:
+		# Call the unsubscribe handler
+		if self._unsubscribeHandler:
+			content = content + "unsubscribe"
+			self._unsubscribeHandler(ACLmsg)
+			return
+	else:
+		# Unsupported presence message
+		pass
+
+	# Pass the FIPA-message to the behaviours
+	for b in self._behaviourList:
+		b.managePresence(ACLmsg)
+
 	"""
 	typ = mess.getAttr('type')
 	if typ == 'subscribe':
@@ -77,6 +116,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		reply = xmpp.Presence(mess.getFrom(), 'subscribed')
 		conn.send(reply)
 		print "Presence subscription answered to ", str(mess.getFrom()), str(reply)
+	"""
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -327,17 +367,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	pass
 
-   def registerSubscribeHandler(self, handler):
+    def registerSubscribeHandler(self, handler):
 	"""
 	register the handler that will manage incoming presence subscriptions (agent level)
 	"""
-	pass
+	self._subscribeHandler = handler
 
-   def registerUnsubscribeHandler(self, handler):
+    def registerUnsubscribeHandler(self, handler):
 	"""
 	register the handler that will manage incoming presence unsubscriptions (agent level)
 	"""
-	pass
+	self._unsubscribeHandler = handler
 
     class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
         def __init__(self, msg, AAD, debug = False):
