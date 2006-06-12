@@ -38,6 +38,7 @@ color_bright_cyan  = chr(27) + "[36;1m"
 color_white        = chr(27) + "[37;1m"
 
 
+
 class AbstractAgent(MessageReceiver.MessageReceiver):
     """
     Abstract Agent
@@ -62,7 +63,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	self.setName(str(agentjid))
 
-	self._friend_list = []
+	self._friend_list = []  # Legacy
+	self._roster = dict()
 	self._subscribeHandler = None
 	self._unsubscribeHandler = None
 
@@ -70,7 +72,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     def _jabber_presenceCB(self, conn, mess):
 	"""
 	presence callback
-	manages jabber stanzas of the 'presence' type
+	manages jabber stanzas of the 'presence' protocol
 	"""
 	# Create the translation into FIPA-message from the presence notification
 	ACLmsg = ACLMessage()
@@ -117,6 +119,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		conn.send(reply)
 		print "Presence subscription answered to ", str(mess.getFrom()), str(reply)
 	"""
+
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -365,7 +368,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	get roster of friends
 	"""
-	pass
+	return self._roster
 
     def registerSubscribeHandler(self, handler):
 	"""
@@ -930,7 +933,7 @@ class Agent(AbstractAgent):
 		
 
 	#print "### Agent %s registered"%(agentjid)
-	self.roster = self.jabber.getRoster()
+	self._jabber_roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():
