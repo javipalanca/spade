@@ -964,7 +964,8 @@ class Agent(AbstractAgent):
 		print 'REconnected'
 		"""
 
-                if (self.jabber.auth(name,password,"spade") == None):
+                #if (self.jabber.auth(name,password,"spade") == None):
+		if not self.jabber.reconnectAndReauth():
 	    	    print "### Agent %s: Second auth attempt failed"%(self._aid.getName())
                     raise NotImplementedError
             else:
