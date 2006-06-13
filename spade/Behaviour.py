@@ -214,16 +214,21 @@ class MessageTemplate(BehaviourTemplate):
 		return True
 
 
-class PresenceTemplate(MessageTemplate):
+class PresenceTemplate(BehaviourTemplate):
 	"""
 	Template for presence notifications
 	"""
-	def __init__(self):
-		ACLTemplate.__init__(self)
-		self.performative = "inform"
-		self.ontology = "presence"
-		self.protocol = "spade-presence"
+	def __init__(self, frm=None, type=None, status=None, show=None):
+		self._frm, self._type, self._status, self._show = frm,type,status,show
 
+	def match(self, frm=None, type=None, status=None, show=None):
+		if self._frm    !=None and frm    != self._frm:    return False
+		if self._type   !=None and type   != self._type:   return False
+		if self._status !=None and status != self._status: return False
+		if self._show   !=None and show   != self._show:   return False
+
+		return True
+		
 
 
 class Behaviour(MessageReceiver.MessageReceiver):
@@ -311,7 +316,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		self._presenceHandlers[handler] = template
 
-	def managePresence(self, msg):
+	def managePresence(self, frm, type, status, show):
 		"""
 		manage a FIPA-formed presence message
 		"""
@@ -319,8 +324,8 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		for handler in self._presenceHandlers:
 			t = self._presenceHandlers[handler]
 			if t:
-				if t.match(msg):
-					handler(msg)	
+				if t.match(frm,type,status,show):
+					handler(frm,type,status,show)
 
 	
 class OneShotBehaviour(Behaviour):

@@ -64,9 +64,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	self.setName(str(agentjid))
 
 	self._friend_list = []  # Legacy
-	self._roster = dict()
-	self._subscribeHandler = None
-	self._unsubscribeHandler = None
+	self._roster = None
+	self._subscribeHandler   = lambda frm,typ,stat,show: False
+	self._unsubscribeHandler = lambda frm,typ,stat,show: False
 
 
     def _jabber_presenceCB(self, conn, mess):
@@ -74,52 +74,36 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	presence callback
 	manages jabber stanzas of the 'presence' protocol
 	"""
-	# Create the translation into FIPA-message from the presence notification
-	ACLmsg = ACLMessage()
-	ACLmsg.setPerformative("inform")
-	ACLmsg.setOntology("presence")
-	ACLmsg.setProtocol("spade-presence")
+
 	if mess.getFrom():
-		ACLmsg.setSender(AID.aid(mess.getFrom()))
-	if mess.getTo():
-		ACLmsg.addReceiver(AID.aid(mess.getTo()))
-	content = ""
+		frm = AID.aid(mess.getFrom(), mess.getFrom())
+
 	typ = mess.getAttr('type')
-	if typ == 'available' or not typ:
-		content = content + "available"
-	elif typ == 'unavailable':
-		content = content + "unavailable"
-	elif typ in ['subscribe', 'subscribed']:
+	status = mess.getAttr('status')
+	show = mess.getAttr('show')
+
+	if typ in ['subscribe']: #, 'subscribed']:
 		# Call the subscribe handler
-		if self._subscribeHandler:
-			content = content + "subscribe"
-			self._subscribeHandler(ACLmsg)
-			return
-	elif typ in ['unsubscribe', 'unsubscribed']:
+		if self._subscribeHandler(frm, typ, status, show):
+			reply = xmpp.Presence(mess.getFrom(), 'subscribed')
+			conn.send(reply)
+		return
+	elif typ in ['unsubscribe']: #, 'unsubscribed']:
 		# Call the unsubscribe handler
-		if self._unsubscribeHandler:
-			content = content + "unsubscribe"
-			self._unsubscribeHandler(ACLmsg)
-			return
+		if self._unsubscribeHandler(frm, typ, status, show):
+			reply = xmpp.Presence(mess.getFrom(), 'unsubscribed')
+			conn.send(reply)
+		return
 	else:
 		# Unsupported presence message
 		pass
 
 	# Pass the FIPA-message to the behaviours
 	for b in self._behaviourList:
-		b.managePresence(ACLmsg)
+		b.managePresence(frm, typ, status, show)
 
-	"""
-	typ = mess.getAttr('type')
-	if typ == 'subscribe':
-		# Answer the subscription affirmatively
-		if mess.getFrom() not in self._friend_list:
-			self._friend_list.append(mess.getFrom())
-		reply = xmpp.Presence(mess.getFrom(), 'subscribed')
-		conn.send(reply)
-		print "Presence subscription answered to ", str(mess.getFrom()), str(reply)
-	"""
 
+	self._roster = conn.getRoster()
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -311,7 +295,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 	                #if (b.done() == True):
                         	        #    self.removeBehaviour(b)
 	                                proc = True
-        	                        break
+        	                        break #should break?
                 	    if (proc == False):
                         	if (self._defaultbehaviour != None):
 	                       		self._defaultbehaviour.postMessage(msg)
@@ -933,7 +917,7 @@ class Agent(AbstractAgent):
 		
 
 	#print "### Agent %s registered"%(agentjid)
-	self._jabber_roster = self.jabber.getRoster()
+	self._roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():
