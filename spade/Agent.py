@@ -287,7 +287,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         	try:
                		#Check for queued messages
 	                proc = False
-        	        msg = self._receive(block=True, timeout=2)
+        	        msg = self._receive(block=True, timeout=0.01)
 	                if msg != None:
         	            for b in self._behaviourList:
                 	        t = self._behaviourList[b]
