@@ -1,5 +1,5 @@
 import constants
-import ch
+#import ch
 import config
 import db_fake
 import dialback

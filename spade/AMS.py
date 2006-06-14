@@ -15,6 +15,47 @@ class AMS(Agent.PlatformAgent):
 			Behaviour.Behaviour.__init__(self)
 			self.sl0parser = SL0Parser()
 
+			t = Behaviour.PresenceTemplate(type="subscribed")
+			self.registerPresenceHandler(t, self.subscribedCB)
+			t = Behaviour.PresenceTemplate(type="unsubscribed")
+			tt = Behaviour.PresenceTemplate(type="unavailable")
+			self.registerPresenceHandler(t, self.unsubscribedCB)
+			self.registerPresenceHandler(tt, self.unsubscribedCB)
+
+		def subscribedCB(self, frm, type, status, show):
+
+			aad = AmsAgentDescription()
+			aad.name = frm
+			if status: aad.state = status
+			if show: aad.ownership = show
+			else: aad.ownership = frm
+
+			if not self.myAgent.agentdb.has_key(frm.getName()):
+				self.myAgent.agentdb[frm.getName()] = aad
+			elif self.myAgent.agentdb[frm.getName()].getOwnership() == aad.getOwnership():
+				self.myAgent.agentdb[frm.getName()] = aad
+			else:
+				presence = Presence(frm,type="unsubscribe")
+				self.myAgent.jabber.send(presence)
+
+		def unsubscribedCB(self, frm, type, status, show):
+
+			aad = AmsAgentDescription()
+			aad.name = frm
+			if status: aad.state = status
+			if show: aad.ownership = show
+			else: aad.ownership = frm
+
+
+			if self.myAgent.agentdb.has_key(frm.getName()):
+				del self.myAgent.agentdb[frm.getName()]
+			else:
+				presence = Presence(frm,type="error", show="not-registered")
+				self.myAgent.jabber.send(presence)
+
+			#print "Agent " + frm.getName() + " deregistered from AMS"
+
+
 		def _process(self):
 			error = False
 			msg = self._receive(True)

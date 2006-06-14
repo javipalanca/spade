@@ -24,7 +24,7 @@ from constants import *
 from stanza_queue import StanzaQueue
 from Queue import Queue
 
-import ch
+#import ch
 import config
 import db_fake
 import dialback
@@ -539,6 +539,8 @@ class Server:
         self.Dispatcher._owner=self
 	self.defaultNamespace = NS_CLIENT
         self.Dispatcher._init()
+
+	self.componentList = list()
 
 	self.router_filters = list()
 	#this is for test

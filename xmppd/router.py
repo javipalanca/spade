@@ -195,7 +195,15 @@ class Router(PlugIn):
 		# Get the textual status data
 		status = status.getData()
 	    self.server.rosterPlugIn.broadcastUnavailable(str(jid), status)
+
+	    for c in self.server.componentList:
+		s = self.server.getsession(c)
+		stanza.setFrom(str(barejid))
+		if s:
+			s.enqueue(stanza)
+
 	    self.DEBUG('Unavailability of '+jid+' broadcasted', 'ok')
+
             if not self._data.has_key(barejid): raise NodeProcessed
             if self._data[barejid].has_key(resource): del self._data[barejid][resource]
             self.update(barejid)

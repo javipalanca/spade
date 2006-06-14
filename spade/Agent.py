@@ -75,12 +75,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	manages jabber stanzas of the 'presence' protocol
 	"""
 
+	frm=None
 	if mess.getFrom():
-		frm = AID.aid(mess.getFrom(), mess.getFrom())
+			frm = AID.aid(str(mess.getFrom()), ['xmpp://'+str(mess.getFrom())])
 
-	typ = mess.getAttr('type')
-	status = mess.getAttr('status')
-	show = mess.getAttr('show')
+	typ = str(mess.getType())
+	status = str(mess.getStatus())
+	show = str(mess.getShow())
 
 	if typ in ['subscribe']: #, 'subscribed']:
 		# Call the subscribe handler
@@ -102,8 +103,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	for b in self._behaviourList:
 		b.managePresence(frm, typ, status, show)
 
+	self._defaultbehaviour.managePresence(frm, typ, status, show)
 
-	self._roster = conn.getRoster()
+	#self._roster = conn.getRoster()
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -917,7 +919,7 @@ class Agent(AbstractAgent):
 		
 
 	#print "### Agent %s registered"%(agentjid)
-	self._roster = self.jabber.getRoster()
+	#self._roster = self.jabber.getRoster()
         self.jabber.sendInitPresence()
 	
 	if not self.__register_in_AMS():
@@ -1024,6 +1026,15 @@ class Agent(AbstractAgent):
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
 
+	presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='subscribed')
+
+	self.jabber.send(presence)
+
+	print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+	return True
+
+    def __register_in_AMS_with_ACL(self, state='active', ownership=None, debug=False):
+
 	self._msg = ACLMessage.ACLMessage()
 	self._msg.addReceiver( self.getAMS() )
 	self._msg.setPerformative('request')
@@ -1070,7 +1081,19 @@ class Agent(AbstractAgent):
 	
 	return True
 
+
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
+    
+	presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribed')
+
+	self.jabber.send(presence)
+	print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " deregistered correctly (inform)" + color_none
+
+	return True
+
+
+    def __deregister_from_AMS_with_ACL(self, state=None, ownership=None, debug=False):
+
 	_msg = ACLMessage.ACLMessage()
 	_msg.addReceiver( self.getAMS() )
 	_msg.setPerformative('request')

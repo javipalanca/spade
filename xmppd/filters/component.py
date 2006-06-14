@@ -64,7 +64,7 @@ class Component(filter.Filter):
         	                # Reply handshake
                 	        rep = Node('handshake')
                         	session.send(rep)
-			except:
+			except Exception, e:
 				self._router.DEBUG("Component Handler could not send reply", "error")
 				return
                         # Identify component
@@ -83,6 +83,7 @@ class Component(filter.Filter):
 			# TODO: Activate session only ONCE
                         if port == 9001:  # AMS
                                 component_name = 'ams.' + primary_name
+				self._router._owner.componentList.append(component_name)
                                 session.peer = component_name
                                 self._router._owner.activatesession(session, component_name)
                                 session.set_session_state(SESSION_AUTHED)
@@ -90,6 +91,7 @@ class Component(filter.Filter):
                                 raise NodeProcessed
                         elif port == 9002:  # DF
                                 component_name = 'df.' + primary_name
+				self._router._owner.componentList.append(component_name)
                                 session.peer = component_name
                                 self._router._owner.activatesession(session, component_name)
                                 session.set_session_state(SESSION_AUTHED)
