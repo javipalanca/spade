@@ -173,6 +173,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
         return AID.aid(name="df." + self._serverplatform, addresses=[ "xmpp://acc."+self._serverplatform ])
 
+    def getMUC(self):
+	"""
+	returs the MUC JID
+	"""
+	return "muc."+self._serverplatform
+
     def getSpadePlatformJID(self):
 	"""
 	returns the SPADE JID (string)
