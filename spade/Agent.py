@@ -64,6 +64,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	self.setName(str(agentjid))
 
 	self._friend_list = []  # Legacy
+	self._muc_list= {}
 	self._roster = None
 	self._subscribeHandler   = lambda frm,typ,stat,show: False
 	self._unsubscribeHandler = lambda frm,typ,stat,show: False
@@ -76,36 +77,43 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 
 	frm=None
-	if mess.getFrom():
-			frm = AID.aid(str(mess.getFrom()), ['xmpp://'+str(mess.getFrom())])
+	
+	ifrm = mess.getFrom()
+	if ifrm:
+		frm = AID.aid(str(mess.getFrom()), ['xmpp://'+str(mess.getFrom())])
+		#check for MUC presence
+		if ifrm.getDomain() == self.getMUC():
+			if self._muc_list.has_key(str(ifrm.getNode())):
+				self._muc_list[ifrm.getNode()].presenceCB(mess)
 
-	typ = str(mess.getType())
-	status = str(mess.getStatus())
-	show = str(mess.getShow())
+		else:
+			typ = str(mess.getType())
+			status = str(mess.getStatus())
+			show = str(mess.getShow())
 
-	if typ in ['subscribe']: #, 'subscribed']:
-		# Call the subscribe handler
-		if self._subscribeHandler(frm, typ, status, show):
-			reply = xmpp.Presence(mess.getFrom(), 'subscribed')
-			conn.send(reply)
-		return
-	elif typ in ['unsubscribe']: #, 'unsubscribed']:
-		# Call the unsubscribe handler
-		if self._unsubscribeHandler(frm, typ, status, show):
-			reply = xmpp.Presence(mess.getFrom(), 'unsubscribed')
-			conn.send(reply)
-		return
-	else:
-		# Unsupported presence message
-		pass
+			if typ in ['subscribe']: #, 'subscribed']:
+				# Call the subscribe handler
+				if self._subscribeHandler(frm, typ, status, show):
+					reply = xmpp.Presence(mess.getFrom(), 'subscribed')
+					conn.send(reply)
+					return
+			elif typ in ['unsubscribe']: #, 'unsubscribed']:
+				# Call the unsubscribe handler
+				if self._unsubscribeHandler(frm, typ, status, show):
+					reply = xmpp.Presence(mess.getFrom(), 'unsubscribed')
+					conn.send(reply)
+				return
+			else:
+				# Unsupported presence message
+				pass
 
-	# Pass the FIPA-message to the behaviours
-	for b in self._behaviourList:
-		b.managePresence(frm, typ, status, show)
+			# Pass the FIPA-message to the behaviours
+			for b in self._behaviourList:
+				b.managePresence(frm, typ, status, show)
 
-	self._defaultbehaviour.managePresence(frm, typ, status, show)
+			self._defaultbehaviour.managePresence(frm, typ, status, show)
 
-	#self._roster = conn.getRoster()
+			#self._roster = conn.getRoster()
 
     def _jabber_messageCB(self, conn, mess):
 	"""
@@ -140,7 +148,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	        payload_esc = mtmp2
 		ACLmsg.setContent(payload_esc)
 
-                self.postMessage(ACLmsg)
+		### If the message is directed to a MUC room it is posted directly
+		frm = mess.getFrom()
+		if frm.getDomain() == self.getMUC():
+			if self._muc_list.has_key(str(frm.getNode())):
+				self._muc_list[frm.getNode()].postMessage(ACLmsg)
+		else:
+			self.postMessage(ACLmsg)
             else:
                 self._other_messageCB(conn,mess)
 

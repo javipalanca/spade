@@ -3,6 +3,8 @@ import ACLMessage
 import MessageReceiver
 import threading
 
+import re
+
 
 class ACLTemplate:
 	"""
@@ -221,7 +223,10 @@ class PresenceTemplate(BehaviourTemplate):
 	def __init__(self, frm=None, type=None, status=None, show=None):
 		self._frm, self._type, self._status, self._show = frm,type,status,show
 
-	def match(self, frm=None, type=None, status=None, show=None):
+	def match(self, message=None): #frm=None, type=None, status=None, show=None):
+
+		frm,type,status,show = message.frm,message.type,message.status,message.show
+
 		if self._frm    !=None and frm    != self._frm:    return False
 		if self._type   !=None and type   != self._type:   return False
 		if self._status !=None and status != self._status: return False
@@ -320,11 +325,15 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 		manage a FIPA-formed presence message
 		"""
+
+		class struct:
+			def __init__(frm,type,status,show):
+				self.frm,self.type,self.status,self.show=frm,type,status,show
 		# Check every handler template to see which ones match
 		for handler in self._presenceHandlers:
 			t = self._presenceHandlers[handler]
 			if t:
-				if t.match(frm,type,status,show):
+				if t.match(struct(frm,type,status,show)):
 					handler(frm,type,status,show)
 
 	
