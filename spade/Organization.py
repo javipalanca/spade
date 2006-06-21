@@ -19,7 +19,15 @@ class Organization:
 
 		self.__messages = Queue(0)
 
+	def create(self):
 		self.connect()
+
+	def join(self):
+		self.connect()
+
+	def leave(self):
+		self.disconnect()
+
 
 
 	###### From the MessageReceiver class
@@ -102,7 +110,7 @@ class Organization:
 				for child2 in child.getChildren():
 					if child2.getName() == "item":
 						for attr,value in child2.items():
-							self._roster[frm][attr]=value
+							self._roster[frm][attr]=str(value)
 
 	def delFromRoster(self, message):
 
