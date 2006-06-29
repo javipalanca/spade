@@ -299,46 +299,69 @@ class Room:
 					# Change the nick in the participant instance
 					p.setNick(nick)
 
-			# For now, all clients can enter
-			print "### For now, all clients can enter"
-			# Conform first standard reply
-			reply = Presence( frm, frm=self.fullJID() )
-			x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
-			reply.addChild(node=x)
-			session.enqueue(reply)
-			# Send presence information from existing participants to the new participant
-			print "### Send presence information from existing participants to the new participant"
-			for participant in self.participants.values():
-				relative_frm = self.fullJID() + '/' + participant.getNick()
-				reply = Presence( frm, frm=relative_frm )
-				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-				item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
-				x.addChild(node=item)
-				reply.addChild(node=x)
-				session.enqueue(reply)
-			if self.addParticipant(frm, nick=nick):
-				# Send new participant's presence to all participants
-				print "### Send new participant's presence to all participants"
-				relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
-				newcomer = self.participants[frm]
-				x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-				item = Node('item', {'affiliation': str(newcomer.getAffiliation()), 'role': str(newcomer.getRole()) } )
-				x.addChild(node=item)
-				for participant in self.participants.values():
-					reply = Presence( participant.getFullJID(), frm=relative_frm )
+			print "### Access check"
+
+			try:    
+				# Try to add a participant to the room. If it everything goes well,
+				# addParticipant will return True. Otherwise, it will throw a
+				# speceific exception, catched later
+				if self.addParticipant(frm, nick=nick):
+					# Conform first standard reply
+					reply = Presence( frm, frm=self.fullJID() )
+					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc'} )
 					reply.addChild(node=x)
-					s = self.muc.server.getsession(participant.getFullJID())
-					print "### Session " + str(s) + " found for client " + participant.getFullJID()
-					if s:
-						s.enqueue(reply)
-				# If the room is non-anonymous, send a warning message to the new occupant
-				if self.semi_anonymous == False:
-					warning = Message(frm, "This room is not anonymous.", frm=self.fullJID())
+					session.enqueue(reply)
+
+					# Send presence information from existing participants to the new participant
+					print "### Send presence information from existing participants to the new participant"
+					for participant in self.participants.values():
+						relative_frm = self.fullJID() + '/' + participant.getNick()
+						reply = Presence( frm, frm=relative_frm )
+						x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+						item = Node('item', {'affiliation': participant.getAffiliation(), 'role': participant.getRole() } )
+						x.addChild(node=item)
+						reply.addChild(node=x)
+						session.enqueue(reply)
+
+					# Send new participant's presence to all participants
+					print "### Send new participant's presence to all participants"
+					relative_frm = self.fullJID() + '/' + nick  # Newcomer's relative JID
+					newcomer = self.participants[frm]
 					x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
-					status = Node('status', {'code': 100} )
-					x.addChild(node=status)
-					warning.addChild(node=x)
-					session.enqueue(warning)
+					item = Node('item', {'affiliation': str(newcomer.getAffiliation()), 'role': str(newcomer.getRole()) } )
+					x.addChild(node=item)
+					for participant in self.participants.values():
+						reply = Presence( participant.getFullJID(), frm=relative_frm )
+						reply.addChild(node=x)
+						s = self.muc.server.getsession(participant.getFullJID())
+						print "### Session " + str(s) + " found for client " + participant.getFullJID()
+						if s:
+							s.enqueue(reply)
+					# If the room is non-anonymous, send a warning message to the new occupant
+					if self.semi_anonymous == False:
+						warning = Message(frm, "This room is not anonymous.", frm=self.fullJID())
+						x = Node('x', {'xmlns': 'http://jabber.org/protocol/muc#user'} )
+						status = Node('status', {'code': 100} )
+						x.addChild(node=status)
+						warning.addChild(node=x)
+						session.enqueue(warning)
+			except BadPassword:
+				# The client sent a bad password
+				pass
+
+			except NotAMember:
+				# the client is not a memebr of this room
+				print "the client is not a memebr of this room"
+				rr = Node('registration-required', {'xmlns': 'urn:ietf:params:xml:ns:xmpp-stanzas'})
+				err = Node('error', {'code': '407', 'type': 'auth'})
+				err.addChild(node=rr)
+				p = Presence(frm, 'error', frm=self.fullJID())
+				p.addChild(node=err)
+				session.enqueue(p)
+			except:
+				print "### Acces Check failed with unknowk exception"
+				pass
+				
 			return
 
 		elif typ == 'unavailable':
@@ -479,7 +502,7 @@ class Room:
 		# Case 0: The participant is blacklisted
 		if p.getBareJID() in self.blacklist:
 			# "I told you not to come back! Get the f**k out of here!"
-			return False
+			raise Blacklisted
 		# Case 1: Open and without password. Free way
 		if self.open and self.unsecured:
 			# Set the participants role based on the room's moderation and the 'role' parameter provided
@@ -503,7 +526,7 @@ class Room:
 				return True
 			else:
 				# Wrong password
-				return False
+				raise WrongPassword
 		# Case 3: Members-only but without password
 		elif not self.open and self.unsecured:
 			if p.getBareJid() in self.whitelist:
@@ -517,7 +540,7 @@ class Room:
 				return True
 			else:
 				# "You're not on my list. Get lost"
-				return False
+				raise NotAMember
 		# Case 4: Members-only and with password
 		elif not self.open and not self.unsecured:
 			if p.getBareJid() in self.whitelist:
@@ -532,10 +555,10 @@ class Room:
 					return True
 				else:
 					# Bad password
-					return False
+					raise BadPassword
 			else:
 				# Not a member. Get lost
-				return False
+				raise NotAMember
 
 	def deleteParticipant(self, fulljid):
 		"""
@@ -586,6 +609,9 @@ class MUC(PlugIn):
 		self.addRoom(coffee)
 		spade_room = Room('spade', self, 'SPADE Agents')
 		self.addRoom(spade_room)
+		member_room = Room('restricted', self, 'Restricted Area', whitelist=['test@thx1138.dsic.upv.es'])
+		member_room.open = False
+		self.addRoom(member_room)
 
 		self.DEBUG("Created MUC Conference " + str(self.jid), "warn")
 
