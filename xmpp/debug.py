@@ -102,14 +102,19 @@ DBG_MULTI = [ DBG_INIT, DBG_CONNECTION ]
 
 class NoDebug:
     def __init__( self, *args, **kwargs ):
-        pass
+        self.debug_flags = []
     def show( self,  *args, **kwargs):
+        pass
+    def Show( self,  *args, **kwargs):
         pass
     def is_active( self, flag ):
         pass
+    colors={}
     def active_set( self, active_flags = None ):
         return 0
-    
+
+
+  
 
 LINE_FEED = '\n'
 
@@ -423,3 +428,5 @@ class Debug:
         return 0
 
 DBG_ALWAYS='always'
+
+#Debug=NoDebug
