@@ -223,7 +223,7 @@ class PresenceTemplate(BehaviourTemplate):
 	def __init__(self, frm=None, type=None, status=None, show=None):
 		self._frm, self._type, self._status, self._show = frm,type,status,show
 
-	def match(self, message=None): #frm=None, type=None, status=None, show=None):
+	def match(self, message): #frm=None, type=None, status=None, show=None):
 
 		frm,type,status,show = message.frm,message.type,message.status,message.show
 
@@ -327,7 +327,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 		"""
 
 		class struct:
-			def __init__(frm,type,status,show):
+			def __init__(self,frm,type,status,show):
 				self.frm,self.type,self.status,self.show=frm,type,status,show
 		# Check every handler template to see which ones match
 		for handler in self._presenceHandlers:
