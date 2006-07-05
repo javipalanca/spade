@@ -1050,7 +1050,7 @@ class Agent(AbstractAgent):
 
 	self.jabber.send(presence)
 
-	print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+	if debug: print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
 	return True
 
     def __register_in_AMS_with_ACL(self, state='active', ownership=None, debug=False):
@@ -1107,7 +1107,7 @@ class Agent(AbstractAgent):
 	presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribed')
 
 	self.jabber.send(presence)
-	print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " deregistered correctly (inform)" + color_none
+	if debug: print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " deregistered correctly (inform)" + color_none
 
 	return True
 

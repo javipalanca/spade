@@ -65,20 +65,23 @@ def generateCode():
 	"""
 
 	# Now fill the MTPs information
+	"""
 	mtp_str = ""
 	for file in os.listdir("usr/share/spade/mtp"):
 		try:
 			# If its a python script
 			if file[-3:] == ".py":
 				fname = file[:-3]
-				mtp_str = mtp_str + '''<mtp name = "''' + fname + '''"><instance>''' + fname + '''</instance>'''
-				mtp_str = mtp_str + """<protocol>""" + fname + """</protocol>"""
-				mtp_str = mtp_str + """</mtp>"""
+				mtp_str = mtp_str + '<mtp name = "' + fname + '"><instance>' + fname + '</instance>'
+				mtp_str = mtp_str + "<protocol>" + fname + "</protocol>"
+				mtp_str = mtp_str + "</mtp>\n	       "
 		except:
 			pass
 		
-		# Fill the data
-		spadexml = spadexml.replace("#MTPS#", mtp_str)	
+	# Fill the data
+	spadexml = spadexml.replace("#MTPS#", mtp_str)
+	"""
+	spadexml = spadexml.replace("#MTPS#", "")	
 
 	file = open("etc/spade.xml", "w+")
 	file.write(spadexml)
