@@ -488,7 +488,7 @@ class Server:
 	self.debug_mutex.release()
 	
 
-    def __init__(self,debug=[],cfgfile=None, max_threads=100):
+    def __init__(self,debug=['always'],cfgfile=None, max_threads=100):
 	self.alive = True
 
 	self.debug_mutex = threading.Lock()
