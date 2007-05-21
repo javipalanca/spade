@@ -256,6 +256,8 @@ class Behaviour(MessageReceiver.MessageReceiver):
 
 		self.setName(str(self.myAgent.getName()) + " Behaviour")
 
+		self.send = self.myAgent.send
+
 	def getAgent(self):
 		"""
 		returns the agent which controls the behavior
