@@ -1,0 +1,705 @@
+# -*- coding: UTF8 -*-
+import time
+import ACLMessage
+import MessageReceiver
+import threading
+import types
+
+from xmpp import Node, Message, Presence, Iq
+import xmpp
+import re
+
+
+class ACLTemplate:
+    """
+    Template for message matching
+    """
+    def __init__(self, performative=None):
+        self.performative = performative
+        self.sender = None
+        self.receivers = []
+        self.reply_to = []
+        self.content = None
+        self.reply_with = None
+        self.reply_by = None
+        self.in_reply_to = None
+        self.encoding = None
+        self.language = None
+        self.ontology = None
+        self.protocol = None
+        self.conversation_id = None
+        #self.userDefProps = None
+
+    def reset(self):
+        self.__init__()
+
+    def setSender(self, sender):
+        self.sender = sender
+
+    def getSender(self):
+        return self.sender
+
+    def addReceiver(self, recv):
+        self.receivers.append(recv)
+
+    def removeReceiver(self, recv):
+        if recv in self.receivers:
+            self.receivers.remove(recv)
+
+    def getReceivers(self):
+        return self.receivers
+
+
+    def addReplyTo(self, re):
+        if isinstance(re,AID.aid):
+            self.reply_to.append(re)
+
+    def removeReplyTo(self, re):
+        if re in self.reply_to:
+            self.reply_to.remove(re)
+
+    def getReplyTo(self):
+        return self.reply_to
+
+    def setPerformative(self, p):
+        self.performative = p
+
+    def getPerformative(self):
+        return self.performative
+
+    def setContent(self,c):
+        self.content = c
+
+    def getContent(self):
+        return self.content
+
+    def setReplyWith(self,rw):
+        self.reply_with = rw
+
+    def getReplyWith(self):
+        return self.reply_with
+
+    def setInReplyTo(self, reply):
+        self.in_reply_to = reply
+
+    def getInReplyTo(self,reply):
+        return self.in_reply_to
+
+    def setEncoding(self,e):
+        self.encoding = e
+
+    def getEncoding(self):
+        return self.encoding
+
+    def setLanguage(self,e):
+        self.language = e
+
+    def getLanguage(self):
+        return self.language
+    def setOntology(self,e):
+        self.ontology = e
+
+    def getOntology(self):
+        return self.ontology
+    def setReplyBy(self,e):
+        self.reply_by = e
+
+    def getReplyBy(self):
+        return self.reply_by
+
+    def setProtocol(self,e):
+        self.protocol = e
+
+    def getProtocol(self):
+        return self.protocol
+    def setConversationId(self,e):
+        self.conversation_id = e
+
+    def getConversationId(self):
+        return self.conversation_id
+
+
+
+
+
+class BehaviourTemplate:
+    """
+    Template operators
+    """
+    def __init__(self):
+        pass
+    def match(self, message):
+        return False
+
+    def __and__(self, other):
+        """Implementation of & operator"""
+        return ANDTemplate(self, other)
+    def __rand__(self, other):
+        """Implementation of &= operator"""
+        return (self & other)
+
+    def __or__(self, other):
+        """Implementation of | operator"""
+        return ORTemplate(self, other)
+    def __ror__(self, other):
+        """Implementation of |= operator"""
+        return (self | other)
+
+    def __xor__(self, other):
+        """Implementation of ^ operator"""
+        return XORTemplate(self, other)
+    def __rxor__(self, other):
+        """Implementation of ^= operator"""
+        return (self ^ other)
+    def __invert__(self):
+        """Implementation of ~ operator"""
+        return NOTTemplate(self)
+
+
+
+class NOTTemplate(BehaviourTemplate):
+    def __init__(self, expr):
+        self.expr = expr
+    def match(self, message):
+        return (not(self.expr.match(message)))
+
+class ORTemplate(BehaviourTemplate):
+    def __init__(self, expr1, expr2):
+        self.expr1 = expr1
+        self.expr2 = expr2
+    def match(self, message):
+        return (self.expr1.match(message) | self.expr2.match(message))
+
+class ANDTemplate(BehaviourTemplate):
+    def __init__(self, expr1, expr2):
+        self.expr1 = expr1
+        self.expr2 = expr2
+    def match(self, message):
+        return (self.expr1.match(message) & self.expr2.match(message))
+
+class XORTemplate(BehaviourTemplate):
+    def __init__(self, expr1, expr2):
+        self.expr1 = expr1
+        self.expr2 = expr2
+    def match(self, message):
+        return (self.expr1.match(message) ^ self.expr2.match(message))
+
+
+'''
+class PresenceTemplate(BehaviourTemplate):
+    """
+    Template for presence notifications
+    """
+    def __init__(self, frm=None, type=None, status=None, show=None, role=None, affiliation=None):
+        self._frm, self._type, self._status, self._show, self._role, self._affiliation = frm,type,status,show,role,affiliation
+'''
+
+
+class MessageTemplate(BehaviourTemplate):
+    def __init__(self, Template):
+        # Discriminate Template class
+        if type(Template) == types.InstanceType:
+            if Template.__class__ == ACLTemplate:
+                self.match = self.acl_match
+            elif Template.__class__ == Message:
+                self.match = self.node_match
+            elif Template.__class__ == Presence:
+                self.match = self.node_match
+            elif Template.__class__ == Iq:
+                self.match = self.node_match
+            elif Template.__class__ == Node:
+                self.match = self.node_match
+            else:
+                # Default template option
+                self.match = self.node_match
+                print "MATCH: DEFAULT OPTION SHOULD NOT BE CALLED"
+
+        self.template =Template
+
+
+    def acl_match(self, message):
+        #print "acl_match called with", str(self.template), str(message)
+        if message.__class__ != ACLMessage.ACLMessage: return False
+        if (self.template.performative != None):
+            if (self.template.performative != message.performative): return False
+        if (self.template.conversation_id != None):
+            if (str(self.template.conversation_id) != str(message.conversation_id)):
+                #print "CID DIFERENTES (",str(self.template.conversation_id),",",str(message.conversation_id),")"
+                #print "PERF: (",str(message.performative),")"
+                #print "SENDER: <",str(message.getSender().getName()),">"
+                return False
+        if (self.template.sender != None):
+            if (self.template.sender != message.sender): return False
+        if (self.template.receivers != []):
+            if (self.template.receivers != message.receivers): return False
+        if (self.template.reply_to != []):
+            if (self.template.reply_to != message.reply_to): return False
+        if (self.template.content != None):
+            if (self.template.content != message.content): return False
+        if (self.template.reply_with != None):
+            if (self.template.reply_with != message.reply_with): return False
+        if (self.template.reply_by != None):
+            if (self.template.reply_by != message.reply_by): return False
+        if (self.template.in_reply_to != None):
+            if (self.template.in_reply_to != message.in_reply_to): return False
+        if (self.template.encoding != None):
+            if (self.template.encoding != message.encoding): return False
+        if (self.template.language != None):
+            if (self.template.language != message.language): return False
+        if (self.template.ontology != None):
+            if (self.template.ontology != message.ontology): return False
+        if (self.template.protocol != None):
+            if (self.template.protocol != message.protocol): return False
+        return True
+
+
+    def node_match(self, other):
+        """
+        Function that matches a xmpp Node with another one
+        """
+        #print "node_match called with", str(self.template), str(other)
+        try:
+            # Check types and classes
+            if type(self.template) != types.InstanceType:
+                #print "node_match: First node not an instance"
+                return False
+            #if not issubclass(self.template.__class__, Node) and not issubclass(self.template.__class__, Protocol) and :
+            if "Message" not in str(self.template.__class__) and "Presence" not in str(self.template.__class__) and "Iq" not in str(self.template.__class__) and "Node" not in str(self.template.__class__):
+                #print "node_match: First node not a node:", str(self.template.__class__)
+                return False
+
+            if type(other) != types.InstanceType:
+                #print "node_match: Second node not an instance"
+                return False
+            #if not issubclass(other.__class__ , Node):
+            if "Message" not in str(other.__class__) and "Presence" not in str(other.__class__) and "Iq" not in str(other.__class__) and "Node" not in str(self.template.__class__):
+                #print "node_match: Second node not a node"
+                return False
+
+            if self.template.name != None:
+                if self.template.name != other.name:
+                    #print "node_match: Different names: ", str(self.template.name), str(other.name)
+                    return False
+            if self.template.attrs != None and self.template.attrs != {}:
+                for i in self.template.attrs.items():
+                    if i not in other.attrs.items():
+                        #print "node_match: Different attrs:", str(self.template.attrs), str(other.attrs)
+                        return False
+            if self.template.data != None and self.template.data != []:
+                if self.template.data != other.data:
+                        #print "node_match: Different data:", str(self.template.data), str(other.data)
+                        return False
+            if self.template.namespace:
+                if self.template.namespace != other.namespace:
+                        #print "node_match: Different namespace:", str(self.template.namespace), str(other.namespace)
+                        return False
+
+            for kid in self.template.kids:
+                # Assemble a list of similar kids from the other node
+                suspects = other.getTags(kid.getName())
+                if not suspects: return False
+                value = False
+                for s in suspects:
+                    value = MessageTemplate(kid).node_match(s)
+                    #value = self.node_match(kid, s)
+                    if value == True:
+                        # There is a match among the supects
+                        break
+                if not value:
+                    # If we reach this point, there is no hope left . . . (no match among the suspects)
+                    return False
+
+        except Exception, e:
+            #print "Exception in node_match:", str(e)
+            return False
+        # Arriving here means this is a perfect match
+        return True
+
+    def presence_match(self, message): #frm=None, type=None, status=None, show=None):
+
+        frm,type,status,show,role,affiliation = message.frm,message.type,message.status,message.show,message.role,message.affiliation
+
+        #if self._frm    !=None and frm    != self._frm:    return False
+        if self._type        !=None and type         != self._type:        return False
+        if self._status      !=None and status       != self._status:      return False
+        if self._show        !=None and show         != self._show:        return False
+        if self._role        !=None and role         != self._role:        return False
+        if self._affiliation != None and affiliation != self._affiliation: return False
+
+        if self._frm:
+            if not JID(self._frm).getResource():
+                if self._frm != JID(frm).getBareJID():
+                    return False
+            else:
+                if self._frm != frm: return False
+
+        return True
+
+    def message_match(self, msg):
+        return self.node_match(msg)
+
+    def iq_match(self, iq):
+        return self.node_match(iq)
+
+
+
+
+
+class Behaviour(MessageReceiver.MessageReceiver):
+    def __init__(self):
+        MessageReceiver.MessageReceiver.__init__(self)
+        self.myParent = None
+        self._forceKill = threading.Event()
+        self._presenceHandlers = dict()
+
+	self._exitcode = 0
+
+    """
+    def __getattr__(self, aname):
+        return self.myAgent.__dict__[aname]
+
+    def __setattr__(self, aname, value):
+        # Base case: aname is defined locally
+        if aname in self.__dict__:
+            self.__dict__[aname] = value
+        # Second case: aname is defined in "myAgent"
+        elif "myAgent" in self.__dict__ and self.__dict__["myAgent"] and aname in self.myAgent.__dict__:
+            setattr(self.myAgent, aname, value)
+        # Third case: new local declaration
+        else:
+            self.__dict__[aname] = value
+    """
+
+    def setParent(self, parent):
+        self.myParent = parent
+    def getParent(self):
+        return self.myParent
+    def setAgent(self, agent):
+        """
+        sets the agent which controls the behavior
+        """
+        self.myAgent = agent
+
+        self.setName(str(self.myAgent.getName()) + " Behaviour")
+
+    def getAgent(self):
+        """
+        returns the agent which controls the behavior
+        """
+        return self.myAgent
+    def root(self):
+        if (self.myParent != None):
+            return self.myParent.root()
+        else:
+            return self
+
+    def done(self):
+        """
+        returns True if the behavior has finished
+        else returns False
+        """
+        return False
+
+    def _process(self):
+        """
+        main loop
+        must be overridden
+        """
+        raise NotImplementedError
+
+    def kill(self):
+        """
+        stops the behavior
+        """
+        try:
+            self._forceKill.set()
+        except:
+            #Behavior is already dead
+            pass
+
+    def onStart(self):
+        """
+        this method runs when the behavior starts
+        """
+        pass
+    def onEnd(self):
+        """
+        this method runs when the behavior stops
+        """
+        pass
+    def exitCode(self):
+        """
+        returns the default exit code for the behavior
+        """
+        return self._exitcode
+
+    def run(self):
+        self.onStart()
+        while (not self.done()) and (not self._forceKill.isSet()):
+            self._exitcode = self._process()
+            #time.sleep(0)
+        self.onEnd()
+        self.myAgent.removeBehaviour(self)
+
+    def registerPresenceHandler(self, template, handler):
+        """
+        DEPRECATED
+        register a handler that will manage all incoming presence notifications matching the given presence template
+        """
+        self._presenceHandlers[handler] = template
+
+    def managePresence(self, frm=None, type=None, status=None, show=None, role=None, affiliation=None):
+        """
+        DEPRECATED
+        manage a FIPA-formed presence message
+        """
+
+        class struct:
+            def __init__(self,frm,type,status,show,role,affiliation):
+                self.frm,self.type,self.status,self.show,self.role,self.affiliation=frm,type,status,show,role,affiliation
+        # Check every handler template to see which ones match
+        for handler in self._presenceHandlers:
+            t = self._presenceHandlers[handler]
+            if t:
+                if t.match(struct(frm,type,status,show,role,affiliation)):
+                    handler(frm,type,status,show,role,affiliation)
+
+    def setTemplate(self, template):
+        """
+        Set the message template for this behaviour
+        """
+        if self.myAgent:
+            self.myAgent._behaviourList[self] = template
+
+
+class OneShotBehaviour(Behaviour):
+    """
+    this behavior is only executed once
+    """
+    def __init__(self):
+        Behaviour.__init__(self)
+        self._firsttime = True
+    def done(self):
+        if (self._firsttime == True):
+            self._firsttime = False
+            return False
+        return True
+
+
+
+
+class PeriodicBehaviour(Behaviour):
+    """
+    this behavior runs periodically with a period
+    """
+    def __init__(self, period, timestart = None):
+        Behaviour.__init__(self)
+        self._period = period
+        if (timestart == None):
+            self._nextActivation = time.time()
+        else:
+            self._nextActivation = timestart
+
+    def getPeriod(self):
+        return self._period
+    def setPeriod(self, period):
+        self._period = period
+
+    def _process(self):
+        if time.time() >= self._nextActivation:
+            self._exitcode = self._onTick()
+            while self._nextActivation <= time.time():
+                self._nextActivation += self._period
+        else:
+            t = self._nextActivation - time.time()
+            if t > 0:
+                time.sleep(t)
+	return self._exitcode
+
+    def _onTick(self):
+        """
+        this method is executed every period
+        must be overridden
+        """
+        raise NotImplementedError
+
+
+class TimeOutBehaviour(PeriodicBehaviour):
+    """
+    this behavior is executed only one time after a timeout
+    """
+    def __init__(self, timeout):
+        PeriodicBehaviour.__init__(self, timeout, time.time()+timeout)
+        self._stop = False
+
+    def getTimeOut(self):
+        return self.getPeriod()
+    def stop(self):
+        """
+        cancels the programmed execution
+        """
+        self._stop = True
+    def done(self):
+        return self._stop
+
+    def _onTick(self):
+        if (self._stop == False):
+            self.timeOut()
+        self.stop()
+
+    def timeOut(self):
+        """
+        this method is executed after the timeout
+        must be overridden
+        """
+        raise NotImplementedError
+
+
+
+
+
+class FSMBehaviour(Behaviour):
+    """
+    this behavior is executed according to a Finite State Machine
+    """
+    def __init__(self):
+        Behaviour.__init__(self)
+        self._firstStateName = None
+        self._lastStatesNames = []
+        self._states = dict()
+        self._transitions = dict()
+        self._actualState = None
+        self._lastexitcode = None
+        self._destroy = False
+        self._firsttime = True
+
+    def setAgent(self, agent):
+        """
+        sets the parent agent
+        """
+        #self.setAgent(agent)
+        Behaviour.setAgent(self, agent)
+        for b in self._states:
+            self._states[b].setAgent(agent)
+
+    def registerState(self, behaviour, name):
+        """
+        registers a state with a behavior
+        """
+        if not issubclass(behaviour.__class__, OneShotBehaviour):
+            print "WARNING! Registering not-OneShot as FSM state"
+        behaviour.setParent(self)
+        self._states[name]=behaviour
+        self._transitions[name]=dict()
+        behaviour._receive = self._receive
+        behaviour.setTemplate = self.setTemplate
+        behaviour._stateName = name
+
+    def registerFirstState(self, behaviour, name):
+        """
+        sets the first state of the fsm
+        """
+        self.registerState(behaviour, name)
+        self._firstStateName = name
+
+    def registerLastState(self, behaviour, name):
+        """
+        sets the final state of the fsm
+        """
+        self.registerState(behaviour, name)
+        self._lastStatesNames.append(name)
+
+    def registerTransition(self, fromname, toname, event):
+        """
+        registers a transition between two states
+        """
+        self._transitions[fromname][event] = toname
+
+    def getState(self, name):
+        return self._states[name]
+
+    #def onStart(self):
+    #    self._actualState = self._firstStateName
+    #    self._actualState.start()
+    #    for b in self._states:
+    #        self._states[b].start()
+    #def onEnd(self):
+    #    for b in self._states:
+    #        self._states[b].kill()
+
+    def exitCode(self):
+        return self._lastexitcode
+
+    def done(self):
+        if self._actualState in self._lastStatesNames:
+            if self._firsttime == True:
+                # The first time "done" is called while in a final state, return False
+                # The next time, return True
+                self._firsttime = False
+                return False
+            else:
+                return True
+        else: return False
+
+    def _transitionTo(self,newState):
+        try:
+            b = self._states[self._actualState]
+            b.onEnd()
+        except KeyError:
+            pass
+        self._actualState = newState
+        try:
+            b = self._states[self._actualState]
+            b.onStart()
+        except KeyError:
+            pass
+
+    def _process(self):
+        if (self._actualState == None):
+            self._transitionTo(self._firstStateName)
+        #msg = self._receive(False)
+        b = self._states[self._actualState]
+        #if msg: b.postMessage(msg)
+        self._lastexitcode = b._process()
+        if (b.done() or b._forceKill.isSet()):
+            if not self._lastexitcode: self._lastexitcode = b.exitCode()
+            self._transitionTo(self._transitions[b._stateName][self._lastexitcode])
+            self._lastexitcode = None
+
+
+    def getCurrentState(self):
+        return self._states[self._actualState]
+
+
+
+
+class EventBehaviour(OneShotBehaviour):
+    """
+    A behaviour that is executed in response to a certain event.
+    The 'onetime' parameter in the constructor represents the
+    re-usability of the behaviour. By default, an Event behaviour is
+    re-instanced (and re-launched) every time a new event that matches
+    the template arrives. This can be changed by setting 'onetime'
+    to True, which renders the behaviour for one use only
+    """
+    onetime = False
+    def __init__(self, onetime=False):
+        self.onetime = onetime
+        OneShotBehaviour.__init__(self)
+
+    #def run(self):
+
+
+
+
+if __name__ == "__main__":
+    class TestBehaviour(PeriodicBehaviour):
+        def __init__(self, time):
+            PeriodicBehaviour.__init__(self, time)
+        def _onTick(self):
+            print "Tick: " + str(time.time())
+
+    a = TestBehaviour(5)
+    a.start()
+
+

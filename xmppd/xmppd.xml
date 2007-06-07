@@ -1,0 +1,17 @@
+
+		<server>
+	        	<servernames>
+	                	<name>localhost</name>
+		        </servernames>
+		        <certificate file="xmppd.pem"/>
+	        	<spool path="/home/jpalanca/.spade/spool"/>
+			<plugins>
+				<MUC jid="muc.localhost" name="SPADE MUC Component"/>
+			</plugins>
+                        <components>
+                                <AMS jid="ams.localhost" name="AMS" username="ams" password="jqFXjxWz"/>
+                                <DF jid="df.localhost" name="DF" username="df" password="pRWTsCxS"/>
+                                <ACC jid="acc.localhost" name="ACC" username="acc" password="MMqvGmRU"/>
+                        </components>
+		</server>
+		
