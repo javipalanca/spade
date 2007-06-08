@@ -197,11 +197,25 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
+        for child in mess.getChildren():
+            if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
+                # It is a jabber-fipa message
+                ACLmsg = ACLMessage()
+                ACLmsg._attrs.update(mess.attrs)
+                ACLmsg.setContent(mess.getBody())
+                self.postMessage(ACLmsg)
+                return True
+            
+        # Not a jabber-fipa message        
+        self.postMessage(mess)
+        return True
+        ###########
+        """
         envxml=None
         try:
             payload=mess.getBody()
         except:
-              payload=""
+            payload=""
         children = mess.getChildren()
         for child in children:
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
@@ -213,7 +227,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
                 ac = ACLParser.ACLParser()
             elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
-                  ac = ACLParser.ACLxmlParser()
+                ac = ACLParser.ACLxmlParser()
             else:
                 print "NO TENGO PARSER!"
 
@@ -233,9 +247,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         else:
             #self._other_messageCB(conn,mess)
             # We post every non-fipa jabber message "as is"
-            self.postMessage(mess)
+            self.postMessage(mess)        
 
         return True
+        """
 
     def _other_messageCB(self, conn, mess):
 	"""
@@ -340,6 +355,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (ACLmsg.getSender() == None):
             ACLmsg.setSender(self.getAID())
 
+        """
         content = ACLmsg.getContent()
         comillas_esc = '\\"'
         barrainv_esc = '\\\\'
@@ -360,13 +376,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         envelope.setPayloadEncoding("US-ASCII")
         envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())
 
-
         xc = XMLCodec.XMLCodec()
         envxml = xc.encodeXML(envelope)
 
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         xenv['content-type']='fipa.mts.env.rep.xml.std'
         xenv.addData(envxml)
+        """
+        xenv = xmpp.protocol.Node('jabber:x:fipa x')
 
         #to = tojid[0]
         # For each of the receivers, try to send the message
@@ -379,14 +396,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     isjabber = True
                     break
             if isjabber:
-                jabber_msg = xmpp.protocol.Message(jabber_id, payload, xmlns="")
-                jabber_msg.addChild(node=xenv)
+                #jabber_msg = xmpp.protocol.Message(jabber_id, payload, xmlns="")
+                jabber_msg = xmpp.protocol.Message(jabber_id, xmlns="")
+                jabber_msg.attrs.update(ACLmsg._attrs)
+                #jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
+                jabber_msg.setBody(ACLmsg.getContent())
             else:
                 # I don't understand this address, relay the message to the platform
+                #jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
                 jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
-                jabber_msg.addChild(node=xenv)
+                jabber_msg.attrs.update(ACLmsg._attrs)
+                #jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
+                jabber_msg.setBody(ACLmsg.getContent())
             self.jabber.send(jabber_msg)
 
 
