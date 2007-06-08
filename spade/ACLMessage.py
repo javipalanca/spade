@@ -52,13 +52,13 @@ class ACLMessage:
 		"""
 		if performative and (performative.lower() in self.commacts):
 			self._attrs["performative"] = performative.lower()
-		
+
 		self.sender = None
 		self.receivers = []
 		self.content = None
-		
+
 		"""
-		self.reply_to = []		
+		self.reply_to = []
 		self.reply_with = None
 		self.reply_by = None
 		self.in_reply_to = None
@@ -69,7 +69,7 @@ class ACLMessage:
 		self.conversation_id = str(self.cid_base + str(self.cid_autocount))
 		self.cid_autocount +=1
 		"""
-		
+
 		self._attrs['id'] = str(ACLMessage.cid_base + str(ACLMessage.cid_autocount))
 		ACLMessage.cid_autocount += 1
 
@@ -137,7 +137,7 @@ class ACLMessage:
 			self._attrs["reply_to"].remove(re)
 		except:
 			return False
-		
+
 		return True
 
 	def getReplyTo(self):
@@ -165,7 +165,7 @@ class ACLMessage:
 		try:
 			return self._attrs["performative"]
 		except:
-			return None		
+			return None
 
 	def setContent(self,c):
 		"""
@@ -201,7 +201,7 @@ class ACLMessage:
 	def setEncoding(self,e):
 		self._attrs["encoding"] = str(e)
 
-	def getEncoding(self):		
+	def getEncoding(self):
 		try:
 			return self._attrs["encoding"]
 		except:
@@ -289,7 +289,7 @@ class ACLMessage:
 
 	def __str__(self):
 		"""
-		returns a printable version of the message in SL0 language
+		returns a printable version of the message in ACL string representation
 		"""
 
 		p = '('

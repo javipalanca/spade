@@ -218,8 +218,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
                 self.postMessage(ACLmsg)
                 return True
-            
-        # Not a jabber-fipa message        
+
+        # Not a jabber-fipa message
         self.postMessage(mess)
         return True
         ###########
@@ -260,7 +260,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         else:
             #self._other_messageCB(conn,mess)
             # We post every non-fipa jabber message "as is"
-            self.postMessage(mess)        
+            self.postMessage(mess)
 
         return True
         """
@@ -1350,7 +1350,7 @@ class jabberProcess(threading.Thread):
 		    except Exception, e:
 			_exception = sys.exc_info()
 			if _exception[0]:
-			    print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()                
+			    print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
 			    print "Exception in jabber process: ", str(e)
 			    print color_red + "Jabber connection failed: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
 			    self._kill()
@@ -1423,6 +1423,41 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
+    class OutOfBandBehaviour(Behaviour.EventBehaviour):
+        def _process(self):
+            self.msg = self._receive(False)
+            if self.msg != None:
+				print "OOB IQ RECEIVED"
+				# Check type of oob iq
+				if self.msg.getType() == "error":
+					# Check error code
+					try:
+						if self.msg.getTag('error').getAttr("code") == "404":
+							# OOB Reject. Answer 406
+							reply = self.msg.buildReply("error")
+							reply.T.error.setAttr("code","406")
+							reply.T.error.setAttr("type","modify")
+							self.myAgent.jabber.send(reply)
+						elif self.msg.getTag('error').getAttr("code") == "406":
+							pass
+					except:
+						# WTF
+						pass
+				elif self.msg.getType() == "set":
+					# OOB proposal
+					if self.myAgent.p2p:
+						# Accept p2p proposal
+						self.myAgent.p2p_routes[self.msg.getSender().getName()] = None
+					else:
+						# Reject p2p proposal
+						reply = self.msg.buildReply("error")
+						err = Node("error", {'code':'404', 'type':'cancel'})
+						err.addChild("not-found", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
+						reply.addChild(err)
+						self.myAgent.jabber.send(reply)
+
+
+
 
     class PresenceBehaviour(Behaviour.EventBehaviour):
         def _process(self):
@@ -1515,7 +1550,7 @@ class Agent(AbstractAgent):
             return self._presence
 
 
-    def __init__(self, agentjid, password, port=5222, debug=[]):
+    def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
@@ -1539,8 +1574,13 @@ class Agent(AbstractAgent):
         # Add Presence Control Behaviour
         self.addBehaviour(Agent.PresenceBehaviour(), Behaviour.MessageTemplate(Presence()))
 
-        #�Add Roster Behaviour
+        # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
+
+        # Add Out-Of-Band Behaviour
+        self.p2p = p2p
+        self.p2p_routes = {}
+        self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS='jabber:iq:oob')))
 
         #print "### Agent %s registered"%(agentjid)
 
