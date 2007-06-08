@@ -200,9 +200,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
-                ACLmsg = ACLMessage()
+                ACLmsg = ACLMessage.ACLMessage()
                 ACLmsg._attrs.update(mess.attrs)
+                try:
+                    # Clean
+                    del ACLmsg._attrs["from"]
+                except:
+                    pass
+                try:
+                    # Clean
+                    del ACLmsg._attrs["to"]
+                except:
+                    pass
                 ACLmsg.setContent(mess.getBody())
+                # Rebuild sender and receiver
+                ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
+                ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
                 self.postMessage(ACLmsg)
                 return True
             
@@ -352,10 +365,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         sends an ACLMessage to a specific JabberID
         """
+        """
         if (ACLmsg.getSender() == None):
             ACLmsg.setSender(self.getAID())
 
-        """
         content = ACLmsg.getContent()
         comillas_esc = '\\"'
         barrainv_esc = '\\\\'
@@ -395,11 +408,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     jabber_id = address.split("://")[1]
                     isjabber = True
                     break
-            if isjabber:
+            if isjabber and str(self.getDomain()) in jabber_id:
                 #jabber_msg = xmpp.protocol.Message(jabber_id, payload, xmlns="")
                 jabber_msg = xmpp.protocol.Message(jabber_id, xmlns="")
                 jabber_msg.attrs.update(ACLmsg._attrs)
-                #jabber_msg.addChild(node=xenv)
+                jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
                 jabber_msg.setBody(ACLmsg.getContent())
             else:
@@ -407,7 +420,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
                 jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
                 jabber_msg.attrs.update(ACLmsg._attrs)
-                #jabber_msg.addChild(node=xenv)
+                jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
                 jabber_msg.setBody(ACLmsg.getContent())
             self.jabber.send(jabber_msg)

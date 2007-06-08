@@ -82,7 +82,7 @@ class ACLTemplate:
     def setInReplyTo(self, reply):
         self.in_reply_to = reply
 
-    def getInReplyTo(self,reply):
+    def getInReplyTo(self):
         return self.in_reply_to
 
     def setEncoding(self,e):
@@ -220,10 +220,10 @@ class MessageTemplate(BehaviourTemplate):
     def acl_match(self, message):
         #print "acl_match called with", str(self.template), str(message)
         if message.__class__ != ACLMessage.ACLMessage: return False
-        if (self.template.performative != None):
-            if (self.template.performative != message.performative): return False
-        if (self.template.conversation_id != None):
-            if (str(self.template.conversation_id) != str(message.conversation_id)):
+        if (self.template.getPerformative() != None):
+            if (self.template.getPerformative() != message.getPerformative()): return False
+        if (self.template.getConversationId() != None):
+            if (str(self.template.getConversationId()) != str(message.getConversationId())):
                 #print "CID DIFERENTES (",str(self.template.conversation_id),",",str(message.conversation_id),")"
                 #print "PERF: (",str(message.performative),")"
                 #print "SENDER: <",str(message.getSender().getName()),">"
@@ -232,24 +232,24 @@ class MessageTemplate(BehaviourTemplate):
             if (self.template.sender != message.sender): return False
         if (self.template.receivers != []):
             if (self.template.receivers != message.receivers): return False
-        if (self.template.reply_to != []):
-            if (self.template.reply_to != message.reply_to): return False
+        if (self.template.getReplyTo() != []):
+            if (self.template.getReplyTo() != message.getReplyTo()): return False
         if (self.template.content != None):
             if (self.template.content != message.content): return False
-        if (self.template.reply_with != None):
-            if (self.template.reply_with != message.reply_with): return False
-        if (self.template.reply_by != None):
-            if (self.template.reply_by != message.reply_by): return False
-        if (self.template.in_reply_to != None):
-            if (self.template.in_reply_to != message.in_reply_to): return False
-        if (self.template.encoding != None):
-            if (self.template.encoding != message.encoding): return False
-        if (self.template.language != None):
-            if (self.template.language != message.language): return False
-        if (self.template.ontology != None):
-            if (self.template.ontology != message.ontology): return False
-        if (self.template.protocol != None):
-            if (self.template.protocol != message.protocol): return False
+        if (self.template.getReplyWith() != None):
+            if (self.template.getReplyWith() != message.getReplyWith()): return False
+        if (self.template.getReplyBy() != None):
+            if (self.template.getReplyBy() != message.getReplyBy()): return False
+        if (self.template.getInReplyTo() != None):
+            if (self.template.getInReplyTo() != message.getInReplyTo()): return False
+        if (self.template.getEncoding() != None):
+            if (self.template.getEncoding() != message.getEncoding()): return False
+        if (self.template.getLanguage() != None):
+            if (self.template.getLanguage() != message.getLanguage()): return False
+        if (self.template.getOntology() != None):
+            if (self.template.getOntology() != message.getOntology()): return False
+        if (self.template.getProtocol() != None):
+            if (self.template.getProtocol() != message.getProtocol()): return False
         return True
 
 
