@@ -23,6 +23,7 @@ import string
 import Organization
 import Organization_new
 import copy
+import socket
 #from AMS import AmsAgentDescription
 
 import DF
@@ -93,7 +94,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             elif template and block and timeout:
                 i = timeout
                 while i > 0:
-                    #�timeout becomes the amount of 'tries' to receive a message
+                    #timeout becomes the amount of 'tries' to receive a message
                     msg = self._receive(block=True, timeout=timeout, template=None)
                     if msg:
                         print "_RECEIVE HAS A MSG:", str(msg)
@@ -1424,6 +1425,33 @@ class Agent(AbstractAgent):
     This is the main class which may be inherited to build a SPADE agent
     """
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
+    	def openP2P(self, url):
+    		"""
+    		Open a P2P connection with a remote agent
+    		"""
+
+    		# Parse url
+    		scheme, address = url.split("://",1)
+    		if scheme == "spade":
+    			# Check for address and port number
+    			l = address.split(":",1)
+    			if len(l) > 1:
+    				address = l[0]
+    				port = l[1]
+    			else:
+    				port = self.myAgent.P2PPORT
+    			
+            # Create a socket connection to the destination url
+			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			s.connect((address, port))
+			if not s:
+				# Socket creation failed, throw a exception
+				raise socket.error
+                
+            # Return socket
+			return s
+	    		
+    		
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
@@ -1433,11 +1461,7 @@ class Agent(AbstractAgent):
 					# Check error code
 					try:
 						if self.msg.getTag('error').getAttr("code") == "404":
-							# OOB Reject. Answer 406
-							reply = self.msg.buildReply("error")
-							reply.T.error.setAttr("code","406")
-							reply.T.error.setAttr("type","modify")
-							self.myAgent.jabber.send(reply)
+							pass
 						elif self.msg.getTag('error').getAttr("code") == "406":
 							pass
 					except:
@@ -1447,12 +1471,27 @@ class Agent(AbstractAgent):
 					# OOB proposal
 					if self.myAgent.p2p:
 						# Accept p2p proposal
-						self.myAgent.p2p_routes[self.msg.getSender().getName()] = None
+						try:
+							# Add remote oob data to p2p routes
+							url = msg.T.query.T.url.getData()
+							remote = {'url':url, 'socket':self.openP2P(url)}
+							d = {self.msg.getSender().getName():remote}
+							self.myAgent.p2p_routes.update(d)
+							# Send result
+							reply = msg.buildReply("result")
+							self.myAgent.jabber.send(reply)
+						except:
+							# The oob-iq was not well formed. Send 404
+							reply = self.msg.buildReply("error")
+							err = Node("error", {'code':'404', 'type':'cancel'})
+							err.addChild("not-found", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
+							reply.addChild(err)
+							self.myAgent.jabber.send(reply)
 					else:
 						# Reject p2p proposal
 						reply = self.msg.buildReply("error")
-						err = Node("error", {'code':'404', 'type':'cancel'})
-						err.addChild("not-found", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
+						err = Node("error", {'code':'406', 'type':'modify'})
+						err.addChild("not-acceptable", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
 						reply.addChild(err)
 						self.myAgent.jabber.send(reply)
 
@@ -1578,6 +1617,7 @@ class Agent(AbstractAgent):
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
         # Add Out-Of-Band Behaviour
+        self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
         self.p2p = p2p
         self.p2p_routes = {}
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS='jabber:iq:oob')))
