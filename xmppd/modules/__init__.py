@@ -40,4 +40,6 @@ addons = [
     muc.MUC,
     wq.WQ,
     #webadmin.WebAdmin
+    
+    oob.OOB,
     ]
