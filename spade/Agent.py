@@ -1425,75 +1425,91 @@ class Agent(AbstractAgent):
     This is the main class which may be inherited to build a SPADE agent
     """
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
-    	def openP2P(self, url):
-    		"""
-    		Open a P2P connection with a remote agent
-    		"""
+        def openP2P(self, url):
+            """
+            Open a P2P connection with a remote agent
+            """
 
-    		# Parse url
-    		scheme, address = url.split("://",1)
-    		if scheme == "spade":
-    			# Check for address and port number
-    			l = address.split(":",1)
-    			if len(l) > 1:
-    				address = l[0]
-    				port = l[1]
-    			else:
-    				port = self.myAgent.P2PPORT
-    			
+            # Parse url
+            scheme, address = url.split("://",1)
+            if scheme == "spade":
+                # Check for address and port number
+                l = address.split(":",1)
+                if len(l) > 1:
+                    address = l[0]
+                    port = l[1]
+                else:
+                    port = self.myAgent.P2PPORT
+            """
+            NOT FOR THE MOMENT    
             # Create a socket connection to the destination url
-			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			s.connect((address, port))
-			if not s:
-				# Socket creation failed, throw a exception
-				raise socket.error
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((address, port))
+            if not s:
+                # Socket creation failed, throw a exception
+                raise socket.error
                 
             # Return socket
-			return s
+            return s
+            """
+            return None
 	    		
     		
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-				print "OOB IQ RECEIVED"
-				# Check type of oob iq
-				if self.msg.getType() == "error":
-					# Check error code
-					try:
-						if self.msg.getTag('error').getAttr("code") == "404":
-							pass
-						elif self.msg.getTag('error').getAttr("code") == "406":
-							pass
-					except:
-						# WTF
-						pass
-				elif self.msg.getType() == "set":
-					# OOB proposal
-					if self.myAgent.p2p:
-						# Accept p2p proposal
-						try:
-							# Add remote oob data to p2p routes
-							url = msg.T.query.T.url.getData()
-							remote = {'url':url, 'socket':self.openP2P(url)}
-							d = {self.msg.getSender().getName():remote}
-							self.myAgent.p2p_routes.update(d)
-							# Send result
-							reply = msg.buildReply("result")
-							self.myAgent.jabber.send(reply)
-						except:
-							# The oob-iq was not well formed. Send 404
-							reply = self.msg.buildReply("error")
-							err = Node("error", {'code':'404', 'type':'cancel'})
-							err.addChild("not-found", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
-							reply.addChild(err)
-							self.myAgent.jabber.send(reply)
-					else:
-						# Reject p2p proposal
-						reply = self.msg.buildReply("error")
-						err = Node("error", {'code':'406', 'type':'modify'})
-						err.addChild("not-acceptable", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
-						reply.addChild(err)
-						self.myAgent.jabber.send(reply)
+                print "OOB IQ RECEIVED"
+                # Check type of oob iq
+                if self.msg.getType() == "error":
+                    # Check error code
+                    try:
+                        if self.msg.getTag('error').getAttr("code") == "404":
+                            pass
+                        elif self.msg.getTag('error').getAttr("code") == "406":
+                            pass
+                    except:
+                        # WTF
+                        pass
+                elif self.msg.getType() == "set":
+                    # OOB proposal
+                    if self.myAgent.p2p:
+                        # Accept p2p proposal
+                        try:
+                            # Add remote oob data to p2p routes
+                            url = msg.T.query.T.url.getData()
+                            remote = {'url':url, 'socket':self.openP2P(url)}
+                            d = {self.msg.getSender().getName():remote}
+                            self.myAgent.p2p_routes.update(d)
+                            # Send result INCLUDING our own p2p url
+                            reply = msg.buildReply("result")
+                            reply.T.query.delChild("url")
+                            reply.T.query.addChild("url")
+                            reply.T.query.T.url.setData(self.myAgent.getP2PUrl())
+                            self.myAgent.jabber.send(reply)
+                        except:
+                            # The oob-iq was not well formed. Send 404
+                            reply = self.msg.buildReply("error")
+                            err = Node("error", {'code':'404', 'type':'cancel'})
+                            err.addChild("not-found", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
+                            reply.addChild(err)
+                            self.myAgent.jabber.send(reply)
+                    else:
+                        # Reject p2p proposal
+                        reply = self.msg.buildReply("error")
+                        err = Node("error", {'code':'406', 'type':'modify'})
+                        err.addChild("not-acceptable", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
+                        reply.addChild(err)
+                        self.myAgent.jabber.send(reply)
+                elif self.msg.getType() == "result":
+                    # Check for remote P2P url
+                    try:
+                        url = msg.T.query.T.url.getData()
+                        remote = {'url':url, 'socket':self.openP2P(url)}
+                        d = {self.msg.getSender().getName():remote}
+                        self.myAgent.p2p_routes.update(d)
+                    except:
+                        # No url info came
+                        pass
 
 
 
@@ -1639,6 +1655,8 @@ class Agent(AbstractAgent):
         else:
             self._socialnetwork[jid] = Agent.SocialItem(self, jid, presence)
 
+    def getP2PUrl(self):
+        return str("spade://"+socket.gethostname()+":"+str(self.P2PPORT))
 
     def _register(self, password, autoregister=True):
         """
