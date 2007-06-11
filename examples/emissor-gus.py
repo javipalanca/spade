@@ -31,7 +31,7 @@ class emissor(Agent.Agent):
 
     class IqBehav(Behaviour.OneShotBehaviour):
 	def _process(self):
-	    iq = xmpp.Iq("get", xmpp.NS_DISCO_INFO, to="receptor0@thx1138.dsic.upv.es")
+	    iq = xmpp.Iq("get", xmpp.NS_DISCO_INFO, attrs={'id':'CUCU'}, to="receptor0@thx1138.dsic.upv.es")
 	    #iq.T.query.addChild("url")
 	    #iq.T.query.T.url.setData(self.myAgent.getP2PUrl())
 	    self.myAgent.jabber.send(iq)

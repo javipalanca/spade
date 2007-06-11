@@ -1426,19 +1426,50 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
+    class StreamInitiationBehaviour(Behaviour.EventBehaviour):
+        def _process(self):
+            self.msg = self._receive(False)
+            if self.msg != None:
+                print "StreamInitiation Behaviour called"
+                if self.msg.getType == "set":
+                    if self.msg.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
+                        # P2P Messaging Offer
+                        if self.myAgent.p2p:
+                            # Take note of sender's p2p address if any
+                            if self.msg.T.si.T.p2p:
+                                remote_address = str(self.msg.T.si.T.p2p.getData())
+                                d = {"url":remote_address, "p2p":True}
+                                if self.myAgent.p2p_routes[self.msg.getFrom()]:
+                                    self.myAgent.p2p_routes[self.msg.getFrom()].update(d)
+                                else:
+                                    self.myAgent.p2p_routes[self.msg.getFrom()] = d
+                            # Accept offer
+                            reply = self.msg.buildReply("result")
+                            si = iq.addChild("si", attrs={"xmlns":"http://jabber.org/protocol/si"})
+                            p2p = si.addChild("p2p", attrs={'xmlns':'http://jabber.org/protocol/si/profile/spade-p2p-messaging'})
+                            value = p2p.addChild("value")
+                            value.setData(self.myAgent.getP2PUrl())
+                        else:
+                            # Refuse offer
+                            reply = self.msg.buildReply("error")
+                            err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
+                            err.addChild("forbidden", attrs={"xmlns":"urn:ietf:params:xml:ns:xmpp-stanzas"})
+                        self.myAgent.send(reply)
+                            
+                
     class DiscoBehaviour(Behaviour.EventBehaviour):
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-                print "DISCO Behaviour called"
-                if self.msg.getType() == "get":
-                    # Inform of services
-                    reply = self.msg.buildReply("result")
-                    if self.myAgent.p2p:
-                        reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
-                        reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-                    self.myAgent.jabber.send(reply)
-                    print "SENT DISCO REPLY", str(reply)
+                print "DISCO Behaviour called"                
+                # Inform of services
+                reply = self.msg.buildReply("result")
+                if self.myAgent.p2p:
+                    reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
+                    reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+                self.myAgent.jabber.send(reply)
+                print "SENT DISCO REPLY", str(reply)
+
             
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
         def openP2P(self, url):
@@ -1621,14 +1652,16 @@ class Agent(AbstractAgent):
             return self._presence
 
 
-    def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
+    def __init__(self, agentjid, password, port=5222, debug=[], p2p=True):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
         self.debug = debug
         AbstractAgent.__init__(self, agentjid, self.server)
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
-
+        
+        self.remote_services = {}  # Services of remote agents
+        
         # Try to register
         try:
             #print "### Trying to register agent %s"%(agentjid)
@@ -1649,7 +1682,12 @@ class Agent(AbstractAgent):
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
         # Add Disco Behaviour
-        self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_DISCO_INFO)))
+        self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq("get",queryNS=NS_DISCO_INFO)))
+
+        # Add Stream Initiation Behaviour
+        iqsi = Iq()
+        iqsi.addChild("si", attrs={"xmlns":"http://jabber.org/protocol/si"})
+        self.addBehaviour(Agent.StreamInitiationBehaviour(), Behaviour.MessageTemplate(iqsi))
 
         # Add Out-Of-Band Behaviour
         self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
@@ -1673,6 +1711,67 @@ class Agent(AbstractAgent):
                 self._socialnetwork[jid].setPresence(presence)
         else:
             self._socialnetwork[jid] = Agent.SocialItem(self, jid, presence)
+
+    def requestDiscoInfo(self, to):
+        class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
+            def _process(self):
+                self.result = []
+                self.jabber.send(self.iq)
+                msg = self._receive(True,20)
+                if msg:
+                    if msg.getType() == "result":
+                        services = []
+                        for child in msg.T.query.getChildren():
+                            services.append(str(child.getAttr("var")))
+                        print "RETRIEVED SERVICES:", services
+                        self.result = services
+                    
+                
+        iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':'nsdi'+str(random.randint(1,10000))})
+        t = Behaviour.MessageTemplate(iq)
+        iq.setTo(to)
+        iq.setType("get")
+        rdif = RequestDiscoInfoBehav()
+        rdif.iq = iq
+        self.addBehaviour(rdif, t)
+        rdif.join()
+        return rdif.result
+        
+
+    def initiateStream(self, to):
+        """
+        Perform a Stream Initiation with another agent
+        in order to stablish a P2P communication channel
+        """
+        class StreamInitiationBehav(Behaviour.OneShotBehaviour):
+            def _process(self):
+                self.result = False
+                self.myAgent.jabber.send(self.iq)
+                msg = self._receive(True, 20)
+                if msg:
+                    if msg.getType("result"):
+                        print "StreamRequest Agreed"
+                    elif msg.getType("error"):
+                        print "StreamRequest Refused"
+                
+
+        # First deal with Disco Info request
+        services = self.requestDiscoInfo(to)
+        if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
+            # Offer Stream Initiation
+            iq = xmpp.Iq(attrs={'id':'offer'+str(random.randint(1,10000))})
+            t = Behaviour.MessageTemplate(iq)
+            iq.setTo(to)
+            iq.setType("set")
+            si = xmpp.Node("si", {"xmlns":"http://jabber.org/protocol/si","profile":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+            if self.p2p:
+                p2p = xmpp.Node("p2p", attrs={'xmlns':'http://jabber.org/protocol/si/profile/spade-p2p-messaging'})
+                si.addChild(node=p2p)
+            iq.addChild(node=si)
+            sib = StreamInitiationBehav()
+            sib.iq = iq
+            self.addBehaviour(sib, t)
+            sib.join()
 
     def getP2PUrl(self):
         return str("spade://"+socket.gethostname()+":"+str(self.P2PPORT))
