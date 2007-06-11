@@ -1375,15 +1375,15 @@ class Router(PlugIn):
 #          the semantics of the qualifying namespace define a reply that the server can provide, the server
 #          MUST reply to the stanza on behalf of the user; if not, the server MUST reply with a
 #          <service-unavailable/> stanza error.
-#          UPDATE: Unless it is an OUT-OF-BAND iq stanza
-        elif name =="iq" and stanza.getQueryNS() == "jabber:iq:oob":
-            s.enqueue(stanza)
-            if raiseFlag: raise NodeProcessed
-        return
+#	UPDATE: Or not.
+		if name=='iq':
+		    s.enqueue(stanza)
+		    if raiseFlag: raise NodeProcessed
+		return
 # 5. Else if the JID is of the form <user@domain> and there are no available resources associated with
 #    the user, how the stanza is handled depends on the stanza type:
-        else:
-            print "SPOOOOOTTTTTTTSPOOOOOTTTTTTT 2"
+	    else:
+		print "SPOOOOOTTTTTTTSPOOOOOTTTTTTT 2"
 		self.intra_route(stanza) ## Try to outsource this guy!
 
 #       1. For presence stanzas of type "subscribe", "subscribed", "unsubscribe", and "unsubscribed",

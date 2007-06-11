@@ -15,5 +15,6 @@ class OOB(PlugIn):
         if s:
             # Relay stanza
             s.enqueue(stanza)
+            self.DEBUG("OOB stanza relayed from %s to %s"%(str(session.peer),str(stanza['to'])),"info")
         raise NodeProcessed
     
