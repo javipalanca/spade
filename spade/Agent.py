@@ -28,7 +28,7 @@ import socket
 
 import DF
 
-from xmpp import Iq, Presence,Protocol, NS_ROSTER
+from xmpp import Iq, Presence,Protocol, NS_ROSTER, NS_DISCO_INFO
 
 # Taken from xmpp debug
 color_none         = chr(27) + "[0m"
@@ -198,6 +198,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
+        print "JMC:", str(mess)
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
@@ -222,6 +223,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         # Not a jabber-fipa message
         self.postMessage(mess)
+        raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
         return True
         ###########
         """
@@ -1424,6 +1426,20 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
+    class DiscoBehaviour(Behaviour.EventBehaviour):
+        def _process(self):
+            self.msg = self._receive(False)
+            if self.msg != None:
+                print "DISCO Behaviour called"
+                if self.msg.getType() == "get":
+                    # Inform of services
+                    reply = self.msg.buildReply("result")
+                    if self.myAgent.p2p:
+                        reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
+                        reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+                    self.myAgent.jabber.send(reply)
+                    print "SENT DISCO REPLY", str(reply)
+            
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
         def openP2P(self, url):
             """
@@ -1496,7 +1512,7 @@ class Agent(AbstractAgent):
                     else:
                         # Reject p2p proposal
                         reply = self.msg.buildReply("error")
-                        err = Node("error", {'code':'406', 'type':'modify'})
+                        err = xmpp.Node("error", {'code':'406', 'type':'modify'})
                         err.addChild("not-acceptable", {'xmlns':'urn:ietf:params:xml:ns:xmpp-stanzas'})
                         reply.addChild(err)
                         self.myAgent.jabber.send(reply)
@@ -1632,11 +1648,14 @@ class Agent(AbstractAgent):
         # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
+        # Add Disco Behaviour
+        self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_DISCO_INFO)))
+
         # Add Out-Of-Band Behaviour
         self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
         self.p2p = p2p
         self.p2p_routes = {}
-        self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS='jabber:iq:oob')))
+        #self.addBehaviour(Agent.OutOfBandBehaviour(), Behaviour.MessageTemplate(Iq(queryNS='jabber:iq:oob')))
 
         #print "### Agent %s registered"%(agentjid)
 
