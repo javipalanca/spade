@@ -29,6 +29,13 @@ class emissor(Agent.Agent):
         emissor.lock.release()
 	#print "decrementa_agents: nagents = " + str(emissor.nagents)
 
+    class IqBehav(Behaviour.OneShotBehaviour):
+	def _process(self):
+	    iq = xmpp.Iq("set", "jabber:iq:oob", to="receptor0@thx1138.dsic.upv.es")
+	    iq.T.query.addChild("url")
+	    iq.T.query.T.url.setData(self.myAgent.getP2PUrl())
+	    self.myAgent.jabber.send(iq)
+
     class BehaviourDefecte(Behaviour.Behaviour):
                 
         def _process(self):
@@ -127,7 +134,9 @@ class emissor(Agent.Agent):
 
 	#while not emissor.go:
 	#	time.sleep(0.1)
-	
+
+	self.addBehaviour(self.IqBehav())
+	time.sleep(5)
         db = self.BehaviourDefecte()
         self.setDefaultBehaviour(db)
 
