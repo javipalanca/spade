@@ -135,7 +135,8 @@ class emissor(Agent.Agent):
 	#while not emissor.go:
 	#	time.sleep(0.1)
 
-	self.addBehaviour(self.IqBehav())
+	#self.addBehaviour(self.IqBehav())
+	self.initiateStream("receptor0@thx1138.dsic.upv.es")
 	time.sleep(5)
         db = self.BehaviourDefecte()
         self.setDefaultBehaviour(db)

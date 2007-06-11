@@ -1716,7 +1716,7 @@ class Agent(AbstractAgent):
         class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
             def _process(self):
                 self.result = []
-                self.jabber.send(self.iq)
+                self.myAgent.jabber.send(self.iq)
                 msg = self._receive(True,20)
                 if msg:
                     if msg.getType() == "result":
@@ -1759,6 +1759,7 @@ class Agent(AbstractAgent):
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
             # Offer Stream Initiation
+            print "Offer Stream Initiation"
             iq = xmpp.Iq(attrs={'id':'offer'+str(random.randint(1,10000))})
             t = Behaviour.MessageTemplate(iq)
             iq.setTo(to)
