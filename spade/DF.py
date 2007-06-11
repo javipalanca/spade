@@ -316,6 +316,9 @@ class DfAgentDescription:
 	def getServices(self):
 		return self.services
 
+	def addService(self, s):
+		self.services.append(s)
+
 	def getProtocols(self):
 		return self.protocols
 
@@ -456,8 +459,14 @@ class ServiceDescription:
 	def getName(self):
 		return self.name
 
+	def setName(self, name):
+		self.name = name
+
 	def getType(self):
 		return self.type
+
+	def setType(self, type):
+		self.type = type
 
 	def getProtocols(self):
 		return self.protocols
