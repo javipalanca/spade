@@ -24,6 +24,7 @@ import Organization
 import Organization_new
 import copy
 import socket
+import SocketServer
 #from AMS import AmsAgentDescription
 
 import DF
@@ -1426,6 +1427,20 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
+    class P2PBehaviour(Behaviour.Behaviour):
+        class P2PRequestHandler(SocketServer.StreamRequestHandler):
+            def handle(self):
+                pass
+                
+        def _process(self):
+            self.server.handle_request()
+        
+        def onStart(self):
+            self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
+            self.server._jabber_messageCB = self.myAgent._jabber_messageCB
+            print "P2P Behaviour Started"
+
+    
     class StreamInitiationBehaviour(Behaviour.EventBehaviour):
         def _process(self):
             self.msg = self._receive(False)
@@ -1685,7 +1700,7 @@ class Agent(AbstractAgent):
         self.addBehaviour(Agent.PresenceBehaviour(), Behaviour.MessageTemplate(Presence()))
 
         # Add Roster Behaviour
-        #self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
+        self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
         # Add Disco Behaviour
         self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq("get",queryNS=NS_DISCO_INFO)))
@@ -1701,6 +1716,7 @@ class Agent(AbstractAgent):
         self.p2p = p2p
         self.p2p_routes = {}
         #self.addBehaviour(Agent.OutOfBandBehaviour(), Behaviour.MessageTemplate(Iq(queryNS='jabber:iq:oob')))
+        self.addBehaviour(Agent.P2PBehaviour())
 
         #print "### Agent %s registered"%(agentjid)
 
