@@ -44,6 +44,8 @@ class Router(PlugIn):
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#traffic")
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#roomconfig")
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#register")
+	# Stream Initiation	
+        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/si')
 
 	server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
 

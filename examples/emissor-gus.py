@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 
 import sys
 import os
@@ -31,10 +31,9 @@ class emissor(Agent.Agent):
 
     class IqBehav(Behaviour.OneShotBehaviour):
 	def _process(self):
-	    iq = xmpp.Iq("get", xmpp.NS_DISCO_INFO, attrs={'id':'CUCU'}, to="receptor0@thx1138.dsic.upv.es")
-	    #iq.T.query.addChild("url")
-	    #iq.T.query.T.url.setData(self.myAgent.getP2PUrl())
-	    self.myAgent.jabber.send(iq)
+	    #iq = xmpp.Iq("get", xmpp.NS_DISCO_INFO, attrs={'id':'CUCU'}, to="receptor0@thx1138.dsic.upv.es")
+	    #self.myAgent.jabber.send(iq)
+	    self.myAgent.initiateStream("receptor0@thx1138.dsic.upv.es")
 
     class BehaviourDefecte(Behaviour.Behaviour):
                 
@@ -135,11 +134,10 @@ class emissor(Agent.Agent):
 	#while not emissor.go:
 	#	time.sleep(0.1)
 
-	#self.addBehaviour(self.IqBehav())
-	self.initiateStream("receptor0@thx1138.dsic.upv.es")
-	time.sleep(5)
+	self.addBehaviour(self.IqBehav())
+	#self.initiateStream("receptor0@thx1138.dsic.upv.es")
         db = self.BehaviourDefecte()
-        self.setDefaultBehaviour(db)
+        #self.setDefaultBehaviour(db)
 
         
 

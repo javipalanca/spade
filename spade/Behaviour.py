@@ -4,6 +4,7 @@ import ACLMessage
 import MessageReceiver
 import threading
 import types
+import copy
 
 from xmpp import Node, Message, Presence, Iq
 import xmpp
@@ -214,7 +215,7 @@ class MessageTemplate(BehaviourTemplate):
                 self.match = self.node_match
                 print "MATCH: DEFAULT OPTION SHOULD NOT BE CALLED"
 
-        self.template =Template
+        self.template = copy.copy(Template)
 
 
     def acl_match(self, message):

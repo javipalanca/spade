@@ -154,7 +154,7 @@ class ACLMessage:
 		sets the message performative (string)
 		must be in ACLMessage.commacts
 		"""
-		if p.lower() in self.commacts:
+		if p and (p.lower() in self.commacts):
 			#self.performative = p.lower()
 			self._attrs["performative"] = p.lower()
 
