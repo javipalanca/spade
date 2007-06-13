@@ -1439,10 +1439,11 @@ class Agent(AbstractAgent):
                             if self.msg.T.si.T.p2p:
                                 remote_address = str(self.msg.T.si.T.p2p.getData())
                                 d = {"url":remote_address, "p2p":True}
-                                if self.myAgent.p2p_routes.has_key(self.msg.getFrom()):
-                                    self.myAgent.p2p_routes[self.msg.getFrom()].update(d)
+                                if self.myAgent.p2p_routes.has_key(str(self.msg.getFrom().getStripped())):
+                                    self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].update(d)
                                 else:
-                                    self.myAgent.p2p_routes[self.msg.getFrom()] = d
+                                    self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())] = d
+                                print "P2P ROUTES", str(self.myAgent.p2p_routes)
                             # Accept offer
                             reply = self.msg.buildReply("result")
                             si = reply.addChild("si")
@@ -1457,7 +1458,7 @@ class Agent(AbstractAgent):
                             err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
                             err.addChild("forbidden")
                             err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
-                        self.myAgent.jabber.send(reply)
+                        self.myAgent.jabber.send(reply)                        
                             
                 
     class DiscoBehaviour(Behaviour.EventBehaviour):
@@ -1471,7 +1472,7 @@ class Agent(AbstractAgent):
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                 self.myAgent.jabber.send(reply)
-                print "SENT DISCO REPLY", str(reply)
+                #print "SENT DISCO REPLY", str(reply)
 
             
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
@@ -1760,6 +1761,17 @@ class Agent(AbstractAgent):
                 if msg:
                     if msg.getType() =="result":
                         print "StreamRequest Agreed"
+                        print msg
+                        try:
+                            remote_address = str(msg.T.si.T.p2p.T.value.getData())
+                            d = {"url":remote_address, "p2p":True}
+                            if self.myAgent.p2p_routes.has_key(str(msg.getFrom().getStripped())):
+                                self.myAgent.p2p_routes[str(msg.getFrom().getStripped())].update(d)
+                            else:
+                                self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = d
+                            print "P2P ROUTES", str(self.myAgent.p2p_routes)
+                        except Exception, e:
+                            print "Malformed StreamRequest Answer", str(e)
                     elif msg.getType() == "error":
                         print "StreamRequest Refused"
                 
@@ -1780,6 +1792,7 @@ class Agent(AbstractAgent):
             if self.p2p:
                 p2p = xmpp.Node("p2p")
                 p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
+                p2p.setData(self.getP2PUrl())
                 si.addChild(node=p2p)
             iq.addChild(node=si)
             sib = StreamInitiationBehav()
