@@ -1430,7 +1430,13 @@ class Agent(AbstractAgent):
     class P2PBehaviour(Behaviour.Behaviour):
         class P2PRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
-                pass
+                data = self.rfile.read()
+                print "P2PBehaviour Received:", str(data)
+                try:
+                    if data:
+                        self.server.jabber.Dispatcher.Stream.Parse(data)
+                except Exception, e:
+                    print "Exception receiving P2P message:", str(e)
                 
         def _process(self):
             self.server.handle_request()
@@ -1438,7 +1444,8 @@ class Agent(AbstractAgent):
         def onStart(self):
             self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
-            print "P2P Behaviour Started"
+            self.server.jabber = self.myAgent.jabber
+            print "P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
 
     
     class StreamInitiationBehaviour(Behaviour.EventBehaviour):
