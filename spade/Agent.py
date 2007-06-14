@@ -194,7 +194,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 	#self._roster = conn.getRoster()
 
-    def _jabber_messageCB(self, conn, mess):
+    def _jabber_messageCB(self, conn, mess, raiseFlag=True):
         """
         message callback
         read the message envelope and post the message to the agent
@@ -219,12 +219,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
                 ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
                 self.postMessage(ACLmsg)
-                raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
+                if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
                 return True
 
         # Not a jabber-fipa message
         self.postMessage(mess)
-        raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
+        if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
         return True
         ###########
         """
@@ -1434,7 +1434,8 @@ class Agent(AbstractAgent):
                 print "P2PBehaviour Received:", str(data)
                 try:
                     if data:
-                        self.server.jabber.Dispatcher.Stream.Parse(data)
+                        n = xmpp.simplexml.XML2Node(str(data))
+                        self.server._jabber_messageCB(None,n,raiseFlag=False)
                 except Exception, e:
                     print "Exception receiving P2P message:", str(e)
                 
@@ -1443,8 +1444,7 @@ class Agent(AbstractAgent):
         
         def onStart(self):
             self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
-            self.server._jabber_messageCB = self.myAgent._jabber_messageCB
-            self.server.jabber = self.myAgent.jabber
+            self.server._jabber_messageCB = self.myAgent._jabber_messageCB            
             print "P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
 
     
