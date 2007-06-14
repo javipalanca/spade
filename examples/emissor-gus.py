@@ -29,11 +29,6 @@ class emissor(Agent.Agent):
         emissor.lock.release()
 	#print "decrementa_agents: nagents = " + str(emissor.nagents)
 
-    class IqBehav(Behaviour.OneShotBehaviour):
-	def _process(self):
-	    #iq = xmpp.Iq("get", xmpp.NS_DISCO_INFO, attrs={'id':'CUCU'}, to="receptor0@thx1138.dsic.upv.es")
-	    #self.myAgent.jabber.send(iq)
-	    self.myAgent.initiateStream("receptor0@thx1138.dsic.upv.es")
 
     class BehaviourDefecte(Behaviour.Behaviour):
                 
@@ -65,20 +60,21 @@ class emissor(Agent.Agent):
 
 	def onStart(self):
 		pass
-		time.sleep(5)
 		#print "EMISOR BEHAV: "+ str(self.getQueue())
 		#print str(self.myAgent.getName()) + ": BehaviourDefecte onStart()"
 
         def onEnd(self):
             #posar estadistiques i si es l'ultim killall
             #print "Mitjana RTT",self.myAgent.mitjana/self.myAgent.nmsg
-            self.rtt = "Mitjana RTT " + str(self.myAgent.mitjana / self.myAgent.nmsg) + "\n"
+            """
+	    self.rtt = "Mitjana RTT " + str(self.myAgent.mitjana / self.myAgent.nmsg) + "\n"
 	    self.nom_fitxer = os.sep + "tmp" + os.sep + str(self.myAgent.getName()) + ".log"
 	    f = open(self.nom_fitxer, "w")
 	    f.write(str(self.myAgent.getName()))
 	    f.write(" ")
 	    f.write(self.rtt)
 	    f.close()
+	    """
             self.myAgent.decrementa_agents()
             #pdb.set_trace()
             #if emissor.nagents == 0:
@@ -135,7 +131,7 @@ class emissor(Agent.Agent):
 	#while not emissor.go:
 	#	time.sleep(0.1)
 
-	self.addBehaviour(self.IqBehav())
+	#self.addBehaviour(self.IqBehav())
         db = self.BehaviourDefecte()
         self.setDefaultBehaviour(db)
 

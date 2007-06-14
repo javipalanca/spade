@@ -76,7 +76,6 @@ if __name__ == "__main__":
         receptors.append( receptor(agent,"secret") )
         print "agent "+agent+" registrant-se!!"
         receptors[i].start()
-        #sleep(5)
 
     #agent = "receptor"+str(nagents-1)+sufix+"@" + host
     #ultim = receptor(agent,"secret")
