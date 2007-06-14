@@ -427,8 +427,44 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
                 jabber_msg.setBody(ACLmsg.getContent())
-            self.jabber.send(jabber_msg)
 
+            # If the receiver is one of our p2p contacts, send the message through p2p.
+            # If it's not or if it fails, send it through the jabber server
+            if jabber_id in self.p2p_routes.keys() and self.p2p_routes[jabber_id]['p2p'] and self.p2p_routes[jabber_id]['url']:
+                try:
+                    self.send_p2p(jabber_msg, jabber_id)
+                except Exception, e:
+                    print "Exception in send_p2p", str(e)
+                    self.jabber.send(jabber_msg)
+            else:
+                self.jabber.send(jabber_msg)
+
+    def send_p2p(self, jabber_msg, to=""):
+        print "SENDING ",str(jabber_msg), "THROUGH P2P"
+        # Get the address
+        if not to: to = str(jabber_msg.getTo())
+        url = self.p2p_routes[to]["url"]            
+        # Parse url
+        scheme, address = url.split("://",1)
+        if scheme == "spade":
+            # Check for address and port number
+            l = address.split(":",1)
+            if len(l) > 1:
+                address = l[0]
+                port = int(l[1])
+        
+        # Create a socket connection to the destination url
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((address, port))
+        if not s:
+            # Socket creation failed, throw a exception
+            raise socket.error
+            
+        # Send message through socket
+        s.send(str(jabber_msg))
+        # Close socket
+        s.close()
+        return True
 
     def _kill(self):
 	"""
@@ -1435,7 +1471,8 @@ class Agent(AbstractAgent):
                 try:
                     if data:
                         n = xmpp.simplexml.XML2Node(str(data))
-                        self.server._jabber_messageCB(None,n,raiseFlag=False)
+                        m = xmpp.Message(node=n)
+                        self.server._jabber_messageCB(None,m,raiseFlag=False)
                 except Exception, e:
                     print "Exception receiving P2P message:", str(e)
                 

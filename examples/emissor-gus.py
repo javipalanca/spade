@@ -65,6 +65,7 @@ class emissor(Agent.Agent):
 
 	def onStart(self):
 		pass
+		time.sleep(5)
 		#print "EMISOR BEHAV: "+ str(self.getQueue())
 		#print str(self.myAgent.getName()) + ": BehaviourDefecte onStart()"
 
@@ -135,9 +136,8 @@ class emissor(Agent.Agent):
 	#	time.sleep(0.1)
 
 	self.addBehaviour(self.IqBehav())
-	#self.initiateStream("receptor0@thx1138.dsic.upv.es")
         db = self.BehaviourDefecte()
-        #self.setDefaultBehaviour(db)
+        self.setDefaultBehaviour(db)
 
         
 
