@@ -72,7 +72,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             m = xmpp.Message(node=n)
                             self.server._jabber_messageCB(None,m,raiseFlag=False)                       
                 except:
-                    print "P2P Socket Closed"
+                    print "P2P Socket Closed to", str(self.client_address)
                 
         def _process(self):
             self.server.handle_request()
@@ -324,51 +324,64 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return True
 
         # Not a jabber-fipa message
+        # Check wether is an offline action
+        if not self._running:
+            if mess.getName() == "iq":
+                # Check if it's an offline disco info request
+                if mess.getAttr("type") == "get":
+                    q = mess.getTag("query")
+                    if q and q.getNamespace() == NS_DISCO_INFO:
+                        print "DISCO Behaviour called (offline)"
+                        # Inform of services
+                        reply = mess.buildReply("result")
+                        if self.p2p:
+                            reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
+                            reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+                        self.jabber.send(reply)
+                        if raiseFlag: raise xmpp.NodeProcessed
+                        return True
+                # Check if it's an offline stream initiation request
+                if mess.getAttr("type") == "set":
+                    q = mess.getTag("si")
+                    if q:                    
+                        print "StreamInitiation Behaviour called (offline)"
+                        if mess.getType() == "set":
+                            if mess.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
+                                # P2P Messaging Offer
+                                if self.p2p:
+                                    # Take note of sender's p2p address if any
+                                    if mess.T.si.T.p2p:
+                                        remote_address = str(mess.T.si.T.p2p.getData())
+                                        d = {"url":remote_address, "p2p":True}
+                                        if self.p2p_routes.has_key(str(mess.getFrom().getStripped())):
+                                            self.p2p_routes[str(mess.getFrom().getStripped())].update(d)
+                                            if self.p2p_routes[str(mess.getFrom().getStripped())].has_key("socket"):
+                                                self.p2p_routes[str(mess.getFrom().getStripped())]["socket"].close()
+                                        else:
+                                            self.p2p_routes[str(mess.getFrom().getStripped())] = d
+                                        print "P2P ROUTES", str(self.p2p_routes)
+                                    # Accept offer
+                                    reply = mess.buildReply("result")
+                                    si = reply.addChild("si")
+                                    si.setNamespace("http://jabber.org/protocol/si")
+                                    p2p = si.addChild("p2p")
+                                    p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
+                                    value = p2p.addChild("value")
+                                    value.setData(self.getP2PUrl())
+                                else:
+                                    # Refuse offer
+                                    reply = mess.buildReply("error")
+                                    err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
+                                    err.addChild("forbidden")
+                                    err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
+                                self.jabber.send(reply)
+                                if raiseFlag: raise xmpp.NodeProcessed
+                                return True
+        
         self.postMessage(mess)
         if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
         return True
-        ###########
-        """
-        envxml=None
-        try:
-            payload=mess.getBody()
-        except:
-            payload=""
-        children = mess.getChildren()
-        for child in children:
-            if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
-                envxml = child.getData()
-        if (envxml != None):
-            xc = XMLCodec.XMLCodec()
-            envelope = xc.parse(str(envxml))
 
-            if str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.string.std":
-                ac = ACLParser.ACLParser()
-            elif str(envelope.getAclRepresentation()).lower() == "fipa.acl.rep.xml.std":
-                ac = ACLParser.ACLxmlParser()
-            else:
-                print "NO TENGO PARSER!"
-
-            ACLmsg = ac.parse(str(payload))
-            content = ACLmsg.getContent()
-            comillas_esc = '"'
-            barrainv_esc = '\\'
-            mtmp1 = comillas_esc.join(content.split('\\"'))
-            mtmp2 = barrainv_esc.join(mtmp1.split('\\\\'))
-            payload_esc = mtmp2
-            ACLmsg.setContent(payload_esc)
-
-            ### If the message is directed to a MUC room it is posted directly
-            frm = mess.getFrom()
-
-            self.postMessage(ACLmsg)
-        else:
-            #self._other_messageCB(conn,mess)
-            # We post every non-fipa jabber message "as is"
-            self.postMessage(mess)
-
-        return True
-        """
 
     def _other_messageCB(self, conn, mess):
 	"""
@@ -468,7 +481,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             def _process(self):
                 self.result = []
                 self.myAgent.jabber.send(self.iq)
-                msg = self._receive(True, 20)
+                msg = self._receive(True, 3)
                 if msg:
                     if msg.getType() == "result":
                         services = []
@@ -517,7 +530,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.result = False
                 self.myAgent.jabber.send(self.iq)
                 #print "SIB SENT:", str(self.iq)
-                msg = self._receive(True, 10)
+                msg = self._receive(True, 3)
                 if msg:
                     self.result = False
                     if msg.getType() =="result":
@@ -539,6 +552,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     elif msg.getType() == "error":
                         print "StreamRequest Refused"
                         self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
+                else:
+                    # Not message, treat like a refuse
+                    print "StreamRequest Refused"
+                    self.myAgent.p2p_routes[str(iq.getTo().getStripped())] = {'p2p':False}
 
         print "INITIATE STREAM CALLED BY", str(self.getName())
         # First deal with Disco Info request
@@ -597,7 +614,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return result
 
 
-    def send(self, ACLmsg, method="auto"):
+    def send(self, ACLmsg, method="jabber"):
 	"""
 	sends an ACLMessage
 	"""
@@ -681,7 +698,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 try:
                     self.send_p2p(jabber_msg, jabber_id)
                 except Exception, e:
-                    print "Exception in send_p2p", str(e)
+                    #print "Exception in send_p2p", str(e), e
+                    print "P2P Connection to",jabber_id,"prevented. Falling back"
                     del self.p2p_routes[jabber_id]
                     if method=="auto": self.jabber.send(jabber_msg)
             else:
@@ -788,7 +806,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #Check for queued messages
                 proc = False
                 toRemove = []  # List of behaviours to remove after this pass
-                msg = self._receive(block=True, timeout=0.005)
+                msg = self._receive(block=True, timeout=0.01)
                 if msg != None:
                     bL = copy.copy(self._behaviourList)
                     for b in bL:
