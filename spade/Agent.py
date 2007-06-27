@@ -1513,11 +1513,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 except:
                     return
 
+
     def searchService(self, DAD, debug=True):
     	"""
     	search a service in the DF
     	the service template is a DfAgentDescriptor
+        
     	"""
+        a=1
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())

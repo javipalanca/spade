@@ -661,6 +661,7 @@ class FSMBehaviour(Behaviour):
         #msg = self._receive(False)
         b = self._states[self._actualState]
         #if msg: b.postMessage(msg)
+        b.done()        
         self._lastexitcode = b._process()
         if (b.done() or b._forceKill.isSet()):
             if not self._lastexitcode: self._lastexitcode = b.exitCode()
