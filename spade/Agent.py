@@ -1520,7 +1520,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     	the service template is a DfAgentDescriptor
         
     	"""
-        a=8
+        a=9
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
