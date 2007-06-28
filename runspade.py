@@ -4,6 +4,7 @@ import os #, signal
 import sys
 import time
 import thread
+from os.path import *
 
 from getopt import getopt
 try:
@@ -44,6 +45,24 @@ def print_version():
   print "SPADE %s by Javi Palanca, Gustavo Aranda, Miguel Escriva and others" % VERSION
   print "jpalanca@dsic.upv.es - http://spade.gti-ia.dsic.upv.es/"
   raise SystemExit
+
+def launchtg():
+	import pkg_resources
+	pkg_resources.require("TurboGears")	
+	from turbogears import update_config, start_server
+	import cherrypy
+	cherrypy.lowercase_api = True
+	"""
+	if len(sys.argv) > 1:
+	    update_config(configfile=sys.argv[1], 
+	        modulename="swi.config")
+	"""
+	if exists(join(dirname(__file__), "setup.py")):
+	    update_config(configfile="dev.cfg",modulename="swi.config")
+	else:
+	    update_config(configfile="prod.cfg",modulename="swi.config")	
+	from swi.controllers import Root
+	start_server(Root())
 
 # Actually start the program running.
 def main():
@@ -130,6 +149,9 @@ def main():
 	#	os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
 	sys.stdout.write(".")
   	sys.stdout.flush()
+
+  	thread.start_new_thread(launchtg, tuple())
+
 
   except Exception,e:
 	print str(e)

@@ -19,6 +19,7 @@ import ACLMessage
 import types
 import ACLParser
 import BasicFipaDateTime
+from os.path import *
 
 class PlatformRestart(Exception):
     def __init__(self): pass
@@ -539,6 +540,30 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 
 class SpadePlatform(Agent.PlatformAgent):
+    class TGWebAdminBehaviour(Behaviour.OneShotBehaviour):
+        def __init__(self, cfg=None):
+            Behaviour.OneShotBehaviour.__init__(self)
+            self.cfg = cfg
+            
+        def _process(self):
+            import pkg_resources
+            pkg_resources.require("TurboGears")            
+            from turbogears import update_config, start_server
+            import cherrypy
+            cherrypy.lowercase_api = True            
+            
+            if self.cfg:
+                update_config(configfile=self.cfg, modulename="swi.config")
+            elif exists(join(dirname(__file__), "setup.py")):
+                update_config(configfile="dev.cfg",modulename="swi.config")
+            else:
+                update_config(configfile="prod.cfg",modulename="swi.config")
+            
+            from swi.controllers import Root            
+
+            #start_server(Root())
+
+            
     class WebAdminBehaviour(Behaviour.Behaviour):
 
         def __init__(self):
@@ -666,7 +691,7 @@ class SpadePlatform(Agent.PlatformAgent):
 
     def _setup(self):
         self.setDefaultBehaviour(self.RouteBehaviour())
-        self.addBehaviour(self.WebAdminBehaviour())
+        #self.addBehaviour(self.TGWebAdminBehaviour())
         # Load MTPs
         self.mtps = {}
         for name,mtp in self.config.acc.mtp.items():
