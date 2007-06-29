@@ -46,7 +46,7 @@ def print_version():
   print "jpalanca@dsic.upv.es - http://spade.gti-ia.dsic.upv.es/"
   raise SystemExit
 
-def launchtg():
+def launchtg(platform):
 	import pkg_resources
 	pkg_resources.require("TurboGears")	
 	from turbogears import update_config, start_server
@@ -62,7 +62,9 @@ def launchtg():
 	else:
 	    update_config(configfile="prod.cfg",modulename="swi.config")	
 	from swi.controllers import Root
-	start_server(Root())
+	r = Root()
+	r.platform = platform
+	start_server(r)
 
 # Actually start the program running.
 def main():
@@ -150,8 +152,7 @@ def main():
 	sys.stdout.write(".")
   	sys.stdout.flush()
 
-  	thread.start_new_thread(launchtg, tuple())
-
+  	thread.start_new_thread(launchtg, tuple([platform]))
 
   except Exception,e:
 	print str(e)

@@ -47,7 +47,6 @@ class SpadeBackend:
     def __init__(self, configfilename="/etc/spade/spade.xml"):
         parser = SpadeConfigParser.ConfigParser()
         self.config = parser.parse(configfilename)
-
         self.ams=None
         self.df =None        
         self.alive = True  # Alive flag
