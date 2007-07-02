@@ -1,0 +1,241 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #EAC99A url('../images/img01.jpg');
+	font: normal small 'Trebuchet MS', Arial, Helvetica, sans-serif;
+	color: #A38560;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+	color: #B27217;
+}
+
+h1 {
+}
+
+h2 {
+	font-size: 2em;
+}
+
+h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+p, blockquote, ul, ol {
+	margin-bottom: 2em;
+	line-height: 180%;
+}
+
+p {
+}
+
+blockquote {
+}
+
+ul {
+	list-style: none;
+}
+
+ul li {
+	padding-left: 1em;
+	background: url('../images/img06.gif') no-repeat left center;
+}
+
+ol {
+	margin-left: 3em;
+}
+
+ol li {
+}
+
+pre, code {
+}
+
+pre {
+}
+
+code {
+}
+
+a {
+	color: #D65601;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:visited {
+}
+
+img {
+}
+
+input, textarea, select {
+}
+
+input {
+}
+
+textarea {
+}
+
+select {
+}
+
+.bg {
+	background: url('../images/img02.jpg') repeat-x;
+}
+
+/* Header */
+
+#header {
+	width: 720px;
+	height: 70px;
+	margin: 0 auto;
+	padding-top: 40px;
+}
+
+/* Logo */
+
+#logo {
+	float: left;
+}
+
+#logo h1 {
+	margin: 0;
+	font-size: 2em;
+}
+
+#logo h2 {
+	margin: 0;
+	padding-left: .1em;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+#logo a {
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+/* Menu */
+
+#menu {
+	float: right;
+}
+
+#menu h2 {
+	display: none;
+}
+
+#menu ul {
+	margin: 0;
+	padding-top: 2.35em;
+	list-style: none;
+}
+
+#menu li {
+	display: inline;
+	padding-left: 2em;
+	background: none;
+}
+
+#menu a {
+	text-decoration: none;
+	letter-spacing: -1px;
+	color: #FFFFFF;
+}
+
+#menu a:hover {
+}
+
+/* Wrapper */
+
+#wrapper {
+	width: 760px;
+	margin: 0 auto;
+}
+
+/* Sidebar */
+
+#sidebar {
+	float: left;
+	width: 230px;
+	background: url('../images/img04.jpg') repeat-y;
+}
+
+#sidebar .title {
+	margin: 0;
+	padding: 20px 20px 0 20px;
+	background: url('../images/img03.jpg') no-repeat;
+}
+
+#sidebar .content {
+	padding: 20px;
+}
+
+#sidebar .bottom {
+	height: 33px;
+	background: url('../images/img05.jpg') repeat-x left bottom;
+}
+
+/* Content */
+
+#content {
+	float: right;
+	width: 500px;
+}
+
+/* Splash */
+
+#splash {
+	text-align: center;
+	background: url('../images/img09.jpg') repeat-y;
+}
+
+#splash .top {
+	padding: 20px 20px 16px 20px;
+	background: url('../images/img08.jpg') no-repeat;
+}
+
+#splash .bottom {
+	height: 33px;
+	background: url('../images/img05.jpg') repeat-x left bottom;
+}
+
+/* Welcome */
+
+#welcome {
+	padding: 0 20px;
+}
+
+/* Samples */
+
+#samples {
+	padding: 20px;
+	background: url('../images/img05.jpg') repeat-x;
+}
+
+/* Footer */
+
+#footer {
+	width: 720px;
+	margin: 0 auto;
+}
+
+#footer p {
+	font-size: 10px;
+}
