@@ -1,4 +1,11 @@
-from turbogears import controllers, expose, flash
+from turbogears import controllers, expose, flash, redirect
+import sys
+try:
+    from spade import *
+except:
+    sys.path.append("..")
+    from spade import *
+    
 # from model import *
 # import logging
 # log = logging.getLogger("swi.controllers")
@@ -12,8 +19,7 @@ class Root(controllers.RootController):
         #flash("Your application is now running "+s)
         #return dict(now=time.ctime())
         servername = self.platform.acc.getDomain()
-        platform = self.platform.acc.getName()
-        import sys
+        platform = self.platform.acc.getName()        
         version = str(sys.version)
         the_time = str(time.ctime())
 #        import os
@@ -33,7 +39,33 @@ class Root(controllers.RootController):
             return dict(to="", keys=keys)
     
     @expose()
-    def sendmessage(self, *args, **kwargs):
-        #print "### SEND KWARGS"
-        #print kwargs
-        return dict()
+    def sendmessage(self, to, fipa, receivers, performative, sender, reply_to, reply_with, reply_by, in_reply_to, encoding, language, ontology, protocol, conversation_id, content):
+        msg = self.platform.acc.newMessage()
+        if type(receivers) == type([]):
+            for recv in receivers:
+                a = AID.aid(str(recv),["xmpp://"+str(recv)])
+                msg.addReceiver(a)
+        else:
+            a = AID.aid(str(receivers),["xmpp://"+str(receivers)])
+            msg.addReceiver(a)
+        msg.setPerformative(performative)
+        if sender:
+            s = AID.aid(str(sender), ["xmpp://"+str(sender)])
+            msg.setSender(s)
+        if reply_to: msg.setReplyTo(reply_to)
+        if reply_with: msg.setReplyWith(reply_with)
+        if reply_by: msg.setReplyBy(reply_by)
+        if in_reply_to: msg.setInReplyTo(in_reply_to)
+        if encoding: msg.setEncoding(encoding)
+        if language: msg.setLanguage(language)
+        if ontology: msg.setOntology(ontology)
+        if protocol: msg.setProtocol(protocol)
+        if conversation_id: msg.setConversationId(conversation_id)
+        msg.setContent(content)
+        print "THE MESSAGE",str(msg)
+        try:
+            self.platform.acc.send(msg, "jabber")
+            flash("ACL message successfully sent")
+        except:
+            flash("Error sending ACL message")
+        raise redirect("/clients")
