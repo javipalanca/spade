@@ -26,6 +26,10 @@ class MTP:
 	# Payload = raw text
 	def send(self, envelope, payload):
 		raise NotImplemented
+		
+	def stop(self):
+	    #raise NotImplemented
+	    pass
 
 
 	def dispatch(self, envelope, payload):

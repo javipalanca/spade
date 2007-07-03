@@ -49,11 +49,10 @@ class http(MTP.MTP):
 
 
 	def setup(self):
-
-		httpserver = HttpServer()
-		httpserver.setName("SpadeHttpServer")
-		httpserver.mtp = self
-		httpserver.start()
+		self.httpserver = HttpServer()
+		self.httpserver.setName("SpadeHttpServer")
+		self.httpserver.mtp = self
+		self.httpserver.start()
 	
 
 	def make_body(self,envelope,payload):
@@ -77,7 +76,13 @@ class http(MTP.MTP):
 
 		return body
 	
-	
+
+	def stop(self):
+	    try:
+		del self.httpserver
+	    except Exception, e:
+	        pass
+                print "EXCEPTION STOPPING HTTP", str(e)
 
 	def send(self,envelope,payload):
 		"""
@@ -157,6 +162,7 @@ class http(MTP.MTP):
 
 class HttpServer(threading.Thread):		
 	def run(self):
+		BaseHTTPServer.HTTPServer.allow_reuse_address = True
 		httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
 		print "HTTP Transport serving at port", PORT
 		httpd.mtp = self.mtp

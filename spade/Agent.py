@@ -228,6 +228,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     """
 
 
+    def newMessage(self):
+		"""Creates and returns an empty ACL message"""
+		return ACLMessage.ACLMessage()
 
     def _jabber_presenceCB(self, conn, mess):
 	"""
@@ -1736,7 +1739,10 @@ class PlatformAgent(AbstractAgent):
 
         #Stop the Behaviours
         for b in self._behaviourList:
-            b.kill()
+            try:
+                b.kill()
+            except:
+                pass
             #self.removeBehaviour(b)
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.kill()

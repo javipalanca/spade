@@ -595,31 +595,6 @@ class SpadePlatform(Agent.PlatformAgent):
         def onEnd(self):
                 del self.httpd
 
-        def getMembers(self,aname):
-            msg = ACLMessage.ACLMessage()
-            msg.setOntology("spade:x:organization")
-            template = Behaviour.ACLTemplate()
-            template.setConversationId(msg.getConversationId())
-            t = Behaviour.MessageTemplate(template)
-            b = self.GetMembersBehav()
-            b.msg = msg
-            b.aname = aname
-            self.myAgent.addBehaviour(b,t)
-            b.join()
-            return b.result
-
-        class GetMembersBehav(Behaviour.OneShotBehaviour):
-            def _process(self):
-                self.result = []
-                self.msg.addReceiver(AID.aid(self.aname, addresses=["xmpp://"+self.aname]))
-                self.msg.setContent("MEMBERS")
-                self.myAgent.send(self.msg)
-                rep = None
-                rep = self._receive(True, 20)
-                if rep:
-                    print "The members list arrived"
-                    self.result = rep.getContent().split(",")
-
     class RouteBehaviour(Behaviour.Behaviour):
         def __init__(self):
             Behaviour.Behaviour.__init__(self)
@@ -627,6 +602,9 @@ class SpadePlatform(Agent.PlatformAgent):
             msg = self._receive(True)
             if (msg != None):
                 #print ">>> SPADE Platform Received a message: " + str(msg)
+                if msg.getSender() == self.myAgent.getAID():
+                    # Prevent self-loopholes
+                    return                    
                 to_list = msg.getReceivers()
                 d = {}
                 for to in to_list:
@@ -666,12 +644,13 @@ class SpadePlatform(Agent.PlatformAgent):
                         if not platform in receiver_URI:
                             # Outside platform
                             print ">>> Message for another platform"
-                            self.myAgent._sendTo(newmsg, receiver_URI)
+                            self.myAgent.send(newmsg, "jabber")
                         else:
                             # THIS platform
                             print ">>> Message for current platform"
                             for recv in v:
-                                self.myAgent._sendTo(newmsg, recv.getName())
+                                #self.myAgent._sendTo(newmsg, recv.getName(), "jabber")
+                                self.myAgent.send(newmsg, "jabber")
 
                     """
                     if k[7:] != self.myAgent.getSpadePlatformJID():
@@ -714,6 +693,41 @@ class SpadePlatform(Agent.PlatformAgent):
                 if _exception[0]:
                      msg='\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                      print msg
+
+    def takeDown(self):
+        for k,mtp in self.mtps.items():
+	    try:
+                mtp.stop()
+		del self.mtps[k]
+            except:
+                pass
+
+
+    def getMembers(self,aname):
+        msg = ACLMessage.ACLMessage()
+        msg.setOntology("spade:x:organization")
+        template = Behaviour.ACLTemplate()
+        template.setConversationId(msg.getConversationId())
+        t = Behaviour.MessageTemplate(template)
+        b = self.GetMembersBehav()
+        b.msg = msg
+        b.aname = aname
+        self.addBehaviour(b,t)
+        b.join()
+        return b.result
+
+    class GetMembersBehav(Behaviour.OneShotBehaviour):
+        def _process(self):
+            self.result = []
+	    self.msg.addReceiver(AID.aid(self.aname, addresses=["xmpp://"+self.aname]))
+	    self.msg.setContent("MEMBERS")
+	    self.myAgent.send(self.msg)
+	    rep = None
+	    rep = self._receive(True, 20)
+	    if rep:
+	        print "The members list arrived"
+	        self.result = rep.getContent().split(",")
+
 
 """
 class FipperPlatform(threading.Thread):

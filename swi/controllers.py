@@ -1,5 +1,7 @@
+# encoding: utf-8
 from turbogears import controllers, expose, flash, redirect
 import sys
+import time
 try:
     from spade import *
 except:
@@ -13,7 +15,6 @@ except:
 class Root(controllers.RootController):
     @expose(template="swi.templates.webadmin")
     def index(self):
-        import time
         # log.debug("Happy TurboGears Controller Responding For Duty")
         #s = self.platform.acc.getName()
         #flash("Your application is now running "+s)
@@ -69,3 +70,52 @@ class Root(controllers.RootController):
         except:
             flash("Error sending ACL message")
         raise redirect("/clients")
+    
+    @expose(template="swi.templates.services")
+    def services(self):
+        #flash("SERVICES PAGE")
+        services=[]
+        # Build a LIST of DADs
+        for dad in self.platform.df.servicedb.values():
+            services.append(dad)
+        return dict(services=services)
+        
+    @expose()
+    def deleteservice(self, service, owner):
+        try:
+            services = self.platform.df.servicedb[owner].getServices()
+            for s in services:
+                if service == s.getName():
+                    services.remove(s)
+                    flash("Service "+service+" deregistered correctly")
+                    if len(services) <= 0:
+                        del self.platform.df.servicedb[owner]
+        except:
+            flash("Could not deregister service "+service)
+            
+        raise redirect("/services")
+                    
+        
+    @expose(template="swi.templates.orgs")
+    def orgs(self):
+        flash("Under construction . . .")
+        """"
+        orgs=[]
+        # Build a LIST of DADs
+        for dad in self.platform.df.servicedb.values():
+            for service in dad:
+                if str(service.getType()).lower() == "organization":
+                    members = self.platform.acc.getMembers()
+                    orgs.append((dad,members))                
+        return dict(orgs=orgs)
+        """
+        return dict()
+    
+    @expose()
+    def restart(self,restart):
+        self.platform.shutdown()
+        time.sleep(5)
+        self.platform.start()
+        flash("Platform restarted")
+        raise redirect("/")
+        

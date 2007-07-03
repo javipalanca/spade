@@ -105,8 +105,6 @@ class DF(PlatformAgent):
 				self.myAgent.send(reply)
 
 
-
-
 			if "register" in self.content.action:
 				if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
@@ -145,8 +143,6 @@ class DF(PlatformAgent):
 						reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
 						self.myAgent.send(reply)
 						return -1
-
-
 
 					reply.setPerformative("inform")
 					reply.setContent("(done "+self.msg.getContent() + ")")
@@ -519,6 +515,12 @@ class ServiceDescription:
 
 	def getProperties(self):
 		return self.properties
+		
+	def getProperty(self, prop):
+	    for p in self.properties:	        
+	        if p["name"] == prop:
+	            return p["value"]
+	    return ""
 
 	def addProperty(self, p):
 		self.properties.append(p)

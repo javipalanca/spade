@@ -59,9 +59,15 @@ class SpadeBackend:
         #self.simba = self.runAgent(self.configfile, "simba", SIMBA.SIMBA)        
 
     def shutdown(self):
-        if self.df: self.df.stop()
-        if self.ams: self.ams.stop()
-        if self.acc: self.acc.stop()
+        if self.df:
+		self.df.stop()
+		del self.df
+        if self.ams: 
+		self.ams.stop()
+		del self.ams
+        if self.acc:
+		self.acc.stop()
+		del self.acc
 
 if __name__ ==  "__main__":
 	p = SpadeBackend()

@@ -31,11 +31,19 @@ class SimbaRequestHandler(SocketServer.DatagramRequestHandler):
 class simba(MTP.MTP):
 
 	def receiveThread(self):
+		SocketServer.ThreadingUDPServer.allow_reuse_address = True
                 self.SS = SocketServer.ThreadingUDPServer(("", self.port), SimbaRequestHandler)
 		self.SS.dispatch = self.dispatch
 		self.SS.parser = ACLParser.ACLParser()
                 #print "SIMBA SS listening on port " + str(self.port)
                 self.SS.serve_forever()
+
+	def stop(self):
+		try:
+			del self.SS
+		except Exception,e:
+			pass
+                        print "EXCEPTION IN SIMBA",str(e)
 
 	def setup(self):
 		'''

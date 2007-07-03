@@ -29,7 +29,16 @@ table.linea{
    margin: 0px 0px 0px 0px;}
    
 table.titulo{
-   background-color: #739fed;
+   background-color: #7aa9ff;
+   font-weight: bold;
+   border: thin solid;
+   border-color: #B2ACDD;
+   margin: 0px 0px 0px 0px;
+	color: white;
+}
+
+table.clients{
+   background-color: #bdceec;
    font-weight: bold;
    border: thin solid;
    border-color: #B2ACDD;
@@ -63,12 +72,17 @@ a.lateral{
        background-color: #739fed;}
 
 .par{
-   background-color: White;}
+   background-color: White;
+	color: #333333;
+}
 
 .impar{
-   background-color: #B0C4DE;}
+   background-color: #B0C4DE;
+	color: #fff;
+}
 
 /*
 a:hover{
        font-variant: small-caps;}
 */
+

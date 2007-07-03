@@ -7,9 +7,12 @@ Released for free under a Creative Commons Attribution 2.5 License
 body {
 	margin: 20px;
 	padding: 0;
-	background: #FFFFFF;
+	/*background: #FFFFFF;*/
 	font: normal 0.9em Verdana, Tahoma, Arial, Helvetica, sans-serif;
 	color: #666666;
+	background-color: #e6e6e6;
+	z-index: 0;
+	align: center;
 }
 
 form {
@@ -87,7 +90,17 @@ a:hover {
 
 #wrapper {
 	width: 778px;
-	margin: 0 auto;
+	/*height:  80%;*/
+	margin: 0 auto auto;
+	background-color: #fff;
+	z-index: 2;
+	position: absolute;
+	top: 5%;
+	right: 10%;
+	bottom: auto;
+	left: 10%;
+	padding: 20px;
+	border: 1px dashed #7f7f7f;
 }
 
 /* Header */
@@ -96,7 +109,7 @@ a:hover {
 	float: left;
 	width: 200px;
 	height: 150px;
-	background: url("../images/lasvegastoo/img1.jpg");
+	background-color: #5d80bd;
 }
 
 #header h1 {
@@ -107,17 +120,29 @@ a:hover {
 	font-size: 2.5em;
 }
 
+#header h1.spadelogo {
+	margin: 0;
+	padding: 13px 0 0 0;
+	text-align: center;
+	letter-spacing: -1px;
+	font: 700% OpenSymbol, Symbol, "Apple Symbols", "Neo Symbol";
+}
+
 #header h2 {
 	margin: 0;
 	padding: 0;
 	text-align: center;
 	font-size: 1.2em;
-	font-style: italic;
+	color: #000;
 }
 
 #header a {
 	text-decoration: none;
 	color: #FFFFFF;
+}
+
+#header a.webadmin {
+	color: #fff;
 }
 
 /* Pages */
@@ -127,7 +152,7 @@ a:hover {
 	width: 568px;
 	height: 150px;
 	/*background: url("../images/lasvegastoo/img2.jpg");*/
-	background: url("../images/spade_book_trsp.png");
+	background: url("../images/spade_book_azul.gif");
 	background-repeat: no-repeat;
 }
 
@@ -163,6 +188,7 @@ a:hover {
 #content {
 	clear: both;
 	padding-top: 10px;
+	z-index: 1;
 }
 
 /* Posts */
