@@ -1,0 +1,265 @@
+/*
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+*/
+
+body {
+	margin: 20px;
+	padding: 0;
+	/*background: #FFFFFF;*/
+	font: normal 0.9em Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	color: #666666;
+	background-color: #e6e6e6;
+	z-index: 0;
+	align: center;
+}
+
+form {
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3 {
+	font-family: Verdana, Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	color: #333333;
+}
+
+p, blockquote, ol, ul {
+	line-height: 160%;
+}
+
+a {
+	color: #3A69BA;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/* Boxed */
+
+.boxed {
+	float: left;
+	clear: left;
+	width: 200px;
+	margin: 0 0 10px 0;
+	padding: 0;
+	background: #EFF3F9;
+}
+
+.boxed .heading {
+	margin-top: 0;
+	padding: 8px 15px;
+	background: #5E80BD url("../images/lasvegastoo/img3.gif") no-repeat center bottom;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font: bold 1em Tahoma, Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+.boxed .content {
+	margin: 0;
+	padding: 5px 14px 10px 14px;
+}
+
+.boxed ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	line-height: normal;
+}
+
+.boxed li {
+	padding: 3px 0;
+	border-top: 1px dotted #1F1F21;
+}
+
+.boxed li.first {
+	border: none;
+}
+
+.boxed a {
+	padding-left: 10px;
+	background: url("../images/lasvegastoo/img4.gif") no-repeat left center;
+	text-decoration: none;
+}
+
+/* Wrapper */
+
+#wrapper {
+	width: 778px;
+	/*height:  80%;*/
+	margin: 0 auto auto;
+	background-color: #fff;
+	z-index: 2;
+	position: absolute;
+	top: 5%;
+	right: 10%;
+	bottom: auto;
+	left: 10%;
+	padding: 20px;
+	border: 1px dashed #7f7f7f;
+}
+
+/* Header */
+
+#header {
+	float: left;
+	width: 200px;
+	height: 150px;
+	background-color: #5d80bd;
+}
+
+#header h1 {
+	margin: 0;
+	padding: 43px 0 0 0;
+	text-align: center;
+	letter-spacing: -1px;
+	font-size: 2.5em;
+}
+
+#header h1.spadelogo {
+	margin: 0;
+	padding: 13px 0 0 0;
+	text-align: center;
+	letter-spacing: -1px;
+	font: 700% OpenSymbol, Symbol, "Apple Symbols", "Neo Symbol";
+}
+
+#header h2 {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	font-size: 1.2em;
+	color: #000;
+}
+
+#header a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+#header a.webadmin {
+	color: #fff;
+}
+
+/* Pages */
+
+#pages {
+	float: right;
+	width: 568px;
+	height: 150px;
+	/*background: url("../images/lasvegastoo/img2.jpg");*/
+	background: url("../images/spade_book_azul.gif");
+	background-repeat: no-repeat;
+}
+
+#pages h2 {
+	display: none;
+}
+
+#pages ul {
+	float: right;
+	margin: 0;
+	padding: 125px 15px 0 0;
+	list-style: none;
+	line-height: normal;
+}
+
+#pages li {
+	display: inline;
+}
+
+#pages a {
+	padding-left: 2em;
+	text-decoration: none;
+	font: bold 1em Tahoma, Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+#pages a:hover {
+	text-decoration: underline;
+}
+
+/* Content */
+
+#content {
+	clear: both;
+	padding-top: 10px;
+	z-index: 1;
+}
+
+/* Posts */
+
+#posts {
+	float: right;
+	width: 520px;
+	padding-right: 20px;
+}
+
+.post {
+	padding-top: 10px;
+}
+
+.post .title {
+	margin: 0;
+	font-size: 1.5em;
+}
+
+.post .posted {
+	margin-top: 0;
+	font: normal .8em Tahoma, Arial, Helvetica, sans-serif;
+	color: #999999;
+}
+
+.post .meta {
+	margin: 2em 0 3em 0;
+	border-top: 1px dotted #939A3C;
+	font: normal .8em Tahoma, Arial, Helvetica, sans-serif;
+	color: #999999;
+}
+
+.post .meta p {
+	margin: 0;
+}
+
+/* Archives */
+
+#archives {
+}
+
+/* Search */
+
+#search {
+}
+
+#search .content {
+	padding-bottom: 12px;
+}
+
+#textfield1 {
+	width: 156px;
+	padding: 5px 5px;
+	border: 1px solid #000000;
+	font: bold 1em Tahoma, Arial, Helvetica, sans-serif;
+	color: #000000;
+}
+
+#submit1 {
+	display: none;
+}
+
+/* Footer */
+
+#footer {
+	clear: both;
+	border-top: 1px dotted #000000;
+	font: normal .8em Tahoma, Arial, Helvetica, sans-serif;
+	color: #999999;
+}
+
+#footer a {
+	color: #999999;
+}

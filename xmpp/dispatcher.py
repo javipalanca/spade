@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: dispatcher.py,v 1.36 2005/05/08 04:51:34 snakeru Exp $
+# $Id: dispatcher.py,v 1.40 2006/01/18 19:26:43 normanr Exp $
 
 """
 Main xmpppy mechanism. Provides library with methods to assign different handlers
@@ -21,7 +21,7 @@ Contains one tunable attribute: DefaultTimeout (25 seconds by default). It defin
 Dispatcher.SendAndWaitForResponce method will wait for reply stanza before giving up.
 """
 
-import simplexml,time
+import simplexml,time,sys
 from protocol import *
 from client import PlugIn
 
@@ -37,6 +37,7 @@ class Dispatcher(PlugIn):
         self.handlers={}
         self._expected={}
         self._defaultHandler=None
+        self._pendingExceptions=[]
         self._eventHandler=None
         self._cycleHandlers=[]
         self._exported_methods=[self.Process,self.RegisterHandler,self.RegisterDefaultHandler,\
@@ -112,10 +113,17 @@ class Dispatcher(PlugIn):
             disconnect handlers are called automatically.
         """
         for handler in self._cycleHandlers: handler(self)
+        if len(self._pendingExceptions) > 0:
+            _pendingException = self._pendingExceptions.pop()
+            raise _pendingException[0], _pendingException[1], _pendingException[2]
         if self._owner.Connection.pending_data(timeout):
             try: data=self._owner.Connection.receive()
-            except IOError: return
+            except IOError: return 0
+	    self._owner._data = data
             self.Stream.Parse(data)
+            if len(self._pendingExceptions) > 0:
+                _pendingException = self._pendingExceptions.pop()
+                raise _pendingException[0], _pendingException[1], _pendingException[2]
             if data: return len(data)
         return '0'      # It means that nothing is received but link is alive.
         
@@ -164,7 +172,7 @@ class Dispatcher(PlugIn):
         if not self.handlers.has_key(xmlns): self.RegisterNamespace(xmlns,'warn')
         if not self.handlers[xmlns].has_key(name): self.RegisterProtocol(name,Protocol,xmlns,'warn')
         if not self.handlers[xmlns][name].has_key(typ+ns): self.handlers[xmlns][name][typ+ns]=[]
-        if makefirst: self.handlers[xmlns][name][typ+ns].insert({'func':handler,'system':system})
+        if makefirst: self.handlers[xmlns][name][typ+ns].insert(0,{'func':handler,'system':system})
         else: self.handlers[xmlns][name][typ+ns].append({'func':handler,'system':system})
 
     def RegisterHandlerOnce(self,name,handler,typ='',ns='',xmlns=None,makefirst=0, system=0):
@@ -175,12 +183,15 @@ class Dispatcher(PlugIn):
     def UnregisterHandler(self,name,handler,typ='',ns='',xmlns=None):
         """ Unregister handler. "typ" and "ns" must be specified exactly the same as with registering."""
         if not xmlns: xmlns=self._owner.defaultNamespace
+	if not self.handlers.has_key(xmlns): xmlns=self._owner.defaultNamespace
         if not typ and not ns: typ='default'
-        for pack in self.handlers[xmlns][name][typ+ns]:
-            if handler==pack['func']: break
-        else: pack=None
-        try: self.handlers[xmlns][name][typ+ns].remove(pack)
-        except ValueError: pass
+	if self.handlers[xmlns].has_key(name):
+	        for pack in self.handlers[xmlns][name][typ+ns]:
+       		     if handler==pack['func']: break
+		     else: pack=None
+		     try: self.handlers[xmlns][name][typ+ns].remove(pack)
+		     except ValueError: pass
+	
 
     def RegisterDefaultHandler(self,handler):
         """ Specify the handler that will be used if no NodeProcessed exception were raised.
@@ -221,13 +232,29 @@ class Dispatcher(PlugIn):
             3) data that comes along with event. Depends on event."""
         if self._eventHandler: self._eventHandler(realm,event,data)
 
-    def dispatch(self,stanza,session=None):
+    def dispatch(self,stanza,session=None,direct=0):
         """ Main procedure that performs XMPP stanza recognition and calling apppropriate handlers for it.
             Called internally. """
         if not session: session=self
         session.Stream._mini_dom=None
         name=stanza.getName()
 
+        if not direct and self._owner._component:
+            if name == 'route':
+                if stanza.getAttr('error') == None:
+                    if len(stanza.getChildren()) == 1:
+                        stanza = stanza.getChildren()[0]
+                        name=stanza.getName()
+                    else:
+                        for each in stanza.getChildren():
+                            self.dispatch(each,session,direct=1)
+                        return
+            elif name == 'presence':
+                pass #return
+            elif name in ('features','bind'):
+                pass
+            else:
+                raise UnsupportedStanzaType(name)
         if name=='features': session.Stream.features=stanza
 
         xmlns=stanza.getNamespace()
@@ -238,7 +265,7 @@ class Dispatcher(PlugIn):
             self.DEBUG("Unknown stanza: " + name,'warn')
             name='unknown'
         else:
-            self.DEBUG("Got %s stanza"%name, 'ok')
+            self.DEBUG("Got %s/%s stanza"%(xmlns,name), 'ok')
 
         if stanza.__class__.__name__=='Node': stanza=self.handlers[xmlns][name][type](node=stanza)
 
@@ -277,7 +304,9 @@ class Dispatcher(PlugIn):
                 try:
                     handler['func'](session,stanza)
                 except Exception, typ:
-                    if typ.__class__.__name__<>'NodeProcessed': raise
+                    if typ.__class__.__name__<>'NodeProcessed':
+                        self._pendingExceptions.insert(0, sys.exc_info())
+                        return
                     user=0
         if user and self._defaultHandler: self._defaultHandler(session,stanza)
 
@@ -326,6 +355,16 @@ class Dispatcher(PlugIn):
             stanza.setID(_ID)
         else: _ID=stanza.getID()
         if self._owner._registered_name and not stanza.getAttr('from'): stanza.setAttr('from',self._owner._registered_name)
+        if self._owner._component and stanza.getName()!='bind':
+            to=self._owner.Server
+            if stanza.getTo() and stanza.getTo().getDomain():
+                to=stanza.getTo().getDomain()
+            frm=stanza.getFrom()
+            if frm.getDomain():
+                frm=frm.getDomain()
+            route=Protocol('route',to=to,frm=frm,payload=[stanza])
+            stanza=route
+        stanza.setNamespace(self._owner.Namespace)
         stanza.setParent(self._metastream)
         self._owner_send(stanza)
         return _ID
@@ -333,9 +372,4 @@ class Dispatcher(PlugIn):
     def disconnect(self):
         """ Send a stream terminator and and handle all incoming stanzas before stream closure. """
         self._owner_send('</stream:stream>')
-	#t = self.Process(1)
-	#while t:
-	#	print t
-	#	print type(t)
-	#	t = self.Process(1)
         while self.Process(1): pass

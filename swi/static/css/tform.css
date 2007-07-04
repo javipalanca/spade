@@ -1,0 +1,26 @@
+fieldset.tform {
+	width: 90%;
+	text-align: left;
+}
+
+fieldset.tform.p {
+	width: 30%;
+	text-align: left;
+}
+
+fieldset table.tform {
+	width: 90%;
+}
+
+fieldset td {
+	width: 50%;
+}
+
+.txtfield {
+	width: auto;
+}
+
+tr.thead {
+	border: 1px solid #5d80bd;
+}
+

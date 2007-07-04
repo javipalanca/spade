@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: simplexml.py,v 1.27 2005/04/30 07:20:27 snakeru Exp $
+# $Id: simplexml.py,v 1.28 2005/08/06 04:44:54 snakeru Exp $
 
 """Simplexml module provides xmpppy library with all needed tools to handle XML nodes and XML streams.
 I'm personally using it in many other separate projects. It is designed to be as standalone as possible."""
@@ -251,7 +251,7 @@ class Node:
 class T:
     """ Auxiliary class used to quick access to node's child nodes. """
     def __init__(self,node): self.__dict__['node']=node
-    def __getattr__(self,attr): return self.node.setTag(attr)
+    def __getattr__(self,attr): return self.node.getTag(attr)
     def __setattr__(self,attr,val):
         if isinstance(val,Node): Node.__init__(self.node.setTag(attr),node=val)
         else: return self.node.setTagData(attr,val)

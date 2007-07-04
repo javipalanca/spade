@@ -33,7 +33,7 @@ if os.name == "posix":
 		author_email='jpalanca@dsic.upv.es',
 		url='http://spade.gti-ia.dsic.upv.es',
 		package_dir={'spade': 'spade'},
-		packages=['spade', 'xmpp', 'xmppd', 'xmppd.filters', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
+		packages=['spade', 'xmpp', 'xmppd', 'xmppd.modules', 'xmppd.locale', 'xmppd.socker', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
 		scripts=['spade.sh','gspade.sh','gspade.py', 'runspade.py',"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
 		data_files=[
 			('/etc/spade',['etc/spade.xml']),

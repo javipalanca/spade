@@ -8,14 +8,16 @@ from xml.sax import parseString
 from xml.sax import make_parser
 from xml.sax.handler import *
 
-
+"""
 spade = dict()
 domain = dict()
 acc = dict()
+acc["mtp"] = dict()
 ams = dict()
 df = dict()
 jabber = dict()
 simba = dict()
+"""
 
 class ParseObject(dict):
         def __getattr__(self, name): return self[name]
@@ -37,7 +39,7 @@ class spadeXMLHandler(ContentHandler):
 		self.chars = ""
 		self.message = ""
 		self.current_tag = ""
-		pass
+		self.current_mtp = ""
 
 	def startDocument(self):
 
@@ -54,6 +56,7 @@ class spadeXMLHandler(ContentHandler):
 		elif name == "acc":
 			self.current_tag = "acc"
 			self.content['acc'] = ParseObject()
+			self.content.acc['mtp'] = ParseObject()
 			#print "Current Tag: " + name
 		elif name == "ams":
 			self.current_tag = "ams"
@@ -65,9 +68,9 @@ class spadeXMLHandler(ContentHandler):
 			#print "Current Tag: " + name
 		elif name == "mtp":
 			self.current_tag = attrs.getValue("name")
-			self.content.acc[self.current_tag] = ParseObject()
-
-
+			self.current_mtp = self.current_tag
+			self.content.acc.mtp[self.current_tag] = ParseObject()
+			
 		else:
 			self.chars = ""
 			self.tag_name = name
@@ -87,11 +90,17 @@ class spadeXMLHandler(ContentHandler):
 				self.content.ams['hostname'] = self.chars
 			elif self.current_tag == "df":
 				self.content.df['hostname'] = self.chars
+			elif self.current_tag == "acc":
+				self.content.acc['hostname'] = self.chars
+
 		elif name == "password":
 			if self.current_tag == "ams":
 				self.content.ams['password'] = self.chars
 			elif self.current_tag == "df":
 				self.content.df['password'] = self.chars
+			elif self.current_tag == "acc":
+				self.content.acc['password'] = self.chars
+
 		elif name == "port":
 			if self.current_tag == "platform":
 				self.content.platform['port'] = self.chars
@@ -99,18 +108,22 @@ class spadeXMLHandler(ContentHandler):
 				self.content.ams['port'] = self.chars
 			elif self.current_tag == "df":
 				self.content.df['port'] = self.chars
-
+			elif self.current_tag == "acc":
+				self.content.acc['port'] = self.chars
 			else:
 				self.content.acc[self.current_tag]['port'] = self.chars
 
+		elif name == "mtp":
+				self.current_mtp = ""
+		
 		elif name == "protocol":
-				self.content.acc[self.current_tag]['protocol'] = self.chars
+				self.content.acc["mtp"][self.current_mtp]['protocol'] = self.chars
 
-		elif name == "address":
-				self.content.acc[self.current_tag]['address'] = self.chars
+		#elif name == "address":
+		#		self.content.acc[self.current_tag][self.current_mtp]['address'] = self.chars
 
 		elif name == "instance":
-				self.content.acc[self.current_tag]['instance'] = self.chars
+				self.content.acc["mtp"][self.current_mtp]['instance'] = self.chars
 
 		elif name == "path":
 				self.content.platform["path"] = self.chars

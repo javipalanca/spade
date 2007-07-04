@@ -1,0 +1,88 @@
+/*
+* {
+   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+   background-color: white;
+   color: Black;
+   font-size: small;}
+*/
+
+tr.b{
+   font-weight: bold;}
+
+/*
+td.aid:hover{
+   background-color: #FFFF66;}
+*/
+
+/*
+th{
+   text-align: left;}
+*/
+
+table{
+   width: 100%;
+   /*margin: 5px 5px 5px 5px;*/}
+
+table.linea{
+   border: thin solid;
+   border-color: grey;    
+   margin: 0px 0px 0px 0px;}
+   
+table.titulo{
+   background-color: #7aa9ff;
+   font-weight: bold;
+   border: thin solid;
+   border-color: #B2ACDD;
+   margin: 0px 0px 0px 0px;
+	color: white;
+}
+
+table.clients{
+   background-color: #bdceec;
+   font-weight: bold;
+   border: thin solid;
+   border-color: #B2ACDD;
+   margin: 0px 0px 0px 0px;
+	color: white;
+}
+
+.cabecera{
+   background-color: #739fed;
+   color: White;
+   font-weight: bolder;
+   font-variant: small-caps;}
+
+.lateral{
+   background-color: #739fed;
+   font-weight: bold;
+   font-variant: small-caps;}
+   
+.der {
+	font-style: italic;
+    text-align: right;
+    width: 85%;
+}
+
+a{
+	text-decoration: none;}
+   
+a.lateral{
+       text-decoration: none;
+       font-weight: bolder;
+       background-color: #739fed;}
+
+.par{
+   background-color: White;
+	color: #333333;
+}
+
+.impar{
+   background-color: #B0C4DE;
+	color: #fff;
+}
+
+/*
+a:hover{
+       font-variant: small-caps;}
+*/
+

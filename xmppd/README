@@ -1,0 +1,164 @@
+XMPPD README
+______________________________
+
+TOC
+======
+1) Preface
+2) New Features
+3) Installation
+4) Usage
+5) Notes
+6) Contact Information
+7) Copyright Information
+
+1. Preface
+=============
+
+Hello, and thank-you for downloading this release of XMPPD, release 0.3-RC1.
+This project has stems from Alexey Nezhdanov's work in 2004 and has been
+recently taken-up at BlueBridge Technologies Group for further development.
+
+There has been some discussions on the Jabber development list on how we can
+get Jabber/XMPP into the hands of everyone using a simple, yet powerful daemon.
+We're accomplishing this in a number of ways, one is using Python, and the
+second is localization, third is 'Help Desk', and fourth will be an easy to use
+web interface.
+
+We have molded Alexey's wonderful code into something that will very soon not
+only be modular, as he intended, but also clusterable and multiplexed. We've
+even built-in libevent support for super-fast transactions. Made severable
+improvements to maintain portability on not only Linux, but Windows, Mac OS X,
+Solaris, and even net-BSD.
+
+The key to this is keeping things simple, and powerful -- Something we feel
+quite good at.
+
+We hope that this wonderful project that Alexey started will continue forward,
+and we cannot wait to show you the passion for communications we have at
+BlueBridge!
+
+Kristopher Tate
+Chief Technology Officer
+BlueBridge Technologies Group, Inc.
+http://bbridgetech.com/
+
+2. New Features
+==================
+
+* Roster Management!
+* Presence (Bigger than it seems)
+* Updated routing practices
+* Privacy functionality now implemented
+* Users can now go invisible
+* Smart Priority
+* Set-up Administrator level ACLs
+* Administration and information via <message /> requests (Available from any
+  Jabber client)
+* S2S that works on Jabber.org/Non-TLS enabled servers
+* Start/stop/restart modules from within the shell and also via the
+  Administration messaging system
+* Added command-line flags to aid daemon mode and other useful oddities.
+* Better database abstraction
+* Now utilizes libevent for even faster transactions
+* Localization Engine
+* Utilizes updated xmpppy libraries.
+* Countless little tweaks.
+* Experimental socket multiplexing with BlueBridge Socker™
+  (Included in the Socker directory)
+
+3. Installation
+==================
+
+Installation is pretty straight-forward. You'll need the following
+packages/modules:
+
+* TLS lite
+  <http://trevp.net/tlslite/>
+
+* libevent and pyevent (HIGHLY recommended)
+  <http://www.monkey.org/~provos/libevent/> and
+  <http://www.monkey.org/~dugsong/pyevent/>
+
+* PsyCo (HIGHLY recommended) <http://psyco.sourceforge.net/>
+
+Follow their installation instructions, and then open-up xmppd.cfg in your
+favorite text editor. This release's config file looks something like this:
+
+[server]
+servernames: 69.107.93.203,127.0.0.1
+ssl-cert: xmppd.pem
+status_file: xmppd.status
+[69.107.93.203]
+admins: kris_tate,pixelcort
+[127.0.0.1]
+admins: kris_tate,pixelcort
+
+Sections are noted by brackets, the first section must be [server].
+key:value pairs follow:
+
+servernames -- Comma-deliminated values for your server names
+ssl-cert -- Location of your cert's pem file from the xmppd root dir.
+status_file -- A file that Help Desk might read to tell users about updates
+               to the system or other system status points.
+
+After those are set, you're welcome to make sections for your servers,
+respectively. Currently, the only key:value pair is as follows:
+
+admins -- Comma-deliminated values for users who are administrators.
+
+That's it! Simple, Huh? The next revision will be exploring a web interface
+that will help with this.
+
+4. Usage
+===========
+
+SYNOPSIS:
+usage: xmppd.py [options] [-l lang_code] [--hostname HOST] [-s host[:ip]]
+
+options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -p, --psyco           Enable PsyCo
+  --nofallback          Disables fallback support (Upon a major error, the
+                        server will not try to restart itself.)
+  -l lang_code, --lang=lang_code
+                        Used to explicitly set the daemon's default language.
+  -d, --debug           Enables debug messaging to console
+  --hostname=HOST       Used to explicitly set the hostname or IP of this
+                        daemon.
+  -s host[:ip], --socker=host[:ip]
+                        Enables, and connects to the host:ip of a socker(tm)
+                        socket multiplexor. [EXPERIMENTAL]
+  -i                    Enables Interactive mode, allowing a console user to
+                        interactively edit the server in realtime.
+
+5. Notes
+===========
+
+There are no notes at this time.
+
+6. Contact Information
+=========================
+
+In order to contact us, you may look at our contact page online:
+<http://www.bbridgetech.com/company/contact/>
+
+7. Copyright Information
+===========================
+
+Copyright (C) 2005 BlueBridge Technologies Group, Inc. All rights reserved
+Copyright (C) 2004 Alexey Nezhdanov
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA

@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: auth.py,v 1.28 2005/05/07 02:42:04 snakeru Exp $
+# $Id: auth.py,v 1.35 2006/01/18 19:26:43 normanr Exp $
 
 """
 Provides library with all Non-SASL and SASL authentication mechanisms.
@@ -96,6 +96,11 @@ class NonSASL(PlugIn):
 
 class SASL(PlugIn):
     """ Implements SASL authentication. """
+    def __init__(self,username,password):
+        PlugIn.__init__(self)
+        self.username=username
+        self.password=password
+
     def plugin(self,owner):
         if not self._owner.Dispatcher.Stream._document_attrs.has_key('version'): self.startsasl='not-supported'
         elif self._owner.Dispatcher.Stream.features:
@@ -103,23 +108,23 @@ class SASL(PlugIn):
             except NodeProcessed: pass
         else: self.startsasl=None
 
-    def auth(self,username,password):
+    def auth(self):
         """ Start authentication. Result can be obtained via "SASL.startsasl" attribute and will be
             either "success" or "failure". Note that successfull auth will take at least
             two Dispatcher.Process() calls. """
-        self.username=username
-        self.password=password
-        if self._owner.Dispatcher.Stream.features:
+        if self.startsasl: pass
+        elif self._owner.Dispatcher.Stream.features:
             try: self.FeaturesHandler(self._owner.Dispatcher,self._owner.Dispatcher.Stream.features)
             except NodeProcessed: pass
         else: self._owner.RegisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
 
     def plugout(self):
         """ Remove SASL handlers from owner's dispatcher. Used internally. """
-        self._owner.UnregisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
+	self._owner.UnregisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
         self._owner.UnregisterHandler('challenge',self.SASLHandler,xmlns=NS_SASL)
-        self._owner.UnregisterHandler('failure',self.SASLHandler,xmlns=NS_SASL)
-        self._owner.UnregisterHandler('success',self.SASLHandler,xmlns=NS_SASL)
+	self._owner.UnregisterHandler('failure',self.SASLHandler,xmlns=NS_SASL)
+	self._owner.UnregisterHandler('success',self.SASLHandler,xmlns=NS_SASL)
+
 
     def FeaturesHandler(self,conn,feats):
         """ Used to determine if server supports SASL auth. Used internally. """
@@ -136,20 +141,14 @@ class SASL(PlugIn):
         if "DIGEST-MD5" in mecs:
             node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'DIGEST-MD5'})
         elif "PLAIN" in mecs:
-	# Added exception handling (for SPADE)
-	    try:
-            	sasl_data='%s\x00%s\x00%s'%(self.username+'@'+self._owner.Server,self.username,self.password)
-            	node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'PLAIN'},payload=[base64.encodestring(sasl_data)])
-	    except: pass
+            sasl_data='%s\x00%s\x00%s'%(self.username+'@'+self._owner.Server,self.username,self.password)
+            node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'PLAIN'},payload=[base64.encodestring(sasl_data)])
         else:
             self.startsasl='failure'
             self.DEBUG('I can only use DIGEST-MD5 and PLAIN mecanisms.','error')
             return
         self.startsasl='in-process'
-	# Added exception handling (for SPADE)
-	try:
-        	self._owner.send(node.__str__())
-	except: pass
+        self._owner.send(node.__str__())
         raise NodeProcessed
 
     def SASLHandler(self,conn,challenge):
@@ -176,7 +175,7 @@ class SASL(PlugIn):
         data=base64.decodestring(incoming_data)
         self.DEBUG('Got challenge:'+data,'ok')
         for pair in data.split(','):
-            key,value=pair.split('=')
+            key,value=pair.split('=', 1)
             if value[:1]=='"' and value[-1:]=='"': value=value[1:-1]
             chal[key]=value
         if chal.has_key('qop') and chal['qop']=='auth':
@@ -190,7 +189,7 @@ class SASL(PlugIn):
             resp['cnonce']=cnonce
             resp['nc']=('00000001')
             resp['qop']='auth'
-            resp['digest-uri']='xmpp/'
+            resp['digest-uri']='xmpp/'+self._owner.Server
             A1=C([H(C([resp['username'],resp['realm'],self.password])),resp['nonce'],resp['cnonce']])
             A2=C(['AUTHENTICATE',resp['digest-uri']])
             response= HH(C([HH(A1),resp['nonce'],resp['nc'],resp['cnonce'],resp['qop'],HH(A2)]))
@@ -201,7 +200,7 @@ class SASL(PlugIn):
                 if key in ['nc','qop','response','charset']: sasl_data+="%s=%s,"%(key,resp[key])
                 else: sasl_data+='%s="%s",'%(key,resp[key])
 ########################################3333
-            node=Node('response',attrs={'xmlns':NS_SASL},payload=[base64.encodestring(sasl_data[:-1]).replace('\n','')])
+            node=Node('response',attrs={'xmlns':NS_SASL},payload=[base64.encodestring(sasl_data[:-1]).replace('\r','').replace('\n','')])
             self._owner.send(node.__str__())
         elif chal.has_key('rspauth'): self._owner.send(Node('response',attrs={'xmlns':NS_SASL}).__str__())
         else: 
@@ -258,6 +257,51 @@ class Bind(PlugIn):
                 self.DEBUG('Session open failed.','error')
                 self.session=0
         elif resp: self.DEBUG('Binding failed: %s.'%resp.getTag('error'),'error')
+        else:
+            self.DEBUG('Binding failed: timeout expired.','error')
+            return ''
+
+class ComponentBind(PlugIn):
+    """ ComponentBind some JID to the current connection to allow router know of our location."""
+    def __init__(self):
+        PlugIn.__init__(self)
+        self.DBG_LINE='bind'
+        self.bound=None
+        self.needsUnregister=None
+
+    def plugin(self,owner):
+        """ Start resource binding, if allowed at this time. Used internally. """
+        if self._owner.Dispatcher.Stream.features:
+            try: self.FeaturesHandler(self._owner.Dispatcher,self._owner.Dispatcher.Stream.features)
+            except NodeProcessed: pass
+        else:
+            self._owner.RegisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
+            self.needsUnregister=1
+
+    def plugout(self):
+        """ Remove ComponentBind handler from owner's dispatcher. Used internally. """
+        if self.needsUnregister:
+            self._owner.UnregisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
+
+    def FeaturesHandler(self,conn,feats):
+        """ Determine if server supports resource binding and set some internal attributes accordingly. """
+        if not feats.getTag('bind',namespace=NS_BIND):
+            self.bound='failure'
+            self.DEBUG('Server does not requested binding.','error')
+            return
+        if feats.getTag('session',namespace=NS_SESSION): self.session=1
+        else: self.session=-1
+        self.bound=[]
+
+    def Bind(self,domain=None):
+        """ Perform binding. Use provided domain name (if not provided). """
+        while self.bound is None and self._owner.Process(1): pass
+        resp=self._owner.SendAndWaitForResponse(Protocol('bind',attrs={'name':domain},xmlns=NS_COMPONENT_1))
+        if resp and resp.getAttr('error'):
+            self.DEBUG('Binding failed: %s.'%resp.getAttr('error'),'error')
+        elif resp:
+            self.DEBUG('Successfully bound.','ok')
+            return 'ok'
         else:
             self.DEBUG('Binding failed: timeout expired.','error')
             return ''

@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: features.py,v 1.20 2005/04/30 07:43:01 snakeru Exp $
+# $Id: features.py,v 1.24 2006/03/25 05:47:22 snakeru Exp $
 
 """
 This module contains variable stuff that is not worth splitting into separate modules.
@@ -26,6 +26,8 @@ All these methods takes 'disp' first argument that should be already connected
 
 from protocol import *
 
+REGISTER_DATA_RECEIVED='REGISTER DATA RECEIVED'
+
 ### DISCO ### http://jabber.org/protocol/disco ### JEP-0030 ####################
 ### Browse ### jabber:iq:browse ### JEP-0030 ###################################
 ### Agents ### jabber:iq:agents ### JEP-0030 ###################################
@@ -35,7 +37,7 @@ def _discover(disp,ns,jid,node=None,fb2b=0,fb2a=1):
         and if it doesnt support browse (or fb2b is not true) fall back to agents protocol
         (if gb2a is true). Returns obtained info. Used internally. """
     iq=Iq(to=jid,typ='get',queryNS=ns)
-    if node: iq.setAttr('node',node)
+    if node: iq.setQuerynode(node)
     rep=disp.SendAndWaitForResponse(iq)
     if fb2b and not isResultNode(rep): rep=disp.SendAndWaitForResponse(Iq(to=jid,typ='get',queryNS=NS_BROWSE))   # Fallback to browse
     if fb2a and not isResultNode(rep): rep=disp.SendAndWaitForResponse(Iq(to=jid,typ='get',queryNS=NS_AGENTS))   # Fallback to agents
@@ -74,7 +76,7 @@ def discoverInfo(disp,jid,node=None):
     return identities , features
 
 ### Registration ### jabber:iq:register ### JEP-0077 ###########################
-def getRegInfo(disp,host,info={}):
+def getRegInfo(disp,host,info={},sync=True):
     """ Gets registration form from remote host.
         You can pre-fill the info dictionary.
         F.e. if you are requesting info on registering user joey than specify 
@@ -82,16 +84,25 @@ def getRegInfo(disp,host,info={}):
         'disp' must be connected dispatcher instance."""
     iq=Iq('get',NS_REGISTER,to=host)
     for i in info.keys(): iq.setTagData(i,info[i])
-    resp=disp.SendAndWaitForResponse(iq)
+    if sync:
+        resp=disp.SendAndWaitForResponse(iq)
+        _ReceivedRegInfo(disp.Dispatcher,resp, host)
+        return resp
+    else: disp.SendAndCallForResponse(iq,_ReceivedRegInfo, {'agent': host})
+
+def _ReceivedRegInfo(con, resp, agent):
+    iq=Iq('get',NS_REGISTER,to=agent)
     if not isResultNode(resp): return
     df=resp.getTag('query',namespace=NS_REGISTER).getTag('x',namespace=NS_DATA)
-    if df: return DataForm(node=df)
+    if df:
+        con.Event(NS_REGISTER,REGISTER_DATA_RECEIVED,(agent, DataForm(node=df)))
+        return
     df=DataForm(typ='form')
     for i in resp.getQueryPayload():
         if type(i)<>type(iq): pass
         elif i.getName()=='instructions': df.addInstructions(i.getData())
         else: df.setField(i.getName()).setValue(i.getData())
-    return df
+    con.Event(NS_REGISTER,REGISTER_DATA_RECEIVED,(agent, df))
 
 def register(disp,host,info):
     """ Perform registration on remote server with provided info.
@@ -162,7 +173,7 @@ def setPrivacyList(disp,list):
     """ Set the ruleset. 'list' should be the simpleXML node formatted
         according to RFC 3921 (XMPP-IM) (I.e. Node('list',{'name':listname},payload=[...]) )
         Returns true on success."""
-    resp=disp.SendAndWaitForResponse(Iq('set',NS_PRIVACY,payload=[payload]))
+    resp=disp.SendAndWaitForResponse(Iq('set',NS_PRIVACY,payload=[list]))
     if isResultNode(resp): return 1
 
 def delPrivacyList(disp,listname):

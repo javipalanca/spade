@@ -1,4 +1,4 @@
-## $Id: commands.py,v 1.4 2005/04/30 07:33:11 snakeru Exp $
+## $Id: commands.py,v 1.12 2006/01/18 21:38:00 normanr Exp $
 
 ## Ad-Hoc Command manager
 ## Mike Albon (c) 5th January 2005
@@ -31,11 +31,11 @@ What it supplies:
     A means of handling requests, by redirection though the command manager.
 """
 
-from xmpp.protocol import *
-from xmpp.client import PlugIn
+from protocol import *
+from client import PlugIn
 
 class Commands(PlugIn):
-    """Commands is an ancestor of Plugin and can be attached to any session.
+    """Commands is an ancestor of PlugIn and can be attached to any session.
     
     The commands class provides a lookup and browse mechnism. It follows the same priciple of the Browser class, for Service Discovery to provide the list of commands, it adds the 'list' disco type to your existing disco handler function. 
     
@@ -43,27 +43,28 @@ class Commands(PlugIn):
         The commands are added into the existing Browser on the correct nodes. When the command list is built the supplied discovery handler function needs to have a 'list' option in type. This then gets enumerated, all results returned as None are ignored.
         The command executed is then called using it's Execute method. All session management is handled by the command itself.
     """
-    def __init__(self):
+    def __init__(self, browser):
         """Initialises class and sets up local variables"""
         PlugIn.__init__(self)
         DBG_LINE='commands'
         self._exported_methods=[]
         self._handlers={'':{}}
+        self._browser = browser
     
-    def plugin(self, owner, browser):
+    def plugin(self, owner):
         """Makes handlers within the session"""
         # Plug into the session and the disco manager
         # We only need get and set, results are not needed by a service provider, only a service user.
         owner.RegisterHandler('iq',self._CommandHandler,typ='set',ns=NS_COMMANDS)
         owner.RegisterHandler('iq',self._CommandHandler,typ='get',ns=NS_COMMANDS)
-        browser.setDiscoHandler(self._DiscoHandler,node=NS_COMMANDS,jid='')
-        self._browser = browser
+        self._browser.setDiscoHandler(self._DiscoHandler,node=NS_COMMANDS,jid='')
         
     def plugout(self):
         """Removes handlers from the session"""
         # unPlug from the session and the disco manager
         self._owner.UnregisterHandler('iq',self_CommandHandler,ns=NS_COMMANDS)
-        self._browser.delDiscoHandler(self._DiscoHandler,node=NS_COMMANDS)
+        for jid in self._handlers:
+            self._browser.delDiscoHandler(self._DiscoHandler,node=NS_COMMANDS)
         
     def _CommandHandler(self,conn,request):
         """The internal method to process the routing of command execution requests"""
@@ -81,45 +82,50 @@ class Commands(PlugIn):
             if self._handlers[jid].has_key(node):
                 self._handlers[jid][node]['execute'](conn,request)
             else:
-                conn.send(Error(request,ERR_NOT_FOUND))
+                conn.send(Error(request,ERR_ITEM_NOT_FOUND))
                 raise NodeProcessed
         elif self._handlers[''].has_key(node):
-                self._handlers[jid][node]['execute'](conn,request)
+                self._handlers[''][node]['execute'](conn,request)
         else:
-            conn.send(Error(requet,ERR_NOT_FOUND))
+            conn.send(Error(requet,ERR_ITEM_NOT_FOUND))
             raise NodeProcessed
     
     def _DiscoHandler(self,conn,request,typ):
         """The internal method to process service discovery requests"""
         # This is the disco manager handler.
-        # We must:
-        #    Generate a list of commands and return the list
-        #    * This handler does not handle individual commands disco requests.
-        # Pseudo:
-        #   Enumerate the 'item' disco of each command for the specified jid
-        #   Build responce and send
-        #   To make this code easy to write we add an 'list' disco type, it returns a tuple or 'none' if not advertised
-        list = []
-        items = []
-        jid = str(request.getTo())
-        # Get specific jid based results
-        if self._handlers.has_key(jid):
-            for each in self._handlers[jid].keys():
-                items.append((jid,each))
-        # Get generic results
-        for each in self._handlers[''].keys():
-            items.append(('',each))
-        if items != []:
-            for each in items:
-                i = self._handlers[each[0]][each[1]]['disco'](conn,request,'list')
-                if i != None:
-                    list.append(Node(tag='item',attrs={'jid':i[0],'node':i[1],'name':i[2]}))
-            iq = request.buildReply('result')
-            iq.setQueryPayload(list)
-            conn.send(iq)
-        else:
-            conn.send(Error(request,ERR_NOT_FOUND))
-        raise NodeProcessed
+        if typ == 'items':
+            # We must:
+            #    Generate a list of commands and return the list
+            #    * This handler does not handle individual commands disco requests.
+            # Pseudo:
+            #   Enumerate the 'item' disco of each command for the specified jid
+            #   Build responce and send
+            #   To make this code easy to write we add an 'list' disco type, it returns a tuple or 'none' if not advertised
+            list = []
+            items = []
+            jid = str(request.getTo())
+            # Get specific jid based results
+            if self._handlers.has_key(jid):
+                for each in self._handlers[jid].keys():
+                    items.append((jid,each))
+            else:
+                # Get generic results
+                for each in self._handlers[''].keys():
+                    items.append(('',each))
+            if items != []:
+                for each in items:
+                    i = self._handlers[each[0]][each[1]]['disco'](conn,request,'list')
+                    if i != None:
+                        list.append(Node(tag='item',attrs={'jid':i[0],'node':i[1],'name':i[2]}))
+                iq = request.buildReply('result')
+                if request.getQuerynode(): iq.setQuerynode(request.getQuerynode())
+                iq.setQueryPayload(list)
+                conn.send(iq)
+            else:
+                conn.send(Error(request,ERR_ITEM_NOT_FOUND))
+            raise NodeProcessed
+        elif typ == 'info':
+            return {'ids':[{'category':'automation','type':'command-list'}],'features':[]}
     
     def addCommand(self,name,cmddisco,cmdexecute,jid=''):
         """The method to call if adding a new command to the session, the requred parameters of cmddisco and cmdexecute are the methods to enable that command to be executed"""
@@ -129,6 +135,7 @@ class Commands(PlugIn):
         #   Add item into command list
         if not self._handlers.has_key(jid):
             self._handlers[jid]={}
+            self._browser.setDiscoHandler(self._DiscoHandler,node=NS_COMMANDS,jid=jid)
         if self._handlers[jid].has_key(name):
             raise NameError,'Command Exists'
         else:
@@ -179,30 +186,34 @@ class Command_Handler_Prototype(PlugIn):
     All stages set the 'actions' dictionary for each session to represent the possible options available.
     """
     name = 'examplecommand'
+    count = 0
     description = 'an example command'
     discofeatures = [NS_COMMANDS,NS_DATA]
     # This is the command template
-    def __init__(self):
+    def __init__(self,jid=''):
         """Set up the class"""
         PlugIn.__init__(self)
         DBG_LINE='command'
         self.sessioncount = 0
         self.sessions = {}
         # Disco information for command list pre-formatted as a tuple
-        self.discoinfo = {'ids':[{'category':'automation','type':'command','name':self.description}],'features': self.discofeatures}
+        self.discoinfo = {'ids':[{'category':'automation','type':'command-node','name':self.description}],'features': self.discofeatures}
+        self._jid = jid
         
-    def plugin(self,owner,jid=''):
+    def plugin(self,owner):
         """Plug command into the commands class"""
         # The owner in this instance is the Command Processor
-        owner.addCommand(self.name,self._DiscoHandler,self.Execute,jid=jid)
+        self._commands = owner
+        self._owner = owner._owner
+        self._commands.addCommand(self.name,self._DiscoHandler,self.Execute,jid=self._jid)
     
-    def plugout(self,jid):
+    def plugout(self):
         """Remove command from the commands class"""
-        self._owner.delCommand(name,jid)
+        self._commands.delCommand(name,self._jid)
 
     def getSessionID(self):
         """Returns an id for the command session"""
-	self.count = self.count+1
+        self.count = self.count+1
         return 'cmd-%s-%d'%(self.name,self.count)
     
     def Execute(self,conn,request):
@@ -212,25 +223,33 @@ class Command_Handler_Prototype(PlugIn):
             session = request.getTagAttr('command','sessionid')
         except:
             session = None
+        try:
+            action = request.getTagAttr('command','action')
+        except:
+            action = None
+        if action == None: action = 'execute'
         # Check session is in session list
         if self.sessions.has_key(session):
             if self.sessions[session]['jid']==request.getFrom():
-                # Check status is vaild
-                if self.sessions[session]['actions'].has_key(request.getTagAttr('command','status')):
+                # Check action is vaild
+                if self.sessions[session]['actions'].has_key(action):
                     # Execute next action
-                    self.sessions[session]['actions'][request.getTagAttr('command','status')](conn,request)
+                    self.sessions[session]['actions'][action](conn,request)
                 else:
                     # Stage not presented as an option
-                    self._owner.send(Error(request,BAD_REQUEST))
+                    self._owner.send(Error(request,ERR_BAD_REQUEST))
+                    raise NodeProcessed
             else:
                 # Jid and session don't match. Go away imposter
-                self._owner.send(Error(request,BAD_REQUEST))
+                self._owner.send(Error(request,ERR_BAD_REQUEST))
+                raise NodeProcessed
         elif session != None:
             # Not on this sessionid you won't.
-            self._owner.send(Error(request,BAD_REQUEST))
+            self._owner.send(Error(request,ERR_BAD_REQUEST))
+            raise NodeProcessed
         else:
             # New session
-            self.initial[request.getTagAttr('command','status')](conn,request)
+            self.initial[action](conn,request)
     
     def _DiscoHandler(self,conn,request,type):
         """The handler for discovery events"""
@@ -247,9 +266,9 @@ class TestCommand(Command_Handler_Prototype):
     """
     name = 'testcommand'
     description = 'a noddy example command'
-    def __init__(self):
+    def __init__(self,jid=''):
         """ Init internal constants. """
-        Command_Handler_Prototype.__init__(self)
+        Command_Handler_Prototype.__init__(self,jid)
         self.pi = 3.14
         self.initial = {'execute':self.cmdFirstStage}
     
@@ -272,7 +291,7 @@ class TestCommand(Command_Handler_Prototype):
         raise NodeProcessed
 
     def cmdSecondStage(self,conn,request):
-        form = DataForm(node = result.getTag(name='command').getTag(namespace=NS_DATA))
+        form = DataForm(node = result.getTag(name='command').getTag(name='x',namespace=NS_DATA))
         sessions[request.getTagAttr('command','sessionid')]['data']['type']=form.getField('calctype')
         sessions[request.getTagAttr('command','sessionid')]['actions']={'cancel':self.cmdCancel,None:self.cmdThirdStage,'previous':cmdFirstStage}
         # The form generation is split out to another method as it may be called by cmdThirdStage
@@ -287,7 +306,7 @@ class TestCommand(Command_Handler_Prototype):
         raise NodeProcessed
         
     def cmdThirdStage(self,conn,request):
-        form = DataForm(node = result.getTag(name='command').getTag(namespace=NS_DATA))
+        form = DataForm(node = result.getTag(name='command').getTag(name='x',namespace=NS_DATA))
         try:
             num = float(form.getField('radius'))
         except:

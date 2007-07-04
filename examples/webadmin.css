@@ -1,0 +1,46 @@
+* {
+   font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+   background-color: white;
+   color: Black;
+   font-size: small;}
+
+table{
+   width: 90%;
+   margin: 10px 10px 10px 10px;}
+
+table.linea{
+  border: thin solid;
+   border-color: grey;    
+   margin: 0px 0px 0px 0px;}
+   
+table.titulo{
+   background-color: #B2ACDD;
+   font-weight: bold;
+   border: thin solid;
+   border-color: #B2ACDD;
+   margin: 0px 0px 0px 0px;}
+
+.cabecera{
+   background-color: #483D8B;
+   color: White;
+   font-weight: bolder;
+   font-variant: small-caps;}
+
+.lateral{
+   background-color: #B2ACDD;
+   font-weight: bold;
+   font-variant: small-caps;}
+   
+a.lateral{
+       text-decoration: none;
+       font-weight: bolder;
+       background-color: #B2ACDD;}
+
+.par{
+   background-color: White;}
+
+.impar{
+   background-color: #B0C4DE;}
+
+a:hover{
+       font-variant: small-caps;}

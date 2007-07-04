@@ -93,7 +93,9 @@ class ACLParser:
 		httpaddress = Combine(Literal("http://")+hostport+Optional(Literal("/")+path) +Optional(Literal("?")+search))
 		URL = (httpaddress|ftpaddress|mailtoaddress)
 		"""
-		URL = Word(alphanums+":/#@.")
+		
+		#URL = Word(alphanums+":/#@.")
+		URL = Word(alphanums+":/#@.-")
 		
 		
 		URLSequence = (lpar + Literal("sequence").suppress() + OneOrMore(URL) + rpar)#.setResultsName("URLseq")
@@ -106,9 +108,13 @@ class ACLParser:
 
 		AgentIdentifier << Group( \
 			lpar + Literal("agent-identifier").suppress() + \
-			Literal(":name").suppress() + ACLWord.setResultsName("name") + \
+			#Literal(":name").suppress() + ACLWord.setResultsName("name") + \
+			Literal(":name").suppress() + URL.setResultsName("name") + \
 			Optional(Literal(":addresses").suppress() + URLSequence.setResultsName("addresses")) + \
 			Optional(Literal(":resolvers").suppress() + AgentIdentifierSequence.setResultsName("resolvers")) +\
+			# This one for the X-tras (thanks Jade)
+			# Make it more general-case oriented
+			Optional(Literal(":X-JADE-agent-classname").suppress() + URL.suppress()) + \
 			rpar)#.setResultsName("AID")
 		
 		#AgentIdentifier << Group(lpar + Literal("agent-identifier").suppress() + Literal(":name").suppress() + Word(alphanums+"@.").setResultsName("name") + Optional(Literal(":addresses").suppress() + URLSequence.setResultsName("addresses")) + Optional(Literal(":resolvers").suppress() + AgentIdentifierSequence.setResultsName("resolvers")) + rpar)#.setResultsName("AID")
@@ -124,7 +130,8 @@ class ACLParser:
 			Literal(":sender").suppress() + AgentIdentifier.setResultsName("sender") | \
 			Literal(":receiver").suppress() + AgentIdentifierSet.setResultsName("receiver") | \
 			Literal(":content").suppress() + String.setResultsName("content") | \
-			Literal(":reply-with").suppress() + Expression.setResultsName("reply-with") | \
+			#Literal(":reply-with").suppress() + Expression.setResultsName("reply-with") | \
+			Literal(":reply-with").suppress() + URL.setResultsName("reply-with") | \
 			Literal(":reply-by").suppress() + DateTime.setResultsName("reply-by") | \
 			Literal(":in-reply-to").suppress() + Expression.setResultsName("in-reply-to") | \
 			Literal(":reply-to").suppress() + AgentIdentifierSet.setResultsName("reply-to") | \
@@ -132,7 +139,8 @@ class ACLParser:
 			Literal(":encoding").suppress() + Expression.setResultsName("encoding") | \
 			Literal(":ontology").suppress() + Expression.setResultsName("ontology") | \
 			Literal(":protocol").suppress() + ACLWord.setResultsName("protocol") | \
-			Literal(":conversation-id").suppress() + Expression.setResultsName("conversation-id") \
+			#Literal(":conversation-id").suppress() + Expression.setResultsName("conversation-id") \
+			Literal(":conversation-id").suppress() + URL.setResultsName("conversation-id") \
 			)
 
 		MessageType = ( \
@@ -157,7 +165,30 @@ class ACLParser:
 			Literal("request")|\
 			Literal("request-when")|\
 			Literal("request-whenever")|\
-			Literal("subscribe")\
+			Literal("subscribe")|\
+			# I'm looking at you, Jade!
+			Literal("ACCEPT-PROPOSAL")|\
+			Literal("AGREE")|\
+			Literal("CANCEL")|\
+			Literal("CFP")|\
+			Literal("CONFIRM")|\
+			Literal("DISCONFIRM")|\
+			Literal("FAILURE")|\
+			Literal("INFORM")|\
+			Literal("INFORM-IF")|\
+			Literal("INFORM-REF")|\
+			Literal("NOT-UNDERSTOOD")|\
+			Literal("PROPAGATE")|\
+			Literal("PROPOSE")|\
+			Literal("PROXY")|\
+			Literal("QUERY-IF")|\
+			Literal("QUERY-REF")|\
+			Literal("REFUSE")|\
+			Literal("REJECT-PROPOSAL")|\
+			Literal("REQUEST")|\
+			Literal("REQUEST-WHEN")|\
+			Literal("REQUEST-WHENEVER")|\
+			Literal("SUBSCRIBE")\
 			)
 
 		Message = (lpar + MessageType.setResultsName("msgtype") + OneOrMore(MessageParameter.setResultsName("msgParameter")) + rpar)#.setResultsName("message")

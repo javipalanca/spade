@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: browser.py,v 1.9 2005/04/30 07:13:33 snakeru Exp $
+# $Id: browser.py,v 1.11 2005/10/07 23:17:09 normanr Exp $
 
 """Browser module provides DISCO server framework for your application.
 This functionality can be used for very different purposes - from publishing
@@ -157,6 +157,7 @@ class Browser(PlugIn):
                 # elif TYR=='info': # returns info dictionary of the same format as shown above
                 # else: # this case is impossible for now.
         """
+        self.DEBUG('Registering handler %s for "%s" node->%s'%(handler,jid,node), 'info')
         node,key=self._traversePath(node,jid,1)
         node[key]=handler
 
@@ -185,18 +186,27 @@ class Browser(PlugIn):
         """
         handler=self.getDiscoHandler(request.getQuerynode(),request.getTo())
         if not handler:
+            self.DEBUG("No Handler for request with jid->%s node->%s ns->%s"%(request.getTo(),request.getQuerynode(),request.getQueryNS()),'error')
             conn.send(Error(request,ERR_ITEM_NOT_FOUND))
             raise NodeProcessed
+        self.DEBUG("Handling request with jid->%s node->%s ns->%s"%(request.getTo(),request.getQuerynode(),request.getQueryNS()),'ok')
         rep=request.buildReply('result')
+        if request.getQuerynode(): rep.setQuerynode(request.getQuerynode())
         q=rep.getTag('query')
         if request.getQueryNS()==NS_DISCO_ITEMS:
             # handler must return list: [{jid,action,node,name}]
             if type(handler)==dict: lst=handler['items']
             else: lst=handler(conn,request,'items')
+            if lst==None:
+                conn.send(Error(request,ERR_ITEM_NOT_FOUND))
+                raise NodeProcessed
             for item in lst: q.addChild('item',item)
         elif request.getQueryNS()==NS_DISCO_INFO:
             if type(handler)==dict: dt=handler['info']
             else: dt=handler(conn,request,'info')
+            if dt==None:
+                conn.send(Error(request,ERR_ITEM_NOT_FOUND))
+                raise NodeProcessed
             # handler must return dictionary:
             # {'ids':[{},{},{},{}], 'features':[fe,at,ur,es], 'xdata':DataForm}
             for id in dt['ids']: q.addChild('identity',id)

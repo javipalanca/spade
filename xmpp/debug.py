@@ -1,4 +1,4 @@
-##   debug.py 
+#   debug.py 
 ##
 ##   Copyright (C) 2003 Jacob Lundqvist
 ##
@@ -40,14 +40,16 @@ in this code
 
 
 import sys
+import traceback
 import time
-from string import join
+import os
 
 import types
 
-import threading
-
-
+if os.environ.has_key('TERM'):
+    colors_enabled=True
+else:
+    colors_enabled=False
 
 color_none         = chr(27) + "[0m"
 color_black        = chr(27) + "[30m"
@@ -112,9 +114,7 @@ class NoDebug:
     colors={}
     def active_set( self, active_flags = None ):
         return 0
-
-
-  
+    
 
 LINE_FEED = '\n'
 
@@ -124,7 +124,7 @@ class Debug:
                   #
                   # active_flags are those that will trigger output
                   #
-                  active_flags = None, 
+                  active_flags = None,
                   #
                   # Log file should be file object or file namne
                   #
@@ -135,7 +135,7 @@ class Debug:
                   # with prefix = chr(27) + '[34m'
                   #      sufix = chr(27) + '[37;1m\n'
                   #
-                  prefix = 'DEBUG: ', 
+                  prefix = 'DEBUG: ',
                   sufix = '\n',
                   #
                   # If you want unix style timestamps, 
@@ -143,7 +143,7 @@ class Debug:
                   #  1 before prefix, good when prefix is a string
                   #  2 after prefix, good when prefix is a color
                   #
-                  time_stamp = 0,		  
+                  time_stamp = 0,
                   #
                   # flag_show should normaly be of, but can be turned on to get a
                   # good view of what flags are actually used for calls,
@@ -164,8 +164,6 @@ class Debug:
                   welcome = -1
                   ):
         
-	self.debug_mutex = threading.RLock()
-
         self.debug_flags = []
         if welcome == -1:
             if active_flags and len(active_flags):
@@ -205,7 +203,7 @@ class Debug:
                 mod_name = ""
             self.show('Debug created for %s%s' % (caller.f_code.co_filename,
                                                    mod_name ))
-            self.show(' flags defined: %s' % join( self.active ))
+            self.show(' flags defined: %s' % ','.join( self.active ))
             
         if type(flag_show) in (type(''), type(None)):
             self.flag_show = flag_show
@@ -214,6 +212,7 @@ class Debug:
             raise 'Invalid type for flag_show!', msg2
 
 
+        
 
 
     def show( self, msg, flag = None, prefix = None, sufix = None,
@@ -231,8 +230,6 @@ class Debug:
         lf = 1 means add linefeed if not pressent
         """
         
-	#self.debug_mutex.acquire()
-
         if self.validate_flags:
             self._validate_flag( flag )
             
@@ -289,8 +286,6 @@ class Debug:
                 s=s+c
             self._fh.write( '%s%s%s' % ( pre, s, suf ))
         self._fh.flush()
-
-	#self.debug_mutex.release()
             
                 
     def is_active( self, flag ):
@@ -321,7 +316,7 @@ class Debug:
             flags = self._as_one_list( active_flags )
             for t in flags:
                 if t not in self.debug_flags:
-                    print 'Invalid debugflag given', t
+                    sys.stderr.write('Invalid debugflag given: %s\n' % t )
                 ok_flags.append( t )
                 
             self.active = ok_flags
@@ -401,26 +396,21 @@ class Debug:
 
     colors={}
     def Show(self, flag, msg, prefix=''):
-
-	#self.debug_mutex.acquire()
-
-        msg=msg.replace('\r','\\r').replace('\n','\\n')
-        if self.colors.has_key(prefix): msg=self.colors[prefix]+msg+color_none
+        msg=msg.replace('\r','\\r').replace('\n','\\n').replace('><','>\n  <')
+        if not colors_enabled: pass
+        elif self.colors.has_key(prefix): msg=self.colors[prefix]+msg+color_none
         else: msg=color_none+msg
-        if self.colors.has_key(flag): prefixcolor=self.colors[flag]
+        if not colors_enabled: prefixcolor=''
+        elif self.colors.has_key(flag): prefixcolor=self.colors[flag]
         else: prefixcolor=color_none
         
+        if prefix=='error':
+            _exception = sys.exc_info()
+            if _exception[0]:
+                msg=msg+'\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+        
         prefix= self.prefix+prefixcolor+(flag+' '*12)[:12]+' '+(prefix+' '*6)[:6]
-
         self.show(msg, flag, prefix)
-	
-	#try:
-	#	self.debug_mutex.release()
-	#except:
-	#	pass
-
-        #self.debug_mutex.lock(self.show,(msg, flag, prefix))
-	#self.debug_mutex.unlock()
 
     def is_active( self, flag ):
         if not self.active: return 0
@@ -429,4 +419,5 @@ class Debug:
 
 DBG_ALWAYS='always'
 
+##Uncomment this to effectively disable all debugging and all debugging overhead.
 #Debug=NoDebug

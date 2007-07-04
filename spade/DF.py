@@ -1,11 +1,11 @@
-import Agent
+from Agent import PlatformAgent
 import AID
 import Behaviour
 import BasicFipaDateTime
 from SL0Parser import *
 
 
-class DF(Agent.PlatformAgent):
+class DF(PlatformAgent):
 	"""
 	Directory Facilitator Agent
 	"""
@@ -20,6 +20,7 @@ class DF(Agent.PlatformAgent):
 			error = False
 			msg = self._receive(True)
 			if msg != None:
+				#print "DF RECEIVED A MESSAGE", str(msg)
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
 						if msg.getLanguage().lower() == "fipa-sl0":
@@ -28,7 +29,7 @@ class DF(Agent.PlatformAgent):
 							ACLtemplate.setConversationId(msg.getConversationId())
 							#ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
-							
+
 							if "action" in content:
 								if "register" in content.action or "deregister" in content.action:
 									self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,content), template)
@@ -46,11 +47,11 @@ class DF(Agent.PlatformAgent):
 								return -1
 
 
-	
+
 						else: error = "(unsupported-language "+msg.getLanguage()+")"
 					else: error = "(unsupported-ontology "+msg.getOntology()+")"
 
-	
+
 				elif msg.getPerformative().lower() not in ['failure','refuse']:
 						error = "(unsupported-act " + msg.getPerformative() + ")"
 				if error:
@@ -104,13 +105,15 @@ class DF(Agent.PlatformAgent):
 				self.myAgent.send(reply)
 
 
-
-
 			if "register" in self.content.action:
 				if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
-	
+
 					try:
 						self.myAgent.servicedb[dad.getAID().getName()] = dad
+						#print "###########"
+						#print "DF REGISTERED SERVICE"
+						#print dad
+						#print "###########"
 					except Exception, err:
 						reply.setPerformative("failure")
 						reply.setContent("("+self.msg.getContent() + "(internal-error))")
@@ -120,7 +123,7 @@ class DF(Agent.PlatformAgent):
 
 					reply.setPerformative("inform")
 					reply.setContent("(done "+self.msg.getContent() + ")")
-					self.myAgent.send(reply)
+					self.myAgent.send(reply)					
 
 					return 1
 
@@ -140,8 +143,6 @@ class DF(Agent.PlatformAgent):
 						reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
 						self.myAgent.send(reply)
 						return -1
-
-					
 
 					reply.setPerformative("inform")
 					reply.setContent("(done "+self.msg.getContent() + ")")
@@ -171,6 +172,7 @@ class DF(Agent.PlatformAgent):
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
 			reply.setContent("(" + str(self.msg.getContent()) + " true)")
+			#reply.setConversationId(self.msg.getConversationId())
 			self.myAgent.send(reply)
 
 			max = 50
@@ -195,14 +197,14 @@ class DF(Agent.PlatformAgent):
 				dad = DfAgentDescription(self.content.action.search["df-agent-description"])
 			for i in self.myAgent.servicedb.values():
 				if max >= 0:
-					if i == dad:
+					if dad.match(i):
 						result.append(i)
 						max -= 1
 				else: break
 
 
 
-			content = "((result " #+ self.msg.getContent() 
+			content = "((result " #+ self.msg.getContent()
 			if len(result)>0:
 				content += " (set "
 				for i in result:
@@ -235,7 +237,7 @@ class DF(Agent.PlatformAgent):
 			try:
 					dad = DF.DfAgentDescription(self.content.action.modify[0][1])
 			except Exception,err:
-				error = "(missing-argument ams-agent-description)" 
+				error = "(missing-argument ams-agent-description)"
 
 			if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
 				error = "(unauthorised)"
@@ -250,7 +252,7 @@ class DF(Agent.PlatformAgent):
 				return -1
 
 			else:
-	
+
 				reply = self.msg.createReply()
 				reply.setSender(self.myAgent.getAID())
 				reply.setPerformative("agree")
@@ -261,7 +263,7 @@ class DF(Agent.PlatformAgent):
 
 
 			if self.myAgent.servicedb.has_key(dad.getAID().getName()):
-	
+
 				try:
 					self.myAgent.servicedb[dad.getAID().getName()] = dad
 				except Exception, err:
@@ -270,7 +272,7 @@ class DF(Agent.PlatformAgent):
 					self.myAgent.send(reply)
 					return -1
 
-					
+
 
 				reply.setPerformative("inform")
 				reply.setContent("(done "+self.msg.getContent() + ")")
@@ -286,7 +288,7 @@ class DF(Agent.PlatformAgent):
 
 
 	def __init__(self,node,passw,server="localhost",port=5347):
-		Agent.PlatformAgent.__init__(self,node,passw,server,port)
+		PlatformAgent.__init__(self,node,passw,server,port)
 
 
 	def _setup(self):
@@ -298,7 +300,7 @@ class DF(Agent.PlatformAgent):
 class DfAgentDescription:
 
 	def __init__(self, content = None):
-		
+
 		self.name = AID.aid()
 		self.services = []
 		self.protocols = []
@@ -313,6 +315,9 @@ class DfAgentDescription:
 	def getAID(self):
 		return self.name
 
+	def setAID(self, a):
+		self.name = a
+
 	def getServices(self):
 		return self.services
 
@@ -322,43 +327,60 @@ class DfAgentDescription:
 	def getProtocols(self):
 		return self.protocols
 
+	def addProtocol(self, p):
+		self.protocols.append(p)
+
 	def getOntologies(self):
 		return self.ontologies
+
+	def addOntologies(self, o):
+		self.ontologies.append(o)
 
 	def getLanguages(self):
 		return self.languages
 
+	def addLanguage(self, l):
+		self.languages.append(l)
+
 	def getLeaseTime(self):
 		return self.lease_time
+
+	def setLeaseTime(self, lt):
+		self.lease_time = lt
 
 	def getScope(self):
 		return self.scope
 
-	def __eq__(self,y):
+	def addScope(self, s):
+		self.scope = s
 
-		if self.name != y.getAID() \
-		and self.name != None and y.getAID() != None:
-			return False
-		if self.protocols.sort() != y.getProtocols().sort() \
-		and len(self.protocols)>0 and len(y.getProtocols())>0:
-			return False
-		if self.ontologies.sort() != y.getOntologies().sort() \
-		and len(self.ontologies)>0 and len(y.getOntologies())>0:
-			return False
-		if self.languages.sort() != y.getLanguages().sort() \
-		and len(self.languages)>0 and len(y.getLanguages())>0:
-			return False
-		if self.lease_time != None and y.getLeaseTime() != None \
-		and str(self.lease_time) != str(y.getLeaseTime()):
-			return False
-		if self.scope.sort() != y.getScope().sort() \
-		and len(self.scope)>0 and len(y.getScope())>0:
-			return False
+	#def __eq__(self,y):
+	def match(self,y):
+
+		if self.name:
+			if self.name != y.getAID():
+				return False
+		if self.protocols:
+			if self.protocols.sort() != y.getProtocols().sort():
+				return False
+		if self.ontologies:
+			if self.ontologies.sort() != y.getOntologies().sort():
+				return False
+		if self.languages:
+			if self.languages.sort() != y.getLanguages().sort():
+				return False
+		if self.lease_time:
+			if self.lease_time != None and y.getLeaseTime() != None:
+				return False
+		if self.scope:
+			if self.scope.sort() != y.getScope().sort():
+				return False
 
 		if len(self.services)>0 and len(y.getServices())>0:
 			for i in self.services:
 				for j in y.getServices():
-					if i == j:
+					#if i == j:
+					if i.match(j):
 						return True
 			return False
 		else:
@@ -366,7 +388,6 @@ class DfAgentDescription:
 
 	def __ne__(self,y):
 		return not self == y
-
 
 	def loadSL0(self,content):
 		if content != None:
@@ -444,7 +465,7 @@ class DfAgentDescription:
 class ServiceDescription:
 
 	def __init__(self, content = None):
-		
+
 		self.name = None
 		self.type = None
 		self.protocols = []
@@ -465,47 +486,67 @@ class ServiceDescription:
 	def getType(self):
 		return self.type
 
-	def setType(self, type):
-		self.type = type
+	def setType(self, t):
+		self.type = t
 
 	def getProtocols(self):
 		return self.protocols
 
+	def addProtocol(self, p):
+		self.protocols.append(p)
+
 	def getOntologies(self):
 		return self.ontologies
+
+	def addOntologies(self, o):
+		self.ontologies.append(o)
 
 	def getLanguages(self):
 		return self.languages
 
+	def addLanguage(self, l):
+		self.languages.append(l)
+
 	def getOwnership(self):
 		return self.ownership
 
+	def setOwnership(self, o):
+		self.ownership = o
+
 	def getProperties(self):
 		return self.properties
+		
+	def getProperty(self, prop):
+	    for p in self.properties:	        
+	        if p["name"] == prop:
+	            return p["value"]
+	    return ""
 
+	def addProperty(self, p):
+		self.properties.append(p)
 
-	def __eq__(self,y):
+	#def __eq__(self,y):
+	def match(self,y):
 
-		if self.name != y.getName() \
-		and self.name != None and y.getName() != None:
-			return False
-		if self.type != y.getType() \
-		and self.type != None and y.getType() != None:
-			return False
-		if self.protocols.sort() != y.getProtocols().sort() \
-		and len(self.protocols)>0 and len(y.getProtocols())>0:
-			return False
-		if self.ontologies.sort() != y.getOntologies().sort() \
-		and len(self.ontologies)>0 and len(y.getOntologies())>0:
-			return False
-		if self.languages.sort() != y.getLanguages().sort() \
-		and len(self.languages)>0 and len(y.getLanguages())>0:
-			return False
-		if self.ownership != y.getOwnership() \
-		and self.ownership != None and y.getOwnership() != None:
-			return False
+		if self.name:
+			if self.name != y.getName():
+				return False
+		if self.type:
+			if self.type != y.getType():
+				return False
+		if self.protocols:
+			if self.protocols.sort() != y.getProtocols().sort():
+				return False
+		if self.ontologies:
+			if self.ontologies.sort() != y.getOntologies().sort():
+				return False
+		if self.languages:
+			if self.languages.sort() != y.getLanguages().sort():
+				return False
+		if self.ownership:
+			if self.ownership != y.getOwnership():
+				return False
 		#properties
-
 		return True
 
 	def __ne__(self,y):
@@ -517,7 +558,7 @@ class ServiceDescription:
 				self.name = content.name[0]
 
 			if "type" in content:
-				self.type = content.type
+				self.type = content.type[0]
 
 			if "protocols" in content:
 				self.protocols = content.protocols.set.asList()
@@ -532,8 +573,13 @@ class ServiceDescription:
 				self.ownership = content.ownership
 
 			if "properties" in content:
-				for p in content.properties.set:
-					self.properties.append({'name':p.name,'value':p.value})
+				#print "##########"
+				#print "PROPERTIES"
+				#print str(content.properties.set)
+				#print "##########"
+				for p in content.properties.set.asDict().values():
+					#print p
+					self.properties.append({'name':str(p['name']).strip("[']"),'value':str(p['value']).strip("[']")})
 
 	def __str__(self):
 
@@ -541,7 +587,7 @@ class ServiceDescription:
 		if self.name != None:
 			sb += ":name " + str(self.name) + "\n"
 		if self.type:
-			sb += ":type" + str(self.type) + "\n"
+			sb += ":type " + str(self.type) + "\n"
 
 		if len(self.protocols) > 0:
 			sb += ":protocols \n(set\n"
@@ -565,9 +611,9 @@ class ServiceDescription:
 			sb += ":ownership" + str(self.ownership) + "\n"
 
 		if len(self.properties) > 0:
-			sb += ":properties\n(set\n"
+			sb += ":properties \n (set\n"
 			for i in self.properties:
-				sb += "(property :name " + i['name'] + " :value " + i['value'] +")\n"
+				sb += " (property :name " + i['name'] + " :value " + i['value'] +")\n"
 			sb += ")\n"
 
 

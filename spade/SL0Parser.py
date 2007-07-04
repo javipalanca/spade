@@ -83,22 +83,51 @@ class SL0Parser:
 		return m
 
 if __name__ == "__main__":
-	p = SL0Parser()
-	msg = p.parse("((prueba :name (set (bla uno) (bla dos))))")
-	#msg = p.parseFile("message.sl0")
-	#print repr(msg)
-	print msg.asXML()
-	print msg.asList()
-	#print "--------------------"
-	#print msg.action['agent-identifier'].addresses.keys()
-	#print msg.action['agent-identifier'].addresses.sequence[1]
+    p = SL0Parser()
+    msg = p.parse("((prueba :name (set (bla uno) (bla dos))))")
+    #msg = p.parseFile("message.sl0")
+    #print repr(msg)
+    print msg.asXML()
+    print msg.asList()
+    #print "--------------------"
+    #print msg.action['agent-identifier'].addresses.keys()
+    #print msg.action['agent-identifier'].addresses.sequence[1]
 
-	print msg.prueba.name.set
-	print msg.prueba.name.set.bla
-	print msg.prueba.name.set.bla.keys()
-	print msg.prueba.name.set.bla.values()
-	print msg.prueba.name.set.bla[0]
-	print "--"
-	print msg.prueba.name.set.values()
-	print "--"
-
+    print msg.prueba.name.set
+    for cosa in msg.prueba.name.set:
+        print cosa
+    """
+    print msg.prueba.name.set.bla
+    print msg.prueba.name.set.bla.keys()
+    print msg.prueba.name.set.bla.values()
+    print msg.prueba.name.set.bla[0]
+    print "--"
+    print msg.prueba.name.set.values()
+    """
+    print "--"
+    
+    slgrande = """((result
+      (search        
+        (set
+          (df-agent-description
+            :name
+              (agent-identifier
+                :name scheduler-agent@foo.com
+                :addresses (sequence iiop://foo.com/acc))
+            :ontology (set meeting-scheduler FIPA-Agent-Management)
+            :languages (set FIPA-SL0 FIPA-SL1 KIF)
+            :services (set
+              (service-description
+                :name profiling
+                :type meeting-scheduler-service)
+              (service-description
+                :name profiling
+                :type user-profiling-service)))))))"""
+    from DF import DfAgentDescription
+    msg = p.parse(slgrande)
+    print msg
+    for dfd in msg.result.search.set:
+    	d = DfAgentDescription()
+    	d.loadSL0(dfd[1])
+    	print str(d)
+    

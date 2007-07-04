@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: transports.py,v 1.19 2005/05/07 16:24:09 snakeru Exp $
+# $Id: transports.py,v 1.28 2006/01/26 13:09:35 snakeru Exp $
 
 """
 This module contains the low-level implementations of xmpppy connect methods or
@@ -27,10 +27,28 @@ Transports are stackable so you - f.e. TLS use HTPPROXYsocket or TCPsocket as mo
 Also exception 'error' is defined to allow capture of this module specific exceptions.
 """
 
-import socket,select,base64,dispatcher
+import socket,select,base64,dispatcher,sys
 from simplexml import ustr
 from client import PlugIn
 from protocol import *
+
+# determine which DNS resolution library is available
+HAVE_DNSPYTHON = False
+HAVE_PYDNS = False
+
+try:
+    import dns.resolver # http://dnspython.org/
+    HAVE_DNSPYTHON = True
+except ImportError:
+    try:
+        import DNS # http://pydns.sf.net/
+        HAVE_PYDNS = True
+    except ImportError:
+        #TODO: use self.DEBUG()
+        sys.stderr.write("Could not load one of the supported DNS libraries (dnspython or pydns). SRV records will not be queried and you may need to set custom hostname/port for some servers to be accessible.\n")
+
+DATA_RECEIVED='DATA RECEIVED'
+DATA_SENT='DATA SENT'
 
 class error:
     """An exception to be raised in case of low-level errors in methods of 'transports' module."""
@@ -42,16 +60,46 @@ class error:
         """Serialise exception into pre-cached descriptive string."""
         return self._comment
 
-BUFLEN=2048
-#BUFLEN=1024
+BUFLEN=1024
 class TCPsocket(PlugIn):
     """ This class defines direct TCP connection method. """
-    def __init__(self, server=None):
+    def __init__(self, server=None, use_srv=True):
         """ Cache connection point 'server'. 'server' is the tuple of (host, port)
-            absolutely the same as standart tcp socket uses. """
+            absolutely the same as standard tcp socket uses. """
         PlugIn.__init__(self)
         self.DBG_LINE='socket'
         self._exported_methods=[self.send,self.disconnect]
+
+        # SRV resolver
+        if use_srv and (HAVE_DNSPYTHON or HAVE_PYDNS):
+            host, port = server
+            possible_queries = ['_xmpp-client._tcp.' + host]
+
+            for query in possible_queries:
+                try:
+                    if HAVE_DNSPYTHON:
+                        answers = [x for x in dns.resolver.query(query, 'SRV')]
+                        if answers:
+                            host = str(answers[0].target)
+                            port = int(answers[0].port)
+                            break
+                    elif HAVE_PYDNS:
+                        # ensure we haven't cached an old configuration
+                        DNS.ParseResolvConf()
+                        response = DNS.Request().req(query, qtype='SRV')
+                        answers = response.answers
+                        if len(answers) > 0:
+                            # ignore the priority and weight for now
+                            _, _, port, host = answers[0]['data']
+                            del _
+                            port = int(port)
+                            break
+                except:
+                    #TODO: use self.DEBUG()
+                    print 'An error occurred while looking up %s' % query
+            server = (host, port)
+        # end of SRV resolver
+
         self._server = server
 
     def plugin(self, owner):
@@ -81,22 +129,28 @@ class TCPsocket(PlugIn):
             self._recv=self._sock.recv
             self.DEBUG("Successfully connected to remote host %s"%`server`,'start')
             return 'ok'
+        except socket.error, (errno, strerror): 
+            self.DEBUG("Failed to connect to remote host %s: %s (%s)"%(`server`, strerror, errno),'error')
         except: pass
 
     def plugout(self):
         """ Disconnect from the remote server and unregister self.disconnected method from
             the owner's dispatcher. """
-        self._owner.DeregisterDisconnectHandler(self.disconnected)
-        self.shutdown()
-        del self._owner.Connection
+        self._sock.close()
+        if self._owner.__dict__.has_key('Connection'):
+            del self._owner.Connection
+            self._owner.UnregisterDisconnectHandler(self.disconnected)
 
     def receive(self):
         """ Reads all pending incoming data.
             In case of disconnection calls owner's disconnected() method and then raises IOError exception."""
         try: received = self._recv(BUFLEN)
-        except socket.sslerror:
+        except socket.sslerror,e:
             self._seen_data=0
-            return ''
+            if e[0]==2: return ''
+            self.DEBUG('Socket error while receiving data','warn')
+            self._owner.disconnected()
+            raise IOError("Disconnected from server")
         except: received = ''
 
         while self.pending_data(0):
@@ -108,8 +162,10 @@ class TCPsocket(PlugIn):
         if len(received): # length of 0 means disconnect
             self._seen_data=1
             self.DEBUG(received,'got')
+            if hasattr(self._owner, 'Dispatcher'):
+                self._owner.Dispatcher.Event('', DATA_RECEIVED, received)
         else:
-            self.DEBUG('Socket error while receiving data','error')
+            self.DEBUG('Socket error while receiving data','warn')
             self._owner.disconnected()
             raise IOError("Disconnected from server")
         return received
@@ -121,7 +177,10 @@ class TCPsocket(PlugIn):
         elif type(raw_data)<>type(''): raw_data = ustr(raw_data).encode('utf-8')
         try:
             self._send(raw_data)
-            self.DEBUG(raw_data,'sent')
+            # Avoid printing messages that are empty keepalive packets.
+            if raw_data.strip():
+                self.DEBUG(raw_data,'sent')
+                self._owner.Dispatcher.Event('', DATA_SENT, raw_data)
         except:
             self.DEBUG("Socket error while sending data",'error')
             self._owner.disconnected()
@@ -145,12 +204,12 @@ class HTTPPROXYsocket(TCPsocket):
     """ HTTP (CONNECT) proxy connection class. Uses TCPsocket as the base class
         redefines only connect method. Allows to use HTTP proxies like squid with
         (optionally) simple authentication (using login and password). """
-    def __init__(self,proxy,server):
+    def __init__(self,proxy,server,use_srv=True):
         """ Caches proxy and target addresses.
             'proxy' argument is a dictionary with mandatory keys 'host' and 'port' (proxy address)
             and optional keys 'user' and 'password' to use for authentication.
             'server' argument is a tuple of host and port - just like TCPsocket uses. """
-        TCPsocket.__init__(self,server)
+        TCPsocket.__init__(self,server,use_srv)
         self.DBG_LINE=DBG_CONNECT_PROXY
         self._proxy=proxy
 
@@ -221,8 +280,10 @@ class TLS(PlugIn):
         """ Unregisters TLS handler's from owner's dispatcher. Take note that encription
             can not be stopped once started. You can only break the connection and start over."""
         self._owner.UnregisterHandler('features',self.FeaturesHandler,xmlns=NS_STREAMS)
-        self._owner.UnregisterHandlerOnce('proceed',self.StartTLSHandler,xmlns=NS_TLS)
-        self._owner.UnregisterHandlerOnce('failure',self.StartTLSHandler,xmlns=NS_TLS)
+	#self._owner.UnregisterHandlerOnce('proceed',self.StartTLSHandler,xmlns=NS_TLS)
+	self._owner.UnregisterHandler('proceed',self.StartTLSHandler,xmlns=NS_TLS)
+        #self._owner.UnregisterHandlerOnce('failure',self.StartTLSHandler,xmlns=NS_TLS)
+        self._owner.UnregisterHandler('failure',self.StartTLSHandler,xmlns=NS_TLS)
 
     def FeaturesHandler(self, conn, feats):
         """ Used to analyse server <features/> tag for TLS support.
@@ -263,9 +324,9 @@ class TLS(PlugIn):
         if starttls.getNamespace()<>NS_TLS: return
         self.starttls=starttls.getName()
         if self.starttls=='failure':
-            self.DEBUG("Got starttls responce: "+self.starttls,'error')
+            self.DEBUG("Got starttls response: "+self.starttls,'error')
             return
-        self.DEBUG("Got starttls proceed responce. Switching to SSL...",'ok')
+        self.DEBUG("Got starttls proceed response. Switching to TLS/SSL...",'ok')
         self._startSSL()
         self._owner.Dispatcher.PlugOut()
         dispatcher.Dispatcher().PlugIn(self._owner)

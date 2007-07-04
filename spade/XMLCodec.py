@@ -59,13 +59,16 @@ class XMLCodec(handler.ContentHandler):
 	#   ***************************************************
 
 	""" Encode the information of Agent, Tags To and From """ 
-	def encodeAid(self, aid):
+	def encodeAid(self, agentid):
+		
+		if not isinstance(agentid, aid):
+			return ""
 
 		sb = self.OT + self.AID_TAG + self.CT
-		sb = sb + self.encodeTag( self.AID_NAME, aid.getName() )
+		sb = sb + self.encodeTag( self.AID_NAME, agentid.getName() )
 		sb = sb + self.OT + self.AID_ADDRESSES + self.CT
     
-		addresses = aid.getAddresses()
+		addresses = agentid.getAddresses()
 		for addr in addresses:
 			sb = sb + self.encodeTag( self.AID_ADDRESS, addr )
 
@@ -164,9 +167,9 @@ class XMLCodec(handler.ContentHandler):
     
 		#Create tag TO
 		tos = env.getTo()
-		for aid in tos:
+		for agentid in tos:
 			sb = sb + self.OT + self.TO_TAG + self.CT
-			sb = sb + self.encodeAid(aid)
+			sb = sb + self.encodeAid(agentid)
 			sb = sb + self.ET + self.TO_TAG + self.CT
     
 		#Create tag from
@@ -288,7 +291,7 @@ class XMLCodec(handler.ContentHandler):
 		elif self.INTENDED_TAG.lower() == localName.lower():
 			self.aid = aid()
 			self.aidTag = self.INTENDED_TAG
-			self.env.addIntendedReceiver(aid)
+			#self.env.addIntendedReceiver(self.aid)
 
 		elif self.RECEIVED_TAG.lower() == localName.lower():
 			self.env.setReceived(ReceivedObject())

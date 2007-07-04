@@ -12,7 +12,7 @@
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
 
-# $Id: roster.py,v 1.17 2005/05/02 08:38:49 snakeru Exp $
+# $Id: roster.py,v 1.20 2005/07/13 13:22:52 snakeru Exp $
 
 """
 Simple roster implementation. Can be used though for different tasks like
@@ -24,7 +24,7 @@ from client import PlugIn
 
 class Roster(PlugIn):
     """ Defines a plenty of methods that will allow you to manage roster.
-        Also automatically track presences from remote JIDs taking into 
+        Also automatically track presences from remote JIDs taking into
         account that every JID can have multiple resources connected. Does not
         currently support 'error' presences.
         You can also use mapping interface for access to the internal representation of
@@ -48,7 +48,7 @@ class Roster(PlugIn):
         if request: self.Request()
 
     def Request(self,force=0):
-        """ Request roster from server if it were not yet requested 
+        """ Request roster from server if it were not yet requested
             (or if the 'force' argument is set). """
         if self.set is None: self.set=0
         elif not force: return
@@ -68,7 +68,7 @@ class Roster(PlugIn):
             jid=item.getAttr('jid')
             if item.getAttr('subscription')=='remove':
                 if self._data.has_key(jid): del self._data[jid]
-                return
+                raise NodeProcessed             # a MUST
             self.DEBUG('Setting roster item %s...'%jid,'ok')
             if not self._data.has_key(jid): self._data[jid]={}
             self._data[jid]['name']=item.getAttr('name')
@@ -79,6 +79,7 @@ class Roster(PlugIn):
             for group in item.getTags('group'): self._data[jid]['groups'].append(group.getData())
         self._data[self._owner.User+'@'+self._owner.Server]={'resources':{},'name':None,'ask':None,'subscription':None,'groups':None,}
         self.set=1
+        raise NodeProcessed   # a MUST. Otherwise you'll get back an <iq type='error'/>
 
     def PresenceHandler(self,dis,pres):
         """ Presence tracker. Used internally for setting items' resources state in
@@ -148,7 +149,7 @@ class Roster(PlugIn):
         """ Returns list of connected resources of contact 'jid'."""
         return self._data[jid[:(jid+'/').find('/')]]['resources'].keys()
     def setItem(self,jid,name=None,groups=[]):
-        """ Renames contact 'jid' and sets the groups list that it now belongs to."""
+        """ Creates/renames contact 'jid' and sets the groups list that it now belongs to."""
         iq=Iq('set',NS_ROSTER)
         query=iq.getTag('query')
         attrs={'jid':jid}
@@ -178,6 +179,6 @@ class Roster(PlugIn):
         """ Authorise JID 'jid'. Works only if these JID requested auth previously. """
         self._owner.send(Presence(jid,'subscribed'))
     def Unauthorize(self,jid):
-        """ Unauthorise JID 'jid'. Use for declining authorisation request 
+        """ Unauthorise JID 'jid'. Use for declining authorisation request
             or for removing existing authorization. """
         self._owner.send(Presence(jid,'unsubscribed'))
