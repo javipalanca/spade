@@ -1,8 +1,8 @@
 """
 HTTP MTP for SPADE
 
-This module have been developed following the "FIPA Agent Message Transport Protocol 
-for HTTP" standard. 
+This module have been developed following the "FIPA Agent Message Transport Protocol
+for HTTP" standard.
 
 www.fipa.org
 """
@@ -24,11 +24,11 @@ BOUNDARY = "SpadeMtpHttpMimeMultipartMixedBoundary"
 BI="--"
 FIPA_CT_HYPHEN = "multipart-mixed"
 FIPA_CT = "multipart/mixed"
-FIPA_HP = {'Cache-Control':'no-cache', 'Host':'localhost:80', 'Mime-Version':'1.0', 
+FIPA_HP = {'Cache-Control':'no-cache', 'Host':'localhost:80', 'Mime-Version':'1.0',
 			'Content-Type':FIPA_CT+' ; boundary="'+BOUNDARY+'"',
 			'Content-Length':'0' , 'Connection':'close'}
 
-FIPA_HP_LOWER = {'cache-control':'no-cache', 'host':'localhost:80', 'mime-version':'1.0', 
+FIPA_HP_LOWER = {'cache-control':'no-cache', 'host':'localhost:80', 'mime-version':'1.0',
 			'content-type':FIPA_CT+' ; boundary="'+BOUNDARY+'"',
 			'content-length':'0' , 'connection':'close'}
 
@@ -53,13 +53,13 @@ class http(MTP.MTP):
 		self.httpserver.setName("SpadeHttpServer")
 		self.httpserver.mtp = self
 		self.httpserver.start()
-	
+
 
 	def make_body(self,envelope,payload):
 		"""
-		Create the body of the message 	
+		Create the body of the message
 		"""
-		body = BI + BOUNDARY + "\r\n" 
+		body = BI + BOUNDARY + "\r\n"
 		if "/JADE" not in envelope:
 			# Standard way
 			body = body + CONTENT_TYPE + FIPA_CT_ENV + "\n\n"
@@ -68,14 +68,14 @@ class http(MTP.MTP):
 		else:
 			# For JADE
 			body = body + CONTENT_TYPE + CT_XML + "\r\n"
-			body = body + envelope + "\r\n" + BI + BOUNDARY + "\r\n"		
+			body = body + envelope + "\r\n" + BI + BOUNDARY + "\r\n"
 			body = body + CONTENT_TYPE + CT_TEXT + "\r\n"
-			
+
 		body = body + payload + "\r\n"
 		body = body + BI + BOUNDARY + BI +"\r\n"
 
 		return body
-	
+
 
 	def stop(self):
 	    try:
@@ -88,10 +88,10 @@ class http(MTP.MTP):
 		"""
 		Send a message to a http agent
 		"""
-		
-		#print ">>>HTTP TRANSPORT: A MESSAGE TO SEND FOR ME"
 
-		#print ">>>HTTP: PAYLOAD = " + payload
+		print ">>>HTTP TRANSPORT: A MESSAGE TO SEND FOR ME"
+
+		print ">>>HTTP: PAYLOAD = " + payload
 
 		envelope.setPayloadLength(str(len(str(payload))))
 
@@ -102,20 +102,20 @@ class http(MTP.MTP):
 		except:
 			#error
 			pass
-		
+
 		# Making the body to send
 		body = self.make_body(envxml,payload);
 
 		# NO CAPS
 		#self.fipaHeadersPost = FIPA_HP_LOWER
-		#self.fipaHeadersPost['content-length'] = str(len(body))	
-		
+		#self.fipaHeadersPost['content-length'] = str(len(body))
+
 		# CAPS
 		self.fipaHeadersPost = FIPA_HP
-		self.fipaHeadersPost['Content-Length'] = str(len(str(body)))	
+		self.fipaHeadersPost['Content-Length'] = str(len(str(body)))
 
-	
-		# Geting message receivers 
+
+		# Geting message receivers
 		to = envelope.getTo()
 		#print ">>>HTTP TRANSPORT: TO = " + str(to)
 
@@ -124,7 +124,7 @@ class http(MTP.MTP):
 			for ad in receiver.getAddresses():
 				ad = str(ad)
 				#print ">>>HTTP TRANSPORT: ADDRESS = " + ad
-		
+
 				# HTTP URI = http://address:port
 				if ad[0:7] == "http://":
 					ad = ad[7:]
@@ -134,33 +134,33 @@ class http(MTP.MTP):
 					#host = ad.split("/acc")[0]
 					host, remote_path = ad.split("/")
 					conn = httplib.HTTPConnection(host)
-			
+
 					self.fipaHeadersPost['Host'] = host
-					
+
 					print str(self.fipaHeadersPost)
 					print str(body)
-			
-					
+
+
 					conn.request("POST",remote_path,body,self.fipaHeadersPost)
 
 					response = conn.getresponse()
-			
+
 					if response.status != 200:
 						print "Conection Error: Bad response", str(response.status)
-				
+
 					if response.reason != "OK":
 						print "Conection Error: Bad reason", str(response.reason)
-					
+
 					print response.status, response.reason
-				
+
 					conn.close()
-					
+
 					# End connection
 					print "HTTP Connection closed"
 
 
 
-class HttpServer(threading.Thread):		
+class HttpServer(threading.Thread):
 	def run(self):
 		BaseHTTPServer.HTTPServer.allow_reuse_address = True
 		httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
@@ -172,7 +172,7 @@ class HttpServer(threading.Thread):
 class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 	protocol_version = PROTOCOL_VERSION
 
-	def send_response(self, code, message=None): 
+	def send_response(self, code, message=None):
 		"""
 		Overloaded for fipa specification responses compliancy
         	"""
@@ -192,17 +192,17 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 		if self.request_version != self.protocol_version:
 			# fipa specification only allows HTTP/1.1
 			self.send_error(505)
-			
+
 		new_headers = {}
 		for k in self.headers.keys():
 			new_headers[k.lower()] = self.headers[k]
 
-		for i in FIPA_HP.keys():			
-			if i.lower() not in new_headers.keys():				
+		for i in FIPA_HP.keys():
+			if i.lower() not in new_headers.keys():
 				print "HEADERS MISMATCH", str(self.headers.keys()), str(FIPA_HP.keys())
 				self.send_error(400,"FIPA headers required (www.fipa.org)")
 				break
-			
+
 		#if self.headers.keys() in FIPA_HP.keys():
 		#	print "HEADERS MISMATCH", str(self.headers.keys()), str(FIPA_HP.keys())
 		#	self.send_error(400,"FIPA headers required (www.fipa.org)")
@@ -217,20 +217,20 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 		if 'boundary' not in self.headers.getparamnames():
 			#print "GETPARAMNAMES", str(self.headers.getparamnames())
 			self.send_error(415)
-		
+
 		boundary = self.headers.getparam('boundary')
-	
-		clen = self.headers.getheader('Content-Length')	
+
+		clen = self.headers.getheader('Content-Length')
 		if clen <= 0:
 			send_error(411)
-	
+
 		envelopexml , payload = self.getContent(self.rfile,boundary,clen)
 
 		# parsing the envelope
 		xc = XMLCodec.XMLCodec()
-						
+
 		envelopexml = envelopexml.strip("\r\n")
-		
+
 
 		try:
 			print "ENVELOPEXML"
@@ -244,8 +244,8 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 		# Dispatching message
 		#MTP.MTP.dispatch(envelope,payload)
 		self.server.mtp.dispatch(envelope, payload)
-			
-		# Response 
+
+		# Response
         	self.send_response(200)
 		for header in FIPA_HR.keys():
 			self.send_header(header,FIPA_HR[header])
@@ -254,13 +254,13 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
  	def getContent(self,rfile,boundary,clen):
 		"""
-		Parses entity body catching the envelope and payload of the incoming message 
+		Parses entity body catching the envelope and payload of the incoming message
 		"""
 
 		env = None
 		pay = None
-		
-		
+
+
 		part = 0
 		buf1 = rfile.read(int(clen)).split(BI+boundary+BI)
 
@@ -275,7 +275,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 			if parts == 2:
 				env = buf2[0]
 				pay = buf2[1]
-			
+
 			elif parts == 3:
 				# there is text before the first boundary delimiter line, and it is ignored
 				env = buf2[1]
@@ -285,7 +285,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 				self.send_error(400,"Malformed Multipart-Mixed MIME")
 		except:
 			self.send_error(400,"Malformed Multipart-Mixed MIME")
-		
+
 		# searching CLRF CLRF where envelope really starts, before this sequence is the envelope content type
 		index = env.find('\r\n\r\n')
 		if index < 0:
@@ -293,19 +293,19 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 		type_env = env[0:index]
 		env = env[index+2:]
 
-		# the same for payload 
+		# the same for payload
 		index = pay.find('\r\n\r\n')
 		if index < 0:
 			index = env.find('\n\n')
 		type_pay = pay[0:index]
 		pay = pay[index+2:]
 
-		
+
 		# Content types check
 		try:
 			type_env = type_env.split(':')[1].split(';')[0].strip()
 			type_pay = type_pay.split(':')[1].split(';')[0].strip()
-		
+
 		except:
 			#self.send_error(415)
 			pass
@@ -314,7 +314,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 		if str(FIPA_CT_ENV) not in str(type_env) or str(FIPA_CT_PAY) not in str(type_pay):
 			if str(CT_XML) not in str(type_env) or str(CT_TEXT) not in str(type_pay):
 				self.send_error(415)
-				
+
 		return (env,pay)
 
 

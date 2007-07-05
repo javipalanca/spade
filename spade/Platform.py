@@ -24,7 +24,7 @@ from os.path import *
 class PlatformRestart(Exception):
     def __init__(self): pass
     def __str__(self): return
-        
+
 
 class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     _body_template = "<table><tr><td class=cabecera colspan=2>#TOP#</td></tr><tr><td class=lateral>#MENU_LEFT#</td><td>#PANEL_RIGHT#</td></tr><tr><td>#BOTTOM#</td></tr></table>"
@@ -185,7 +185,7 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self._body = self._body.replace("#MAINCP#", cp)
             self._body = self._body.replace("#BOTTOM#", '')
             self._content = self.header() + self.body(self._body) + self.footer("<h5>Designed by <a href='http://gti-ia.dsic.upv.es'>GTI-IA DSIC UPV</a></h5>")
-        
+
         elif page == "/send":
             self.setPageTemplate()
             cp = ""
@@ -310,12 +310,12 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         elif page == "/services":
             self.setPageTemplate()
             cp = ""
-            
+
             #Check if we have to delete any service
             #cp = cp + str(vars) + "<br />"
             if vars.has_key("delete"):
                 # Search for the DAD of the given service
-                
+
                 # USe that DAD for a deregister query
                 vars['delete'] = vars['delete'].replace("%40", "@")
                 vars['delete'] = vars['delete'].replace("%2F", "/")
@@ -338,7 +338,7 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             try:
                 #for j in range(0,len(search)):
                 for dfd in search:
-                    aname = dfd.getAID().getName()                    
+                    aname = dfd.getAID().getName()
                     #entry = search[j][1] #[0]['df-agent-description']
                     #print str(entry.__class__)
                     #print "ENTRY:", str(entry)
@@ -504,12 +504,12 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
         elif page == "/":
             self.setPageTemplate()
-            
+
             # Check if we have to restart the platform
             if vars.has_key("restart") and vars["restart"] == "true":
                 #raise PlatformRestart
                 self.server.behav.getAgent().stop()
-            
+
             cp = ""
             cp = cp + """Below are the jabber server settings. If you wish to know more about jabber servers, please visit <a href="http://www.jabber.org">this</a> link.<br>
                     <table><tr><td>
@@ -544,26 +544,26 @@ class SpadePlatform(Agent.PlatformAgent):
         def __init__(self, cfg=None):
             Behaviour.OneShotBehaviour.__init__(self)
             self.cfg = cfg
-            
+
         def _process(self):
             import pkg_resources
-            pkg_resources.require("TurboGears")            
+            pkg_resources.require("TurboGears")
             from turbogears import update_config, start_server
             import cherrypy
-            cherrypy.lowercase_api = True            
-            
+            cherrypy.lowercase_api = True
+
             if self.cfg:
                 update_config(configfile=self.cfg, modulename="swi.config")
             elif exists(join(dirname(__file__), "setup.py")):
                 update_config(configfile="dev.cfg",modulename="swi.config")
             else:
                 update_config(configfile="prod.cfg",modulename="swi.config")
-            
-            from swi.controllers import Root            
+
+            from swi.controllers import Root
 
             #start_server(Root())
 
-            
+
     class WebAdminBehaviour(Behaviour.Behaviour):
 
         def __init__(self):
@@ -601,10 +601,12 @@ class SpadePlatform(Agent.PlatformAgent):
         def _process(self):
             msg = self._receive(True)
             if (msg != None):
-                #print ">>> SPADE Platform Received a message: " + str(msg)
+                print ">>> SPADE Platform Received a message: " + str(msg)
                 if msg.getSender() == self.myAgent.getAID():
                     # Prevent self-loopholes
-                    return                    
+                    print "###ACC LOOP HOLE"
+                    return
+
                 to_list = msg.getReceivers()
                 d = {}
                 for to in to_list:
@@ -627,7 +629,7 @@ class SpadePlatform(Agent.PlatformAgent):
                         #ap = ACLParser.ACLxmlParser()
                         #payload = ap.encodeXML(newmsg)
                         payload = str(newmsg)
-                        
+
                         envelope = Envelope.Envelope()
                         envelope.setFrom(newmsg.getSender())
                         for i in newmsg.getReceivers():
@@ -636,7 +638,7 @@ class SpadePlatform(Agent.PlatformAgent):
                         envelope.setPayloadLength(len(payload))
                         envelope.setPayloadEncoding("US-ASCII")
                         envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())
-                        self.myAgent.mtps[protocol].send(envelope, payload)                        
+                        self.myAgent.mtps[protocol].send(envelope, payload)
                     else:
                         # Default case: it's an XMPP message
                         print ">>> Message through protocol XMPP"

@@ -38,7 +38,7 @@ class emissor(Agent.Agent):
 
             #print "Vaig a enviar un missatge"
 	    self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
-            self.myAgent.send(self.myAgent.msg)
+            self.myAgent.send(self.myAgent.msg, "jabber")
 	    #print "Enviat: "+ str(self.myAgent.msg)
            
 	    #print "Estic asperant ..." 
@@ -84,13 +84,12 @@ class emissor(Agent.Agent):
             
 
     def __init__(self,jid,passw,nagent,ntotal,tmsg,nmsg,multiemissor,debug=[]):
-        Agent.Agent.__init__(self,jid,passw, debug=debug)
+        Agent.Agent.__init__(self,jid,passw, debug=debug, addresses=["http://supu.com"])
         self.ntotal = ntotal
         self.tmsg = tmsg
         self.nmsg = nmsg
         self.nagent = nagent
         self.multi = multiemissor
-
 
            
 

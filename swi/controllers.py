@@ -98,7 +98,6 @@ class Root(controllers.RootController):
         
     @expose(template="swi.templates.orgs")
     def orgs(self):
-        flash("Under construction . . .")
         """"
         orgs=[]
         # Build a LIST of DADs

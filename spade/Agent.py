@@ -29,7 +29,8 @@ import SocketServer
 
 import DF
 
-from xmpp import Iq, Presence,Protocol, NS_ROSTER, NS_DISCO_INFO
+#from xmpp import Iq, Presence,Protocol, Node, NodeBuilder, NS_ROSTER, NS_DISCO_INFO
+from xmpp import *
 
 # Taken from xmpp debug
 color_none         = chr(27) + "[0m"
@@ -64,7 +65,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 try:
                     data = ""
                     while True:
-                        # Read message length                        
+                        # Read message length
                         length = self.rfile.read(8)
                         if length:
                             data = self.rfile.read(int(length))
@@ -76,23 +77,23 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         data = ""
                 except Exception, e:
                     print "P2P Socket Closed to", str(self.client_address),":",str(e),":",str(data)
-                
+
         def _process(self):
             self.server.handle_request()
-        
+
         def onStart(self):
-            open = False            
+            open = False
             while open == False:
                 try:
                     self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
                     open = True
                 except:
-                    self.myAgent.P2PPORT = random.randint(1025,65535)                
-                
-            self.server._jabber_messageCB = self.myAgent._jabber_messageCB            
+                    self.myAgent.P2PPORT = random.randint(1025,65535)
+
+            self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             print self.getName(),": P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
 
-    
+
     class StreamInitiationBehaviour(Behaviour.EventBehaviour):
         def _process(self):
             self.msg = self._receive(False)
@@ -128,9 +129,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
                             err.addChild("forbidden")
                             err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
-                        self.myAgent.jabber.send(reply)                        
-                            
-                
+                        self.myAgent.jabber.send(reply)
+
+
     class DiscoBehaviour(Behaviour.EventBehaviour):
         def _process(self):
             self.msg = self._receive(False)
@@ -145,14 +146,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.myAgent.jabber.send(reply)
                 #print "SENT DISCO REPLY", str(reply)
 
-    
 
-    def __init__(self, agentjid, serverplatform, p2p=True):
+
+    def __init__(self, agentjid, serverplatform, p2p=True, addresses=[]):
         """
         inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
         """
         MessageReceiver.MessageReceiver.__init__(self)
-        self._aid = AID.aid(name=agentjid, addresses=[ "xmpp://"+agentjid ])
+        if "xmpp://"+agentjid not in addresses:
+            addresses = addresses.append("xmpp://"+agentjid)
+        self._aid = AID.aid(name=agentjid, addresses=addresses)
         self._jabber = None
         self._serverplatform = serverplatform
         self._defaultbehaviour = None
@@ -175,7 +178,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
         self._running = False
-        
+
         # Add Disco Behaviour
         self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq("get",queryNS=NS_DISCO_INFO)))
 
@@ -188,7 +191,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         # Add P2P Behaviour
         self.p2p = p2p
         self.p2p_routes = {}
-        self.p2p_lock = thread.allocate_lock()        
+        self.p2p_lock = thread.allocate_lock()
         if p2p:
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
             self.addBehaviour(Agent.P2PBehaviour())
@@ -307,7 +310,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         message callback
         read the message envelope and post the message to the agent
-        """        
+        """
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
@@ -325,6 +328,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     pass
                 ACLmsg.setContent(mess.getBody())
                 # Rebuild sender and receiver
+                # Check wether there is an envelope
+                if child.getData():
+                    xc = XMLCodec.XMLCodec()
+                    env = xc.parse(child.getData())
                 ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
                 ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
                 self.postMessage(ACLmsg)
@@ -351,7 +358,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 # Check if it's an offline stream initiation request
                 if mess.getAttr("type") == "set":
                     q = mess.getTag("si")
-                    if q:                    
+                    if q:
                         print "StreamInitiation Behaviour called (offline)"
                         if mess.getType() == "set":
                             if mess.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
@@ -385,7 +392,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.jabber.send(reply)
                                 if raiseFlag: raise xmpp.NodeProcessed
                                 return True
-        
+
         self.postMessage(mess)
         if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
         return True
@@ -479,10 +486,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         returns the SPADE server domain
         """
         return self._serverplatform
-    
+
     def getP2PUrl(self):
         return str("spade://"+socket.gethostname()+":"+str(self.P2PPORT))
-    
+
 
     def requestDiscoInfo(self, to):
         class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
@@ -497,7 +504,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             services.append(str(child.getAttr("var")))
                         #print "RETRIEVED SERVICES:", services
                         self.result = services
-                    
+
         #print "REQUEST DISCO INFO CALLED BY", str(self.getName())
         id = 'nsdi'+str(random.randint(1,10000))
         temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
@@ -664,6 +671,47 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv.addData(envxml)
         """
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
+        envelope = Envelope.Envelope()
+        generate_envelope = True
+        # If there is more than one address in the sender or
+        # the only address is not an xmpp address,
+        # we need the full sender AID field
+        try:
+            if len(ACLmsg.getSender().getAddresses()) > 1 or \
+                "xmpp" not in ACLmsg.getSender().getAddresses()[0]:
+                envelope.setFrom(ACLmsg.getSender())
+                generate_envelope = True
+        except:
+            pass
+
+        try:
+            for i in ACLmsg.getReceivers():
+                # For every receiver,
+                # if there is more than one address in the receiver or
+                # the only address is not an xmpp address,
+                # we need the full receiver AID field
+                if len(i.getAddresses()) > 1 or \
+                    "xmpp" not in i.getAddresses()[0]:
+                    envelope.addTo(i)
+                    generate_envelope = True
+        except:
+            pass
+
+        try:
+            # The same for 'reply_to'
+            if len(ACLmsg.getReplyTo().getAddresses()) > 1 or \
+                "xmpp" not in ACLmsg.getReplyTo().getAddresses()[0]:
+                envelope.addTo(ACLmsg.getReplyTo())
+                generate_envelope = True
+        except:
+            pass
+
+        # Generate the envelope ONLY if it is needed
+        if generate_envelope:
+            xc = XMLCodec.XMLCodec()
+            envxml = xc.encodeXML(envelope)
+            xenv['content-type']='fipa.mts.env.rep.xml.std'
+            xenv.addChild(node=simplexml.NodeBuilder(envxml).getDom())
 
         #to = tojid[0]
         # For each of the receivers, try to send the message
@@ -685,7 +733,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             else:
                 # I don't understand this address, relay the message to the platform
                 #jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
-                jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
+                jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(), xmlns="")
                 jabber_msg.attrs.update(ACLmsg._attrs)
                 jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
@@ -695,7 +743,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.jabber.send(jabber_msg)
                 #return
                 continue
-            
+
             # If the receiver is one of our p2p contacts, send the message through p2p.
             # If it's not or it fails, send it through the jabber server
             # We suppose method=="p2p"
@@ -707,7 +755,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     self.p2p_lock.acquire()
                     self.send_p2p(jabber_msg, jabber_id)
                 except Exception, e:
-                    #print "Exception in send_p2p", str(e), e                    
+                    #print "Exception in send_p2p", str(e), e
                     print "P2P Connection to",jabber_id,"prevented. Falling back"
                     del self.p2p_routes[jabber_id]
                     if method=="auto": self.jabber.send(jabber_msg)
@@ -720,12 +768,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         # Get the address
         if not to: to = str(jabber_msg.getTo())
         url = self.p2p_routes[to]["url"]
-        
+
         # Check if there is already an open socket
         s = None
         if self.p2p_routes[to].has_key("socket"):
             s = self.p2p_routes[to]["socket"]
-        if not s:        
+        if not s:
             # Parse url
             scheme, address = url.split("://",1)
             if scheme == "spade":
@@ -734,7 +782,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if len(l) > 1:
                     address = l[0]
                     port = int(l[1])
-            
+
             # Create a socket connection to the destination url
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((address, port))
@@ -1521,7 +1569,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     	"""
     	search a service in the DF
     	the service template is a DfAgentDescriptor
-        
+
     	"""
         a=11
         msg = ACLMessage.ACLMessage()
@@ -1698,8 +1746,8 @@ class PlatformAgent(AbstractAgent):
     A PlatformAgent is a SPADE component.
     Examples: AMS, DF, ACC, ...
     """
-    def __init__(self, node, password, server="localhost", port=5347, config=None ,debug = [], p2p=False):
-        AbstractAgent.__init__(self, node, server, p2p=p2p)
+    def __init__(self, node, password, server="localhost", port=5347, config=None ,debug = [], p2p=False, addresses=[]):
+        AbstractAgent.__init__(self, node, server, p2p=p2p, addresses=addresses)
         self.config = config
         self.debug = debug
         self.jabber = xmpp.Component(server=server, port=port, debug=self.debug)
@@ -1755,7 +1803,7 @@ class Agent(AbstractAgent):
     """
     This is the main class which may be inherited to build a SPADE agent
     """
-           
+
     class OutOfBandBehaviour(Behaviour.EventBehaviour):
         def openP2P(self, url):
             """
@@ -1773,20 +1821,20 @@ class Agent(AbstractAgent):
                 else:
                     port = self.myAgent.P2PPORT
             """
-            NOT FOR THE MOMENT    
+            NOT FOR THE MOMENT
             # Create a socket connection to the destination url
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((address, port))
             if not s:
                 # Socket creation failed, throw a exception
                 raise socket.error
-                
+
             # Return socket
             return s
             """
             return None
-	    		
-    		
+
+
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
@@ -1939,16 +1987,16 @@ class Agent(AbstractAgent):
             return self._presence
 
 
-    def __init__(self, agentjid, password, port=5222, debug=[]):
+    def __init__(self, agentjid, password, port=5222, debug=[], addresses=[]):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
         self.debug = debug
-        AbstractAgent.__init__(self, agentjid, self.server)
+        AbstractAgent.__init__(self, agentjid, self.server, addresses=addresses)
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
-        
+
         self.remote_services = {}  # Services of remote agents
-        
+
         # Try to register
         try:
             #print "### Trying to register agent %s"%(agentjid)
@@ -1968,7 +2016,7 @@ class Agent(AbstractAgent):
         # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
-        
+
 
         #print "### Agent %s registered"%(agentjid)
 
@@ -1988,7 +2036,7 @@ class Agent(AbstractAgent):
             self._socialnetwork[jid] = Agent.SocialItem(self, jid, presence)
 
 
-        
+
 
 
 

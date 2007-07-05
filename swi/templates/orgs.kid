@@ -16,7 +16,8 @@
 				<div class="meta">
 				</div>
 				<div class="story">
-					<table class="clients">
+					<p>Under construction . . .</p>
+					<!--><table class="clients">
 						<tr><th class="b">Name</th><th class="b">Supervisor</th><th class="b">Topology</th><th>Members</th></tr>
 						<?python par = "par" ?>
 						<span py:for="dad in orgs">
@@ -32,7 +33,7 @@
 									par="par" ?>
 		                	</tr>
 						</span>
-		            </table>
+		            </table>-->
 				</div>
 			</div>
 		</div>

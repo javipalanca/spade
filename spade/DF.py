@@ -77,7 +77,7 @@ class DF(PlatformAgent):
 
 			#The DF agrees and then informs dummy of the successful execution of the action
 			error = False
-			#print "Register"
+			print "###DFRegister"
 
 			try:
 				if "register" in self.content.action:
@@ -123,7 +123,7 @@ class DF(PlatformAgent):
 
 					reply.setPerformative("inform")
 					reply.setContent("(done "+self.msg.getContent() + ")")
-					self.myAgent.send(reply)					
+					self.myAgent.send(reply)
 
 					return 1
 
@@ -515,9 +515,9 @@ class ServiceDescription:
 
 	def getProperties(self):
 		return self.properties
-		
+
 	def getProperty(self, prop):
-	    for p in self.properties:	        
+	    for p in self.properties:
 	        if p["name"] == prop:
 	            return p["value"]
 	    return ""
