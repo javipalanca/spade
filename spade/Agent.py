@@ -148,14 +148,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def __init__(self, agentjid, serverplatform, p2p=True, addresses=[]):
+    def __init__(self, agentjid, serverplatform, p2p=True):
         """
         inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
         """
         MessageReceiver.MessageReceiver.__init__(self)
-        if "xmpp://"+agentjid not in addresses:
-            addresses = addresses.append("xmpp://"+agentjid)
-        self._aid = AID.aid(name=agentjid, addresses=addresses)
+        self._aid = AID.aid(name=agentjid, addresses=["xmpp://"+agentjid])
         self._jabber = None
         self._serverplatform = serverplatform
         self._defaultbehaviour = None
@@ -453,6 +451,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	returns AID
 	"""
         return self._aid
+
+    def setAID(self, aid):
+        """
+        sets a new AID
+        """
+        self._aid = aid
+
+    def addAddress(self, addr):
+        self._aid.addAddress(addr)
 
     def getName(self):
 	return self._aid.getName()
@@ -1746,8 +1753,8 @@ class PlatformAgent(AbstractAgent):
     A PlatformAgent is a SPADE component.
     Examples: AMS, DF, ACC, ...
     """
-    def __init__(self, node, password, server="localhost", port=5347, config=None ,debug = [], p2p=False, addresses=[]):
-        AbstractAgent.__init__(self, node, server, p2p=p2p, addresses=addresses)
+    def __init__(self, node, password, server="localhost", port=5347, config=None ,debug = [], p2p=False):
+        AbstractAgent.__init__(self, node, server, p2p=p2p)
         self.config = config
         self.debug = debug
         self.jabber = xmpp.Component(server=server, port=port, debug=self.debug)
@@ -1987,12 +1994,12 @@ class Agent(AbstractAgent):
             return self._presence
 
 
-    def __init__(self, agentjid, password, port=5222, debug=[], addresses=[]):
+    def __init__(self, agentjid, password, port=5222, debug=[]):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
         self.debug = debug
-        AbstractAgent.__init__(self, agentjid, self.server, addresses=addresses)
+        AbstractAgent.__init__(self, agentjid, self.server)
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
 
         self.remote_services = {}  # Services of remote agents

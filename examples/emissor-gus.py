@@ -22,7 +22,7 @@ class emissor(Agent.Agent):
         emissor.nagents=emissor.nagents+1
         emissor.lock.release()
 	print "incrementa_agents: nagents = " + str(emissor.nagents)
-        
+
     def decrementa_agents(self):
         emissor.lock.acquire()
         emissor.nagents=emissor.nagents-1
@@ -31,7 +31,7 @@ class emissor(Agent.Agent):
 
 
     class BehaviourDefecte(Behaviour.Behaviour):
-                
+
         def _process(self):
             #agafar temps
             t1=time.time()
@@ -40,8 +40,8 @@ class emissor(Agent.Agent):
 	    self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
             self.myAgent.send(self.myAgent.msg, "jabber")
 	    #print "Enviat: "+ str(self.myAgent.msg)
-           
-	    #print "Estic asperant ..." 
+
+	    #print "Estic asperant ..."
             recv = self._receive(True)
             #print "He rebut la contestacio"
             #agafar temps
@@ -54,7 +54,7 @@ class emissor(Agent.Agent):
             #print "Missatge",self.myAgent.nenviats
 	    #time.sleep(1)
 
-        def done(self): 
+        def done(self):
             if self.myAgent.nenviats == self.myAgent.nmsg + 5: return True
             else: return False
 
@@ -81,17 +81,18 @@ class emissor(Agent.Agent):
             #    os.system("killall -9 /usr/bin/python;killall -9 /usr/local/bin/jabberd;rm -f jabber.pid")#canviar!!
 
 
-            
+
 
     def __init__(self,jid,passw,nagent,ntotal,tmsg,nmsg,multiemissor,debug=[]):
-        Agent.Agent.__init__(self,jid,passw, debug=debug, addresses=["http://supu.com"])
+        Agent.Agent.__init__(self,jid,passw, debug=debug)
+        self.addAddress("http://supu.com")
         self.ntotal = ntotal
         self.tmsg = tmsg
         self.nmsg = nmsg
         self.nagent = nagent
         self.multi = multiemissor
 
-           
+
 
     def _setup(self):
 	#print "EMISOR: "+ str(self.getQueue())
@@ -112,9 +113,9 @@ class emissor(Agent.Agent):
         self.msg.setContent(string)
 
 
-        #esperem a que estiguen tots els agents 
+        #esperem a que estiguen tots els agents
         self.incrementa_agents()
-	
+
 	'''
         while emissor.nagents != self.ntotal:
             time.sleep(5)
@@ -122,10 +123,10 @@ class emissor(Agent.Agent):
         if self.nagent==4:
             time.sleep(20)
 	'''
-	
-	emissor.go.acquire()	
-	emissor.go.wait()	
-	emissor.go.release()	
+
+	emissor.go.acquire()
+	emissor.go.wait()
+	emissor.go.release()
 
 	#while not emissor.go:
 	#	time.sleep(0.1)
@@ -134,7 +135,7 @@ class emissor(Agent.Agent):
         db = self.BehaviourDefecte()
         self.setDefaultBehaviour(db)
 
-        
+
 
 if __name__ == "__main__":
     host = os.getenv("HOSTNAME")
@@ -149,15 +150,15 @@ if __name__ == "__main__":
     tmsg = atoi(sys.argv[2])
     nmsg = atoi(sys.argv[3])
     multiemissor = 0
-        
+
     if len(sys.argv) == 5 and sys.argv[4] == "m":
         multiemissor = 1
-       
+
     try:
 	sufix = sys.argv[4]
     except:
-	sufix='' 
-        
+	sufix=''
+
     for i in range(nagents-1):
         agent="emissor"+str(i)+sufix+"@"+host
         emissors[i] = emissor(agent,"secret",i,nagents,tmsg,nmsg,multiemissor)
@@ -166,7 +167,7 @@ if __name__ == "__main__":
         emissors[i].start()
         #time.sleep(20)
 
-    start_time = time.time() 
+    start_time = time.time()
     agent="emissor"+str(nagents-1)+sufix+"@"+host
     ultim = emissor(agent,"secret",nagents-1,nagents,tmsg,nmsg,multiemissor)
     print "agent "+agent+" registrant-se!!"
@@ -192,7 +193,7 @@ if __name__ == "__main__":
 
     elapsed_time = time.time() - start_time
     print "Tiempo total transcurrido: " + str(elapsed_time)
-    print "Enviados en total " + str(nagents*nmsg*2) + " mensajes de " + str(tmsg) + " bytes" 
+    print "Enviados en total " + str(nagents*nmsg*2) + " mensajes de " + str(tmsg) + " bytes"
     for i in range(nagents-1):
     	emissors[i].stop()
     ultim.stop()
