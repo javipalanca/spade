@@ -100,11 +100,12 @@ class emissor(Agent.Agent):
         self.nenviats = 0
         self.msg = ACLMessage()
         self.msg.setPerformative("inform")
+	self.msg.setSender(self.getAID())
         if self.multi:
             #self.msg.addReceiver(AID.aid("receptor0@"+host,self.myAgent.getAID().getAdresses()[0]["xmpp://acc."+host]))
-            self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host]))
+            self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host,"http://supu.com"]))
         else:
-            self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host]))
+            self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host,"http://supu.com"]))
 	#self.msg.addReceiver(AID.aid("ping@"+host,["xmpp://acc."+host]))
 
         string = ""

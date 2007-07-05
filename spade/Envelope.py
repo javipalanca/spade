@@ -35,7 +35,7 @@ class Envelope:
         if date != None:
             self.date = date  #list(datetime)
         else:
-            self.date = None 
+            self.date = None
         if encrypted != None:
             self.encrypted = encrypted  #list(str)
         else:
@@ -119,12 +119,12 @@ class Envelope:
 
     def setReceived(self,received):
         self.received = received
-        
+
     def __str__(self):
         """
         returns a printable version of the envelope in XML
         """
-        r = '<?xml version="1.0"?>' +"\n" 
+        r = '<?xml version="1.0"?>' +"\n"
         r=r+"\t\t<envelope> \n"
         r=r+'\t\t\t<params index="1">'+"\n"
         r=r+"\t\t\t\t<to>\n"
@@ -137,15 +137,16 @@ class Envelope:
             r=r+"\t\t\t\t\t\t</addresses> \n"
             r=r+"\t\t\t\t\t</agent-identifier>\n"
         r=r+"\t\t\t\t</to> \n"
-        r=r+"\t\t\t\t<from> \n"
-        r=r+"\t\t\t\t\t<agent-identifier> \n"
-        r=r+"\t\t\t\t\t\t<name>" + self._from.getName() + "</name> \n"
-        r=r+"\t\t\t\t\t\t<addresses>\n"
-        for addr in self._from.getAddresses():
-            r=r+ "\t\t\t\t\t\t\t<url>" + addr + "</url>\n"
-        r=r+"\t\t\t\t\t\t</addresses> \n"
-        r=r+"\t\t\t\t\t</agent-identifier> \n"
-        r=r+"\t\t\t\t</from>\n"
+        if self._from:
+            r=r+"\t\t\t\t<from> \n"
+            r=r+"\t\t\t\t\t<agent-identifier> \n"
+            r=r+"\t\t\t\t\t\t<name>" + self._from.getName() + "</name> \n"
+            r=r+"\t\t\t\t\t\t<addresses>\n"
+            for addr in self._from.getAddresses():
+                r=r+ "\t\t\t\t\t\t\t<url>" + addr + "</url>\n"
+            r=r+"\t\t\t\t\t\t</addresses> \n"
+            r=r+"\t\t\t\t\t</agent-identifier> \n"
+            r=r+"\t\t\t\t</from>\n"
         if self.aclRepresentation:
             r=r+ "\t\t\t\t<acl-representation>"+ self.aclRepresentation + "</acl-representation>\n"
         if self.payloadLength:
@@ -164,7 +165,7 @@ class Envelope:
                  	r=r+ "\t\t\t\t\t\t\t<url>" + addr + "</url>\n"
                 r=r+"\t\t\t\t\t\t</addresses> \n"
                 r=r+"\t\t\t\t\t</agent-identifier>\n"
-            r=r+"\t\t\t\t</intended-receiver> \n"            
+            r=r+"\t\t\t\t</intended-receiver> \n"
         if self.received:
             r=r+ "\t\t\t\t<received>\n"
             if self.received.getBy():

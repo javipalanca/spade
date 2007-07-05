@@ -1,4 +1,4 @@
-
+# encoding: utf-8
 from spade import SpadeConfigParser
 from spade import XMLCodec
 from spade import ACLParser
@@ -46,7 +46,25 @@ class MTP:
 		msg = p.parse(payload)
 		print "###MTP MESSAGE PARSED"
 		print msg
-		self.acc.send(msg, "jabber")
+
+		# Try to send message through XMPP
+		# If no xmpp address is found, try to come uo with one
+		try:
+			for recv in msg.getReceivers():
+				jabber_id = ""
+				for addr in recv.getAddresses():
+					if "xmpp" in addr:
+						jabber_id = addr
+						break
+				if not jabber_id:
+					jabber_id = "xmpp://"+str(recv.getName())
+					# Figuring out the XMPP address
+					recv.addAddress(jabber_id)
+
+			self.acc.send(msg, "jabber")
+
+		except:
+			self.acc.send(msg, "jabber")
 
 		"""
 		for to in envelope.getTo():

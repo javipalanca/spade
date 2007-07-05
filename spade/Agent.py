@@ -326,12 +326,24 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     pass
                 ACLmsg.setContent(mess.getBody())
                 # Rebuild sender and receiver
+
                 # Check wether there is an envelope
-                if child.getData():
+                if child.getTag("envelope"):
+                    # There is an envelope; use it to build sender and receivers
                     xc = XMLCodec.XMLCodec()
-                    env = xc.parse(child.getData())
-                ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
-                ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
+                    envelope = xc.parse(str(child.getTag("envelope")))
+                    if envelope.getFrom():
+                        ACLmsg.setSender(envelope.getFrom())
+                    else:
+                        ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
+                    if envelope.getIntendedReceiver():
+                        for ir in envelope.getIntendedReceiver():
+                            ACLmsg.addReceiver(ir)
+                    else:
+                        ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
+                else:
+                    ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
+                    ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
                 self.postMessage(ACLmsg)
                 if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
                 return True
@@ -688,7 +700,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 "xmpp" not in ACLmsg.getSender().getAddresses()[0]:
                 envelope.setFrom(ACLmsg.getSender())
                 generate_envelope = True
-        except:
+        except Exception, e:
+            #print "EXCEPTION SETTING SENDER", str(e)
             pass
 
         try:
@@ -701,16 +714,23 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     "xmpp" not in i.getAddresses()[0]:
                     envelope.addTo(i)
                     generate_envelope = True
-        except:
+        except Exception, e:
+            #print "EXCEPTION SETTING RECEIVERS", str(e)
             pass
 
         try:
             # The same for 'reply_to'
-            if len(ACLmsg.getReplyTo().getAddresses()) > 1 or \
-                "xmpp" not in ACLmsg.getReplyTo().getAddresses()[0]:
-                envelope.addTo(ACLmsg.getReplyTo())
-                generate_envelope = True
-        except:
+            for i in ACLmsg.getReplyTo():
+                # For every receiver,
+                # if there is more than one address in the receiver or
+                # the only address is not an xmpp address,
+                # we need the full receiver AID field
+                if len(i.getAddresses()) > 1 or \
+                    "xmpp" not in i.getAddresses()[0]:
+                    envelope.addIntendedReceiver(i)
+                    generate_envelope = True
+        except Exception, e:
+            #print "EXCEPTION SETTING REPLY TO", str(e)
             pass
 
         # Generate the envelope ONLY if it is needed
@@ -741,6 +761,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 # I don't understand this address, relay the message to the platform
                 #jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
                 jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(), xmlns="")
+                jabber_id = self.getSpadePlatformJID()
                 jabber_msg.attrs.update(ACLmsg._attrs)
                 jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
