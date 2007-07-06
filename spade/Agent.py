@@ -691,7 +691,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         envelope = Envelope.Envelope()
-        generate_envelope = True
+        generate_envelope = False
         # If there is more than one address in the sender or
         # the only address is not an xmpp address,
         # we need the full sender AID field
@@ -1585,11 +1585,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     #if self.debug:
                     #    print str(msg)
                     self.result = []
-                    for dfd in content.result.set:  #[0]#.asList()
+                    for dfd in content.result.sequence:  #[0]#.asList()
                         d = DF.DfAgentDescription()
                         d.loadSL0(dfd[1])
                         self.result.append(d)
-                except:
+                except Exception, e:
+                    print "###Exception in searchServiceBehav", str(e)
                     return
 
 
@@ -1610,7 +1611,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             b.join()
             return b.result
         else:
-            # Inline operation (done when the agent is starting)
+            # (Offline) Inline operation (done when the agent is starting)
             result = []
             try:
                 msg.addReceiver( self.getDF() )
@@ -1645,7 +1646,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 p = SL0Parser.SL0Parser()
                 content = p.parse(msg.getContent())
-                for dfd in content.result.set:  #[0]#.asList()
+                for dfd in content.result.sequence:  #[0]#.asList()
                     d = DF.DfAgentDescription()
                     d.loadSL0(dfd[1])
                     result.append(d)
@@ -1654,7 +1655,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 _exception = sys.exc_info()
                 if _exception[0]:
                     print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                #print "EXCEPTION IN SEARCHSERVICE", str(e)
+                print "EXCEPTION IN SEARCHSERVICE", str(e)
                 return result
 
 

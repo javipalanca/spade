@@ -64,7 +64,7 @@ class aid:
 
 	def getProperties(self):
 		return self.__userDefinedProperties
-	
+
 	def addPropertie(self,prop):
 		self.__userDefinedProperties.append(prop)
 
@@ -91,7 +91,7 @@ class aid:
 		returns False if two AIDs are equal
 		else returns True
 		"""
-	
+
 		return not self == other
 
 
@@ -104,7 +104,7 @@ class aid:
             for i in self.__userDefinedProperties:
                 h = h + hash(i)
             return h
-        
+
 	def __str__(self):
 		"""
 		returns a printable version of an AID
@@ -136,7 +136,7 @@ class aid:
 		"""
 		sb = "<agent-identifier>\n\t" + self.encodeTag( "name", self.getName() ) + "\n"
 		sb = sb + "\t<addresses>\n"
-    
+
 		addresses = self.getAddresses()
 		for addr in addresses:
 			sb = sb + "\t\t" + self.encodeTag( "url", addr ) + "\n"
@@ -149,7 +149,7 @@ class aid:
 	def encodeTag( self, tag, content ):
 		"""
 		encodes a content between 2 XML tags using the tag parameter
-		
+
 			<tag>content</tag>
 
 		return string
@@ -182,4 +182,4 @@ class aid:
 
 
 
-				
+

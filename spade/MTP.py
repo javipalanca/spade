@@ -42,10 +42,12 @@ class MTP:
 		xenv['content-type']='fipa.mts.env.rep.xml.std'
 		xenv.addData(envxml)
 		"""
+		#print "DISPATCH PAYLOAD"
+		#print str(payload)
 		p = ACLParser.ACLParser()
 		msg = p.parse(payload)
-		print "###MTP MESSAGE PARSED"
-		print msg
+		#print "###MTP MESSAGE PARSED"
+		#print msg
 
 		# Try to send message through XMPP
 		# If no xmpp address is found, try to come uo with one

@@ -89,9 +89,8 @@ class http(MTP.MTP):
 		Send a message to a http agent
 		"""
 
-		print ">>>HTTP TRANSPORT: A MESSAGE TO SEND FOR ME"
-
-		print ">>>HTTP: PAYLOAD = " + payload
+		#print ">>>HTTP TRANSPORT: A MESSAGE TO SEND FOR ME"
+		#print ">>>HTTP: PAYLOAD = " + payload
 
 		envelope.setPayloadLength(str(len(str(payload))))
 
@@ -137,8 +136,8 @@ class http(MTP.MTP):
 
 					self.fipaHeadersPost['Host'] = host
 
-					print str(self.fipaHeadersPost)
-					print str(body)
+					#print str(self.fipaHeadersPost)
+					#print str(body)
 
 
 					conn.request("POST",remote_path,body,self.fipaHeadersPost)
@@ -151,7 +150,7 @@ class http(MTP.MTP):
 					if response.reason != "OK":
 						print "Conection Error: Bad reason", str(response.reason)
 
-					print response.status, response.reason
+					#print response.status, response.reason
 
 					conn.close()
 
@@ -233,8 +232,8 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
 		try:
-			print "ENVELOPEXML"
-			print envelopexml
+			#print "ENVELOPEXML"
+			#print envelopexml
 			envelope = xc.parse(envelopexml)
 		except Exception, e:
 			print "EXCEPTION IN POST", str(e)

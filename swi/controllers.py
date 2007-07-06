@@ -110,6 +110,14 @@ class Root(controllers.RootController):
         """
         return dict()
     
+    @expose(template="swi.templates.prefs")
+    def prefs(self):
+        return dict()
+        
+    @expose(template="swi.templates.plugins")
+    def plugins(self):
+        return dict()
+    
     @expose()
     def restart(self,restart):
         self.platform.shutdown()

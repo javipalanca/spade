@@ -1,3 +1,6 @@
+
+# encoding: utf-8
+
 from Agent import PlatformAgent
 import AID
 import Behaviour
@@ -77,7 +80,6 @@ class DF(PlatformAgent):
 
 			#The DF agrees and then informs dummy of the successful execution of the action
 			error = False
-			print "###DFRegister"
 
 			try:
 				if "register" in self.content.action:
@@ -179,7 +181,8 @@ class DF(PlatformAgent):
 			if "search-constraints" in self.content.action.search:
 				if "max-results" in self.content.action.search["search-constraints"]:
 					try:
-						max = int(self.content.action.search["search-constraints"]["max-results"])
+						max_str = str(self.content.action.search["search-constraints"]["max-results"]).strip("[']")
+						max = int(max_str)
 					except Exception, err:
 						error = '(internal-error "max-results is not an integer")'
 			if error:
@@ -195,23 +198,28 @@ class DF(PlatformAgent):
 
 			if "df-agent-description" in self.content.action.search:
 				dad = DfAgentDescription(self.content.action.search["df-agent-description"])
-			for i in self.myAgent.servicedb.values():
-				if max >= 0:
+			if max in [-1, 0]:
+				# No limit
+				for i in self.myAgent.servicedb.values():
 					if dad.match(i):
 						result.append(i)
-						max -= 1
-				else: break
+			else:
+				for i in self.myAgent.servicedb.values():
+					if max >= 0:
+						if dad.match(i):
+							result.append(i)
+							max -= 1
+					else: break
 
-
-
-			content = "((result " #+ self.msg.getContent()
+			content = "((result " + self.msg.getContent().strip("\n")[1:-1]
 			if len(result)>0:
-				content += " (set "
+				content += " (sequence "
 				for i in result:
 					content += str(i) + " "
 				content += ")"
 			else:
-				content+= "None"
+				#content+= "None"  # ??????
+				pass
 			content += "))"
 
 
@@ -289,7 +297,7 @@ class DF(PlatformAgent):
 
 	def __init__(self,node,passw,server="localhost",port=5347):
 		PlatformAgent.__init__(self,node,passw,server,port)
-
+		#self.addAddress("http://"+self.getDomain()+":2099/acc")  # HACK
 
 	def _setup(self):
 		self.servicedb = dict()
@@ -301,7 +309,8 @@ class DfAgentDescription:
 
 	def __init__(self, content = None):
 
-		self.name = AID.aid()
+		#self.name = AID.aid()
+		self.name = None
 		self.services = []
 		self.protocols = []
 		self.ontologies = []
@@ -392,8 +401,8 @@ class DfAgentDescription:
 	def loadSL0(self,content):
 		if content != None:
 			if "name" in content:
+				self.name = AID.aid()
 				self.name.loadSL0(content.name)
-
 
 			if "services" in content:
 				#TODO: el parser solo detecta 1 service-description!!!
