@@ -961,7 +961,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	adds a new behavior to the agent
 	"""
-
         if not issubclass(behaviour.__class__, Behaviour.EventBehaviour):  #and type(behaviour) != types.TypeType:
             # Event behaviour do not start inmediately
             self._behaviourList[behaviour] = copy.copy(template)
@@ -969,7 +968,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             behaviour.start()
         else:
             self._behaviourList[behaviour.__class__] = copy.copy(template)
-
 
 
     def removeBehaviour(self, behaviour):
@@ -1551,67 +1549,51 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     class searchServiceBehaviour(Behaviour.OneShotBehaviour):
 
     	def __init__(self, msg, DAD, debug=False):
-                Behaviour.OneShotBehaviour.__init__(self)
-                self._msg = msg
-    	        self.DAD = DAD
-                self.debug = debug
-                self.result = None
-                self.finished = False
-
+            Behaviour.OneShotBehaviour.__init__(self)
+            self._msg = msg
+    	    self.DAD = DAD
+            self.debug = debug
+            self.result = None
+            self.finished = False
 
         def _process(self):
+            try:
+                self._msg.addReceiver( self.myAgent.getDF() )
+                self._msg.setPerformative('request')
+                self._msg.setLanguage('fipa-sl0')
+                self._msg.setProtocol('fipa-request')
+                self._msg.setOntology('FIPA-Agent-Management')
 
-            self._msg.addReceiver( self.myAgent.getDF() )
-            self._msg.setPerformative('request')
-            self._msg.setLanguage('fipa-sl0')
-            self._msg.setProtocol('fipa-request')
-            self._msg.setOntology('FIPA-Agent-Management')
+                content = "((action "
+                content += str(self.myAgent.getAID())
+                content += "(search "+ str(self.DAD) +")"
+                content +=" ))"
 
-            content = "((action "
-            content += str(self.myAgent.getAID())
-            content += "(search "+ str(self.DAD) +")"
-            content +=" ))"
+                self._msg.setContent(content)
 
-            self._msg.setContent(content)
+                self.myAgent.send(self._msg, "jabber")
 
-            self.myAgent.send(self._msg, "jabber")
-
-            """
+                msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    print "There was an error searching the Service. (not agree)", str(msg)
-                    return result
-
-                elif msg == None or msg.getPerformative() == 'agree':
-                    msg = self._receive(True, 10, t)
-
-                    if msg == None or msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service. (not inform)"
-                        return result
-            """
-
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                print "%s : There was an error searching the Service %s (not agree)"%(self.myAgent.getName(),self.DAD)
-                return
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(True, 10)
-                if msg == None or msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service. (not inform)"
-                        return
-            else:
-                try:
-                    p = SL0Parser.SL0Parser()
-                    content = p.parse(msg.getContent())
-                    #if self.debug:
-                    #    print str(msg)
-                    self.result = []
-                    for dfd in content.result.sequence:  #[0]#.asList()
-                        d = DF.DfAgentDescription()
-                        d.loadSL0(dfd[1])
-                        self.result.append(d)
-                except Exception, e:
-                    print "###Exception in searchServiceBehav", str(e)
+                    print "%s : There was an error searching the Service %s (not agree)"%(self.myAgent.getName(),self.DAD)
                     return
+                elif msg == None or msg.getPerformative() == 'agree':
+                    msg = self._receive(True, 10)
+                    if msg == None or msg.getPerformative() != 'inform':
+                            print "There was an error searching the Service. (not inform)"
+                            return
+
+                p = SL0Parser.SL0Parser()
+                content = p.parse(msg.getContent())
+                self.result = []
+                for dfd in content.result.sequence:  #[0]#.asList()
+                    d = DF.DfAgentDescription()
+                    d.loadSL0(dfd[1])
+                    self.result.append(d)
+
+            except Exception, e:
+                print "###Exception in searchServiceBehav", str(e)
+                return
 
 
     def searchService(self, DAD, debug=True):
@@ -1626,6 +1608,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         if self._running:
+            print "ONLINE SERVICE SEARCH"
             b = AbstractAgent.searchServiceBehaviour(msg, DAD, debug)
             self.addBehaviour(b,t)
             b.join()

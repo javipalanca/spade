@@ -349,6 +349,7 @@ class MessageTemplate(BehaviourTemplate):
 class Behaviour(MessageReceiver.MessageReceiver):
     def __init__(self):
         MessageReceiver.MessageReceiver.__init__(self)
+        #self._running = False  # Not needed for now
         self.myParent = None
         self._forceKill = threading.Event()
         self._presenceHandlers = dict()
@@ -440,6 +441,16 @@ class Behaviour(MessageReceiver.MessageReceiver):
             self.myAgent.behavioursGo.acquire()
             self.myAgent.behavioursGo.wait()
             self.myAgent.behavioursGo.release()
+
+        """
+        # Check wether this behaviour has already started
+        if not self._running:
+            self._running = True
+        else:
+            # The behaviour was already running, no need to run run (he he) twice
+            return
+        """
+
         self.onStart()
         while (not self.done()) and (not self._forceKill.isSet()):
             self._exitcode = self._process()

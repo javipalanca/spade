@@ -145,7 +145,7 @@ class ACLMessage:
 		returns a 'reply to' from the list (AID class)
 		"""
 		try:
-			return self._attrs["reply_to"]
+			return str(self._attrs["reply_to"])
 		except:
 			return []
 
@@ -163,7 +163,7 @@ class ACLMessage:
 		returns the message performative (string)
 		"""
 		try:
-			return self._attrs["performative"]
+			return str(self._attrs["performative"])
 		except:
 			return None
 
@@ -177,7 +177,7 @@ class ACLMessage:
 		"""
 		returns the message content
 		"""
-		return self.content
+		return str(self.content)
 
 	def setReplyWith(self,rw):
 		self._attrs["reply_with"] = str(rw)
@@ -185,7 +185,7 @@ class ACLMessage:
 
 	def getReplyWith(self):
 		try:
-			return self._attrs["reply_with"]
+			return str(self._attrs["reply_with"])
 		except:
 			return None
 
@@ -194,7 +194,7 @@ class ACLMessage:
 
 	def getInReplyTo(self):
 		try:
-			return self._attrs["in_reply_to"]
+			return str(self._attrs["in_reply_to"])
 		except:
 			return None
 
@@ -203,7 +203,7 @@ class ACLMessage:
 
 	def getEncoding(self):
 		try:
-			return self._attrs["encoding"]
+			return str(self._attrs["encoding"])
 		except:
 			return None
 
@@ -212,7 +212,7 @@ class ACLMessage:
 
 	def getLanguage(self):
 		try:
-			return self._attrs["language"]
+			return str(self._attrs["language"])
 		except:
 			return None
 
@@ -221,7 +221,7 @@ class ACLMessage:
 
 	def getOntology(self):
 		try:
-			return self._attrs["ontology"]
+			return str(self._attrs["ontology"])
 		except:
 			return None
 
@@ -230,7 +230,7 @@ class ACLMessage:
 
 	def getReplyBy(self):
 		try:
-			return self._attrs["reply_by"]
+			return str(self._attrs["reply_by"])
 		except:
 			return None
 
@@ -239,7 +239,7 @@ class ACLMessage:
 
 	def getProtocol(self):
 		try:
-			return self._attrs["protocol"]
+			return str(self._attrs["protocol"])
 		except:
 			return None
 
@@ -248,7 +248,7 @@ class ACLMessage:
 
 	def getConversationId(self):
 		try:
-			return self._attrs["id"]
+			return str(self._attrs["id"])
 		except:
 			return None
 
