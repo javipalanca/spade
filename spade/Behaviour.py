@@ -450,7 +450,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
             # The behaviour was already running, no need to run run (he he) twice
             return
         """
-
+        #print "START BEHAVIOUR",str(self)
         self.onStart()
         while (not self.done()) and (not self._forceKill.isSet()):
             self._exitcode = self._process()
@@ -470,7 +470,6 @@ class Behaviour(MessageReceiver.MessageReceiver):
         DEPRECATED
         manage a FIPA-formed presence message
         """
-
         class struct:
             def __init__(self,frm,type,status,show,role,affiliation):
                 self.frm,self.type,self.status,self.show,self.role,self.affiliation=frm,type,status,show,role,affiliation

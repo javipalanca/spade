@@ -648,7 +648,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return result
 
 
-    def send(self, ACLmsg, method="auto"):
+    def send(self, ACLmsg, method="jabber"):
 	"""
 	sends an ACLMessage
 	"""
@@ -1574,14 +1574,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.myAgent.send(self._msg, "jabber")
 
                 msg = self._receive(True,20)
-                if msg == None or msg.getPerformative() not in ['agree', 'inform']:
+                if msg == None:
+                    print "%s : There was an error searching the Service %s (timeout on agree)"%(self.myAgent.getName(),self.DAD)
+                    return
+                elif msg.getPerformative() not in ['agree', 'inform']:
                     print "%s : There was an error searching the Service %s (not agree)"%(self.myAgent.getName(),self.DAD)
                     return
-                elif msg == None or msg.getPerformative() == 'agree':
+                elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
-                    if msg == None or msg.getPerformative() != 'inform':
-                            print "There was an error searching the Service. (not inform)"
-                            return
+                    if msg == None:
+                        print "There was an error searching the Service (timeout on inform)"
+                        return
+                    elif msg.getPerformative() != 'inform':
+                        print "There was an error searching the Service (not inform)"
+                        return
 
                 p = SL0Parser.SL0Parser()
                 content = p.parse(msg.getContent())
