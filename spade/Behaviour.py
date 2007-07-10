@@ -435,6 +435,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
         return self._exitcode
 
     def run(self):
+        if not self.myAgent._running:
+            # Get condition and wait for the other threads
+            self.myAgent.behavioursGo.acquire()
+            self.myAgent.behavioursGo.wait()
+            self.myAgent.behavioursGo.release()
         self.onStart()
         while (not self.done()) and (not self._forceKill.isSet()):
             self._exitcode = self._process()
@@ -661,7 +666,7 @@ class FSMBehaviour(Behaviour):
         #msg = self._receive(False)
         b = self._states[self._actualState]
         #if msg: b.postMessage(msg)
-        b.done()        
+        b.done()
         self._lastexitcode = b._process()
         if (b.done() or b._forceKill.isSet()):
             if not self._lastexitcode: self._lastexitcode = b.exitCode()

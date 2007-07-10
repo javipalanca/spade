@@ -98,7 +98,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-                #print "StreamInitiation Behaviour called"
+                print self.myAgent.getName(), ": StreamInitiation Behaviour called"
                 if self.msg.getType() == "set":
                     if self.msg.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                         # P2P Messaging Offer
@@ -137,14 +137,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.msg = self._receive(False)
             if self.msg != None:
                 #print "DISCO Behaviour called"
-                print "DISCO request from", str(self.msg.getFrom())
+                print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
                 # Inform of services
                 reply = self.msg.buildReply("result")
                 if self.myAgent.p2p:
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                 self.myAgent.jabber.send(reply)
-                #print "SENT DISCO REPLY", str(reply)
+                print self.myAgent.getName(),": SENT DISCO REPLY TO", str(reply.getTo())
 
 
 
@@ -175,6 +175,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
+        self.behavioursGo = threading.Condition()  # Condition to synchronise behaviours
         self._running = False
 
         # Add Disco Behaviour
@@ -881,14 +882,21 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         #Init The agent
         self._setup()
+        self._running = True
+        self.behavioursGo.acquire()
+        self.behavioursGo.notifyAll()
+        self.behavioursGo.release()
         #Start the Behaviours
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
 
         #Main Loop
-        self._running = True
         while not self.forceKill():
             try:
+                # WakeUp sleepy behaviours
+                self.behavioursGo.acquire()
+                self.behavioursGo.notifyAll()
+                self.behavioursGo.release()
                 #Check for queued messages
                 proc = False
                 toRemove = []  # List of behaviours to remove after this pass
@@ -955,7 +963,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 
         if not issubclass(behaviour.__class__, Behaviour.EventBehaviour):  #and type(behaviour) != types.TypeType:
-            #ï¿½Event behaviour do not start inmediately
+            # Event behaviour do not start inmediately
             self._behaviourList[behaviour] = copy.copy(template)
             behaviour.setAgent(self)
             behaviour.start()
@@ -1174,7 +1182,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.myAgent.send(self._msg)
             msg = self._receive(True,10)
             if msg == None or str(msg.getPerformative()) != 'agree':
-                print "There was an error searching the Agent. (not agree)"
+                print "%s : There was an error searching the Agent %s (not agree)"%(self.myAgent.getName(),self.AAD.getAID().getName())
                 if self.debug:
                     print str(msg)
                 self.finished = True
@@ -1369,7 +1377,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() != 'inform':
-                    print "There was an error registering the Service. (not inform)"
+                    if msg.getPerformative() == 'failure':
+                        print "There was an error registering the Service. (failure)"
+                    else:
+                        print "There was an error registering the Service. (not inform)"
                     self.result = False
                     return
 
@@ -1391,12 +1402,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         if self._running:
+            # Online
          	b = AbstractAgent.registerServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
           	self.addBehaviour(b,t)
            	b.join()
         	return b.result
         else:
-            # Inline operation, done when the agent is starting
+            # Offline operation, done when the agent is starting
+            print "OFFLINE REGISTERSERVICE"
             if otherdf and isinstance(otherdf, AID.aid):
                 smsg.addReceiver( otherdf )
             else:
@@ -1412,9 +1425,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             content +=" ))"
 
             msg.setContent(content)
-            self.send(msg)
+            self.send(msg, "jabber")
 
-	    # EYE! msg becomes the reply
+	        # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 print "There was an error registering the Service. (not agree)", str(msg)
@@ -1423,7 +1436,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(block=True, timeout=20, template=t)
                 if msg == None or msg.getPerformative() != 'inform':
-                    print "There was an error registering the Service. (not inform)"
+                    if msg.getPerformative() == 'failure':
+                        print "There was an error registering the Service. (failure)"
+                    else:
+                        print "There was an error registering the Service. (not inform)"
                     return False
 
             return True
@@ -1489,7 +1505,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         if self.forceKill():
-
             if otherdf and isinstance(otherdf, AID.aid):
                 msg.addReceiver( otherdf )
             else:
@@ -1511,16 +1526,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             msg = self._receive(True, 20, t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 print "There was an error deregistering the Service. (not agree)"
-                #if self.debug:
-                #    print str(msg)
                 return False
 
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(True, 20, t)
                 if msg == None or msg.getPerformative() != 'inform':
                     print "There was an error deregistering the Service. (not inform)"
-                    #if self.debug:
-                    #    print str(msg)
                     return False
 
             return True
@@ -1563,21 +1574,30 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self._msg.setContent(content)
 
-            self.myAgent.send(self._msg)
+            self.myAgent.send(self._msg, "jabber")
+
+            """
+                if msg == None or msg.getPerformative() not in ['agree', 'inform']:
+                    print "There was an error searching the Service. (not agree)", str(msg)
+                    return result
+
+                elif msg == None or msg.getPerformative() == 'agree':
+                    msg = self._receive(True, 10, t)
+
+                    if msg == None or msg.getPerformative() != 'inform':
+                        print "There was an error searching the Service. (not inform)"
+                        return result
+            """
 
             msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() != 'agree':
-                print "There was an error searching the Agent. (not agree)"
-                #if self.debug:
-                #    print str(msg)
+            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
+                print "%s : There was an error searching the Service %s (not agree)"%(self.myAgent.getName(),self.DAD)
                 return
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() != 'inform':
-                print "There was an error searching the Agent. (not inform)"
-                #if self.debug:
-                #    print str(msg)
-                return
-
+            elif msg == None or msg.getPerformative() == 'agree':
+                msg = self._receive(True, 10)
+                if msg == None or msg.getPerformative() != 'inform':
+                        print "There was an error searching the Service. (not inform)"
+                        return
             else:
                 try:
                     p = SL0Parser.SL0Parser()
@@ -1633,7 +1653,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    #if msg == None or msg.getPerformative() != 'agree':
                     print "There was an error searching the Service. (not agree)", str(msg)
                     return result
 
@@ -2045,8 +2064,6 @@ class Agent(AbstractAgent):
         # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
-
-
         #print "### Agent %s registered"%(agentjid)
 
         if not self.__register_in_AMS():
@@ -2054,7 +2071,7 @@ class Agent(AbstractAgent):
             sys.exit(-1)
 
         # Ask for roster
-        self.getSocialNetwork(nowait=True)
+        ##self.getSocialNetwork(nowait=True)
 
     def setSocialItem(self, jid, presence=""):
         if self._socialnetwork.has_key(jid):
@@ -2063,12 +2080,6 @@ class Agent(AbstractAgent):
                 self._socialnetwork[jid].setPresence(presence)
         else:
             self._socialnetwork[jid] = Agent.SocialItem(self, jid, presence)
-
-
-
-
-
-
 
 
     def _register(self, password, autoregister=True):
