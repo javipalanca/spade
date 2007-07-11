@@ -92,6 +92,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             print self.getName(),": P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
+            self.myAgent.p2p_ready = True
 
 
     class StreamInitiationBehaviour(Behaviour.EventBehaviour):
@@ -103,7 +104,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if self.msg.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                         # P2P Messaging Offer
                         print "P2P-Messaging offer from", str(self.msg.getFrom())
-                        if self.myAgent.p2p:
+                        if self.myAgent.p2p_ready:
                             # Take note of sender's p2p address if any
                             if self.msg.T.si.T.p2p:
                                 remote_address = str(self.msg.T.si.T.p2p.getData())
@@ -140,7 +141,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
                 # Inform of services
                 reply = self.msg.buildReply("result")
-                if self.myAgent.p2p:
+                if self.myAgent.p2p_ready:
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
                     reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                 self.myAgent.jabber.send(reply)
@@ -191,6 +192,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.p2p = p2p
         self.p2p_routes = {}
         self.p2p_lock = thread.allocate_lock()
+        self.p2p_ready = False  # Actually ready for P2P communication
         if p2p:
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
             self.addBehaviour(Agent.P2PBehaviour())
@@ -360,7 +362,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         print "DISCO Behaviour called (offline)"
                         # Inform of services
                         reply = mess.buildReply("result")
-                        if self.p2p:
+                        if self.p2p_ready:
                             reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
                             reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                         self.jabber.send(reply)
@@ -374,7 +376,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if mess.getType() == "set":
                             if mess.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                                 # P2P Messaging Offer
-                                if self.p2p:
+                                if self.p2p_ready:
                                     # Take note of sender's p2p address if any
                                     if mess.T.si.T.p2p:
                                         remote_address = str(mess.T.si.T.p2p.getData())
@@ -605,7 +607,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             iq.setType("set")
             si = xmpp.Node("si", {"profile":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
             si.setNamespace("http://jabber.org/protocol/si")
-            if self.p2p:
+            if self.p2p_ready:
                 p2p = xmpp.Node("p2p")
                 p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
                 p2p.setData(self.getP2PUrl())
@@ -648,7 +650,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return result
 
 
-    def send(self, ACLmsg, method="jabber"):
+    def send(self, ACLmsg, method="auto"):
 	"""
 	sends an ACLMessage
 	"""
@@ -777,9 +779,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             # If it's not or it fails, send it through the jabber server
             # We suppose method=="p2p"
             jabber_id = xmpp.JID(jabber_id).getStripped()
-            if self.p2p and jabber_id not in self.p2p_routes.keys():
+            if self.p2p_ready and jabber_id not in self.p2p_routes.keys():
                 self.initiateStream(jabber_id)
-            if self.p2p and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p') and self.p2p_routes[jabber_id]['p2p'] and self.p2p_routes[jabber_id]['url']:
+            if self.p2p_ready and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p') and self.p2p_routes[jabber_id]['p2p'] and self.p2p_routes[jabber_id]['url']:
                 try:
                     self.p2p_lock.acquire()
                     self.send_p2p(jabber_msg, jabber_id)
@@ -1889,7 +1891,7 @@ class Agent(AbstractAgent):
                         pass
                 elif self.msg.getType() == "set":
                     # OOB proposal
-                    if self.myAgent.p2p:
+                    if self.myAgent.p2p_ready:
                         # Accept p2p proposal
                         try:
                             # Add remote oob data to p2p routes

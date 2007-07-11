@@ -38,7 +38,7 @@ class emissor(Agent.Agent):
 
             #print "Vaig a enviar un missatge"
 	    self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
-            self.myAgent.send(self.myAgent.msg, "jabber")
+            self.myAgent.send(self.myAgent.msg)
 	    #print "Enviat: "+ str(self.myAgent.msg)
 
 	    #print "Estic asperant ..."
@@ -85,7 +85,7 @@ class emissor(Agent.Agent):
 
     def __init__(self,jid,passw,nagent,ntotal,tmsg,nmsg,multiemissor,debug=[]):
         Agent.Agent.__init__(self,jid,passw, debug=debug)
-        self.addAddress("http://supu.com")
+        #self.addAddress("http://supu.com")
         self.ntotal = ntotal
         self.tmsg = tmsg
         self.nmsg = nmsg
@@ -103,9 +103,11 @@ class emissor(Agent.Agent):
 	self.msg.setSender(self.getAID())
         if self.multi:
             #self.msg.addReceiver(AID.aid("receptor0@"+host,self.myAgent.getAID().getAdresses()[0]["xmpp://acc."+host]))
-            self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host,"http://supu.com"]))
+            #self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host,"http://supu.com"]))
+            self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host]))
         else:
-            self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host,"http://supu.com"]))
+            #self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host,"http://supu.com"]))
+            self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host]))
 	#self.msg.addReceiver(AID.aid("ping@"+host,["xmpp://acc."+host]))
 
         string = ""

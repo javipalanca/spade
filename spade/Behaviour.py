@@ -437,7 +437,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
 
     def run(self):
         if not self.myAgent._running:
-            # Get condition and wait for the other threads
+            # Get condition and wait for the other behaviours
             self.myAgent.behavioursGo.acquire()
             self.myAgent.behavioursGo.wait()
             self.myAgent.behavioursGo.release()
