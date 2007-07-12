@@ -864,7 +864,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 # Close socket
                 #s.close()
             except:
-                print colors.color_red + "Socket: send failed, threw an exception:" + colors.color_none
+                #print colors.color_red + "Socket: send failed, threw an exception:" + colors.color_none
                 #raise socket.error
                 # Dispose of old socket
                 s.close()

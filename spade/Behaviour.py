@@ -458,7 +458,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
                 self._exitcode = self._process()
                 #time.sleep(0)
         except Exception,e:
-            print colors.color_red + "<Exception in Behaviour %s>"%(str(self)) + colors.color_none
+            print colors.color_red + "<Exception in Behaviour %s><%s>"%(str(self),str(e)) + colors.color_none
         self.onEnd()
         self.myAgent.removeBehaviour(self)
 
