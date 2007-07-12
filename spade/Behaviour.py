@@ -5,6 +5,7 @@ import MessageReceiver
 import threading
 import types
 import copy
+import colors
 
 from xmpp import Node, Message, Presence, Iq
 import xmpp
@@ -452,9 +453,12 @@ class Behaviour(MessageReceiver.MessageReceiver):
         """
         #print "START BEHAVIOUR",str(self)
         self.onStart()
-        while (not self.done()) and (not self._forceKill.isSet()):
-            self._exitcode = self._process()
-            #time.sleep(0)
+        try:
+            while (not self.done()) and (not self._forceKill.isSet()):
+                self._exitcode = self._process()
+                #time.sleep(0)
+        except Exception,e:
+            print colors.color_red + "<Exception in Behaviour %s>"%(str(self)) + colors.color_none
         self.onEnd()
         self.myAgent.removeBehaviour(self)
 

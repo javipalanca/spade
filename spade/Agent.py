@@ -25,6 +25,7 @@ import Organization_new
 import copy
 import socket
 import SocketServer
+import colors
 #from AMS import AmsAgentDescription
 
 import DF
@@ -62,6 +63,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     class P2PBehaviour(Behaviour.Behaviour):
         class P2PRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
+
                 try:
                     data = ""
                     while True:
@@ -73,13 +75,23 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if data:
                             n = xmpp.simplexml.XML2Node(str(data))
                             m = xmpp.Message(node=n)
+                            self.server.mutex.acquire()
                             self.server._jabber_messageCB(None,m,raiseFlag=False)
+                            self.server.mutex.release()
                         data = ""
                 except Exception, e:
                     print "P2P Socket Closed to", str(self.client_address),":",str(e),":",str(data)
+                    try:
+                        self.server.mutex.release()
+                    except:
+                        pass
+
 
         def _process(self):
             self.server.handle_request()
+
+        def onEnd(self):
+            self.myAgent.p2p_ready = False
 
         def onStart(self):
             open = False
@@ -91,6 +103,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 except:
                     self.myAgent.P2PPORT = random.randint(1025,65535)
 
+            self.server.mutex = threading.Lock()
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             print self.getName(),": P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
             self.myAgent.p2p_ready = True
@@ -789,7 +802,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     self.send_p2p(jabber_msg, jabber_id)
                 except Exception, e:
                     #print "Exception in send_p2p", str(e), e
-                    print "P2P Connection to",jabber_id,"prevented. Falling back"
+                    print "P2P Connection to",str(self.p2p_routes[jabber_id]["url"]),"prevented. Falling back.",str(e)
                     del self.p2p_routes[jabber_id]
                     if method=="auto": self.jabber.send(jabber_msg)
                 self.p2p_lock.release()
@@ -817,21 +830,61 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     port = int(l[1])
 
             # Create a socket connection to the destination url
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((address, port))
-            self.p2p_routes[to]["socket"] = s
-            if not s:
-                # Socket creation failed, throw a exception
+            connected = False
+            tries = 10
+            while not connected and tries > 0:
+                try:
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.connect((address, port))
+                    self.p2p_routes[to]["socket"] = s
+                    connected = True
+                    """
+                    if not s:
+                        # Socket creation failed, throw a exception
+                        print colors.color_red + "Socket creation failed, throw a exception" + colors.color_none
+                        raise socket.error
+                    """
+                except:
+                    tries -= 1
+
+            if not connected:
+                print colors.color_red + "Socket creation failed, throw an exception" + colors.color_none
                 raise socket.error
 
         # Send message length
-        length = "%08d"%(len(str(jabber_msg)))
-        s.send(length)
-        # Send message through socket
-        s.send(str(jabber_msg))
-        # Close socket
-        #s.close()
-        return True
+        sent = False
+        tries = 10
+        while not sent and tries > 0:
+            try:
+                length = "%08d"%(len(str(jabber_msg)))
+                s.send(length)
+                # Send message through socket
+                s.send(str(jabber_msg))
+                sent = True
+                # Close socket
+                #s.close()
+            except:
+                print colors.color_red + "Socket: send failed, threw an exception:" + colors.color_none
+                #raise socket.error
+                # Dispose of old socket
+                s.close()
+                del s
+                # Get address and port AGAIN
+                scheme, address = url.split("://",1)
+                if scheme == "spade":
+                    # Check for address and port number
+                    l = address.split(":",1)
+                    if len(l) > 1:
+                        address = l[0]
+                        port = int(l[1])
+                # Try again
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((address, port))
+                tries -= 1
+        if not sent:
+            raise socket.error
+        else:
+            return True
 
     def _kill(self):
 	"""
@@ -898,6 +951,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #Main Loop
         while not self.forceKill():
             try:
+                """
+                self.behavioursGo.acquire()
+                self.behavioursGo.notifyAll()
+                self.behavioursGo.release()
+                """
+
                 #Check for queued messages
                 proc = False
                 toRemove = []  # List of behaviours to remove after this pass
@@ -1576,10 +1635,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 msg = self._receive(True,20)
                 if msg == None:
-                    print "%s : There was an error searching the Service %s (timeout on agree)"%(self.myAgent.getName(),self.DAD)
+                    print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() not in ['agree', 'inform']:
-                    print "%s : There was an error searching the Service %s (not agree)"%(self.myAgent.getName(),self.DAD)
+                    print "%s : There was an error searching the Service (not agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
@@ -1619,11 +1678,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             b = AbstractAgent.searchServiceBehaviour(msg, DAD, debug)
             self.addBehaviour(b,t)
             b.join()
-            print "#############"
-            print "#############"
-            print "DF RETURNED SUCCESSFULL RESULT"
-            print "#############"
-            print "#############"
             return b.result
         else:
             # (Offline) Inline operation (done when the agent is starting)
@@ -1648,7 +1702,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    print "There was an error searching the Service. (not agree)", str(msg)
+                    print "There was an error searching the Service. (not agree)"
                     return result
 
                 elif msg == None or msg.getPerformative() == 'agree':
@@ -1705,15 +1759,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
 			print "There was an error modifying the Service. (not agree)"
-			if self.debug:
-				print str(msg)
 			self.result=False
 			return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Service. (not inform)"
-			if self.debug:
-				print str(msg)
 			self.result = False
 			return
 

@@ -14,6 +14,7 @@ class MessageReceiver(threading.Thread):
 		except ImportError:
 			pass
 		threading.Thread.__init__(self)
+		self.post_mutex = threading.Lock()
 		self.mutex = threading.Lock()
 		self.not_empty = threading.Condition(self.mutex)
 		self.not_full = threading.Condition(self.mutex)
@@ -84,11 +85,13 @@ class MessageReceiver(threading.Thread):
 
 	def postMessage(self, message):
 		if (message != None):
+			self.post_mutex.acquire()
 			#self.__messages.put_commit(self.__messages.put(message,block=True))
 			self.not_full.acquire()
 			self.__messages.put(message,block=True)
 			self.not_empty.notify()
 			self.not_full.release()
 			#print ">>>>>MSG posteado DE VERDAD: " + str(message.getContent())
+			self.post_mutex.release()
 		return True
 
