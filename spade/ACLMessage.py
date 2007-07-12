@@ -279,7 +279,8 @@ class ACLMessage:
 		if not self.getReplyTo():
 			m.addReceiver(self.sender)
 
-		m.setInReplyTo(self.getReplyWith())
+		if self.getReplyWith():
+			m.setInReplyTo(self.getReplyWith())
 
 		if self.getReplyWith() != None:
 			m.setConversationId(str(self.getReplyWith()))

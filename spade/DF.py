@@ -227,6 +227,11 @@ class DF(PlatformAgent):
 			reply.setContent(content)
 			self.myAgent.send(reply)
 
+			recvs = ""
+			for r in reply.getReceivers():
+				recvs += str(r.getName())
+			print "### DF: informed",r,"of services",str(result)
+
 			return 1
 
 	class ModifyBehaviour(Behaviour.OneShotBehaviour):
@@ -490,13 +495,13 @@ class ServiceDescription:
 		return self.name
 
 	def setName(self, name):
-		self.name = name
+		self.name = name.lower()
 
 	def getType(self):
 		return self.type
 
 	def setType(self, t):
-		self.type = t
+		self.type = t.lower()
 
 	def getProtocols(self):
 		return self.protocols
@@ -520,7 +525,7 @@ class ServiceDescription:
 		return self.ownership
 
 	def setOwnership(self, o):
-		self.ownership = o
+		self.ownership = o.lower()
 
 	def getProperties(self):
 		return self.properties
@@ -564,10 +569,10 @@ class ServiceDescription:
 	def loadSL0(self,content):
 		if content != None:
 			if "name" in content:
-				self.name = content.name[0]
+				self.name = str(content.name[0]).lower()
 
 			if "type" in content:
-				self.type = content.type[0]
+				self.type = str(content.type[0]).lower()
 
 			if "protocols" in content:
 				self.protocols = content.protocols.set.asList()
@@ -588,7 +593,7 @@ class ServiceDescription:
 				#print "##########"
 				for p in content.properties.set.asDict().values():
 					#print p
-					self.properties.append({'name':str(p['name']).strip("[']"),'value':str(p['value']).strip("[']")})
+					self.properties.append({'name':str(p['name']).lower().strip("[']"),'value':str(p['value']).lower().strip("[']")})
 
 	def __str__(self):
 

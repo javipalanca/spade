@@ -83,6 +83,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         def onStart(self):
             open = False
+            SocketServer.ThreadingTCPServer.allow_reuse_address = True
             while open == False:
                 try:
                     self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
@@ -312,6 +313,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
+
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
@@ -884,10 +886,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         #Init The agent
         self._setup()
-        self._running = True
         self.behavioursGo.acquire()
+        self._running = True
         self.behavioursGo.notifyAll()
         self.behavioursGo.release()
+
         #Start the Behaviours
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
@@ -895,10 +898,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #Main Loop
         while not self.forceKill():
             try:
-                # WakeUp sleepy behaviours
-                self.behavioursGo.acquire()
-                self.behavioursGo.notifyAll()
-                self.behavioursGo.release()
                 #Check for queued messages
                 proc = False
                 toRemove = []  # List of behaviours to remove after this pass
@@ -1425,7 +1424,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             content +=" ))"
 
             msg.setContent(content)
-            self.send(msg, "jabber")
+            self.send(msg)
 
 	        # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
@@ -1573,7 +1572,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 self._msg.setContent(content)
 
-                self.myAgent.send(self._msg, "jabber")
+                self.myAgent.send(self._msg)
 
                 msg = self._receive(True,20)
                 if msg == None:
@@ -1620,6 +1619,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             b = AbstractAgent.searchServiceBehaviour(msg, DAD, debug)
             self.addBehaviour(b,t)
             b.join()
+            print "#############"
+            print "#############"
+            print "DF RETURNED SUCCESSFULL RESULT"
+            print "#############"
+            print "#############"
             return b.result
         else:
             # (Offline) Inline operation (done when the agent is starting)
