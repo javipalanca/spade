@@ -230,7 +230,6 @@ class DF(PlatformAgent):
 			recvs = ""
 			for r in reply.getReceivers():
 				recvs += str(r.getName())
-			print "### DF: informed",r,"of services",str(result)
 
 			return 1
 

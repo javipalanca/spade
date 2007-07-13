@@ -382,8 +382,8 @@ class Behaviour(MessageReceiver.MessageReceiver):
         sets the agent which controls the behavior
         """
         self.myAgent = agent
-
         self.setName(str(self.myAgent.getName()) + " Behaviour")
+        self.DEBUG = self.myAgent.DEBUG
 
     def getAgent(self):
         """
@@ -458,7 +458,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
                 self._exitcode = self._process()
                 #time.sleep(0)
         except Exception,e:
-            print colors.color_red + "<Exception in Behaviour %s><%s>"%(str(self),str(e)) + colors.color_none
+            self.DEBUG("<Exception in Behaviour %s><%s>"%(str(self),str(e)), "err")
         self.onEnd()
         self.myAgent.removeBehaviour(self)
 

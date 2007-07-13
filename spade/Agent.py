@@ -245,6 +245,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
     """
 
+    def DEBUG(self, dmsg, typ="info", component=""):
+        if typ == "info":
+            print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
+        elif typ == "err":
+            print colors.color_none + "DEBUG: " + colors.color_red + dmsg + " , error" + colors.color_none
+        elif typ == "ok":
+            print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
+        elif typ == "warn":
+            print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
 
     def newMessage(self):
 		"""Creates and returns an empty ACL message"""
@@ -796,17 +805,45 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             jabber_id = xmpp.JID(jabber_id).getStripped()
             if self.p2p_ready and jabber_id not in self.p2p_routes.keys():
                 self.initiateStream(jabber_id)
-            if self.p2p_ready and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p') and self.p2p_routes[jabber_id]['p2p'] and self.p2p_routes[jabber_id]['url']:
-                try:
-                    self.p2p_lock.acquire()
-                    self.send_p2p(jabber_msg, jabber_id)
-                except Exception, e:
-                    #print "Exception in send_p2p", str(e), e
-                    print "P2P Connection to",str(self.p2p_routes[jabber_id]["url"]),"prevented. Falling back.",str(e)
-                    del self.p2p_routes[jabber_id]
+            if self.p2p_ready and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p'):
+                # If this p2p connection is marked as faulty,
+                # check if enough time has passed to try again a possible p2p connection
+                if self.p2p_routes[jabber_id]['p2p'] == False:
+                    try:
+                        t1 = time.time()
+                        t = t1 - self.p2p_routes[jabber_id]['failed_time']
+                        # If more than 10 seconds have passed . . .
+                        if t > 10.0:
+                            self.p2p_routes[jabber_id]['p2p'] = True
+                            self.p2p_routes[jabber_id]['failed_time'] = 0.0
+                    except:
+                        # The p2p connection is really faulty
+                        pass
+
+                # The road seems clear, try a p2p connection
+                if self.p2p_routes[jabber_id]['p2p'] == True and self.p2p_routes[jabber_id]['url']:
+                    try:
+                        self.p2p_lock.acquire()
+                        self.send_p2p(jabber_msg, jabber_id)
+                    except Exception, e:
+                        #print "Exception in send_p2p", str(e), e
+                        self.DEBUG("P2P Connection to "+str(self.p2p_routes[jabber_id]["url"])+" prevented. Falling back. "+str(e), "warn")
+                        # Mark this p2p connection as faulty (False)
+                        # and write down when it failed
+                        #del self.p2p_routes[jabber_id]
+                        self.p2p_routes[jabber_id]["p2p"] = False
+                        self.p2p_routes[jabber_id]["failed_time"] = time.time()
+                        if method=="auto": self.jabber.send(jabber_msg)
+                    self.p2p_lock.release()
+
+                else:
+                    # The P2P connection was faulty.
+                    # Try to send it through jabber if the method is "auto"
                     if method=="auto": self.jabber.send(jabber_msg)
-                self.p2p_lock.release()
+
             else:
+                # P2P is not available / not supported
+                # Try to send it through jabber if the method is "auto"
                 if method=="auto": self.jabber.send(jabber_msg)
 
     def send_p2p(self, jabber_msg, to=""):
@@ -831,7 +868,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             # Create a socket connection to the destination url
             connected = False
-            tries = 10
+            tries = 2
             while not connected and tries > 0:
                 try:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -848,12 +885,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     tries -= 1
 
             if not connected:
-                print colors.color_red + "Socket creation failed, throw an exception" + colors.color_none
+                self.DEBUG("Socket creation failed, throw an exception","err")
                 raise socket.error
 
         # Send message length
         sent = False
-        tries = 10
+        tries = 2
         while not sent and tries > 0:
             try:
                 length = "%08d"%(len(str(jabber_msg)))
@@ -880,8 +917,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 # Try again
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 s.connect((address, port))
+                self.p2p_routes[to]["socket"] = s
                 tries -= 1
         if not sent:
+            #self.DEBUG("Socket send failed, throw an exception","err")
             raise socket.error
         else:
             return True
@@ -1674,7 +1713,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         if self._running:
-            print "ONLINE SERVICE SEARCH"
             b = AbstractAgent.searchServiceBehaviour(msg, DAD, debug)
             self.addBehaviour(b,t)
             b.join()
@@ -2162,7 +2200,7 @@ class Agent(AbstractAgent):
 
                 if not self.jabber.reconnectAndReauth():
                     #if (self.jabber.auth(name,password,"spade") == None):
-                    print "### Agent %s: Second auth attempt failed"%(self._aid.getName())
+                    self.DEBUG("### Agent %s: Second auth attempt failed"%(self._aid.getName()), "err")
                     raise NotImplementedError
             else:
                     raise NotImplementedError
