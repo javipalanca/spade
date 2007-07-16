@@ -168,6 +168,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
         """
         MessageReceiver.MessageReceiver.__init__(self)
+        self._agent_log = {}  # Log system
+        self._agent_log["general"] = {}  # Log system
         self._aid = AID.aid(name=agentjid, addresses=["xmpp://"+agentjid])
         self._jabber = None
         self._serverplatform = serverplatform
@@ -208,6 +210,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.p2p_lock = thread.allocate_lock()
         self.p2p_ready = False  # Actually ready for P2P communication
         if p2p:
+            self.registerLogComponent("p2p")
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
             self.addBehaviour(Agent.P2PBehaviour())
 
@@ -245,7 +248,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
     """
 
+    def registerLogComponent(self, component):
+        self._agent_log[component] = {}
+
     def DEBUG(self, dmsg, typ="info", component=""):
+    	# Record at log
+    	self._agent_log["general"][time.time()] = "typ: " + dmsg
+
+		# Print on screen
         if typ == "info":
             print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
         elif typ == "err":
@@ -254,6 +264,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
         elif typ == "warn":
             print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
+
+	def printLog(self):
+		l = self._agent_log[general].keys()
+		l.sort()
+		for t in l:
+			s = str(t)+": "
+			if line.endswith("info"):
+				s += colors.color_none + self._agent_log["general"][t] + colors.color_none
+			elif line.endswith("error"):
+				s += colors.color_red + self._agent_log["general"][t] + colors.color_none
+			elif line.endswith("ok"):
+				s += colors.color_green + self._agent_log["general"][t] + colors.color_none
+			elif line.endswith("warn"):
+				s += colors.color_yellow + self._agent_log["general"][t] + colors.color_none
 
     def newMessage(self):
 		"""Creates and returns an empty ACL message"""
