@@ -63,7 +63,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     class P2PBehaviour(Behaviour.Behaviour):
         class P2PRequestHandler(SocketServer.StreamRequestHandler):
             def handle(self):
-
                 try:
                     data = ""
                     while True:
@@ -75,17 +74,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if data:
                             n = xmpp.simplexml.XML2Node(str(data))
                             m = xmpp.Message(node=n)
-                            self.server.mutex.acquire()
                             self.server._jabber_messageCB(None,m,raiseFlag=False)
-                            self.server.mutex.release()
                         data = ""
                 except Exception, e:
-                    print "P2P Socket Closed to", str(self.client_address),":",str(e),":",str(data)
-                    try:
-                        self.server.mutex.release()
-                    except:
-                        pass
-
+                    print "P2P Socket Closed to", str(self.client_address),":",str(e),":",str(length),str(data)
 
         def _process(self):
             self.server.handle_request()
@@ -103,7 +95,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 except:
                     self.myAgent.P2PPORT = random.randint(1025,65535)
 
-            self.server.mutex = threading.Lock()
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             print self.getName(),": P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
             self.myAgent.p2p_ready = True
@@ -918,14 +909,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         while not sent and tries > 0:
             try:
                 length = "%08d"%(len(str(jabber_msg)))
-                s.send(length)
+                s.send(length+str(jabber_msg))
                 # Send message through socket
-                s.send(str(jabber_msg))
+                #s.send(str(jabber_msg))
                 sent = True
                 # Close socket
                 #s.close()
             except:
-                #print colors.color_red + "Socket: send failed, threw an exception:" + colors.color_none
+                self.DEBUG("Socket: send failed, threw an exception:", "err")
                 #raise socket.error
                 # Dispose of old socket
                 s.close()
@@ -938,13 +929,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if len(l) > 1:
                         address = l[0]
                         port = int(l[1])
-                # Try again
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.connect((address, port))
-                self.p2p_routes[to]["socket"] = s
+                    # Try again
+                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    s.connect((address, port))
+                    self.p2p_routes[to]["socket"] = s
+                else:
+                    raise socket.error
                 tries -= 1
         if not sent:
-            #self.DEBUG("Socket send failed, throw an exception","err")
+            self.DEBUG("Socket send failed, throw an exception","err")
             raise socket.error
         else:
             return True
