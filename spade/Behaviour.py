@@ -382,8 +382,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
         sets the agent which controls the behavior
         """
         self.myAgent = agent
-        self.setName(str(self.myAgent.getName()) + " Behaviour")
         self.DEBUG = self.myAgent.DEBUG
+        try:
+            self.setName(str(self.myAgent.getName()) + " Behaviour")
+        except:
+            pass
 
     def getAgent(self):
         """
@@ -546,7 +549,7 @@ class PeriodicBehaviour(Behaviour):
 
 class TimeOutBehaviour(PeriodicBehaviour):
     """
-    this behavior is executed only one time after a timeout
+    this behavior is executed only once after a timeout
     """
     def __init__(self, timeout):
         PeriodicBehaviour.__init__(self, timeout, time.time()+timeout)
