@@ -9,18 +9,19 @@ from spade import *
 from spade.ACLMessage import *
 from string import *
 from time import sleep
-from xmpp import * 
+from xmpp import *
 
 class receptor(Agent.Agent):
 
     class BehaviourDefecte(Behaviour.Behaviour):
-                
+
         def _process(self):
             msg = self._receive(True)
-            if msg.__class__ != ACLMessage:
+            print "##RECEPTOR RECEIVED" #,str(msg)
+            if "ACLMessage" not in str(msg.__class__):
                 print "BD RECEIVED A NON_FIPA MESSAGE"
                 return
- 
+
             emissor = msg.getSender()
             msg.removeReceiver(self.myAgent.getAID())
             msg.setSender(self.myAgent.getAID())
@@ -45,7 +46,7 @@ class receptor(Agent.Agent):
 
             except Exception, e:
                 print "EXCEPTION: ", str(e)
-		
+
     def _setup(self):
         #print "RECEPTOR: "+ str(self.getQueue())
         #self.setDefaultBehaviour(db)

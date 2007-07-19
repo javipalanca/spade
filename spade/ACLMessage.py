@@ -2,6 +2,7 @@
 import AID
 import random
 import string
+import cPickle as pickle
 #random.seed(time.time())
 
 
@@ -343,5 +344,8 @@ class ACLMessage:
 
 		return p
 
-
-
+	def serialize(self):
+		"""
+		returns a serialized version of the message
+		"""
+		return pickle.dumps(self)
