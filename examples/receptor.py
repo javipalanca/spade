@@ -17,7 +17,6 @@ class receptor(Agent.Agent):
 
         def _process(self):
             msg = self._receive(True)
-            print "##RECEPTOR RECEIVED" #,str(msg)
             if "ACLMessage" not in str(msg.__class__):
                 print "BD RECEIVED A NON_FIPA MESSAGE"
                 return

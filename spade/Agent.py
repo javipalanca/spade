@@ -77,14 +77,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "P2PBehaviour Received:", str(data)
                         if data:
                             try:
+                                # Try with a serialized message
+                                ACLmsg = pickle.loads(data)
+                                self.server.postMessage(ACLmsg)
+                            except:
                                 # Try with a jabber message
                                 n = xmpp.simplexml.XML2Node(str(data))
                                 m = xmpp.Message(node=n)
                                 self.server._jabber_messageCB(None,m,raiseFlag=False)
-                            except:
-                                # Try with a serialized message
-                                ACLmsg = pickle.loads(data)
-                                self.server.postMessage(ACLmsg)
                         data = ""
                 except Exception, e:
                     print "P2P Socket Closed to", str(self.client_address)  #,":",str(e),":",str(length),str(data)
@@ -95,14 +95,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         def onEnd(self):
             self.myAgent.p2p_ready = False
             if not self.finished:
-                for sock in self.server.requests:
-                    try:
-                        sock.close()
-                        del sock
-                    except:
-                        pass
-                self.server.socket.close()
-                del self.server
+                try:
+                    for sock in self.server.requests:
+                        try:
+                            sock.close()
+                            del sock
+                        except:
+                            pass
+                    self.server.socket.close()
+                    del self.server
+                except:
+                    pass
                 iq = xmpp.Iq("result",queryNS=xmpp.NS_DISCO_INFO)
                 for to in self.myAgent.p2p_routes.keys():
                     iq.setTo(to)
@@ -855,7 +858,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             # If the receiver is one of our p2p contacts, send the message through p2p.
             # If it's not or it fails, send it through the jabber server
-            # We suppose method in ['p2p', 'p2ppy']
+            # We suppose method in ['p2p']
             jabber_id = xmpp.JID(jabber_id).getStripped()
             if self.p2p_ready and jabber_id not in self.p2p_routes.keys():
                 self.initiateStream(jabber_id)
@@ -947,15 +950,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         tries = 2
         while not sent and tries > 0:
             try:
-                print "##URL",url
-                if method in ["p2p","auto"]:
+                if method in ["p2p"]:
                     length = "%08d"%(len(str(jabber_msg)))
                     s.send(length+str(jabber_msg))
                     # Send message through socket
                     #s.send(str(jabber_msg))
-                elif method in ["p2ppy"] and ACLmsg:
-                    ser = ACLmsg.serialize()
-                    length = "%08d"%(len(ser))
+                elif method in ["auto","p2ppy"]:
+                    ser = pickle.dumps(ACLmsg)
+                    length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
                 sent = True
                 # Close socket
