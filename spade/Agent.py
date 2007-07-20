@@ -773,6 +773,27 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv['content-type']='fipa.mts.env.rep.xml.std'
         xenv.addData(envxml)
         """
+        # First, try Ultra-Fast(tm) python cPickle way of things
+        if method in ["auto", "p2ppy"]:
+        #if method in ["p2ppy"]:
+            remaining = copy.copy(tojid)
+            for receiver in tojid:
+                to = None
+                for address in receiver.getAddresses():
+                    # Get a jabber address
+                    if "xmpp://" in address:
+                        to = address.split("://")[1]
+                        break
+                if to and self.send_p2p(None, to, method="p2ppy", ACLmsg=ACLmsg):
+                    # The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
+                    remaining.remove(receiver)
+
+            tojid = remaining
+            if not tojid:
+                # There is noone left to send the message to
+                return
+
+        # Second, try it the old way
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         envelope = Envelope.Envelope()
         generate_envelope = False
@@ -860,6 +881,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             # If it's not or it fails, send it through the jabber server
             # We suppose method in ['p2p']
             jabber_id = xmpp.JID(jabber_id).getStripped()
+
+            if self.p2p_ready:
+                """
             if self.p2p_ready and jabber_id not in self.p2p_routes.keys():
                 self.initiateStream(jabber_id)
             if self.p2p_ready and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p'):
@@ -876,7 +900,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     except:
                         # The p2p connection is really faulty
                         pass
+                """
 
+                sent = False
+                self.p2p_lock.acquire()
+                try:
+                    sent = self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
+                except Exception, e:
+                    self.DEBUG("P2P Connection to "+str(self.p2p_routes[jabber_id]["url"])+" prevented. Falling back. "+str(e), "warn")
+                    sent = False
+                self.p2p_lock.release()
+                if not sent:
+                    if method=="auto": self.jabber.send(jabber_msg)
+
+                """
                 # The road seems clear, try a p2p connection
                 if self.p2p_routes[jabber_id]['p2p'] == True and self.p2p_routes[jabber_id]['url']:
                     try:
@@ -897,17 +934,47 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # The P2P connection was faulty.
                     # Try to send it through jabber if the method is "auto"
                     if method=="auto": self.jabber.send(jabber_msg)
-
+                """
             else:
                 # P2P is not available / not supported
                 # Try to send it through jabber if the method is "auto"
                 if method=="auto": self.jabber.send(jabber_msg)
 
-    def send_p2p(self, jabber_msg, to="", method="p2ppy", ACLmsg=None):
+
+    def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
         #print "SENDING ",str(jabber_msg), "THROUGH P2P"
         # Get the address
-        if not to: to = str(jabber_msg.getTo())
-        url = self.p2p_routes[to]["url"]
+        if not to:
+            if not jabber_msg:
+                return False
+            else:
+                to = str(jabber_msg.getTo())
+
+        try:
+            # Try to get the contact's url
+            url = self.p2p_routes[to]["url"]
+        except:
+            # The contact is not in our routes
+            self.initiateStream(to)
+            if self.p2p_routes.has_key(to) and self.p2p_routes[to].has_key('p2p'):
+                # If this p2p connection is marked as faulty,
+                # check if enough time has passed to try again a possible p2p connection
+                if self.p2p_routes[to]['p2p'] == False:
+                    try:
+                        t1 = time.time()
+                        t = t1 - self.p2p_routes[to]['failed_time']
+                        # If more than 10 seconds have passed . . .
+                        if t > 10.0:
+                            self.p2p_routes[to]['p2p'] = True
+                            self.p2p_routes[to]['failed_time'] = 0.0
+                    except:
+                        # The p2p connection is really faulty
+                        return False
+                url = self.p2p_routes[to]["url"]
+            else:
+                # There is no p2p for this contact
+                return False
+
 
         # Check if there is already an open socket
         s = None
@@ -950,12 +1017,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         tries = 2
         while not sent and tries > 0:
             try:
-                if method in ["p2p"]:
+                if method in ["p2p","auto"]:
                     length = "%08d"%(len(str(jabber_msg)))
                     s.send(length+str(jabber_msg))
                     # Send message through socket
                     #s.send(str(jabber_msg))
-                elif method in ["auto","p2ppy"]:
+                elif method in ["p2ppy"]:
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
@@ -984,8 +1051,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     raise socket.error
                 tries -= 1
         if not sent:
-            self.DEBUG("Socket send failed, throw an exception","err")
-            raise socket.error
+            self.DEBUG("Socket send failed","err")
+            self.p2p_routes[to]["p2p"] = False
+            self.p2p_routes[to]["failed_time"] = time.time()
+            #raise socket.error
         else:
             return True
 

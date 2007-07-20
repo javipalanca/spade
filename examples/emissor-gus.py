@@ -38,7 +38,7 @@ class emissor(Agent.Agent):
 
             #print "Vaig a enviar un missatge"
 	    self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
-            self.myAgent.send(self.myAgent.msg)
+            self.myAgent.send(self.myAgent.msg, method="auto")
 	    #print "Enviat: "+ str(self.myAgent.msg)
 
 	    #print "Estic asperant ..."
