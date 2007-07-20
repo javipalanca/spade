@@ -735,6 +735,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	sends an ACLMessage
 	"""
+        # Check for the sender field!!! (mistake #1)
+        if not ACLmsg.getSender():
+            ACLmsg.setSender(self.getAID())
+
         #self._sendTo(ACLmsg, self.getSpadePlatformJID())
         self._sendTo(ACLmsg, ACLmsg.getReceivers(), method=method)
 
@@ -774,24 +778,28 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv.addData(envxml)
         """
         # First, try Ultra-Fast(tm) python cPickle way of things
-        if method in ["auto", "p2ppy"]:
-        #if method in ["p2ppy"]:
-            remaining = copy.copy(tojid)
-            for receiver in tojid:
-                to = None
-                for address in receiver.getAddresses():
-                    # Get a jabber address
-                    if "xmpp://" in address:
-                        to = address.split("://")[1]
-                        break
-                if to and self.send_p2p(None, to, method="p2ppy", ACLmsg=ACLmsg):
-                    # The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
-                    remaining.remove(receiver)
+        try:
+            if method in ["auto", "p2ppy"]:
+            #if method in ["p2ppy"]:
+                remaining = copy.copy(tojid)
+                for receiver in tojid:
+                    to = None
+                    for address in receiver.getAddresses():
+                        # Get a jabber address
+                        if "xmpp://" in address:
+                            to = address.split("://")[1]
+                            break
+                    if to and self.send_p2p(None, to, method="p2ppy", ACLmsg=ACLmsg):
+                        # The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
+                        remaining.remove(receiver)
 
-            tojid = remaining
-            if not tojid:
-                # There is noone left to send the message to
-                return
+                tojid = remaining
+                if not tojid:
+                    # There is noone left to send the message to
+                    return
+        except Exception, e:
+            print "EXCEPTION IN SEND",str(e)
+            pass
 
         # Second, try it the old way
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
@@ -806,7 +814,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 envelope.setFrom(ACLmsg.getSender())
                 generate_envelope = True
         except Exception, e:
-            #print "EXCEPTION SETTING SENDER", str(e)
+            print "EXCEPTION SETTING SENDER", str(e)
             pass
 
         try:
