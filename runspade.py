@@ -40,6 +40,7 @@ def print_help():
   print " -d, --debug        enable the debug execution"
   print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
   print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
+  print " -w, --web          load teh TurboGears(tm) web interface"
   raise SystemExit
 
 def print_version():
@@ -71,10 +72,12 @@ def launchtg(platform):
 def main():
 
   gui = False
+  web = False
   if len(sys.argv) < 2: pass
   elif sys.argv[1] in ["--help", "-h"]: print_help()
   elif sys.argv[1] in ["--version", "-v"]: print_version()
   elif sys.argv[1] in ["--gui", "-g"]: gui = True
+  elif sys.argv[1] in ["--web", "-w"]: web = True
 
 
   configfilename = "/etc/spade/spade.xml"
@@ -89,13 +92,14 @@ def main():
 
   try:
   	for opt, arg in getopt(sys.argv[1:],
-                         "hvdgc:j:", ["help", "version", "debug", "gui", "configfile=",
+                         "hvdgwc:j:", ["help", "version", "debug", "gui", "web", "configfile=",
                                       "jabber="])[0]:
     		if opt in ["-h", "--help"]: print_help()
     		elif opt in ["-v", "--version"]: print_version()
     		elif opt in ["-c", "--configfile"]: configfilename = arg
     		elif opt in ["-j", "--jabber"]: jabberxml = arg
     		elif opt in ["-g", "--gui"]: gui = True
+    		elif opt in ["-w", "--web"]: web = True
     		elif opt in ["-d", "--debug"]: dbg = ['always']
   except:
 	pass
@@ -153,7 +157,10 @@ def main():
 	sys.stdout.write(".")
   	sys.stdout.flush()
 
-  	thread.start_new_thread(launchtg, tuple([platform]))
+  	if web:
+		thread.start_new_thread(launchtg, tuple([platform]))
+		sys.stdout.write(".")
+  		sys.stdout.flush()
 
   except Exception,e:
 	print str(e)
