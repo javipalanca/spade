@@ -104,7 +104,7 @@ def main():
   except:
 	pass
 
-  print "SPADE", VERSION, "<jpalanca@dsic.upv.es> - http://magentix.gti-ia.dsic.upv.es/"
+  print "SPADE", VERSION, "<garanda@dsic.upv.es> - http://spade.gti-ia.dsic.upv.es/"
 
   try:
   	import psyco
@@ -114,8 +114,8 @@ def main():
 	#psyco.profile()
   except ImportError: print "W: Psyco optimizing compiler not found."
 
-  print "Using config file " + str(configfilename)
-  print "Using jabber file " + str(jabberxml)
+  #print "Using config file " + str(configfilename)
+  #print "Using jabber file " + str(jabberxml)
   sys.stdout.write("Starting SPADE")
   sys.stdout.flush()
 

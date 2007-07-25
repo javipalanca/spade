@@ -163,7 +163,7 @@ class HttpServer(threading.Thread):
 	def run(self):
 		BaseHTTPServer.HTTPServer.allow_reuse_address = True
 		httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
-		print "HTTP Transport serving at port", PORT
+		#print "HTTP Transport serving at port", PORT
 		httpd.mtp = self.mtp
 		httpd.serve_forever()
 

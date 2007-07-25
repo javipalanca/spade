@@ -1,10 +1,11 @@
 #! /usr/bin/python
 
+import sys
+sys.path.append("..")
 from spade import *
 from spade.ACLMessage import *
 import os
 import time
-import sys
 import pdb
 from string import *
 from threading import Lock

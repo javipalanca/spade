@@ -49,7 +49,7 @@ class simba(MTP.MTP):
 		'''
 		Secondary constructor
 		'''
-		print ">>>SIMBA Transport ready for action"
+		#print ">>>SIMBA Transport ready for action"
 		#self.address = self.config.acc[self.name].address		
 		#self.port = self.config.acc[self.name].port
 		self.port = 2001
