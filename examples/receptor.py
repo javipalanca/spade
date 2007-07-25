@@ -25,7 +25,7 @@ class receptor(Agent.Agent):
             msg.removeReceiver(self.myAgent.getAID())
             msg.setSender(self.myAgent.getAID())
             msg.addReceiver(emissor)
-            self.myAgent.send(msg, method="auto")
+            self.myAgent.send(msg, method=msg.getContent().strip())
 
         def onStart(self):
             #self.myAgent.getRoster()

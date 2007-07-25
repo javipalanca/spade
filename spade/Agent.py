@@ -87,7 +87,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.server._jabber_messageCB(None,m,raiseFlag=False)
                         data = ""
                 except Exception, e:
-                    print "P2P Socket Closed to", str(self.client_address)  #,":",str(e),":",str(length),str(data)
+                    #print "P2P Socket Closed to", str(self.client_address)  #,":",str(e),":",str(length),str(data)
+		    pass
 
         def _process(self):
             self.server.handle_request()
@@ -134,11 +135,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-                print self.myAgent.getName(), ": StreamInitiation Behaviour called"
+                #print self.myAgent.getName(), ": StreamInitiation Behaviour called"
                 if self.msg.getType() == "set":
                     if self.msg.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                         # P2P Messaging Offer
-                        print "P2P-Messaging offer from", str(self.msg.getFrom())
+                        #print "P2P-Messaging offer from", str(self.msg.getFrom())
                         if self.myAgent.p2p_ready:
                             # Take note of sender's p2p address if any
                             if self.msg.T.si.T.p2p:
@@ -174,14 +175,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if self.msg != None:
                 if self.msg.getType() == "get":
                     #print "DISCO Behaviour called"
-                    print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
+                    #print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
                     # Inform of services
                     reply = self.msg.buildReply("result")
                     if self.myAgent.p2p_ready:
                         reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si"})
                         reply.T.query.addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                     self.myAgent.jabber.send(reply)
-                    print self.myAgent.getName(),": SENT DISCO REPLY TO", str(reply.getTo())
+                    #print self.myAgent.getName(),": SENT DISCO REPLY TO", str(reply.getTo())
                 elif self.msg.getType() == "result":
                     services = []
                     for child in self.msg.T.query.getChildren():
@@ -245,7 +246,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if p2p:
             self.registerLogComponent("p2p")
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
-            self.addBehaviour(Agent.P2PBehaviour())
+            p2pb = Agent.P2PBehaviour()
+            self.addBehaviour(p2pb)
+
+
 
 
     """
@@ -453,7 +457,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if mess.getAttr("type") == "set":
                     q = mess.getTag("si")
                     if q:
-                        print "StreamInitiation Behaviour called (offline)"
+                        #print "StreamInitiation Behaviour called (offline)"
                         if mess.getType() == "set":
                             if mess.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                                 # P2P Messaging Offer
@@ -625,7 +629,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return rdif.result
         else:
             # Offline way
-            print "RDI OFFLINE"
+            #print "RDI OFFLINE"
             self.jabber.send(iq)
             msg = self._receive(True, 20, template=t)
             if msg:
@@ -633,7 +637,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     services = []
                     for child in msg.T.query.getChildren():
                         services.append(str(child.getAttr("var")))
-                    print "RETRIEVED SERVICES:", services
+                    #print "RETRIEVED SERVICES:", services
                     return services
             return []
 
@@ -652,7 +656,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if msg:
                     self.result = False
                     if msg.getType() =="result":
-                        print "StreamRequest Agreed"
+                        #print "StreamRequest Agreed"
                         #print msg
                         try:
                             remote_address = str(msg.T.si.T.p2p.T.value.getData())
@@ -664,14 +668,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = d
                             #print "P2P ROUTES", str(self.myAgent.p2p_routes)
                         except Exception, e:
-                            print "Malformed StreamRequest Answer", str(e)
+                            #print "Malformed StreamRequest Answer", str(e)
                             self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {}
                     elif msg.getType() == "error":
-                        print "StreamRequest REFUSED"
+                        #print "StreamRequest REFUSED"
                         self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
                 else:
                     # Not message, treat like a refuse
-                    print "StreamRequest REFUSED"
+                    #print "StreamRequest REFUSED"
                     self.myAgent.p2p_routes[str(iq.getTo().getStripped())] = {'p2p':False}
 
         #print "INITIATE STREAM CALLED BY", str(self.getName())
@@ -679,7 +683,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
             # Offer Stream Initiation
-            print "Offer StreamInitiation to", str(to)
+            #print "Offer StreamInitiation to", str(to)
             id = 'offer'+str(random.randint(1,10000))
             temp_iq = xmpp.Iq(attrs={'id':id})
             t = Behaviour.MessageTemplate(temp_iq)
@@ -711,7 +715,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if msg:
                     result = False
                     if msg.getType() =="result":
-                        print "StreamRequest Agreed"
+                        #print "StreamRequest Agreed"
                         #print msg
                         try:
                             remote_address = str(msg.T.si.T.p2p.T.value.getData())
@@ -723,10 +727,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.p2p_routes[str(msg.getFrom().getStripped())] = d
                             #print "P2P ROUTES", str(self.p2p_routes)
                         except Exception, e:
-                            print "Malformed StreamRequest Answer", str(e)
+                            #print "Malformed StreamRequest Answer", str(e)
                             self.p2p_routes[str(msg.getFrom().getStripped())] = {}
                     elif msg.getType() == "error":
-                        print "StreamRequest REFUSED"
+                        #print "StreamRequest REFUSED"
                         self.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
                 return result
 
@@ -1128,6 +1132,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
 
+        # If this agent supports P2P, wait for P2PBEhaviour to properly start
+        if self.p2p:
+            while not self.p2p_ready:
+                time.sleep(0.1)
+
         #Main Loop
         while not self.forceKill():
             try:
@@ -1420,22 +1429,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.myAgent.send(self._msg)
             msg = self._receive(True,10)
             if msg == None or str(msg.getPerformative()) != 'agree':
-                print "%s : There was an error searching the Agent %s (not agree)"%(self.myAgent.getName(),self.AAD.getAID().getName())
-                if self.debug:
-                    print str(msg)
+                #print "%s : There was an error searching the Agent %s (not agree)"%(self.myAgent.getName(),self.AAD.getAID().getName())
                 self.finished = True
                 return None
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
-                print "There was an error searching the Agent. (not inform)"
-                if self.debug:
-                    print str(msg)
+                #print "There was an error searching the Agent. (not inform)"
                 self.finished = True
                 return None
             else:
                 content = p.parse(msg.getContent())
-                if self.debug:
-                    print str(msg)
                 self.result = [] #content.result.set
 		for i in content.result.set:
 			#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
@@ -1487,16 +1490,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'agree':
-                print "There was an error modifying the Agent. (not agree)"
-                if self.debug:
-                    print str(msg)
+                #print "There was an error modifying the Agent. (not agree)"
                 self.result = False
                 return -1
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
-                print "There was an error modifying the Agent. (not inform)"
-                if self.debug:
-                    print str(msg)
+                #print "There was an error modifying the Agent. (not inform)"
                 self.result = False
                 return -1
             self.result = True
@@ -1543,15 +1542,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
-			print "There was an error modifying the Agent. (not agree)"
-			if self.debug:
-				print str(msg)
+			#print "There was an error modifying the Agent. (not agree)"
+
 			return -1
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
 			print "There was an error modifying the Agent. (not inform)"
-			if self.debug:
-				print str(msg)
+
 			return -1
 
 		self.result = msg.getContent()
@@ -1609,7 +1606,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
             #if msg == None or msg.getPerformative() != 'agree':
-                print "There was an error registering the Service. (not agree)"
+                #print "There was an error registering the Service. (not agree)"
                 self.result = False
                 return
             elif msg == None or msg.getPerformative() == 'agree':
@@ -1622,8 +1619,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     self.result = False
                     return
 
-            if self.debug:
-                print str(msg)
             self.result = True
 
     def registerService(self, DAD, debug=False, otherdf=None):
@@ -1647,7 +1642,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         	return b.result
         else:
             # Offline operation, done when the agent is starting
-            print "OFFLINE REGISTERSERVICE"
+            #print "OFFLINE REGISTERSERVICE"
             if otherdf and isinstance(otherdf, AID.aid):
                 smsg.addReceiver( otherdf )
             else:
@@ -1668,7 +1663,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	        # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                print "There was an error registering the Service. (not agree)", str(msg)
+                #print "There was an error registering the Service. (not agree)", str(msg)
                 return False
 
             elif msg == None or msg.getPerformative() == 'agree':
@@ -1714,22 +1709,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                print "There was an error deregistering the Service. (not agree)"
-                if self.debug:
-                    print str(msg)
+                #print "There was an error deregistering the Service. (not agree)"
                 self.result = False
                 return
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() != 'inform':
-                    print "There was an error deregistering the Service. (not inform)"
-                    if self.debug:
-                        print str(msg)
+                    #print "There was an error deregistering the Service. (not inform)"
                     self.result = False
                     return
 
-            if self.debug:
-                print str(msg)
             self.result = True
             return
 
@@ -1763,13 +1752,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             # EYE! from here, msg becomes the reply
             msg = self._receive(True, 20, t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                print "There was an error deregistering the Service. (not agree)"
+                #print "There was an error deregistering the Service. (not agree)"
                 return False
 
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(True, 20, t)
                 if msg == None or msg.getPerformative() != 'inform':
-                    print "There was an error deregistering the Service. (not inform)"
+                    #print "There was an error deregistering the Service. (not inform)"
                     return False
 
             return True
@@ -1815,18 +1804,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 msg = self._receive(True,20)
                 if msg == None:
-                    print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
+                    #print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() not in ['agree', 'inform']:
-                    print "%s : There was an error searching the Service (not agree)"%(self.myAgent.getName())
+                    #print "%s : There was an error searching the Service (not agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
                     if msg == None:
-                        print "There was an error searching the Service (timeout on inform)"
+                        #print "There was an error searching the Service (timeout on inform)"
                         return
                     elif msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service (not inform)"
+                        #print "There was an error searching the Service (not inform)"
                         return
 
                 p = SL0Parser.SL0Parser()
@@ -1838,7 +1827,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     self.result.append(d)
 
             except Exception, e:
-                print "###Exception in searchServiceBehav", str(e)
+                #print "###Exception in searchServiceBehav", str(e)
                 return
 
 
@@ -1881,14 +1870,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    print "There was an error searching the Service. (not agree)"
+                    #print "There was an error searching the Service. (not agree)"
                     return result
 
                 elif msg == None or msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10, t)
 
                     if msg == None or msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service. (not inform)"
+                        #print "There was an error searching the Service. (not inform)"
                         return result
 
                 p = SL0Parser.SL0Parser()
@@ -1902,7 +1891,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 _exception = sys.exc_info()
                 if _exception[0]:
                     print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                print "EXCEPTION IN SEARCHSERVICE", str(e)
+                #print "EXCEPTION IN SEARCHSERVICE", str(e)
                 return result
 
 
@@ -1937,12 +1926,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
-			print "There was an error modifying the Service. (not agree)"
+			#print "There was an error modifying the Service. (not agree)"
 			self.result=False
 			return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
-			print "There was an error modifying the Service. (not inform)"
+			#print "There was an error modifying the Service. (not inform)"
 			self.result = False
 			return
 
@@ -2110,7 +2099,7 @@ class Agent(AbstractAgent):
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-                print "OOB IQ RECEIVED"
+                #print "OOB IQ RECEIVED"
                 # Check type of oob iq
                 if self.msg.getType() == "error":
                     # Check error code
@@ -2182,7 +2171,7 @@ class Agent(AbstractAgent):
                     print color_yellow + str(self.msg.getFrom()) + color_green + " subscribes to me" + color_none
                     rep.setType("subscribe")
                     self.myAgent.jabber.send(rep)
-                    print "Subscription request sent in return"
+                    #print "Subscription request sent in return"
                 if self.msg.getType() == "subscribed":
                     if self.msg.getFrom() == self.myAgent.getAMS().getName():
                         # Subscription confirmation from AMS
@@ -2196,10 +2185,10 @@ class Agent(AbstractAgent):
                     else:
                         print color_yellow + str(self.msg.getFrom()) + color_green + " has unsubscribed me" + color_none
                 elif self.msg.getType() in ["available", ""]:
-                    print "Agent " + str(self.msg.getFrom()) + " is online"
+                    #print "Agent " + str(self.msg.getFrom()) + " is online"
                     self.myAgent.setSocialItem(self.msg.getFrom(), "available")
                 elif self.msg.getType() == "unavailable":
-                    print "Agent " + str(self.msg.getFrom()) + " is offline"
+                    #print "Agent " + str(self.msg.getFrom()) + " is offline"
                     self.myAgent.setSocialItem(self.msg.getFrom(), "unavailable")
 
                 self.myAgent.getSocialNetwork()

@@ -31,19 +31,18 @@ class emissor(Agent.Agent):
 
 
     class BehaviourDefecte(Behaviour.Behaviour):
-
         def _process(self):
+	    self.myAgent.msg.setContent(self.myAgent.mode)
             #agafar temps
             t1=time.time()
 
             #print "Vaig a enviar un missatge"
-	    self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
-            self.myAgent.send(self.myAgent.msg, method="auto")
+	    #self.myAgent.msg.setContent("Missatge " +str( self.myAgent.nenviats))
+            self.myAgent.send(self.myAgent.msg, method=self.myAgent.mode)
 	    #print "Enviat: "+ str(self.myAgent.msg)
 
 	    #print "Estic asperant ..."
             recv = self._receive(True)
-            #print "He rebut la contestacio"
             #agafar temps
             t2=time.time()
 
@@ -59,9 +58,10 @@ class emissor(Agent.Agent):
             else: return False
 
 	def onStart(self):
-		pass
-		#print "EMISOR BEHAV: "+ str(self.getQueue())
-		#print str(self.myAgent.getName()) + ": BehaviourDefecte onStart()"
+	    #asperem a la resta
+	    emissor.go.acquire()
+	    emissor.go.wait()
+	    emissor.go.release()
 
         def onEnd(self):
             #posar estadistiques i si es l'ultim killall
@@ -83,7 +83,7 @@ class emissor(Agent.Agent):
 
 
 
-    def __init__(self,jid,passw,nagent,ntotal,tmsg,nmsg,multiemissor,debug=[]):
+    def __init__(self,jid,passw,nagent,ntotal,tmsg,nmsg,multiemissor,mode="p2ppy",debug=[]):
         Agent.Agent.__init__(self,jid,passw, debug=debug)
         #self.addAddress("http://supu.com")
         self.ntotal = ntotal
@@ -91,7 +91,7 @@ class emissor(Agent.Agent):
         self.nmsg = nmsg
         self.nagent = nagent
         self.multi = multiemissor
-
+	self.mode = mode
 
 
     def _setup(self):
@@ -110,15 +110,14 @@ class emissor(Agent.Agent):
             self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host]))
 	#self.msg.addReceiver(AID.aid("ping@"+host,["xmpp://acc."+host]))
 
-        string = ""
-        for i in range(self.tmsg):
-            string = string + "a"
-        self.msg.setContent(string)
+        #string = ""
+        #for i in range(self.tmsg):
+        #    string = string + "a"
+        #self.msg.setContent(string)
 
 
         #esperem a que estiguen tots els agents
         self.incrementa_agents()
-
 	'''
         while emissor.nagents != self.ntotal:
             time.sleep(5)
@@ -126,64 +125,61 @@ class emissor(Agent.Agent):
         if self.nagent==4:
             time.sleep(20)
 	'''
-
-	emissor.go.acquire()
-	emissor.go.wait()
-	emissor.go.release()
-
 	#while not emissor.go:
 	#	time.sleep(0.1)
 
 	#self.addBehaviour(self.IqBehav())
         db = self.BehaviourDefecte()
+	#self.addBehaviour(db)
         self.setDefaultBehaviour(db)
 
 
+def test(mode, nagents, tmsg, nmsg):
+    global host
 
-if __name__ == "__main__":
     host = os.getenv("HOSTNAME")
     if host == None:
         host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
         if host == None:
-            host = "sandoval.dsic.upv.es"
+            host = "thx1138.dsic.upv.es"
             print "No s'ha pogut obtindre nom de host, utilitzant: "+host+" per defecte"
 
     emissors = {}
-    nagents = atoi(sys.argv[1])
-    tmsg = atoi(sys.argv[2])
-    nmsg = atoi(sys.argv[3])
+    #nagents = atoi(sys.argv[1])
+    #tmsg = atoi(sys.argv[2])
+    #nmsg = atoi(sys.argv[3])
     multiemissor = 0
 
-    if len(sys.argv) == 5 and sys.argv[4] == "m":
-        multiemissor = 1
+    #if len(sys.argv) == 5 and sys.argv[4] == "m":
+    #    multiemissor = 1
 
-    try:
-	sufix = sys.argv[4]
-    except:
-	sufix=''
+    sufix = ''
+    #try:
+    #	sufix = sys.argv[4]
+    #except:
+    #	sufix=''
 
     for i in range(nagents-1):
         agent="emissor"+str(i)+sufix+"@"+host
-        emissors[i] = emissor(agent,"secret",i,nagents,tmsg,nmsg,multiemissor)
+        emissors[i] = emissor(agent,"secret",i,nagents,tmsg,nmsg,multiemissor,mode)
         print "agent "+agent+" registrant-se!!"
 	emissors[i].sufix = sufix
         emissors[i].start()
         #time.sleep(20)
 
-    start_time = time.time()
     agent="emissor"+str(nagents-1)+sufix+"@"+host
-    ultim = emissor(agent,"secret",nagents-1,nagents,tmsg,nmsg,multiemissor)
+    ultim = emissor(agent,"secret",nagents-1,nagents,tmsg,nmsg,multiemissor,mode)
     print "agent "+agent+" registrant-se!!"
     #ultim.start_and_wait()
     ultim.sufix=sufix
     ultim.start()
 
-    time.sleep(0.1)
+    time.sleep(2)
     emissor.go.acquire()
-    print "Go!"
     emissor.go.notifyAll()
+    print "Go!"
     emissor.go.release()
-
+    start_time = time.time()
 
     while emissor.nagents != 0:
     	try:
@@ -202,5 +198,22 @@ if __name__ == "__main__":
     ultim.stop()
     print "TODOS DEBEN HABER MUERTO YA...."
     print ultim
+
+    return elapsed_time
+
+
+if __name__ == "__main__":
+	host = ""
+	tmsg = 10
+	for mode in ["jabber","p2ppy ",  "p2p   "]:
+		f = open(mode+".log", "a+")
+		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
+			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
+				print "Testing",mode,str(nagents),str(nmsg)
+				results = test(mode=mode, nagents=nagents, tmsg=tmsg, nmsg=nmsg)
+				f.write( str(results/(nagents*nmsg*2)) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n" )
+				f.close()
+				f = open(mode+".log", "a+")
+        f.close()
 
 # TODO:parametritzar el host del acc i del desti
