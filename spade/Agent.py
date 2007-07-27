@@ -145,14 +145,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             if self.msg.T.si.T.p2p:
                                 remote_address = str(self.msg.T.si.T.p2p.getData())
                                 d = {"url":remote_address, "p2p":True}
-			        self.p2p_lock.acquire()
+			        self.myAgent.p2p_lock.acquire()
                                 if self.myAgent.p2p_routes.has_key(str(self.msg.getFrom().getStripped())):
                                     self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].update(d)
                                     if self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].has_key("socket"):
                                         self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())]["socket"].close()
                                 else:
                                     self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())] = d
-			        self.p2p_lock.release()
+			        self.myAgent.p2p_lock.release()
                                 #print "P2P ROUTES", str(self.myAgent.p2p_routes)
                             # Accept offer
                             reply = self.msg.buildReply("result")
@@ -193,9 +193,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         frm = self.msg.getFrom().getStripped()
                         if str(frm) in self.myAgent.p2p_routes.keys():
                             # This agent does no longer support p2p
-			    self.p2p_lock.acquire()
+			    self.myAgent.p2p_lock.acquire()
                             del self.myAgent.p2p_routes[frm]
-			    self.p2p_lock.release()
+			    self.myAgent.p2p_lock.release()
 
 
 
@@ -2140,9 +2140,9 @@ class Agent(AbstractAgent):
                             url = msg.T.query.T.url.getData()
                             remote = {'url':url, 'socket':self.openP2P(url)}
                             d = {self.msg.getSender().getName():remote}
-			    self.p2p_lock.acquire()
+			    self.myAgent.p2p_lock.acquire()
                             self.myAgent.p2p_routes.update(d)
-			    self.p2p_lock.release()
+			    self.myAgent.p2p_lock.release()
                             # Send result INCLUDING our own p2p url
                             reply = msg.buildReply("result")
                             reply.T.query.delChild("url")
@@ -2171,9 +2171,9 @@ class Agent(AbstractAgent):
                         url = msg.T.query.T.url.getData()
                         remote = {'url':url, 'socket':self.openP2P(url)}
                         d = {self.msg.getSender().getName():remote}
-			self.p2p_lock.acquire()
+			self.myAgent.p2p_lock.acquire()
                         self.myAgent.p2p_routes.update(d)
-			self.p2p_lock.release()
+			self.myAgent.p2p_lock.release()
                     except:
                         # No url info came
                         pass
