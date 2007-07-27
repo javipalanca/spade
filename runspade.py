@@ -107,10 +107,10 @@ def main():
   print "SPADE", VERSION, "<garanda@dsic.upv.es> - http://spade.gti-ia.dsic.upv.es/"
 
   try:
-  	import psyco
+  	#import psyco
 	print "Using Psyco optimizing compiler."
 	#psyco.log(logfile='/tmp/psyco.log')
-	psyco.full()
+	#psyco.full()
 	#psyco.profile()
   except ImportError: print "W: Psyco optimizing compiler not found."
 
@@ -129,7 +129,8 @@ def main():
   #s = xmppd.xmppd.Server(cfgfile=jabberxml, debug = dbg)
   os.chdir("xmppd")
   #s = xmppd.Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
-  s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
+  #s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
+  s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':False})
   #s = xmppd.Server(cfgfile=jabberxml)
   os.chdir("..")
   """

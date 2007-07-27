@@ -145,12 +145,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             if self.msg.T.si.T.p2p:
                                 remote_address = str(self.msg.T.si.T.p2p.getData())
                                 d = {"url":remote_address, "p2p":True}
+			        self.p2p_lock.acquire()
                                 if self.myAgent.p2p_routes.has_key(str(self.msg.getFrom().getStripped())):
                                     self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].update(d)
                                     if self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].has_key("socket"):
                                         self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())]["socket"].close()
                                 else:
                                     self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())] = d
+			        self.p2p_lock.release()
                                 #print "P2P ROUTES", str(self.myAgent.p2p_routes)
                             # Accept offer
                             reply = self.msg.buildReply("result")
@@ -191,7 +193,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         frm = self.msg.getFrom().getStripped()
                         if str(frm) in self.myAgent.p2p_routes.keys():
                             # This agent does no longer support p2p
+			    self.p2p_lock.acquire()
                             del self.myAgent.p2p_routes[frm]
+			    self.p2p_lock.release()
 
 
 
@@ -242,6 +246,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.p2p = p2p
         self.p2p_routes = {}
         self.p2p_lock = thread.allocate_lock()
+        self.p2p_send_lock = thread.allocate_lock()
         self.p2p_ready = False  # Actually ready for P2P communication
         if p2p:
             self.registerLogComponent("p2p")
@@ -466,12 +471,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                     if mess.T.si.T.p2p:
                                         remote_address = str(mess.T.si.T.p2p.getData())
                                         d = {"url":remote_address, "p2p":True}
+					self.p2p_lock.acquire()
                                         if self.p2p_routes.has_key(str(mess.getFrom().getStripped())):
                                             self.p2p_routes[str(mess.getFrom().getStripped())].update(d)
                                             if self.p2p_routes[str(mess.getFrom().getStripped())].has_key("socket"):
                                                 self.p2p_routes[str(mess.getFrom().getStripped())]["socket"].close()
                                         else:
                                             self.p2p_routes[str(mess.getFrom().getStripped())] = d
+					self.p2p_lock.release()
                                         #print "P2P ROUTES", str(self.p2p_routes)
                                     # Accept offer
                                     reply = mess.buildReply("result")
@@ -720,18 +727,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         try:
                             remote_address = str(msg.T.si.T.p2p.T.value.getData())
                             d = {"url":remote_address, "p2p":True}
+			    self.p2p_lock.acquire()
                             if self.p2p_routes.has_key(str(msg.getFrom().getStripped())):
                                 self.p2p_routes[str(msg.getFrom().getStripped())].update(d)
                                 result = True
                             else:
                                 self.p2p_routes[str(msg.getFrom().getStripped())] = d
+			    self.p2p_lock.release()
                             #print "P2P ROUTES", str(self.p2p_routes)
                         except Exception, e:
                             #print "Malformed StreamRequest Answer", str(e)
                             self.p2p_routes[str(msg.getFrom().getStripped())] = {}
                     elif msg.getType() == "error":
                         #print "StreamRequest REFUSED"
+			self.p2p_lock.acquire()
                         self.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
+			self.p2p_lock.release()
                 return result
 
 
@@ -915,13 +926,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 """
 
                 sent = False
-                self.p2p_lock.acquire()
+                self.p2p_send_lock.acquire()
                 try:
                     sent = self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
                 except Exception, e:
                     self.DEBUG("P2P Connection to "+str(self.p2p_routes[jabber_id]["url"])+" prevented. Falling back. "+str(e), "warn")
                     sent = False
-                self.p2p_lock.release()
+                self.p2p_send_lock.release()
                 if not sent:
                     if method=="auto": self.jabber.send(jabber_msg)
 
@@ -929,7 +940,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 # The road seems clear, try a p2p connection
                 if self.p2p_routes[jabber_id]['p2p'] == True and self.p2p_routes[jabber_id]['url']:
                     try:
-                        self.p2p_lock.acquire()
+                        self.p2p_send_lock.acquire()
                         self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
                     except Exception, e:
                         #print "Exception in send_p2p", str(e), e
@@ -937,10 +948,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         # Mark this p2p connection as faulty (False)
                         # and write down when it failed
                         #del self.p2p_routes[jabber_id]
+			self.p2p_lock.acquire()
                         self.p2p_routes[jabber_id]["p2p"] = False
                         self.p2p_routes[jabber_id]["failed_time"] = time.time()
+			self.p2p_lock.release()
                         if method=="auto": self.jabber.send(jabber_msg)
-                    self.p2p_lock.release()
+                    self.p2p_send_lock.release()
 
                 else:
                     # The P2P connection was faulty.
@@ -977,8 +990,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = t1 - self.p2p_routes[to]['failed_time']
                         # If more than 10 seconds have passed . . .
                         if t > 10.0:
+			    self.p2p_lock.acquire()
                             self.p2p_routes[to]['p2p'] = True
                             self.p2p_routes[to]['failed_time'] = 0.0
+			    self.p2p_lock.release()
                     except:
                         # The p2p connection is really faulty
                         return False
@@ -1009,7 +1024,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 try:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.connect((address, port))
+		    self.p2p_lock.acquire()
                     self.p2p_routes[to]["socket"] = s
+		    self.p2p_lock.release()
                     connected = True
                     """
                     if not s:
@@ -1057,14 +1074,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # Try again
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.connect((address, port))
+		    self.p2p_lock.acquire()
                     self.p2p_routes[to]["socket"] = s
+		    self.p2p_lock.release()
                 else:
                     raise socket.error
                 tries -= 1
         if not sent:
             self.DEBUG("Socket send failed","err")
+	    self.p2p_lock.acquire()
             self.p2p_routes[to]["p2p"] = False
             self.p2p_routes[to]["failed_time"] = time.time()
+            self.p2p_lock.release()
             #raise socket.error
         else:
             return True
@@ -2119,7 +2140,9 @@ class Agent(AbstractAgent):
                             url = msg.T.query.T.url.getData()
                             remote = {'url':url, 'socket':self.openP2P(url)}
                             d = {self.msg.getSender().getName():remote}
+			    self.p2p_lock.acquire()
                             self.myAgent.p2p_routes.update(d)
+			    self.p2p_lock.release()
                             # Send result INCLUDING our own p2p url
                             reply = msg.buildReply("result")
                             reply.T.query.delChild("url")
@@ -2148,7 +2171,9 @@ class Agent(AbstractAgent):
                         url = msg.T.query.T.url.getData()
                         remote = {'url':url, 'socket':self.openP2P(url)}
                         d = {self.msg.getSender().getName():remote}
+			self.p2p_lock.acquire()
                         self.myAgent.p2p_routes.update(d)
+			self.p2p_lock.release()
                     except:
                         # No url info came
                         pass

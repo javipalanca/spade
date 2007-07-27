@@ -66,15 +66,16 @@ class emissor(Agent.Agent):
         def onEnd(self):
             #posar estadistiques i si es l'ultim killall
             #print "Mitjana RTT",self.myAgent.mitjana/self.myAgent.nmsg
-            """
-	    self.rtt = "Mitjana RTT " + str(self.myAgent.mitjana / self.myAgent.nmsg) + "\n"
-	    self.nom_fitxer = os.sep + "tmp" + os.sep + str(self.myAgent.getName()) + ".log"
+            
+	    self.myAgent.rtt = (self.myAgent.mitjana / self.myAgent.nmsg)*1000
+	    self.srtt = str((self.myAgent.mitjana / self.myAgent.nmsg)*1000) + "\n"
+	    self.nom_fitxer = self.myAgent.mode.strip()+ "_"+ str(self.myAgent.getName()) + ".log"
 	    f = open(self.nom_fitxer, "w")
-	    f.write(str(self.myAgent.getName()))
-	    f.write(" ")
-	    f.write(self.rtt)
+	    #f.write(str(self.myAgent.getName()))
+	    #f.write(" ")
+	    f.write(self.srtt)
 	    f.close()
-	    """
+	    
             self.myAgent.decrementa_agents()
             #pdb.set_trace()
             #if emissor.nagents == 0:
@@ -95,20 +96,15 @@ class emissor(Agent.Agent):
 
 
     def _setup(self):
-	#print "EMISOR: "+ str(self.getQueue())
         self.mitjana = 0
         self.nenviats = 0
         self.msg = ACLMessage()
         self.msg.setPerformative("inform")
 	self.msg.setSender(self.getAID())
         if self.multi:
-            #self.msg.addReceiver(AID.aid("receptor0@"+host,self.myAgent.getAID().getAdresses()[0]["xmpp://acc."+host]))
-            #self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host,"http://supu.com"]))
             self.msg.addReceiver(AID.aid("receptor0@"+host,["xmpp://receptor0@"+host]))
         else:
-            #self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host,"http://supu.com"]))
             self.msg.addReceiver(AID.aid("receptor"+str(self.nagent)+self.sufix+"@"+host,["xmpp://receptor"+str(self.nagent)+self.sufix+"@"+host]))
-	#self.msg.addReceiver(AID.aid("ping@"+host,["xmpp://acc."+host]))
 
         #string = ""
         #for i in range(self.tmsg):
@@ -136,13 +132,6 @@ class emissor(Agent.Agent):
 
 def test(mode, nagents, tmsg, nmsg):
     global host
-
-    host = os.getenv("HOSTNAME")
-    if host == None:
-        host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
-        if host == None:
-            host = "thx1138.dsic.upv.es"
-            print "No s'ha pogut obtindre nom de host, utilitzant: "+host+" per defecte"
 
     emissors = {}
     #nagents = atoi(sys.argv[1])
@@ -193,27 +182,37 @@ def test(mode, nagents, tmsg, nmsg):
     elapsed_time = time.time() - start_time
     print "Tiempo total transcurrido: " + str(elapsed_time)
     print "Enviados en total " + str(nagents*nmsg*2) + " mensajes de " + str(tmsg) + " bytes"
+
+
+
+    media = 0
     for i in range(nagents-1):
+	media += emissors[i].rtt 
     	emissors[i].stop()
+    media += ultim.rtt
     ultim.stop()
     print "TODOS DEBEN HABER MUERTO YA...."
-    print ultim
 
-    return elapsed_time
+
+    media /= nagents    
+
+    return elapsed_time, media
 
 
 if __name__ == "__main__":
-	host = ""
+	host = sys.argv[1]
 	tmsg = 10
 	for mode in ["p2ppy ", "p2p   ", "jabber"]:
-		f = open(mode+".log", "a+")
+		f = open(mode.strip()+".log", "a+")
 		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
 			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
 				print "Testing",mode,str(nagents),str(nmsg)
-				results = test(mode=mode, nagents=nagents, tmsg=tmsg, nmsg=nmsg)
-				f.write( str(results/(nagents*nmsg*2)) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n" )
+				results,media = test(mode=mode, nagents=nagents, tmsg=tmsg, nmsg=nmsg)
+				#f.write( str(results/(nagents*nmsg*2)) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n" )
+				f.write(str(media) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n")
 				f.close()
-				f = open(mode+".log", "a+")
+				f = open(mode.strip()+".log", "a+")
+				time.sleep(5)
         f.close()
 
 # TODO:parametritzar el host del acc i del desti
