@@ -55,34 +55,21 @@ class receptor(Agent.Agent):
 
 
 if __name__ == "__main__":
-    host = os.getenv("HOSTNAME")
-    if host == None:
-        host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
-        if host == None:
-            host = "thx1138.dsic.upv.es"
-            print "No s'ha pogut obtindre nom de host, utilitzant: "+host+" per defecte"
-
     receptors = []
-    nagents = atoi(sys.argv[1])
+    host = sys.argv[1]
+    nagents = atoi(sys.argv[2])
     if len(sys.argv)>2:
     	try:
-		sufix = sys.argv[2]
+		sufix = sys.argv[3]
     	except:
 		sufix = ''
     else: sufix = ''
     for i in range(nagents):
         agent = "receptor"+str(i)+sufix+"@"+ host
-	print "registrant agent " + str(i)
+	#print "registrant agent " + str(i)
         receptors.append( receptor(agent,"secret") )
-        print "agent "+agent+" registrant-se!!"
+        #print "agent "+agent+" registrant-se!!"
         receptors[i].start()
-
-    #agent = "receptor"+str(nagents-1)+sufix+"@" + host
-    #ultim = receptor(agent,"secret")
-    #print "agent "+agent+" registrant-se!!"
-    #ultim.start_and_wait()
-    #ultim.start()
-
 
     while len(receptors) > 0:
 		try:
