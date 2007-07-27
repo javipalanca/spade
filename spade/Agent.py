@@ -744,7 +744,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             ACLmsg.setSender(self.getAID())
 
         #self._sendTo(ACLmsg, self.getSpadePlatformJID())
-        self._sendTo(ACLmsg, ACLmsg.getReceivers(), method=method)
+        self._sendTo(ACLmsg, ACLmsg.getReceivers(), method=method.strip())
 
     def _sendTo(self, ACLmsg, tojid, method):
         """
@@ -1031,9 +1031,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             try:
                 if method in ["p2p","auto"]:
                     length = "%08d"%(len(str(jabber_msg)))
-                    s.send(length+str(jabber_msg))
                     # Send message through socket
-                    #s.send(str(jabber_msg))
+                    s.send(length+str(jabber_msg))
                 elif method in ["p2ppy"]:
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))

@@ -205,7 +205,7 @@ def test(mode, nagents, tmsg, nmsg):
 if __name__ == "__main__":
 	host = ""
 	tmsg = 10
-	for mode in ["jabber","p2ppy ",  "p2p   "]:
+	for mode in ["p2ppy ", "p2p   ", "jabber"]:
 		f = open(mode+".log", "a+")
 		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
 			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
