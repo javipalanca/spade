@@ -137,13 +137,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if self.msg != None:
                 #print self.myAgent.getName(), ": StreamInitiation Behaviour called"
                 if self.msg.getType() == "set":
-                    if self.msg.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
+                    if self.msg.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                         # P2P Messaging Offer
                         #print "P2P-Messaging offer from", str(self.msg.getFrom())
                         if self.myAgent.p2p_ready:
                             # Take note of sender's p2p address if any
-                            if self.msg.T.si.T.p2p:
-                                remote_address = str(self.msg.T.si.T.p2p.getData())
+                            if self.msg.getTag("si").getTag("p2p"):
+                                remote_address = str(self.msg.getTag("si").getTag("p2p").getData())
                                 d = {"url":remote_address, "p2p":True}
 			        self.myAgent.p2p_lock.acquire()
                                 if self.myAgent.p2p_routes.has_key(str(self.msg.getFrom().getStripped())):
@@ -465,12 +465,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if q:
                         #print "StreamInitiation Behaviour called (offline)"
                         if mess.getType() == "set":
-                            if mess.T.si.getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
+                            if mess.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                                 # P2P Messaging Offer
                                 if self.p2p_ready:
                                     # Take note of sender's p2p address if any
-                                    if mess.T.si.T.p2p:
-                                        remote_address = str(mess.T.si.T.p2p.getData())
+                                    if mess.getTag("si").getTag("p2p"):
+                                        remote_address = str(mess.getTag("si").getTag("p2p").getData())
                                         d = {"url":remote_address, "p2p":True}
 					self.p2p_lock.acquire()
                                         if self.p2p_routes.has_key(str(mess.getFrom().getStripped())):
@@ -667,7 +667,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "StreamRequest Agreed"
                         #print msg
                         try:
-                            remote_address = str(msg.T.si.T.p2p.T.value.getData())
+                            remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
                             d = {"url":remote_address, "p2p":True}
                             if self.myAgent.p2p_routes.has_key(str(msg.getFrom().getStripped())):
                                 self.myAgent.p2p_routes[str(msg.getFrom().getStripped())].update(d)
@@ -726,7 +726,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "StreamRequest Agreed"
                         #print msg
                         try:
-                            remote_address = str(msg.T.si.T.p2p.T.value.getData())
+                            remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
                             d = {"url":remote_address, "p2p":True}
 			    self.p2p_lock.acquire()
                             if self.p2p_routes.has_key(str(msg.getFrom().getStripped())):
@@ -2099,7 +2099,7 @@ class Agent(AbstractAgent):
                         # Accept p2p proposal
                         try:
                             # Add remote oob data to p2p routes
-                            url = msg.getQuery().T.url.getData()
+                            url = msg.getTag("query").getTag("url").getData()
                             remote = {'url':url, 'socket':self.openP2P(url)}
                             d = {self.msg.getSender().getName():remote}
 			    self.myAgent.p2p_lock.acquire()
@@ -2109,7 +2109,7 @@ class Agent(AbstractAgent):
                             reply = msg.buildReply("result")
                             reply.getTag("query").delChild("url")
                             reply.getTag("query").addChild("url")
-                            reply.getTag("query").T.url.setData(self.myAgent.getP2PUrl())
+                            reply.getTag("query").getTag("url").setData(self.myAgent.getP2PUrl())
                             self.myAgent.jabber.send(reply)
                         except:
                             # The oob-iq was not well formed. Send 404
@@ -2130,7 +2130,7 @@ class Agent(AbstractAgent):
                 elif self.msg.getType() == "result":
                     # Check for remote P2P url
                     try:
-                        url = msg.getTag("query").T.url.getData()
+                        url = msg.getTag("query").getTag("url").getData()
                         remote = {'url':url, 'socket':self.openP2P(url)}
                         d = {self.msg.getSender().getName():remote}
 			self.myAgent.p2p_lock.acquire()
