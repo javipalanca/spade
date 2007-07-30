@@ -199,13 +199,20 @@ def test(mode, nagents, tmsg, nmsg):
     if failures > 0:
 	print "P2P FAILURES:",str(failures)
 
+    # Delete agents
+    for i in range(nagents-1):
+	emissors[i]._kill()
+    ultim._kill()
+    del emissors
+    del ultim
+
     return elapsed_time, media, failures
 
 
 if __name__ == "__main__":
 	host = sys.argv[1]
 	tmsg = 10
-	for mode in ["p2ppy ", "p2p   ", "jabber"]:
+	for mode in ["p2p   ", "jabber", "p2ppy "]:
 		f = open(mode.strip()+".log", "w+")
 		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
 			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
