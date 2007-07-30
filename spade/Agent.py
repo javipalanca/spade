@@ -181,8 +181,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # Inform of services
                     reply = self.msg.buildReply("result")
                     if self.myAgent.p2p_ready:
-                        reply.getQuerynode().addChild("feature", {"var":"http://jabber.org/protocol/si"})
-                        reply.getQuerynode().addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+                        reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
+                        reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                     self.myAgent.jabber.send(reply)
                     #print self.myAgent.getName(),": SENT DISCO REPLY TO", str(reply.getTo())
                 elif self.msg.getType() == "result":
@@ -454,8 +454,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         # Inform of services
                         reply = mess.buildReply("result")
                         if self.p2p_ready:
-                            reply.getQuerynode().addChild("feature", {"var":"http://jabber.org/protocol/si"})
-                            reply.getQuerynode().addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
+                            reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
+                            reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                         self.jabber.send(reply)
                         if raiseFlag: raise xmpp.NodeProcessed
                         return True
@@ -2107,9 +2107,9 @@ class Agent(AbstractAgent):
 			    self.myAgent.p2p_lock.release()
                             # Send result INCLUDING our own p2p url
                             reply = msg.buildReply("result")
-                            reply.getQuerynode().delChild("url")
-                            reply.getQuerynode().addChild("url")
-                            reply.getQuerynode().T.url.setData(self.myAgent.getP2PUrl())
+                            reply.getTag("query").delChild("url")
+                            reply.getTag("query").addChild("url")
+                            reply.getTag("query").T.url.setData(self.myAgent.getP2PUrl())
                             self.myAgent.jabber.send(reply)
                         except:
                             # The oob-iq was not well formed. Send 404
@@ -2130,7 +2130,7 @@ class Agent(AbstractAgent):
                 elif self.msg.getType() == "result":
                     # Check for remote P2P url
                     try:
-                        url = msg.getQuerynode().T.url.getData()
+                        url = msg.getTag("query").T.url.getData()
                         remote = {'url':url, 'socket':self.openP2P(url)}
                         d = {self.msg.getSender().getName():remote}
 			self.myAgent.p2p_lock.acquire()
