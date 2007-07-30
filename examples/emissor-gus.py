@@ -209,7 +209,7 @@ if __name__ == "__main__":
 	host = sys.argv[1]
 	tmsg = 10
 	for mode in ["p2ppy ", "p2p   ", "jabber"]:
-		f = open(mode.strip()+".log", "a+")
+		f = open(mode.strip()+".log", "w+")
 		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
 			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
 				print "Testing",mode,str(nagents),str(nmsg)
