@@ -58,6 +58,7 @@ class emissor(Agent.Agent):
             else: return False
 
 	def onStart(self):
+	    self.f = open(self.nom_fitxer, "w")
 	    #asperem a la resta
 	    emissor.go.acquire()
 	    emissor.go.wait()
@@ -66,15 +67,13 @@ class emissor(Agent.Agent):
         def onEnd(self):
             #posar estadistiques i si es l'ultim killall
             #print "Mitjana RTT",self.myAgent.mitjana/self.myAgent.nmsg
-            
 	    self.myAgent.rtt = (self.myAgent.mitjana / self.myAgent.nmsg)*1000
 	    self.srtt = str((self.myAgent.mitjana / self.myAgent.nmsg)*1000) + "\n"
 	    self.nom_fitxer = self.myAgent.mode.strip()+ "_"+ str(self.myAgent.getName()) + ".log"
-	    f = open(self.nom_fitxer, "w")
 	    #f.write(str(self.myAgent.getName()))
 	    #f.write(" ")
-	    f.write(self.srtt)
-	    f.close()
+	    self.f.write(self.srtt)
+	    self.f.close()
 	    
             self.myAgent.decrementa_agents()
             #pdb.set_trace()
