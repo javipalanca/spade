@@ -243,11 +243,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.addBehaviour(Agent.StreamInitiationBehaviour(), Behaviour.MessageTemplate(iqsi))
 
         # Add P2P Behaviour
+        self.p2p_ready = False  # Actually ready for P2P communication
         self.p2p = p2p
         self.p2p_routes = {}
         self.p2p_lock = thread.allocate_lock()
         self.p2p_send_lock = thread.allocate_lock()
-        self.p2p_ready = False  # Actually ready for P2P communication
+        self.__p2p_failures = 0  # Counter for failed attempts to send p2p messages
         if p2p:
             self.registerLogComponent("p2p")
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
@@ -906,25 +907,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             jabber_id = xmpp.JID(jabber_id).getStripped()
 
             if self.p2p_ready:
-                """
-            if self.p2p_ready and jabber_id not in self.p2p_routes.keys():
-                self.initiateStream(jabber_id)
-            if self.p2p_ready and self.p2p_routes.has_key(jabber_id) and self.p2p_routes[jabber_id].has_key('p2p'):
-                # If this p2p connection is marked as faulty,
-                # check if enough time has passed to try again a possible p2p connection
-                if self.p2p_routes[jabber_id]['p2p'] == False:
-                    try:
-                        t1 = time.time()
-                        t = t1 - self.p2p_routes[jabber_id]['failed_time']
-                        # If more than 10 seconds have passed . . .
-                        if t > 10.0:
-                            self.p2p_routes[jabber_id]['p2p'] = True
-                            self.p2p_routes[jabber_id]['failed_time'] = 0.0
-                    except:
-                        # The p2p connection is really faulty
-                        pass
-                """
-
                 sent = False
                 self.p2p_send_lock.acquire()
                 try:
@@ -934,36 +916,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     sent = False
                 self.p2p_send_lock.release()
                 if not sent:
-                    if method=="auto": self.jabber.send(jabber_msg)
+		    # P2P failed, try to send it through jabber
+                    if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
-                """
-                # The road seems clear, try a p2p connection
-                if self.p2p_routes[jabber_id]['p2p'] == True and self.p2p_routes[jabber_id]['url']:
-                    try:
-                        self.p2p_send_lock.acquire()
-                        self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
-                    except Exception, e:
-                        #print "Exception in send_p2p", str(e), e
-                        self.DEBUG("P2P Connection to "+str(self.p2p_routes[jabber_id]["url"])+" prevented. Falling back. "+str(e), "warn")
-                        # Mark this p2p connection as faulty (False)
-                        # and write down when it failed
-                        #del self.p2p_routes[jabber_id]
-			self.p2p_lock.acquire()
-                        self.p2p_routes[jabber_id]["p2p"] = False
-                        self.p2p_routes[jabber_id]["failed_time"] = time.time()
-			self.p2p_lock.release()
-                        if method=="auto": self.jabber.send(jabber_msg)
-                    self.p2p_send_lock.release()
-
-                else:
-                    # The P2P connection was faulty.
-                    # Try to send it through jabber if the method is "auto"
-                    if method=="auto": self.jabber.send(jabber_msg)
-                """
             else:
                 # P2P is not available / not supported
-                # Try to send it through jabber if the method is "auto"
-                if method=="auto": self.jabber.send(jabber_msg)
+                # Try to send it through jabber
+                if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
@@ -1041,7 +1000,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.DEBUG("Socket creation failed, throw an exception","err")
                 raise socket.error
 
-        # Send message length
+        # Send length + message
         sent = False
         tries = 2
         while not sent and tries > 0:
@@ -1059,6 +1018,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #s.close()
             except:
                 self.DEBUG("Socket: send failed, threw an exception:", "err")
+		self.myAgent.__p2p_failures += 1
                 #raise socket.error
                 # Dispose of old socket
                 s.close()
@@ -1087,6 +1047,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.p2p_routes[to]["failed_time"] = time.time()
             self.p2p_lock.release()
             #raise socket.error
+	    return False
         else:
             return True
 
