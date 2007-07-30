@@ -107,10 +107,10 @@ def main():
   print "SPADE", VERSION, "<garanda@dsic.upv.es> - http://spade.gti-ia.dsic.upv.es/"
 
   try:
-  	#import psyco
+  	import psyco
+	psyco.full()
 	print "Using Psyco optimizing compiler."
 	#psyco.log(logfile='/tmp/psyco.log')
-	#psyco.full()
 	#psyco.profile()
   except ImportError: print "W: Psyco optimizing compiler not found."
 

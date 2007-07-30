@@ -1,4 +1,15 @@
 # -*- coding: cp1252 -*-
+
+try:  
+	import psyco
+	psyco.full()
+	print "Using Psyco optimizing compiler"
+	#psyco.log(logfile='/tmp/psyco.log')
+	#psyco.profile()
+except ImportError:
+	pass
+	#print "W: Psyco optimizing compiler not found."
+
 import sys
 import traceback
 import xmpp
