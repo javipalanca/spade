@@ -248,7 +248,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.p2p_routes = {}
         self.p2p_lock = thread.allocate_lock()
         self.p2p_send_lock = thread.allocate_lock()
-        self.__p2p_failures = 0  # Counter for failed attempts to send p2p messages
+        self._p2p_failures = 0  # Counter for failed attempts to send p2p messages
         if p2p:
             self.registerLogComponent("p2p")
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
@@ -815,7 +815,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     return
         except Exception, e:
             print "EXCEPTION IN SEND",str(e)
-            pass
+	    method = "jabber"
 
         # Second, try it the old way
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
@@ -997,8 +997,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     tries -= 1
 
             if not connected:
-                self.DEBUG("Socket creation failed, throw an exception","err")
-                raise socket.error
+                self.DEBUG("Socket creation failed","err")
+                #raise socket.error
+		return False
 
         # Send length + message
         sent = False
@@ -1018,7 +1019,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #s.close()
             except:
                 self.DEBUG("Socket: send failed, threw an exception:", "err")
-		self.myAgent.__p2p_failures += 1
+		self.myAgent._p2p_failures += 1
                 #raise socket.error
                 # Dispose of old socket
                 s.close()

@@ -6,6 +6,8 @@ import threading
 import types
 import copy
 import colors
+import sys
+import traceback
 
 from xmpp import Node, Message, Presence, Iq
 import xmpp
@@ -462,6 +464,9 @@ class Behaviour(MessageReceiver.MessageReceiver):
                 #time.sleep(0)
         except Exception,e:
             self.DEBUG("<Exception in Behaviour %s><%s>"%(str(self),str(e)), "err")
+	    _exception = sys.exc_info()
+            if _exception[0]:
+                print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
         self.onEnd()
         self.myAgent.removeBehaviour(self)
 

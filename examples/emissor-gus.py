@@ -193,10 +193,16 @@ def test(mode, nagents, tmsg, nmsg):
     ultim.stop()
     print "TODOS DEBEN HABER MUERTO YA...."
 
-
     media /= nagents    
 
-    return elapsed_time, media
+    failures = 0
+    for i in range(nagents-1):
+	failures += emissors[i]._p2p_failures
+    failures += ultim._p2p_failures
+    if failures > 0:
+	print "P2P FAILURES:",str(failures)
+
+    return elapsed_time, media, failures
 
 
 if __name__ == "__main__":
@@ -207,9 +213,9 @@ if __name__ == "__main__":
 		for nagents in [1,10,20,30,40,50,60,70,80,90,100]:
 			for nmsg in [1,10,20,30,40,50,60,70,80,90,100]:
 				print "Testing",mode,str(nagents),str(nmsg)
-				results,media = test(mode=mode, nagents=nagents, tmsg=tmsg, nmsg=nmsg)
+				results,media,failures = test(mode=mode, nagents=nagents, tmsg=tmsg, nmsg=nmsg)
 				#f.write( str(results/(nagents*nmsg*2)) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n" )
-				f.write(str(media) + "\t" + str(nagents) + "\t" + str(nmsg) + "\n")
+				f.write(str(media) + "\t" + str(nagents) + "\t" + str(nmsg) + "\t" + str(failures) +"\n")
 				f.close()
 				f = open(mode.strip()+".log", "a+")
 				time.sleep(5)
