@@ -58,8 +58,8 @@ class emissor(Agent.Agent):
             else: return False
 
 	def onStart(self):
-	    self.nom_fitxer = self.myAgent.mode.strip()+ "_"+ str(self.myAgent.getName()) + ".log"
-	    self.f = open(self.nom_fitxer, "w")
+	    #self.nom_fitxer = self.myAgent.mode.strip()+ "_"+ str(self.myAgent.getName()) + ".log"
+	    #self.f = open(self.nom_fitxer, "w")
 	    #asperem a la resta
 	    emissor.go.acquire()
 	    emissor.go.wait()
@@ -70,10 +70,8 @@ class emissor(Agent.Agent):
             #print "Mitjana RTT",self.myAgent.mitjana/self.myAgent.nmsg
 	    self.myAgent.rtt = (self.myAgent.mitjana / self.myAgent.nmsg)*1000
 	    self.srtt = str((self.myAgent.mitjana / self.myAgent.nmsg)*1000) + "\n"
-	    #f.write(str(self.myAgent.getName()))
-	    #f.write(" ")
-	    self.f.write(self.srtt)
-	    self.f.close()
+	    #self.f.write(self.srtt)
+	    #self.f.close()
 	    
             self.myAgent.decrementa_agents()
             #pdb.set_trace()
