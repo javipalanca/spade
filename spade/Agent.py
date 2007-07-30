@@ -1019,7 +1019,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #s.close()
             except:
                 self.DEBUG("Socket: send failed, threw an exception:", "err")
-		self.myAgent._p2p_failures += 1
+		self._p2p_failures += 1
                 #raise socket.error
                 # Dispose of old socket
                 s.close()
