@@ -201,11 +201,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     for child in self.msg.getQueryChildren():
                         services.append(str(child.getAttr("var")))
                     if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" not in services:
-                        frm = self.msg.getFrom().getStripped()
+                        frm = str(self.msg.getFrom().getStripped())
                         if str(frm) in self.myAgent.p2p_routes.keys():
                             # This agent does no longer support p2p
 			    self.myAgent.p2p_lock.acquire()
-                            del self.myAgent.p2p_routes[frm]
+			    try:
+                            	del self.myAgent.p2p_routes[frm]
+			    except:
+				pass
 			    self.myAgent.p2p_lock.release()
 
 
