@@ -2,6 +2,7 @@
 
 import sys
 import os
+import signal
 sys.path.append('..'+os.sep+'trunk')
 sys.path.append('..')
 
@@ -55,21 +56,47 @@ class receptor(Agent.Agent):
 
 
 if __name__ == "__main__":
+    print sys.argv
     receptors = []
     host = sys.argv[1]
-    nagents = atoi(sys.argv[2])
+    sufix = int(sys.argv[2])
+    try:
+    	nagents = int(sys.argv[3])
+    except:
+	nagents = 10
+    """
     if len(sys.argv)>2:
     	try:
-		sufix = sys.argv[3]
+    		nagents = atoi(sys.argv[3])
+		print "MULTI-RECEPTOR",str(nagents)
+		pids = []
+		for i in range(nagents):
+			pid = os.spawnv(os.P_NOWAIT, sys.argv[0], [host, sufix])
+			print "LANZADO",str(sufix),str(pid)
+			pids.append(pid)
+			sufix += 1
+		# Wait for interrupt
+		while True:
+			try:
+				sleep(1)
+			except:
+				break
+		for pid in pids:
+			os.kill(pid, signal.SIGKILL)
+		sys.exit(0)
     	except:
-		sufix = ''
-    else: sufix = ''
+		nagents = 1
+    else:
+    	nagents = 1	
+    """
+
     for i in range(nagents):
-        agent = "receptor"+str(i)+sufix+"@"+ host
+        agent = "receptor"+str(sufix)+"@"+ host
 	#print "registrant agent " + str(i)
         receptors.append( receptor(agent,"secret") )
         #print "agent "+agent+" registrant-se!!"
         receptors[i].start()
+	sufix += 1
 
     while len(receptors) > 0:
 		try:

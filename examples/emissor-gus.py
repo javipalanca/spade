@@ -184,9 +184,15 @@ def test(mode, nagents, tmsg, nmsg):
 
     media = 0
     for i in range(nagents-1):
-	media += emissors[i].rtt 
-    	emissors[i].stop()
-    media += ultim.rtt
+	try:
+		media += emissors[i].rtt 
+    		emissors[i].stop()
+	except:
+		pass
+    try:
+    	media += ultim.rtt
+    except:
+	pass
     ultim.stop()
     print "TODOS DEBEN HABER MUERTO YA...."
 
