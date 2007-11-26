@@ -1,7 +1,7 @@
 import spade
 
 class MyAgent(spade.Agent.Agent):
-	class MyBehav(spade.Behaviour.OneShotBehaviour):
+	class MyBehav(spade.Behaviour.timeOutBehaviour):
 		def onStart(self):
 			print "Starting behaviour . . ."
 
