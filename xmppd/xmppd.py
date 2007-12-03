@@ -896,8 +896,12 @@ class Server:
         for x in globals()['LANG_LIST']: self.l.build_localeset(x)
 
 	cmd_options.setdefault('select_enabled',False)
-	try: import event   # Do we have lib event???
-	except: cmd_options['select_enabled'] = True # If not, we'll have to just use the old select :/
+	try:
+	    import event   # Do we have lib event???
+	    print "LIBEVENT ENABLED"
+	except:
+	    cmd_options['select_enabled'] = True # If not, we'll have to just use the old select :/
+	    print "SELECT ENABLED"
 	if not cmd_options['select_enabled']: event.init()
 
 	# Components dict

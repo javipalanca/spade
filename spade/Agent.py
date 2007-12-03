@@ -1009,6 +1009,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     """
                 except:
                     tries -= 1
+                    _exception = sys.exc_info()
+                    if _exception[0]:
+                        print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
 
             if not connected:
                 self.DEBUG("Socket creation failed","err")
@@ -1036,8 +1039,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self._p2p_failures += 1
                 #raise socket.error
                 # Dispose of old socket
+		self.p2p_lock.acquire()
                 s.close()
-                del s
+		try:
+                	del s
+			del self.p2p_routes[to]["socket"]
+		except:
+			pass
+		self.p2p_lock.release()
                 # Get address and port AGAIN
                 scheme, address = url.split("://",1)
                 if scheme == "spade":
@@ -1053,7 +1062,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     self.p2p_routes[to]["socket"] = s
 		    self.p2p_lock.release()
                 else:
-                    raise socket.error
+                    #raise socket.error
+		    return False
                 tries -= 1
         if not sent:
             self.DEBUG("Socket send failed","err")
