@@ -761,7 +761,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return result
 
 
-    def send(self, ACLmsg, method="auto"):
+    def send(self, ACLmsg, method="jabber"):
 	"""
 	sends an ACLMessage
 	"""
@@ -1444,8 +1444,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.finished = True
                 return None
             else:
-                content = p.parse(msg.getContent())
-                self.result = [] #content.result.set
+		try:
+			print msg.getContent()
+                	content = p.parse(str(msg.getContent()).strip())
+			print content
+                except:
+			print "PARSE EXCEPTION"
+			self.result = []
+			return None
+			
+		self.result = [] #content.result.set
 		for i in content.result.set:
 			#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
 			#print str(i[1])
@@ -1462,7 +1470,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         b = AbstractAgent.SearchAgentBehaviour(msg, AAD, debug)
-
+	
         self.addBehaviour(b,t)
         b.join()
         return b.result

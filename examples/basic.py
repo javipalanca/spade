@@ -7,6 +7,9 @@ class MyAgent(spade.Agent.Agent):
 
 		def _process(self):
 			print "Hello World from a OneShot"
+			pi = self.myAgent.getPlatformInfo()
+			print pi
+			print type(pi)
 
 		def onEnd(self):
 			print "Ending behaviour . . ."

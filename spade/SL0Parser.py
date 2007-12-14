@@ -21,11 +21,7 @@ class SL0Parser:
 		Expr = Forward()
 		Parameter =  Dict(Group(Literal(":").suppress() + Key + Group(Constant|Expr)))
 		Expr << Dict(Group( lpar + Key + Group(OneOrMore(Parameter)|OneOrMore(Constant)|OneOrMore(Expr)) + rpar ))
-
-
-
 		Content = ( lpar + OneOrMore(Expr) + rpar )
-
  
 		self.bnf = Content
 
@@ -37,10 +33,7 @@ class SL0Parser:
 
 		except Exception, err:
 			print err
-			sys.exit(-1)
-		
-
-
+			#sys.exit(-1)
 
 	def parse(self,string):
 		"""
@@ -54,11 +47,11 @@ class SL0Parser:
 			print err.line
 			print " "*(err.column-1)+"|"
 			print err
-			sys.exit(-1)
+			#sys.exit(-1)
 		except Exception, err:
-			print "Unkwonw Exception"
+			print "Unknown Parsing Exception"
 			print err
-			sys.exit(-1)
+			#sys.exit(-1)
 
 		return m
 
