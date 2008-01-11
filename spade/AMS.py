@@ -2,7 +2,7 @@ import Agent
 import AID
 import Behaviour
 from SL0Parser import *
-
+import copy
 
 import xmpp
 
@@ -335,7 +335,6 @@ class AMS(Agent.PlatformAgent):
 			self.content = content
 
 		def _process(self):
-
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
 			aad = None
@@ -343,12 +342,15 @@ class AMS(Agent.PlatformAgent):
 					aad = AmsAgentDescription(self.content.action.modify['ams-agent-description'])
 			except Exception,err:
 				error = "(missing-argument ams-agent-description)"
-
 			#print "aad: " + str(aad.getAID().getName())
 			#print "aid: " + str(self.msg.getSender())
 
-			if aad and (not aad.getAID() == self.msg.getSender()):
+			if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
 				error = "(unauthorised)"
+
+			# If there is no AID in the AAD, fill it with the sender of the message
+			if not aad.getAID():
+				aad.setAID(self.msg.getSender())
 
 			if error:
 				reply = self.msg.createReply()
@@ -366,9 +368,6 @@ class AMS(Agent.PlatformAgent):
 				reply.setContent("(" + str(self.msg.getContent()) + " true)")
 				self.myAgent.send(reply)
 
-
-
-
 			if self.myAgent.agentdb.has_key(aad.getAID().getName()):
 
 				try:
@@ -378,8 +377,6 @@ class AMS(Agent.PlatformAgent):
 					reply.setContent("("+self.msg.getContent() + "(internal-error))")
 					self.myAgent.send(reply)
 					return -1
-
-
 
 				reply.setPerformative("inform")
 				reply.setContent("(done "+self.msg.getContent() + ")")
@@ -391,6 +388,8 @@ class AMS(Agent.PlatformAgent):
 				reply.setPerformative("failure")
 				reply.setContent("("+self.msg.getContent() + "(not-registered))")
 				self.myAgent.send(reply)
+				print aad.getAID().getName()
+				print self.myAgent.agentdb
 				return -1
 
 
@@ -437,6 +436,12 @@ class AmsAgentDescription:
 
 		if content != None:
 			self.loadSL0(content)
+
+	def setAID(self, a):
+		"""
+		sets the AID class
+		"""
+		self.name = copy.copy(a)
 
 	def getAID(self):
 		"""

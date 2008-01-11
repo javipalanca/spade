@@ -441,17 +441,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     xc = XMLCodec.XMLCodec()
                     envelope = xc.parse(str(child.getTag("envelope")))
                     if envelope.getFrom():
-                        ACLmsg.setSender(envelope.getFrom())
+                        ACLmsg.setSender(envelope.getFrom().getStripped())
                     else:
-                        ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
+                        ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
                     if envelope.getIntendedReceiver():
                         for ir in envelope.getIntendedReceiver():
                             ACLmsg.addReceiver(ir)
                     else:
-                        ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
+                        ACLmsg.addReceiver(AID.aid(str(mess.getTo().getStripped()), ["xmpp://"+str(mess.getTo())]))
                 else:
-                    ACLmsg.setSender(AID.aid(str(mess.getFrom()), ["xmpp://"+str(mess.getFrom())]))
-                    ACLmsg.addReceiver(AID.aid(str(mess.getTo()), ["xmpp://"+str(mess.getTo())]))
+                    ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
+                    ACLmsg.addReceiver(AID.aid(str(mess.getTo().getStripped()), ["xmpp://"+str(mess.getTo().getStripped())]))
                 self.postMessage(ACLmsg)
                 if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
                 return True
@@ -1477,13 +1477,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     class ModifyAgentBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, AAD, debug = False):
+        def __init__(self, msg, AAD, debug = False):
             Behaviour.OneShotBehaviour.__init__(self)
             self.AAD = AAD
             self.debug = debug
             self.result = None
             self.finished = False
-            self._msg = ACLMessage()
+            self._msg = msg
 
         def _process(self):
             p = SL0Parser.SL0Parser()
@@ -1519,6 +1519,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	modifies the AmsAgentDescription of an agent in the AMS
 	"""
+	msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
