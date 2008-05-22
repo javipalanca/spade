@@ -29,7 +29,7 @@ class SL0Parser:
 
 		try:
 			self.bnf.validate()
-			print "BNF VALID!!!"
+			#print "BNF VALID!!!"
 
 		except Exception, err:
 			print "ERROR: BNF NOT VALID!!!" 
