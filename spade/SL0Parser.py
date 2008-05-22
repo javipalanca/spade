@@ -28,10 +28,11 @@ class SL0Parser:
 		#self.bnf.setDebug()
 
 		try:
-			#self.bnf.validate()
-			pass
+			self.bnf.validate()
+			print "BNF VALID!!!"
 
 		except Exception, err:
+			print "ERROR: BNF NOT VALID!!!" 
 			print err
 			#sys.exit(-1)
 
@@ -42,7 +43,7 @@ class SL0Parser:
 		"""
 
 		try:
-			m = self.bnf.parseString(string)
+			m = self.bnf.parseString(str(string))
 		except ParseException, err:
 			print err.line
 			print " "*(err.column-1)+"|"
@@ -116,6 +117,40 @@ if __name__ == "__main__":
               (service-description
                 :name profiling
                 :type user-profiling-service)))))))"""
+    slgrande="""((result  (set (ams-agent-description
+:name (agent-identifier
+:name agent@alien3.dsic.upv.es
+:addresses 
+(sequence
+xmpp://agent@alien3.dsic.upv.es
+)
+)
+
+:ownership agent@alien3.dsic.upv.es
+)
+ (ams-agent-description
+:name (agent-identifier
+:name ams.alien3.dsic.upv.es
+:addresses 
+(sequence
+xmpp://ams.alien3.dsic.upv.es
+)
+)
+
+:ownership SPADE
+:state active)
+ (ams-agent-description
+:name (agent-identifier
+:name df.alien3.dsic.upv.es
+:addresses 
+(sequence
+xmpp://df.alien3.dsic.upv.es
+)
+)
+
+:ownership SPADE
+:state active)
+ )))"""
     from DF import DfAgentDescription
     msg = p.parse(slgrande)
     print msg

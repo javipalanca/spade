@@ -1417,9 +1417,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.result = None
             self.finished = False
             self._msg = msg
+            self.p = SL0Parser.SL0Parser()
 
         def _process(self):
-            p = SL0Parser.SL0Parser()
             self._msg.addReceiver( self.myAgent.getAMS() )
             self._msg.setPerformative('request')
             self._msg.setLanguage('fipa-sl0')
@@ -1446,15 +1446,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             else:
 		try:
 			print msg.getContent()
-                	content = p.parse(str(msg.getContent()).strip())
+			content = msg.getContent()
+			content = str(content)
+			print "STR"
+			#content = content.strip()
+			print "STRIP"
 			print content
+			content_p = self.p.parse(content)
+			print "PARSE"
+                	#content = p.parse(str(msg.getContent()).strip())
                 except:
 			print "PARSE EXCEPTION"
 			self.result = []
 			return None
 			
 		self.result = [] #content.result.set
-		for i in content.result.set:
+		for i in content_p.result.set:
 			#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
 			#print str(i[1])
 			self.result.append(i[1])

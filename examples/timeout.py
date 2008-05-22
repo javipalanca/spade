@@ -1,3 +1,8 @@
+import os
+import sys
+sys.path.append('..'+os.sep+'trunk')
+sys.path.append('..')
+
 import spade
 
 class MyAgent(spade.Agent.Agent):
@@ -17,6 +22,6 @@ class MyAgent(spade.Agent.Agent):
 		self.addBehaviour(b, None)
 
 if __name__ == "__main__":
-	a = MyAgent("agent@thx1138.dsic.upv.es", "secret")
+	a = MyAgent("agent@alien3.dsic.upv.es", "secret")
 	a.start()
 

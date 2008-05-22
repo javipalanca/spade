@@ -41,7 +41,7 @@ globals()['SERVER_MOTD'] = "Hello, I'm Help Desk. Type 'menu' for help."
 globals()['PORT_5222'] = 5222 # Default XMPP port for c2s
 globals()['PORT_5223'] = 5223 # Default XMPP port for c2s (w/ TLS)
 globals()['PORT_5269'] = 5269 # Default XMPP port for s2s
-globals()['PORT_8000'] = 8000 # Port to open for all XMLRPC requests
+globals()['PORT_8000'] = 8001 # Port to open for all XMLRPC requests
 
 globals()['MAXREQUESTLENGTH'] = 10000 # maximum allowed length of XML-RPC request (in bytes)
 globals()['XMPPD_MAX_CONNECTIONS'] = 1 # [SOCKER] Set maximum number of connections for this node.
