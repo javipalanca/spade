@@ -440,8 +440,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # There is an envelope; use it to build sender and receivers
                     xc = XMLCodec.XMLCodec()
                     envelope = xc.parse(str(child.getTag("envelope")))
-                    if envelope.getFrom():
-                        ACLmsg.setSender(envelope.getFrom().getStripped())
+                    if envelope.getFrom():                        
+						try:
+							#ACLmsg.setSender(envelope.getFrom().getStripped())
+							ACLmsg.setSender(envelope.getFrom().getStripped())
+						except:
+							ACLmsg.setSender(envelope.getFrom())
                     else:
                         ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
                     if envelope.getIntendedReceiver():

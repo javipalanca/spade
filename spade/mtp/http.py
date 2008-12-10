@@ -53,6 +53,7 @@ class http(MTP.MTP):
 		self.httpserver.setName("SpadeHttpServer")
 		self.httpserver.mtp = self
 		self.httpserver.start()
+		print "SPADE HTTP MTP Starting . . ."
 
 
 	def make_body(self,envelope,payload):
