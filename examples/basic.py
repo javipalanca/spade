@@ -25,6 +25,6 @@ class MyAgent(spade.Agent.Agent):
 		self.addBehaviour(b, None)
 
 if __name__ == "__main__":
-	a = MyAgent("agent@alien3.dsic.upv.es", "secret")
+	a = MyAgent("agent@luke.dsic.upv.es", "secret")
 	a.start()
 

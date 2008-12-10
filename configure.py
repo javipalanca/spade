@@ -81,7 +81,9 @@ def generateCode():
 			print "EXCEPTION GETTING MTPS: ", str(e)
 	
 	# Fill the data
-	spadexml = spadexml.replace("#MTPS#", mtp_str)	
+	# GUS: By default, no MTPs, thank you
+	#spadexml = spadexml.replace("#MTPS#", mtp_str)	
+	spadexml = spadexml.replace("#MTPS#", "")	
 
 	file = open("etc/spade.xml", "w+")
 	file.write(spadexml)

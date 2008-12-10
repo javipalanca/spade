@@ -898,10 +898,10 @@ class Server:
 	cmd_options.setdefault('select_enabled',False)
 	try:
 	    import event   # Do we have lib event???
-	    print "LIBEVENT ENABLED"
+	    #print "LIBEVENT ENABLED"
 	except:
 	    cmd_options['select_enabled'] = True # If not, we'll have to just use the old select :/
-	    print "SELECT ENABLED"
+	    #print "SELECT ENABLED"
 	if not cmd_options['select_enabled']: event.init()
 
 	# Components dict

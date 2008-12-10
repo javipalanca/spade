@@ -214,7 +214,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def __init__(self, agentjid, serverplatform, p2p=True):
+    def __init__(self, agentjid, serverplatform, p2p=False):
         """
         inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
         """

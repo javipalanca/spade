@@ -40,11 +40,11 @@ def print_help():
   print " -d, --debug        enable the debug execution"
   print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
   print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
-  print " -w, --web          load teh TurboGears(tm) web interface"
+  print " -w, --web          load the TurboGears(tm) web interface"
   raise SystemExit
 
 def print_version():
-  print "SPADE %s by Javi Palanca, Gustavo Aranda, Miguel Escriva and others" % VERSION
+  print "SPADE %s by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others" % VERSION
   print "jpalanca@dsic.upv.es - http://spade.gti-ia.dsic.upv.es/"
   raise SystemExit
 
