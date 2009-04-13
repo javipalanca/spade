@@ -1,6 +1,6 @@
 # -*- coding: cp1252 -*-
 
-try:  
+try:
 	import psyco
 	psyco.full()
 	print "Using Psyco optimizing compiler"
@@ -1453,17 +1453,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			content = msg.getContent()
 			content = str(content)
 			print "STR"
-			#content = content.strip()
+			content = content.strip()
 			print "STRIP"
 			print content
-			content_p = self.p.parse(content)
+			conpar = SL0Parser.SL0Parser()
+			#content_p = conpar.parse(content)
+			content_p = None
 			print "PARSE"
                 	#content = p.parse(str(msg.getContent()).strip())
                 except:
 			print "PARSE EXCEPTION"
 			self.result = []
 			return None
-			
+
 		self.result = [] #content.result.set
 		for i in content_p.result.set:
 			#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
@@ -1481,7 +1483,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         b = AbstractAgent.SearchAgentBehaviour(msg, AAD, debug)
-	
+
         self.addBehaviour(b,t)
         b.join()
         return b.result

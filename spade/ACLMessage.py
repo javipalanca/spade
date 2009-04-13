@@ -14,6 +14,7 @@ class ACLMessage:
 	AGREE            = 'agree'
 	CANCEL           = 'cancel'
 	CFP              = 'cfp'
+	CALL_FOR_PROPOSAL = 'call-for-proposal'
 	CONFIRM          = 'confirm'
 	DISCONFIRM       = 'disconfirm'
 	FAILURE	         = 'failure'
@@ -39,7 +40,7 @@ class ACLMessage:
 		self._attrs = {}
 		#possible FIPA communicative acts
 		self.commacts = ['accept-proposal', 'agree', 'cancel', \
-				'cfp', 'confirm', 'disconfirm', \
+				'cfp', 'call-for-proposal', 'confirm', 'disconfirm', \
 				'failure', 'inform', 'not-understood', \
 				'propose', 'query-if', 'query-ref', \
 				'refuse', 'reject-proposal', 'request', \

@@ -278,7 +278,8 @@ class RDF0Parser(handler.ContentHandler):
 		self.accumulator = ""
    		
 		#fipa Actions 
-		if btag(self.prefixs.fipa,self.ACTION).lower() == qname.lower():
+		#if btag(self.prefixs.fipa,self.ACTION).lower() == qname.lower():
+		if btag(self.prefixs.fipa,self.ACTION) == qname.lower():
 			self.content[self.ACTION] = Newdict()
 			self.s = self.ACTION
 			if btag(self.prefixs.rdf,self.ID) in attributes.getQNames():
