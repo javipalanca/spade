@@ -5,10 +5,18 @@ import cStringIO
 
 class Newdict(dict):
 	def __getattr__(self, name): return self[name]
+	def pprint(self, ind=0):
+		s = ""
+		for k,v in self.items():
+			try:
+				s = s + ('\t'*ind)+str(k)+":\n"+v.pprint(ind+1) + '\n'
+			except:
+				s = s + ('\t'*ind)+str(k)+": " + str(v) + '\n'
+		return s
 
 # build a shorthand tag
 def btag(n1,n2):
-	return n1+":"+n2
+	return str(n1)+":"+str(n2)
 
 class RDF0Parser(handler.ContentHandler):
 	"""
@@ -275,11 +283,18 @@ class RDF0Parser(handler.ContentHandler):
 
 	def startElementNS(self, name, qname, attributes):
 	
+		print "RDF0: seNS"+str(name)+" "+str(qname)+" "+str(attributes)
+	
 		self.accumulator = ""
-   		
+		
+		# Fix "lower" bug
+		if qname == None:
+			qname = ""
+
 		#fipa Actions 
+		if str(self.FIPA_NS+self.ACTION).lower() == str(name[0]+name[1]).lower():
 		#if btag(self.prefixs.fipa,self.ACTION).lower() == qname.lower():
-		if btag(self.prefixs.fipa,self.ACTION) == qname.lower():
+			print "MATCH ACTION"
 			self.content[self.ACTION] = Newdict()
 			self.s = self.ACTION
 			if btag(self.prefixs.rdf,self.ID) in attributes.getQNames():
@@ -288,60 +303,76 @@ class RDF0Parser(handler.ContentHandler):
 				self.content[self.ACTION][self.ABOUT] = attributes.getValueByQName(btag(self.prefixs.rdf,self.ABOUT))
 
 
-		elif btag(self.prefixs.fipa,self.ARGUMENT).lower() == qname.lower():
+		elif str(self.FIPA_NS+self.ARGUMENT).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.fipa,self.ARGUMENT).lower() == qname.lower():
 			self.content[self.s][self.ARGUMENT] = Newdict()
 			self.p = self.ARGUMENT
 
-		
-		elif btag(self.prefixs.fipa,self.IMPLBY).lower() == qname.lower():
+		elif str(self.FIPA_NS+self.IMPLBY).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.fipa,self.IMPLBY).lower() == qname.lower():
 			self.content[self.s][self.IMPLBY] = Newdict()
 			self.p = self.IMPLBY
 				
-		elif btag(self.prefixs.fipa,self.CODE).lower() == qname.lower():
+		elif str(self.FIPA_NS+self.CODE).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.fipa,self.CODE).lower() == qname.lower():
 			self.code = Newdict()
 
-		elif btag(self.prefixs.rdf,self.BAG).lower() == qname.lower():
+		elif str(self.RDF_NS+self.BAG).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.rdf,self.BAG).lower() == qname.lower():
 			self.content[self.s][self.p][self.BAG] = []
 			self.container = self.BAG
 
-		elif btag(self.prefixs.rdf,self.SEQ).lower() == qname.lower():
+		elif str(self.RDF_NS+self.SEQ).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.rdf,self.SEQ).lower() == qname.lower():
 			self.content[self.s][self.p][self.SEQ] = []
 			self.container = self.SEQ
 
-		elif btag(self.prefixs.rdf,self.ALT).lower() == qname.lower():
+		elif str(self.RDF_NS+self.ALT).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.rdf,self.ALT).lower() == qname.lower():
 			self.content[self.s][self.p][self.ALT] = []
 			self.container = self.ALT
 		
 
 		#fipa Propositions	
-		elif btag(self.prefixs.fipa,self.PROPOSITION).lower() == qname.lower():
+		elif str(self.FIPA_NS+self.PROPOSITION).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.fipa,self.PROPOSITION).lower() == qname.lower():
 			self.content[self.PROPOSITION]=Newdict()
 			self.s = self.PROPOSITION
 
 		#rdf Descriptions
-		elif btag(self.prefixs.rdf,self.DESCRIPTION).lower() == qname.lower():
+		elif str(self.RDF_NS+self.DESCRIPTION).lower() == str(name[0]+name[1]).lower():
+		#elif btag(self.prefixs.rdf,self.DESCRIPTION).lower() == qname.lower():
 			self.content[self.DESCRIPTION]=Newdict()
 			self.s = self.DESCRIPTION
 			if btag(self.prefixs.rdf,self.ABOUT) in attributes.getQNames():
 				self.content[self.DESCRIPTION][self.ABOUT] = attributes.getValueByQName(btag(self.prefixs.rdf,self.ABOUT))
 
-
-
-
+		else:
+			print "NO FIPA MATCH"
+			#self.content[name[1]] = None
+			
+		print "SELF.S "+str(self.s)
 
 		# if tag refers to a resource
-		if btag(self.prefixs.rdf,self.RESOURCE) in attributes.getQNames():
+		if str(self.RDF_NS+self.RESOURCE).lower() == str(name[0]+name[1]).lower():
+		#if btag(self.prefixs.rdf,self.RESOURCE) in attributes.getQNames():
 				self.resource[name] = attributes.getValueByQName(btag(self.prefixs.rdf,self.RESOURCE))
 
 		# catching datatype
-		if btag(self.prefixs.rdf,self.DATATYPE) in attributes.getQNames():
+		if str(self.RDF_NS+self.DATATYPE).lower() == str(name[0]+name[1]).lower():
+		#if btag(self.prefixs.rdf,self.DATATYPE) in attributes.getQNames():
 				self.datatype[name] = attributes.getValueByQName(btag(self.prefixs.rdf,self.DATATYPE))
+
+		print "RDF0: seNS: self.s "+str(self.s)
 
 			
 		
 		
   
 	def endElementNS(self, name, qname):
+
+		print "RDF0: eeNS"+str(name)+" "+str(qname)
+		print "RDF0: eeNS: self.s "+str(self.s)
 
 		# tags with resource don't need any value
 		if self.resource.has_key(name):
@@ -353,8 +384,6 @@ class RDF0Parser(handler.ContentHandler):
 			self.accumulator = '"'+ self.accumulator + '"' + self.TYPE_SEP + self.datatype[name]
 			self.datatype.clear()	
 			
-
-
 
 		# start name check
 	
@@ -442,14 +471,17 @@ class RDF0Parser(handler.ContentHandler):
 
 
 if __name__ == "__main__":
-	f=open("example5.rdf","r")
+	f=open("example7.rdf","r")
 	s=f.read()
 	rdfparser=RDF0Parser()
 	content=rdfparser.parse(s)
-	print content
-	result=rdfparser.encode(content)
-	print result
-	print rdfparser.parse(result)
+	print "#################################"
+	#print content
+	print content.pprint()
+	#result=rdfparser.encode(content)
+	#print result
+	#print "#################################"
+	#print rdfparser.parse(result)
 
 
 """
