@@ -104,7 +104,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 t = SWIHandler.templates[template]
             else:
                 try:        
-                    t = pyratemp.Template(filename="spade"+os.sep+"templates"+os.sep+template)
+                    t = pyratemp.Template(filename="templates"+os.sep+template)
                     SWIHandler.templates[template]=t
                 except:
                         print "NO TEMPLATE"
