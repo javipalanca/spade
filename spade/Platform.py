@@ -673,6 +673,7 @@ class SpadePlatform(Agent.PlatformAgent):
     def _setup(self):
         self.setDefaultBehaviour(self.RouteBehaviour())
         #self.addBehaviour(self.TGWebAdminBehaviour())
+        self.addBehaviour(self.WebAdminBehaviour())
         # Load MTPs
         self.mtps = {}
         for name,mtp in self.config.acc.mtp.items():
