@@ -38,8 +38,10 @@ def RDFXML2SCO(rdfdata):
 
 if __name__=="__main__":
     import urllib2
-    f = urllib2.urlopen("http://infomesh.net/2003/rdfparser/meta.rdf")
+    #f = urllib2.urlopen("http://infomesh.net/2003/rdfparser/meta.rdf")
+    f = urllib2.urlopen("http://tourism.gti-ia.dsic.upv.es/rdf/ComidasTascaRapida.rdf")
     sco = RDFXML2SCO(f.read())
     print str(sco)
     print sco.pprint()
-    
+    print sco["rdf:Description"]["dc:creator"]["foaf:name"]
+    print sco["rdf:Description"]["dc:creator"]["foaf:homePage"]
