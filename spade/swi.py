@@ -1,6 +1,7 @@
 import SimpleHTTPServer
 import pyratemp
 import os
+import sys
 
 class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
@@ -134,3 +135,13 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         version = str("sys.version")
         the_time = str(time.ctime())
         return "webadmin.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
+
+    def webadmin_indigo(self):
+        import sys
+        import time
+        servername = self.platform.getDomain()
+        platform = self.platform.getName()        
+        version = str("sys.version")
+        the_time = str(time.ctime())
+        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
+
