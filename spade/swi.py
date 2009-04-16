@@ -101,7 +101,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 t = SWIHandler.templates[template]
             else:
                 try:
-                    print "lloking for template ",template
                     t = pyratemp.Template(filename="templates/"+template)
                     SWIHandler.templates[template]=t
                 except:
@@ -111,10 +110,12 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 
             args=""
             for k,v in ret.items():
-                args+= str(k) + "=" + str(v)+","
+                args+= str(k) + "=" + '"'+str(v)+'"'+","
             if args.endswith(","): args = args[:-1]
             
-            result = eval(str(t)+"("+args+")")
+            print args
+            
+            result = eval(str("t")+"("+args+")")
                 
             r = result.encode("ascii", 'xmlcharrefreplace')
             
@@ -127,6 +128,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         import time
         servername = self.platform.getDomain()
         platform = self.platform.getName()        
-        version = str(sys.version)
+        version = str("sys.version")
         the_time = str(time.ctime())
         return "webadmin.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
