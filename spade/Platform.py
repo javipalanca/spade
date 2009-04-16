@@ -12,6 +12,7 @@ import sys
 import traceback
 import SocketServer
 import SimpleHTTPServer
+import BaseHTTPServer
 import time
 import thread
 import copy
@@ -19,6 +20,9 @@ import ACLMessage
 import types
 import ACLParser
 import BasicFipaDateTime
+
+#from swi import SWIHandler
+import swi
 from os.path import *
 
 class PlatformRestart(Exception):
@@ -540,6 +544,7 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 
 class SpadePlatform(Agent.PlatformAgent):
+    
     class TGWebAdminBehaviour(Behaviour.OneShotBehaviour):
         def __init__(self, cfg=None):
             Behaviour.OneShotBehaviour.__init__(self)
@@ -595,9 +600,37 @@ class SpadePlatform(Agent.PlatformAgent):
         def onEnd(self):
                 del self.httpd
 
-    class RouteBehaviour(Behaviour.Behaviour):
+
+    class SWIBehaviour(Behaviour.Behaviour):
+
         def __init__(self):
             Behaviour.Behaviour.__init__(self)
+            self.WEB_ADMIN_PORT = 8008
+
+        def onStart(self):
+            self.httpd = None
+            while not self.httpd:
+                try:
+                    #self.httpd = SocketServer.ThreadingTCPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
+                    self.httpd = BaseHTTPServer.HTTPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
+                    # This connects xmmpd with the request handler and server
+                    self.httpd.behav = self
+                    print "WebAdmin serving at port "+str(self.WEB_ADMIN_PORT)
+                except:
+                    print "WebAdmin Error: could not open port "+str(self.WEB_ADMIN_PORT)
+                    time.sleep(5)
+
+        def _process(self):
+            self.httpd.handle_request()
+
+        def onEnd(self):
+            del self.httpd
+
+    class RouteBehaviour(Behaviour.Behaviour):
+        
+        def __init__(self):
+            Behaviour.Behaviour.__init__(self)
+            
         def _process(self):
             msg = self._receive(True)
             if (msg != None):
@@ -673,7 +706,9 @@ class SpadePlatform(Agent.PlatformAgent):
     def _setup(self):
         self.setDefaultBehaviour(self.RouteBehaviour())
         #self.addBehaviour(self.TGWebAdminBehaviour())
-        self.addBehaviour(self.WebAdminBehaviour())
+        #self.addBehaviour(self.WebAdminBehaviour())
+        self.addBehaviour(self.SWIBehaviour())
+        #swi.SWIHandler.platform = self
         # Load MTPs
         self.mtps = {}
         for name,mtp in self.config.acc.mtp.items():

@@ -30,6 +30,10 @@ def generateCode():
 		else:
 			hostname = globalhostname
 		path = "usr"+os.sep+"share"+os.sep+"spade"
+		
+	if hostname == "localhost": 
+		hostname = "127.0.0.1"
+		print "Translating localhost DNS to IP (127.0.0.1)."
 
 	acc_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
 	ams_passwd = "".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(8)])
