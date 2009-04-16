@@ -611,8 +611,8 @@ class SpadePlatform(Agent.PlatformAgent):
             self.httpd = None
             while not self.httpd:
                 try:
-                    #self.httpd = SocketServer.ThreadingTCPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
-                    self.httpd = BaseHTTPServer.HTTPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
+                    self.httpd = SocketServer.ThreadingTCPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
+                    #self.httpd = BaseHTTPServer.HTTPServer(('', self.WEB_ADMIN_PORT), swi.SWIHandler)
                     # This connects xmmpd with the request handler and server
                     self.httpd.behav = self
                     print "WebAdmin serving at port "+str(self.WEB_ADMIN_PORT)
@@ -708,7 +708,7 @@ class SpadePlatform(Agent.PlatformAgent):
         #self.addBehaviour(self.TGWebAdminBehaviour())
         #self.addBehaviour(self.WebAdminBehaviour())
         self.addBehaviour(self.SWIBehaviour())
-        #swi.SWIHandler.platform = self
+        swi.SWIHandler.platform = self
         # Load MTPs
         self.mtps = {}
         for name,mtp in self.config.acc.mtp.items():
