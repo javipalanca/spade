@@ -1,5 +1,6 @@
 import SimpleHTTPServer
 import pyratemp
+import os
 
 class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
@@ -96,12 +97,14 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         else:
             print "Executing "+page
             template, ret = eval("self."+str(page)+"("+s_vars+")")
-                
+            
+            #print os.getcwd()
+            
             if template in SWIHandler.templates.keys():
                 t = SWIHandler.templates[template]
             else:
-                try:
-                    t = pyratemp.Template(filename="templates/"+template)
+                try:        
+                    t = pyratemp.Template(filename="spade"+os.sep+"templates"+os.sep+template)
                     SWIHandler.templates[template]=t
                 except:
                         print "NO TEMPLATE"
