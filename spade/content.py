@@ -17,7 +17,6 @@ class ContentObject(dict):
     def __init__(self):
         dict.__init__(self)
         self.namespaces = {}
-        print "INIT",self.namespaces
         
     def __getattr__(self, name): return self[name]
 
@@ -98,9 +97,8 @@ if __name__=="__main__":
 
     #sco = RDFXML2CO(f.read())
     sco = RDFXML2CO(ex)
-    print str(sco)
+    #print str(sco)
     print sco.pprint()
     #print sco["rdf:Description"]["dc:creator"]["foaf:name"], str(type(sco["rdf:Description"]["dc:creator"]["foaf:name"]))
     #print sco["rdf:Description"]["dc:creator"]["foaf:homePage"]
     print sco.asRDFXML()
-    print sco.namespaces
