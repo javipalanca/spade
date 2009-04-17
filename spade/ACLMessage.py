@@ -4,7 +4,7 @@ import random
 import string
 import cPickle as pickle
 #random.seed(time.time())
-
+import content
 
 class ACLMessage:
 	"""
@@ -174,12 +174,32 @@ class ACLMessage:
 		sets the message content (string, bytestream, ...)
 		"""
 		self.content = str(c)
+		
+	def setContentObject(self,co):
+		"""
+		sets the message content in ContentObject format
+		"""
+		self.content = co
 
 	def getContent(self):
 		"""
 		returns the message content
 		"""
 		return str(self.content)
+
+	def getContentObject(self):
+		"""
+		returns the message content in ContentObject format, if possible
+		"""
+		if "str" in str(type(self.content)):		    
+		    try:
+			    return content.RDFXML2CO(self.content)
+		    except:		    
+			    return None
+		elif "ContentObject" in str(type(self.content)):
+		    return self.content
+		else:
+		    return None
 
 	def setReplyWith(self,rw):
 		self._attrs["reply_with"] = str(rw)
@@ -308,7 +328,7 @@ class ACLMessage:
 
 			p = p + ")\n"
 		if self.content:
-			p = p +  ':content "'+ self.content + '"\n'
+			p = p +  ':content "'+ str(self.content) + '"\n'
 
 		if self.getReplyWith():
 			p = p + ":reply-with " + self.getReplyWith() + '\n'

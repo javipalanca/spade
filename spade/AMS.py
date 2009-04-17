@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 import Agent
 import AID
 import Behaviour
@@ -7,6 +9,7 @@ import copy
 import xmpp
 
 from spade.msgtypes import *
+from content import ContentObject
 
 class AMS(Agent.PlatformAgent):
 	"""
@@ -105,9 +108,38 @@ class AMS(Agent.PlatformAgent):
 								self.myAgent.send(reply)
 
 								return -1
-
-
-
+						
+						elif msg.getLanguage().lower() == "rdf":
+							# Content in RDF							
+							co = msg.getContentObject()
+							content = msg.getContent()
+							ACLtemplate = Behaviour.ACLTemplate()
+							ACLtemplate.setConversationId(msg.getConversationId())
+							ACLtemplate.setSender(msg.getSender())
+							template = (Behaviour.MessageTemplate(ACLtemplate))
+							#print ">>>>>>>>AMS CONTENT RDF ",co
+							
+							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
+								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
+									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
+								elif co["fipa:action"]["fipa:act"] == "get-description":
+									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
+								elif co["fipa:action"]["fipa:act"] == "search":									
+									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
+									print ">>>>>>>>AMS CONTENT SEARCH"
+								elif co["fipa:action"]["fipa:act"] == "search":
+									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
+							else:
+								reply = msg.createReply()
+								reply.setSender(self.myAgent.getAID())
+								reply.setPerformative("refuse")								
+								co["unsuported-function"] = "true"
+								reply.setContentObject(co)
+								self.myAgent.send(reply)
+								return -1
+								
+								
+							
 						else: error = "(unsupported-language "+msg.getLanguage()+")"
 					else: error = "(unsupported-ontology "+msg.getOntology()+")"
 
@@ -270,59 +302,111 @@ class AMS(Agent.PlatformAgent):
 		def _process(self):
 
 			error = False
-
+			rdf = True
+			max = 1000		
+			
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
-			reply.setContent("(" + str(self.msg.getContent()) + " true)")
+			
+			if "rdf" in self.msg.getLanguage().lower():
+				rdf = True
+				co = copy.copy(self.msg.getContentObject())
+				co["fipa:done"] = "true"
+				reply.setContentObject(co)
+			else:
+				# Old ugly SL0
+				rdf = False
+				reply.setContent("(" + str(self.msg.getContent()) + " true)")
+				
 			self.myAgent.send(reply)
 
-			max = 1000
-			if "search-constraints" in self.content.action.search:
-				if "max-results" in self.content.action.search["search-constraints"]:
+			if not rdf:
+				if "search-constraints" in self.content.action.search:
+					if "max-results" in self.content.action.search["search-constraints"]:
+						try:
+							max = int(self.content.action.search["search-constraints"]["max-results"])
+						except Exception, err:
+							error = '(internal-error "max-results is not an integer")'
+				if error:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("failure")
+					reply.setContent("( "+self.msg.getContent() + error+")")
+					self.myAgent.send(reply)
+					return -1
+
+
+				result = []
+				if "ams-agent-description" in self.content.action.search:
+					aad = AmsAgentDescription(self.content.action.search['ams-agent-description'])
+					#print str( self.myAgent.agentdb.values())
+					for a in self.myAgent.agentdb.values():
+						if max >= 0:
+							#print "comparo " +str(a)+ " con " +str(aad)
+							if a == aad:
+								#print "TRUE!"
+								result.append(a)
+								max -= 1
+						else: break
+
+				else:
+					result = self.myAgent.agentdb.values()
+
+				content = "((result " #TODO: + self.msg.getContent()
+				#print "He encontrado: " + str(len(result))
+				if len(result)>0:
+					content += " (set "
+					for i in result:
+						content += str(i) + " "
+					content += ")"
+				else:
+					content+= 'None'
+				content += "))"
+				
+				reply.setContent(content)
+				
+			else:
+				# The RDF way of things, baby
+				# Delete done (from previous reply)
+				del co["fipa:done"]
+				# Look for search constraints
+				if co["fipa:action"].has_key("constraints"):
 					try:
-						max = int(self.content.action.search["search-constraints"]["max-results"])
-					except Exception, err:
-						error = '(internal-error "max-results is not an integer")'
-			if error:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("failure")
-				reply.setContent("( "+self.msg.getContent() + error+")")
-				self.myAgent.send(reply)
-				return -1
+						max = int(co["fipa:action"]["constraints"])
+					except:
+						error = 'constraints-error'
+				if error:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("failure")
+					co["fipa:error"] = error
+					reply.setContentObject(co)
+					self.myAgent.send(reply)
+					return -1
+				
+				# Search for the results
+				result = []
+				if co["fipa:action"].has_key("fipa:argument") and co["fipa:action"]["fipa:argument"]:
+					aad = AmsAgentDescription(co=co["fipa:action"]["fipa:argument"])
+					for a in self.myAgent.agentdb.values():
+						if max >= 0:
+							print "comparo " +str(a)+ " con " +str(aad)
+							if a == aad:
+								print "TRUE!"
+								result.append(a)
+								max -= 1
+						else: break
+				else:
+					result = self.myAgent.agentdb.values()
 
-
-			result = []
-			if "ams-agent-description" in self.content.action.search:
-				aad = AmsAgentDescription(self.content.action.search['ams-agent-description'])
-				#print str( self.myAgent.agentdb.values())
-				for a in self.myAgent.agentdb.values():
-					if max >= 0:
-						#print "comparo " +str(a)+ " con " +str(aad)
-						if a == aad:
-							#print "TRUE!"
-							result.append(a)
-							max -= 1
-					else: break
-
-			else:
-				result = self.myAgent.agentdb.values()
-
-			content = "((result " #TODO: + self.msg.getContent()
-			#print "He encontrado: " + str(len(result))
-			if len(result)>0:
-				content += " (set "
+				co2 = ContentObject()
+				co2["fipa:result"] = []
 				for i in result:
-					content += str(i) + " "
-				content += ")"
-			else:
-				content+= 'None'
-			content += "))"
-
-
+					co2["fipa:result"].append(i.asContentObject())
+				reply.setContentObject(co2)			
+			
 			reply.setPerformative("inform")
-			reply.setContent(content)
 			self.myAgent.send(reply)
 
 			return 1
@@ -424,17 +508,31 @@ class AmsAgentDescription:
 	Agent Descriptor for AMS registering
 	"""
 
-	def __init__(self, content = None):
+	def __init__(self, content = None, co = None):
 		"""
 		AAD constructor
 		Optionally accepts a string containing a SL definition of the AAD
+		or a ContentObject version of the AAD
 		"""
 
 		self.name = None #AID.aid()
 		self.ownership = None
 		self.state = None
 
-		if content != None:
+		if co:
+			try:
+				self.name = AID.aid(co=co["name"])
+			except:
+				self.name = None
+			try:
+				self.ownership = co["ownership"]
+			except:
+				self.ownership = None
+			try:
+				self.state = co["state"]
+			except:
+				self.state = None
+		elif content != None:
 			self.loadSL0(content)
 
 	def setAID(self, a):
@@ -505,9 +603,29 @@ class AmsAgentDescription:
 			if "state" in content:
 				self.state = content.state[0]
 
+	def asContentObject(self):
+		"""
+		returns a version of the AAD in ContentObject format
+		"""
+		co = ContentObject()
+		try:
+			co["fipa:aid"] = self.name.asContentObject()
+		except:
+			co["fipa:aid"] = ContentObject()
+		co["fipa:ownership"] = str(self.ownership)
+		co["fipa:state"] = str(self.state)
+		return co
+		
+
+	def asRDFXML(self):
+		"""
+		returns a printable version of the AAD in RDF/XML format
+		"""
+		return str(self.asContentObject())		  
+
 	def __str__(self):
 		"""
-		returns a printable version of the AAD in SL format)
+		returns a printable version of the AAD in SL format
 		"""
 
 		if ( (self.name == None) and (self.ownership == None) and (self.state == None) ):

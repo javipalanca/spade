@@ -1,14 +1,21 @@
-
+from content import ContentObject
 
 class aid:
-	def __init__(self, name = None, addresses = None, resolvers = None, userDefinedProperties= None):
+	def __init__(self, name = None, addresses = None, resolvers = None, userDefinedProperties= None, co = None):
 		"""
 		Agent Identifier Class
 		Optional parameters:
 			String name
 			String[] addresses
 			String[] resolvers
+			ContentObject co
 		"""
+		if co:
+		    self.__name = co["name"]
+		    self.__addresses = co["addresses"]
+		    self.__resolvers = list()
+		    self.__userDefinedProperties = list()
+		    
 		if name != None:
 			self.__name = name
 		else:
@@ -128,7 +135,17 @@ class aid:
 			sb = "None"
 
 		return sb
-
+		
+	def asContentObject(self):
+	    """
+	    returns a version of an AID in ContentObject format
+	    """
+	    co = ContentObject()	    
+	    co["name"] = self.getName()
+	    co["addresses"] = []
+	    for addr in self.getAddresses():
+	        co["addresses"].append(addr)
+	    return co
 
 	def asXML(self):
 		"""

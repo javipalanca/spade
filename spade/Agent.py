@@ -41,6 +41,7 @@ import cPickle as pickle
 #from AMS import AmsAgentDescription
 
 import DF
+from content import ContentObject
 
 #from xmpp import Iq, Presence,Protocol, Node, NodeBuilder, NS_ROSTER, NS_DISCO_INFO
 from xmpp import *
@@ -1426,16 +1427,25 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         def _process(self):
             self._msg.addReceiver( self.myAgent.getAMS() )
             self._msg.setPerformative('request')
-            self._msg.setLanguage('fipa-sl0')
+            #self._msg.setLanguage('fipa-sl0')
+            self._msg.setLanguage('rdf')
             self._msg.setProtocol('fipa-request')
             self._msg.setOntology('FIPA-Agent-Management')
 
-            content = "((action "
-            content += str(self.myAgent.getAID())
-            content += "(search "+ str(self.AAD) +")"
-            content +=" ))"
-
-            self._msg.setContent(content)
+            #content = "((action "
+            #content += str(self.myAgent.getAID())
+            #content += "(search "+ str(self.AAD) +")"
+            #content +=" ))"
+            
+            #self._msg.setContent(content)
+            
+            content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+            content["fipa:action"] = ContentObject()
+            content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+            content["fipa:action"]["fipa:act"] = "search"
+            content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
+            self._msg.setContentObject(content)
+            
             self.myAgent.send(self._msg)
             msg = self._receive(True,10)
             if msg == None or str(msg.getPerformative()) != 'agree':
@@ -1449,28 +1459,34 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return None
             else:
 		try:
-			print msg.getContent()
-			content = msg.getContent()
-			content = str(content)
-			print "STR"
-			content = content.strip()
-			print "STRIP"
-			print content
-			conpar = SL0Parser.SL0Parser()
-			#content_p = conpar.parse(content)
-			content_p = None
-			print "PARSE"
-                	#content = p.parse(str(msg.getContent()).strip())
+			#print msg.getContent()
+			#content = msg.getContent()
+			#content = str(content)
+			#print "STR"
+			#content = content.strip()
+			#print "STRIP"
+			#print content
+			#conpar = SL0Parser.SL0Parser()
+			##content_p = conpar.parse(content)
+			#content_p = None
+			#print "PARSE"
+                	##content = p.parse(str(msg.getContent()).strip())
+			co = msg.getContentObject()
+			print co
                 except:
 			print "PARSE EXCEPTION"
 			self.result = []
 			return None
 
 		self.result = [] #content.result.set
-		for i in content_p.result.set:
-			#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
-			#print str(i[1])
-			self.result.append(i[1])
+		#for i in content_p.result.set:
+		#	#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
+		#	#print str(i[1])
+		#	self.result.append(i[1])
+
+		for i in co["fipa:result"]:
+			self.result.append(i)
+		
             self.finished = True
 
     def searchAgent(self, AAD, debug=False):

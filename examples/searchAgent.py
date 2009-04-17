@@ -25,7 +25,11 @@ class MyAgent(spade.Agent.Agent):
 		self.addBehaviour(b, None)
 
 if __name__ == "__main__":
-	#a = MyAgent("agent@alien3.dsic.upv.es", "secret")
-	a = MyAgent("agent@192.168.2.3", "secret")
+	if len(sys.argv) < 2:
+		host = "127.0.0.1"
+	else:
+		host = sys.argv[1]
+	a = MyAgent("agent@"+host, "secret")
 	a.start()
+	print "Agent started"
 

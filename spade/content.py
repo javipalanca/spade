@@ -1,22 +1,23 @@
 from xmpp import simplexml
-#from copy import copy
-#from _dict2xml import dict2Xml
 
 def co2xml(map):
-    """ Convenience method for transforming dictionaries into xml.  
+    """ Convenience recursive function for transforming ContentObjects into XML.  
         The transformation is {x:y} --> <x>y</x> """
     xml = ""
     for key, value in map.items():
         if "ContentObject" in str(type(value)):
             xml += "<%s>%s</%s>" % (key, co2xml(value), key)
+        elif "list" in str(type(value)):
+            for i in value:
+                xml += "<%s>%s</%s>" % (key, i, key)
         else:
             xml += "<%s>%s</%s>" % (key, value, key)
     return xml
 
 class ContentObject(dict):
-    def __init__(self):
+    def __init__(self, namespaces={}):
         dict.__init__(self)
-        self.namespaces = {}
+        self.namespaces = namespaces
         
     def __getattr__(self, name): return self[name]
 
@@ -41,6 +42,9 @@ class ContentObject(dict):
 		root.attrs.update(nss)
 		root.addData("#WILDCARD#")
 		return str(root).replace("#WILDCARD#",co2xml(self))
+		
+    def __str__(self):
+		return self.asRDFXML()
 
 
 def Node2CO(node, nsdict):
@@ -76,7 +80,7 @@ def RDFXML2CO(rdfdata):
 
 if __name__=="__main__":
     import urllib2
-    f = urllib2.urlopen("http://infomesh.net/2003/rdfparser/meta.rdf")
+    #f = urllib2.urlopen("http://infomesh.net/2003/rdfparser/meta.rdf")
     #f = urllib2.urlopen("http://tourism.gti-ia.dsic.upv.es/rdf/ComidasTascaRapida.rdf")
 
     ex = """<rdf:RDF
@@ -86,17 +90,22 @@ if __name__=="__main__":
 		<rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn">
 			<dc:title>Tony Benn</dc:title>
 			<dc:publisher>Wikipedia</dc:publisher>
-	                <foaf:primaryTopic>
-	                     <foaf:Person>
-	                          <foaf:name>Tony Benn</foaf:name>  
-	                     </foaf:Person>
-	                </foaf:primaryTopic>
+	        <foaf:primaryTopic>
+	             <foaf:Person>
+	                  <foaf:name>Tony Benn</foaf:name>  
+	             </foaf:Person>
+	        </foaf:primaryTopic>
 		</rdf:Description>
 	</rdf:RDF>
 	"""
 
     #sco = RDFXML2CO(f.read())
     sco = RDFXML2CO(ex)
+    sco["rdf:Description"]["foaf:primaryTopic"]["friend"] = []
+    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("John Doe")
+    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("Chuck Bartowski")
+    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("Sarah Connor")
+    
     #print str(sco)
     print sco.pprint()
     #print sco["rdf:Description"]["dc:creator"]["foaf:name"], str(type(sco["rdf:Description"]["dc:creator"]["foaf:name"]))
