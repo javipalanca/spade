@@ -1,5 +1,6 @@
 # encoding: UTF-8
 from xmpp import simplexml
+from exceptions import KeyError
 
 def co2xml(map):
     """ Convenience recursive function for transforming ContentObjects into XML.  
@@ -20,8 +21,22 @@ class ContentObject(dict):
         dict.__init__(self)
         self.namespaces = namespaces
         
-    def __getattr__(self, name): return self[name]
-
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except:
+            pass
+        for ns in self.namespaces.values():
+            try:
+                return self[ns+name]
+            except:
+                pass
+        raise KeyError
+        
+    def addNamespace(self, uri, abv):
+        self.namespaces[uri] = abv
+        return
+        
     def pprint(self, ind=0):
         s = ""
         for k,v in self.items():
@@ -49,6 +64,7 @@ class ContentObject(dict):
 
 
 def Node2CO(node, nsdict):
+    #print "NODE2CO: ",str(node)
     if len(node.kids) == 0:
         # Leaf node
 		if node.getData():
@@ -61,7 +77,8 @@ def Node2CO(node, nsdict):
     else:
         # Blank node
         s = ContentObject()
-        for c in node.kids:  
+        for c in node.kids:
+            #print "KID ",c.name," NS ",c.namespace
             if c.namespace in nsdict.keys():
                 key = nsdict[c.namespace]+c.name
             else:
@@ -113,10 +130,14 @@ if __name__=="__main__":
 
     #sco = RDFXML2CO(f.read())
     sco = RDFXML2CO(ex)
-    sco["rdf:Description"]["foaf:primaryTopic"]["friend"] = []
-    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("John Doe")
-    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("Chuck Bartowski")
-    sco["rdf:Description"]["foaf:primaryTopic"]["friend"].append("Sarah Connor")
+    sco.addNamespace("http://spade.gti-ia-dsic.upv.es/ns/2.0/", "spade:")
+    sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"] = []
+    sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"].append("John Doe")
+    sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"].append("Chuck Bartowski")
+    sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"].append("Sarah Connor")
+    sco["spade:uno"] = ContentObject()
+    sco["spade:uno"]["spade:dos"] = "COSA"
+    sco.uno["spade:tres"] = "OTRA"
     
     #print str(sco)
     print sco.pprint()
