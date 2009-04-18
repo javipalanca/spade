@@ -1,3 +1,4 @@
+# encoding: UTF-8
 from xmpp import simplexml
 
 def co2xml(map):
@@ -65,7 +66,18 @@ def Node2CO(node, nsdict):
                 key = nsdict[c.namespace]+c.name
             else:
                 key = c.name
-            s[key] = Node2CO(c,nsdict)
+            if not s.has_key(key):              
+                s[key] = Node2CO(c,nsdict)
+            else:
+                # Possible list
+                if "list" in str(type(s[key])):
+                    # Append to the existing list
+                    s[key].append(Node2CO(c,nsdict))
+                else:
+                    # Create a list with the current value and
+                    # append the new one
+                    s[key] = [s[key]]
+                    s[key].append(Node2CO(c,nsdict))
         return s
             
 
@@ -111,3 +123,6 @@ if __name__=="__main__":
     #print sco["rdf:Description"]["dc:creator"]["foaf:name"], str(type(sco["rdf:Description"]["dc:creator"]["foaf:name"]))
     #print sco["rdf:Description"]["dc:creator"]["foaf:homePage"]
     print sco.asRDFXML()
+    sco2 = RDFXML2CO(sco.asRDFXML())
+    print sco2.pprint()
+    print sco2.asRDFXML()
