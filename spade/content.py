@@ -20,49 +20,49 @@ class ContentObject(dict):
 	"""
 	WARNING: copy.copy() does NOT work for this class :-?
 	"""
-    def __init__(self, namespaces={}):
-        dict.__init__(self)
-        self.namespaces = namespaces
-        
-    def __getattr__(self, name):
-        try:
-            return self[name]
-        except:
-            pass
-        for ns in self.namespaces.values():
-            try:
-                return self[ns+name]
-            except:
-                pass
-        raise KeyError
-        
-    def addNamespace(self, uri, abv):
-        self.namespaces[uri] = abv
-        return
-        
-    def pprint(self, ind=0):
-        s = ""
-        for k,v in self.items():
-                try:
-                        s = s + ('\t'*ind)+str(k)+":\n"+v.pprint(ind+1) + '\n'
-                except:
-                        s = s + ('\t'*ind)+str(k)+": " + str(v) + '\n'
-        return s
-    
-    def asRDFXML(self):
+	def __init__(self, namespaces={}):
+		dict.__init__(self)
+		self.namespaces = namespaces
+		
+	def __getattr__(self, name):
+		try:
+			return self[name]
+		except:
+			pass
+		for ns in self.namespaces.values():
+			try:
+				return self[ns+name]
+			except:
+				pass
+		raise KeyError
+		
+	def addNamespace(self, uri, abv):
+		self.namespaces[uri] = abv
+		return
+		
+	def pprint(self, ind=0):
+		s = ""
+		for k,v in self.items():
+				try:
+						s = s + ('\t'*ind)+str(k)+":\n"+v.pprint(ind+1) + '\n'
+				except:
+						s = s + ('\t'*ind)+str(k)+": " + str(v) + '\n'
+		return s
+	
+	def asRDFXML(self):
 		# Build rdf:RDF node
 		root = simplexml.Node("rdf:RDF", {"xmlns:rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"})
 		nss = {}
 		for k,v in self.namespaces.items():
-		    if v in ["xml:","rdf:"]:
-		        pass
-		    else:
-		        nss["xmlns:"+v[:-1]] = k
+			if v in ["xml:","rdf:"]:
+				pass
+			else:
+				nss["xmlns:"+v[:-1]] = k
 		root.attrs.update(nss)
 		root.addData("#WILDCARD#")
 		return str(root).replace("#WILDCARD#",co2xml(self))
 		
-    def __str__(self):
+	def __str__(self):
 		return self.asRDFXML()
 
 
