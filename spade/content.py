@@ -12,7 +12,7 @@ def co2xml(map):
         elif "list" in str(type(value)):
             for i in value:
                 xml += "<%s>%s</%s>" % (key, i, key)
-        else:
+        elif value != None and value != "None":
             xml += "<%s>%s</%s>" % (key, value, key)
     return xml
 
@@ -56,8 +56,8 @@ class ContentObject(dict):
 		for k,v in self.namespaces.items():
 			if v in ["xml:","rdf:"]:
 				pass
-			else:
-				nss["xmlns:"+v[:-1]] = k
+			elif v != None and v != "None":
+					nss["xmlns:"+v[:-1]] = k
 		root.attrs.update(nss)
 		root.addData("#WILDCARD#")
 		return str(root).replace("#WILDCARD#",co2xml(self))

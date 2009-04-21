@@ -5,11 +5,6 @@ import sys
 
 class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
-    def __init__(self, request, client_address, server):
-
-        SWIHandler.templates = dict()
-        SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(self, request, client_address, server)
-
     def getPage(self, req):
         """
         Return the page name from a raw GET line
@@ -40,7 +35,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                         d[var[0]] = var[1]
                 else:
                     d[var[0]] = ""
-                #print var
         except:
             pass
 
@@ -55,8 +49,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	    except:
 	        pass
 
-	    #print "_POST_REQ:", self._POST_REQ
-
 	    self.do_GET()
 
 
@@ -64,7 +56,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         """
         GET petitions handler
         """
-        #print "DO_GET"
 
         request = self.raw_requestline.split()
         page = self.getPage(request[1])
@@ -83,7 +74,6 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             s_vars+= str(k) + "=" + str(v)+","
         if s_vars.endswith(","): s_vars = s_vars[:-1]
 	        
-        print page, vars
 	    # Switch page
         #if page.endswith("css"):
         if "." in page:
@@ -96,30 +86,10 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	            print "Could not open file: ", page
 	
         else:
-            print "Executing "+page
             template, ret = eval("self."+str(page)+"("+s_vars+")")
             
-            #print os.getcwd()
-            
-            if template in SWIHandler.templates.keys():
-                t = SWIHandler.templates[template]
-            else:
-                try:        
-                    t = pyratemp.Template(filename="templates"+os.sep+template)
-                    SWIHandler.templates[template]=t
-                except:
-                        print "NO TEMPLATE"
-                        return ""
-                
-                
-            args=""
-            for k,v in ret.items():
-                args+= str(k) + "=" + '"'+str(v)+'"'+","
-            if args.endswith(","): args = args[:-1]
-            
-            print args
-            
-            result = eval(str("t")+"("+args+")")
+            t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
+            result = t()
                 
             r = result.encode("ascii", 'xmlcharrefreplace')
             
@@ -132,7 +102,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         import time
         servername = self.platform.getDomain()
         platform = self.platform.getName()        
-        version = str("sys.version")
+        version = str(sys.version)
         the_time = str(time.ctime())
         return "webadmin.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
@@ -141,7 +111,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         import time
         servername = self.platform.getDomain()
         platform = self.platform.getName()        
-        version = str("sys.version")
+        version = str(sys.version)
         the_time = str(time.ctime())
         return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
