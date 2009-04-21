@@ -17,6 +17,9 @@ def co2xml(map):
     return xml
 
 class ContentObject(dict):
+	"""
+	WARNING: copy.copy() does NOT work for this class :-?
+	"""
     def __init__(self, namespaces={}):
         dict.__init__(self)
         self.namespaces = namespaces

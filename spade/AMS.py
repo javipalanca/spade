@@ -77,7 +77,7 @@ class AMS(Agent.PlatformAgent):
 		def _process(self):
 			error = False
 			msg = self._receive(True)
-			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
+			print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
@@ -117,16 +117,16 @@ class AMS(Agent.PlatformAgent):
 							ACLtemplate.setConversationId(msg.getConversationId())
 							ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
-							#print ">>>>>>>>AMS CONTENT RDF ",co
+							print ">>>>>>>>AMS CONTENT RDF ",co
 							
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
 								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
 									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "get-description":
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
-								elif co["fipa:action"]["fipa:act"] == "search":									
+								elif co["fipa:action"]["fipa:act"] == "search":
+									print ">>>>>>>>AMS CONTENT SEARCH"									
 									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
-									print ">>>>>>>>AMS CONTENT SEARCH"
 								elif co["fipa:action"]["fipa:act"] == "search":
 									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
 							else:
@@ -304,16 +304,18 @@ class AMS(Agent.PlatformAgent):
 			error = False
 			rdf = True
 			max = 1000		
-			
+						
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
 			
 			if "rdf" in self.msg.getLanguage().lower():
 				rdf = True
-				co = copy.copy(self.msg.getContentObject())
+				print "$$$$$$$$$$ AMS SEARCHBEHAVIOUR"
+				co = self.msg.getContentObject()
 				co["fipa:done"] = "true"
 				reply.setContentObject(co)
+
 			else:
 				# Old ugly SL0
 				rdf = False
@@ -367,6 +369,7 @@ class AMS(Agent.PlatformAgent):
 				reply.setContent(content)
 				
 			else:
+				print "$$$$$$$$$$$ AMS RDF"
 				# The RDF way of things, baby
 				# Delete done (from previous reply)
 				del co["fipa:done"]

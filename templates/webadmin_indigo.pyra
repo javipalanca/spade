@@ -38,20 +38,21 @@
 			<h1>Welcome to SPADE ! ! !</h1>
 			<div class="descr"><span>@!time!@</span></div>
 
-			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.html">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
+			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. You can check the online documentation for the SPADE project <a href="http://spade.gti-ia.dsic.upv.es/documentation.html">here</a>.<!--In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.html">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.--></p>
 
-			<cite>Sed sodales nisl sit amet augue. Donec ultrices, augue ullamcorper posuere laoreet, turpis massa tristique justo, sed egestas metus magna sed purus.</cite>
+			<cite>SPADE is the ultimate solution for all your agent needs -- Gustavo Aranda, SPADE developer</cite>
 			
-			<p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi. In eu diam.</p>
+			<p>SPADE (Smart Python multi-Agent Development Environment) is a Multiagent and Organizations Platform based on the <a href="http://www.xmpp.org">XMPP/Jabber technology</a> and written in the <a href="http://www.python.org">Python</a> programming language. This technology offers by itself many features and facilities that ease the construction of MAS, such as an existing communication channel, the concepts of users (agents) and servers (platforms) and an extensible communication protocol based on XML, just like <a href="http://www.fipa.org">FIPA-ACL</a>. Many other agent platforms exist, but SPADE is the first to base its roots on the XMPP technology.</p>
 
-			<p>Fusce porta pede nec eros. Maecenas ipsum sem, interdum non, aliquam vitae, interdum nec, metus. Maecenas ornare lobortis risus. Etiam placerat varius mauris. Maecenas viverra. Sed feugiat. Donec mattis <a href="index.html">quam aliquam</a> risus. Nulla non felis sollicitudin urna blandit egestas. Integer et libero varius pede tristique ultricies. Cras nisl. Proin quis massa semper felis euismod ultricies.
-			</p>
+			<p>The SPADE Agent Platform does not require (but strongly recommends) the operation of agents made with the SPADE Agent Library. The platform itself uses the library to empower its internals, but aside from that, you can develop your own agents in the programming language of your choice and use them with SPADE. The only requirement those agents must fulfill is to be able to communicate through the XMPP protocol. The FIPA-ACL messages will be embedded in XMPP messages. Be warned, however, that some features of the whole SPADE experience may not be available if you do not use the SPADE Agent Library to build your agents.</p>
 
-			<h1>Adipiscing</h1>
-			<div class="descr">Jun 11, 2006 by Laoreet</div>
+			<h1>The SPADE Agent Library</h1>
+			<!--<div class="descr">Jun 11, 2006 by Laoreet</div>-->
 
-			<p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi. In eu diam. Phasellus rutrum elit vel nisi. Cras mauris nulla, egestas quis, cursus at, venenatis ac, ante. Fusce accumsan enim et arcu. Duis sagittis libero at lacus. Suspendisse lacinia nulla eget urna.</p>
-			<ul>
+			<p>The SPADE Agent Library is a module for the Python programming language for building SPADE agents. It is a collection of classes, functions and tools for creating new SPADE agents that can work with the SPADE Agent Platform. Using it is the best way to start developing your own SPADE agents. In the future, we would like to offer bindings of the SPADE Agent Library for more programming languages, like Java or C#, but for now only Python is supported.</p>
+
+			<p>If you have worked with Python before, you will find the SPADE Agent Library easy to understand and use, with classes ready to use and expand, and many functionalities already built in the library. If you have worked with other high-level behavioral agent platforms (like Jade or MadKit) you will find some similarities in the way the library works, although the agent model present in SPADE is a bit different.</p>
+			<!--<ul>
 				<li>Tristique</li>
 				<li>Aenean</li>
 				<li>Pretium</li>
@@ -67,13 +68,13 @@ font: normal 1.1em "Lucida Sans Unicode",serif;
 background: url(img/quote.gif) no-repeat;
 padding-left: 28px;
 color: #555;</code>
-			<p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>
+			<p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>-->
 
 		</div>
 
 		<div class="sidenav">
 
-			<h1>Search</h1>
+			<h1>Search Agents and Services</h1>
 			<form action="index.html">
 			<div>
 				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
@@ -82,14 +83,14 @@ color: #555;</code>
 
 			<h1>Platform Info</h1>
 			<ul>
-				<li><a href="index.html">Hostname <span>@!servername!@</span></a></li>
-				<li><a href="index.html">Platform <span>@!platform!@<span></a></li>
+				<li><a href="index.html">Hostname <strong><span>@!servername!@</span></strong></a></li>
+				<li><a href="index.html">Platform <strong><span>@!platform!@<span></strong></a></li>
 				<!--<li><a href="index.html">convallis</a></li>-->
 			</ul>
 
 			<h1>System</h1>
 			<ul>
-				<li><a href="index.html">Python version <span>@!version!@</span></a></li>
+				<li><a href="index.html">Python version <strong><span>@!version!@</span></strong></a></li>
 				<!--<li><a href="index.html">sem justo</a></li>-->
 				<!--<li><a href="index.html">semper</a></li>-->
 			</ul>
