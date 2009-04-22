@@ -61,6 +61,34 @@ class ContentObject(dict):
 		root.attrs.update(nss)
 		root.addData("#WILDCARD#")
 		return str(root).replace("#WILDCARD#",co2xml(self))
+	"""
+	def asSL0(self, data = None):
+	    
+		if not data: data = self
+        cos = {}
+        lists = {}
+        attrs = {}
+        
+		sl = ""
+        
+		for key,value in data.items():
+		    if ":" in key: key = key.split(":")[1]
+
+		    if "ContentObject" in str(type(value)):
+    		    cos[key] = value
+				sl += "(%s %s )" % (key, self.asSL0(value))
+		    elif "list" in str(type(value)):
+				sl += "(sequence "
+				for i in value:
+				    sl += "(%s %s)" % (key, i)
+				sl += ")"
+		    elif value != None and value != "None":
+				sl += " :%s %s " % (key, value)
+				
+		for key,value in attrs.items():
+
+		return sl
+	"""
 		
 	def __str__(self):
 		return self.asRDFXML()
@@ -150,3 +178,5 @@ if __name__=="__main__":
     sco2 = RDFXML2CO(sco.asRDFXML())
     print sco2.pprint()
     print sco2.asRDFXML()
+    
+    #print sco2.asSL0()
