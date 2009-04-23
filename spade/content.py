@@ -91,7 +91,8 @@ class ContentObject(dict):
 	"""
 		
 	def __str__(self):
-		return self.asRDFXML()
+		return co2xml(self)
+		#return self.asRDFXML()
 
 
 def Node2CO(node, nsdict):

@@ -15,7 +15,8 @@ class MyAgent(spade.Agent.Agent):
 			aad = spade.AMS.AmsAgentDescription()
 			#print "AAD:",aad
 			search = self.myAgent.searchAgent(aad)
-			print "SEARCH:",search
+			for a in search:
+				print a.pprint()
 
 		def onEnd(self):
 			print "Ending behaviour . . ."

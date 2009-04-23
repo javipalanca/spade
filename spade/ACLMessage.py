@@ -185,7 +185,11 @@ class ACLMessage:
 		"""
 		returns the message content
 		"""
-		return str(self.content)
+		#print "$$$$$$$ GETCONTENT: ", str(self.content)
+		try:
+			return self.content.asRDFXML()
+		except:
+			return str(self.content)
 
 	def getContentObject(self):
 		"""

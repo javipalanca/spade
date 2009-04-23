@@ -311,7 +311,7 @@ class AMS(Agent.PlatformAgent):
 			
 			if "rdf" in self.msg.getLanguage().lower():
 				rdf = True
-				print "$$$$$$$$$$ AMS SEARCHBEHAVIOUR"
+				#print "$$$$$$$$$$ AMS SEARCHBEHAVIOUR"
 				co = self.msg.getContentObject()
 				co["fipa:done"] = "true"
 				reply.setContentObject(co)
@@ -369,7 +369,7 @@ class AMS(Agent.PlatformAgent):
 				reply.setContent(content)
 				
 			else:
-				print "$$$$$$$$$$$ AMS RDF"
+				#print "$$$$$$$$$$$ AMS RDF"
 				# The RDF way of things, baby
 				# Delete done (from previous reply)
 				del co["fipa:done"]
@@ -407,7 +407,8 @@ class AMS(Agent.PlatformAgent):
 				co2["fipa:result"] = []
 				for i in result:
 					co2["fipa:result"].append(i.asContentObject())
-				reply.setContentObject(co2)			
+				reply.setContentObject(co2)
+				#print "$$$$$$ AMS CONTENT: ",co2.pprint()			
 			
 			reply.setPerformative("inform")
 			self.myAgent.send(reply)
