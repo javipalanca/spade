@@ -61,34 +61,46 @@ class ContentObject(dict):
 		root.attrs.update(nss)
 		root.addData("#WILDCARD#")
 		return str(root).replace("#WILDCARD#",co2xml(self))
-	"""
-	def asSL0(self, data = None):
+
+
+"""CAWEN DIOS!!!
+        def asSL0(self):
+            return toSL0(self)
+
+def toSL0(self, data = None):
 	    
-		if not data: data = self
-        cos = {}
-        lists = {}
-        attrs = {}
+		self.co = []
+		self.l = []
+		self.other = []
         
 		sl = ""
+
+		for key,value in data.items():
+		    if "ContentObject" in str(type(value)): self.co.append((key,value))
+		    elif "list" in str(type(value)): self.l.append((key,value))
+		    else self.other.append((key,value))        
+
+
         
+
+
+
 		for key,value in data.items():
 		    if ":" in key: key = key.split(":")[1]
 
 		    if "ContentObject" in str(type(value)):
-    		    cos[key] = value
-				sl += "(%s %s )" % (key, self.asSL0(value))
+				sl += "(%s %s )" % (key, toSL0(value))
 		    elif "list" in str(type(value)):
 				sl += "(sequence "
 				for i in value:
-				    sl += "(%s %s)" % (key, i)
+				    sl += "(%s %s)" % (key, toSL0(i))
 				sl += ")"
 		    elif value != None and value != "None":
 				sl += " :%s %s " % (key, value)
-				
-		for key,value in attrs.items():
+
 
 		return sl
-	"""
+"""
 		
 	def __str__(self):
 		return co2xml(self)
