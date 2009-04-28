@@ -63,7 +63,7 @@ class ContentObject(dict):
 		return str(root).replace("#WILDCARD#",co2xml(self))
 
 
-"""CAWEN DIOS!!!
+	"""CAWEN DIOS!!!
         def asSL0(self):
             return toSL0(self)
 
@@ -100,7 +100,7 @@ def toSL0(self, data = None):
 
 
 		return sl
-"""
+	"""
 		
 	def __str__(self):
 		return co2xml(self)

@@ -2,6 +2,7 @@ import SimpleHTTPServer
 import pyratemp
 import os
 import sys
+from AMS import AmsAgentDescription
 
 class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
@@ -115,3 +116,12 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         the_time = str(time.ctime())
         return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
+    def agents(self):
+        import sys
+        import time
+        servername = self.platform.getDomain()
+        platform = self.platform.getName()        
+        version = str(sys.version)
+        the_time = str(time.ctime())
+        search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
+        return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)

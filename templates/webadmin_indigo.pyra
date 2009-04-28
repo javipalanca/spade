@@ -22,7 +22,7 @@
 
 		<div class="navigation">
 			<a href="index">Home</a>
-			<a href="index">Agents</a>
+			<a href="agents">Agents</a>
 			<a href="index">Services</a>
 			<a href="index">Organizations</a>
 			<a href="index">Plugins</a>
