@@ -87,10 +87,24 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 	            print "Could not open file: ", page
 	
         else:
-            template, ret = eval("self."+str(page)+"("+s_vars+")")
+            try:
+                template, ret = eval("self."+str(page)+"("+s_vars+")")
+            except:
+                #No controller
+                template = "404.pyra"
+                ret = {"template":page}
             
-            t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
-            result = t()
+            try:
+                t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
+            except:
+                #No template
+                t = pyratemp.Template(filename="templates"+os.sep+"503.pyra", data={"page":template})
+            try:
+                result = t()
+            except:
+                #Error in template
+                t = pyratemp.Template(filename="templates"+os.sep+"501.pyra", data={"template":template})
+                result = t()
                 
             r = result.encode("ascii", 'xmlcharrefreplace')
             
@@ -98,6 +112,13 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     #Controllers
     
+    def error404(self):
+        return "404.pyra", {"template":"404.pyra"}
+    def error501(self):
+        return "501.pyra", {"template":"501.pyra"}
+    def error503(self):
+        return "503.pyra", {"page":"503.pyra"}
+
     def index(self):
         import sys
         import time
@@ -105,7 +126,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         platform = self.platform.getName()        
         version = str(sys.version)
         the_time = str(time.ctime())
-        return "webadmin.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
+        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
     def webadmin_indigo(self):
         import sys
