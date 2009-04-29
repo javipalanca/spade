@@ -7,6 +7,8 @@
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
+
 <title>SPADE Web Interface: Agents</title>
 </head>
 
@@ -34,15 +36,23 @@
 	<div class="main">
 		
 		<div class="content">
-
-			<h1>Agent Directory</h1>
-			<ul>
-			<!--(for agent in agents)-->
-			<li>@!str(agent)!@</li>
-			<!--(end)-->
-			</ul>
-
 			
+			<ul>
+				<!--(for agent in agents)-->
+				<li>@!str(agent)!@</li>
+				<!--(end)-->
+			</ul>		
+			
+			<table class="servicesT" cellspacing="0">
+				<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>
+					<td class="servHd">State</td><td class="servHd">Ownership</td></tr>
+				<!--(for agent in agents)-->
+				<tr><td class="servBodL"><a href="#">@!str(agent["fipa:aid"]["fipa:name"])!@</a></td>
+					<td class="servBodL">@!str(agent["fipa:aid"]["fipa:addresses"])!@</td>
+				    <td class="servBodL">@!str(agent["fipa:state"])!@</td>
+					<td class="servBodL">@!str(agent["fipa:ownership"])!@</td></tr>
+				<!--(end)-->
+			</table>
 
 		</div>
 

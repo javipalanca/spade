@@ -145,4 +145,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         version = str(sys.version)
         the_time = str(time.ctime())
         search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
+        for agent in search:
+            if not agent.has_key("fipa:state"):
+                agent["fipa:state"] = ""
         return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)
