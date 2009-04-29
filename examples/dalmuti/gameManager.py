@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import sys
+import os
+sys.path.append(".."+os.sep+"..")
 import spade
 import string
 import random
@@ -8,7 +10,7 @@ import time
 from cartas import Carta
 from cartas import jugada
 
-servidor="host"
+servidor="127.0.0.1"
 
 class gameManager(spade.Agent.Agent):
 
