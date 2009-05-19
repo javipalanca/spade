@@ -1,3 +1,0 @@
-SPADE README
-
-TODO
