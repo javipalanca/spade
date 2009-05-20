@@ -3,6 +3,7 @@ import pyratemp
 import os
 import sys
 from AMS import AmsAgentDescription
+import DF
 
 class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
@@ -149,3 +150,16 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             if not agent.has_key("fipa:state"):
                 agent["fipa:state"] = ""
         return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)
+        
+    def services(self):
+        import sys
+        import time
+        servername = self.platform.getDomain()
+        platform = self.platform.getName()        
+        version = str(sys.version)
+        the_time = str(time.ctime())
+        search = self.server.behav.getAgent().searchService(DF.DfAgentDescription())
+        #for service in search:
+        #   if not agent.has_key("fipa:state"):
+        #        agent["fipa:state"] = ""
+        return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=search)
