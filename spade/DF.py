@@ -6,7 +6,8 @@ import AID
 import Behaviour
 import BasicFipaDateTime
 from SL0Parser import *
-
+from content import ContentObject
+import copy
 
 class DF(PlatformAgent):
 	"""
@@ -312,7 +313,6 @@ class DF(PlatformAgent):
 class DfAgentDescription:
 
 	def __init__(self, content = None):
-
 		#self.name = AID.aid()
 		self.name = None
 		self.services = []
@@ -634,4 +634,30 @@ class ServiceDescription:
 			sb = "(service-description\n" + sb + ")\n"
 		return sb
 
-
+	def asContentObject(self):
+		"""
+		Returns a version of the SD in ContentObject format
+		"""
+		co = ContentObject()
+		if self.name:
+			co["name"] = str(self.name)
+		else:
+			co["name"] = ""
+		if self.type:
+			co["type"] = str(self.type)
+		else:
+			co["type"] = ""
+		if self.protocols:
+			co["protocols"] = copy.copy(self.protocols)
+		if self.ontologies:
+			co["ontologies"] = copy.copy(self.ontologies)
+		if self.languages:
+			co["languages"] = copy.copy(self.languages)
+		if self.ownership:
+			co["ownership"] = self.ownership
+		if self.properties:
+			co["properties"] = ContentObject()
+			for p in self.properties:
+				co["properties"][p["name"]] = p["value"]
+		return co
+				

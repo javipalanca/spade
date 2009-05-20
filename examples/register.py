@@ -21,6 +21,7 @@ class RegisterAgent(Agent.Agent):
                 sd = DF.ServiceDescription()
                 sd.setName("test")
                 sd.setType("testservice")
+		print sd.asContentObject()
                 dad = DF.DfAgentDescription()
                 dad.addService(sd)
                 dad.setAID(self.myAgent.getAID())
@@ -36,9 +37,7 @@ class RegisterAgent(Agent.Agent):
 if __name__ == "__main__":
     host = os.getenv("HOSTNAME")
     if host == None:
-        host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
-        if host == None:
-            host = "thx1138.dsic.upv.es"
+    	host = "127.0.0.1"
 
     print "HOST:",host
     ag = RegisterAgent("register@"+host, "secret")
