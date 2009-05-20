@@ -77,7 +77,7 @@ class AMS(Agent.PlatformAgent):
 		def _process(self):
 			error = False
 			msg = self._receive(True)
-			print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
+			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology().lower() == "fipa-agent-management":
@@ -117,7 +117,7 @@ class AMS(Agent.PlatformAgent):
 							ACLtemplate.setConversationId(msg.getConversationId())
 							ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
-							print ">>>>>>>>AMS CONTENT RDF ",co
+							#print ">>>>>>>>AMS CONTENT RDF ",co
 							
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
 								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
@@ -125,9 +125,9 @@ class AMS(Agent.PlatformAgent):
 								elif co["fipa:action"]["fipa:act"] == "get-description":
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "search":
-									print ">>>>>>>>AMS CONTENT SEARCH"									
+									#print ">>>>>>>>AMS SEARCH"									
 									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
-								elif co["fipa:action"]["fipa:act"] == "search":
+								elif co["fipa:action"]["fipa:act"] == "modify":
 									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
 							else:
 								reply = msg.createReply()
@@ -257,37 +257,63 @@ class AMS(Agent.PlatformAgent):
 			self.content = content
 
 		def _process(self):
-
+			# Create an AGREE reply
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
-			reply.setContent("(" + str(self.msg.getContent()) + " true)")
+			
+			if "rdf" in self.msg.getLanguage().lower():
+				# The content language is RDF
+				rdf = True
+				co = self.msg.getContentObject()
+				co["fipa:done"] = "true"
+				reply.setContentObject(co)
+			else:
+				rdf = False
+				reply.setContent("(" + str(self.msg.getContent()) + " true)")
+			
+			# Send the AGREE reply
 			self.myAgent.send(reply)
 
-			content = "(ap-description :name xmpp://"+self.myAgent.getSpadePlatformJID()+ " :ap-services  (set "
+			# Set up the content of the actual reply
+			if rdf:
+				co_rep = ContentObject()
+				co_rep["ap-description"] = ContentObject()
+				co_rep["ap-description"]["name"] = "xmpp://"+self.myAgent.getSpadePlatformJID()
+				co_rep["ap-description"]["ap-services"] = []
+				co_serv = ContentObject()
+				co_serv["ap-service"] = ContentObject()
+				co_serv["ap-service"]["name"] = "xmpp://" + str(self.myAgent.getAMS().getName())
+				co_serv["ap-service"]["type"] = "fipa.agent-management.ams"
+				co_serv["ap-service"]["addresses"] = []
+				co_serv["ap-service"]["addresses"].append(self.myAgent.getSpadePlatformJID())
+				co_rep["ap-description"]["ap-services"].append(co_serv)
+				reply.setContentObject(co_rep)
+			else:
+				# Write the content in old ugly SL0
+				content = "(ap-description :name xmpp://"+self.myAgent.getSpadePlatformJID()+ " :ap-services  (set "
 
-			#TODO acceso al nombre de la plataforma y los servicios ofertados (df, ams, etc...)
-			"""
-			for s in "TODO_SERVICES":
-				content += "(ap-service :name " + s.name
-				content += " :type " + s.type
-				content += " :addresses (sequence "
-				for ad in s.addresses:
-					content += ad + " "
-				content += "))"
-			"""
+				#TODO acceso al nombre de la plataforma y los servicios ofertados (df, ams, etc...)
+				"""
+				for s in "TODO_SERVICES":
+					content += "(ap-service :name " + s.name
+					content += " :type " + s.type
+					content += " :addresses (sequence "
+					for ad in s.addresses:
+						content += ad + " "
+					content += "))"
+				"""
 
-			content += "(ap-service :name xmpp://"+ str(self.myAgent.getAMS().getName())
-			content += " :type fipa.agent-management.ams " #TODO
-			content += " :addresses (sequence " + str(self.myAgent.getSpadePlatformJID()) + ")"
-			content + " ) )"
+				content += "(ap-service :name xmpp://"+ str(self.myAgent.getAMS().getName())
+				content += " :type fipa.agent-management.ams " #TODO
+				content += " :addresses (sequence " + str(self.myAgent.getSpadePlatformJID()) + ")"
+				content + " ) )"
 
+				content += ")"
+				reply.setContent(content)
 
-			content += ")"
-
-
+			# Send the actual INFORM reply
 			reply.setPerformative("inform")
-			reply.setContent(content)
 			self.myAgent.send(reply)
 
 			return 1
@@ -369,7 +395,6 @@ class AMS(Agent.PlatformAgent):
 				reply.setContent(content)
 				
 			else:
-				#print "$$$$$$$$$$$ AMS RDF"
 				# The RDF way of things, baby
 				# Delete done (from previous reply)
 				del co["fipa:done"]
@@ -394,9 +419,9 @@ class AMS(Agent.PlatformAgent):
 					aad = AmsAgentDescription(co=co["fipa:action"]["fipa:argument"])
 					for a in self.myAgent.agentdb.values():
 						if max >= 0:
-							print "comparo " +str(a)+ " con " +str(aad)
+							#print "compare " +str(a)+ " with " +str(aad)
 							if a == aad:
-								print "TRUE!"
+								#print "TRUE!"
 								result.append(a)
 								max -= 1
 						else: break
@@ -476,8 +501,8 @@ class AMS(Agent.PlatformAgent):
 				reply.setPerformative("failure")
 				reply.setContent("("+self.msg.getContent() + "(not-registered))")
 				self.myAgent.send(reply)
-				print aad.getAID().getName()
-				print self.myAgent.agentdb
+				#print aad.getAID().getName()
+				#print self.myAgent.agentdb
 				return -1
 
 

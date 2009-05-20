@@ -35,13 +35,7 @@
 
 	<div class="main">
 		
-		<div class="content">
-			
-			<ul>
-				<!--(for agent in agents)-->
-				<li>@!str(agent)!@</li>
-				<!--(end)-->
-			</ul>		
+		<div class="content">		
 			
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>

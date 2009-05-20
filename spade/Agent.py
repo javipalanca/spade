@@ -1472,7 +1472,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			#print "PARSE"
                 	##content = p.parse(str(msg.getContent()).strip())
 			co = msg.getContentObject()
-			print co
+			#print co
                 except:
 			print "PARSE EXCEPTION"
 			self.result = []
@@ -1571,16 +1571,25 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		msg = self._msg
 		msg.addReceiver( self.myAgent.getAMS() )
 		msg.setPerformative('request')
-		msg.setLanguage('fipa-sl0')
+		#msg.setLanguage('fipa-sl0')
+		msg.setLanguage('rdf')
 		msg.setProtocol('fipa-request')
 		msg.setOntology('FIPA-Agent-Management')
 
+		"""
 		content = "((action "
 		content += str(self.myAgent.getAID())
 		content += "(get-description platform)"
 		content +=" ))"
 
 		msg.setContent(content)
+		"""
+
+		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+		content["fipa:action"] = ContentObject()
+		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+		content["fipa:action"]["fipa:act"] = "get-description"
+		msg.setContentObject(content)
 
 		self.myAgent.send(msg)
 
@@ -1595,7 +1604,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 			return -1
 
-		self.result = msg.getContent()
+		#self.result = msg.getContent()
+		self.result = msg.getContentObject()
 
     def getPlatformInfo(self, debug=False):
 	"""
