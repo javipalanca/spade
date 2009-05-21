@@ -36,6 +36,28 @@ class RecvMsgBehav(spade.Behaviour.OneShotBehaviour):
         self.myAgent.msg = None
         self.myAgent.msg = self._receive(block=True,timeout=10)
 
+class SendAndRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def _process(self):
+        msg = spade.ACLMessage.ACLMessage()
+        msg.setPerformative("inform")
+        msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
+        msg.setContent("UNITTEST")
+
+        self.myAgent.send(msg)
+        self.myAgent.msg = None
+        self.myAgent.msg = self._receive(block=True,timeout=10)
+
+class AnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def _process(self):
+        msg = None
+        msg = self._receive(block=True,timeout=10)
+        if msg != None:
+			msg = msg.createReply()
+			self.myAgent.send(msg)
+
+
 
 class BasicTestCase(unittest.TestCase):
     
@@ -71,6 +93,21 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
         self.assertNotEqual(self.b.msg,None)
+
+    def testSendAndRecvMsg(self):
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(spade.AID.aid("a@"+host,["xmpp://a@"+host]))
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(AnswerMsgBehav(),t)
+        template.setSender(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
+        t = spade.Behaviour.MessageTemplate(template)
+        self.a.addBehaviour(SendAndRecvMsgBehav(),t)
+        counter = 0
+        while self.a.msg == None and counter < 20:
+            time.sleep(1)
+            counter += 1
+        self.assertNotEqual(self.a.msg,None)
+
 
 if __name__ == "__main__":
     unittest.main()
