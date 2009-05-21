@@ -10,654 +10,737 @@ from content import ContentObject
 import copy
 
 class DF(PlatformAgent):
-	"""
-	Directory Facilitator Agent
-	"""
-
-	class DefaultBehaviour(Behaviour.Behaviour):
-
-		def __init__(self):
-			Behaviour.Behaviour.__init__(self)
-			self.sl0parser = SL0Parser()
-
-		def _process(self):
-			error = False
-			msg = self._receive(True)
-			if msg != None:
-				#print "DF RECEIVED A MESSAGE", str(msg)
-				if msg.getPerformative().lower() == 'request':
-					if msg.getOntology().lower() == "fipa-agent-management":
-						if msg.getLanguage().lower() == "fipa-sl0":
-							content = self.sl0parser.parse(msg.getContent())
-							ACLtemplate = Behaviour.ACLTemplate()
-							ACLtemplate.setConversationId(msg.getConversationId())
-							#ACLtemplate.setSender(msg.getSender())
-							template = (Behaviour.MessageTemplate(ACLtemplate))
-
-							if "action" in content:
-								if "register" in content.action or "deregister" in content.action:
-									self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,content), template)
-								elif "search" in content.action:
-									self.myAgent.addBehaviour(DF.SearchBehaviour(msg,content), template)
-								elif "modify" in content.action:
-									self.myAgent.addBehaviour(DF.ModifyBehaviour(msg,content), template)
-							else:
-								reply = msg.createReply()
-								reply.setSender(self.myAgent.getAID())
-								reply.setPerformative("refuse")
-								reply.setContent("( "+msg.getContent() +"(unsuported-function "+ content.keys()[0] +"))")
-								self.myAgent.send(reply)
-
-								return -1
-
-
-
-						else: error = "(unsupported-language "+msg.getLanguage()+")"
-					else: error = "(unsupported-ontology "+msg.getOntology()+")"
-
-
-				elif msg.getPerformative().lower() not in ['failure','refuse']:
-						error = "(unsupported-act " + msg.getPerformative() + ")"
-				if error:
-					reply = msg.createReply()
-					reply.setSender(self.myAgent.getAID())
-					reply.setPerformative("not-understood")
-					reply.setContent("( "+msg.getContent() + error+")")
-					self.myAgent.send(reply)
-					return -1
-
-				#TODO: delete old services
-
-
-	class RegisterBehaviour(Behaviour.OneShotBehaviour):
-
-		def __init__(self,msg,content):
-			Behaviour.OneShotBehaviour.__init__(self)
-			self.msg = msg
-			self.content = content
-			#print "Constructor"
-
-		def _process(self):
-
-			#The DF agrees and then informs dummy of the successful execution of the action
-			error = False
-
-			try:
-				if "register" in self.content.action:
-					dad = DfAgentDescription(self.content.action.register['df-agent-description'])
-				else:
-					dad = DfAgentDescription(self.content.action.deregister['df-agent-description'])
-			except KeyError: #Exception,err:
-				error = "(missing-argument df-agent-description)"
-
-
-			if error:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("refuse")
-				reply.setContent("( "+self.msg.getContent() + error + ")")
-				self.myAgent.send(reply)
-
-				return -1
-
-			else:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("agree")
-				reply.setContent("(" + str(self.msg.getContent()) + " true)")
-				self.myAgent.send(reply)
-
-
-			if "register" in self.content.action:
-				if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
-
-					try:
-						self.myAgent.servicedb[dad.getAID().getName()] = dad
-						#print "###########"
-						#print "DF REGISTERED SERVICE"
-						#print dad
-						#print "###########"
-					except Exception, err:
-						reply.setPerformative("failure")
-						reply.setContent("("+self.msg.getContent() + "(internal-error))")
-						self.myAgent.send(reply)
-						return -1
-
-
-					reply.setPerformative("inform")
-					reply.setContent("(done "+self.msg.getContent() + ")")
-					self.myAgent.send(reply)
-
-					return 1
-
-				else:
-					reply.setPerformative("failure")
-					reply.setContent("("+self.msg.getContent() + "(already-registered))")
-					self.myAgent.send(reply)
-					return -1
-
-			elif "deregister" in self.content.action:
-
-				if self.myAgent.servicedb.has_key(dad.getAID().getName()):
-					try:
-						del self.myAgent.servicedb[dad.getAID().getName()]
-					except Exception, err:
-						reply.setPerformative("failure")
-						reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
-						self.myAgent.send(reply)
-						return -1
-
-					reply.setPerformative("inform")
-					reply.setContent("(done "+self.msg.getContent() + ")")
-					self.myAgent.send(reply)
-
-					return 1
-
-				else:
-					reply.setPerformative("failure")
-					reply.setContent("("+self.msg.getContent() + "(not-registered))")
-					self.myAgent.send(reply)
-					return -1
-
-
-	class SearchBehaviour(Behaviour.OneShotBehaviour):
-
-		def __init__(self,msg,content):
-			Behaviour.OneShotBehaviour.__init__(self)
-			self.msg = msg
-			self.content = content
-
-		def _process(self):
-
-			error = False
-
-			reply = self.msg.createReply()
-			reply.setSender(self.myAgent.getAID())
-			reply.setPerformative("agree")
-			reply.setContent("(" + str(self.msg.getContent()) + " true)")
-			#reply.setConversationId(self.msg.getConversationId())
-			self.myAgent.send(reply)
-
-			max = 50
-			if "search-constraints" in self.content.action.search:
-				if "max-results" in self.content.action.search["search-constraints"]:
-					try:
-						max_str = str(self.content.action.search["search-constraints"]["max-results"]).strip("[']")
-						max = int(max_str)
-					except Exception, err:
-						error = '(internal-error "max-results is not an integer")'
-			if error:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("failure")
-				reply.setContent("( "+self.msg.getContent() + error+")")
-				self.myAgent.send(reply)
-				return -1
-
-
-			result = []
-
-			if "df-agent-description" in self.content.action.search:
-				dad = DfAgentDescription(self.content.action.search["df-agent-description"])
-			if max in [-1, 0]:
-				# No limit
-				for i in self.myAgent.servicedb.values():
-					if dad.match(i):
-						result.append(i)
-			else:
-				for i in self.myAgent.servicedb.values():
-					if max >= 0:
-						if dad.match(i):
-							result.append(i)
-							max -= 1
-					else: break
-
-			content = "((result " + self.msg.getContent().strip("\n")[1:-1]
-			if len(result)>0:
-				content += " (sequence "
-				for i in result:
-					content += str(i) + " "
-				content += ")"
-			else:
-				#content+= "None"  # ??????
-				pass
-			content += "))"
-
-
-			reply.setPerformative("inform")
-			reply.setContent(content)
-			self.myAgent.send(reply)
-
-			recvs = ""
-			for r in reply.getReceivers():
-				recvs += str(r.getName())
-
-			return 1
-
-	class ModifyBehaviour(Behaviour.OneShotBehaviour):
-
-		def __init__(self,msg,content):
-			Behaviour.OneShotBehaviour.__init__(self)
-			self.msg = msg
-			self.content = content
-
-		def _process(self):
-
-			#The AMS agrees and then informs dummy of the successful execution of the action
-			error = False
-			dad = None
-			#print self.content.action.modify[0][1]
-			try:
-					dad = DF.DfAgentDescription(self.content.action.modify[0][1])
-			except Exception,err:
-				error = "(missing-argument ams-agent-description)"
-
-			if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
-				error = "(unauthorised)"
-
-			if error:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("refuse")
-				reply.setContent("( "+self.msg.getContent() + error + ")")
-				self.myAgent.send(reply)
-
-				return -1
-
-			else:
-
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("agree")
-				reply.setContent("(" + str(self.msg.getContent()) + " true)")
-				self.myAgent.send(reply)
-
-
-
-
-			if self.myAgent.servicedb.has_key(dad.getAID().getName()):
-
-				try:
-					self.myAgent.servicedb[dad.getAID().getName()] = dad
-				except Exception, err:
-					reply.setPerformative("failure")
-					reply.setContent("("+self.msg.getContent() + "(internal-error))")
-					self.myAgent.send(reply)
-					return -1
-
-
-
-				reply.setPerformative("inform")
-				reply.setContent("(done "+self.msg.getContent() + ")")
-				self.myAgent.send(reply)
-
-				return 1
-
-			else:
-				reply.setPerformative("failure")
-				reply.setContent("("+self.msg.getContent() + "(not-registered))")
-				self.myAgent.send(reply)
-				return -1
-
-
-	def __init__(self,node,passw,server="localhost",port=5347):
-		PlatformAgent.__init__(self,node,passw,server,port)
-		#self.addAddress("http://"+self.getDomain()+":2099/acc")  # HACK
-
-	def _setup(self):
-		self.servicedb = dict()
-
-		self.setDefaultBehaviour(self.DefaultBehaviour())
+    """
+    Directory Facilitator Agent
+    """
+
+    class DefaultBehaviour(Behaviour.Behaviour):
+
+        def __init__(self):
+            Behaviour.Behaviour.__init__(self)
+            self.sl0parser = SL0Parser()
+
+        def _process(self):
+            error = False
+            msg = self._receive(True)
+            if msg != None:
+                #print "DF RECEIVED A MESSAGE", str(msg)
+                if msg.getPerformative().lower() == 'request':
+                    if msg.getOntology().lower() == "fipa-agent-management":
+                        if msg.getLanguage().lower() == "fipa-sl0":
+                            content = self.sl0parser.parse(msg.getContent())
+                            ACLtemplate = Behaviour.ACLTemplate()
+                            ACLtemplate.setConversationId(msg.getConversationId())
+                            #ACLtemplate.setSender(msg.getSender())
+                            template = (Behaviour.MessageTemplate(ACLtemplate))
+
+                            if "action" in content:
+                                if "register" in content.action or "deregister" in content.action:
+                                    self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,content), template)
+                                elif "search" in content.action:
+                                    self.myAgent.addBehaviour(DF.SearchBehaviour(msg,content), template)
+                                elif "modify" in content.action:
+                                    self.myAgent.addBehaviour(DF.ModifyBehaviour(msg,content), template)
+                            else:
+                                reply = msg.createReply()
+                                reply.setSender(self.myAgent.getAID())
+                                reply.setPerformative("refuse")
+                                reply.setContent("( "+msg.getContent() +"(unsuported-function "+ content.keys()[0] +"))")
+                                self.myAgent.send(reply)
+
+                                return -1
+
+
+                        elif "rdf" in msg.getLanguage().lower():
+                            co = msg.getContentObject()
+                            ACLtemplate = Behaviour.ACLTemplate()
+                            ACLtemplate.setConversationId(msg.getConversationId())
+                            #ACLtemplate.setSender(msg.getSender())
+                            template = (Behaviour.MessageTemplate(ACLtemplate))
+                            
+                            if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
+                                if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
+                                    self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,co), template)
+                                elif co["fipa:action"]["fipa:act"] == "search":
+                                    self.myAgent.addBehaviour(DF.SearchBehaviour(msg,co), template)
+                                elif co["fipa:action"]["fipa:act"] == "modify":
+                                    self.myAgent.addBehaviour(DF.ModifyBehaviour(msg,content), template)
+                            else:
+                                    reply = msg.createReply()
+                                    reply.setSender(self.myAgent.getAID())
+                                    reply.setPerformative("refuse")
+                                    co2 = ContentObject()
+                                    co2["unsuported-function"] = co["fipa:action"]["fipa:act"]
+                                    reply.setContentObject(co2)
+                                    self.myAgent.send(reply)
+                                    return -1
+                            
+                            
+                        else: error = "(unsupported-language "+msg.getLanguage()+")"
+                    else: error = "(unsupported-ontology "+msg.getOntology()+")"
+
+
+                elif msg.getPerformative().lower() not in ['failure','refuse']:
+                        error = "(unsupported-act " + msg.getPerformative() + ")"
+                if error:
+                    reply = msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("not-understood")
+                    reply.setContent("( "+msg.getContent() + error+")")
+                    self.myAgent.send(reply)
+                    return -1
+
+                #TODO: delete old services
+
+
+    class RegisterBehaviour(Behaviour.OneShotBehaviour):
+
+        def __init__(self,msg,content):
+            Behaviour.OneShotBehaviour.__init__(self)
+            self.msg = msg
+            self.content = content
+            #print "Constructor"
+
+        def _process(self):
+            #The DF agrees and then informs dummy of the successful execution of the action
+            error = False
+
+            if "rdf" not in self.msg.getLanguage():
+                rdf = True
+                try:
+                    if "register" in self.content.action:
+                        dad = DfAgentDescription(self.content.action.register['df-agent-description'])
+                    else:
+                        dad = DfAgentDescription(self.content.action.deregister['df-agent-description'])
+                except KeyError: #Exception,err:
+                    error = "(missing-argument df-agent-description)"
+
+
+                if error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("refuse")
+                    reply.setContent("( "+self.msg.getContent() + error + ")")
+                    self.myAgent.send(reply)
+
+                    return -1
+
+                else:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("agree")
+                    reply.setContent("(" + str(self.msg.getContent()) + " true)")
+                    self.myAgent.send(reply)
+
+
+                if "register" in self.content.action:
+                    if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
+
+                        try:
+                            self.myAgent.servicedb[dad.getAID().getName()] = dad
+                            #print "###########"
+                            #print "DF REGISTERED SERVICE"
+                            #print dad
+                            #print "###########"
+                        except Exception, err:
+                            reply.setPerformative("failure")
+                            reply.setContent("("+self.msg.getContent() + "(internal-error))")
+                            self.myAgent.send(reply)
+                            return -1
+
+
+                        reply.setPerformative("inform")
+                        reply.setContent("(done "+self.msg.getContent() + ")")
+                        self.myAgent.send(reply)
+
+                        return 1
+
+                    else:
+                        reply.setPerformative("failure")
+                        reply.setContent("("+self.msg.getContent() + "(already-registered))")
+                        self.myAgent.send(reply)
+                        return -1
+
+                elif "deregister" in self.content.action:
+
+                    if self.myAgent.servicedb.has_key(dad.getAID().getName()):
+                        try:
+                            del self.myAgent.servicedb[dad.getAID().getName()]
+                        except Exception, err:
+                            reply.setPerformative("failure")
+                            reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
+                            self.myAgent.send(reply)
+                            return -1
+
+                        reply.setPerformative("inform")
+                        reply.setContent("(done "+self.msg.getContent() + ")")
+                        self.myAgent.send(reply)
+
+                        return 1
+
+                    else:
+                        reply.setPerformative("failure")
+                        reply.setContent("("+self.msg.getContent() + "(not-registered))")
+                        self.myAgent.send(reply)
+                        return -1
+
+
+    class SearchBehaviour(Behaviour.OneShotBehaviour):
+
+        def __init__(self,msg,content):
+            Behaviour.OneShotBehaviour.__init__(self)
+            self.msg = msg
+            self.content = content
+
+        def _process(self):
+
+            error = False
+
+            reply = self.msg.createReply()
+            reply.setSender(self.myAgent.getAID())
+            reply.setPerformative("agree")
+            reply.setContent("(" + str(self.msg.getContent()) + " true)")
+            #reply.setConversationId(self.msg.getConversationId())
+            self.myAgent.send(reply)
+
+            max = 50
+            if "search-constraints" in self.content.action.search:
+                if "max-results" in self.content.action.search["search-constraints"]:
+                    try:
+                        max_str = str(self.content.action.search["search-constraints"]["max-results"]).strip("[']")
+                        max = int(max_str)
+                    except Exception, err:
+                        error = '(internal-error "max-results is not an integer")'
+            if error:
+                reply = self.msg.createReply()
+                reply.setSender(self.myAgent.getAID())
+                reply.setPerformative("failure")
+                reply.setContent("( "+self.msg.getContent() + error+")")
+                self.myAgent.send(reply)
+                return -1
+
+
+            result = []
+
+            if "df-agent-description" in self.content.action.search:
+                dad = DfAgentDescription(self.content.action.search["df-agent-description"])
+            if max in [-1, 0]:
+                # No limit
+                for i in self.myAgent.servicedb.values():
+                    if dad.match(i):
+                        result.append(i)
+            else:
+                for i in self.myAgent.servicedb.values():
+                    if max >= 0:
+                        if dad.match(i):
+                            result.append(i)
+                            max -= 1
+                    else: break
+
+            content = "((result " + self.msg.getContent().strip("\n")[1:-1]
+            if len(result)>0:
+                content += " (sequence "
+                for i in result:
+                    content += str(i) + " "
+                content += ")"
+            else:
+                #content+= "None"  # ??????
+                pass
+            content += "))"
+
+
+            reply.setPerformative("inform")
+            reply.setContent(content)
+            self.myAgent.send(reply)
+
+            recvs = ""
+            for r in reply.getReceivers():
+                recvs += str(r.getName())
+
+            return 1
+
+    class ModifyBehaviour(Behaviour.OneShotBehaviour):
+
+        def __init__(self,msg,content):
+            Behaviour.OneShotBehaviour.__init__(self)
+            self.msg = msg
+            self.content = content
+
+        def _process(self):
+
+            #The AMS agrees and then informs dummy of the successful execution of the action
+            error = False
+            dad = None
+            #print self.content.action.modify[0][1]
+            try:
+                    dad = DF.DfAgentDescription(self.content.action.modify[0][1])
+            except Exception,err:
+                error = "(missing-argument ams-agent-description)"
+
+            if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
+                error = "(unauthorised)"
+
+            if error:
+                reply = self.msg.createReply()
+                reply.setSender(self.myAgent.getAID())
+                reply.setPerformative("refuse")
+                reply.setContent("( "+self.msg.getContent() + error + ")")
+                self.myAgent.send(reply)
+
+                return -1
+
+            else:
+
+                reply = self.msg.createReply()
+                reply.setSender(self.myAgent.getAID())
+                reply.setPerformative("agree")
+                reply.setContent("(" + str(self.msg.getContent()) + " true)")
+                self.myAgent.send(reply)
+
+
+
+
+            if self.myAgent.servicedb.has_key(dad.getAID().getName()):
+
+                try:
+                    self.myAgent.servicedb[dad.getAID().getName()] = dad
+                except Exception, err:
+                    reply.setPerformative("failure")
+                    reply.setContent("("+self.msg.getContent() + "(internal-error))")
+                    self.myAgent.send(reply)
+                    return -1
+
+
+
+                reply.setPerformative("inform")
+                reply.setContent("(done "+self.msg.getContent() + ")")
+                self.myAgent.send(reply)
+
+                return 1
+
+            else:
+                reply.setPerformative("failure")
+                reply.setContent("("+self.msg.getContent() + "(not-registered))")
+                self.myAgent.send(reply)
+                return -1
+
+
+    def __init__(self,node,passw,server="localhost",port=5347):
+        PlatformAgent.__init__(self,node,passw,server,port)
+        #self.addAddress("http://"+self.getDomain()+":2099/acc")  # HACK
+
+    def _setup(self):
+        self.servicedb = dict()
+
+        self.setDefaultBehaviour(self.DefaultBehaviour())
 
 
 class DfAgentDescription:
 
-	def __init__(self, content = None):
-		#self.name = AID.aid()
-		self.name = None
-		self.services = []
-		self.protocols = []
-		self.ontologies = []
-		self.languages = []
-		self.lease_time = None
-		self.scope = []
+    def __init__(self, content = None, co = None):
+        #self.name = AID.aid()
+        self.name = None
+        self.services = []
+        self.protocols = []
+        self.ontologies = []
+        self.languages = []
+        self.lease_time = None
+        self.scope = []
 
-		if content != None:
-			self.loadSL0(content)
+        if content != None:
+            self.loadSL0(content)
+        
+        if co:
+            if co.has_key("name"):
+                self.name = co["name"]
+            if co.has_key("lease_time"):
+                self.name = co["lease_time"]
+            if co.has_key("services"):
+                self.services = copy.copy(co["services"])
+            if co.has_key("protocols"):
+                self.protocols = copy.copy(co["protocols"])
+            if co.has_key("ontologies"):
+                self.protocols = copy.copy(co["ontologies"])
+            if co.has_key("languages"):
+                self.protocols = copy.copy(co["languages"])
+            if co.has_key("scope"):
+                self.scope = copy.copy(co["scope"])
 
-	def getAID(self):
-		return self.name
 
-	def setAID(self, a):
-		self.name = a
+    def asContentObject():
+        """
+        Returns a version of the DAD in ContentObject format
+        """
+        co = ContentObject()
+        if self.name:
+            co["name"] = str(self.name)
+        else:
+            co["name"] = ""
+        if self.type:
+            co["lease-time"] = str(self.lease_time)
+        if self.protocols:
+            co["protocols"] = copy.copy(self.protocols)
+        if self.services:
+            co["services"] = copy.copy(self.services)
+        if self.ontologies:
+            co["ontologies"] = copy.copy(self.ontologies)
+        if self.languages:
+            co["languages"] = copy.copy(self.languages)
+        if self.scope:
+            co["scope"] = copy.copy(self.scope)     
+        return co
 
-	def getServices(self):
-		return self.services
+    def getAID(self):
+        return self.name
 
-	def addService(self, s):
-		self.services.append(s)
+    def setAID(self, a):
+        self.name = a
 
-	def getProtocols(self):
-		return self.protocols
+    def getServices(self):
+        return self.services
 
-	def addProtocol(self, p):
-		self.protocols.append(p)
+    def addService(self, s):
+        self.services.append(s)
 
-	def getOntologies(self):
-		return self.ontologies
+    def getProtocols(self):
+        return self.protocols
 
-	def addOntologies(self, o):
-		self.ontologies.append(o)
+    def addProtocol(self, p):
+        self.protocols.append(p)
 
-	def getLanguages(self):
-		return self.languages
+    def getOntologies(self):
+        return self.ontologies
 
-	def addLanguage(self, l):
-		self.languages.append(l)
+    def addOntologies(self, o):
+        self.ontologies.append(o)
 
-	def getLeaseTime(self):
-		return self.lease_time
+    def getLanguages(self):
+        return self.languages
 
-	def setLeaseTime(self, lt):
-		self.lease_time = lt
+    def addLanguage(self, l):
+        self.languages.append(l)
 
-	def getScope(self):
-		return self.scope
+    def getLeaseTime(self):
+        return self.lease_time
 
-	def addScope(self, s):
-		self.scope = s
+    def setLeaseTime(self, lt):
+        self.lease_time = lt
 
-	#def __eq__(self,y):
-	def match(self,y):
+    def getScope(self):
+        return self.scope
 
-		if self.name:
-			if self.name != y.getAID():
-				return False
-		if self.protocols:
-			if self.protocols.sort() != y.getProtocols().sort():
-				return False
-		if self.ontologies:
-			if self.ontologies.sort() != y.getOntologies().sort():
-				return False
-		if self.languages:
-			if self.languages.sort() != y.getLanguages().sort():
-				return False
-		if self.lease_time:
-			if self.lease_time != None and y.getLeaseTime() != None:
-				return False
-		if self.scope:
-			if self.scope.sort() != y.getScope().sort():
-				return False
+    def addScope(self, s):
+        self.scope = s
 
-		if len(self.services)>0 and len(y.getServices())>0:
-			for i in self.services:
-				for j in y.getServices():
-					#if i == j:
-					if i.match(j):
-						return True
-			return False
-		else:
-			return True
+    #def __eq__(self,y):
+    def match(self,y):
 
-	def __ne__(self,y):
-		return not self == y
+        if self.name:
+            if self.name != y.getAID():
+                return False
+        if self.protocols:
+            if self.protocols.sort() != y.getProtocols().sort():
+                return False
+        if self.ontologies:
+            if self.ontologies.sort() != y.getOntologies().sort():
+                return False
+        if self.languages:
+            if self.languages.sort() != y.getLanguages().sort():
+                return False
+        if self.lease_time:
+            if self.lease_time != None and y.getLeaseTime() != None:
+                return False
+        if self.scope:
+            if self.scope.sort() != y.getScope().sort():
+                return False
 
-	def loadSL0(self,content):
-		if content != None:
-			if "name" in content:
-				self.name = AID.aid()
-				self.name.loadSL0(content.name)
+        if len(self.services)>0 and len(y.getServices())>0:
+            for i in self.services:
+                for j in y.getServices():
+                    #if i == j:
+                    if i.match(j):
+                        return True
+            return False
+        else:
+            return True
 
-			if "services" in content:
-				#TODO: el parser solo detecta 1 service-description!!!
-				self.services = [] #ServiceDescription()
-				#self.services.loadSL0(content.services.set['service-description'])
-				for i in content.services.set:
-					sd = ServiceDescription(i[1])
-					self.services.append(sd)
+    def __ne__(self,y):
+        return not self == y
 
-			if "protocols" in content:
-				self.protocols = content.protocols.set.asList()
+    def loadSL0(self,content):
+        if content != None:
+            if "name" in content:
+                self.name = AID.aid()
+                self.name.loadSL0(content.name)
 
-			if "ontologies" in content:
-				self.ontologies = content.ontologies.set.asList()
+            if "services" in content:
+                #TODO: el parser solo detecta 1 service-description!!!
+                self.services = [] #ServiceDescription()
+                #self.services.loadSL0(content.services.set['service-description'])
+                for i in content.services.set:
+                    sd = ServiceDescription(i[1])
+                    self.services.append(sd)
 
-			if "languages" in content:
-				self.languages = content.languages.set.asList()
+            if "protocols" in content:
+                self.protocols = content.protocols.set.asList()
 
-			if "lease-time" in content:
-				self.lease_time = BasicFipaDateTime.BasicFipaDateTime()
-				#self.lease_time.fromString(content["lease-time"])
-				self.lease_time = content["lease-time"][0]
+            if "ontologies" in content:
+                self.ontologies = content.ontologies.set.asList()
 
-			if "scope" in content:
-				self.scope = content.scope.set.asList()
+            if "languages" in content:
+                self.languages = content.languages.set.asList()
 
-	def __str__(self):
+            if "lease-time" in content:
+                self.lease_time = BasicFipaDateTime.BasicFipaDateTime()
+                #self.lease_time.fromString(content["lease-time"])
+                self.lease_time = content["lease-time"][0]
 
-		sb = ''
-		if self.name != None:
-			sb = sb + ":name " + str(self.name) + "\n"
+            if "scope" in content:
+                self.scope = content.scope.set.asList()
 
-		if len(self.services) > 0:
-			sb = sb + ":services \n(set\n"
-			for i in self.services:
-				sb = sb + str(i) + '\n'
-			sb = sb + ")\n"
+    def __str__(self):
 
-		if len(self.protocols) > 0:
-			sb = sb + ":protocols \n(set\n"
-			for i in self.protocols:
-				sb = sb + str(i) + '\n'
-			sb = sb + ")\n"
+        sb = ''
+        if self.name != None:
+            sb = sb + ":name " + str(self.name) + "\n"
 
-		if len(self.ontologies) > 0:
-			sb = sb + ":ontologies \n(set\n"
-			for i in self.ontologies:
-				sb = sb + str(i) + '\n'
-			sb = sb + ")\n"
+        if len(self.services) > 0:
+            sb = sb + ":services \n(set\n"
+            for i in self.services:
+                sb = sb + str(i) + '\n'
+            sb = sb + ")\n"
 
-		if len(self.languages) > 0:
-			sb = sb + ":languages \n(set\n"
-			for i in self.languages:
-				sb = sb + str(i) + '\n'
-			sb = sb + ")\n"
+        if len(self.protocols) > 0:
+            sb = sb + ":protocols \n(set\n"
+            for i in self.protocols:
+                sb = sb + str(i) + '\n'
+            sb = sb + ")\n"
 
-		if self.lease_time != None:
-			sb = sb + ":lease-time " + str(self.lease_time)
+        if len(self.ontologies) > 0:
+            sb = sb + ":ontologies \n(set\n"
+            for i in self.ontologies:
+                sb = sb + str(i) + '\n'
+            sb = sb + ")\n"
 
-		if len(self.scope) > 0:
-			sb = sb + ":scope \n(set\n"
-			for i in self.scope:
-				sb = sb + str(i) + '\n'
-			sb = sb + ")\n"
+        if len(self.languages) > 0:
+            sb = sb + ":languages \n(set\n"
+            for i in self.languages:
+                sb = sb + str(i) + '\n'
+            sb = sb + ")\n"
 
-		sb = "(df-agent-description \n" + sb + ")\n"
-		return sb
+        if self.lease_time != None:
+            sb = sb + ":lease-time " + str(self.lease_time)
+
+        if len(self.scope) > 0:
+            sb = sb + ":scope \n(set\n"
+            for i in self.scope:
+                sb = sb + str(i) + '\n'
+            sb = sb + ")\n"
+
+        sb = "(df-agent-description \n" + sb + ")\n"
+        return sb
 
 class ServiceDescription:
 
-	def __init__(self, content = None):
+    def __init__(self, content = None, co = None):
 
-		self.name = None
-		self.type = None
-		self.protocols = []
-		self.ontologies = []
-		self.languages = []
-		self.ownership = None
-		self.properties = []
+        self.name = None
+        self.type = None
+        self.protocols = []
+        self.ontologies = []
+        self.languages = []
+        self.ownership = None
+        self.properties = []
 
-		if content != None:
-			self.loadSL0(content)
+        if content != None:
+            self.loadSL0(content)
 
-	def getName(self):
-		return self.name
+        if co:
+            if co.has_key("name"):
+                self.name = co["name"]
+            if co.has_key("type"):
+                self.name = co["type"]
+            if co.has_key("protocols"):
+                self.protocols = copy.copy(co["protocols"])
+            if co.has_key("ontologies"):
+                self.protocols = copy.copy(co["ontologies"])
+            if co.has_key("languages"):
+                self.protocols = copy.copy(co["languages"])
+            if co.has_key("ownership"):
+                self.protocols = co["ownership"]
+            if co.has_key("properties"):
+                for k,v in co["properties"]:
+                    self.properties.append({"name":k, "value":v})
+                
 
-	def setName(self, name):
-		self.name = name.lower()
+    def getName(self):
+        return self.name
 
-	def getType(self):
-		return self.type
+    def setName(self, name):
+        self.name = name.lower()
 
-	def setType(self, t):
-		self.type = t.lower()
+    def getType(self):
+        return self.type
 
-	def getProtocols(self):
-		return self.protocols
+    def setType(self, t):
+        self.type = t.lower()
 
-	def addProtocol(self, p):
-		self.protocols.append(p)
+    def getProtocols(self):
+        return self.protocols
 
-	def getOntologies(self):
-		return self.ontologies
+    def addProtocol(self, p):
+        self.protocols.append(p)
 
-	def addOntologies(self, o):
-		self.ontologies.append(o)
+    def getOntologies(self):
+        return self.ontologies
 
-	def getLanguages(self):
-		return self.languages
+    def addOntologies(self, o):
+        self.ontologies.append(o)
 
-	def addLanguage(self, l):
-		self.languages.append(l)
+    def getLanguages(self):
+        return self.languages
 
-	def getOwnership(self):
-		return self.ownership
+    def addLanguage(self, l):
+        self.languages.append(l)
 
-	def setOwnership(self, o):
-		self.ownership = o.lower()
+    def getOwnership(self):
+        return self.ownership
 
-	def getProperties(self):
-		return self.properties
+    def setOwnership(self, o):
+        self.ownership = o.lower()
 
-	def getProperty(self, prop):
-	    for p in self.properties:
-	        if p["name"] == prop:
-	            return p["value"]
-	    return ""
+    def getProperties(self):
+        return self.properties
 
-	def addProperty(self, p):
-		self.properties.append(p)
+    def getProperty(self, prop):
+        for p in self.properties:
+            if p["name"] == prop:
+                return p["value"]
+        return ""
 
-	#def __eq__(self,y):
-	def match(self,y):
+    def addProperty(self, p):
+        self.properties.append(p)
 
-		if self.name:
-			if self.name != y.getName():
-				return False
-		if self.type:
-			if self.type != y.getType():
-				return False
-		if self.protocols:
-			if self.protocols.sort() != y.getProtocols().sort():
-				return False
-		if self.ontologies:
-			if self.ontologies.sort() != y.getOntologies().sort():
-				return False
-		if self.languages:
-			if self.languages.sort() != y.getLanguages().sort():
-				return False
-		if self.ownership:
-			if self.ownership != y.getOwnership():
-				return False
-		#properties
-		return True
+    #def __eq__(self,y):
+    def match(self,y):
 
-	def __ne__(self,y):
-		return not self == y
+        if self.name:
+            if self.name != y.getName():
+                return False
+        if self.type:
+            if self.type != y.getType():
+                return False
+        if self.protocols:
+            if self.protocols.sort() != y.getProtocols().sort():
+                return False
+        if self.ontologies:
+            if self.ontologies.sort() != y.getOntologies().sort():
+                return False
+        if self.languages:
+            if self.languages.sort() != y.getLanguages().sort():
+                return False
+        if self.ownership:
+            if self.ownership != y.getOwnership():
+                return False
+        #properties
+        return True
 
-	def loadSL0(self,content):
-		if content != None:
-			if "name" in content:
-				self.name = str(content.name[0]).lower()
+    def __ne__(self,y):
+        return not self == y
 
-			if "type" in content:
-				self.type = str(content.type[0]).lower()
+    def loadSL0(self,content):
+        if content != None:
+            if "name" in content:
+                self.name = str(content.name[0]).lower()
 
-			if "protocols" in content:
-				self.protocols = content.protocols.set.asList()
+            if "type" in content:
+                self.type = str(content.type[0]).lower()
 
-			if "ontologies" in content:
-				self.ontologies = content.ontologies.set.asList()
+            if "protocols" in content:
+                self.protocols = content.protocols.set.asList()
 
-			if "languages" in content:
-				self.languages = content.languages.set.asList()
+            if "ontologies" in content:
+                self.ontologies = content.ontologies.set.asList()
 
-			if "ownership" in content:
-				self.ownership = content.ownership
+            if "languages" in content:
+                self.languages = content.languages.set.asList()
 
-			if "properties" in content:
-				#print "##########"
-				#print "PROPERTIES"
-				#print str(content.properties.set)
-				#print "##########"
-				for p in content.properties.set.asDict().values():
-					#print p
-					self.properties.append({'name':str(p['name']).lower().strip("[']"),'value':str(p['value']).lower().strip("[']")})
+            if "ownership" in content:
+                self.ownership = content.ownership
 
-	def __str__(self):
+            if "properties" in content:
+                #print "##########"
+                #print "PROPERTIES"
+                #print str(content.properties.set)
+                #print "##########"
+                for p in content.properties.set.asDict().values():
+                    #print p
+                    self.properties.append({'name':str(p['name']).lower().strip("[']"),'value':str(p['value']).lower().strip("[']")})
 
-		sb = ""
-		if self.name != None:
-			sb += ":name " + str(self.name) + "\n"
-		if self.type:
-			sb += ":type " + str(self.type) + "\n"
+    def __str__(self):
 
-		if len(self.protocols) > 0:
-			sb += ":protocols \n(set\n"
-			for i in self.protocols:
-				sb += str(i) + " "
-			sb = sb + ")\n"
+        sb = ""
+        if self.name != None:
+            sb += ":name " + str(self.name) + "\n"
+        if self.type:
+            sb += ":type " + str(self.type) + "\n"
 
-		if len(self.ontologies) > 0:
-			sb = sb + ":ontologies \n(set\n"
-			for i in self.ontologies:
-				sb += str(i) + " "
-			sb = sb + ")\n"
+        if len(self.protocols) > 0:
+            sb += ":protocols \n(set\n"
+            for i in self.protocols:
+                sb += str(i) + " "
+            sb = sb + ")\n"
 
-		if len(self.languages) > 0:
-			sb = sb + ":languages \n(set\n"
-			for i in self.languages:
-				sb += str(i) + " "
-			sb += ")"
+        if len(self.ontologies) > 0:
+            sb = sb + ":ontologies \n(set\n"
+            for i in self.ontologies:
+                sb += str(i) + " "
+            sb = sb + ")\n"
 
-		if self.ownership:
-			sb += ":ownership" + str(self.ownership) + "\n"
+        if len(self.languages) > 0:
+            sb = sb + ":languages \n(set\n"
+            for i in self.languages:
+                sb += str(i) + " "
+            sb += ")"
 
-		if len(self.properties) > 0:
-			sb += ":properties \n (set\n"
-			for i in self.properties:
-				sb += " (property :name " + i['name'] + " :value " + i['value'] +")\n"
-			sb += ")\n"
+        if self.ownership:
+            sb += ":ownership" + str(self.ownership) + "\n"
+
+        if len(self.properties) > 0:
+            sb += ":properties \n (set\n"
+            for i in self.properties:
+                sb += " (property :name " + i['name'] + " :value " + i['value'] +")\n"
+            sb += ")\n"
 
 
-		if sb != "":
-			sb = "(service-description\n" + sb + ")\n"
-		return sb
+        if sb != "":
+            sb = "(service-description\n" + sb + ")\n"
+        return sb
 
-	def asContentObject(self):
-		"""
-		Returns a version of the SD in ContentObject format
-		"""
-		co = ContentObject()
-		if self.name:
-			co["name"] = str(self.name)
-		else:
-			co["name"] = ""
-		if self.type:
-			co["type"] = str(self.type)
-		else:
-			co["type"] = ""
-		if self.protocols:
-			co["protocols"] = copy.copy(self.protocols)
-		if self.ontologies:
-			co["ontologies"] = copy.copy(self.ontologies)
-		if self.languages:
-			co["languages"] = copy.copy(self.languages)
-		if self.ownership:
-			co["ownership"] = self.ownership
-		if self.properties:
-			co["properties"] = ContentObject()
-			for p in self.properties:
-				co["properties"][p["name"]] = p["value"]
-		return co
-				
+    def asContentObject(self):
+        """
+        Returns a version of the SD in ContentObject format
+        """
+        co = ContentObject()
+        if self.name:
+            co["name"] = str(self.name)
+        else:
+            co["name"] = ""
+        if self.type:
+            co["type"] = str(self.type)
+        else:
+            co["type"] = ""
+        if self.protocols:
+            co["protocols"] = copy.copy(self.protocols)
+        if self.ontologies:
+            co["ontologies"] = copy.copy(self.ontologies)
+        if self.languages:
+            co["languages"] = copy.copy(self.languages)
+        if self.ownership:
+            co["ownership"] = self.ownership
+        if self.properties:
+            co["properties"] = ContentObject()
+            for p in self.properties:
+                co["properties"][p["name"]] = p["value"]
+        return co
+                
