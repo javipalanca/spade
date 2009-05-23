@@ -64,12 +64,12 @@ class DF(PlatformAgent):
                                 elif co["fipa:action"]["fipa:act"] == "search":
                                     self.myAgent.addBehaviour(DF.SearchBehaviour(msg,co), template)
                                 elif co["fipa:action"]["fipa:act"] == "modify":
-                                    self.myAgent.addBehaviour(DF.ModifyBehaviour(msg,content), template)
+                                    self.myAgent.addBehaviour(DF.ModifyBehaviour(msg,co), template)
                             else:
                                     reply = msg.createReply()
                                     reply.setSender(self.myAgent.getAID())
                                     reply.setPerformative("refuse")
-                                    co2 = ContentObject()
+                                    co2 = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                                     co2["unsuported-function"] = co["fipa:action"]["fipa:act"]
                                     reply.setContentObject(co2)
                                     self.myAgent.send(reply)
@@ -105,8 +105,9 @@ class DF(PlatformAgent):
             #The DF agrees and then informs dummy of the successful execution of the action
             error = False
 
+            # Check if the content language is RDF/XML
             if "rdf" not in self.msg.getLanguage():
-                rdf = True
+                rdf = False
                 try:
                     if "register" in self.content.action:
                         dad = DfAgentDescription(self.content.action.register['df-agent-description'])
@@ -181,6 +182,97 @@ class DF(PlatformAgent):
                     else:
                         reply.setPerformative("failure")
                         reply.setContent("("+self.msg.getContent() + "(not-registered))")
+                        self.myAgent.send(reply)
+                        return -1
+                        
+            elif "rdf" in self.msg.getLanguage():
+                # Content in RDF/XML (ContentObject capable)
+                rdf = True
+                co_error = None
+                try:
+                    co = self.msg.getContentObject()
+                    print "########"
+                    print "CO",co.pprint()
+                    dad = DfAgentDescription(co = co["fipa:action"]["fipa:argument"])                    
+                    print "DAD",dad
+                    print "########"
+                #except KeyError: #Exception,err:
+                except KeyboardInterrupt,err:
+                    print err
+                    co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                    co_error["fipa:error"] = "missing-argument df-agent-description"
+
+                if co_error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("refuse")
+                    reply.setContentObject(co_error)
+                    self.myAgent.send(reply)
+                    return -1
+
+                else:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("agree")
+                    #co["fipa:done"] = "true"
+                    #reply.setContentObject(co)
+                    self.myAgent.send(reply)
+
+                if "register" in co["fipa:action"]["fipa:act"]:
+                    if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
+                        try:
+                            self.myAgent.servicedb[dad.getAID().getName()] = dad
+                            print "###########"
+                            print "DF REGISTERED SERVICE"
+                            print dad
+                            print "###########"
+                        except Exception, err:
+                            reply.setPerformative("failure")
+                            co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                            co_error["fipa:error"] = "internal-error"
+                            reply.setContentObject(co_error)
+                            self.myAgent.send(reply)
+                            return -1
+
+                        reply.setPerformative("inform")
+                        co_rep = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                        co_rep["fipa:done"] = "true"
+                        reply.setContentObject(co_rep)
+                        self.myAgent.send(reply)
+                        return 1
+
+                    else:
+                        reply.setPerformative("failure")
+                        co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                        co_error["fipa:error"] = "already-registered"
+                        reply.setContentObject(co_error)
+                        self.myAgent.send(reply)
+                        return -1
+
+                elif "deregister" in co["fipa:action"]["fipa:act"]:
+                    if self.myAgent.servicedb.has_key(dad.getAID().getName()):
+                        try:
+                            del self.myAgent.servicedb[dad.getAID().getName()]
+                        except Exception, err:
+                            reply.setPerformative("failure")
+                            co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                            co_error["fipa:error"] = 'internal-error "could not deregister agent"'
+                            reply.setContentObject(co_error)
+                            self.myAgent.send(reply)
+                            return -1
+
+                        reply.setPerformative("inform")
+                        co_rep = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                        co_rep["fipa:done"] = "true"
+                        reply.setContentObject(co_rep)
+                        self.myAgent.send(reply)
+                        return 1
+
+                    else:
+                        reply.setPerformative("failure")
+                        co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                        co_error["fipa:error"] = 'not-registered'
+                        reply.setContentObject(co_error)
                         self.myAgent.send(reply)
                         return -1
 
@@ -347,41 +439,49 @@ class DfAgentDescription:
         self.lease_time = None
         self.scope = []
 
-        if content != None:
+        if content:
             self.loadSL0(content)
         
         if co:
-            if co.has_key("name"):
-                self.name = co["name"]
-            if co.has_key("lease_time"):
-                self.name = co["lease_time"]
-            if co.has_key("services"):
-                self.services = copy.copy(co["services"])
-            if co.has_key("protocols"):
-                self.protocols = copy.copy(co["protocols"])
-            if co.has_key("ontologies"):
-                self.protocols = copy.copy(co["ontologies"])
-            if co.has_key("languages"):
-                self.protocols = copy.copy(co["languages"])
-            if co.has_key("scope"):
-                self.scope = copy.copy(co["scope"])
+            if co.name:
+                self.name = AID.aid(co = co.name)
+            if co.services:
+                self.services = []
+                if "ContentObject" in str(type(co.services)):
+                    self.services.append(ServiceDescription(co = co.services))
+                else:
+                    # List
+                    for s in co.services:
+                        self.services.append(ServiceDescription(co = s))
+            if co.lease_time:
+                self.name = co.lease_time
+            if co.protocols:
+                self.protocols = copy.copy(co.protocols)
+            if co.ontologies:
+                self.ontologies = copy.copy(co.ontologies)
+            if co.languages:
+                self.languages = copy.copy(co.languages)
+            if co.scope:
+                self.scope = copy.copy(co.scope)
 
 
-    def asContentObject():
+    def asContentObject(self):
         """
         Returns a version of the DAD in ContentObject format
         """
-        co = ContentObject()
+        co = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
         if self.name:
-            co["name"] = str(self.name)
+            co["name"] = self.name.asContentObject()
         else:
-            co["name"] = ""
-        if self.type:
+            co["name"] = AID.aid().asContentObject()
+        if self.lease_time:
             co["lease-time"] = str(self.lease_time)
         if self.protocols:
             co["protocols"] = copy.copy(self.protocols)
         if self.services:
-            co["services"] = copy.copy(self.services)
+            co["services"] = []
+            for s in self.services:
+                co["services"].append(s.asContentObject())
         if self.ontologies:
             co["ontologies"] = copy.copy(self.ontologies)
         if self.languages:
@@ -389,6 +489,13 @@ class DfAgentDescription:
         if self.scope:
             co["scope"] = copy.copy(self.scope)     
         return co
+
+
+    def asRDFXML(self):
+		"""
+		returns a printable version of the DAD in RDF/XML format
+		"""
+		return str(self.asContentObject())
 
     def getAID(self):
         return self.name
@@ -721,7 +828,7 @@ class ServiceDescription:
         """
         Returns a version of the SD in ContentObject format
         """
-        co = ContentObject()
+        co = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
         if self.name:
             co["name"] = str(self.name)
         else:
@@ -739,8 +846,13 @@ class ServiceDescription:
         if self.ownership:
             co["ownership"] = self.ownership
         if self.properties:
-            co["properties"] = ContentObject()
+            co["properties"] = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
             for p in self.properties:
                 co["properties"][p["name"]] = p["value"]
         return co
-                
+
+	def asRDFXML(self):
+		"""
+		returns a printable version of the SD in RDF/XML format
+		"""
+		return str(self.asContentObject())

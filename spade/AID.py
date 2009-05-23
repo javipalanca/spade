@@ -11,8 +11,8 @@ class aid:
 			ContentObject co
 		"""
 		if co:
-		    self.__name = co["name"]
-		    self.__addresses = co["addresses"]
+		    self.__name = co.name
+		    self.__addresses = co.addresses
 		    self.__resolvers = list()
 		    self.__userDefinedProperties = list()
 		    
