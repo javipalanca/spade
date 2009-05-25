@@ -21,7 +21,7 @@ class RegisterAgent(Agent.Agent):
                 sd = DF.ServiceDescription()
                 sd.setName("test")
                 sd.setType("testservice")
-		print sd.asContentObject()
+                print sd.asContentObject()
                 dad = DF.DfAgentDescription()
                 dad.addService(sd)
                 sd = DF.ServiceDescription()
@@ -31,6 +31,13 @@ class RegisterAgent(Agent.Agent):
                 dad.setAID(self.myAgent.getAID())
                 res = self.myAgent.registerService(dad)
                 print "Service Registered",str(res)
+                dad = DF.DfAgentDescription()
+                ds = DF.ServiceDescription()
+                ds.setType("testservice")
+                dad.addService(ds)
+                search = self.myAgent.searchService(dad)
+                print "SEARCH:",str(search)                
+                
             except Exception,e:
                 print "EXCEPTION ONSTART",str(e)
 
@@ -41,7 +48,7 @@ class RegisterAgent(Agent.Agent):
 if __name__ == "__main__":
     host = os.getenv("HOSTNAME")
     if host == None:
-    	host = "127.0.0.1"
+        host = "127.0.0.1"
 
     print "HOST:",host
     ag = RegisterAgent("register@"+host, "secret")

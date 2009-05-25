@@ -1869,16 +1869,28 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             try:
                 self._msg.addReceiver( self.myAgent.getDF() )
                 self._msg.setPerformative('request')
-                self._msg.setLanguage('fipa-sl0')
+                #self._msg.setLanguage('fipa-sl0')
+                self._msg.setLanguage('rdf')
                 self._msg.setProtocol('fipa-request')
                 self._msg.setOntology('FIPA-Agent-Management')
 
-                content = "((action "
+                """
+		content = "((action "
                 content += str(self.myAgent.getAID())
                 content += "(search "+ str(self.DAD) +")"
                 content +=" ))"
+		"""
 
-                self._msg.setContent(content)
+		content = ContentObject()
+		content["fipa:action"] = ContentObject()
+            	content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+            	content["fipa:action"]["fipa:act"] = "search"
+            	content["fipa:action"]["fipa:argument"] = ContentObject()
+		content["fipa:action"]["fipa:argument"]["fipa:max_results"] = "0"
+		content["fipa:action"]["fipa:argument"]["fipa:df_agent_description"] = self.DAD.asContentObject()
+            	self._msg.setContentObject(content)
+
+                #self._msg.setContent(content)
 
                 self.myAgent.send(self._msg)
 
@@ -1898,17 +1910,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "There was an error searching the Service (not inform)"
                         return
 
-                p = SL0Parser.SL0Parser()
-                content = p.parse(msg.getContent())
+                #p = SL0Parser.SL0Parser()
+                #content = p.parse(msg.getContent())
+		content = msg.getContentObject()
                 self.result = []
-                for dfd in content.result.sequence:  #[0]#.asList()
-                    d = DF.DfAgentDescription()
-                    d.loadSL0(dfd[1])
+                for dfd in content.result:  #[0]#.asList()
+                    d = DF.DfAgentDescription(co = dfd)
                     self.result.append(d)
 
             except Exception, e:
                 #print "###Exception in searchServiceBehav", str(e)
                 return
+	    return
 
 
     def searchService(self, DAD, debug=True):
@@ -1933,16 +1946,28 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             try:
                 msg.addReceiver( self.getDF() )
                 msg.setPerformative('request')
-                msg.setLanguage('fipa-sl0')
+                #msg.setLanguage('fipa-sl0')
+                msg.setLanguage('rdf')
                 msg.setProtocol('fipa-request')
                 msg.setOntology('FIPA-Agent-Management')
 
-                content = "((action "
+                """
+		content = "((action "
                 content += str(self.getAID())
                 content += "(search "+ str(DAD) +")"
                 content +=" ))"
-
                 msg.setContent(content)
+		"""
+
+		content = ContentObject()
+                content["fipa:action"] = ContentObject()
+                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+                content["fipa:action"]["fipa:act"] = "search"
+                content["fipa:action"]["fipa:argument"] = ContentObject()
+                content["fipa:action"]["fipa:argument"]["fipa:max_results"] = "0"
+                content["fipa:action"]["fipa:argument"]["fipa:df_agent_description"] = self.DAD.asContentObject()
+                msg.setContentObject(content)
+
                 self.send(msg)
 
                 # EYE! msg becomes the reply
@@ -1960,11 +1985,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "There was an error searching the Service. (not inform)"
                         return result
 
-                p = SL0Parser.SL0Parser()
-                content = p.parse(msg.getContent())
-                for dfd in content.result.sequence:  #[0]#.asList()
-                    d = DF.DfAgentDescription()
-                    d.loadSL0(dfd[1])
+                #p = SL0Parser.SL0Parser()
+                #content = p.parse(msg.getContent())
+                content = msg.getContentObject()
+                for dfd in content.result:  #[0]#.asList()
+                    d = DF.DfAgentDescription(co = dfd)
                     result.append(d)
                 return result
             except:

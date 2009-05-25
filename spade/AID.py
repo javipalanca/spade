@@ -1,4 +1,5 @@
 from content import ContentObject
+import copy
 
 class aid:
 	def __init__(self, name = None, addresses = None, resolvers = None, userDefinedProperties= None, co = None):
@@ -11,10 +12,17 @@ class aid:
 			ContentObject co
 		"""
 		if co:
-		    self.__name = co.name
-		    self.__addresses = co.addresses
+		    self.__name = copy.copy(co.name)
+		    if "list" in str(type(co.addresses)):
+		        self.__addresses = copy.copy(co.addresses)
+		    else:
+		        self.__addresses = []
+		        if co.addresses:
+		            self.__addresses.append(co.addresses)
 		    self.__resolvers = list()
 		    self.__userDefinedProperties = list()
+		    #print "AID:",str(self.asXML())
+		    return
 		    
 		if name != None:
 			self.__name = name

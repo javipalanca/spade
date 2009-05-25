@@ -428,7 +428,7 @@ class AMS(Agent.PlatformAgent):
 				else:
 					result = self.myAgent.agentdb.values()
 
-				co2 = ContentObject()
+				co2 = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
 				co2["fipa:result"] = []
 				for i in result:
 					co2["fipa:result"].append(i.asContentObject())

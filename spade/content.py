@@ -24,11 +24,28 @@ class ContentObject(dict):
         dict.__init__(self)
         self.namespaces = namespaces
 
-    def __setattr__(self, key, value):
+    def __setitem__(self, key, value):
+        #print "KEY: ", key, "VALUE: ", value
+        try:
+            if ":" in key:
+                prefix,tag = key.rsplit(":")
+                if prefix not in self.namespaces:
+                    # The usual FIPA namespace
+                    if prefix == "fipa":
+                        self.addNamespace("http://www.fipa.org/schemas/fipa-rdf0#", "fipa")
+                    else:
+                        self.addNamespace("",prefix)
+        except:
+            pass
+        return dict.__setitem__(self, key, value)
+        
+
+    def DEACTIVATED__setattr__(self, key, value):
         """
         Overloader of __setattr__ allows for entering keys in prefix:tag format
         without worry.
         """
+        #print "KEY: ", key, "VALUE: ", value
         if not self.__dict__.has_key('_ContentObject__initialised'):
             return dict.__setattr__(self, key, value)
         elif self.__dict__.has_key(key):
@@ -50,13 +67,16 @@ class ContentObject(dict):
                 
 
     def __getattr__(self, name):
+        #print "GETATTR:", name
         try:
-            return self[name]
+            if self.has_key(name):
+                return self[name]
         except:
             pass
         for ns in self.namespaces.values():
             try:
-                return self[ns+name]
+                if self.has_key(ns+name):
+                    return self[ns+name]
             except:
                 pass
         # Ethical dilemma: Should ContentObject return a None when trying to
@@ -65,6 +85,8 @@ class ContentObject(dict):
         return None
         
     def addNamespace(self, uri, abv):
+        if abv[-1] != ":":
+            abv = abv + ":"
         self.namespaces[uri] = abv
         return
         

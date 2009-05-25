@@ -58,7 +58,7 @@ class DF(PlatformAgent):
                             #ACLtemplate.setSender(msg.getSender())
                             template = (Behaviour.MessageTemplate(ACLtemplate))
                             
-                            if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
+                            if co and co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
                                 if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
                                     self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,co), template)
                                 elif co["fipa:action"]["fipa:act"] == "search":
@@ -193,8 +193,8 @@ class DF(PlatformAgent):
                     co = self.msg.getContentObject()
                     print "########"
                     print "CO",co.pprint()
-                    dad = DfAgentDescription(co = co["fipa:action"]["fipa:argument"])                    
-                    print "DAD",dad
+                    dad = DfAgentDescription(co = co.action.argument)                    
+                    print "DAD",dad.asRDFXML()
                     print "########"
                 #except KeyError: #Exception,err:
                 except KeyboardInterrupt,err:
@@ -224,7 +224,7 @@ class DF(PlatformAgent):
                             self.myAgent.servicedb[dad.getAID().getName()] = dad
                             print "###########"
                             print "DF REGISTERED SERVICE"
-                            print dad
+                            print dad.asRDFXML()
                             print "###########"
                         except Exception, err:
                             reply.setPerformative("failure")
@@ -291,65 +291,116 @@ class DF(PlatformAgent):
             reply = self.msg.createReply()
             reply.setSender(self.myAgent.getAID())
             reply.setPerformative("agree")
-            reply.setContent("(" + str(self.msg.getContent()) + " true)")
+            if "rdf" in self.msg.getLanguage():
+                rdf = True
+                reply.setContent("(" + str(self.msg.getContent()) + " true)")
+            else:
+                rdf = False                
             #reply.setConversationId(self.msg.getConversationId())
             self.myAgent.send(reply)
 
-            max = 50
-            if "search-constraints" in self.content.action.search:
-                if "max-results" in self.content.action.search["search-constraints"]:
-                    try:
-                        max_str = str(self.content.action.search["search-constraints"]["max-results"]).strip("[']")
-                        max = int(max_str)
-                    except Exception, err:
-                        error = '(internal-error "max-results is not an integer")'
-            if error:
-                reply = self.msg.createReply()
-                reply.setSender(self.myAgent.getAID())
-                reply.setPerformative("failure")
-                reply.setContent("( "+self.msg.getContent() + error+")")
-                self.myAgent.send(reply)
-                return -1
+            if not rdf:
+                max = 50
+                if "search-constraints" in self.content.action.search:
+                    if "max-results" in self.content.action.search["search-constraints"]:
+                        try:
+                            max_str = str(self.content.action.search["search-constraints"]["max-results"]).strip("[']")
+                            max = int(max_str)
+                        except Exception, err:
+                            error = '(internal-error "max-results is not an integer")'
+                if error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("failure")
+                    reply.setContent("( "+self.msg.getContent() + error+")")
+                    self.myAgent.send(reply)
+                    return -1
 
 
-            result = []
+                result = []
 
-            if "df-agent-description" in self.content.action.search:
-                dad = DfAgentDescription(self.content.action.search["df-agent-description"])
-            if max in [-1, 0]:
-                # No limit
-                for i in self.myAgent.servicedb.values():
-                    if dad.match(i):
-                        result.append(i)
-            else:
-                for i in self.myAgent.servicedb.values():
-                    if max >= 0:
+                if "df-agent-description" in self.content.action.search:
+                    dad = DfAgentDescription(self.content.action.search["df-agent-description"])
+                if max in [-1, 0]:
+                    # No limit
+                    for i in self.myAgent.servicedb.values():
                         if dad.match(i):
                             result.append(i)
-                            max -= 1
-                    else: break
+                else:
+                    for i in self.myAgent.servicedb.values():
+                        if max >= 0:
+                            if dad.match(i):
+                                result.append(i)
+                                max -= 1
+                        else: break
 
-            content = "((result " + self.msg.getContent().strip("\n")[1:-1]
-            if len(result)>0:
-                content += " (sequence "
-                for i in result:
-                    content += str(i) + " "
-                content += ")"
+                content = "((result " + self.msg.getContent().strip("\n")[1:-1]
+                if len(result)>0:
+                    content += " (sequence "
+                    for i in result:
+                        content += str(i) + " "
+                    content += ")"
+                else:
+                    #content+= "None"  # ??????
+                    pass
+                content += "))"
+
+
+                reply.setPerformative("inform")
+                reply.setContent(content)
+                self.myAgent.send(reply)
+
+                recvs = ""
+                for r in reply.getReceivers():
+                    recvs += str(r.getName())
+
+                return 1
+            
             else:
-                #content+= "None"  # ??????
-                pass
-            content += "))"
+                # Content is in RDF/XML
+                max = 50
+                if self.content.action.argument.max_results:
+                    try:
+                        max_str = str(self.content.action.argument.max_results)
+                        max = int(max_str)
+                    except Exception, err:
+                        # Ignoring the exception
+                        pass
+                        #co_error = ContentObject()
+                        #co_error["error"] = '(internal-error "max-results is not an integer")'
+                
+                    result = []
 
+                    if self.content.action.argument.df_agent_description:
+                        dad = DfAgentDescription(co = self.content.action.argument.df_agent_description)
+                    if max in [-1, 0]:
+                        # No limit
+                        for i in self.myAgent.servicedb.values():
+                            if dad.match(i):
+                                result.append(i)
+                    else:
+                        for i in self.myAgent.servicedb.values():
+                            if max >= 0:
+                                if dad.match(i):
+                                    result.append(i)
+                                    max -= 1
+                            else: break
 
-            reply.setPerformative("inform")
-            reply.setContent(content)
-            self.myAgent.send(reply)
+                    content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                    content["fipa:result"] = []
+                    for i in result:
+    					content["fipa:result"].append(i.asContentObject())
+                    reply.setPerformative("inform")
+                    reply.setContentObject(content)
+                    self.myAgent.send(reply)
 
-            recvs = ""
-            for r in reply.getReceivers():
-                recvs += str(r.getName())
+                    recvs = ""
+                    for r in reply.getReceivers():
+                        recvs += str(r.getName())
 
-            return 1
+                    return 1
+                    
+                
 
     class ModifyBehaviour(Behaviour.OneShotBehaviour):
 
@@ -443,8 +494,10 @@ class DfAgentDescription:
             self.loadSL0(content)
         
         if co:
+            print "DAD FROM:",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
+                #print "DAD NAME:",str(self.name.asContentObject())
             if co.services:
                 self.services = []
                 if "ContentObject" in str(type(co.services)):
@@ -463,6 +516,7 @@ class DfAgentDescription:
                 self.languages = copy.copy(co.languages)
             if co.scope:
                 self.scope = copy.copy(co.scope)
+            print "DAD DONE:", self.asRDFXML()
 
 
     def asContentObject(self):
@@ -663,20 +717,20 @@ class ServiceDescription:
             self.loadSL0(content)
 
         if co:
-            if co.has_key("name"):
-                self.name = co["name"]
-            if co.has_key("type"):
-                self.name = co["type"]
-            if co.has_key("protocols"):
-                self.protocols = copy.copy(co["protocols"])
-            if co.has_key("ontologies"):
-                self.protocols = copy.copy(co["ontologies"])
-            if co.has_key("languages"):
-                self.protocols = copy.copy(co["languages"])
-            if co.has_key("ownership"):
-                self.protocols = co["ownership"]
-            if co.has_key("properties"):
-                for k,v in co["properties"]:
+            if co.name:
+                self.name = co.name
+            if co.type:
+                self.name = co.type
+            if co.protocols:
+                self.protocols = copy.copy(co.protocols)
+            if co.ontologies:
+                self.protocols = copy.copy(co.ontologies)
+            if co.languages:
+                self.protocols = copy.copy(co.languages)
+            if co.ownership:
+                self.ownership = co.ownership
+            if co.properties:
+                for k,v in co.properties:
                     self.properties.append({"name":k, "value":v})
                 
 
