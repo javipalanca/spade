@@ -64,7 +64,7 @@ class SearchBehav(spade.Behaviour.OneShotBehaviour):
             dad.setAID(self.myAgent.getAID())
             self.myAgent.result = self.myAgent.searchService(dad)
 
-            
+"""            
 class ModifyBehav(spade.Behaviour.OneShotBehaviour):
 
         def __init__(self, s):
@@ -81,7 +81,7 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
             aad = spade.AMS.AmsAgentDescription()
             aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
             self.myAgent.search = self.myAgent.searchAgent(aad)[0]
-            
+"""           
             
 
 
@@ -99,27 +99,58 @@ class BasicTestCase(unittest.TestCase):
         self.a.stop()
         self.b.stop()
         
-    def wait(self,item):
+    def waitfor(self,item):
         counter = 0
         while item == None and counter < 20:
             time.sleep(1)
             counter += 1
         
     def testRegisterService(self):
+        
+        #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
-        counter = 0
-        self.wait(self.a.result)
+        self.waitfor(self.a.result)
             
         self.assertEqual(self.a.result, True)
         
+        self.a.result = None
+        
+        #check service is registered
         self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 0
-        self.wait(self.a.result)
+        self.waitfor(self.a.result)
         
         self.assertNotEqual(self.a.result, None)    
         self.assertEqual(len(self.a.result), 1)
+        
+        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+        self.assertEqual(len(self.a.result[0].getServices()), 2)
+        
+        if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
+            self.fail()
+        
+        self.a.result = None
+            
+        #deregister service
+        self.a.addBehaviour(DeRegisterBehav("a"),None)
+        self.waitfor(self.a.result)
+            
+        self.assertEqual(self.a.result, True)
+        
+        #check service is deregistered
+        self.a.result = False
+        self.a.addBehaviour(SearchBehav("a"),None)
+        counter = 1
+        while self.a.result == False and counter < 20:
+            time.sleep(1)
+            counter += 1
+        
+        self.assertEqual(self.a.result, [])
 
         
+
+        
+
+    """    
     def testSearchNotPresent(self):
         self.b.stop()
         for agent in ["notpresent","b"]:
@@ -152,6 +183,8 @@ class BasicTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, False)
         self.assertNotEqual(self.a.search[0]["ownership"], "UNITTEST")
+        
+    """
 
 
 if __name__ == "__main__":
