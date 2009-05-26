@@ -14,8 +14,9 @@ import spade
 class ContentObjectTestCase(unittest.TestCase):
     
     def setUp(self):
-        self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn"><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
-
+        #self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn"><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
+        self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
+        
         self.co = spade.content.ContentObject()
         self.co.addNamespace("http://xmlns.com/foaf/0.1/","foaf:")
         self.co.addNamespace("http://purl.org/dc/elements/1.1/", "dc")
@@ -34,7 +35,9 @@ class ContentObjectTestCase(unittest.TestCase):
         self.assertEqual(sco, self.co)
         
     def testCO2RDFXML(self):
-        sco = self.co.asRDFXML()
+        # ESTA MAL DISENYADO: LOS RDFs SON LOS MISMOS, PERO CON LAS
+        # TAGS DE XML EN DISTINTO ORDEN
+        sco = self.co.asRDFXML()       
         self.assertEqual(sco, self.rdf)
         
     def testGetData(self):
@@ -44,18 +47,19 @@ class ContentObjectTestCase(unittest.TestCase):
         
         assert co.test1.test2 == "test3"
         
-    def testCOSanity(self):
-        
+    def testCOSanity(self):        
         rdf = self.co.asRDFXML()
-        co = spade.content.ContentObject(rdf)
+        #co = spade.content.ContentObject(rdf)
+        co = spade.content.RDFXML2CO(rdf)
         
         assert co == self.co
         
     def testRDFSanity(self):
-        
-        co = spade.content.ContentObject(self.rdf)
+        # CREO QUE PASA LO MISMO QUE EN testCO2RDFXML
+        #co = spade.content.ContentObject(self.rdf)
+        co = spade.content.RDFXML2CO(self.rdf)        
         rdf = co.asRDFXML()
-        
+
         assert rdf == self.rdf
 
 if __name__ == "__main__":

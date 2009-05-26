@@ -12,7 +12,7 @@ class aid:
 			ContentObject co
 		"""
 		if co:
-		    print "AID FROM:\n",co.pprint()
+		    #print "AID FROM:\n",co.pprint()
 		    self.__name = co.name
 		    if "list" in str(type(co.addresses)):
 		        self.__addresses = copy.copy(co.addresses)

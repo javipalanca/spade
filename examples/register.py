@@ -38,7 +38,9 @@ class RegisterAgent(Agent.Agent):
                 ds.setType("testservice")
                 dad.addService(ds)
                 search = self.myAgent.searchService(dad)
-                print "SEARCH:",str(search)                
+                print "SEARCH:"
+                for s in search:
+                    print s
                 
             except Exception,e:
                 print "EXCEPTION ONSTART",str(e)

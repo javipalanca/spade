@@ -376,7 +376,7 @@ class DF(PlatformAgent):
                     if max in [-1, 0]:
                         # No limit
                         for i in self.myAgent.servicedb.values():
-                            print dad.asContentObject()," VS ",i.asContentObject()
+                            #print dad.asContentObject()," VS ",i.asContentObject()
                             if dad.match(i):
                                 result.append(i)
                     else:
@@ -392,7 +392,7 @@ class DF(PlatformAgent):
                     content["fipa:result"] = []
                     for i in result:
                         content["fipa:result"].append(i.asContentObject())
-                    print "CONT:",content.pprint()
+                    #print "CONT:",content.pprint()
                     reply.setPerformative("inform")
                     reply.setContentObject(content)
                     self.myAgent.send(reply)
@@ -494,7 +494,7 @@ class DfAgentDescription:
             self.loadSL0(content)
         
         if co:
-            print "DAD FROM:\n",co.pprint()
+            #print "DAD FROM:\n",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
                 #print "DAD NAME:",str(self.name.asContentObject())
@@ -516,7 +516,7 @@ class DfAgentDescription:
                 self.languages = copy.copy(co.languages)
             if co.scope:
                 self.scope = copy.copy(co.scope)
-            print "DAD DONE:", self.asRDFXML()
+            #print "DAD DONE:", self.asRDFXML()
 
 
     def asContentObject(self):
