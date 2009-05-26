@@ -1664,6 +1664,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             	content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
             	self._msg.setContentObject(content)
                 print "#################"
+                print "AGENT:REGISTERSERVICE"
                 print content.pprint()
                 print "#################"
 

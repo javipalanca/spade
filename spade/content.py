@@ -10,7 +10,7 @@ def co2xml(map):
         if "ContentObject" in str(type(value)):
             xml += "<%s>%s</%s>" % (key, co2xml(value), key)
         elif "list" in str(type(value)):
-            xml += "<%s>" % (key)
+            xml += '<%s list="true">' % (key)
             for i in value:
                 xml += "<%s>%s</%s>" % (key, i, key)
             xml += "</%s>" % (key)
@@ -164,21 +164,25 @@ def Node2CO(node, nsdict):
     if len(node.kids) == 0:
         # Leaf node
         if node.getData():
-            return node.getData()
+            return str(node.getData())
         else:
             try:
-                return node.attrs["rdf:resource"]
+                return str(node.attrs["rdf:resource"])
             except:
                 return ""
     else:
         # Blank node        
         is_list = False
         # Is it a list?
-        for c in node.kids[1:]:
-            if node.kids[0].name == c.name:
-                # It IS a f*ck*ng list!!!
-                is_list = True
-                break
+        if node.attrs.has_key("list"):
+            # It IS a marked list
+            is_list = True
+        else:
+            for c in node.kids[1:]:
+                if node.kids[0].name == c.name:
+                    # It IS a f*ck*ng list!!!
+                    is_list = True
+                    break
         if is_list:
             s = []
             for c in node.kids:

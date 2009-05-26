@@ -443,9 +443,6 @@ class DF(PlatformAgent):
                 reply.setContent("(" + str(self.msg.getContent()) + " true)")
                 self.myAgent.send(reply)
 
-
-
-
             if self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
                 try:
@@ -497,7 +494,7 @@ class DfAgentDescription:
             self.loadSL0(content)
         
         if co:
-            print "DAD FROM:",co.pprint()
+            print "DAD FROM:\n",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
                 #print "DAD NAME:",str(self.name.asContentObject())
