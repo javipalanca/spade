@@ -10,8 +10,10 @@ def co2xml(map):
         if "ContentObject" in str(type(value)):
             xml += "<%s>%s</%s>" % (key, co2xml(value), key)
         elif "list" in str(type(value)):
+            xml += "<%s>" % (key)
             for i in value:
                 xml += "<%s>%s</%s>" % (key, i, key)
+            xml += "</%s>" % (key)
         elif value != None and value != "None":
             xml += "<%s>%s</%s>" % (key, value, key)
     return xml
@@ -169,26 +171,27 @@ def Node2CO(node, nsdict):
             except:
                 return ""
     else:
-        # Blank node
-        s = ContentObject()
-        for c in node.kids:
-            #print "KID ",c.name," NS ",c.namespace
-            if c.namespace in nsdict.keys():
-                key = nsdict[c.namespace]+c.name
-            else:
-                key = c.name
-            if not s.has_key(key):              
-                s[key] = Node2CO(c,nsdict)
-            else:
-                # Possible list
-                if "list" in str(type(s[key])):
-                    # Append to the existing list
-                    s[key].append(Node2CO(c,nsdict))
+        # Blank node        
+        is_list = False
+        # Is it a list?
+        for c in node.kids[1:]:
+            if node.kids[0].name == c.name:
+                # It IS a f*ck*ng list!!!
+                is_list = True
+                break
+        if is_list:
+            s = []
+            for c in node.kids:
+                s.append(Node2CO(c,nsdict))            
+        else:
+            s = ContentObject()
+            for c in node.kids:
+                #print "KID ",c.name," NS ",c.namespace
+                if c.namespace in nsdict.keys():
+                    key = nsdict[c.namespace]+c.name
                 else:
-                    # Create a list with the current value and
-                    # append the new one
-                    s[key] = [s[key]]
-                    s[key].append(Node2CO(c,nsdict))
+                    key = c.name            
+                s[key] = Node2CO(c,nsdict)                
         return s
             
 
@@ -219,6 +222,10 @@ if __name__=="__main__":
                  </foaf:Person>
             </foaf:primaryTopic>
         </rdf:Description>
+        <rdf:bla>
+            <rdf:friend>Alice</rdf:friend>
+            <rdf:friend>Bob</rdf:friend>
+        </rdf:bla>
     </rdf:RDF>
     """
 
@@ -234,11 +241,13 @@ if __name__=="__main__":
     sco.uno["spade:tres"] = "OTRA"
     
     #print str(sco)
+    print "ORIGINAL:"
     print sco.pprint()
     #print sco["rdf:Description"]["dc:creator"]["foaf:name"], str(type(sco["rdf:Description"]["dc:creator"]["foaf:name"]))
     #print sco["rdf:Description"]["dc:creator"]["foaf:homePage"]
     print sco.asRDFXML()
     sco2 = RDFXML2CO(sco.asRDFXML())
+    print "SEGUNDO:"
     print sco2.pprint()
     print sco2.asRDFXML()
     

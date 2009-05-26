@@ -1914,8 +1914,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #content = p.parse(msg.getContent())
 		content = msg.getContentObject()
                 self.result = []
+		print "CONT:",content.pprint()
                 for dfd in content.result:  #[0]#.asList()
                     d = DF.DfAgentDescription(co = dfd)
+                    print "DFD:",d.asRDFXML()
                     self.result.append(d)
 
             except Exception, e:

@@ -391,7 +391,8 @@ class DF(PlatformAgent):
                     content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     content["fipa:result"] = []
                     for i in result:
-    					content["fipa:result"].append(i.asContentObject())
+                        content["fipa:result"].append(i.asContentObject())
+                    print "CONT:",content.pprint()
                     reply.setPerformative("inform")
                     reply.setContentObject(content)
                     self.myAgent.send(reply)
@@ -496,7 +497,7 @@ class DfAgentDescription:
             self.loadSL0(content)
         
         if co:
-            #print "DAD FROM:",co.pprint()
+            print "DAD FROM:",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
                 #print "DAD NAME:",str(self.name.asContentObject())
@@ -518,7 +519,7 @@ class DfAgentDescription:
                 self.languages = copy.copy(co.languages)
             if co.scope:
                 self.scope = copy.copy(co.scope)
-            #print "DAD DONE:", self.asRDFXML()
+            print "DAD DONE:", self.asRDFXML()
 
 
     def asContentObject(self):
@@ -548,10 +549,10 @@ class DfAgentDescription:
 
 
     def asRDFXML(self):
-		"""
-		returns a printable version of the DAD in RDF/XML format
-		"""
-		return str(self.asContentObject())
+        """
+        returns a printable version of the DAD in RDF/XML format
+        """
+        return str(self.asContentObject())
 
     def getAID(self):
         return self.name
@@ -910,7 +911,7 @@ class ServiceDescription:
         return co
 
     def asRDFXML(self):
-		"""
-		returns a printable version of the SD in RDF/XML format
-		"""
-		return str(self.asContentObject())
+        """
+        returns a printable version of the SD in RDF/XML format
+        """
+        return str(self.asContentObject())
