@@ -31,6 +31,8 @@ class RegisterAgent(Agent.Agent):
                 dad.setAID(self.myAgent.getAID())
                 res = self.myAgent.registerService(dad)
                 print "Service Registered",str(res)
+                
+                # Now the search
                 dad = DF.DfAgentDescription()
                 ds = DF.ServiceDescription()
                 ds.setType("testservice")
