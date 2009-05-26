@@ -191,14 +191,14 @@ class DF(PlatformAgent):
                 co_error = None
                 try:
                     co = self.msg.getContentObject()
-                    print "########"
-                    print "CO",co.pprint()
+                    #print "########"
+                    #print "CO",co.pprint()
                     dad = DfAgentDescription(co = co.action.argument)                    
-                    print "DAD",dad.asRDFXML()
-                    print "########"
+                    #print "DAD",dad.asRDFXML()
+                    #print "########"
                 #except KeyError: #Exception,err:
                 except KeyboardInterrupt,err:
-                    print err
+                    #print err
                     co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_error["fipa:error"] = "missing-argument df-agent-description"
 
@@ -222,10 +222,10 @@ class DF(PlatformAgent):
                     if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
                         try:
                             self.myAgent.servicedb[dad.getAID().getName()] = dad
-                            print "###########"
-                            print "DF REGISTERED SERVICE"
-                            print dad.asRDFXML()
-                            print "###########"
+                            #print "###########"
+                            #print "DF REGISTERED SERVICE"
+                            #print dad.asRDFXML()
+                            #print "###########"
                         except Exception, err:
                             reply.setPerformative("failure")
                             co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
@@ -494,7 +494,7 @@ class DfAgentDescription:
             self.loadSL0(content)
         
         if co:
-            print "DAD FROM:",co.pprint()
+            #print "DAD FROM:",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
                 #print "DAD NAME:",str(self.name.asContentObject())
@@ -516,7 +516,7 @@ class DfAgentDescription:
                 self.languages = copy.copy(co.languages)
             if co.scope:
                 self.scope = copy.copy(co.scope)
-            print "DAD DONE:", self.asRDFXML()
+            #print "DAD DONE:", self.asRDFXML()
 
 
     def asContentObject(self):
@@ -717,21 +717,23 @@ class ServiceDescription:
             self.loadSL0(content)
 
         if co:
+            #print "SD:",co.pprint()
             if co.name:
                 self.name = co.name
             if co.type:
-                self.name = co.type
+                self.type = co.type
             if co.protocols:
                 self.protocols = copy.copy(co.protocols)
             if co.ontologies:
-                self.protocols = copy.copy(co.ontologies)
+                self.ontologies = copy.copy(co.ontologies)
             if co.languages:
-                self.protocols = copy.copy(co.languages)
+                self.languages = copy.copy(co.languages)
             if co.ownership:
                 self.ownership = co.ownership
             if co.properties:
                 for k,v in co.properties:
                     self.properties.append({"name":k, "value":v})
+            #print "SD DONE:",self.asRDFXML()
                 
 
     def getName(self):
@@ -905,7 +907,7 @@ class ServiceDescription:
                 co["properties"][p["name"]] = p["value"]
         return co
 
-	def asRDFXML(self):
+    def asRDFXML(self):
 		"""
 		returns a printable version of the SD in RDF/XML format
 		"""
