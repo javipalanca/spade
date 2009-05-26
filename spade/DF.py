@@ -375,14 +375,10 @@ class DF(PlatformAgent):
                         dad = DfAgentDescription(co = self.content.action.argument.df_agent_description)
                     if max in [-1, 0]:
                         # No limit
-                        print "SERVICES:",str(self.myAgent.servicedb.values())
                         for i in self.myAgent.servicedb.values():
                             print dad.asContentObject()," VS ",i.asContentObject()
                             if dad.match(i):
                                 result.append(i)
-                                print "SERVICE MATCHES!!"
-                            else:
-                                print "SERVICE DOES NOT MATCH!!"
                     else:
                         for i in self.myAgent.servicedb.values():
                             if max >= 0:
