@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
 
-<title>SPADE Web Interface: Services</title>
+<title>SPADE Web Interface: Agents</title>
 </head>
 
 <body>
@@ -35,27 +35,19 @@
 
 	<div class="main">
 		
-		<div class="content">
-			
+		<div class="content">		
+			<!--(for service, v in servs.items())-->
+			<h2>@!str(service)!@</h2>
 			<table class="servicesT" cellspacing="0">
-				<tr><td class="servHd">AID</td><td class="servHd">Service</td>
-					<td class="servHd">Type</td><td class="servHd">Actions</td></tr>
-				<!--(for dad in services)-->
-				<tr>
-					<!--(for serv in dad.getServices())-->
-					<tr>
-						<td>@!str(dad.getAID().getName())!@</td>
-						<td class="servBodL"><a href="#">@!str(serv.getName())!@</a></td>
-						<td class="servBodL">@!str(serv.getType())!@</td>
-						<td><form action="/deleteservice" method="POST">
-							<input type="hidden" name="service" value="@!serv.getName()!@"></input>
-							<input type="hidden" name="owner" value="@!dad.getAID().getName()@!"></input>
-							<input type="submit" value="Deregister"></input></form></td>
-					</tr>
-					<!--(end)-->
-				</tr>
+				<tr><td class="servHd">Service Name</td><td class="servHd">Provider</td>
+					<td class="servHd">Addresses</td></tr>
+				<!--(for s in v.values())-->
+				<tr><td class="servBodL"><a href="#">@!str(s["name"])!@</a></td>
+					<td class="servBodL">@!str(s["provider"])!@</td>
+				    <td class="servBodL">@!str(s["addresses"])!@</td></tr>
 				<!--(end)-->
 			</table>
+			<!--(end)-->
 
 		</div>
 
