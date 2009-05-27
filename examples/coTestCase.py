@@ -9,8 +9,8 @@ sys.path.append('..')
 import spade
 import xmpp
 
-import pxdom
-from xml.dom import minidom
+#import pxdom
+#from xml.dom import minidom
 
 
 
@@ -18,7 +18,7 @@ class ContentObjectTestCase(unittest.TestCase):
     
     def setUp(self):
         #self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn"><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
-        self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
+        self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name list="true"><foaf:name>Tony Benn</foaf:name><foaf:name>Pepe</foaf:name></foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
         self.nb = xmpp.simplexml.NodeBuilder(self.rdf)
         
         self.co = spade.content.ContentObject()
@@ -29,13 +29,14 @@ class ContentObjectTestCase(unittest.TestCase):
         self.co["rdf:Description"]["dc:publisher"] = "Wikipedia"
         self.co["rdf:Description"]["foaf:primaryTopic"] = spade.content.ContentObject()
         self.co["rdf:Description"]["foaf:primaryTopic"]["foaf:Person"] = spade.content.ContentObject()
-        self.co["rdf:Description"].primaryTopic.Person["foaf:name"] = "Tony Benn"
+        self.co["rdf:Description"].primaryTopic.Person["foaf:name"] = ["Tony Benn", "Pepe"]
 
     def tearDown(self):
         pass
         
     def testRDFXML2CO(self):
-        sco = spade.content.RDFXML2CO(self.rdf) 
+        sco = spade.content.RDFXML2CO(self.rdf)
+        print self.co
         self.assertEqual(sco, self.co)
         
     def testCO2RDFXML(self):
@@ -63,49 +64,55 @@ class ContentObjectTestCase(unittest.TestCase):
         assert self.isEqualXML(rdf, self.rdf)
 
 
-    def isEqualXML(self, a, b):
-        #da, db= pxdom.parseString(a), pxdom.parseString(a)
-        #return da.isEqualNode(db)
-        #da, db= minidom.parseString(a), minidom.parseString(b)
-        da,db = xmpp.simplexml.NodeBuilder(a),xmpp.simplexml.NodeBuilder(b)
-        self.isEqualElement(da.getDom(),db.getDom())
+def isEqualXML(a, b):
+    #da, db= pxdom.parseString(a), pxdom.parseString(a)
+    #return da.isEqualNode(db)
+    #da, db= minidom.parseString(a), minidom.parseString(b)
+    da,db = xmpp.simplexml.NodeBuilder(a),xmpp.simplexml.NodeBuilder(b)
+    return isEqualElement(da.getDom(),db.getDom())
 
-    def isEqualElement(self,a, b):
-        if a.getName()!=b.getName():
+def isEqualElement(a, b):
+    if a.getName()!=b.getName():
+        return False
+    if sorted(a.getAttrs().items())!=sorted(b.getAttrs().items()):
+        return False
+    if len(a.getChildren())!=len(b.getChildren()):
+        return False
+    if a.getData() and b.getData() and a.getData() != b.getData():
+        return False
+    for ac in a.getChildren():
+        l = []
+        for bc in b.getChildren():
+            if ac.getName() == bc.getName():
+                l.append(bc)
+        if len(l) == 0:
             return False
-        if sorted(a.getAttrs().items())!=sorted(b.getAttrs().items()):
+        r = False
+        for n in l:
+            if len(ac.kids)==len(n.kids): r = True
+        if not r:
             return False
-        if len(a.getChildren())!=len(b.getChildren()):
-            return False
-        for ac in a.getChildren():
-            l = []
-            for bc in b.getChildren():
-                if ac.getName() == bc.getName():
-                    l.append(bc)
-            if len(l) == 0: return False
-            r = False
+        
+        if ac.getData():
             for n in l:
-                if len(ac.kids)==len(n.kids): r = True
-            if not r: return False
+                if n.getData()==ac.getData(): r = True
+            if not r:
+                return False
             
-            if ac.getData():
-                for n in l:
-                    if n.getData()==ac.getData(): r = True
-                if not r: return False
-                
-            if not ac.getData() and (len(ac.kids)>0):
-                for n in l:
-                    if self.isEqualElement(ac,n): r = True
-                if not r: return False
-                
-        """for ac, bc in zip(a.getChildren(), b.getChildren()):
-            if len(ac.kids)!=len(bc.kids):
+        if not ac.getData() and (len(ac.kids)>0):
+            for n in l:
+                if isEqualElement(ac,n): r = True
+            if not r:
                 return False
-            if ac.getData() and ac.getData()!=bc.getData():
-                return False
-            if not ac.getData() and (len(ac.kids)>0) and not self.isEqualElement(ac, bc):
-                return False"""
-        return True
+            
+    """for ac, bc in zip(a.getChildren(), b.getChildren()):
+        if len(ac.kids)!=len(bc.kids):
+            return False
+        if ac.getData() and ac.getData()!=bc.getData():
+            return False
+        if not ac.getData() and (len(ac.kids)>0) and not self.isEqualElement(ac, bc):
+            return False"""
+    return True
 
 
 
