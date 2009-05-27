@@ -7,7 +7,10 @@ sys.path.append('..'+os.sep+'trunk')
 sys.path.append('..')
 
 import spade
+import xmpp
 
+import pxdom
+from xml.dom import minidom
 
 
 
@@ -16,6 +19,7 @@ class ContentObjectTestCase(unittest.TestCase):
     def setUp(self):
         #self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn"><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
         self.rdf = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:title>Tony Benn</dc:title><dc:publisher>Wikipedia</dc:publisher><foaf:primaryTopic><foaf:Person><foaf:name>Tony Benn</foaf:name></foaf:Person></foaf:primaryTopic></rdf:Description></rdf:RDF>"""
+        self.nb = xmpp.simplexml.NodeBuilder(self.rdf)
         
         self.co = spade.content.ContentObject()
         self.co.addNamespace("http://xmlns.com/foaf/0.1/","foaf:")
@@ -35,10 +39,9 @@ class ContentObjectTestCase(unittest.TestCase):
         self.assertEqual(sco, self.co)
         
     def testCO2RDFXML(self):
-        # ESTA MAL DISENYADO: LOS RDFs SON LOS MISMOS, PERO CON LAS
-        # TAGS DE XML EN DISTINTO ORDEN
-        sco = self.co.asRDFXML()       
-        self.assertEqual(sco, self.rdf)
+        rdf = self.co.asRDFXML()
+        assert self.isEqualXML(rdf, self.rdf)
+        
         
     def testGetData(self):
         co = spade.content.ContentObject()
@@ -49,18 +52,62 @@ class ContentObjectTestCase(unittest.TestCase):
         
     def testCOSanity(self):        
         rdf = self.co.asRDFXML()
-        #co = spade.content.ContentObject(rdf)
         co = spade.content.RDFXML2CO(rdf)
         
         assert co == self.co
         
     def testRDFSanity(self):
-        # CREO QUE PASA LO MISMO QUE EN testCO2RDFXML
-        #co = spade.content.ContentObject(self.rdf)
         co = spade.content.RDFXML2CO(self.rdf)        
         rdf = co.asRDFXML()
 
-        assert rdf == self.rdf
+        assert self.isEqualXML(rdf, self.rdf)
+
+
+    def isEqualXML(self, a, b):
+        #da, db= pxdom.parseString(a), pxdom.parseString(a)
+        #return da.isEqualNode(db)
+        #da, db= minidom.parseString(a), minidom.parseString(b)
+        da,db = xmpp.simplexml.NodeBuilder(a),xmpp.simplexml.NodeBuilder(b)
+        self.isEqualElement(da.getDom(),db.getDom())
+
+    def isEqualElement(self,a, b):
+        if a.getName()!=b.getName():
+            return False
+        if sorted(a.getAttrs().items())!=sorted(b.getAttrs().items()):
+            return False
+        if len(a.getChildren())!=len(b.getChildren()):
+            return False
+        for ac in a.getChildren():
+            l = []
+            for bc in b.getChildren():
+                if ac.getName() == bc.getName():
+                    l.append(bc)
+            if len(l) == 0: return False
+            r = False
+            for n in l:
+                if len(ac.kids)==len(n.kids): r = True
+            if not r: return False
+            
+            if ac.getData():
+                for n in l:
+                    if n.getData()==ac.getData(): r = True
+                if not r: return False
+                
+            if not ac.getData() and (len(ac.kids)>0):
+                for n in l:
+                    if self.isEqualElement(ac,n): r = True
+                if not r: return False
+                
+        """for ac, bc in zip(a.getChildren(), b.getChildren()):
+            if len(ac.kids)!=len(bc.kids):
+                return False
+            if ac.getData() and ac.getData()!=bc.getData():
+                return False
+            if not ac.getData() and (len(ac.kids)>0) and not self.isEqualElement(ac, bc):
+                return False"""
+        return True
+
+
 
 if __name__ == "__main__":
     unittest.main()
