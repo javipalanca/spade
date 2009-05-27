@@ -1,3 +1,4 @@
+# encoding: UTF-8
 import SimpleHTTPServer
 import pyratemp
 import os
@@ -162,4 +163,20 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         #for service in search:
         #   if not agent.has_key("fipa:state"):
         #        agent["fipa:state"] = ""
-        return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=search)
+        # Create a service-indexed dictionary of services, not an agent-indexed one
+        servs = {}
+        idn = 0
+        for dad in search:
+            for service in dad.getServices():
+                if service.getType() not in servs.keys():
+                    servs[service.getType()] = {}
+                servs[service.getType()][idn] = {}
+                servs[service.getType()][idn]["name"] = str(service.getName())
+                servs[service.getType()][idn]["provider"] = str(dad.getAID().getName())
+                servs[service.getType()][idn]["addresses"] = ""
+                for address in dad.getAID().getAddresses():
+                    servs[service.getType()][idn]["addresses"] += str(address)+" "
+                idn += 1
+        print servs
+        return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=servs)
+

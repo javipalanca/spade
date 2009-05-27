@@ -21,7 +21,6 @@ class RegisterAgent(Agent.Agent):
                 sd = DF.ServiceDescription()
                 sd.setName("test")
                 sd.setType("testservice")
-                print sd.asContentObject()
                 dad = DF.DfAgentDescription()
                 dad.addService(sd)
                 sd = DF.ServiceDescription()
@@ -30,7 +29,7 @@ class RegisterAgent(Agent.Agent):
                 dad.addService(sd)
                 dad.setAID(self.myAgent.getAID())
                 res = self.myAgent.registerService(dad)
-                print "Service Registered",str(res)
+                print "Service Registered:",str(res)
                 
                 # Now the search
                 dad = DF.DfAgentDescription()
@@ -38,9 +37,9 @@ class RegisterAgent(Agent.Agent):
                 ds.setType("testservice")
                 dad.addService(ds)
                 search = self.myAgent.searchService(dad)
-                print "SEARCH:"
+                print "Search Results:"
                 for s in search:
-                    print s
+                    print " * ",s.asRDFXML()
                 
             except Exception,e:
                 print "EXCEPTION ONSTART",str(e)
@@ -54,7 +53,7 @@ if __name__ == "__main__":
     if host == None:
         host = "127.0.0.1"
 
-    print "HOST:",host
+    print "Using HOST:",host
     ag = RegisterAgent("register@"+host, "secret")
     ag.start()
 

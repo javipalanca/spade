@@ -1663,10 +1663,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             	content["fipa:action"]["fipa:act"] = "register"
             	content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
             	self._msg.setContentObject(content)
-                print "#################"
-                print "AGENT:REGISTERSERVICE"
-                print content.pprint()
-                print "#################"
+                #print "#################"
+                #print "AGENT:REGISTERSERVICE"
+                #print content.pprint()
+                #print "#################"
 
             self.myAgent.send(self._msg)
 
@@ -1915,10 +1915,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 #content = p.parse(msg.getContent())
 		content = msg.getContentObject()
                 self.result = []
-		print "CONT:",content.pprint()
+		#print "CONT:",content.pprint()
                 for dfd in content.result:  #[0]#.asList()
                     d = DF.DfAgentDescription(co = dfd)
-                    print "DFD:",d.asRDFXML()
+                    #print "DFD:",d.asRDFXML()
                     self.result.append(d)
 
             except Exception, e:

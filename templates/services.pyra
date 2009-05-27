@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
 
-<title>SPADE Web Interface: Agents</title>
+<title>SPADE Web Interface: Services</title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 	<div class="main">
 		
 		<div class="content">		
-			<!--(for service, v in servs.items())-->
+			<!--(for service,v in services.items())-->
 			<h2>@!str(service)!@</h2>
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Service Name</td><td class="servHd">Provider</td>
