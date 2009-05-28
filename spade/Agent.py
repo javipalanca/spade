@@ -441,7 +441,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # There is an envelope; use it to build sender and receivers
                     xc = XMLCodec.XMLCodec()
                     envelope = xc.parse(str(child.getTag("envelope")))
-                    if envelope.getFrom():                        
+                    if envelope.getFrom():
 						try:
 							#ACLmsg.setSender(envelope.getFrom().getStripped())
 							ACLmsg.setSender(envelope.getFrom().getStripped())
@@ -1436,16 +1436,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             #content += str(self.myAgent.getAID())
             #content += "(search "+ str(self.AAD) +")"
             #content +=" ))"
-            
+
             #self._msg.setContent(content)
-            
+
             content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
             content["fipa:action"] = ContentObject()
             content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
             content["fipa:action"]["fipa:act"] = "search"
             content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
             self._msg.setContentObject(content)
-            
+
             self.myAgent.send(self._msg)
             msg = self._receive(True,10)
             if msg == None or str(msg.getPerformative()) != 'agree':
@@ -1486,7 +1486,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		for i in co["fipa:result"]:
 			self.result.append(i)
-		
+
             self.finished = True
 
     def searchAgent(self, AAD, debug=False):
@@ -1518,16 +1518,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             p = SL0Parser.SL0Parser()
             self._msg.addReceiver( self.myAgent.getAMS() )
             self._msg.setPerformative('request')
-            self._msg.setLanguage('fipa-sl0')
+            self._msg.setLanguage('rdf')
             self._msg.setProtocol('fipa-request')
             self._msg.setOntology('FIPA-Agent-Management')
 
-            content = "((action "
-            content += str(self.myAgent.getAID())
-            content += "(modify "+ str(self.AAD) + ")"
-            content +=" ))"
+            #content = "((action "
+            #content += str(self.myAgent.getAID())
+            #content += "(modify "+ str(self.AAD) + ")"
+            #content +=" ))"
+            #self._msg.setContent(content)
 
-            self._msg.setContent(content)
+            content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+            content["fipa:action"] = ContentObject()
+            content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+            content["fipa:action"]["fipa:act"] = "modify"
+            content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
+            self._msg.setContentObject(content)
 
             self.myAgent.send(self._msg)
 
@@ -1567,45 +1573,45 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.result = None
             self.finished = False
 
-	def _process(self):
-		msg = self._msg
-		msg.addReceiver( self.myAgent.getAMS() )
-		msg.setPerformative('request')
-		#msg.setLanguage('fipa-sl0')
-		msg.setLanguage('rdf')
-		msg.setProtocol('fipa-request')
-		msg.setOntology('FIPA-Agent-Management')
+    	def _process(self):
+    		msg = self._msg
+    		msg.addReceiver( self.myAgent.getAMS() )
+    		msg.setPerformative('request')
+    		#msg.setLanguage('fipa-sl0')
+    		msg.setLanguage('rdf')
+    		msg.setProtocol('fipa-request')
+    		msg.setOntology('FIPA-Agent-Management')
 
-		"""
-		content = "((action "
-		content += str(self.myAgent.getAID())
-		content += "(get-description platform)"
-		content +=" ))"
+    		"""
+    		content = "((action "
+    		content += str(self.myAgent.getAID())
+    		content += "(get-description platform)"
+    		content +=" ))"
 
-		msg.setContent(content)
-		"""
+    		msg.setContent(content)
+    		"""
 
-		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-		content["fipa:action"] = ContentObject()
-		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-		content["fipa:action"]["fipa:act"] = "get-description"
-		msg.setContentObject(content)
+    		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+    		content["fipa:action"] = ContentObject()
+    		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+    		content["fipa:action"]["fipa:act"] = "get-description"
+    		msg.setContentObject(content)
 
-		self.myAgent.send(msg)
+    		self.myAgent.send(msg)
 
-		msg = self._receive(True,20)
-		if msg == None or msg.getPerformative() != 'agree':
-			#print "There was an error modifying the Agent. (not agree)"
+    		msg = self._receive(True,20)
+    		if msg == None or msg.getPerformative() != 'agree':
+    			#print "There was an error modifying the Agent. (not agree)"
 
-			return -1
-		msg = self._receive(True,20)
-		if msg == None or msg.getPerformative() != 'inform':
-			print "There was an error modifying the Agent. (not inform)"
+    			return -1
+    		msg = self._receive(True,20)
+    		if msg == None or msg.getPerformative() != 'inform':
+    			print "There was an error modifying the Agent. (not inform)"
 
-			return -1
+    			return -1
 
-		#self.result = msg.getContent()
-		self.result = msg.getContentObject()
+    		#self.result = msg.getContent()
+    		self.result = msg.getContentObject()
 
     def getPlatformInfo(self, debug=False):
 	"""
@@ -2019,30 +2025,36 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self._msg = ACLMessage.ACLMessage()
 		self._msg.addReceiver( self.myAgent.getDF() )
 		self._msg.setPerformative('request')
-		self._msg.setLanguage('fipa-sl0')
+		self._msg.setLanguage('rdf')
 		self._msg.setProtocol('fipa-request')
 		self._msg.setOntology('FIPA-Agent-Management')
 
-		content = "((action "
-		content += str(self.myAgent.getAID())
-		content += "(modify "+ str(self.DAD) + ")"
-		content +=" ))"
+		#content = "((action "
+		#content += str(self.myAgent.getAID())
+		#content += "(modify "+ str(self.DAD) + ")"
+		#content +=" ))"
+		#self._msg.setContent(content)
 
-		self._msg.setContent(content)
+
+		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+		content["fipa:action"] = ContentObject()
+		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+		content["fipa:action"]["fipa:act"] = "modify"
+		content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
+		self._msg.setContentObject(content)
 
 		self.myAgent.send(self._msg)
 
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
-			#print "There was an error modifying the Service. (not agree)"
-			self.result=False
-			return
+		    #print "There was an error modifying the Service. (not agree)"
+		    self.result=False
+		    return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
-			#print "There was an error modifying the Service. (not inform)"
-			self.result = False
-			return
-
+		    #print "There was an error modifying the Service. (not inform)"
+		    self.result = False
+		    return
 		self.result = True
 		return
     def modifyService(self, DAD, debug=False):

@@ -451,59 +451,132 @@ class AMS(Agent.PlatformAgent):
 			#The AMS agrees and then informs dummy of the successful execution of the action
 			error = False
 			aad = None
-			try:
-					aad = AmsAgentDescription(self.content.action.modify['ams-agent-description'])
-			except Exception,err:
-				error = "(missing-argument ams-agent-description)"
-			#print "aad: " + str(aad.getAID().getName())
-			#print "aid: " + str(self.msg.getSender())
 
-			if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
-				error = "(unauthorised)"
-
-			# If there is no AID in the AAD, fill it with the sender of the message
-			if not aad.getAID():
-				aad.setAID(self.msg.getSender())
-
-			if error:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("refuse")
-				reply.setContent("( "+self.msg.getContent() + error + ")")
-				self.myAgent.send(reply)
-
-				return -1
-
+			if "rdf" in self.msg.getLanguage().lower():
+				rdf = True
 			else:
-				reply = self.msg.createReply()
-				reply.setSender(self.myAgent.getAID())
-				reply.setPerformative("agree")
-				reply.setContent("(" + str(self.msg.getContent()) + " true)")
-				self.myAgent.send(reply)
+				# Old ugly SL0
+				rdf = False
 
-			if self.myAgent.agentdb.has_key(aad.getAID().getName()):
+			if not rdf:
 
 				try:
-					self.myAgent.agentdb[aad.getAID().getName()] = aad
-				except Exception, err:
-					reply.setPerformative("failure")
-					reply.setContent("("+self.msg.getContent() + "(internal-error))")
+					aad = AmsAgentDescription(self.content.action.modify['ams-agent-description'])
+				except Exception,err:
+					error = "(missing-argument ams-agent-description)"
+				#print "aad: " + str(aad.getAID().getName())
+				#print "aid: " + str(self.msg.getSender())
+
+				if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
+					error = "(unauthorised)"
+
+				# If there is no AID in the AAD, fill it with the sender of the message
+				if not aad.getAID():
+					aad.setAID(self.msg.getSender())
+
+				if error:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("refuse")
+					reply.setContent("( "+self.msg.getContent() + error + ")")
 					self.myAgent.send(reply)
+
 					return -1
 
-				reply.setPerformative("inform")
-				reply.setContent("(done "+self.msg.getContent() + ")")
-				self.myAgent.send(reply)
+				else:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("agree")
+					reply.setContent("(" + str(self.msg.getContent()) + " true)")
+					self.myAgent.send(reply)
 
-				return 1
+				if self.myAgent.agentdb.has_key(aad.getAID().getName()):
+
+					try:
+						self.myAgent.agentdb[aad.getAID().getName()] = aad
+					except Exception, err:
+						reply.setPerformative("failure")
+						reply.setContent("("+self.msg.getContent() + "(internal-error))")
+						self.myAgent.send(reply)
+						return -1
+
+					reply.setPerformative("inform")
+					reply.setContent("(done "+self.msg.getContent() + ")")
+					self.myAgent.send(reply)
+
+					return 1
+
+				else:
+					reply.setPerformative("failure")
+					reply.setContent("("+self.msg.getContent() + "(not-registered))")
+					self.myAgent.send(reply)
+					#print aad.getAID().getName()
+					#print self.myAgent.agentdb
+					return -1
 
 			else:
-				reply.setPerformative("failure")
-				reply.setContent("("+self.msg.getContent() + "(not-registered))")
-				self.myAgent.send(reply)
-				#print aad.getAID().getName()
-				#print self.myAgent.agentdb
-				return -1
+				#Language is RDF
+				co = self.msg.getContentObject()
+				if co["fipa:action"].has_key("fipa:argument") and co["fipa:action"]["fipa:argument"]:
+					aad = AmsAgentDescription(co=co["fipa:action"]["fipa:argument"])
+				else:
+					error = "missing-argument ams-agent-description"
+				#print "aad: " + str(aad.getAID().getName())
+				#print "aid: " + str(self.msg.getSender())
+
+				if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
+					error = "unauthorised"
+
+				# If there is no AID in the AAD, fill it with the sender of the message
+				if not aad.getAID():
+					aad.setAID(self.msg.getSender())
+
+				if error:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("refuse")
+					co["fipa:error"] = error
+					reply.setContentObject(co)
+					self.myAgent.send(reply)
+
+					return -1
+
+				else:
+					reply = self.msg.createReply()
+					reply.setSender(self.myAgent.getAID())
+					reply.setPerformative("agree")
+					co["fipa:done"]="true"
+					reply.setContentObject(co)
+					self.myAgent.send(reply)
+
+					del co["fipa:done"]
+
+				if self.myAgent.agentdb.has_key(aad.getAID().getName()):
+
+					try:
+						self.myAgent.agentdb[aad.getAID().getName()] = aad
+					except Exception, err:
+						reply.setPerformative("failure")
+						co["fipa:error"] = "internal-error"
+						reply.setContentObject(co)
+						self.myAgent.send(reply)
+						return -1
+
+					reply.setPerformative("inform")
+					co["fipa:done"] = "true"
+					reply.setContentObject(co)
+					self.myAgent.send(reply)
+
+					return 1
+
+				else:
+					reply.setPerformative("failure")
+					co["fipa:error"]="not-registered"
+					reply.setContentObject(co)
+					self.myAgent.send(reply)
+					#print aad.getAID().getName()
+					#print self.myAgent.agentdb
+					return -1
 
 
 	def __init__(self,node,passw,server="localhost",port=5347):

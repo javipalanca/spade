@@ -42,7 +42,7 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
 
             aad = spade.AMS.AmsAgentDescription()
             aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.search = self.myAgent.searchAgent(aad)[0]
+            self.myAgent.search = self.myAgent.searchAgent(aad)
             
             
 
@@ -73,7 +73,7 @@ class BasicTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.search[0]["fipa:aid"]["fipa:name"], "a@"+host)
         
-    '''def testSearchOther(self):
+    def testSearchOther(self):
         self.a.addBehaviour(SearchBehav("b"), None)
         counter = 0
         while self.a.search == None and counter < 20:
@@ -105,7 +105,8 @@ class BasicTestCase(unittest.TestCase):
             counter +=1
 
         self.assertEqual(self.a.result, True)
-        self.assertEqual(self.a.search[0]["ownership"], "UNITTEST")
+        self.assertEqual(len(self.a.search), 1)
+        self.assertEqual(self.a.search[0]["fipa:ownership"], "UNITTEST")
 
     def testModifyNotAllowed(self):
 
@@ -116,7 +117,8 @@ class BasicTestCase(unittest.TestCase):
             counter +=1
 
         self.assertEqual(self.a.result, False)
-        self.assertNotEqual(self.a.search[0]["ownership"], "UNITTEST")'''
+        self.assertEqual(len(self.a.search), 1)
+        self.assertNotEqual(self.a.search[0]["fipa:ownership"], "UNITTEST")
 
 
 if __name__ == "__main__":
