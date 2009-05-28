@@ -20,7 +20,7 @@ class AMS(Agent.PlatformAgent):
 		def __init__(self):
 			Behaviour.Behaviour.__init__(self)
 			self.sl0parser = SL0Parser()
-			
+
 		def onStart(self):
 			self.myAgent.addBehaviour(self.SubscribeBehaviour(), Behaviour.MessageTemplate(xmpp.Presence()))
 
@@ -44,14 +44,14 @@ class AMS(Agent.PlatformAgent):
 					status = msg.getStatus()
 					show = msg.getShow()
 					reply_address = frm
-					if typ == "subscribe":						
+					if typ == "subscribe":
 						frm=AID.aid(name=str(frm), addresses=["xmpp://"+str(frm)])
 						aad = AmsAgentDescription()
 						aad.name = frm
 						if status: aad.state = status
 						if show: aad.ownership = show
 						else: aad.ownership = frm.getName()
-		
+
 						if not self.myAgent.agentdb.has_key(frm.getName()):
 							self.myAgent.agentdb[frm.getName()] = aad
 						elif self.myAgent.agentdb[frm.getName()].getOwnership() == aad.getOwnership():
@@ -61,11 +61,11 @@ class AMS(Agent.PlatformAgent):
 							presence = xmpp.Presence(reply_address,typ="unsubscribed",xmlns=xmpp.NS_CLIENT)
 							self.myAgent.jabber.send(presence)
 							return
-		
+
 						#print "AMS SUCCESFULLY REGISTERED AGENT " + frm.getName()
 						presence = xmpp.Presence(reply_address,typ="subscribed")
 						#print "AMS SENDS "+str(presence)
-						self.myAgent.jabber.send(presence)						
+						self.myAgent.jabber.send(presence)
 					elif typ == "unsubscribed":
 						frm=AID.aid(name=frm, adresses=["xmpp://"+frm])
 						if self.myAgent.agentdb.has_key(frm.getName()):
@@ -108,9 +108,9 @@ class AMS(Agent.PlatformAgent):
 								self.myAgent.send(reply)
 
 								return -1
-						
+
 						elif msg.getLanguage().lower() == "rdf":
-							# Content in RDF							
+							# Content in RDF
 							co = msg.getContentObject()
 							content = msg.getContent()
 							ACLtemplate = Behaviour.ACLTemplate()
@@ -118,28 +118,28 @@ class AMS(Agent.PlatformAgent):
 							ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
 							#print ">>>>>>>>AMS CONTENT RDF ",co
-							
+
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
 								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
 									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "get-description":
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "search":
-									#print ">>>>>>>>AMS SEARCH"									
+									#print ">>>>>>>>AMS SEARCH"
 									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "modify":
 									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
 							else:
 								reply = msg.createReply()
 								reply.setSender(self.myAgent.getAID())
-								reply.setPerformative("refuse")								
+								reply.setPerformative("refuse")
 								co["unsuported-function"] = "true"
 								reply.setContentObject(co)
 								self.myAgent.send(reply)
 								return -1
-								
-								
-							
+
+
+
 						else: error = "(unsupported-language "+msg.getLanguage()+")"
 					else: error = "(unsupported-ontology "+msg.getOntology()+")"
 
@@ -261,7 +261,7 @@ class AMS(Agent.PlatformAgent):
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
-			
+
 			if "rdf" in self.msg.getLanguage().lower():
 				# The content language is RDF
 				rdf = True
@@ -271,7 +271,7 @@ class AMS(Agent.PlatformAgent):
 			else:
 				rdf = False
 				reply.setContent("(" + str(self.msg.getContent()) + " true)")
-			
+
 			# Send the AGREE reply
 			self.myAgent.send(reply)
 
@@ -329,12 +329,12 @@ class AMS(Agent.PlatformAgent):
 
 			error = False
 			rdf = True
-			max = 1000		
-						
+			max = 1000
+
 			reply = self.msg.createReply()
 			reply.setSender(self.myAgent.getAID())
 			reply.setPerformative("agree")
-			
+
 			if "rdf" in self.msg.getLanguage().lower():
 				rdf = True
 				#print "$$$$$$$$$$ AMS SEARCHBEHAVIOUR"
@@ -346,7 +346,7 @@ class AMS(Agent.PlatformAgent):
 				# Old ugly SL0
 				rdf = False
 				reply.setContent("(" + str(self.msg.getContent()) + " true)")
-				
+
 			self.myAgent.send(reply)
 
 			if not rdf:
@@ -391,9 +391,9 @@ class AMS(Agent.PlatformAgent):
 				else:
 					content+= 'None'
 				content += "))"
-				
+
 				reply.setContent(content)
-				
+
 			else:
 				# The RDF way of things, baby
 				# Delete done (from previous reply)
@@ -412,7 +412,7 @@ class AMS(Agent.PlatformAgent):
 					reply.setContentObject(co)
 					self.myAgent.send(reply)
 					return -1
-				
+
 				# Search for the results
 				result = []
 				if co["fipa:action"].has_key("fipa:argument") and co["fipa:action"]["fipa:argument"]:
@@ -433,8 +433,8 @@ class AMS(Agent.PlatformAgent):
 				for i in result:
 					co2["fipa:result"].append(i.asContentObject())
 				reply.setContentObject(co2)
-				#print "$$$$$$ AMS CONTENT: ",co2.pprint()			
-			
+				#print "$$$$$$ AMS CONTENT: ",co2.pprint()
+
 			reply.setPerformative("inform")
 			self.myAgent.send(reply)
 
@@ -550,15 +550,15 @@ class AmsAgentDescription:
 
 		if co:
 			try:
-				self.name = AID.aid(co=co["name"])
+				self.name = AID.aid(co=co["fipa:aid"])
 			except:
 				self.name = None
 			try:
-				self.ownership = co["ownership"]
+				self.ownership = co["fipa:ownership"]
 			except:
 				self.ownership = None
 			try:
-				self.state = co["state"]
+				self.state = co["fipa:state"]
 			except:
 				self.state = None
 		elif content != None:
@@ -644,13 +644,13 @@ class AmsAgentDescription:
 		co["fipa:ownership"] = str(self.ownership)
 		co["fipa:state"] = str(self.state)
 		return co
-		
+
 
 	def asRDFXML(self):
 		"""
 		returns a printable version of the AAD in RDF/XML format
 		"""
-		return str(self.asContentObject())		  
+		return str(self.asContentObject())
 
 	def __str__(self):
 		"""
