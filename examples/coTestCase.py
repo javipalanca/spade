@@ -9,9 +9,6 @@ sys.path.append('..')
 import spade
 import xmpp
 
-#import pxdom
-#from xml.dom import minidom
-
 
 
 class ContentObjectTestCase(unittest.TestCase):
@@ -36,12 +33,11 @@ class ContentObjectTestCase(unittest.TestCase):
         
     def testRDFXML2CO(self):
         sco = spade.content.RDFXML2CO(self.rdf)
-        print self.co
         self.assertEqual(sco, self.co)
         
     def testCO2RDFXML(self):
         rdf = self.co.asRDFXML()
-        assert self.isEqualXML(rdf, self.rdf)
+        assert isEqualXML(rdf, self.rdf)
         
         
     def testGetData(self):
@@ -61,13 +57,10 @@ class ContentObjectTestCase(unittest.TestCase):
         co = spade.content.RDFXML2CO(self.rdf)        
         rdf = co.asRDFXML()
 
-        assert self.isEqualXML(rdf, self.rdf)
+        assert isEqualXML(rdf, self.rdf)
 
 
 def isEqualXML(a, b):
-    #da, db= pxdom.parseString(a), pxdom.parseString(a)
-    #return da.isEqualNode(db)
-    #da, db= minidom.parseString(a), minidom.parseString(b)
     da,db = xmpp.simplexml.NodeBuilder(a),xmpp.simplexml.NodeBuilder(b)
     return isEqualElement(da.getDom(),db.getDom())
 
@@ -104,14 +97,7 @@ def isEqualElement(a, b):
                 if isEqualElement(ac,n): r = True
             if not r:
                 return False
-            
-    """for ac, bc in zip(a.getChildren(), b.getChildren()):
-        if len(ac.kids)!=len(bc.kids):
-            return False
-        if ac.getData() and ac.getData()!=bc.getData():
-            return False
-        if not ac.getData() and (len(ac.kids)>0) and not self.isEqualElement(ac, bc):
-            return False"""
+
     return True
 
 
