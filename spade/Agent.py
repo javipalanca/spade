@@ -1776,38 +1776,60 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.otherdf = otherdf
 
         def _process(self):
+            force_sl0 = False
             if self.otherdf and isinstance(self.otherdf, AID.aid):
                 self._msg.addReceiver( self.otherdf )
+                force_sl0 = True
             else:
                 self._msg.addReceiver( self.myAgent.getDF() )
             self._msg.setPerformative('request')
-            self._msg.setLanguage('fipa-sl0')
+            #self._msg.setLanguage('fipa-sl0')
+            #self._msg.setLanguage('rdf')
             self._msg.setProtocol('fipa-request')
             self._msg.setOntology('FIPA-Agent-Management')
 
-            content = "((action "
-            content += str(self.myAgent.getAID())
-            content += "(deregister " + str(self.DAD) + ")"
-            content +=" ))"
+            if force_sl0:
+            	self._msg.setLanguage('fipa-sl0')
+            	content = "((action "
+            	content += str(self.myAgent.getAID())
+            	content += "(deregister " + str(self.DAD) + ")"
+            	content +=" ))"
+            	self._msg.setContent(content)
 
-            self._msg.setContent(content)
+            else:
+                self._msg.setLanguage('rdf')
+            	content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+           	content["fipa:action"] = ContentObject()
+            	content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+            	content["fipa:action"]["fipa:act"] = "deregister"
+            	content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
+            	self._msg.setContentObject(content)
+                #print "#################"
+                #print "AGENT:REGISTERSERVICE"
+                #print content.pprint()
+                #print "#################"
 
             self.myAgent.send(self._msg)
 
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                #print "There was an error deregistering the Service. (not agree)"
+            #if msg == None or msg.getPerformative() != 'agree':
+                #print "There was an error registering the Service. (not agree)"
                 self.result = False
                 return
             elif msg == None or msg.getPerformative() == 'agree':
                 msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() != 'inform':
-                    #print "There was an error deregistering the Service. (not inform)"
+                    if not msg:
+                        print "There was an error deregistering the Service. (timeout)"
+                    elif msg.getPerformative() == 'failure':
+                        print "There was an error deregistering the Service. (failure)"
+                    else:
+                        print "There was an error deregistering the Service. (not inform)"
                     self.result = False
                     return
 
             self.result = True
-            return
 
     def deregisterService(self, DAD, debug=False, otherdf=None):
         """
@@ -1816,51 +1838,66 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
+        if otherdf and isinstance(otherdf, AID.aid):
+            template.setSender(otherdf)
+        else:
+            template.setSender(self.getDF())
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
-        if self.forceKill():
-            if otherdf and isinstance(otherdf, AID.aid):
-                msg.addReceiver( otherdf )
-            else:
-                msg.addReceiver( self.getDF() )
-            msg.setPerformative('request')
-            msg.setLanguage('fipa-sl0')
-            msg.setProtocol('fipa-request')
-            msg.setOntology('FIPA-Agent-Management')
-
-            content = "((action "
-            content += str(self.getAID())
-            content += "(deregister " + str(DAD) + ")"
-            content +=" ))"
-
-            msg.setContent(content)
-            self.send(msg)
-
-            # EYE! from here, msg becomes the reply
-            msg = self._receive(True, 20, t)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                #print "There was an error deregistering the Service. (not agree)"
-                return False
-
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(True, 20, t)
-                if msg == None or msg.getPerformative() != 'inform':
-                    #print "There was an error deregistering the Service. (not inform)"
-                    return False
-
-            return True
-
-        else:
-            # The agent is alive and kicking. We must launch a behaviour to perform the deregister
-            msg = ACLMessage.ACLMessage()
-            template = Behaviour.ACLTemplate()
-            template.setConversationId(msg.getConversationId())
-            t = Behaviour.MessageTemplate(template)
-            b = AbstractAgent.deregisterServiceBehaviour(msg, DAD, debug, otherdf)
-
+        if self._running:
+            # Online
+            b = AbstractAgent.deregisterServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
             self.addBehaviour(b,t)
             b.join()
             return b.result
+        else:
+            # Offline operation, done when the agent is starting
+            print "OFFLINE DEREGISTERSERVICE"
+            if otherdf and isinstance(otherdf, AID.aid):
+                msg.addReceiver( otherdf )
+                force_sl0 = True
+            else:
+                msg.addReceiver( self.getDF() )
+                force_sl0 = False
+            msg.setPerformative('request')
+            #msg.setLanguage('fipa-sl0')
+            msg.setProtocol('fipa-request')
+            msg.setOntology('FIPA-Agent-Management')
+
+            if force_sl0:
+                content = "((action "
+                content += str(self.getAID())
+                content += "(deregister " + str(DAD) + ")"
+                content +=" ))"
+                msg.setContent(content)
+
+            else:
+                self._msg.setLanguage('rdf')
+                content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                content["fipa:action"] = ContentObject()
+                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+                content["fipa:action"]["fipa:act"] = "deregister"
+                content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
+                self._msg.setContentObject(content)
+
+            self.send(msg)
+
+        # EYE! msg becomes the reply
+            msg = self._receive(block=True, timeout=20, template=t)
+            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
+                #print "There was an error registering the Service. (not agree)", str(msg)
+                return False
+
+            elif msg == None or msg.getPerformative() == 'agree':
+                msg = self._receive(block=True, timeout=20, template=t)
+                if msg == None or msg.getPerformative() != 'inform':
+                    if msg.getPerformative() == 'failure':
+                        print "There was an error deregistering the Service. (failure)"
+                    else:
+                        print "There was an error deregistering the Service. (not inform)"
+                    return False
+
+            return True
 
     class searchServiceBehaviour(Behaviour.OneShotBehaviour):
 
