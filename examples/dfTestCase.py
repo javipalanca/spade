@@ -115,9 +115,8 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
 
-    '''def testRegisterService(self):
+    def testRegisterService(self):
 
-        print "REGISTERING"
         #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
         self.waitfor(self.a.result)
@@ -125,8 +124,6 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
-
-        print "REGISTERED"
 
         #check service is registered
         self.a.addBehaviour(SearchBehav("a"),None)
@@ -140,76 +137,6 @@ class BasicTestCase(unittest.TestCase):
 
         if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
             self.fail()
-
-        self.a.result = None
-
-        print "CHECKED"
-
-        #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
-        self.waitfor(self.a.result)
-
-        self.assertEqual(self.a.result, True)
-
-        print "DEREGISTERED"
-
-        #check service is deregistered
-        self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-            time.sleep(1)
-            counter += 1
-
-        self.assertEqual(self.a.result, [])'''
-
-
-    '''def testModifyService(self):
-        #register service
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
-
-        self.assertEqual(self.a.result, True)
-
-        self.a.result = None
-
-        #check service is registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
-        self.assertEqual(len(self.a.result[0].getServices()), 2)
-
-        if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-        if self.a.result[0].getServices()[1].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-
-        self.a.result = None
-
-        #modify service
-        self.a.addBehaviour(ModifyBehav("a"),None)
-        self.waitfor(self.a.result)
-
-        self.assertEqual(self.a.result, True)
-
-        self.a.result = None
-
-        #check service is modified
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
-
-        self.assertEqual(len(self.a.result[0].getServices()), 1)
-
-        self.assertEqual(self.a.result[0].getServices()[0].getType(),"unittest_type_1_modified")
 
         self.a.result = None
 
@@ -259,7 +186,7 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
+        self.a.addBehaviour(DeRegisterBehav("b"),None)
         self.waitfor(self.a.result)
 
         self.assertEqual(self.a.result, True)
@@ -276,6 +203,74 @@ class BasicTestCase(unittest.TestCase):
 
 
 
+    '''def testModifyService(self):
+            #register service
+            self.a.addBehaviour(RegisterBehav("a"),None)
+            self.waitfor(self.a.result)
+
+            self.assertEqual(self.a.result, True)
+
+            self.a.result = None
+
+            #check service is registered
+            self.a.addBehaviour(SearchBehav("a"),None)
+            self.waitfor(self.a.result)
+
+            self.assertNotEqual(self.a.result, None)
+            self.assertEqual(len(self.a.result), 1)
+
+            self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+            self.assertEqual(len(self.a.result[0].getServices()), 2)
+
+            if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
+                self.fail()
+            if self.a.result[0].getServices()[1].getName() not in ['unittest_name_1','unittest_name_2']:
+                self.fail()
+
+            self.a.result = None
+
+            #modify service
+            self.a.addBehaviour(ModifyBehav("a"),None)
+            self.waitfor(self.a.result)
+
+            self.assertEqual(self.a.result, True)
+
+            self.a.result = None
+
+            #check service is modified
+            self.a.addBehaviour(SearchBehav("a"),None)
+            self.waitfor(self.a.result)
+
+            self.assertNotEqual(self.a.result, None)
+            self.assertEqual(len(self.a.result), 1)
+
+            self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+
+            self.assertEqual(len(self.a.result[0].getServices()), 1)
+
+            self.assertEqual(self.a.result[0].getServices()[0].getType(),"unittest_type_1_modified")
+
+            self.a.result = None
+
+            #deregister service
+            self.a.addBehaviour(DeRegisterBehav("a"),None)
+            self.waitfor(self.a.result)
+
+            self.assertEqual(self.a.result, True)
+
+            #check service is deregistered
+            self.a.result = False
+            self.a.addBehaviour(SearchBehav("a"),None)
+            counter = 1
+            while self.a.result == False and counter < 20:
+                time.sleep(1)
+                counter += 1
+
+            self.assertEqual(self.a.result, [])
+
+
+
+    
     def testModifyNotAllowed(self):
         #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
@@ -390,7 +385,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.a.result, [])
 
 
-    '''def testAlreadyRegistered(self):
+    def testAlreadyRegistered(self):
         #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
         self.waitfor(self.a.result)
@@ -406,7 +401,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
 
-        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
         self.assertEqual(len(self.a.result[0].getServices()), 2)
 
         if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
@@ -437,7 +432,7 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
 
-        self.assertEqual(self.a.result, [])'''
+        self.assertEqual(self.a.result, [])
 
 
 

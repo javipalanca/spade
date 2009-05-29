@@ -109,7 +109,7 @@ class DF(PlatformAgent):
             if "rdf" not in self.msg.getLanguage():
                 rdf = False
                 try:
-                    if "register" in self.content.action:
+                    if self.content.action == "register":
                         dad = DfAgentDescription(self.content.action.register['df-agent-description'])
                     else:
                         dad = DfAgentDescription(self.content.action.deregister['df-agent-description'])
@@ -134,7 +134,7 @@ class DF(PlatformAgent):
                     self.myAgent.send(reply)
 
 
-                if "register" in self.content.action:
+                if self.content.action == "register":
                     if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
                         try:
@@ -162,7 +162,7 @@ class DF(PlatformAgent):
                         self.myAgent.send(reply)
                         return -1
 
-                elif "deregister" in self.content.action:
+                elif self.content.action == "deregister":
 
                     if self.myAgent.servicedb.has_key(dad.getAID().getName()):
                         try:
@@ -218,7 +218,7 @@ class DF(PlatformAgent):
                     #reply.setContentObject(co)
                     self.myAgent.send(reply)
 
-                if "register" in co["fipa:action"]["fipa:act"]:
+                if co["fipa:action"]["fipa:act"] == "register":
                     if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
                         try:
                             self.myAgent.servicedb[dad.getAID().getName()] = dad
@@ -249,7 +249,7 @@ class DF(PlatformAgent):
                         self.myAgent.send(reply)
                         return -1
 
-                elif "deregister" in co["fipa:action"]["fipa:act"]:
+                elif co["fipa:action"]["fipa:act"] == "deregister":
                     if self.myAgent.servicedb.has_key(dad.getAID().getName()):
                         try:
                             del self.myAgent.servicedb[dad.getAID().getName()]

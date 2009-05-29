@@ -1654,21 +1654,21 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._msg.setOntology('FIPA-Agent-Management')
 
             if force_sl0:
-            	self._msg.setLanguage('fipa-sl0')
-            	content = "((action "
-            	content += str(self.myAgent.getAID())
-            	content += "(register " + str(self.DAD) + ")"
-            	content +=" ))"
-            	self._msg.setContent(content)
+                self._msg.setLanguage('fipa-sl0')
+                content = "((action "
+                content += str(self.myAgent.getAID())
+                content += "(register " + str(self.DAD) + ")"
+                content +=" ))"
+                self._msg.setContent(content)
 
             else:
                 self._msg.setLanguage('rdf')
-            	content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-           	content["fipa:action"] = ContentObject()
-            	content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-            	content["fipa:action"]["fipa:act"] = "register"
-            	content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-            	self._msg.setContentObject(content)
+                content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                content["fipa:action"] = ContentObject()
+                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
+                content["fipa:action"]["fipa:act"] = "register"
+                content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
+                self._msg.setContentObject(content)
                 #print "#################"
                 #print "AGENT:REGISTERSERVICE"
                 #print content.pprint()
@@ -1688,7 +1688,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if not msg:
                         print "There was an error registering the Service. (timeout)"
                     elif msg.getPerformative() == 'failure':
-                        print "There was an error registering the Service. (failure)"
+                        print "There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error']
                     else:
                         print "There was an error registering the Service. (not inform)"
                     self.result = False
@@ -1711,33 +1711,33 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         t = Behaviour.MessageTemplate(template)
         if self._running:
             # Online
-         	b = AbstractAgent.registerServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
-          	self.addBehaviour(b,t)
-           	b.join()
-        	return b.result
+            b = AbstractAgent.registerServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
+            self.addBehaviour(b,t)
+            b.join()
+            return b.result
         else:
             # Offline operation, done when the agent is starting
             print "OFFLINE REGISTERSERVICE"
             if otherdf and isinstance(otherdf, AID.aid):
                 msg.addReceiver( otherdf )
-		force_sl0 = True
+                force_sl0 = True
             else:
                 msg.addReceiver( self.getDF() )
-		force_sl0 = False
+                force_sl0 = False
             msg.setPerformative('request')
             #msg.setLanguage('fipa-sl0')
             msg.setProtocol('fipa-request')
             msg.setOntology('FIPA-Agent-Management')
 
             if force_sl0:
-            	content = "((action "
-            	content += str(self.getAID())
-            	content += "(register " + str(DAD) + ")"
-            	content +=" ))"
+                content = "((action "
+                content += str(self.getAID())
+                content += "(register " + str(DAD) + ")"
+                content +=" ))"
                 msg.setContent(content)
 
             else:
-		self._msg.setLanguage('rdf')
+                self._msg.setLanguage('rdf')
                 content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                 content["fipa:action"] = ContentObject()
                 content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
@@ -1747,7 +1747,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self.send(msg)
 
-	    # EYE! msg becomes the reply
+            # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 #print "There was an error registering the Service. (not agree)", str(msg)
@@ -1757,7 +1757,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=20, template=t)
                 if msg == None or msg.getPerformative() != 'inform':
                     if msg.getPerformative() == 'failure':
-                        print "There was an error registering the Service. (failure)"
+                        print "There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error']
                     else:
                         print "There was an error registering the Service. (not inform)"
                     return False
@@ -1823,7 +1823,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if not msg:
                         print "There was an error deregistering the Service. (timeout)"
                     elif msg.getPerformative() == 'failure':
-                        print "There was an error deregistering the Service. (failure)"
+                        print "There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error']
                     else:
                         print "There was an error deregistering the Service. (not inform)"
                     self.result = False
@@ -1892,7 +1892,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=20, template=t)
                 if msg == None or msg.getPerformative() != 'inform':
                     if msg.getPerformative() == 'failure':
-                        print "There was an error deregistering the Service. (failure)"
+                        print "There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error']
                     else:
                         print "There was an error deregistering the Service. (not inform)"
                     return False
