@@ -416,56 +416,143 @@ class DF(PlatformAgent):
 
             #The AMS agrees and then informs dummy of the successful execution of the action
             error = False
+            co_error = False
             dad = None
             #print self.content.action.modify[0][1]
-            try:
-                    dad = DF.DfAgentDescription(self.content.action.modify[0][1])
-            except Exception,err:
-                error = "(missing-argument ams-agent-description)"
-
-            if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
-                error = "(unauthorised)"
-
-            if error:
-                reply = self.msg.createReply()
-                reply.setSender(self.myAgent.getAID())
-                reply.setPerformative("refuse")
-                reply.setContent("( "+self.msg.getContent() + error + ")")
-                self.myAgent.send(reply)
-
-                return -1
-
-            else:
-
-                reply = self.msg.createReply()
-                reply.setSender(self.myAgent.getAID())
-                reply.setPerformative("agree")
-                reply.setContent("(" + str(self.msg.getContent()) + " true)")
-                self.myAgent.send(reply)
-
-            if self.myAgent.servicedb.has_key(dad.getAID().getName()):
-
+            if "rdf" in self.msg.getLanguage():
+                
                 try:
-                    self.myAgent.servicedb[dad.getAID().getName()] = dad
-                except Exception, err:
-                    reply.setPerformative("failure")
-                    reply.setContent("("+self.msg.getContent() + "(internal-error))")
+                    co = self.msg.getContentObject()
+                    #print "########"
+                    #print "CO",co.pprint()
+                    dad = DfAgentDescription(co = co.action.argument)                    
+                    #print "DAD",dad.asRDFXML()
+                    #print "########"
+                #except KeyError: #Exception,err:
+                except KeyboardInterrupt,err:
+                    #print err
+                    co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                    co_error["fipa:error"] = "missing-argument df-agent-description"
+
+                if co_error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("refuse")
+                    reply.setContentObject(co_error)
                     self.myAgent.send(reply)
                     return -1
 
+                else:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("agree")
+                    co["fipa:done"] = "true"
+                    reply.setContentObject(co)
+                    self.myAgent.send(reply)
+
+                if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
+                    co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                    co_error["fipa:error"] = "unauthorised"
+
+                if co_error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("refuse")
+                    reply.setContentObject(co_error)
+                    self.myAgent.send(reply)
+
+                    return -1
+
+                else:
+
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("agree")
+                    co = self.msg.getContentObject()
+    		    co["fipa:done"] = "true"
+    		    reply.setContentObject(co)
+                    self.myAgent.send(reply)
+
+                if self.myAgent.servicedb.has_key(dad.getAID().getName()):
+
+                    try:
+                        self.myAgent.servicedb[dad.getAID().getName()] = dad
+                    except Exception, err:
+                        reply.setPerformative("failure")
+                        co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                        co_error["fipa:error"] = "internal-error"
+                        reply.setContentObject(co_error)
+                        self.myAgent.send(reply)
+                        return -1
 
 
-                reply.setPerformative("inform")
-                reply.setContent("(done "+self.msg.getContent() + ")")
-                self.myAgent.send(reply)
 
-                return 1
+                    reply.setPerformative("inform")
+                    co = self.msg.getContentObject()
+    		    co["fipa:done"] = "true"
+    		    reply.setContentObject(co)
+                    self.myAgent.send(reply)
 
+                    return 1
+
+                else:
+                    reply.setPerformative("failure")
+                    co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+                    co_error["fipa:error"] = "not-registered"
+                    reply.setContentObject(co_error)
+                    self.myAgent.send(reply)
+                    return -1
+                    
             else:
-                reply.setPerformative("failure")
-                reply.setContent("("+self.msg.getContent() + "(not-registered))")
-                self.myAgent.send(reply)
-                return -1
+                #language is sl-0
+                try:
+                        dad = DF.DfAgentDescription(self.content.action.modify[0][1])
+                except Exception,err:
+                    error = "(missing-argument ams-agent-description)"
+
+                if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
+                    error = "(unauthorised)"
+
+                if error:
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("refuse")
+                    reply.setContent("( "+self.msg.getContent() + error + ")")
+                    self.myAgent.send(reply)
+
+                    return -1
+
+                else:
+
+                    reply = self.msg.createReply()
+                    reply.setSender(self.myAgent.getAID())
+                    reply.setPerformative("agree")
+                    reply.setContent("(" + str(self.msg.getContent()) + " true)")
+                    self.myAgent.send(reply)
+
+                if self.myAgent.servicedb.has_key(dad.getAID().getName()):
+
+                    try:
+                        self.myAgent.servicedb[dad.getAID().getName()] = dad
+                    except Exception, err:
+                        reply.setPerformative("failure")
+                        reply.setContent("("+self.msg.getContent() + "(internal-error))")
+                        self.myAgent.send(reply)
+                        return -1
+
+
+
+                    reply.setPerformative("inform")
+                    reply.setContent("(done "+self.msg.getContent() + ")")
+                    self.myAgent.send(reply)
+
+                    return 1
+
+                else:
+                    reply.setPerformative("failure")
+                    reply.setContent("("+self.msg.getContent() + "(not-registered))")
+                    self.myAgent.send(reply)
+                    return -1
 
 
     def __init__(self,node,passw,server="localhost",port=5347):

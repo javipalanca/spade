@@ -1948,10 +1948,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
                     if msg == None:
-                        #print "There was an error searching the Service (timeout on inform)"
+                        print "There was an error searching the Service (timeout on inform)"
                         return
                     elif msg.getPerformative() != 'inform':
-                        #print "There was an error searching the Service (not inform)"
+                        print "There was an error searching the Service (not inform) " +  msg.getContentObject()['fipa:error']
                         return
 
                 #p = SL0Parser.SL0Parser()
@@ -2021,14 +2021,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    #print "There was an error searching the Service. (not agree)"
+                    print "There was an error searching the Service. (not agree)"
                     return result
 
                 elif msg == None or msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10, t)
 
                     if msg == None or msg.getPerformative() != 'inform':
-                        #print "There was an error searching the Service. (not inform)"
+                        print "There was an error searching the Service. (not inform) " +  msg.getContentObject()['fipa:error']
                         return result
 
                 #p = SL0Parser.SL0Parser()
@@ -2051,7 +2051,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	def __init__(self, msg, DAD, debug=False):
             Behaviour.OneShotBehaviour.__init__(self)
             self._msg = msg
-	    self.DAD = DAD
+            self.DAD = DAD
             self.debug = debug
             self.result = None
 
@@ -2077,23 +2077,25 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		content["fipa:action"] = ContentObject()
 		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
 		content["fipa:action"]["fipa:act"] = "modify"
-		content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
+		content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
 		self._msg.setContentObject(content)
 
 		self.myAgent.send(self._msg)
 
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
-		    #print "There was an error modifying the Service. (not agree)"
+		    print "There was an error modifying the Service. (not agree) "
+		    if msg: print msg.getContentObject()['fipa:error']
 		    self.result=False
 		    return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
-		    #print "There was an error modifying the Service. (not inform)"
+		    print "There was an error modifying the Service. (not inform) " +  msg.getContentObject()['fipa:error']
 		    self.result = False
 		    return
 		self.result = True
 		return
+		
     def modifyService(self, DAD, debug=False):
 	"""
 	modifies a service in the DF

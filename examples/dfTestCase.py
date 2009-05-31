@@ -90,7 +90,7 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
             dad.addService(sd)
 
             dad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.result = self.myAgent.registerService(dad)
+            self.myAgent.result = self.myAgent.modifyService(dad)
 
 
 
@@ -115,7 +115,7 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
 
-    def testRegisterService(self):
+    '''def testRegisterService(self):
 
         #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
@@ -199,11 +199,11 @@ class BasicTestCase(unittest.TestCase):
              time.sleep(1)
              counter += 1
 
-        self.assertEqual(self.a.result, [])
+        self.assertEqual(self.a.result, [])'''
 
 
 
-    '''def testModifyService(self):
+    def testModifyService(self):
             #register service
             self.a.addBehaviour(RegisterBehav("a"),None)
             self.waitfor(self.a.result)
@@ -219,7 +219,7 @@ class BasicTestCase(unittest.TestCase):
             self.assertNotEqual(self.a.result, None)
             self.assertEqual(len(self.a.result), 1)
 
-            self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+            self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
             self.assertEqual(len(self.a.result[0].getServices()), 2)
 
             if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
@@ -271,7 +271,7 @@ class BasicTestCase(unittest.TestCase):
 
 
     
-    def testModifyNotAllowed(self):
+    '''def testModifyNotAllowed(self):
         #register service
         self.a.addBehaviour(RegisterBehav("a"),None)
         self.waitfor(self.a.result)
@@ -341,7 +341,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.a.result, [])'''
 
 
-    def testEmptySearch(self):
+    '''def testEmptySearch(self):
         #get zero services
         self.a.addBehaviour(EmptySearchBehav("a"),None)
         self.waitfor(self.a.result)
@@ -432,7 +432,7 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
 
-        self.assertEqual(self.a.result, [])
+        self.assertEqual(self.a.result, [])'''
 
 
 
