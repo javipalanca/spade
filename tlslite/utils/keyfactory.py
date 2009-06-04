@@ -3,7 +3,7 @@
 parseAsPrivateKey
 """
 
-from jython_compat import *
+from compat import *
 
 from RSAKey import RSAKey
 from Python_RSAKey import Python_RSAKey

@@ -6,8 +6,9 @@ import os
 import math
 import base64
 import binascii
+import sha
 
-from jython_compat import *
+from compat import *
 
 
 # **************************************************************************
@@ -194,7 +195,7 @@ def numBytes(n):
     return int(math.ceil(bits / 8.0))
 
 def hashAndBase64(s):
-    return stringToBase64(getSHA1(s).digest())
+    return stringToBase64(sha.sha(s).digest())
 
 def getBase64Nonce(numChars=22): #defaults to an 132 bit nonce
     bytes = getRandomBytes(numChars)

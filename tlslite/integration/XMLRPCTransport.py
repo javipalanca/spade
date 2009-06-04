@@ -2,11 +2,11 @@
 
 import xmlrpclib
 import httplib
-from tlslite.Checker import Checker
 from tlslite.integration.HTTPTLSConnection import HTTPTLSConnection
+from tlslite.integration.ClientHelper import ClientHelper
 
 
-class XMLRPCTransport(xmlrpclib.Transport):
+class XMLRPCTransport(xmlrpclib.Transport, ClientHelper):
     """Handles an HTTPS transaction to an XML-RPC server."""
 
     def __init__(self,
@@ -15,7 +15,7 @@ class XMLRPCTransport(xmlrpclib.Transport):
                  cryptoID=None, protocol=None,
                  x509Fingerprint=None,
                  x509TrustList=None, x509CommonName=None,
-                 settings = None):
+                 settings=None):
         """Create a new XMLRPCTransport.
 
         An instance of this class can be passed to L{xmlrpclib.ServerProxy}
@@ -110,48 +110,13 @@ class XMLRPCTransport(xmlrpclib.Transport):
         offered by the client.
         """
 
-        self.username = None
-        self.password = None
-        self.sharedKey = None
-        self.certChain = None
-        self.privateKey = None
-        self.checker = None
-
-        #SRP Authentication
-        if username and password and not \
-                (sharedKey or certChain or privateKey):
-            self.username = username
-            self.password = password
-
-        #Shared Key Authentication
-        elif username and sharedKey and not \
-                (password or certChain or privateKey):
-            self.username = username
-            self.sharedKey = sharedKey
-
-        #Certificate Chain Authentication
-        elif certChain and privateKey and not \
-                (username or password or sharedKey):
-            self.certChain = certChain
-            self.privateKey = privateKey
-
-        #No Authentication
-        elif not password and not username and not \
-                sharedKey and not certChain and not privateKey:
-            pass
-
-        else:
-            raise ValueError("Bad parameters")
-
-        #Authenticate the server based on its cryptoID or fingerprint
-        if sharedKey and (cryptoID or protocol or x509Fingerprint):
-            raise ValueError("Can't use shared keys with other forms of"\
-                             "authentication")
-
-        self.checker = Checker(cryptoID, protocol, x509Fingerprint,
-                               x509TrustList, x509CommonName)
-        self.settings = settings
-
+        ClientHelper.__init__(self,
+                 username, password, sharedKey,
+                 certChain, privateKey,
+                 cryptoID, protocol,
+                 x509Fingerprint,
+                 x509TrustList, x509CommonName,
+                 settings)
 
 
     def make_connection(self, host):

@@ -1,8 +1,10 @@
 """
-Main class for TLS Lite.
+MAIN CLASS FOR TLS LITE (START HERE!).
 """
+from __future__ import generators
+
 import socket
-from utils.jython_compat import formatExceptionTrace
+from utils.compat import formatExceptionTrace
 from TLSRecordLayer import TLSRecordLayer
 from Session import Session
 from constants import *

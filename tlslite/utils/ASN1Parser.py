@@ -1,5 +1,5 @@
 """Class for parsing ASN.1"""
-from jython_compat import *
+from compat import *
 from codec import *
 
 #Takes a byte array which has a DER TLV field at its head

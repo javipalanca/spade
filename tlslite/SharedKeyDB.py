@@ -1,7 +1,7 @@
 """Class for storing shared keys."""
 
 from utils.cryptomath import *
-from utils.jython_compat import *
+from utils.compat import *
 from mathtls import *
 from Session import Session
 from BaseDB import BaseDB

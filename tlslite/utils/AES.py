@@ -1,7 +1,5 @@
 """Abstract class for AES."""
 
-from jython_compat import * #For True
-
 class AES:
     def __init__(self, key, mode, IV, implementation):
         if len(key) not in (16, 24, 32):

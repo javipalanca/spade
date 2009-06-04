@@ -1,6 +1,6 @@
 """Class representing a TLS session."""
 
-from utils.jython_compat import *
+from utils.compat import *
 from mathtls import *
 from constants import *
 

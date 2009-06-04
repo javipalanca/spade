@@ -1,6 +1,7 @@
 """Helper class for TLSConnection."""
+from __future__ import generators
 
-from utils.jython_compat import *
+from utils.compat import *
 from utils.cryptomath import *
 from utils.cipherfactory import createAES, createRC4, createTripleDES
 from utils.codec import *
@@ -320,10 +321,14 @@ class TLSRecordLayer:
                 for result in self._sendMsg(Alert().create(\
                         AlertDescription.close_notify, AlertLevel.warning)):
                     yield result
-                for result in self._getMsg(ContentType.alert):
-                    if result in (0,1):
-                        yield result
-                alert = result
+                alert = None
+                while not alert:
+                    for result in self._getMsg((ContentType.alert, \
+                                              ContentType.application_data)):
+                        if result in (0,1):
+                            yield result
+                    if result.contentType == ContentType.alert:
+                        alert = result
                 if alert.description == AlertDescription.close_notify:
                     self._shutdown(True)
                 else:

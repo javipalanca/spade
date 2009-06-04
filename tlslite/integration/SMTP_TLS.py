@@ -1,69 +1,23 @@
-"""TLS Lite + httplib."""
+"""TLS Lite + smtplib."""
 
-import socket
-import httplib
+from smtplib import SMTP
 from tlslite.TLSConnection import TLSConnection
 from tlslite.integration.ClientHelper import ClientHelper
 
+class SMTP_TLS(SMTP):
+    """This class extends L{smtplib.SMTP} with TLS support."""
 
-class HTTPBaseTLSConnection(httplib.HTTPConnection):
-    """This abstract class provides a framework for adding TLS support
-    to httplib."""
-
-    default_port = 443
-
-    def __init__(self, host, port=None, strict=None):
-        if strict == None:
-            #Python 2.2 doesn't support strict
-            httplib.HTTPConnection.__init__(self, host, port)
-        else:
-            httplib.HTTPConnection.__init__(self, host, port, strict)
-
-    def connect(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        if hasattr(sock, 'settimeout'):
-            sock.settimeout(10)
-        sock.connect((self.host, self.port))
-
-        #Use a TLSConnection to emulate a socket
-        self.sock = TLSConnection(sock)
-
-        #When httplib closes this, close the socket
-        self.sock.closeSocket = True
-        self._handshake(self.sock)
-
-    def _handshake(self, tlsConnection):
-        """Called to perform some sort of handshake.
-
-        This method must be overridden in a subclass to do some type of
-        handshake.  This method will be called after the socket has
-        been connected but before any data has been sent.  If this
-        method does not raise an exception, the TLS connection will be
-        considered valid.
-
-        This method may (or may not) be called every time an HTTP
-        request is performed, depending on whether the underlying HTTP
-        connection is persistent.
-
-        @type tlsConnection: L{tlslite.TLSConnection.TLSConnection}
-        @param tlsConnection: The connection to perform the handshake
-        on.
-        """
-        raise NotImplementedError()
-
-
-class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
-    """This class extends L{HTTPBaseTLSConnection} to support the
-    common types of handshaking."""
-
-    def __init__(self, host, port=None,
+    def starttls(self,
                  username=None, password=None, sharedKey=None,
                  certChain=None, privateKey=None,
                  cryptoID=None, protocol=None,
                  x509Fingerprint=None,
                  x509TrustList=None, x509CommonName=None,
-                 settings = None):
-        """Create a new HTTPTLSConnection.
+                 settings=None):
+        """Puts the connection to the SMTP server into TLS mode.
+
+        If the server supports TLS, this will encrypt the rest of the SMTP
+        session.
 
         For client authentication, use one of these argument
         combinations:
@@ -83,21 +37,10 @@ class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
         SRP or certificate-based client authentication.  It is
         not compatible with shared-keys.
 
-        The constructor does not perform the TLS handshake itself, but
-        simply stores these arguments for later.  The handshake is
-        performed only when this class needs to connect with the
-        server.  Thus you should be prepared to handle TLS-specific
-        exceptions when calling methods inherited from
-        L{httplib.HTTPConnection} such as request(), connect(), and
-        send().  See the client handshake functions in
+        The caller should be prepared to handle TLS-specific
+        exceptions.  See the client handshake functions in
         L{tlslite.TLSConnection.TLSConnection} for details on which
         exceptions might be raised.
-
-        @type host: str
-        @param host: Server to connect to.
-
-        @type port: int
-        @param port: Port to connect to.
 
         @type username: str
         @param username: SRP or shared-key username.  Requires the
@@ -154,16 +97,18 @@ class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
         the ciphersuites, certificate types, and SSL/TLS versions
         offered by the client.
         """
-
-        HTTPBaseTLSConnection.__init__(self, host, port)
-
-        ClientHelper.__init__(self,
-                 username, password, sharedKey,
-                 certChain, privateKey,
-                 cryptoID, protocol,
-                 x509Fingerprint,
-                 x509TrustList, x509CommonName,
-                 settings)
-
-    def _handshake(self, tlsConnection):
-        ClientHelper._handshake(self, tlsConnection)
+        (resp, reply) = self.docmd("STARTTLS")
+        if resp == 220:
+            helper = ClientHelper(
+                     username, password, sharedKey,
+                     certChain, privateKey,
+                     cryptoID, protocol,
+                     x509Fingerprint,
+                     x509TrustList, x509CommonName,
+                     settings)
+            conn = TLSConnection(self.sock)
+            conn.closeSocket = True
+            helper._handshake(conn)
+            self.sock = conn
+            self.file = conn.makefile('rb')
+        return (resp, reply)

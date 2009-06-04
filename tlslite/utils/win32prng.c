@@ -57,7 +57,7 @@ static struct PyMethodDef win32prng_functions[] = {
 
 /* Initialize this module. */
 
-PyMODINIT_FUNC initwin32prng(void)
+DL_EXPORT(void) initwin32prng(void)
 {
     Py_InitModule("win32prng", win32prng_functions);
 }

@@ -3,7 +3,7 @@
 This module has misc. helper functions for working with XML DOM nodes."""
 
 import re
-from jython_compat import *
+from compat import *
 
 import os
 if os.name != "java":

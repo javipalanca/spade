@@ -1,6 +1,6 @@
 """Classes representing TLS messages."""
 
-from utils.jython_compat import *
+from utils.compat import *
 from utils.cryptomath import *
 from errors import *
 from utils.codec import *

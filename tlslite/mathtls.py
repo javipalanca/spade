@@ -1,6 +1,6 @@
 """Miscellaneous helper functions."""
 
-from utils.jython_compat import *
+from utils.compat import *
 from utils.cryptomath import *
 
 import hmac

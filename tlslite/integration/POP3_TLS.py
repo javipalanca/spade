@@ -1,69 +1,24 @@
-"""TLS Lite + httplib."""
+"""TLS Lite + poplib."""
 
 import socket
-import httplib
+from poplib import POP3
 from tlslite.TLSConnection import TLSConnection
 from tlslite.integration.ClientHelper import ClientHelper
 
+# POP TLS PORT
+POP3_TLS_PORT = 995
 
-class HTTPBaseTLSConnection(httplib.HTTPConnection):
-    """This abstract class provides a framework for adding TLS support
-    to httplib."""
+class POP3_TLS(POP3, ClientHelper):
+    """This class extends L{poplib.POP3} with TLS support."""
 
-    default_port = 443
-
-    def __init__(self, host, port=None, strict=None):
-        if strict == None:
-            #Python 2.2 doesn't support strict
-            httplib.HTTPConnection.__init__(self, host, port)
-        else:
-            httplib.HTTPConnection.__init__(self, host, port, strict)
-
-    def connect(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        if hasattr(sock, 'settimeout'):
-            sock.settimeout(10)
-        sock.connect((self.host, self.port))
-
-        #Use a TLSConnection to emulate a socket
-        self.sock = TLSConnection(sock)
-
-        #When httplib closes this, close the socket
-        self.sock.closeSocket = True
-        self._handshake(self.sock)
-
-    def _handshake(self, tlsConnection):
-        """Called to perform some sort of handshake.
-
-        This method must be overridden in a subclass to do some type of
-        handshake.  This method will be called after the socket has
-        been connected but before any data has been sent.  If this
-        method does not raise an exception, the TLS connection will be
-        considered valid.
-
-        This method may (or may not) be called every time an HTTP
-        request is performed, depending on whether the underlying HTTP
-        connection is persistent.
-
-        @type tlsConnection: L{tlslite.TLSConnection.TLSConnection}
-        @param tlsConnection: The connection to perform the handshake
-        on.
-        """
-        raise NotImplementedError()
-
-
-class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
-    """This class extends L{HTTPBaseTLSConnection} to support the
-    common types of handshaking."""
-
-    def __init__(self, host, port=None,
+    def __init__(self, host, port = POP3_TLS_PORT,
                  username=None, password=None, sharedKey=None,
                  certChain=None, privateKey=None,
                  cryptoID=None, protocol=None,
                  x509Fingerprint=None,
                  x509TrustList=None, x509CommonName=None,
-                 settings = None):
-        """Create a new HTTPTLSConnection.
+                 settings=None):
+        """Create a new POP3_TLS.
 
         For client authentication, use one of these argument
         combinations:
@@ -83,13 +38,8 @@ class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
         SRP or certificate-based client authentication.  It is
         not compatible with shared-keys.
 
-        The constructor does not perform the TLS handshake itself, but
-        simply stores these arguments for later.  The handshake is
-        performed only when this class needs to connect with the
-        server.  Thus you should be prepared to handle TLS-specific
-        exceptions when calling methods inherited from
-        L{httplib.HTTPConnection} such as request(), connect(), and
-        send().  See the client handshake functions in
+        The caller should be prepared to handle TLS-specific
+        exceptions.  See the client handshake functions in
         L{tlslite.TLSConnection.TLSConnection} for details on which
         exceptions might be raised.
 
@@ -155,8 +105,25 @@ class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
         offered by the client.
         """
 
-        HTTPBaseTLSConnection.__init__(self, host, port)
+        self.host = host
+        self.port = port
+        msg = "getaddrinfo returns an empty list"
+        self.sock = None
+        for res in socket.getaddrinfo(self.host, self.port, 0, socket.SOCK_STREAM):
+            af, socktype, proto, canonname, sa = res
+            try:
+                self.sock = socket.socket(af, socktype, proto)
+                self.sock.connect(sa)
+            except socket.error, msg:
+                if self.sock:
+                    self.sock.close()
+                self.sock = None
+                continue
+            break
+        if not self.sock:
+            raise socket.error, msg
 
+        ### New code below (all else copied from poplib)
         ClientHelper.__init__(self,
                  username, password, sharedKey,
                  certChain, privateKey,
@@ -165,5 +132,11 @@ class HTTPTLSConnection(HTTPBaseTLSConnection, ClientHelper):
                  x509TrustList, x509CommonName,
                  settings)
 
-    def _handshake(self, tlsConnection):
-        ClientHelper._handshake(self, tlsConnection)
+        self.sock = TLSConnection(self.sock)
+        self.sock.closeSocket = True
+        ClientHelper._handshake(self, self.sock)
+        ###
+
+        self.file = self.sock.makefile('rb')
+        self._debugging = 0
+        self.welcome = self._getresp()

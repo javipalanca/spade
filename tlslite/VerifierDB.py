@@ -1,7 +1,7 @@
 """Class for storing SRP password verifiers."""
 
 from utils.cryptomath import *
-from utils.jython_compat import *
+from utils.compat import *
 import mathtls
 from BaseDB import BaseDB
 
