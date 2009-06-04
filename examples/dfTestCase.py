@@ -15,13 +15,11 @@ class MyAgent(spade.Agent.Agent):
 	def _setup(self):
             self.result = None
 
-class RegisterBehav(spade.Behaviour.OneShotBehaviour):
 
-        def __init__(self, s):
-            self.s = s
-            spade.Behaviour.OneShotBehaviour.__init__(self)
 
-        def _process(self):
+def Register(agent, param):
+
+
             sd = spade.DF.ServiceDescription()
             sd.setName("unittest_name_1")
             sd.setType("unittest_type_1")
@@ -32,55 +30,34 @@ class RegisterBehav(spade.Behaviour.OneShotBehaviour):
             sd.setName("unittest_name_2")
             sd.setType("unittest_type_2")
             dad.addService(sd)
-            dad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.result = self.myAgent.registerService(dad)
+            dad.setAID(spade.AID.aid(param+"@"+host,["xmpp://"+param+"@"+host]))
+            agent.result = agent.registerService(dad)
 
-class DeRegisterBehav(spade.Behaviour.OneShotBehaviour):
+def DeRegister(agent, param):
 
-        def __init__(self, s):
-            self.s = s
-            spade.Behaviour.OneShotBehaviour.__init__(self)
-
-        def _process(self):
 
             dad = spade.DF.DfAgentDescription()
-            dad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.result = self.myAgent.deregisterService(dad)
+            dad.setAID(spade.AID.aid(param+"@"+host,["xmpp://"+param+"@"+host]))
+            agent.result = agent.deregisterService(dad)
 
-class SearchBehav(spade.Behaviour.OneShotBehaviour):
+def Search(agent, param):
 
-        def __init__(self, s):
-            self.s = s
-            spade.Behaviour.OneShotBehaviour.__init__(self)
 
-        def _process(self):
             sd = spade.DF.ServiceDescription()
             sd.setName("unittest_name_1")
-            sd.setType("unittest_type_1")
+            #sd.setType("unittest_type_1")
 
             dad = spade.DF.DfAgentDescription()
             dad.addService(sd)
 
-            dad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.result = self.myAgent.searchService(dad)
+            dad.setAID(spade.AID.aid(param+"@"+host,["xmpp://"+param+"@"+host]))
+            agent.result = agent.searchService(dad)
 
-class EmptySearchBehav(spade.Behaviour.OneShotBehaviour):
-
-        def __init__(self, s):
-            self.s = s
-            spade.Behaviour.OneShotBehaviour.__init__(self)
-
-        def _process(self):
+def EmptySearch(agent):
             dad = spade.DF.DfAgentDescription()
-            self.myAgent.result = self.myAgent.searchService(dad)
+            agent.result = agent.searchService(dad)
 
-class ModifyBehav(spade.Behaviour.OneShotBehaviour):
-
-        def __init__(self, s):
-            self.s = s
-            spade.Behaviour.OneShotBehaviour.__init__(self)
-
-        def _process(self):
+def Modify(agent, param):
 
             sd = spade.DF.ServiceDescription()
             sd.setName("unittest_name_1")
@@ -89,14 +66,14 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
             dad = spade.DF.DfAgentDescription()
             dad.addService(sd)
 
-            dad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
-            self.myAgent.result = self.myAgent.modifyService(dad)
+            dad.setAID(spade.AID.aid(param+"@"+host,["xmpp://"+param+"@"+host]))
+            agent.result = agent.modifyService(dad)
 
 
 
 
 
-class BasicTestCase(unittest.TestCase):
+class DFTestCase(unittest.TestCase):
 
     def setUp(self):
 
@@ -109,25 +86,17 @@ class BasicTestCase(unittest.TestCase):
         self.a.stop()
         self.b.stop()
 
-    def waitfor(self,item):
-        counter = 0
-        while item == None and counter < 20:
-            time.sleep(1)
-            counter += 1
-
-    '''def testRegisterService(self):
+    def testRegisterService(self):
 
         #register service
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        Register(self.a, "a")
 
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
 
         #check service is registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
@@ -141,27 +110,21 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        DeRegister(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         #check service is deregistered
         self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-            time.sleep(1)
-            counter += 1
-
+        Search(self.a,"a")
+        
         self.assertEqual(self.a.result, [])
 
 
 
     def testSearchNotPresent(self):
         #check service is not registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 0)
@@ -169,16 +132,14 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #register service
-        self.a.addBehaviour(RegisterBehav("b"),None)
-        self.waitfor(self.a.result)
+        Register(self.a,"b")
 
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
 
         #check service is not registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 0)
@@ -186,35 +147,27 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("b"),None)
-        self.waitfor(self.a.result)
+        DeRegister(self.a,"b")
 
         self.assertEqual(self.a.result, True)
 
         #check service is deregistered
         self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-             time.sleep(1)
-             counter += 1
-
-        self.assertEqual(self.a.result, [])'''
+        Search(self.a,"b")
+        self.assertEqual(self.a.result, [])
 
 
 
     def testModifyService(self):
             #register service
-            self.a.addBehaviour(RegisterBehav("a"),None)
-            self.waitfor(self.a.result)
+            Register(self.a,"a")
 
             self.assertEqual(self.a.result, True)
 
             self.a.result = None
 
             #check service is registered
-            self.a.addBehaviour(SearchBehav("a"),None)
-            self.waitfor(self.a.result)
+            Search(self.a,"a")
 
             self.assertNotEqual(self.a.result, None)
             self.assertEqual(len(self.a.result), 1)
@@ -230,21 +183,19 @@ class BasicTestCase(unittest.TestCase):
             self.a.result = None
 
             #modify service
-            self.a.addBehaviour(ModifyBehav("a"),None)
-            self.waitfor(self.a.result)
+            Modify(self.a,"a")
 
             self.assertEqual(self.a.result, True)
 
             self.a.result = None
 
             #check service is modified
-            self.a.addBehaviour(SearchBehav("a"),None)
-            self.waitfor(self.a.result)
+            Search(self.a,"a")
 
             self.assertNotEqual(self.a.result, None)
             self.assertEqual(len(self.a.result), 1)
 
-            self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+            self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
 
             self.assertEqual(len(self.a.result[0].getServices()), 1)
 
@@ -253,41 +204,33 @@ class BasicTestCase(unittest.TestCase):
             self.a.result = None
 
             #deregister service
-            self.a.addBehaviour(DeRegisterBehav("a"),None)
-            self.waitfor(self.a.result)
+            DeRegister(self.a,"a")
 
             self.assertEqual(self.a.result, True)
 
             #check service is deregistered
             self.a.result = False
-            self.a.addBehaviour(SearchBehav("a"),None)
-            counter = 1
-            while self.a.result == False and counter < 20:
-                time.sleep(1)
-                counter += 1
-
+            Search(self.a,"a")
             self.assertEqual(self.a.result, [])
 
 
 
-    
-    '''def testModifyNotAllowed(self):
+
+    def testModifyNotAllowed(self):
         #register service
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        Register(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
 
         #check service is registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
 
-        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
         self.assertEqual(len(self.a.result[0].getServices()), 2)
 
         if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
@@ -299,21 +242,19 @@ class BasicTestCase(unittest.TestCase):
         self.b.result = None
 
         #modify service
-        self.b.addBehaviour(ModifyBehav("a"),None)
-        self.waitfor(self.b.result)
+        Modify(self.b,"a")
 
         self.assertEqual(self.b.result, False)
 
         self.b.result = None
 
         #check service is NOT modified
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
 
-        self.assertEqual(self.a.result[0].getName(), self.a.getAID())
+        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
 
         self.assertEqual(len(self.a.result[0].getServices()), 2)
 
@@ -325,26 +266,19 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        DeRegister(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         #check service is deregistered
         self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-            time.sleep(1)
-            counter += 1
-
-        self.assertEqual(self.a.result, [])'''
+        Search(self.a,"a")
+        self.assertEqual(self.a.result, [])
 
 
-    '''def testEmptySearch(self):
+    def testEmptySearch(self):
         #get zero services
-        self.a.addBehaviour(EmptySearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        EmptySearch(self.a)
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 0)
@@ -352,16 +286,14 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #register service
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        Register(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
 
         #check number of services is 1
-        self.a.addBehaviour(EmptySearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        EmptySearch(self.a)
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
@@ -369,34 +301,26 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        DeRegister(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         #check service is deregistered
         self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-            time.sleep(1)
-            counter += 1
-
+        Search(self.a,"a")
         self.assertEqual(self.a.result, [])
 
 
     def testAlreadyRegistered(self):
         #register service
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        Register(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
 
         #check service is registered
-        self.a.addBehaviour(SearchBehav("a"),None)
-        self.waitfor(self.a.result)
+        Search(self.a,"a")
 
         self.assertNotEqual(self.a.result, None)
         self.assertEqual(len(self.a.result), 1)
@@ -410,8 +334,7 @@ class BasicTestCase(unittest.TestCase):
         self.a.result = None
 
         #register service ALREADY registered
-        self.a.addBehaviour(RegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        Register(self.a,"a")
 
         self.assertEqual(self.a.result, False)
 
@@ -419,20 +342,14 @@ class BasicTestCase(unittest.TestCase):
 
 
         #deregister service
-        self.a.addBehaviour(DeRegisterBehav("a"),None)
-        self.waitfor(self.a.result)
+        DeRegister(self.a,"a")
 
         self.assertEqual(self.a.result, True)
 
         #check service is deregistered
         self.a.result = False
-        self.a.addBehaviour(SearchBehav("a"),None)
-        counter = 1
-        while self.a.result == False and counter < 20:
-            time.sleep(1)
-            counter += 1
-
-        self.assertEqual(self.a.result, [])'''
+        Search(self.a,"a")
+        self.assertEqual(self.a.result, [])
 
 
 

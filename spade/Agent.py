@@ -639,34 +639,34 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "RETRIEVED SERVICES:", services
                         self.result = services
 
-        #print "REQUEST DISCO INFO CALLED BY", str(self.getName())
-        id = 'nsdi'+str(random.randint(1,10000))
-        temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-        temp_iq.setType("result")
-        t = Behaviour.MessageTemplate(temp_iq)
-        iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-        iq.setTo(to)
-        iq.setType("get")
-        if self._running:
-            # Online way
-            rdif = RequestDiscoInfoBehav()
-            rdif.iq = iq
-            self.addBehaviour(rdif, t)
-            rdif.join()
-            return rdif.result
-        else:
-            # Offline way
-            #print "RDI OFFLINE"
-            self.jabber.send(iq)
-            msg = self._receive(True, 20, template=t)
-            if msg:
-                if msg.getType() == "result":
-                    services = []
-                    for child in msg.getQueryChildren():
-                        services.append(str(child.getAttr("var")))
-                    #print "RETRIEVED SERVICES:", services
-                    return services
-            return []
+		#print "REQUEST DISCO INFO CALLED BY", str(self.getName())
+		id = 'nsdi'+str(random.randint(1,10000))
+		temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
+		temp_iq.setType("result")
+		t = Behaviour.MessageTemplate(temp_iq)
+		iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
+		iq.setTo(to)
+		iq.setType("get")
+		if self._running:
+		    # Online way
+		    rdif = RequestDiscoInfoBehav()
+		    rdif.iq = iq
+		    self.addBehaviour(rdif, t)
+		    rdif.join()
+		    return rdif.result
+		else:
+		    # Offline way
+		    #print "RDI OFFLINE"
+		    self.jabber.send(iq)
+		    msg = self._receive(True, 20, template=t)
+		    if msg:
+			if msg.getType() == "result":
+			    services = []
+			    for child in msg.getQueryChildren():
+				services.append(str(child.getAttr("var")))
+			    #print "RETRIEVED SERVICES:", services
+			    return services
+		    return []
 
 
     def initiateStream(self, to):
@@ -1677,8 +1677,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.myAgent.send(self._msg)
 
             msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
             #if msg == None or msg.getPerformative() != 'agree':
+            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 #print "There was an error registering the Service. (not agree)"
                 self.result = False
                 return
@@ -1747,7 +1747,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self.send(msg)
 
-            # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 #print "There was an error registering the Service. (not agree)", str(msg)
@@ -1882,7 +1881,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self.send(msg)
 
-        # EYE! msg becomes the reply
             msg = self._receive(block=True, timeout=20, template=t)
             if msg == None or msg.getPerformative() not in ['agree', 'inform']:
                 #print "There was an error registering the Service. (not agree)", str(msg)
@@ -1943,7 +1941,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     #print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() not in ['agree', 'inform']:
-                    #print "%s : There was an error searching the Service (not agree)"%(self.myAgent.getName())
+                    print "%s : There was an error searching the Service (not agree) Failure: %s"%(self.myAgent.getName(), msg.getContentObject()["fipa:error"])
                     return
                 elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
@@ -2016,8 +2014,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 self.send(msg)
 
-                # EYE! msg becomes the reply
-                #time.sleep(0.5)
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
@@ -2059,7 +2055,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		#p = SL0Parser.SL0Parser()
 
-		self._msg = ACLMessage.ACLMessage()
+		#self._msg = ACLMessage.ACLMessage()
 		self._msg.addReceiver( self.myAgent.getDF() )
 		self._msg.setPerformative('request')
 		self._msg.setLanguage('rdf')
@@ -2090,11 +2086,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		    return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
-		    print "There was an error modifying the Service. (not inform) " +  msg.getContentObject()['fipa:error']
+		    print "There was an error modifying the Service. (not inform) " +  str(msg.getContentObject()['fipa:error'])
 		    self.result = False
 		    return
 		self.result = True
 		return
+
 		
     def modifyService(self, DAD, debug=False):
 	"""

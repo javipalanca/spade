@@ -57,7 +57,7 @@ class DF(PlatformAgent):
                             ACLtemplate.setConversationId(msg.getConversationId())
                             #ACLtemplate.setSender(msg.getSender())
                             template = (Behaviour.MessageTemplate(ACLtemplate))
-                            
+
                             if co and co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
                                 if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
                                     self.myAgent.addBehaviour(DF.RegisterBehaviour(msg,co), template)
@@ -74,8 +74,8 @@ class DF(PlatformAgent):
                                     reply.setContentObject(co2)
                                     self.myAgent.send(reply)
                                     return -1
-                            
-                            
+
+
                         else: error = "(unsupported-language "+msg.getLanguage()+")"
                     else: error = "(unsupported-ontology "+msg.getOntology()+")"
 
@@ -184,7 +184,7 @@ class DF(PlatformAgent):
                         reply.setContent("("+self.msg.getContent() + "(not-registered))")
                         self.myAgent.send(reply)
                         return -1
-                        
+
             elif "rdf" in self.msg.getLanguage():
                 # Content in RDF/XML (ContentObject capable)
                 rdf = True
@@ -193,7 +193,7 @@ class DF(PlatformAgent):
                     co = self.msg.getContentObject()
                     #print "########"
                     #print "CO",co.pprint()
-                    dad = DfAgentDescription(co = co.action.argument)                    
+                    dad = DfAgentDescription(co = co.action.argument)
                     #print "DAD",dad.asRDFXML()
                     #print "########"
                 #except KeyError: #Exception,err:
@@ -295,7 +295,7 @@ class DF(PlatformAgent):
                 rdf = True
                 reply.setContent("(" + str(self.msg.getContent()) + " true)")
             else:
-                rdf = False                
+                rdf = False
             #reply.setConversationId(self.msg.getConversationId())
             self.myAgent.send(reply)
 
@@ -355,7 +355,7 @@ class DF(PlatformAgent):
                     recvs += str(r.getName())
 
                 return 1
-            
+
             else:
                 # Content is in RDF/XML
                 max = 50
@@ -368,7 +368,7 @@ class DF(PlatformAgent):
                         pass
                         #co_error = ContentObject()
                         #co_error["error"] = '(internal-error "max-results is not an integer")'
-                
+
                     result = []
 
                     if self.content.action.argument.df_agent_description:
@@ -397,13 +397,13 @@ class DF(PlatformAgent):
                     reply.setContentObject(content)
                     self.myAgent.send(reply)
 
-                    recvs = ""
-                    for r in reply.getReceivers():
-                        recvs += str(r.getName())
+                    #recvs = ""
+                    #for r in reply.getReceivers():
+                    #    recvs += str(r.getName())
 
                     return 1
-                    
-                
+
+
 
     class ModifyBehaviour(Behaviour.OneShotBehaviour):
 
@@ -414,27 +414,26 @@ class DF(PlatformAgent):
 
         def _process(self):
 
-            #The AMS agrees and then informs dummy of the successful execution of the action
+            #The DF agrees and then informs dummy of the successful execution of the action
             error = False
             co_error = False
             dad = None
             #print self.content.action.modify[0][1]
             if "rdf" in self.msg.getLanguage():
-                
+
                 try:
                     co = self.msg.getContentObject()
                     #print "########"
                     #print "CO",co.pprint()
-                    dad = DfAgentDescription(co = co.action.argument)                    
+                    dad = DfAgentDescription(co = co.action.argument)
                     #print "DAD",dad.asRDFXML()
                     #print "########"
-                #except KeyError: #Exception,err:
+                    #except KeyError: #Exception,err:
                 except KeyboardInterrupt,err:
                     #print err
                     co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_error["fipa:error"] = "missing-argument df-agent-description"
 
-                if co_error:
                     reply = self.msg.createReply()
                     reply.setSender(self.myAgent.getAID())
                     reply.setPerformative("refuse")
@@ -442,15 +441,16 @@ class DF(PlatformAgent):
                     self.myAgent.send(reply)
                     return -1
 
-                else:
+                '''else:
                     reply = self.msg.createReply()
                     reply.setSender(self.myAgent.getAID())
                     reply.setPerformative("agree")
                     co["fipa:done"] = "true"
                     reply.setContentObject(co)
                     self.myAgent.send(reply)
+		        '''
 
-                if dad and (dad.getAID().getName() != self.myAgent.getAID().getName()):
+                if dad and (dad.getAID().getName() != self.msg.getSender().getName()):
                     co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_error["fipa:error"] = "unauthorised"
 
@@ -463,15 +463,15 @@ class DF(PlatformAgent):
 
                     return -1
 
-                else:
 
-                    reply = self.msg.createReply()
-                    reply.setSender(self.myAgent.getAID())
-                    reply.setPerformative("agree")
-                    co = self.msg.getContentObject()
-    		    co["fipa:done"] = "true"
-    		    reply.setContentObject(co)
-                    self.myAgent.send(reply)
+                reply = self.msg.createReply()
+                reply.setSender(self.myAgent.getAID())
+                reply.setPerformative("agree")
+                co = self.msg.getContentObject()
+                co["fipa:done"] = "true"
+                reply.setContentObject(co)
+                self.myAgent.send(reply)
+                
 
                 if self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
@@ -502,7 +502,7 @@ class DF(PlatformAgent):
                     reply.setContentObject(co_error)
                     self.myAgent.send(reply)
                     return -1
-                    
+
             else:
                 #language is sl-0
                 try:
@@ -579,7 +579,7 @@ class DfAgentDescription:
 
         if content:
             self.loadSL0(content)
-        
+
         if co:
             #print "DAD FROM:\n",co.pprint()
             if co.name:
@@ -628,7 +628,7 @@ class DfAgentDescription:
         if self.languages:
             co["languages"] = copy.copy(self.languages)
         if self.scope:
-            co["scope"] = copy.copy(self.scope)     
+            co["scope"] = copy.copy(self.scope)
         return co
 
 
@@ -821,7 +821,7 @@ class ServiceDescription:
                 for k,v in co.properties:
                     self.properties.append({"name":k, "value":v})
             #print "SD DONE:",self.asRDFXML()
-                
+
 
     def getName(self):
         return self.name
