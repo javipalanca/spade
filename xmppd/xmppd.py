@@ -1277,9 +1277,12 @@ class Server:
         for fileno in socklist:
             s=self.sockets[fileno]
             if isinstance(s,socket.socket):
-                self.unregistersession(s)
-                s.shutdown(2)
-                s.close()
+                try:
+                    self.unregistersession(s)
+                    s.shutdown(2)
+                    s.close()
+                except:
+                    pass
             elif isinstance(s,Session): s.terminate_stream(reason)
 	try:
 		self.multisession_manager.destroy()

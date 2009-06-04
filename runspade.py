@@ -19,17 +19,14 @@ except ImportError:
 	#from libspade import SpadeConfigParser
 	#from libspade import colors
 
-
-# Esto hay que ponerlo algun vez ? - Gus
-
-#os.chdir("xmppd")
-#from xmppd import xmppd
-#os.chdir("..")
-
 from xmppd.xmppd import Server
 
 
-VERSION = colors.color_red + "2.0.alpha" + colors.color_none
+
+__author__    = "Gustavo Aranda <garanda@dsic.upv.es> and Javier Palanca <jpalanca@dsic.upv.es>"
+__version__   = "2.0-RC3"
+__copyright__ = "Copyright (C) 2009 Grupo de Tecnologia Informatica - Inteligencia Artificial (DSIC-UPV)"
+__license__   = "GPL"
 
 
 def print_help():
@@ -40,33 +37,13 @@ def print_help():
   print " -d, --debug        enable the debug execution"
   print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
   print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
-  print " -w, --web          load the TurboGears(tm) web interface"
+  #print " -w, --web          load the TurboGears(tm) web interface"
   raise SystemExit
 
 def print_version():
-  print "SPADE %s by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others" % VERSION
-  print "jpalanca@dsic.upv.es - http://spade.gti-ia.dsic.upv.es/"
+  print "SPADE %s by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others" % colors.color_yellow + __version__ + colors.color_none
+  print "garanda@dsic.upv.es - http://spade.gti-ia.dsic.upv.es/"
   raise SystemExit
-
-def launchtg(platform):
-	import pkg_resources
-	pkg_resources.require("TurboGears")	
-	from turbogears import update_config, start_server
-	import cherrypy
-	cherrypy.lowercase_api = True
-	"""
-	if len(sys.argv) > 1:
-	    update_config(configfile=sys.argv[1], 
-	        modulename="swi.config")
-	"""
-	if exists(join(dirname(__file__), "setup.py")):
-	    update_config(configfile="dev.cfg",modulename="swi.config")
-	else:
-	    update_config(configfile="prod.cfg",modulename="swi.config")	
-	from swi.controllers import Root
-	r = Root()
-	r.platform = platform
-	start_server(r)
 
 # Actually start the program running.
 def main():
@@ -77,7 +54,7 @@ def main():
   elif sys.argv[1] in ["--help", "-h"]: print_help()
   elif sys.argv[1] in ["--version", "-v"]: print_version()
   elif sys.argv[1] in ["--gui", "-g"]: gui = True
-  elif sys.argv[1] in ["--web", "-w"]: web = True
+  #elif sys.argv[1] in ["--web", "-w"]: web = True
 
 
   configfilename = "/etc/spade/spade.xml"
@@ -99,17 +76,17 @@ def main():
     		elif opt in ["-c", "--configfile"]: configfilename = arg
     		elif opt in ["-j", "--jabber"]: jabberxml = arg
     		elif opt in ["-g", "--gui"]: gui = True
-    		elif opt in ["-w", "--web"]: web = True
+    		#elif opt in ["-w", "--web"]: web = True
     		elif opt in ["-d", "--debug"]: dbg = ['always']
   except:
 	pass
 
-  print "SPADE", VERSION, "<garanda@dsic.upv.es> - http://spade.gti-ia.dsic.upv.es/"
+  print "SPADE ", colors.color_yellow + __version__ + colors.color_none, " <garanda@dsic.upv.es> - http://spade.gti-ia.dsic.upv.es/"
 
   try:
   	import psyco
 	psyco.full()
-	print "Using Psyco optimizing compiler."
+	#print "Using Psyco optimizing compiler."
 	#psyco.log(logfile='/tmp/psyco.log')
 	#psyco.profile()
   except ImportError: print "W: Psyco optimizing compiler not found."
@@ -153,15 +130,9 @@ def main():
 	sys.stdout.write(".")
   	sys.stdout.flush()
 
-	#if gui:
-	#	os.spawnl(os.P_NOWAIT, "spade-rma.py", "spade-rma.py")
 	sys.stdout.write(".")
   	sys.stdout.flush()
 
-  	if web:
-		thread.start_new_thread(launchtg, tuple([platform]))
-		sys.stdout.write(".")
-  		sys.stdout.flush()
 
   except Exception,e:
 	print str(e)
