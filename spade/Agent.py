@@ -1484,8 +1484,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		#	#print str(i[1])
 		#	self.result.append(i[1])
 
+		from AMS import AmsAgentDescription
 		for i in co["fipa:result"]:
-			self.result.append(i)
+			self.result.append(AmsAgentDescription(co=i))
 
             self.finished = True
 

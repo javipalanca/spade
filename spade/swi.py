@@ -3,6 +3,7 @@ import SimpleHTTPServer
 import pyratemp
 import os
 import sys
+import traceback
 from AMS import AmsAgentDescription
 import DF
 
@@ -45,14 +46,14 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     def do_POST(self):
 
-	    self._POST_REQ = ""
-	    try:
-	        length = int(self.headers.getheader('content-length'))
-	        self._POST_REQ = self.rfile.read(length)
-	    except:
-	        pass
+        self._POST_REQ = ""
+        try:
+            length = int(self.headers.getheader('content-length'))
+            self._POST_REQ = self.rfile.read(length)
+        except:
+            pass
 
-	    self.do_GET()
+        self.do_GET()
 
 
     def do_GET(self):
@@ -60,6 +61,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         GET petitions handler
         """
 
+        ret = None
         request = self.raw_requestline.split()
         page = self.getPage(request[1])
 
@@ -71,30 +73,41 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             vars = self.getVars("?"+self._POST_REQ)
         except:
             vars = self.getVars(request[1])
-	    
+        
         s_vars=""
         for k,v in vars.items():
             s_vars+= str(k) + "=" + str(v)+","
         if s_vars.endswith(","): s_vars = s_vars[:-1]
-	        
-	    # Switch page
+            
+        # Switch page
         #if page.endswith("css"):
         if "." in page:
-	        #self.copyfile(urllib.urlopen(self.path), self.wfile)
-	        try:
-	            f = open(page, "r")
-	            self.copyfile(f, self.wfile)
-	            f.close()
-	        except:
-	            print "Could not open file: ", page
-	
+            #self.copyfile(urllib.urlopen(self.path), self.wfile)
+            try:
+                f = open(page, "r")
+                self.copyfile(f, self.wfile)
+                f.close()
+            except:
+                print "Could not open file: ", page
+    
         else:
             try:
-                template, ret = eval("self."+str(page)+"("+s_vars+")")
+                # Check wether controller exists
+                eval("self."+str(page))
             except:
-                #No controller
+                # The controller doesn't exist
                 template = "404.pyra"
                 ret = {"template":page}
+            try:
+                if not ret:
+                    template, ret = eval("self."+str(page)+"("+s_vars+")")
+            except Exception, e:
+                #No controller
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                template = "501.pyra"
+                ret = {"template":page, "error":str(_err)}
             
             try:
                 t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
@@ -103,9 +116,12 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 t = pyratemp.Template(filename="templates"+os.sep+"503.pyra", data={"page":template})
             try:
                 result = t()
-            except:
+            except Exception, e:
                 #Error in template
-                t = pyratemp.Template(filename="templates"+os.sep+"501.pyra", data={"template":template})
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                t = pyratemp.Template(filename="templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err)})
                 result = t()
                 
             r = result.encode("ascii", 'xmlcharrefreplace')
@@ -117,7 +133,7 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def error404(self):
         return "404.pyra", {"template":"404.pyra"}
     def error501(self):
-        return "501.pyra", {"template":"501.pyra"}
+        return "501.pyra", {"template":"501.pyra", "error":""}
     def error503(self):
         return "503.pyra", {"page":"503.pyra"}
 
@@ -189,9 +205,9 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         the_time = str(time.ctime())
 
         search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
-	agents = []
-	for agent in search:
-		agents.append(agent.getAID().getName())
+        agents = []
+        for agent in search:
+            agents.append(agent.getAID().getName())
 
         return "message.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, keys=agents)
 

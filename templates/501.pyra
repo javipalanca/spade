@@ -37,7 +37,8 @@
 
 			<h1>501 Internal Error!</h1>
 
-			<p>The page "@!template!@" you followed produced an <strong>error</strong>.</p>
+			<p>The page "@!template!@" you followed produced an <strong>error:</strong>.</p>
+			<p>@!error!@</p>
 			<p>Please try the following:
 				<ul>
 					<li>If you are <strong>obsessive-compulsive</strong>, please check the URL repeatedly.</li>

@@ -34,7 +34,8 @@
 	<div class="main">
 		
 		<div class="content">
-				<h2 class="title">Send a message to agent @!to!@</h2>
+				<!--<h2 class="title">Send a message to agent @!to!@</h2>-->
+				<h2 class="title">Send a message to agent</h2>
 
 		            	<FORM action="/sendmessage" method="post">
 							<div id="msgsendup">
