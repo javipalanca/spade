@@ -180,3 +180,19 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         print servs
         return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=servs)
 
+    def sendmessage(self):#, to):
+        import sys
+        import time
+        servername = self.platform.getDomain()
+        platform = self.platform.getName()        
+        version = str(sys.version)
+        the_time = str(time.ctime())
+
+        search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
+	agents = []
+	for agent in search:
+		agents.append(agent.getAID().getName())
+
+        return "message.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, keys=agents)
+
+
