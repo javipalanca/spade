@@ -41,10 +41,17 @@
 				<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>
 					<td class="servHd">State</td><td class="servHd">Ownership</td></tr>
 				<!--(for agent in agents)-->
-				<tr><td class="servBodL"><a href="#">@!str(agent["fipa:aid"]["fipa:name"])!@</a></td>
-					<td class="servBodL">@!str(agent["fipa:aid"]["fipa:addresses"])!@</td>
-				    <td class="servBodL">@!str(agent["fipa:state"])!@</td>
-					<td class="servBodL">@!str(agent["fipa:ownership"])!@</td></tr>
+				<tr><td class="servBodL">
+					<!--(if agent.getAID())-->
+					<a href="#">@!str(agent.getAID().getName())!@</a></td>
+					<!--(end)-->
+					<td class="servBodL">
+						<!--(if agent.getAID())-->
+						@!str(agent.getAID().getAddresses()).strip("[']")!@
+						<!--(end)-->
+						</td>
+				    <td class="servBodL">@!str(agent.getState())!@</td>
+					<td class="servBodL">@!str(agent.getOwnership())!@</td></tr>
 				<!--(end)-->
 			</table>
 

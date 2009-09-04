@@ -111,8 +111,11 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             
             try:
                 t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
-            except:
+            except Exception, e:
                 #No template
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 t = pyratemp.Template(filename="templates"+os.sep+"503.pyra", data={"page":template})
             try:
                 result = t()
@@ -163,9 +166,10 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         version = str(sys.version)
         the_time = str(time.ctime())
         search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
-        for agent in search:
+        """for agent in search:
             if not agent.has_key("fipa:state"):
                 agent["fipa:state"] = ""
+        """
         return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)
         
     def services(self):
