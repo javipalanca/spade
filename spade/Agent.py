@@ -233,6 +233,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._forceKill.clear()
         self.JID=agentjid
         self.setName(str(agentjid))
+        
+        self.wui = WUI(self)
+        self.wui.registerController(self.admin)
+        self.wui.registerController(self.log)
 
         self._friend_list = []  # Legacy
         self._muc_list= {}

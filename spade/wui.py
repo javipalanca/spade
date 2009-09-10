@@ -1,5 +1,8 @@
 # encoding: UTF-8
+import traceback
+import SocketServer
 import SimpleHTTPServer
+import BaseHTTPServer
 import pyratemp
 import os
 import sys
@@ -7,7 +10,73 @@ import traceback
 from AMS import AmsAgentDescription
 import DF
 
-class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+import urllib
+import time
+import random
+
+from threading import Thread
+
+class WUI(Thread):
+    def __init__(self, owner):
+        Thread.__init__(self)
+        self.httpd = None
+        self.port = 8009
+        self.owner = owner
+        self.controllers = {}
+        
+        self.is_running = False
+        
+    def run(self):
+
+        while not self.httpd:
+             try:
+                 self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
+                 self.httpd.owner = self
+                 #self.httpd.controllers = self.controllers
+                 print "WebUserInterface serving at port "+str(self.port)
+             except:
+                 self.port = random.randint(1024,65536)
+                 #print "WebUserInterface Error: could not open port "+str(self.port)
+                 #time.sleep(5)
+        self.registerController("error404", self.error404)
+        self.registerController("error501", self.error501)
+        self.registerController("error503", self.error503)
+
+        self.is_running = True
+        while self.isRunning():
+            self.httpd.handle_request()
+
+    def isRunning(self):
+        return self.is_running
+        
+    def stop(self):
+        self.is_running = False
+        
+    def setPort(self, port):
+        self.port = port
+        
+    def registerController(self, name, controller):
+        #if self.httpd:
+        #self.httpd.controllers[controller.func_name] = controller
+        #else:
+        self.controllers[name] = controller
+            
+    def unregisterController(self, name):
+        #if self.httpd:
+        #   del self.httpd.controllers[controller.func_name]
+        #else:
+        del self.controllers[name]
+            
+    #Controllers
+
+    def error404(self):
+        return "404.pyra", {"template":"404.pyra"}
+    def error501(self):
+        return "501.pyra", {"template":"501.pyra", "error":""}
+    def error503(self):
+        return "503.pyra", {"page":"503.pyra"}
+
+class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     
     def getPage(self, req):
         """
@@ -36,9 +105,9 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                             d[var[0]] = [d[var[0]]]
                             d[var[0]].append(var[1])
                     else:
-                        d[var[0]] = var[1]
+                        d[urllib.unquote_plus(var[0])] = urllib.unquote_plus(var[1])
                 else:
-                    d[var[0]] = ""
+                    d[urllib.unquote_plus(var[0])] = ""
         except:
             pass
 
@@ -93,14 +162,18 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         else:
             try:
                 # Check wether controller exists
-                eval("self."+str(page))
+                eval("self.server.owner.controllers['"+str(page)+"']")
             except:
                 # The controller doesn't exist
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 template = "404.pyra"
-                ret = {"template":page}
+                ret = {"template":page, "error":str(_err)}
             try:
                 if not ret:
-                    template, ret = eval("self."+str(page)+"("+s_vars+")")
+                    func = self.server.owner.controllers[str(page)]
+                    template, ret = eval("func"+"("+s_vars+")")
             except Exception, e:
                 #No controller
                 _exception = sys.exc_info()
@@ -131,88 +204,8 @@ class SWIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             
             self.wfile.write(r)
 
-    #Controllers
-    
-    def error404(self):
-        return "404.pyra", {"template":"404.pyra"}
-    def error501(self):
-        return "501.pyra", {"template":"501.pyra", "error":""}
-    def error503(self):
-        return "503.pyra", {"page":"503.pyra"}
 
-    def index(self):
-        import sys
-        import time
-        servername = self.platform.getDomain()
-        platform = self.platform.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
-    def webadmin_indigo(self):
-        import sys
-        import time
-        servername = self.platform.getDomain()
-        platform = self.platform.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
 
-    def agents(self):
-        import sys
-        import time
-        servername = self.platform.getDomain()
-        platform = self.platform.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-        search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
-        """for agent in search:
-            if not agent.has_key("fipa:state"):
-                agent["fipa:state"] = ""
-        """
-        return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)
-        
-    def services(self):
-        import sys
-        import time
-        servername = self.platform.getDomain()
-        platform = self.platform.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-        search = self.server.behav.getAgent().searchService(DF.DfAgentDescription())
-        #for service in search:
-        #   if not agent.has_key("fipa:state"):
-        #        agent["fipa:state"] = ""
-        # Create a service-indexed dictionary of services, not an agent-indexed one
-        servs = {}
-        idn = 0
-        for dad in search:
-            for service in dad.getServices():
-                if service.getType() not in servs.keys():
-                    servs[service.getType()] = {}
-                servs[service.getType()][idn] = {}
-                servs[service.getType()][idn]["name"] = str(service.getName())
-                servs[service.getType()][idn]["provider"] = str(dad.getAID().getName())
-                servs[service.getType()][idn]["addresses"] = ""
-                for address in dad.getAID().getAddresses():
-                    servs[service.getType()][idn]["addresses"] += str(address)+" "
-                idn += 1
-        print servs
-        return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=servs)
-
-    def sendmessage(self):#, to):
-        import sys
-        import time
-        servername = self.platform.getDomain()
-        platform = self.platform.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-
-        search = self.server.behav.getAgent().searchAgent(AmsAgentDescription())
-        agents = []
-        for agent in search:
-            agents.append(agent.getAID().getName())
-
-        return "message.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, keys=agents)
 
 
