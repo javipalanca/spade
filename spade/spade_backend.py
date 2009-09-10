@@ -48,7 +48,8 @@ class SpadeBackend:
         parser = SpadeConfigParser.ConfigParser()
         self.config = parser.parse(configfilename)
         self.ams=None
-        self.df =None        
+        self.df =None
+        self.acc=None     
         self.alive = True  # Alive flag
 
     def start(self):

@@ -38,6 +38,7 @@
 			<h1>404 File Not Found!</h1>
 
 			<p>The page "@!template!@" you followed was <strong>not found</strong>.</p>
+			<p>@!error!@</p>
 			<p>Please try the following:
 				<ul>
 					<li>If you are <strong>obsessive-compulsive</strong>, please check the URL repeatedly.</li>

@@ -42,6 +42,7 @@ import cPickle as pickle
 
 import DF
 from content import ContentObject
+from wui import *
 
 #from xmpp import Iq, Presence,Protocol, Node, NodeBuilder, NS_ROSTER, NS_DISCO_INFO
 from xmpp import *
@@ -234,9 +235,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.JID=agentjid
         self.setName(str(agentjid))
         
+        self._debug = True
+        
         self.wui = WUI(self)
-        self.wui.registerController(self.admin)
-        self.wui.registerController(self.log)
+        self.wui.registerController("admin", self.WUIController_admin)
+        self.wui.registerController("log", self.WUIController_log)
 
         self._friend_list = []  # Legacy
         self._muc_list= {}
@@ -275,6 +278,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.addBehaviour(p2pb)
 
 
+    def WUIController_admin(self):
+        return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
+        
+    def WUIController_log(self):
+        return "log.pyra", {"name":self.getName(), "log":self.getLog()}
 
 
     """
@@ -315,20 +323,21 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def DEBUG(self, dmsg, typ="info", component=""):
     	# Record at log
-    	self._agent_log["general"][time.time()] = "typ: " + dmsg
+    	self._agent_log["general"][time.time()] = typ+": " + dmsg
 
-		# Print on screen
-        if typ == "info":
-            print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
-        elif typ == "err":
-            print colors.color_none + "DEBUG: " + colors.color_red + dmsg + " , error" + colors.color_none
-        elif typ == "ok":
-            print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
-        elif typ == "warn":
-            print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
+        if self._debug:
+    		# Print on screen
+            if typ == "info":
+                print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
+            elif typ == "err":
+                print colors.color_none + "DEBUG: " + colors.color_red + dmsg + " , error" + colors.color_none
+            elif typ == "ok":
+                print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
+            elif typ == "warn":
+                print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
 
 	def printLog(self):
-		l = self._agent_log[general].keys()
+		l = self._agent_log["general"].keys()
 		l.sort()
 		for t in l:
 			s = str(t)+": "
@@ -340,6 +349,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 				s += colors.color_green + self._agent_log["general"][t] + colors.color_none
 			elif line.endswith("warn"):
 				s += colors.color_yellow + self._agent_log["general"][t] + colors.color_none
+				
+    def getLog(self, html=True):
+        s=""
+        logs = self._agent_log["general"].keys()
+        logs.sort()
+        for tstamp in logs:
+            line = self._agent_log["general"][tstamp]
+            s += str(tstamp) + line + "<br>"
+        return s
 
     def newMessage(self):
 		"""Creates and returns an empty ACL message"""

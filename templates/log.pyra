@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
+
+<title>SPADE Web Interface: Agents</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<div class="header">
+		
+		<div class="title">
+			<h1>@!name!@</h1>
+		</div>
+
+
+	</div>
+
+	<div class="main">
+		
+		<div class="content">		
+			
+			@!log!@
+		</div>
+
+		<div class="sidenav">
+
+			<h1>Search Agents and Services</h1>
+			<form action="index.html">
+			<div>
+				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
+			</div>
+			</form>
+		</div>
+	
+		<div class="clearer"><span></span></div>
+
+	</div>
+
+</div>
+
+<div class="footer">&copy; 2007 <a href="spade.gti-ia.dsic.upv.es">spade.gti-ia.dsic.upv.es</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se/">Website template</a> by <a href="http://arcsin.se/">Arcsin</a>
+</div>
+
+</body>
+
+</html>

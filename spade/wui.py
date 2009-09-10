@@ -7,9 +7,6 @@ import pyratemp
 import os
 import sys
 import traceback
-from AMS import AmsAgentDescription
-import DF
-
 import urllib
 import time
 import random
@@ -21,6 +18,7 @@ class WUI(Thread):
         Thread.__init__(self)
         self.httpd = None
         self.port = 8009
+        self.template_path = ""
         self.owner = owner
         self.controllers = {}
         
@@ -32,12 +30,9 @@ class WUI(Thread):
              try:
                  self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
                  self.httpd.owner = self
-                 #self.httpd.controllers = self.controllers
                  print "WebUserInterface serving at port "+str(self.port)
              except:
                  self.port = random.randint(1024,65536)
-                 #print "WebUserInterface Error: could not open port "+str(self.port)
-                 #time.sleep(5)
         self.registerController("error404", self.error404)
         self.registerController("error501", self.error501)
         self.registerController("error503", self.error503)
@@ -55,16 +50,13 @@ class WUI(Thread):
     def setPort(self, port):
         self.port = port
         
+    def setTemplatePath(self,path):
+        self.template_path = path
+        
     def registerController(self, name, controller):
-        #if self.httpd:
-        #self.httpd.controllers[controller.func_name] = controller
-        #else:
         self.controllers[name] = controller
             
     def unregisterController(self, name):
-        #if self.httpd:
-        #   del self.httpd.controllers[controller.func_name]
-        #else:
         del self.controllers[name]
             
     #Controllers
@@ -183,7 +175,10 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 ret = {"template":page, "error":str(_err)}
             
             try:
-                t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
+                if os.path.exists(self.server.owner.template_path+os.sep+template):
+                    t = pyratemp.Template(filename=self.server.owner.template_path+os.sep+template, data=ret)
+                else:
+                    t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
             except Exception, e:
                 #No template
                 _exception = sys.exc_info()

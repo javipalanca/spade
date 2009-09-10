@@ -15,7 +15,7 @@ import copy
 import random
 
 
-PLATFORM_HOST = "thx1138.dsic.upv.es"
+PLATFORM_HOST = "127.0.0.1"
 
 class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     _body_template = "<table><tr><td class=cabecera colspan=2>#TOP#</td></tr><tr><td class=lateral>#MENU_LEFT#</td><td>#PANEL_RIGHT#</td></tr><tr><td>#BOTTOM#</td></tr></table>"
