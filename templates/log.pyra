@@ -6,8 +6,8 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="default.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
 
 <title>@!name!@ - SPADE Web Interface</title>
 </head>

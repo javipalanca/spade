@@ -3,12 +3,11 @@
 try:
 	import psyco
 	psyco.full()
-	print "Using Psyco optimizing compiler"
+	#self.DEBUG("Using Psyco optimizing compiler")
 	#psyco.log(logfile='/tmp/psyco.log')
 	#psyco.profile()
 except ImportError:
-	pass
-	#print "W: Psyco optimizing compiler not found."
+	pass #self.DEBUG("Psyco optimizing compiler not found","warn")
 
 import sys
 import traceback
@@ -139,7 +138,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             self.server.postMessage = self.myAgent.postMessage
             self.server.requests = []
-            print self.getName(),": P2P Behaviour Started at port", str(self.myAgent.P2PPORT)
+            self.DEBUG(self.getName()+": P2P Behaviour Started at port"+ str(self.myAgent.P2PPORT))
             self.finished = False  # Flag to mark (later) if we have passed through "onEnd"
             self.myAgent.p2p_ready = True
 
@@ -278,12 +277,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.addBehaviour(p2pb)
 
 
-        # Start WebUserInterface
-        self.wui.start()
-
 
     def WUIController_admin(self):
-        return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
+        #return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
+        return "admin.pyra", {"aid":self.getAID(), "p2pready":self.p2p_ready}
         
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
@@ -434,7 +431,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		self._defaultbehaviour.managePresence(frm, typ, status, show, role, affiliation)
 	except Exception, e:
 	 	#There is not a default behaviour yet
-		print "EXCEPTION: ", str(e)
+		self.DEBUG(str(e),"err")
 
 	#self._roster = conn.getRoster()
 
@@ -495,7 +492,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if mess.getAttr("type") == "get":
                     q = mess.getTag("query")
                     if q and q.getNamespace() == NS_DISCO_INFO:
-                        print "DISCO Behaviour called (offline)"
+                        self.DEBUG("DISCO Behaviour called (offline)","info")
                         # Inform of services
                         reply = mess.buildReply("result")
                         if self.p2p_ready:
@@ -567,7 +564,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
 	# We post every jabber iq
 	self.postMessage(mess)
-	print "Jabber Iq posted to agent ", str(self.getAID().getName())
+	self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()),"info")
         #self._other_messageCB(conn,mess)
 
 
@@ -736,7 +733,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
             # Offer Stream Initiation
-            #print "Offer StreamInitiation to", str(to)
+            self.DEBUG( "Offer StreamInitiation to" + str(to))
             id = 'offer'+str(random.randint(1,10000))
             temp_iq = xmpp.Iq(attrs={'id':id})
             t = Behaviour.MessageTemplate(temp_iq)
@@ -760,7 +757,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 return sib.result
             else:
                 # Offline way
-                print "I.S. OFFLINE"
+                self.DEBUG("Initiate Stream OFFLINE","warn")
                 result = False
                 self.jabber.send(iq)
                 #print "SIB SENT:", str(self.iq)
@@ -859,7 +856,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # There is noone left to send the message to
                     return
         except Exception, e:
-            print "EXCEPTION IN SEND",str(e)
+            self.DEBUG("EXCEPTION IN SEND: "+str(e), "err")
 	    method = "jabber"
 
         # Second, try it the old way
@@ -875,8 +872,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 envelope.setFrom(ACLmsg.getSender())
                 generate_envelope = True
         except Exception, e:
-            print "EXCEPTION SETTING SENDER", str(e)
-            pass
+            self.DEBUG("EXCEPTION SETTING SENDER: "+ str(e), "err")
 
         try:
             for i in ACLmsg.getReceivers():
@@ -889,8 +885,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     envelope.addTo(i)
                     generate_envelope = True
         except Exception, e:
-            #print "EXCEPTION SETTING RECEIVERS", str(e)
-            pass
+            self.DEBUG("EXCEPTION SETTING RECEIVERS: " + str(e),"err")
+
 
         try:
             # The same for 'reply_to'
@@ -904,8 +900,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     envelope.addIntendedReceiver(i)
                     generate_envelope = True
         except Exception, e:
-            #print "EXCEPTION SETTING REPLY TO", str(e)
-            pass
+            self.DEBUG("EXCEPTION SETTING REPLY TO: " + str(e),"err")
 
         # Generate the envelope ONLY if it is needed
         if generate_envelope:
@@ -971,7 +966,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
-        #print "SENDING ",str(jabber_msg), "THROUGH P2P"
+        self.DEBUG("SENDING " + str(jabber_msg) + "THROUGH P2P")
         # Get the address
         if not to:
             if not jabber_msg:
@@ -1042,7 +1037,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     tries -= 1
                     _exception = sys.exc_info()
                     if _exception[0]:
-                        print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                        #print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                        self.DEBUG('\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
 
             if not connected:
                 self.DEBUG("Socket creation failed","err")
@@ -1216,7 +1212,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         self._behaviourList.remove(beh)
 
             except Exception, e:
-                print "Agent", self.getName(), "Exception in run:", str(e)
+                self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
                 self._kill()
 
         self._shutdown()
@@ -1265,8 +1261,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
-	    #print "removeBehaviour: KeyError"
-            pass
+	    self.DEBUG("removeBehaviour: KeyError","err")
+
 
     def subscribeToFriend(self, aid):
 	"""
@@ -1500,7 +1496,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			co = msg.getContentObject()
 			#print co
                 except:
-			print "PARSE EXCEPTION"
+			self.DEBUG("PARSE EXCEPTION","err")
 			self.result = []
 			return None
 
@@ -1633,7 +1629,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     			return -1
     		msg = self._receive(True,20)
     		if msg == None or msg.getPerformative() != 'inform':
-    			print "There was an error modifying the Agent. (not inform)"
+    			self.DEBUG("There was an error modifying the Agent. (not inform)","err")
 
     			return -1
 
@@ -1713,11 +1709,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() != 'inform':
                     if not msg:
-                        print "There was an error registering the Service. (timeout)"
+                        self.DEBUG("There was an error registering the Service. (timeout)","err")
                     elif msg.getPerformative() == 'failure':
-                        print "There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
                     else:
-                        print "There was an error registering the Service. (not inform)"
+                        self.DEBUG("There was an error registering the Service. (not inform)","err")
                     self.result = False
                     return
 
@@ -1744,7 +1740,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return b.result
         else:
             # Offline operation, done when the agent is starting
-            print "OFFLINE REGISTERSERVICE"
+            self.DEBUG("OFFLINE REGISTERSERVICE")
             if otherdf and isinstance(otherdf, AID.aid):
                 msg.addReceiver( otherdf )
                 force_sl0 = True
@@ -1783,9 +1779,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=20, template=t)
                 if msg == None or msg.getPerformative() != 'inform':
                     if msg.getPerformative() == 'failure':
-                        print "There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
                     else:
-                        print "There was an error registering the Service. (not inform)"
+                        self.DEBUG("There was an error registering the Service. (not inform)","err")
                     return False
 
             return True
@@ -1847,11 +1843,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(True,20)
                 if msg == None or msg.getPerformative() != 'inform':
                     if not msg:
-                        print "There was an error deregistering the Service. (timeout)"
+                        self.DEBUG("There was an error deregistering the Service. (timeout)","err")
                     elif msg.getPerformative() == 'failure':
-                        print "There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
                     else:
-                        print "There was an error deregistering the Service. (not inform)"
+                        self.DEBUG("There was an error deregistering the Service. (not inform)","err")
                     self.result = False
                     return
 
@@ -1878,7 +1874,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return b.result
         else:
             # Offline operation, done when the agent is starting
-            print "OFFLINE DEREGISTERSERVICE"
+            self.DEBUG("OFFLINE DEREGISTERSERVICE")
             if otherdf and isinstance(otherdf, AID.aid):
                 msg.addReceiver( otherdf )
                 force_sl0 = True
@@ -1917,9 +1913,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=20, template=t)
                 if msg == None or msg.getPerformative() != 'inform':
                     if msg.getPerformative() == 'failure':
-                        print "There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
                     else:
-                        print "There was an error deregistering the Service. (not inform)"
+                        self.DEBUG("There was an error deregistering the Service. (not inform)","err")
                     return False
 
             return True
@@ -1968,15 +1964,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     #print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
                     return
                 elif msg.getPerformative() not in ['agree', 'inform']:
-                    print "%s : There was an error searching the Service (not agree) Failure: %s"%(self.myAgent.getName(), msg.getContentObject()["fipa:error"])
+                    self.DEBUG("%s : There was an error searching the Service (not agree) Failure: %s"%(self.myAgent.getName(), msg.getContentObject()["fipa:error"]),"err")
                     return
                 elif msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10)
                     if msg == None:
-                        print "There was an error searching the Service (timeout on inform)"
+                        self.DEBUG("There was an error searching the Service (timeout on inform)","err")
                         return
                     elif msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service (not inform) " +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error searching the Service (not inform) " +  msg.getContentObject()['fipa:error'],"err")
                         return
 
                 #p = SL0Parser.SL0Parser()
@@ -2044,14 +2040,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 msg = self._receive(block=True, timeout=10, template=t)
 
                 if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    print "There was an error searching the Service. (not agree)"
+                    self.DEBUG("There was an error searching the Service. (not agree)","err")
                     return result
 
                 elif msg == None or msg.getPerformative() == 'agree':
                     msg = self._receive(True, 10, t)
 
                     if msg == None or msg.getPerformative() != 'inform':
-                        print "There was an error searching the Service. (not inform) " +  msg.getContentObject()['fipa:error']
+                        self.DEBUG("There was an error searching the Service. (not inform) " +  msg.getContentObject()['fipa:error'],"err")
                         return result
 
                 #p = SL0Parser.SL0Parser()
@@ -2064,7 +2060,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             except:
                 _exception = sys.exc_info()
                 if _exception[0]:
-                    print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                    self.DEBUG('\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
                 #print "EXCEPTION IN SEARCHSERVICE", str(e)
                 return result
 
@@ -2107,13 +2103,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'agree':
-		    print "There was an error modifying the Service. (not agree) "
-		    if msg: print msg.getContentObject()['fipa:error']
+		    self.DEBUG("There was an error modifying the Service. (not agree) ","err")
+		    if msg: self.DEBUG(msg.getContentObject()['fipa:error'],"err")
 		    self.result=False
 		    return
 		msg = self._receive(True,20)
 		if msg == None or msg.getPerformative() != 'inform':
-		    print "There was an error modifying the Service. (not inform) " +  str(msg.getContentObject()['fipa:error'])
+		    self.DEBUG( "There was an error modifying the Service. (not inform) " +  str(msg.getContentObject()['fipa:error']),"err")
 		    self.result = False
 		    return
 		self.result = True
@@ -2171,15 +2167,17 @@ class jabberProcess(threading.Thread):
 		    except Exception, e:
 			_exception = sys.exc_info()
 			if _exception[0]:
-			    print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-			    print "Exception in jabber process: ", str(e)
+			    self.DEBUG( '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
+			    self.DEBUG("Exception in jabber process: "+ str(e),"err")
 			    print color_red + "Jabber connection failed: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
+			    self.DEBUG("Jabber connection failed: "+self._owner.getAID().getName()+" (dying)","err")
 			    self._kill()
 			    self._owner.stop()
 			    err = None
 
 		    if err == None or err == 0:  # None or zero the integer, socket closed
 			print color_red + "Agent disconnected: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
+			self.DEBUG("Agent disconnected: "+self._owner.getAID().getName()+" (dying)","err")
 			self._kill()
 			self._owner.stop()
 
@@ -2355,22 +2353,22 @@ class Agent(AbstractAgent):
                     rep = Presence(to=self.msg.getFrom())
                     rep.setType("subscribed")
                     self.myAgent.jabber.send(rep)
-                    print color_yellow + str(self.msg.getFrom()) + color_green + " subscribes to me" + color_none
+                    self.DEBUG( str(self.msg.getFrom())  + " subscribes to me")
                     rep.setType("subscribe")
                     self.myAgent.jabber.send(rep)
                     #print "Subscription request sent in return"
                 if self.msg.getType() == "subscribed":
                     if self.msg.getFrom() == self.myAgent.getAMS().getName():
                         # Subscription confirmation from AMS
-                        print color_green + "Agent: " + color_yellow + str(self.myAgent.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+                        self.DEBUG( "Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)")
                     else:
-                        print color_yellow + str(self.msg.getFrom()) + color_green + " has subscribed me" + color_none
+                        self.DEBUG(str(self.msg.getFrom()) + "has subscribed me")
                 elif self.msg.getType() == "unsubscribed":
                     # Unsubscription from AMS
                     if self.msg.getFrom() == self.myAgent.getAMS().getName():
-                        print color_red + "There was an error registering in the AMS: " + color_yellow + str(self.getAID().getName()) + color_none
+                        self.DEBUG("There was an error registering in the AMS: " + str(self.getAID().getName()),"err")
                     else:
-                        print color_yellow + str(self.msg.getFrom()) + color_green + " has unsubscribed me" + color_none
+                        self.DEBUG(str(self.msg.getFrom()) + " has unsubscribed me")
                 elif self.msg.getType() in ["available", ""]:
                     #print "Agent " + str(self.msg.getFrom()) + " is online"
                     self.myAgent.setSocialItem(self.msg.getFrom(), "available")
@@ -2447,14 +2445,14 @@ class Agent(AbstractAgent):
 
         # Try to register
         try:
-            #print "### Trying to register agent %s"%(agentjid)
+            self.DEBUG("Trying to register agent " + agentjid)
             self._register(password)
         except NotImplementedError:
-            #print "### NotImplementedError: Could not register agent %s"%(agentjid)
+            self.DEBUG("NotImplementedError: Could not register agent %s"%(agentjid),"err")
             self.stop()
             return
         except:
-            #print "### Could not register agent %s"%(agentjid)
+            self.DEBUG("Could not register agent %s"%(agentjid),"err")
             self.stop()
             return
 
@@ -2464,10 +2462,10 @@ class Agent(AbstractAgent):
         # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
-        #print "### Agent %s registered"%(agentjid)
+        self.DEBUG("Agent %s registered"%(agentjid))
 
         if not self.__register_in_AMS():
-            print "Agent " + str(self.getAID().getName()) + " dying ..."
+            self.DEBUG("Agent " + str(self.getAID().getName()) + " dying ...","err")
             sys.exit(-1)
 
         # Ask for roster
@@ -2522,7 +2520,7 @@ class Agent(AbstractAgent):
             else:
                     raise NotImplementedError
 
-        #print "### Agent %s got authed"%(self._aid.getName())
+        self.DEBUG("Agent %s got authed"%(self._aid.getName()))
 
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_messageCB)
@@ -2561,7 +2559,7 @@ class Agent(AbstractAgent):
         if self._alivemutex.testandset():
             if not self.jabber_process.forceKill():
                 if not self.__deregister_from_AMS():
-                    print "Agent " + str(self.getAID().getName()) + " dying without deregistering itself ..."
+                    self.DEBUG("Agent " + str(self.getAID().getName()) + " dying without deregistering itself ...","err")
                 self.jabber_process._kill()  # Kill jabber thread
             self._alive = False
         self._alivemutex.unlock()
@@ -2578,7 +2576,7 @@ class Agent(AbstractAgent):
 
         self.jabber.send(presence)
 
-        #print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+        self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)")
         return True
 
     def __register_in_AMS_with_ACL(self, state='active', ownership=None, debug=False):
@@ -2606,25 +2604,25 @@ class Agent(AbstractAgent):
         # We expect the initial answer from the AMS
         msg = self._receive(True,20)
         if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-            print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (refuse)" + color_none
+            self.DEBUG("There was an error initiating the register of agent: " + str(self.getAID().getName()) + " (refuse)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-            print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " initiating registering process (agree)" + color_none
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " initiating registering process (agree)")
         else:
             # There was no answer from the AMS or it answered something weird, so error
-            print color_red + "There was an error initiating the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
+            self.DEBUG("There was an error initiating the register of agent: " + str(self.getAID().getName()),"err")
             return False
 
         # Now we expect the real informative answer from the AMS
         msg = self._receive(True,20)
         if (msg != None) and (msg.getPerformative() == 'failure'):
-            print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_red + " (failure)" + color_none
+            self.DEBUG("There was an error with the register of agent: " + str(self.getAID().getName()) + " (failure)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-            print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " registered correctly (inform)" + color_none
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)")
         else:
             # There was no real answer from the AMS or it answered something weird, so error
-            print color_red + "There was an error with the register of agent: " + color_yellow + str(self.getAID().getName()) + color_none
+            self.DEBUG("There was an error with the register of agent: " + str(self.getAID().getName()),"err")
             return False
 
         return True
@@ -2635,7 +2633,7 @@ class Agent(AbstractAgent):
         presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribed')
 
         self.jabber.send(presence)
-        print color_green + "Agent: " + color_yellow + str(self.getAID().getName()) + color_green + " deregistered correctly (inform)" + color_none
+        self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)")
 
         return True
 
@@ -2666,25 +2664,25 @@ class Agent(AbstractAgent):
         # We expect the initial answer from the AMS
         msg = self._receive(True,20)
         if (msg != None) and (str(msg.getPerformative()) == 'refuse'):
-            print colors.color_red + "There was an error initiating the deregister of agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_red + " (refuse)" + colors.color_none
+            self.DEBUG("There was an error initiating the deregister of agent: " + str(self.getAID().getName()) + " (refuse)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'agree'):
-            print colors.color_green + "Agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_green + " initiating deregistering process (agree)" + colors.color_none
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " initiating deregistering process (agree)")
         else:
             # There was no answer from the AMS or it answered something weird, so error
-            print colors.color_red + "There was an error deregistering of agent: " + colors.color_yellow + str(self.getAID().getName()) + colors.color_none
+            self.DEBUG("There was an error deregistering of agent: " + str(self.getAID().getName()),"err")
             return False
 
         # Now we expect the real informative answer from the AMS
         msg = self._receive(True,20)
         if (msg != None) and (msg.getPerformative() == 'failure'):
-            print "There was an error with the deregister of agent: " + str(self.getAID().getName()) + " (failure)"
+            self.DEBUG("There was an error with the deregister of agent: " + str(self.getAID().getName()) + " (failure)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-            print "Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)"
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)")
         else:
             # There was no real answer from the AMS or it answered something weird, so error
-            print "There was an error with the deregister of agent: " + str(self.getAID().getName())
+            self.DEBUG("There was an error with the deregister of agent: " + str(self.getAID().getName()),"err")
             return False
 
         return True

@@ -8,19 +8,18 @@ import spade
 class MyAgent(spade.Agent.Agent):
 	class MyBehav(spade.Behaviour.OneShotBehaviour):
 		def onStart(self):
-			print "Starting behaviour . . ."
+			self.myAgent.DEBUG("Starting behaviour . . .")
 
 		def _process(self):
 			print "Hello World from a OneShot"
 			pi = self.myAgent.getPlatformInfo()
-			print pi
-			#print type(pi)
+			self.myAgent.DEBUG(str(pi))
 
 		def onEnd(self):
-			print "Ending behaviour . . ."
+			self.myAgent.DEBUG("Ending behaviour . . .")
 
 	def _setup(self):
-		print "MyAgent starting . . ."
+		self.DEBUG("MyAgent starting . . .")
 		b = self.MyBehav()
 		self.addBehaviour(b, None)
 
@@ -30,5 +29,17 @@ if __name__ == "__main__":
 	else:
 		host = sys.argv[1]
 	a = MyAgent("agent@"+host, "secret")
+	a.wui.start()
 	a.start()
+	
+	alive = True
+	import time
+	while alive:
+	    try:
+	        time.sleep(1)
+	    except KeyboardInterrupt:
+	        alive=False
+	a.stop()
+	sys.exit(0)
+	    
 
