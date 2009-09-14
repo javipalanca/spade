@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="templates/table.css" media="screen"/>
 
-<title>SPADE Web Interface: Agents</title>
+<title>@!name!@ - SPADE Web Interface</title>
 </head>
 
 <body>
@@ -21,14 +21,16 @@
 		<div class="title">
 			<h1>@!name!@</h1>
 		</div>
-
+		
+		<div class="navigation">			
+			<div class="clearer"><span></span></div>
+		</div>
 
 	</div>
 
 	<div class="main">
 		
-		<div class="content">		
-			
+		<div class="content">			
 			@!log!@
 		</div>
 

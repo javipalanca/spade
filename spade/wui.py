@@ -51,7 +51,7 @@ class WUI(Thread):
         self.port = port
         
     def setTemplatePath(self,path):
-        self.template_path = path
+        self.template_path = os.path.realpath(path)
         
     def registerController(self, name, controller):
         self.controllers[name] = controller
@@ -178,12 +178,22 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if os.path.exists(self.server.owner.template_path+os.sep+template):
                     t = pyratemp.Template(filename=self.server.owner.template_path+os.sep+template, data=ret)
                 else:
-                    t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
+                    # Try to get SPADE's default template path
+                    olddir = os.path.curdir
+                    tpath = os.path.realpath(pyratemp.__file__)  # /Users/foo/devel/trunk/spade
+                    tpath = tpath.rsplit(os.sep,1)  # ["/Users/foo/devel/trunk", "spade"]
+                    tpath = tpath[0]                    
+                    os.chdir(tpath)
+                    #tpath = os.path.join(tpath, "templates")
+                    #t = pyratemp.Template(filename="templates"+os.sep+template, data=ret)
+                    t = pyratemp.Template(filename=tpath+os.sep+"templates"+os.sep+template, data=ret)
+                    os.chdir(olddir)
             except Exception, e:
                 #No template
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                print "###", _err, "###"
                 t = pyratemp.Template(filename="templates"+os.sep+"503.pyra", data={"page":template})
             try:
                 result = t()

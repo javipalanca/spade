@@ -278,6 +278,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.addBehaviour(p2pb)
 
 
+        # Start WebUserInterface
+        self.wui.start()
+
+
     def WUIController_admin(self):
         return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
         
