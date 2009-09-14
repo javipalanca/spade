@@ -129,6 +129,7 @@ def main():
 	platform.start()
 	sys.stdout.write(".")
   	sys.stdout.flush()
+  	s.DEBUG = platform.DEBUG
 
 	sys.stdout.write(".")
   	sys.stdout.flush()

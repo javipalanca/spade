@@ -6,8 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="default.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 
 <title>@!name!@ - SPADE Web Interface</title>
 </head>
@@ -15,42 +14,71 @@
 <body>
 
 <div class="container">
+	<div class="imgPlaceHolder"> <img src="http://spade.gti-ia.dsic.upv.es/archivos/images/spade_book_trsp.png" border="0"></img> </div>
+	<div class="menuNav">
+	<!--(if "acc." in name)-->
+		<a class="vertical" href="index">Home</a> 
+		<a class="vertical" href="agents">Agents</a>
+		<a class="vertical" href="services">Services</a>
+		<a class="vertical" href="organizations">Organizations</a>
+	<!--(end)-->
+	<a class="vertical" href="admin">Admin</a> 
+	<a class="vertical" href="log">Log</a></div>
 
-	<div class="header">
-		
-		<div class="title">
-			<h1>@!name!@</h1>
-		</div>
-		
-		<div class="navigation">			
-			<div class="clearer"><span></span></div>
-		</div>
+
+	
+
 
 	</div>
 
 	<div class="main">
-		
-		<div class="content">			
-			@!log!@
+				<h1>@!name!@</h1>
+		<div class="content">
+			<ul>
+			<!--(for line in log)-->
+				<li class="@!line[0]!@"><tt>@!line[3]!@: </tt>
+					<!--(if line[0]=="ok")-->
+				 		<font color="green"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="warn")-->
+						<font color="orange"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="err")-->
+						<font color="red"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="error")-->
+						<font color="red"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="sent")-->
+						<font color="blue"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="got")-->
+						<font color="olive"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(elif line[0]=="dispatch")-->
+						<font color="purple"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
+					<!--(else)-->
+						<strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@
+					<!--(end)-->
+					</li>
+			<!--(end)-->
+			</ul>
 		</div>
 
-		<div class="sidenav">
 
-			<h1>Search Agents and Services</h1>
-			<form action="index.html">
-			<div>
-				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
-			</div>
-			</form>
-		</div>
-	
-		<div class="clearer"><span></span></div>
-
-	</div>
 
 </div>
 
-<div class="footer">&copy; 2007 <a href="spade.gti-ia.dsic.upv.es">spade.gti-ia.dsic.upv.es</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se/">Website template</a> by <a href="http://arcsin.se/">Arcsin</a>
+<div class="pageFooter">
+  <table width="100%">
+
+    <tbody>
+      <tr> 
+        <td align="left" width="15%">
+		<a href="http://www.dsic.upv.es/" target="_blank"><img src="http://spade.gti-ia.dsic.upv.es/archivos/images/dsicnaranja_peque.gif" border="0" height="62" width="122"></a></td>
+		<td><p><a href="http://www.dsic.upv.es/users/ia/ia.html">GTI-IA Grupo de Tecnologia Informatica - Inteligencia Artificial</a><br>
+
+            Departamento de Sistemas Informaticos y Computacion<br>
+        Universidad Politecnica de Valencia</p></td>
+        <td align="right" width="25%"><a href="http://www.upv.es/" target="_blank"><img src="http://www.upv.es/images/logo_upv.gif" width="233" height="83" border="0"></a> 
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 </body>

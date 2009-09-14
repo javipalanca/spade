@@ -6,30 +6,29 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="templates/default.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 <title>SPADE Web Interface</title>
 </head>
 
 <body>
 
-<div class="container">
+	<div class="container">
+		<div class="imgPlaceHolder"> <img src="http://spade.gti-ia.dsic.upv.es/archivos/images/spade_book_trsp.png" border="0"></img> </div>
+		<div class="menuNav">
+		<!--(if "acc." in name)-->
+			<a class="vertical" href="index">Home</a> 
+			<a class="vertical" href="agents">Agents</a>
+			<a class="vertical" href="services">Services</a>
+			<a class="vertical" href="organizations">Organizations</a>
+		<!--(end)-->
+		<a class="vertical" href="admin">Admin</a> 
+		<a class="vertical" href="log">Log</a></div>
 
-	<div class="header">
-		
-		<div class="title">
-			<h1>SPADE</h1>
+
+
+
+
 		</div>
-
-		<div class="navigation">
-			<a href="index">Home</a>
-			<a href="agents">Agents</a>
-			<a href="services">Services</a>
-			<a href="index">Organizations</a>
-			<a href="index">Plugins</a>
-			<div class="clearer"><span></span></div>
-		</div>
-
-	</div>
 
 	<div class="main">
 		
@@ -54,45 +53,26 @@
 
 		</div>
 
-		<div class="sidenav">
 
-			<h1>Search Agents and Services</h1>
-			<form action="index.html">
-			<div>
-				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
-			</div>
-			</form>
-
-			<h1>Platform Info</h1>
-			<ul>
-				<li><a href="index">Hostname <strong><span></span></strong></a></li>
-				<li><a href="index">Platform <strong><span><span></strong></a></li>
-				<!--<li><a href="index.html">convallis</a></li>-->
-			</ul>
-
-			<h1>System</h1>
-			<ul>
-				<li><a href="index">Python version <strong><span></span></strong></a></li>
-				<!--<li><a href="index.html">sem justo</a></li>-->
-				<!--<li><a href="index.html">semper</a></li>-->
-			</ul>
-
-			<!--<h1>Third and last</h1>
-			<ul>
-				<li><a href="index.html">sociis natoque</a></li>
-				<li><a href="index.html">magna sed purus</a></li>
-				<li><a href="index.html">tincidunt</a></li>
-			</ul>-->
-
-		</div>
-	
-		<div class="clearer"><span></span></div>
-
-	</div>
 
 </div>
 
-<div class="footer">&copy; 2007 <a href="spade.gti-ia.dsic.upv.es">spade.gti-ia.dsic.upv.es</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se/">Website template</a> by <a href="http://arcsin.se/">Arcsin</a>
+<div class="pageFooter">
+  <table width="100%">
+
+    <tbody>
+      <tr> 
+        <td align="left" width="15%">
+		<a href="http://www.dsic.upv.es/" target="_blank"><img src="http://spade.gti-ia.dsic.upv.es/archivos/images/dsicnaranja_peque.gif" border="0" height="62" width="122"></a></td>
+		<td><p><a href="http://www.dsic.upv.es/users/ia/ia.html">GTI-IA Grupo de Tecnologia Informatica - Inteligencia Artificial</a><br>
+
+            Departamento de Sistemas Informaticos y Computacion<br>
+        Universidad Politecnica de Valencia</p></td>
+        <td align="right" width="25%"><a href="http://www.upv.es/" target="_blank"><img src="http://www.upv.es/images/logo_upv.gif" width="233" height="83" border="0"></a> 
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 </body>

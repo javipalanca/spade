@@ -56,7 +56,9 @@ class SpadeBackend:
         #TODO: this should be configurable
         self.acc = self.runAgent(self.config, "acc", Platform.SpadePlatform)
         self.ams = self.runAgent(self.config, "ams", AMS.AMS)
+        self.ams.DEBUG = self.acc.DEBUG
         self.df = self.runAgent(self.config, "df", DF.DF)
+        self.df.DEBUG = self.acc.DEBUG
         #self.simba = self.runAgent(self.configfile, "simba", SIMBA.SIMBA)        
 
     def shutdown(self):
@@ -69,6 +71,9 @@ class SpadeBackend:
         if self.acc:
 		    self.acc.stop()
 		    #del self.acc
+		    
+    def DEBUG(self,component="",msg="",typ=""):
+	    self.acc.DEBUG(msg,typ,component)
 
 if __name__ ==  "__main__":
 	p = SpadeBackend()

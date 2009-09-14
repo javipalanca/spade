@@ -24,7 +24,7 @@ class WUI(Thread):
         tpath = os.path.realpath(pyratemp.__file__)  # /Users/foo/devel/trunk/spade
         tpath = tpath.rsplit(os.sep,1)  # ["/Users/foo/devel/trunk", "spade"]
         self.spade_path = tpath[0]+os.sep+os.pardir
-        self.owner.DEBUG("SPADE path: " + self.spade_path,"warn")
+        #self.owner.DEBUG("SPADE path: " + self.spade_path,"warn")
         
         self.controllers = {}
         
@@ -38,6 +38,7 @@ class WUI(Thread):
                  self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
                  self.httpd.owner = self
                  self.owner.DEBUG("WebUserInterface serving at port "+str(self.port))
+                 print "WebUserInterface serving at port "+str(self.port)
              except:
                  self.port = random.randint(1024,65536)
         self.registerController("error404", self.error404)
@@ -174,7 +175,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 template = "404.pyra"
-                ret = {"template":page, "error":str(_err)}
+                ret = {"template":page, "error":str(_err),"name":self.server.owner.owner.getName()}
             try:
                 if not ret:
                     func = self.server.owner.controllers[str(page)]
@@ -195,13 +196,18 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     #os.chdir(self.server.spade_path)
                     t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+template, data=ret)
                     #os.chdir(olddir)
+            except pyratemp.TemplateSyntaxError, e:
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err),"name":self.server.owner.owner.getName()})
             except Exception, e:
                 #No template
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 #print "###", _err, "###"
-                t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"503.pyra", data={"page":template})
+                t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"503.pyra", data={"page":template,"name":self.server.owner.owner.getName()})
             try:
                 result = t()
             except Exception, e:
@@ -209,7 +215,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err)})
+                t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err),"name":self.server.owner.owner.getName()})
                 result = t()
                 
             r = result.encode("ascii", 'xmlcharrefreplace')

@@ -7,50 +7,50 @@
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
-<title>SPADE Web Interface</title>
+<link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
+
+<title>SPADE Web Interface: Agents</title>
 </head>
 
 <body>
 
+<div class="container">
+
 	<div class="container">
 		<div class="imgPlaceHolder"> <img src="http://spade.gti-ia.dsic.upv.es/archivos/images/spade_book_trsp.png" border="0"></img> </div>
-		<div class="menuNav">
-		<!--(if "acc." in name)-->
-			<a class="vertical" href="index">Home</a> 
-			<a class="vertical" href="agents">Agents</a>
-			<a class="vertical" href="services">Services</a>
-			<a class="vertical" href="organizations">Organizations</a>
-		<!--(end)-->
-		<a class="vertical" href="admin">Admin</a> 
-		<a class="vertical" href="log">Log</a></div>
-
-
-
+		<div class="menuNav"> 
+			<!--(if "acc." in aid.getName())-->
+				<a class="vertical" href="index">Home</a> 
+				<a class="vertical" href="agents">Agents</a>
+				<a class="vertical" href="services">Services</a>
+				<a class="vertical" href="organizations">Organizations</a>
+			<!--(end)-->
+			<a class="vertical" href="admin">Admin</a> 
+			<a class="vertical" href="log">Log</a></div>
 
 
 		</div>
 
 	<div class="main">
 		
-		<div class="content">
-
-			<h1>404 File Not Found!</h1>
-
-			<p>The page "@!template!@" you followed was <strong>not found</strong>.</p>
-			<p>@!error!@</p>
-			<p>Please try the following:
-				<ul>
-					<li>If you are <strong>obsessive-compulsive</strong>, please check the URL repeatedly.</li>
-					<li>If you are <strong>co-dependent</strong>, please ask someone to check the URL for you.</li>
-					<li>If you are <strong>paranoid--delusional</strong>, we know who you are and what you want. Just stay online until we can trace your computer.</li>
-					<li>If you are <strong>schizophrenic</strong>, listen carefully and a little voice will tell you the correct URL.</li>
-					<li>If you are <strong>manic-depressive</strong>, it doesn't matter what URL you pick. No one cares, and no one will give you the correct file.</li>
-				</ul>
-				
-			</p>
-
-
-
+		<div class="content">		
+			
+			<table class="servicesT" cellspacing="0">
+				<tr><td class="servHd">Name</td><td class="servBodL">@!aid.getName()!@</td></tr>
+				<tr><td class="servHd">Addresses</td><td class="servBodL">@!str(aid.getAddresses())!@</td></tr>
+				<tr><td class="servHd">AID (XML)</td><td class="servBodL">@!str(aid.asXML())!@</td></tr>
+				<tr><td class="servHd">P2P ready?</td><td class="servBodL">@!str(p2pready)!@</td></tr>
+				<tr><td class="servHd">P2P routes</td><td class="servBodL">@!str(p2proutes)!@</td></tr>
+			</table>
+			
+			<br>
+			
+			<table class="servicesT" cellspacing="0">
+				<tr><td class="servHd">Behaviours</td></tr>
+				<!--(for b in behavs.keys())-->
+					<tr><td class="servBodL">@!str(b)!@</td></tr>
+				<!--(end)-->
+			</table>
 		</div>
 
 

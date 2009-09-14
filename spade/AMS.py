@@ -38,7 +38,7 @@ class AMS(Agent.PlatformAgent):
 				msg = None
 				msg = self._receive(block=True)
 				if msg:
-					#print "AMS RECEIVED SUBSCRIPTION MESSAGE", str(msg)
+					self.myAgent.DEBUG("AMS RECEIVED SUBSCRIPTION MESSAGE"+ str(msg),"info")
 					typ = msg.getType()
 					frm = msg.getFrom()
 					status = msg.getStatus()
@@ -62,15 +62,15 @@ class AMS(Agent.PlatformAgent):
 							self.myAgent.jabber.send(presence)
 							return
 
-						#print "AMS SUCCESFULLY REGISTERED AGENT " + frm.getName()
+						self.myAgent.DEBUG("AMS SUCCESFULLY REGISTERED AGENT " + frm.getName(),"ok")
 						presence = xmpp.Presence(reply_address,typ="subscribed")
-						#print "AMS SENDS "+str(presence)
+						self.myAgent.DEBUG("AMS SENDS "+str(presence),"info")
 						self.myAgent.jabber.send(presence)
 					elif typ == "unsubscribed":
 						frm=AID.aid(name=frm, adresses=["xmpp://"+frm])
 						if self.myAgent.agentdb.has_key(frm.getName()):
 							del self.myAgent.agentdb[frm.getName()]
-						#print "Agent " + frm.getName() + " deregistered from AMS"
+						self.myAgent.DEBUG("Agent " + frm.getName() + " deregistered from AMS","ok")
 				return
 
 
@@ -90,6 +90,7 @@ class AMS(Agent.PlatformAgent):
 							template = (Behaviour.MessageTemplate(ACLtemplate))
 
 							if "action" in content:
+								self.myAgent.DEBUG("AMS: "+str(content.action)+ " request. " + str(content),"info")
 								if "register" in content.action \
 								or "deregister" in content.action:
 									#print ">>>>>>>>AMS REGISTER REQUEST"
@@ -120,6 +121,7 @@ class AMS(Agent.PlatformAgent):
 							#print ">>>>>>>>AMS CONTENT RDF ",co
 
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
+								self.myAgent.DEBUG("AMS: "+str(co["fipa:action"]["fipa:act"])+ " request. " + str(co.asRDFXML()),"info")
 								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
 									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "get-description":

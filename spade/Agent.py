@@ -86,7 +86,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             # EOF
                             break
                         data = self.rfile.read(int(length))
-                        #print "P2PBehaviour Received:", str(data)
+                        self.myAgent.DEBUG("P2PBehaviour Received: "+ str(data),"info")
                         if data:
                             try:
                                 # Try with a serialized message
@@ -99,7 +99,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.server._jabber_messageCB(None,m,raiseFlag=False)
                         data = ""
                 except Exception, e:
-                    #print "P2P Socket Closed to", str(self.client_address)  #,":",str(e),":",str(length),str(data)
+                    self.myAgent.DEBUG("P2P Socket Closed to "+ str(self.client_address),"err")  #,":",str(e),":",str(length),str(data)
 		    pass
 
         def _process(self):
@@ -221,7 +221,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         MessageReceiver.MessageReceiver.__init__(self)
         self._agent_log = {}  # Log system
-        self._agent_log["general"] = {}  # Log system
         self._aid = AID.aid(name=agentjid, addresses=["xmpp://"+agentjid])
         self._jabber = None
         self._serverplatform = serverplatform
@@ -234,7 +233,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.JID=agentjid
         self.setName(str(agentjid))
         
-        self._debug = True
+        self._debug = False
         
         self.wui = WUI(self)
         self.wui.registerController("admin", self.WUIController_admin)
@@ -280,7 +279,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def WUIController_admin(self):
         #return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
-        return "admin.pyra", {"aid":self.getAID(), "p2pready":self.p2p_ready}
+        return "admin.pyra", {"aid":self.getAID(), "behavs":self._behaviourList, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes}
         
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
@@ -320,11 +319,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     """
 
     def registerLogComponent(self, component):
-        self._agent_log[component] = {}
+        #self._agent_log[component] = {}
+        pass
 
     def DEBUG(self, dmsg, typ="info", component=""):
     	# Record at log
-    	self._agent_log["general"][time.time()] = typ+": " + dmsg
+    	t = time.time()
+    	dmsg = dmsg.replace("&gt;",">")
+    	dmsg = dmsg.replace("&lt;","<")
+    	dmsg = dmsg.replace("&quot;",'"')
+    	self._agent_log[t] = (typ,dmsg,component,time.ctime(t))
 
         if self._debug:
     		# Print on screen
@@ -336,29 +340,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
             elif typ == "warn":
                 print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
-
-	def printLog(self):
-		l = self._agent_log["general"].keys()
-		l.sort()
-		for t in l:
-			s = str(t)+": "
-			if line.endswith("info"):
-				s += colors.color_none + self._agent_log["general"][t] + colors.color_none
-			elif line.endswith("error"):
-				s += colors.color_red + self._agent_log["general"][t] + colors.color_none
-			elif line.endswith("ok"):
-				s += colors.color_green + self._agent_log["general"][t] + colors.color_none
-			elif line.endswith("warn"):
-				s += colors.color_yellow + self._agent_log["general"][t] + colors.color_none
 				
-    def getLog(self, html=True):
-        s=""
-        logs = self._agent_log["general"].keys()
-        logs.sort()
-        for tstamp in logs:
-            line = self._agent_log["general"][tstamp]
-            s += str(tstamp) + line + "<br>"
-        return s
+    def getLog(self):
+        keys = self._agent_log.keys()
+        keys.sort()
+        keys.reverse()
+        l = list()
+        for k in keys:
+            l.append(self._agent_log[k])
+        return l
 
     def newMessage(self):
 		"""Creates and returns an empty ACL message"""
@@ -1261,7 +1251,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
-	    self.DEBUG("removeBehaviour: KeyError","err")
+	    self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +" is not registered","warn")
 
 
     def subscribeToFriend(self, aid):
@@ -2167,17 +2157,15 @@ class jabberProcess(threading.Thread):
 		    except Exception, e:
 			_exception = sys.exc_info()
 			if _exception[0]:
-			    self.DEBUG( '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
-			    self.DEBUG("Exception in jabber process: "+ str(e),"err")
-			    print color_red + "Jabber connection failed: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
-			    self.DEBUG("Jabber connection failed: "+self._owner.getAID().getName()+" (dying)","err")
+			    self._owner.DEBUG( '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
+			    self._owner.DEBUG("Exception in jabber process: "+ str(e),"err")
+			    self._owner.DEBUG("Jabber connection failed: "+self._owner.getAID().getName()+" (dying)","err")
 			    self._kill()
 			    self._owner.stop()
 			    err = None
 
 		    if err == None or err == 0:  # None or zero the integer, socket closed
-			print color_red + "Agent disconnected: " + color_yellow + str(self._owner.getAID().getName()) + color_red + " (dying)" + color_none
-			self.DEBUG("Agent disconnected: "+self._owner.getAID().getName()+" (dying)","err")
+			self._owner.DEBUG("Agent disconnected: "+self._owner.getAID().getName()+" (dying)","err")
 			self._kill()
 			self._owner.stop()
 
@@ -2360,7 +2348,7 @@ class Agent(AbstractAgent):
                 if self.msg.getType() == "subscribed":
                     if self.msg.getFrom() == self.myAgent.getAMS().getName():
                         # Subscription confirmation from AMS
-                        self.DEBUG( "Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)")
+                        self.DEBUG( "Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)","ok")
                     else:
                         self.DEBUG(str(self.msg.getFrom()) + "has subscribed me")
                 elif self.msg.getType() == "unsubscribed":
@@ -2462,7 +2450,7 @@ class Agent(AbstractAgent):
         # Add Roster Behaviour
         self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
-        self.DEBUG("Agent %s registered"%(agentjid))
+        self.DEBUG("Agent %s registered"%(agentjid),"ok")
 
         if not self.__register_in_AMS():
             self.DEBUG("Agent " + str(self.getAID().getName()) + " dying ...","err")
@@ -2515,12 +2503,12 @@ class Agent(AbstractAgent):
 
                 if not self.jabber.reconnectAndReauth():
                     #if (self.jabber.auth(name,password,"spade") == None):
-                    self.DEBUG("### Agent %s: Second auth attempt failed"%(self._aid.getName()), "err")
+                    self.DEBUG("Agent %s: Second auth attempt failed"%(self._aid.getName()), "err")
                     raise NotImplementedError
             else:
                     raise NotImplementedError
 
-        self.DEBUG("Agent %s got authed"%(self._aid.getName()))
+        self.DEBUG("Agent %s got authed"%(self._aid.getName()),"ok")
 
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_messageCB)
@@ -2576,7 +2564,7 @@ class Agent(AbstractAgent):
 
         self.jabber.send(presence)
 
-        self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)")
+        self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)","ok")
         return True
 
     def __register_in_AMS_with_ACL(self, state='active', ownership=None, debug=False):
@@ -2619,7 +2607,7 @@ class Agent(AbstractAgent):
             self.DEBUG("There was an error with the register of agent: " + str(self.getAID().getName()) + " (failure)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-            self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)")
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)","ok")
         else:
             # There was no real answer from the AMS or it answered something weird, so error
             self.DEBUG("There was an error with the register of agent: " + str(self.getAID().getName()),"err")
@@ -2633,7 +2621,7 @@ class Agent(AbstractAgent):
         presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribed')
 
         self.jabber.send(presence)
-        self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)")
+        self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)","ok")
 
         return True
 
@@ -2679,7 +2667,7 @@ class Agent(AbstractAgent):
             self.DEBUG("There was an error with the deregister of agent: " + str(self.getAID().getName()) + " (failure)","err")
             return False
         elif (msg != None) and (str(msg.getPerformative()) == 'inform'):
-            self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)")
+            self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)","ok")
         else:
             # There was no real answer from the AMS or it answered something weird, so error
             self.DEBUG("There was an error with the deregister of agent: " + str(self.getAID().getName()),"err")

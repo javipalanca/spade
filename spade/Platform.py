@@ -118,7 +118,6 @@ class SpadePlatform(Agent.PlatformAgent):
         #swi.SWIHandler.platform = self
         #self.wui = WUI(self)
         self.wui.registerController("index",self.index)
-        self.wui.registerController("webadmin_indigo",self.webadmin_indigo)
         self.wui.registerController("agents", self.agents)
         self.wui.registerController("services", self.services)
         self.wui.registerController("sendmessage", self.sendmessage)
@@ -160,15 +159,6 @@ class SpadePlatform(Agent.PlatformAgent):
 
     #Controllers
     def index(self):
-        import sys
-        import time
-        servername = self.getDomain()
-        platform = self.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
-
-    def webadmin_indigo(self):
         import sys
         import time
         servername = self.getDomain()
