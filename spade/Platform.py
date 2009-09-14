@@ -42,10 +42,10 @@ class SpadePlatform(Agent.PlatformAgent):
         def _process(self):
             msg = self._receive(True)
             if (msg != None):
-                print ">>> SPADE Platform Received a message: " + str(msg)
+                self.myAgent.DEBUG("SPADE Platform Received a message: " + str(msg))
                 if msg.getSender() == self.myAgent.getAID():
                     # Prevent self-loopholes
-                    print "###ACC LOOP HOLE"
+                    self.myAgent.DEBUG("ACC LOOP HOLE", "warn")
                     return
 
                 to_list = msg.getReceivers()
@@ -66,7 +66,7 @@ class SpadePlatform(Agent.PlatformAgent):
                     # Check if one of our MTPs handles this protocol
                     #switch(protocol)
                     if protocol in self.myAgent.mtps.keys():
-                        print ">>> Message through protocol", str(protocol)
+                        self.myAgent.DEBUG("Message through protocol " + str(protocol))
                         #ap = ACLParser.ACLxmlParser()
                         #payload = ap.encodeXML(newmsg)
                         payload = str(newmsg)
@@ -82,15 +82,15 @@ class SpadePlatform(Agent.PlatformAgent):
                         self.myAgent.mtps[protocol].send(envelope, payload)
                     else:
                         # Default case: it's an XMPP message
-                        print ">>> Message through protocol XMPP"
+                        self.myAgent.DEBUG("Message through protocol XMPP")
                         platform = self.myAgent.getSpadePlatformJID().split(".",1)[1]
                         if not platform in receiver_URI:
                             # Outside platform
-                            print ">>> Message for another platform"
+                            self.myAgent.DEBUG("Message for another platform")
                             self.myAgent.send(newmsg, "jabber")
                         else:
                             # THIS platform
-                            print ">>> Message for current platform"
+                            self.myAgent.DEBUG("Message for current platform")
                             for recv in v:
                                 #self.myAgent._sendTo(newmsg, recv.getName(), "jabber")
                                 self.myAgent.send(newmsg, "jabber")
