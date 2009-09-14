@@ -38,8 +38,8 @@
 					<td class="servHd">State</td><td class="servHd">Ownership</td></tr>
 				<!--(for agent in agents)-->
 				<tr><td class="servBodL">
-					<!--(if agent.getAID())-->
-					<a href="#">@!str(agent.getAID().getName())!@</a></td>
+					<!--(if agent.getAID())-->						
+					<a href="@!awuis[agent.getAID().getName()]!@">@!str(agent.getAID().getName())!@</a></td>
 					<!--(end)-->
 					<td class="servBodL">
 						<!--(if agent.getAID())-->

@@ -80,7 +80,7 @@ class AMS(Agent.PlatformAgent):
 			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
-					if msg.getOntology().lower() == "fipa-agent-management":
+					if msg.getOntology() and msg.getOntology().lower() == "fipa-agent-management":
 						if msg.getLanguage().lower() == "fipa-sl0":
 							#print str(msg.getContent())
 							content = self.sl0parser.parse(msg.getContent())
@@ -119,7 +119,7 @@ class AMS(Agent.PlatformAgent):
 							ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
 							#print ">>>>>>>>AMS CONTENT RDF ",co
-
+                            
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
 								self.myAgent.DEBUG("AMS: "+str(co["fipa:action"]["fipa:act"])+ " request. " + str(co.asRDFXML()),"info")
 								if co["fipa:action"]["fipa:act"] in ["register","deregister"]:
@@ -131,6 +131,10 @@ class AMS(Agent.PlatformAgent):
 									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "modify":
 									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
+							elif co.has_key("spade:action"):
+							    self.myAgent.DEBUG("AMS: "+str(co["spade:action"])+ " request. " + str(co.asRDFXML()),"info")
+							    if co["spade:action"] == "register_awui":
+							        self.myAgent.registerWUI(msg.getSender(), co["spade:argument"])
 							else:
 								reply = msg.createReply()
 								reply.setSender(self.myAgent.getAID())
@@ -606,6 +610,13 @@ class AMS(Agent.PlatformAgent):
 		#db.setPeriod(0.25)
 		#self.setDefaultBehaviour(db)
 		self.addBehaviour(db, Behaviour.MessageTemplate(Behaviour.ACLTemplate()))
+	
+	def registerWUI(self, sndr, url):
+	    if self.agentdb.has_key(sndr.getName()):
+	        AAD = self.agentdb[sndr.getName()]
+	        AAD.getAID().addAddress("awui://"+url)
+	    
+
 
 class AmsAgentDescription:
 	"""

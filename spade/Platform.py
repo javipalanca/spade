@@ -179,7 +179,19 @@ class SpadePlatform(Agent.PlatformAgent):
             if not agent.has_key("fipa:state"):
                 agent["fipa:state"] = ""
         """
-        return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search)
+        # Build AWUIs dict
+        awuis = {}
+        aw = ""
+        for agent in search:
+            if agent.getAID():
+                aw = "#"
+                for addr in agent.getAID().getAddresses():                    
+                    if "awui://" in addr:
+                        aw = addr.replace("awui://", "http://")
+                        break
+                awuis[agent.getAID().getName()] = aw
+        self.DEBUG("AWUIs: "+str(awuis))
+        return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search, awuis=awuis)
 
     def services(self):
         import sys

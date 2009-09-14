@@ -10,6 +10,7 @@ import traceback
 import urllib
 import time
 import random
+import socket
 
 from threading import Thread
 
@@ -39,6 +40,7 @@ class WUI(Thread):
                  self.httpd.owner = self
                  self.owner.DEBUG("WebUserInterface serving at port "+str(self.port))
                  print "WebUserInterface serving at port "+str(self.port)
+                 self.notifyAMS()
              except:
                  self.port = random.randint(1024,65536)
         self.registerController("error404", self.error404)
@@ -66,6 +68,21 @@ class WUI(Thread):
             
     def unregisterController(self, name):
         del self.controllers[name]
+    
+    def notifyAMS(self):
+        """Notify AMS of current AWUI URL"""
+        msg = self.owner.newMessage()
+        msg.setSender(self.owner.getAID())
+        msg.setPerformative("request")
+        msg.setLanguage("rdf")
+        msg.setOntology("fipa-agent-management")  # Pretend to be a FIPA message
+        co = self.owner.newContentObject()
+        co.addNamespace("http://spade.gti-ia.dsic.upv.es", "spade")
+        co["spade:action"] = "register_awui"
+        co["spade:argument"] = str(socket.gethostbyname(socket.gethostname()))+":"+str(self.port)
+        msg.setContentObject(co)
+        msg.addReceiver(self.owner.getAMS())
+        self.owner.send(msg)
             
     #Controllers
 

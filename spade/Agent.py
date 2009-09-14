@@ -354,6 +354,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		"""Creates and returns an empty ACL message"""
 		return ACLMessage.ACLMessage()
 
+    def newContentObject(self):
+		"""Creates and returns an empty Content Object"""
+		return ContentObject()
+
     def _jabber_presenceCB(self, conn, mess):
 	"""
 	presence callback
