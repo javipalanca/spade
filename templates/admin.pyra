@@ -46,9 +46,10 @@
 			<br>
 			
 			<table class="servicesT" cellspacing="0">
-				<tr><td class="servHd">Behaviours</td></tr>
-				<!--(for b in behavs.keys())-->
-					<tr><td class="servBodL">@!str(b)!@</td></tr>
+				<tr><td class="servHd">ID</td><td class="servHd">Behaviours</td></tr>
+				<tr><td class="servBodL">@!defbehav[0]!@</td><td class="servBodL">@!str(defbehav[1])!@ <strong>[Default Behaviour]</strong></td></tr>
+				<!--(for id,b in behavs.items())-->
+					<tr><td class="servBodL">@!id!@</td><td class="servBodL">@!str(b)!@</td></tr>
 				<!--(end)-->
 			</table>
 		</div>
