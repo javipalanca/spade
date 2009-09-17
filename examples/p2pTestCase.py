@@ -26,7 +26,7 @@ class p2pSendMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
         msg.setContent("testSendMsg")
         
-        self.myAgent.send(msg,method="p2p")
+        self.myAgent.send(msg,method="p2ppy")
 
 class p2pRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
 
@@ -41,7 +41,7 @@ class p2pSendAndRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
         msg.setContent("testSendAndRecvMsg")
 
-        self.myAgent.send(msg, method="p2p")
+        self.myAgent.send(msg, method="p2ppy")
         self.myAgent.msg = None
         self.myAgent.msg = self._receive(block=True,timeout=10)
 
@@ -54,7 +54,7 @@ class p2pAnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
 			content = msg.getContent()
 			msg = msg.createReply()
 			msg.setContent(content)
-			self.myAgent.send(msg, method="p2p")
+			self.myAgent.send(msg, method="p2ppy")
 
 
 
