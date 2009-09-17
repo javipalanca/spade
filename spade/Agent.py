@@ -86,24 +86,29 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             # EOF
                             break
                         data = self.rfile.read(int(length))
-                        self.myAgent.DEBUG("P2PBehaviour Received: "+ str(data),"info")
+                        self.server.owner.DEBUG("P2P message received.","ok")
                         if data:
                             try:
                                 # Try with a serialized message
                                 ACLmsg = pickle.loads(data)
                                 self.server.postMessage(ACLmsg)
+                                self.server.owner.DEBUG("The p2p message is serialized.")
                             except:
                                 # Try with a jabber message
                                 n = xmpp.simplexml.XML2Node(str(data))
                                 m = xmpp.Message(node=n)
                                 self.server._jabber_messageCB(None,m,raiseFlag=False)
+                                self.server.owner.DEBUG("The p2p message is XML:"+str(m))
                         data = ""
                 except Exception, e:
-                    self.myAgent.DEBUG("P2P Socket Closed to "+ str(self.client_address),"err")  #,":",str(e),":",str(length),str(data)
+                    self.server.owner.DEBUG("P2P Socket Closed to "+ str(self.client_address),"err")  #,":",str(e),":",str(length),str(data)
 		    pass
 
         def _process(self):
-            self.server.handle_request()
+            try:
+                self.server.handle_request()
+            except Exception,e:
+                self.myAgent.DEBUG("P2P server failed: "+str(e),"err")
 
         def onEnd(self):
             self.myAgent.p2p_ready = False
@@ -131,14 +136,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             while open == False:
                 try:
                     self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
+                    self.server.owner = self.myAgent
                     open = True
                 except:
                     self.myAgent.P2PPORT = random.randint(1025,65535)
+                    self.myAgent.DEBUG("Changing P2P port to " + str(self.myAgent.P2PPORT))
 
             self.server._jabber_messageCB = self.myAgent._jabber_messageCB
             self.server.postMessage = self.myAgent.postMessage
             self.server.requests = []
-            self.DEBUG(self.getName()+": P2P Behaviour Started at port"+ str(self.myAgent.P2PPORT))
+            self.myAgent.DEBUG(self.getName()+": P2P Behaviour Started at port "+ str(self.myAgent.P2PPORT))
             self.finished = False  # Flag to mark (later) if we have passed through "onEnd"
             self.myAgent.p2p_ready = True
 
@@ -147,11 +154,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         def _process(self):
             self.msg = self._receive(False)
             if self.msg != None:
-                #print self.myAgent.getName(), ": StreamInitiation Behaviour called"
                 if self.msg.getType() == "set":
                     if self.msg.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                         # P2P Messaging Offer
-                        #print "P2P-Messaging offer from", str(self.msg.getFrom())
+                        self.myAgent.DEBUG("P2P-Messaging offer from " + str(self.msg.getFrom()))
                         if self.myAgent.p2p_ready:
                             # Take note of sender's p2p address if any
                             if self.msg.getTag("si").getTag("p2p"):
@@ -174,12 +180,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
                             value = p2p.addChild("value")
                             value.setData(self.myAgent.getP2PUrl())
+                            self.myAgent.DEBUG("P2P: Accept offer from "+str(self.msg.getFrom())+"."+str(reply) )
                         else:
                             # Refuse offer
                             reply = self.msg.buildReply("error")
                             err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
                             err.addChild("forbidden")
                             err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
+                            self.myAgent.DEBUG("P2P: Refuse offer from "+str(self.msg.getFrom())+"."+str(reply))
                         self.myAgent.jabber.send(reply)
 
 
@@ -188,7 +196,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.msg = self._receive(False)
             if self.msg != None:
                 if self.msg.getType() == "get":
-                    #print "DISCO Behaviour called"
                     #print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
                     # Inform of services
                     reply = self.msg.buildReply("result")
@@ -196,7 +203,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
                         reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
                     self.myAgent.jabber.send(reply)
-                    #print self.myAgent.getName(),": SENT DISCO REPLY TO", str(reply.getTo())
+                    self.myAgent.DEBUG(self.myAgent.getName()+": SENT DISCO REPLY TO "+ str(reply.getTo()))
                 elif self.msg.getType() == "result":
                     services = []
                     for child in self.msg.getQueryChildren():
@@ -207,6 +214,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             # This agent does no longer support p2p
 			    self.myAgent.p2p_lock.acquire()
 			    try:
+                            	self.myAgent.DEBUG("Deleting "+str(frm)+" from P2P routes: "+ str(self.myAgent.p2p_routes),"warn")
                             	del self.myAgent.p2p_routes[frm]
 			    except:
 				pass
@@ -656,38 +664,37 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         services = []
                         for child in msg.getQueryChildren():
                             services.append(str(child.getAttr("var")))
-                        #print "RETRIEVED SERVICES:", services
+                        self.myAgent.DEBUG("Retrieved services: " + str(services))
                         self.result = services
 
-		self.DEBUG("REQUEST DISCO INFO CALLED BY " + str(self.getName()))
-		id = 'nsdi'+str(random.randint(1,10000))
-		temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-		temp_iq.setType("result")
-		t = Behaviour.MessageTemplate(temp_iq)
-		iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-		iq.setTo(to)
-		iq.setType("get")
-		self.DEBUG("Send IQ message: "+str(iq))
-		if self._running:
-		    # Online way
-		    rdif = RequestDiscoInfoBehav()
-		    rdif.iq = iq
-		    self.addBehaviour(rdif, t)
-		    rdif.join()
-		    return rdif.result
-		else:
-		    # Offline way
-		    #print "RDI OFFLINE"
-		    self.jabber.send(iq)
-		    msg = self._receive(True, 20, template=t)
-		    if msg:
-			if msg.getType() == "result":
-			    services = []
-			    for child in msg.getQueryChildren():
-				services.append(str(child.getAttr("var")))
-			    self.DEBUG("RETRIEVED SERVICES: " + str(services))
-			    return services
-		    return []
+	self.DEBUG("Request Disco Info called by " + str(self.getName()))
+	id = 'nsdi'+str(random.randint(1,10000))
+	temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
+	temp_iq.setType("result")
+	t = Behaviour.MessageTemplate(temp_iq)
+	iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
+	iq.setTo(to)
+	iq.setType("get")
+	self.DEBUG("Send IQ message: "+str(iq))
+	if self._running:
+	    # Online way
+	    rdif = RequestDiscoInfoBehav()
+	    rdif.iq = iq
+	    self.addBehaviour(rdif, t)
+	    rdif.join()
+	    return rdif.result
+	else:
+	    # Offline way
+	    self.jabber.send(iq)
+	    msg = self._receive(True, 20, template=t)
+	    if msg:
+		if msg.getType() == "result":
+		    services = []
+		    for child in msg.getQueryChildren():
+			services.append(str(child.getAttr("var")))
+		    self.DEBUG("Retrieved services: " + str(services))
+		    return services
+	    return []
 
 
     def initiateStream(self, to):
@@ -704,7 +711,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if msg:
                     self.result = False
                     if msg.getType() =="result":
-                        #print "StreamRequest Agreed"
+                        self.myAgent.DEBUG("StreamRequest Agreed","ok")
                         #print msg
                         try:
                             remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
@@ -714,19 +721,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 self.result = True
                             else:
                                 self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = d
-                            #print "P2P ROUTES", str(self.myAgent.p2p_routes)
                         except Exception, e:
-                            #print "Malformed StreamRequest Answer", str(e)
+                            self.myAgent.DEBUG("Malformed StreamRequest Answer: "+ str(e),"err")
                             self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {}
                     elif msg.getType() == "error":
-                        #print "StreamRequest REFUSED"
+                        self.myAgent.DEBUG("StreamRequest REFUSED","warn")
                         self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
                 else:
                     # Not message, treat like a refuse
                     self.myAgent.DEBUG("StreamRequest REFUSED","warn")
                     self.myAgent.p2p_routes[str(iq.getTo().getStripped())] = {'p2p':False}
 
-        self.DEBUG("INITIATE STREAM CALLED BY " + str(self.getName()))
+        self.DEBUG("Initiate Stream called by " + str(self.getName()))
         # First deal with Disco Info request
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
@@ -758,13 +764,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.DEBUG("Initiate Stream OFFLINE","warn")
                 result = False
                 self.jabber.send(iq)
-                #print "SIB SENT:", str(self.iq)
                 msg = self._receive(True, 10, template=t)
                 if msg:
                     result = False
                     if msg.getType() =="result":
-                        #print "StreamRequest Agreed"
-                        #print msg
+                        self.DEBUG("StreamRequest Agreed","ok")
                         try:
                             remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
                             d = {"url":remote_address, "p2p":True}
@@ -775,12 +779,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                             else:
                                 self.p2p_routes[str(msg.getFrom().getStripped())] = d
 			    self.p2p_lock.release()
-                            #print "P2P ROUTES", str(self.p2p_routes)
                         except Exception, e:
-                            #print "Malformed StreamRequest Answer", str(e)
+                            self.DEBUG("Malformed StreamRequest Answer: "+ str(e),"warn")
                             self.p2p_routes[str(msg.getFrom().getStripped())] = {}
                     elif msg.getType() == "error":
-                        #print "StreamRequest REFUSED"
+                        self.DEBUG("StreamRequest REFUSED","warn")
 			self.p2p_lock.acquire()
                         self.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
 			self.p2p_lock.release()
@@ -854,7 +857,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     # There is noone left to send the message to
                     return
         except Exception, e:
-            self.DEBUG("EXCEPTION IN SEND: "+str(e), "err")
+            self.DEBUG("Could not send throught P2PPY: "+str(e), "err")
 	    method = "jabber"
 
         # Second, try it the old way
@@ -870,7 +873,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 envelope.setFrom(ACLmsg.getSender())
                 generate_envelope = True
         except Exception, e:
-            self.DEBUG("EXCEPTION SETTING SENDER: "+ str(e), "err")
+            self.DEBUG("Error setting sender: "+ str(e), "err")
 
         try:
             for i in ACLmsg.getReceivers():
@@ -883,7 +886,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     envelope.addTo(i)
                     generate_envelope = True
         except Exception, e:
-            self.DEBUG("EXCEPTION SETTING RECEIVERS: " + str(e),"err")
+            self.DEBUG("Error setting receivers: " + str(e),"err")
 
 
         try:
@@ -898,7 +901,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     envelope.addIntendedReceiver(i)
                     generate_envelope = True
         except Exception, e:
-            self.DEBUG("EXCEPTION SETTING REPLY TO: " + str(e),"err")
+            self.DEBUG("Error setting reply-to: " + str(e),"err")
 
         # Generate the envelope ONLY if it is needed
         if generate_envelope:
@@ -964,7 +967,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
-        self.DEBUG("SENDING " + str(jabber_msg) + "THROUGH P2P")
+        self.DEBUG("Sending " + str(jabber_msg) + "throught P2P")
         # Get the address
         if not to:
             if not jabber_msg:
@@ -1038,8 +1041,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     tries -= 1
                     _exception = sys.exc_info()
                     if _exception[0]:
-                        #print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                        self.DEBUG('\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
+                        self.DEBUG("Error opening p2p socket " +'\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
 
             if not connected:
                 self.DEBUG("Socket creation failed","err")
@@ -1055,10 +1057,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     length = "%08d"%(len(str(jabber_msg)))
                     # Send message through socket
                     s.send(length+str(jabber_msg))
+                    self.DEBUG("P2P message sent throught p2p: "+str(jabber_msg),"ok")
                 elif method in ["p2ppy"]:
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
+                    self.DEBUG("P2P message sent throught p2ppy: "+str(id(ser)),"ok")
                 sent = True
                 # Close socket
                 #s.close()
