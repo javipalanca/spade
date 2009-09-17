@@ -659,7 +659,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print "RETRIEVED SERVICES:", services
                         self.result = services
 
-		#print "REQUEST DISCO INFO CALLED BY", str(self.getName())
+		self.DEBUG("REQUEST DISCO INFO CALLED BY " + str(self.getName()))
 		id = 'nsdi'+str(random.randint(1,10000))
 		temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
 		temp_iq.setType("result")
@@ -667,6 +667,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
 		iq.setTo(to)
 		iq.setType("get")
+		self.DEBUG("Send IQ message: "+str(iq))
 		if self._running:
 		    # Online way
 		    rdif = RequestDiscoInfoBehav()
@@ -684,7 +685,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			    services = []
 			    for child in msg.getQueryChildren():
 				services.append(str(child.getAttr("var")))
-			    #print "RETRIEVED SERVICES:", services
+			    self.DEBUG("RETRIEVED SERVICES: " + str(services))
 			    return services
 		    return []
 
@@ -722,10 +723,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
                 else:
                     # Not message, treat like a refuse
-                    #print "StreamRequest REFUSED"
+                    self.myAgent.DEBUG("StreamRequest REFUSED","warn")
                     self.myAgent.p2p_routes[str(iq.getTo().getStripped())] = {'p2p':False}
 
-        #print "INITIATE STREAM CALLED BY", str(self.getName())
+        self.DEBUG("INITIATE STREAM CALLED BY " + str(self.getName()))
         # First deal with Disco Info request
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
@@ -949,7 +950,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 try:
                     sent = self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
                 except Exception, e:
-                    self.DEBUG("P2P Connection to "+str(self.p2p_routes[jabber_id]["url"])+" prevented. Falling back. "+str(e), "warn")
+                    self.DEBUG("P2P Connection to "+str(self.p2p_routes)+jabber_id+" prevented. Falling back. "+str(e), "warn")
                     sent = False
                 self.p2p_send_lock.release()
                 if not sent:
@@ -976,6 +977,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             url = self.p2p_routes[to]["url"]
         except:
             # The contact is not in our routes
+            self.DEBUG("P2P: The contact is not in our routes","warn")
             self.initiateStream(to)
             if self.p2p_routes.has_key(to) and self.p2p_routes[to].has_key('p2p'):
                 # If this p2p connection is marked as faulty,
@@ -992,10 +994,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 			    self.p2p_lock.release()
                     except:
                         # The p2p connection is really faulty
+                        self.DEBUG("P2P: The p2p connection is really faulty","warn")
                         return False
                 url = self.p2p_routes[to]["url"]
             else:
                 # There is no p2p for this contact
+                self.DEBUG("P2P: There is no p2p for this contact","warn")
                 return False
 
 
@@ -2428,12 +2432,12 @@ class Agent(AbstractAgent):
             return self._presence
 
 
-    def __init__(self, agentjid, password, port=5222, debug=[]):
+    def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
         self.debug = debug
-        AbstractAgent.__init__(self, agentjid, self.server)
+        AbstractAgent.__init__(self, agentjid, self.server,p2p=p2p)
         self.jabber = xmpp.Client(self.server, self.port, self.debug)
 
         self.remote_services = {}  # Services of remote agents
