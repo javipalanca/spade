@@ -423,7 +423,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
             self._forceKill.set()
         except:
             #Behavior is already dead
-            pass
+            self.myAgent.DEBUG("Behavior " +str(self)+ " is already dead","warn/")
 
     def onStart(self):
         """
@@ -456,17 +456,12 @@ class Behaviour(MessageReceiver.MessageReceiver):
             # The behaviour was already running, no need to run run (he he) twice
             return
         """
-        #print "START BEHAVIOUR",str(self)
         self.onStart()
         try:
             while (not self.done()) and (not self._forceKill.isSet()):
                 self._exitcode = self._process()
-                #time.sleep(0)
         except Exception,e:
-            self.DEBUG("<Exception in Behaviour %s><%s>"%(str(self),str(e)), "err")
-	    _exception = sys.exc_info()
-            if _exception[0]:
-                print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+            self.myAgent.DEBUG("Exception in Behaviour "+str(self)+": "+str(e), "err")
         self.onEnd()
         self.myAgent.removeBehaviour(self)
 

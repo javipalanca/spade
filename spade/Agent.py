@@ -112,6 +112,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         def onEnd(self):
             self.myAgent.p2p_ready = False
+            self.server.stop()
             if not self.finished:
                 try:
                     for sock in self.server.requests:
@@ -1194,10 +1195,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = bL[b]
                         if (t != None):
                             if (t.match(msg) == True):
-                                if type(b) == types.ClassType or type(b) == types.TypeType:
+                                if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
                                     #print "Class or Type DETECTED"
                                     #if issubclass(b, Behaviour.EventBehaviour):
-                                    #print "EventBehaviour DETECTED"
+                                    self.DEBUG("EventBehaviour DETECTED "+ str(b) + "type "+str(type(b)))
                                     if b.onetime:
                                         toRemove.append(b)
                                     b = b()
@@ -1254,6 +1255,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             behaviour.setAgent(self)
             behaviour.start()
         else:
+            self.DEBUG("Adding Event Behaviour "+str(behaviour.__class__))
             self._behaviourList[behaviour.__class__] = copy.copy(template)
 
 
@@ -1266,7 +1268,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
-	    self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +" is not registered","warn")
+	    self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +"with type " +str(type(behaviour))+ " is not registered in "+str(self._behaviourList),"warn")
 
 
     def subscribeToFriend(self, aid):
