@@ -13,12 +13,15 @@ host = "127.0.0.1"
 class MyAgent(spade.Agent.Agent):
 
 	def _setup(self):
-		self.pi  = None
 		self.msg  = None
 
 
 		
 class p2pSendMsgBehav(spade.Behaviour.OneShotBehaviour):
+    
+    def __init__(self,method):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
 
     def _process(self):
         msg = spade.ACLMessage.ACLMessage()
@@ -26,14 +29,22 @@ class p2pSendMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
         msg.setContent("testSendMsg")
         
-        self.myAgent.send(msg,method="p2ppy")
+        self.myAgent.send(msg,method=self.method)
 
 class p2pRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def __init__(self,method):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
 
     def _process(self):
         self.myAgent.msg = self._receive(block=True,timeout=10)
 
 class p2pSendAndRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def __init__(self,method):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
 
     def _process(self):
         msg = spade.ACLMessage.ACLMessage()
@@ -41,11 +52,15 @@ class p2pSendAndRecvMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
         msg.setContent("testSendAndRecvMsg")
 
-        self.myAgent.send(msg, method="p2ppy")
+        self.myAgent.send(msg, method=self.method)
         self.myAgent.msg = None
         self.myAgent.msg = self._receive(block=True,timeout=10)
 
 class p2pAnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def __init__(self,method):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
 
     def _process(self):
         msg = None
@@ -54,7 +69,7 @@ class p2pAnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
 			content = msg.getContent()
 			msg = msg.createReply()
 			msg.setContent(content)
-			self.myAgent.send(msg, method="p2ppy")
+			self.myAgent.send(msg, method=self.method)
 
 
 
@@ -80,12 +95,12 @@ class BasicTestCase(unittest.TestCase):
         self.a.stop()
         self.b.stop()
         
-    def testSendMsg(self):
+    def testSendMsgP2P(self):
         template = spade.Behaviour.ACLTemplate()
         template.setSender(self.Aaid)
         t = spade.Behaviour.MessageTemplate(template)
-        self.b.addBehaviour(p2pRecvMsgBehav(),t)
-        self.a.addBehaviour(p2pSendMsgBehav(),None)
+        self.b.addBehaviour(p2pRecvMsgBehav("p2p"),t)
+        self.a.addBehaviour(p2pSendMsgBehav("p2p"),None)
         counter = 0
         while self.b.msg == None and counter < 10:
             time.sleep(1)
@@ -96,14 +111,30 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(len(self.b.msg.getReceivers()),1)
         self.assertEqual(self.b.msg.getReceivers()[0], self.Baid)
 
-    def testSendAndRecvMsg(self):
+    def testSendMsgP2PPY(self):
         template = spade.Behaviour.ACLTemplate()
         template.setSender(self.Aaid)
         t = spade.Behaviour.MessageTemplate(template)
-        self.b.addBehaviour(p2pAnswerMsgBehav(),t)
+        self.b.addBehaviour(p2pRecvMsgBehav("p2ppy"),t)
+        self.a.addBehaviour(p2pSendMsgBehav("p2ppy"),None)
+        counter = 0
+        while self.b.msg == None and counter < 10:
+            time.sleep(1)
+            counter += 1
+        self.assertNotEqual(self.b.msg,None)
+        self.assertEqual(self.b.msg.getContent(),"testSendMsg")
+        self.assertEqual(self.b.msg.getSender(), self.Aaid)
+        self.assertEqual(len(self.b.msg.getReceivers()),1)
+        self.assertEqual(self.b.msg.getReceivers()[0], self.Baid)
+
+    def testSendAndRecvMsgP2P(self):
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(self.Aaid)
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(p2pAnswerMsgBehav("p2p"),t)
         template.setSender(self.Baid)
         t = spade.Behaviour.MessageTemplate(template)
-        self.a.addBehaviour(p2pSendAndRecvMsgBehav(),t)
+        self.a.addBehaviour(p2pSendAndRecvMsgBehav("p2p"),t)
         counter = 0
         while self.a.msg == None and counter < 20:
             time.sleep(1)
@@ -111,6 +142,20 @@ class BasicTestCase(unittest.TestCase):
         self.assertNotEqual(self.a.msg,None)
         self.assertEqual(self.a.msg.getContent(),"testSendAndRecvMsg")
 
+    def testSendAndRecvMsgP2PPY(self):
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(self.Aaid)
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(p2pAnswerMsgBehav("p2ppy"),t)
+        template.setSender(self.Baid)
+        t = spade.Behaviour.MessageTemplate(template)
+        self.a.addBehaviour(p2pSendAndRecvMsgBehav("p2ppy"),t)
+        counter = 0
+        while self.a.msg == None and counter < 20:
+            time.sleep(1)
+            counter += 1
+        self.assertNotEqual(self.a.msg,None)
+        self.assertEqual(self.a.msg.getContent(),"testSendAndRecvMsg")
 
 if __name__ == "__main__":
     unittest.main()
