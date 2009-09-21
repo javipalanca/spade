@@ -795,6 +795,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	sends an ACLMessage
 	"""
+        ACLmsg._attrs.update({"method":method})
         # Check for the sender field!!! (mistake #1)
         if not ACLmsg.getSender():
             ACLmsg.setSender(self.getAID())
@@ -837,6 +838,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         xenv['content-type']='fipa.mts.env.rep.xml.std'
         xenv.addData(envxml)
         """
+        
         # First, try Ultra-Fast(tm) python cPickle way of things
         try:
             if method in ["auto", "p2ppy"]:
@@ -855,13 +857,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 tojid = remaining
                 if not tojid:
-                    # There is noone left to send the message to
+                    # There is no one left to send the message to
                     return
         except Exception, e:
             self.DEBUG("Could not send throught P2PPY: "+str(e), "err")
 	    method = "jabber"
 
         # Second, try it the old way
+        #ACLmsg._attrs.update({"method":"jabber"})
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         envelope = Envelope.Envelope()
         generate_envelope = False
@@ -959,29 +962,37 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 self.p2p_send_lock.release()
                 if not sent:
 		    # P2P failed, try to send it through jabber
+                    self.DEBUG("P2P failed, try to send it through jabber","warn")
+                    jabber_msg.attrs.update({"method":"jabber"})
                     if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
             else:
                 # P2P is not available / not supported
                 # Try to send it through jabber
+                jabber_msg.attrs.update({"method":"jabber"})
                 if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
-        self.DEBUG("Sending " + str(jabber_msg) + "throught P2P")
+
         # Get the address
         if not to:
             if not jabber_msg:
                 return False
             else:
                 to = str(jabber_msg.getTo())
-
+        if jabber_msg:
+            self.DEBUG("Trying to send Jabber msg" + str(jabber_msg) + " through P2P")
+        elif ACLmsg:
+            self.DEBUG("Trying to send ACL msg" + str(ACLmsg) + " through P2P")
+            
+            
         try:
             # Try to get the contact's url
             url = self.p2p_routes[to]["url"]
         except:
             # The contact is not in our routes
-            self.DEBUG("P2P: The contact is not in our routes","warn")
+            self.DEBUG("P2P: The contact is not in our routes. Starting negotiation","warn")
             self.initiateStream(to)
             if self.p2p_routes.has_key(to) and self.p2p_routes[to].has_key('p2p'):
                 # If this p2p connection is marked as faulty,
@@ -1003,7 +1014,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 url = self.p2p_routes[to]["url"]
             else:
                 # There is no p2p for this contact
-                self.DEBUG("P2P: There is no p2p for this contact","warn")
+                self.DEBUG("P2P: There is no p2p support for this contact","warn")
                 return False
 
 
@@ -1045,7 +1056,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         self.DEBUG("Error opening p2p socket " +'\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
 
             if not connected:
-                self.DEBUG("Socket creation failed","err")
+                self.DEBUG("Socket creation failed","warn")
                 #raise socket.error
 		return False
 
@@ -1055,11 +1066,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         while not sent and tries > 0:
             try:
                 if method in ["p2p","auto"]:
+                    jabber_msg.attrs.update({"method":"p2p"})
                     length = "%08d"%(len(str(jabber_msg)))
                     # Send message through socket
                     s.send(length+str(jabber_msg))
                     self.DEBUG("P2P message sent throught p2p: "+str(jabber_msg),"ok")
                 elif method in ["p2ppy"]:
+                    ACLmsg._attrs.update({"method":"p2ppy"})
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
@@ -1067,8 +1080,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 sent = True
                 # Close socket
                 #s.close()
-            except:
-                self.DEBUG("Socket: send failed, threw an exception:", "err")
+            except Exception, e:
+                self.DEBUG("Socket: send failed, threw an exception: " +str(e), "err")
 		self._p2p_failures += 1
                 #raise socket.error
                 # Dispose of old socket
@@ -1099,7 +1112,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		    return False
                 tries -= 1
         if not sent:
-            self.DEBUG("Socket send failed","err")
+            self.DEBUG("Socket send failed","warn")
 	    self.p2p_lock.acquire()
             self.p2p_routes[to]["p2p"] = False
             self.p2p_routes[to]["failed_time"] = time.time()
@@ -1198,9 +1211,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
                                     #print "Class or Type DETECTED"
                                     #if issubclass(b, Behaviour.EventBehaviour):
-                                    self.DEBUG("EventBehaviour DETECTED "+ str(b) + "type "+str(type(b)))
-                                    if b.onetime:
-                                        toRemove.append(b)
+                                    #self.DEBUG("EventBehaviour DETECTED "+ str(b) + "type "+str(type(b)))
+                                    #if b.onetime:
+                                    #    toRemove.append(b)
                                     b = b()
                                     b.setAgent(self)
                                     b.postMessage(msg)
@@ -1214,8 +1227,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         #print ">>>MESSAGE", str(msg), " DOES NOT MATCH BEHAVIOUR ", str(b)
                         if (self._defaultbehaviour != None):
                                self._defaultbehaviour.postMessage(msg)
-                    for beh in toRemove:
-                        self._behaviourList.remove(beh)
+                    #for beh in toRemove:
+                    #    self._behaviourList.remove(beh)
 
             except Exception, e:
                 self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
@@ -1263,7 +1276,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	"""
 	removes a behavior from the agent
 	"""
-        if not issubclass(behaviour.__class__, Behaviour.EventBehaviour):
+        if (type(behaviour) not in [types.ClassType,types.TypeType]) and (not issubclass(behaviour.__class__, Behaviour.EventBehaviour)):
+            #self.DEBUG("Killing "+str(behaviour) + " with type "+str(type(behaviour)) ,"warn")
             behaviour.kill()
         try:
             self._behaviourList.pop(behaviour)

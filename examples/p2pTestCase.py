@@ -88,7 +88,7 @@ class BasicTestCase(unittest.TestCase):
     	self.b.start()
     	
     	#self.rdf = """<rdf:ap-description><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses>acc.127.0.0.1</rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description>"""
-    	self.rdf = """<rdf:RDF xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:ap-description><rdf:ap-services list="true"><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses list="true"><rdf:addresses>acc.127.0.0.1</rdf:addresses></rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description></rdf:RDF>"""
+    	#self.rdf = """<rdf:RDF xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:ap-description><rdf:ap-services list="true"><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses list="true"><rdf:addresses>acc.127.0.0.1</rdf:addresses></rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description></rdf:RDF>"""
     	#self.pi = spade.content.RDFXML2CO(self.rdf)
 
     def tearDown(self):

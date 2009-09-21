@@ -463,8 +463,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
         except Exception,e:
             self.myAgent.DEBUG("Exception in Behaviour "+str(self)+": "+str(e), "err")
         self.onEnd()
-        self.myAgent.removeBehaviour(self)
-
+        if issubclass(self.__class__, EventBehaviour):
+            self.myAgent.removeBehaviour(self.__class__)
+        else:
+            self.myAgent.removeBehaviour(self)
+            
     def registerPresenceHandler(self, template, handler):
         """
         DEPRECATED
