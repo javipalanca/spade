@@ -71,7 +71,47 @@ class p2pAnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
 			msg.setContent(content)
 			self.myAgent.send(msg, method=self.method)
 
+class p2pSendMultiMsgBehav(spade.Behaviour.OneShotBehaviour):
 
+    def __init__(self,method, nmsg=1):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
+        self.nmsg = int(nmsg)
+
+    def _process(self):
+        self.myAgent.routeTag = []
+        msg = spade.ACLMessage.ACLMessage()
+        msg.setPerformative("inform")
+        msg.addReceiver(spade.AID.aid("b@"+host,["xmpp://b@"+host]))
+        
+        socket = None
+
+        for i in range (self.nmsg):
+            msg.setContent(str(i+1))
+            self.myAgent.send(msg,method=self.method)
+            if i==0:
+                socket = self.myAgent.p2p_routes["b@"+host]["socket"]
+            else:
+                if socket != self.myAgent.p2p_routes["b@"+host]["socket"]:
+                    self.myAgent.routeTag.append(str(i+1))
+
+class p2pRecvMultiMsgBehav(spade.Behaviour.OneShotBehaviour):
+
+    def __init__(self,method, nmsg=1):
+        spade.Behaviour.OneShotBehaviour.__init__(self)
+        self.method = method
+        self.nmsg = int(nmsg)
+
+    def _process(self):
+        self.myAgent.receivedmsg = 0
+        self.myAgent.errorTag = []
+        
+        for i in range(self.nmsg):
+            self.myAgent.msg = None
+            self.myAgent.msg = self._receive(block=True,timeout=10)
+            if self.myAgent.msg.getContent()!=str(i+1):
+                self.myAgent.errorTag.append(i+1)
+            if self.myAgent.msg: self.myAgent.receivedmsg+=1
 
 class BasicTestCase(unittest.TestCase):
     
@@ -86,10 +126,6 @@ class BasicTestCase(unittest.TestCase):
     	self.b = MyAgent("b@"+host, "secret",p2p=True)
     	self.b._debug=True
     	self.b.start()
-    	
-    	#self.rdf = """<rdf:ap-description><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses>acc.127.0.0.1</rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description>"""
-    	#self.rdf = """<rdf:RDF xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:ap-description><rdf:ap-services list="true"><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses list="true"><rdf:addresses>acc.127.0.0.1</rdf:addresses></rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description></rdf:RDF>"""
-    	#self.pi = spade.content.RDFXML2CO(self.rdf)
 
     def tearDown(self):
         self.a.stop()
@@ -110,6 +146,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.b.msg.getSender(), self.Aaid)
         self.assertEqual(len(self.b.msg.getReceivers()),1)
         self.assertEqual(self.b.msg.getReceivers()[0], self.Baid)
+        self.assertEqual(self.b.msg._attrs["method"],"p2p")
 
     def testSendMsgP2PPY(self):
         template = spade.Behaviour.ACLTemplate()
@@ -126,6 +163,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.b.msg.getSender(), self.Aaid)
         self.assertEqual(len(self.b.msg.getReceivers()),1)
         self.assertEqual(self.b.msg.getReceivers()[0], self.Baid)
+        self.assertEqual(self.b.msg._attrs["method"],"p2ppy")
 
     def testSendAndRecvMsgP2P(self):
         template = spade.Behaviour.ACLTemplate()
@@ -141,6 +179,7 @@ class BasicTestCase(unittest.TestCase):
             counter += 1
         self.assertNotEqual(self.a.msg,None)
         self.assertEqual(self.a.msg.getContent(),"testSendAndRecvMsg")
+        self.assertEqual(self.a.msg._attrs["method"],"p2p")
 
     def testSendAndRecvMsgP2PPY(self):
         template = spade.Behaviour.ACLTemplate()
@@ -156,6 +195,42 @@ class BasicTestCase(unittest.TestCase):
             counter += 1
         self.assertNotEqual(self.a.msg,None)
         self.assertEqual(self.a.msg.getContent(),"testSendAndRecvMsg")
+        self.assertEqual(self.a.msg._attrs["method"],"p2ppy")
+        
+    def testSendMultiMsgP2P(self):
+        nmsg=100
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(self.Aaid)
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(p2pRecvMultiMsgBehav("p2p",nmsg),t)
+        self.a.addBehaviour(p2pSendMultiMsgBehav("p2p",nmsg),None)
+        counter = 0
+        while self.b.msg == None and counter < 10:
+            time.sleep(1)
+            counter += 1
+        self.assertNotEqual(self.b.msg,None)
+        self.assertEqual(self.b.msg._attrs["method"],"p2p")
+        self.assertEqual(self.b.receivedmsg,nmsg)
+        self.assertEqual(self.b.errorTag,[])
+        self.assertEqual(self.a.routeTag,[])
+
+    def testSendMultiMsgP2PPY(self):
+        nmsg=100
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(self.Aaid)
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(p2pRecvMultiMsgBehav("p2ppy",nmsg),t)
+        self.a.addBehaviour(p2pSendMultiMsgBehav("p2ppy",nmsg),None)
+        counter = 0
+        while self.b.msg == None and counter < 10:
+            time.sleep(1)
+            counter += 1
+        self.assertNotEqual(self.b.msg,None)
+
+        self.assertEqual(self.b.msg._attrs["method"],"p2ppy")
+        self.assertEqual(self.b.receivedmsg,nmsg)
+        self.assertEqual(self.b.errorTag,[])
+        self.assertEqual(self.a.routeTag,[])
 
 if __name__ == "__main__":
     unittest.main()
