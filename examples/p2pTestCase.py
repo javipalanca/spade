@@ -121,10 +121,10 @@ class BasicTestCase(unittest.TestCase):
         self.Baid = spade.AID.aid("b@"+host,["xmpp://b@"+host])
 
     	self.a = MyAgent("a@"+host, "secret",p2p=True)
-    	self.a._debug = True
+    	#self.a._debug = True
     	self.a.start()
     	self.b = MyAgent("b@"+host, "secret",p2p=True)
-    	self.b._debug=True
+    	#self.b._debug=True
     	self.b.start()
 
     def tearDown(self):
