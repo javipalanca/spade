@@ -32,13 +32,10 @@ class PlatformRestart(Exception):
 
 
 class SpadePlatform(Agent.PlatformAgent):
-    
-
     class RouteBehaviour(Behaviour.Behaviour):
-        
         def __init__(self):
             Behaviour.Behaviour.__init__(self)
-            
+
         def _process(self):
             msg = self._receive(True)
             if (msg != None):
@@ -110,6 +107,7 @@ class SpadePlatform(Agent.PlatformAgent):
 
     def __init__(self, node, password, server, port, config=None):
         Agent.PlatformAgent.__init__(self, node, password, server, port, config=config, debug=[])
+        self.mtps = {}
 
     def _setup(self):
         self.setDefaultBehaviour(self.RouteBehaviour())
@@ -125,7 +123,6 @@ class SpadePlatform(Agent.PlatformAgent):
         self.wui.start()
         
         # Load MTPs
-        self.mtps = {}
         for name,mtp in self.config.acc.mtp.items():
         #self.mtps[mtp.protocol] = mtp.instance(name)
             try:
@@ -149,9 +146,9 @@ class SpadePlatform(Agent.PlatformAgent):
 
     def takeDown(self):
         for k,mtp in self.mtps.items():
-	    try:
+            try:
                 mtp.stop()
-		del self.mtps[k]
+                del self.mtps[k]
             except:
                 pass
 

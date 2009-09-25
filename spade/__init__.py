@@ -15,4 +15,8 @@ import AMS
 import spade_backend
 import SpadeConfigParser
 import MTP
-
+import fipa
+import peer2peer
+import socialnetwork
+import content
+import colors

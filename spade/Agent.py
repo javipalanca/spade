@@ -1,13 +1,10 @@
 # -*- coding: cp1252 -*-
 
 try:
-	import psyco
-	psyco.full()
-	#self.DEBUG("Using Psyco optimizing compiler")
-	#psyco.log(logfile='/tmp/psyco.log')
-	#psyco.profile()
+    import psyco
+    psyco.full()
 except ImportError:
-	pass #self.DEBUG("Psyco optimizing compiler not found","warn")
+    pass #self.DEBUG("Psyco optimizing compiler not found","warn")
 
 import sys
 import traceback
@@ -25,25 +22,25 @@ import ACLMessage
 import BasicFipaDateTime
 import Behaviour
 import SL0Parser
-import colors
+import fipa
+import peer2peer as P2P
+import socialnetwork
+
 import mutex
 import types
 import random
 import string
-import Organization
-import Organization_new
 import copy
 import socket
 import SocketServer
 import colors
 import cPickle as pickle
-#from AMS import AmsAgentDescription
+
 
 import DF
 from content import ContentObject
 from wui import *
 
-#from xmpp import Iq, Presence,Protocol, Node, NodeBuilder, NS_ROSTER, NS_DISCO_INFO
 from xmpp import *
 
 # Taken from xmpp debug
@@ -73,156 +70,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     only for heritance
     Child classes: PlatformAgent, Agent
     """
-    class P2PBehaviour(Behaviour.Behaviour):
-        class P2PRequestHandler(SocketServer.StreamRequestHandler):
-            def handle(self):
-                self.server.requests.append(self.request)
-                try:
-                    data = ""
-                    while True:
-                        # Read message length
-                        length = self.rfile.read(8)
-                        if not length:
-                            # EOF
-                            break
-                        data = self.rfile.read(int(length))
-                        self.server.owner.DEBUG("P2P message received.","ok")
-                        if data:
-                            try:
-                                # Try with a serialized message
-                                ACLmsg = pickle.loads(data)
-                                self.server.postMessage(ACLmsg)
-                                self.server.owner.DEBUG("The p2p message is serialized.")
-                            except:
-                                # Try with a jabber message
-                                n = xmpp.simplexml.XML2Node(str(data))
-                                m = xmpp.Message(node=n)
-                                self.server._jabber_messageCB(None,m,raiseFlag=False)
-                                self.server.owner.DEBUG("The p2p message is XML:"+str(m))
-                        data = ""
-                except Exception, e:
-                    self.server.owner.DEBUG("P2P Socket Closed to "+ str(self.client_address),"err")  #,":",str(e),":",str(length),str(data)
-		    pass
-
-        def _process(self):
-            try:
-                self.server.handle_request()
-            except Exception,e:
-                self.myAgent.DEBUG("P2P server failed: "+str(e),"err")
-
-        def onEnd(self):
-            self.myAgent.p2p_ready = False
-            self.server.stop()
-            if not self.finished:
-                try:
-                    for sock in self.server.requests:
-                        try:
-                            sock.close()
-                            del sock
-                        except:
-                            pass
-                    self.server.socket.close()
-                    del self.server
-                except:
-                    pass
-                iq = xmpp.Iq("result",queryNS=xmpp.NS_DISCO_INFO)
-                for to in self.myAgent.p2p_routes.keys():
-                    iq.setTo(to)
-                    self.myAgent.jabber.send(iq)
-                self.finished = True
-
-        def onStart(self):
-            open = False
-            SocketServer.ThreadingTCPServer.allow_reuse_address = True
-            while open == False:
-                try:
-                    self.server = SocketServer.ThreadingTCPServer(('', self.myAgent.P2PPORT), self.P2PRequestHandler)
-                    self.server.owner = self.myAgent
-                    open = True
-                except:
-                    self.myAgent.P2PPORT = random.randint(1025,65535)
-                    self.myAgent.DEBUG("Changing P2P port to " + str(self.myAgent.P2PPORT))
-
-            self.server._jabber_messageCB = self.myAgent._jabber_messageCB
-            self.server.postMessage = self.myAgent.postMessage
-            self.server.requests = []
-            self.myAgent.DEBUG(self.getName()+": P2P Behaviour Started at port "+ str(self.myAgent.P2PPORT))
-            self.finished = False  # Flag to mark (later) if we have passed through "onEnd"
-            self.myAgent.p2p_ready = True
-
-
-    class StreamInitiationBehaviour(Behaviour.EventBehaviour):
-        def _process(self):
-            self.msg = self._receive(False)
-            if self.msg != None:
-                if self.msg.getType() == "set":
-                    if self.msg.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
-                        # P2P Messaging Offer
-                        self.myAgent.DEBUG("P2P-Messaging offer from " + str(self.msg.getFrom()))
-                        if self.myAgent.p2p_ready:
-                            # Take note of sender's p2p address if any
-                            if self.msg.getTag("si").getTag("p2p"):
-                                remote_address = str(self.msg.getTag("si").getTag("p2p").getData())
-                                d = {"url":remote_address, "p2p":True}
-			        self.myAgent.p2p_lock.acquire()
-                                if self.myAgent.p2p_routes.has_key(str(self.msg.getFrom().getStripped())):
-                                    self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].update(d)
-                                    if self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())].has_key("socket"):
-                                        self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())]["socket"].close()
-                                else:
-                                    self.myAgent.p2p_routes[str(self.msg.getFrom().getStripped())] = d
-			        self.myAgent.p2p_lock.release()
-                                #print "P2P ROUTES", str(self.myAgent.p2p_routes)
-                            # Accept offer
-                            reply = self.msg.buildReply("result")
-                            si = reply.addChild("si")
-                            si.setNamespace("http://jabber.org/protocol/si")
-                            p2p = si.addChild("p2p")
-                            p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
-                            value = p2p.addChild("value")
-                            value.setData(self.myAgent.getP2PUrl())
-                            self.myAgent.DEBUG("P2P: Accept offer from "+str(self.msg.getFrom())+"."+str(reply) )
-                        else:
-                            # Refuse offer
-                            reply = self.msg.buildReply("error")
-                            err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
-                            err.addChild("forbidden")
-                            err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
-                            self.myAgent.DEBUG("P2P: Refuse offer from "+str(self.msg.getFrom())+"."+str(reply))
-                        self.myAgent.jabber.send(reply)
-
-
-    class DiscoBehaviour(Behaviour.EventBehaviour):
-        def _process(self):
-            self.msg = self._receive(False)
-            if self.msg != None:
-                if self.msg.getType() == "get":
-                    #print self.myAgent.getName(),": DISCO request from", str(self.msg.getFrom())
-                    # Inform of services
-                    reply = self.msg.buildReply("result")
-                    if self.myAgent.p2p_ready:
-                        reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
-                        reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-                    self.myAgent.jabber.send(reply)
-                    self.myAgent.DEBUG(self.myAgent.getName()+": SENT DISCO REPLY TO "+ str(reply.getTo()))
-                elif self.msg.getType() == "result":
-                    services = []
-                    for child in self.msg.getQueryChildren():
-                        services.append(str(child.getAttr("var")))
-                    if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" not in services:
-                        frm = str(self.msg.getFrom().getStripped())
-                        if str(frm) in self.myAgent.p2p_routes.keys():
-                            # This agent does no longer support p2p
-			    self.myAgent.p2p_lock.acquire()
-			    try:
-                            	self.myAgent.DEBUG("Deleting "+str(frm)+" from P2P routes: "+ str(self.myAgent.p2p_routes),"warn")
-                            	del self.myAgent.p2p_routes[frm]
-			    except:
-				pass
-			    self.myAgent.p2p_lock.release()
-
-
-
 
     def __init__(self, agentjid, serverplatform, p2p=False):
         """
@@ -248,13 +95,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.wui.registerController("admin", self.WUIController_admin)
         self.wui.registerController("log", self.WUIController_log)
 
-        self._friend_list = []  # Legacy
-        self._muc_list= {}
+        #self._friend_list = []  # Legacy
+        #self._muc_list= {}
         self._roster = {}
         self._socialnetwork = {}
         self._subscribeHandler   = lambda frm,typ,stat,show: False
         self._unsubscribeHandler = lambda frm,typ,stat,show: False
-        self._jabber_mailbox = {}
 
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
@@ -262,14 +108,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._running = False
 
         # Add Disco Behaviour
-        #self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq("get",queryNS=NS_DISCO_INFO)))
-        self.addBehaviour(Agent.DiscoBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_DISCO_INFO)))
+        self.addBehaviour(P2P.DiscoBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_DISCO_INFO)))
 
         # Add Stream Initiation Behaviour
         iqsi = Iq()
         si = iqsi.addChild("si")
         si.setNamespace("http://jabber.org/protocol/si")
-        self.addBehaviour(Agent.StreamInitiationBehaviour(), Behaviour.MessageTemplate(iqsi))
+        self.addBehaviour(P2P.StreamInitiationBehaviour(), Behaviour.MessageTemplate(iqsi))
 
         # Add P2P Behaviour
         self.p2p_ready = False  # Actually ready for P2P communication
@@ -281,13 +126,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if p2p:
             self.registerLogComponent("p2p")
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
-            p2pb = Agent.P2PBehaviour()
+            p2pb = P2P.P2PBehaviour()
             self.addBehaviour(p2pb)
 
 
 
     def WUIController_admin(self):
-        #return "admin.pyra", {"aid":self.getAID(), "social_network": self.getSocialNetwork(), "p2pready":self.p2p_ready}
         behavs = {}
         for k in self._behaviourList.keys():
             behavs[id(k)]=k
@@ -297,53 +141,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
 
 
-    """
-    def _receive(self, block = False, timeout = None, template = None):
-        try:
-            if not template: return MessageReceiver.MessageReceiver._receive(self, block, timeout)
-            elif template and block and timeout:
-                i = timeout
-                while i > 0:
-                    #timeout becomes the amount of 'tries' to receive a message
-                    msg = self._receive(block=True, timeout=timeout, template=None)
-                    if msg:
-                        print "_RECEIVE HAS A MSG:", str(msg)
-                        if template.match(msg):
-                            print "_RECEIVE HAS MADE A MATCH"
-                            return msg
-                        else:
-                            print "_RECEIVE NO MATCH"
-                            self.postMessage(msg)
-                    i -= 1
-                return None
-            else:
-                while True:
-                    msg = MessageReceiver.MessageReceiver._receive(self, True, 0.1)
-                    if msg:
-                        if template.match(msg): return msg
-                        else: #self.postMessage(msg)
-                            pass
-
-        except:
-            _exception = sys.exc_info()
-            if _exception[0]:
-                print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-    """
-
     def registerLogComponent(self, component):
         #self._agent_log[component] = {}
         pass
 
     def DEBUG(self, dmsg, typ="info", component=""):
-    	# Record at log
-    	t = time.time()
-    	dmsg = dmsg.replace("&gt;",">")
-    	dmsg = dmsg.replace("&lt;","<")
-    	dmsg = dmsg.replace("&quot;",'"')
-    	self._agent_log[t] = (typ,dmsg,component,time.ctime(t))
+        # Record at log
+        t = time.time()
+        dmsg = dmsg.replace("&gt;",">")
+        dmsg = dmsg.replace("&lt;","<")
+        dmsg = dmsg.replace("&quot;",'"')
+        self._agent_log[t] = (typ,dmsg,component,time.ctime(t))
 
         if self._debug:
-    		# Print on screen
+            # Print on screen
             if typ == "info":
                 print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
             elif typ == "err":
@@ -363,23 +174,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return l
 
     def newMessage(self):
-		"""Creates and returns an empty ACL message"""
-		return ACLMessage.ACLMessage()
+        """Creates and returns an empty ACL message"""
+        return ACLMessage.ACLMessage()
 
     def newContentObject(self):
-		"""Creates and returns an empty Content Object"""
-		return ContentObject()
+        """Creates and returns an empty Content Object"""
+        return ContentObject()
 
     def _jabber_presenceCB(self, conn, mess):
-	"""
-	presence callback
-	manages jabber stanzas of the 'presence' protocol
-	"""
+        """
+        presence callback
+        manages jabber stanzas of the 'presence' protocol
+        """
 
-	#frm=None
-
-	frm = mess.getFrom()
-        #frm = AID.aid(str(mess.getFrom()), ['xmpp://'+str(mess.getFrom())])
+        frm = mess.getFrom()
         typ = str(mess.getType())
         status = str(mess.getStatus())
         show = str(mess.getShow())
@@ -391,55 +199,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             for item in x.getTags(name='item'):
                 role = item.getAttr('role')
                 affiliation = item.getAttr('affiliation')
-#
-#        #check for MUC presence
-#		if ifrm.getDomain() == self.getMUC():
-#			if self._muc_list.has_key(str(ifrm.getNode())):
-#				self._muc_list[ifrm.getNode()].presenceCB(mess)
-#
-#		else:
-#
-#
-#        if typ in ['subscribe']:
-#		# Call the subscribe handler
-#		if self._subscribeHandler(frm, typ, status, show):
-#			reply = xmpp.Presence(mess.getFrom(), 'subscribed')
-#			conn.send(reply)
-#			return
-#	elif typ in ['subscribed']:
-#		# Subscription confirmation
-#		print color_green + "Subscription to " + color_yellow + str(ifrm) + color_green  +" resolved" + color_none
-#		return
-#	elif typ in ['unsubscribe']:
-#		# Call the unsubscribe handler
-#		if self._unsubscribeHandler(frm, typ, status, show):
-#			reply = xmpp.Presence(mess.getFrom(), 'unsubscribed')
-#			conn.send(reply)
-#		return
-#	elif typ in ['unsubscribed']:
-#		# Subscription denial
-#		print color_red + "WARNING: Subscription to " + color_yellow + str(ifrm) + color_red  +" denied or cancelled" + color_none
-#		return
-#
-#
-#        else:
-#			# Unsupported presence message
-#			print color_yellow + "Unsupported presence message: " + str(mess.getType()) + color_none
-#			return
 
         try:
-	 	# Pass the FIPA-message to the behaviours
-		#print "BEHAVIOURLIST: ", str(self._behaviourList)
-		for b in self._behaviourList.keys():
-		       #print "BEHAVIOUR LIST", str(b)
-		       b.managePresence(frm, typ, status, show, role, affiliation)
+            # Pass the FIPA-message to the behaviours
+            for b in self._behaviourList.keys():
+                b.managePresence(frm, typ, status, show, role, affiliation)
 
-		self._defaultbehaviour.managePresence(frm, typ, status, show, role, affiliation)
-	except Exception, e:
-	 	#There is not a default behaviour yet
-		self.DEBUG(str(e),"err")
-
-	#self._roster = conn.getRoster()
+            self._defaultbehaviour.managePresence(frm, typ, status, show, role, affiliation)
+        except Exception, e:
+            #There is not a default behaviour yet
+            self.DEBUG(str(e),"err")
 
     def _jabber_messageCB(self, conn, mess, raiseFlag=True):
         """
@@ -471,11 +240,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     xc = XMLCodec.XMLCodec()
                     envelope = xc.parse(str(child.getTag("envelope")))
                     if envelope.getFrom():
-						try:
-							#ACLmsg.setSender(envelope.getFrom().getStripped())
-							ACLmsg.setSender(envelope.getFrom().getStripped())
-						except:
-							ACLmsg.setSender(envelope.getFrom())
+                        try:
+                            ACLmsg.setSender(envelope.getFrom().getStripped())
+                        except:
+                            ACLmsg.setSender(envelope.getFrom())
                     else:
                         ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
                     if envelope.getIntendedReceiver():
@@ -486,6 +254,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 else:
                     ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
                     ACLmsg.addReceiver(AID.aid(str(mess.getTo().getStripped()), ["xmpp://"+str(mess.getTo().getStripped())]))
+
                 self.postMessage(ACLmsg)
                 if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
                 return True
@@ -511,7 +280,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if mess.getAttr("type") == "set":
                     q = mess.getTag("si")
                     if q:
-                        #print "StreamInitiation Behaviour called (offline)"
                         if mess.getType() == "set":
                             if mess.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
                                 # P2P Messaging Offer
@@ -520,15 +288,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                     if mess.getTag("si").getTag("p2p"):
                                         remote_address = str(mess.getTag("si").getTag("p2p").getData())
                                         d = {"url":remote_address, "p2p":True}
-					self.p2p_lock.acquire()
+                                        self.p2p_lock.acquire()
                                         if self.p2p_routes.has_key(str(mess.getFrom().getStripped())):
                                             self.p2p_routes[str(mess.getFrom().getStripped())].update(d)
                                             if self.p2p_routes[str(mess.getFrom().getStripped())].has_key("socket"):
                                                 self.p2p_routes[str(mess.getFrom().getStripped())]["socket"].close()
                                         else:
                                             self.p2p_routes[str(mess.getFrom().getStripped())] = d
-					self.p2p_lock.release()
-                                        #print "P2P ROUTES", str(self.p2p_routes)
+                                        self.p2p_lock.release()
+
                                     # Accept offer
                                     reply = mess.buildReply("result")
                                     si = reply.addChild("si")
@@ -553,59 +321,25 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def _other_messageCB(self, conn, mess):
-	"""
-	non jabber:x:fipa chat messages callback
-	"""
-        #if there is a mailbox with type and id registered. we store the message
-        typ = mess.getType()
-        id  = mess.getID()
-        if self._jabber_mailbox.has_key(typ):
-            if self._jabber_mailbox[typ].has_key(id):
-                self._jabber_mailbox[typ][id].append(mess)
-
+        """
+        non jabber:x:fipa chat messages callback
+        """
+        pass
+        
     def _jabber_iqCB(self, conn, mess):
         """
         IQ callback
         manages jabber stanzas of the 'iq' protocol
         """
-	# We post every jabber iq
-	self.postMessage(mess)
-	self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()),"info")
-        #self._other_messageCB(conn,mess)
+        # We post every jabber iq
+        self.postMessage(mess)
+        self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()),"info")
 
-
-    def register_mailbox(self,typ,id):
-        """
-        Registers a jabber mailbox with type and id
-        """
-        if self._jabber_mailbox.has_key(typ):
-            if not self._jabber_mailbox[typ].has_key(id):
-                self._jabber_mailbox[typ][id]=[]
-        else:
-            self._jabber_mailbox[typ]={}
-            self._jabber_mailbox[typ][id]=[]
-
-    def unregister_mailbox(self,typ,id):
-        """
-        Unregisters a jabber mailbox with type and id
-        """
-        if self._jabber_mailbox.has_key(typ):
-            if self._jabber_mailbox[typ].has_key(id):
-                del self._jabber_mailbox[typ][id]
-
-    def jabber_receive(self, typ, id):
-        """
-        Returns a jabber message from the mailbox with type and id
-        """
-        if self._jabber_mailbox.has_key(typ) and self._jabber_mailbox[typ].has_key(id):
-            if len(self._jabber_mailbox[typ][id])>0:
-                return self._jabber_mailbox[typ][id].pop()
-        return None
 
     def getAID(self):
-	"""
-	returns AID
-	"""
+        """
+        returns AID
+        """
         return self._aid
 
     def setAID(self, aid):
@@ -618,30 +352,30 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._aid.addAddress(addr)
 
     def getName(self):
-	return self._aid.getName()
+        return self._aid.getName()
 
     def getAMS(self):
-	"""
-	returns the AMS aid
-	"""
+        """
+        returns the AMS aid
+        """
         return AID.aid(name="ams." + self._serverplatform, addresses=[ "xmpp://ams."+self._serverplatform ])
 
     def getDF(self):
-	"""
-	returns the DF aid
-	"""
+        """
+        returns the DF aid
+        """
         return AID.aid(name="df." + self._serverplatform, addresses=[ "xmpp://df."+self._serverplatform ])
 
     def getMUC(self):
-	"""
-	returns the MUC JID
-	"""
-	return "muc." + self._serverplatform
+        """
+        returns the MUC JID
+        """
+        return "muc." + self._serverplatform
 
     def getSpadePlatformJID(self):
-	"""
-	returns the SPADE JID (string)
-	"""
+        """
+        returns the SPADE JID (string)
+        """
         return "acc." + self._serverplatform
 
     def getDomain(self):
@@ -655,47 +389,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def requestDiscoInfo(self, to):
-        class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
-            def _process(self):
-                self.result = []
-                self.myAgent.jabber.send(self.iq)
-                msg = self._receive(True, 3)
-                if msg:
-                    if msg.getType() == "result":
-                        services = []
-                        for child in msg.getQueryChildren():
-                            services.append(str(child.getAttr("var")))
-                        self.myAgent.DEBUG("Retrieved services: " + str(services))
-                        self.result = services
-
-	self.DEBUG("Request Disco Info called by " + str(self.getName()))
-	id = 'nsdi'+str(random.randint(1,10000))
-	temp_iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-	temp_iq.setType("result")
-	t = Behaviour.MessageTemplate(temp_iq)
-	iq = xmpp.Iq(queryNS=xmpp.NS_DISCO_INFO, attrs={'id':id})
-	iq.setTo(to)
-	iq.setType("get")
-	self.DEBUG("Send IQ message: "+str(iq))
-	if self._running:
-	    # Online way
-	    rdif = RequestDiscoInfoBehav()
-	    rdif.iq = iq
-	    self.addBehaviour(rdif, t)
-	    rdif.join()
-	    return rdif.result
-	else:
-	    # Offline way
-	    self.jabber.send(iq)
-	    msg = self._receive(True, 20, template=t)
-	    if msg:
-		if msg.getType() == "result":
-		    services = []
-		    for child in msg.getQueryChildren():
-			services.append(str(child.getAttr("var")))
-		    self.DEBUG("Retrieved services: " + str(services))
-		    return services
-	    return []
+        
+        self.DEBUG("Request Disco Info called by " + str(self.getName()))
+        rdif = P2P.RequestDiscoInfoBehav(to)
+        t = Behaviour.MessageTemplate(rdif.temp_iq)
+        if self._running:
+            # Online way
+            self.addBehaviour(rdif, t)
+            rdif.join()
+            return rdif.result
+        else:
+            # Offline way
+            self.runBehaviourOnce(rdif, t)
+            return rdif.result
 
 
     def initiateStream(self, to):
@@ -703,174 +409,74 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         Perform a Stream Initiation with another agent
         in order to stablish a P2P communication channel
         """
-        class StreamInitiationBehav(Behaviour.OneShotBehaviour):
-            def _process(self):
-                self.result = False
-                self.myAgent.jabber.send(self.iq)
-                #print "SIB SENT:", str(self.iq)
-                msg = self._receive(True, 4)
-                if msg:
-                    self.result = False
-                    if msg.getType() =="result":
-                        self.myAgent.DEBUG("StreamRequest Agreed","ok")
-                        #print msg
-                        try:
-                            remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
-                            d = {"url":remote_address, "p2p":True}
-                            if self.myAgent.p2p_routes.has_key(str(msg.getFrom().getStripped())):
-                                self.myAgent.p2p_routes[str(msg.getFrom().getStripped())].update(d)
-                                self.result = True
-                            else:
-                                self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = d
-                        except Exception, e:
-                            self.myAgent.DEBUG("Malformed StreamRequest Answer: "+ str(e),"err")
-                            self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {}
-                    elif msg.getType() == "error":
-                        self.myAgent.DEBUG("StreamRequest REFUSED","warn")
-                        self.myAgent.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
-                else:
-                    # Not message, treat like a refuse
-                    self.myAgent.DEBUG("StreamRequest REFUSED","warn")
-                    self.myAgent.p2p_routes[str(iq.getTo().getStripped())] = {'p2p':False}
+
 
         self.DEBUG("Initiate Stream called by " + str(self.getName()))
         # First deal with Disco Info request
         services = self.requestDiscoInfo(to)
         if "http://jabber.org/protocol/si/profile/spade-p2p-messaging" in services:
-            # Offer Stream Initiation
-            self.DEBUG( "Offer StreamInitiation to" + str(to))
-            id = 'offer'+str(random.randint(1,10000))
-            temp_iq = xmpp.Iq(attrs={'id':id})
-            t = Behaviour.MessageTemplate(temp_iq)
-            iq = xmpp.Iq(attrs={'id':id})
-            iq.setTo(to)
-            iq.setType("set")
-            si = xmpp.Node("si", {"profile":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-            si.setNamespace("http://jabber.org/protocol/si")
-            if self.p2p_ready:
-                p2p = xmpp.Node("p2p")
-                p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
-                p2p.setData(self.getP2PUrl())
-                si.addChild(node=p2p)
-            iq.addChild(node=si)
+
+            sib = P2P.SendStreamInitiationBehav(to)
+            t = Behaviour.MessageTemplate(sib.temp_iq)
+
             if self._running:
                 # Online way
-                sib = StreamInitiationBehav()
-                sib.iq = iq
                 self.addBehaviour(sib, t)
                 sib.join()
                 return sib.result
             else:
                 # Offline way
                 self.DEBUG("Initiate Stream OFFLINE","warn")
-                result = False
-                self.jabber.send(iq)
-                msg = self._receive(True, 10, template=t)
-                if msg:
-                    result = False
-                    if msg.getType() =="result":
-                        self.DEBUG("StreamRequest Agreed","ok")
-                        try:
-                            remote_address = str(msg.getTag("si").getTag("p2p").getTag("value").getData())
-                            d = {"url":remote_address, "p2p":True}
-			    self.p2p_lock.acquire()
-                            if self.p2p_routes.has_key(str(msg.getFrom().getStripped())):
-                                self.p2p_routes[str(msg.getFrom().getStripped())].update(d)
-                                result = True
-                            else:
-                                self.p2p_routes[str(msg.getFrom().getStripped())] = d
-			    self.p2p_lock.release()
-                        except Exception, e:
-                            self.DEBUG("Malformed StreamRequest Answer: "+ str(e),"warn")
-                            self.p2p_routes[str(msg.getFrom().getStripped())] = {}
-                    elif msg.getType() == "error":
-                        self.DEBUG("StreamRequest REFUSED","warn")
-			self.p2p_lock.acquire()
-                        self.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p':False}
-			self.p2p_lock.release()
-                return result
+                self.runBehaviourOnce(sib,t)
+                return sib.result
 
 
     def send(self, ACLmsg, method="jabber"):
-	"""
-	sends an ACLMessage
-	"""
+        """
+        sends an ACLMessage
+        """
         ACLmsg._attrs.update({"method":method})
         # Check for the sender field!!! (mistake #1)
         if not ACLmsg.getSender():
             ACLmsg.setSender(self.getAID())
 
-        #self._sendTo(ACLmsg, self.getSpadePlatformJID())
         self._sendTo(ACLmsg, ACLmsg.getReceivers(), method=method.strip())
 
     def _sendTo(self, ACLmsg, tojid, method):
         """
         sends an ACLMessage to a specific JabberID
         """
-        """
-        if (ACLmsg.getSender() == None):
-            ACLmsg.setSender(self.getAID())
-
-        content = ACLmsg.getContent()
-        comillas_esc = '\\"'
-        barrainv_esc = '\\\\'
-        mtmp1 = barrainv_esc.join(content.split('\\'))
-        mtmp2 = comillas_esc.join(mtmp1.split('"'))
-        payload_esc = mtmp2
-        ACLmsg.setContent(payload_esc)
-
-        ap = ACLParser.ACLxmlParser()
-        payload = ap.encodeXML(ACLmsg)
-
-        envelope = Envelope.Envelope()
-        envelope.setFrom(ACLmsg.getSender())
-        for i in ACLmsg.getReceivers():
-            envelope.addTo(i)
-        envelope.setAclRepresentation("fipa.acl.rep.xml.std")
-        envelope.setPayloadLength(len(payload))
-        envelope.setPayloadEncoding("US-ASCII")
-        envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())
-
-        xc = XMLCodec.XMLCodec()
-        envxml = xc.encodeXML(envelope)
-
-        xenv = xmpp.protocol.Node('jabber:x:fipa x')
-        xenv['content-type']='fipa.mts.env.rep.xml.std'
-        xenv.addData(envxml)
-        """
         
-        # First, try Ultra-Fast(tm) python cPickle way of things
+        #First, try Ultra-Fast(tm) python cPickle way of things
         try:
             if method in ["auto", "p2ppy"]:
-            #if method in ["p2ppy"]:
                 remaining = copy.copy(tojid)
                 for receiver in tojid:
                     to = None
                     for address in receiver.getAddresses():
-                        # Get a jabber address
+                        #Get a jabber address
                         if "xmpp://" in address:
                             to = address.split("://")[1]
                             break
                     if to and self.send_p2p(None, to, method="p2ppy", ACLmsg=ACLmsg):
-                        # The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
+                        #The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
                         remaining.remove(receiver)
 
                 tojid = remaining
                 if not tojid:
-                    # There is no one left to send the message to
+                    #There is no one left to send the message to
                     return
         except Exception, e:
-            self.DEBUG("Could not send throught P2PPY: "+str(e), "err")
-	    method = "jabber"
+            self.DEBUG("Could not send throught P2PPY: "+str(e), "warn")
+        method = "jabber"
 
         # Second, try it the old way
-        #ACLmsg._attrs.update({"method":"jabber"})
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         envelope = Envelope.Envelope()
         generate_envelope = False
-        # If there is more than one address in the sender or
-        # the only address is not an xmpp address,
-        # we need the full sender AID field
+        #If there is more than one address in the sender or
+        #the only address is not an xmpp address,
+        #we need the full sender AID field
         try:
             if len(ACLmsg.getSender().getAddresses()) > 1 or \
                 "xmpp" not in ACLmsg.getSender().getAddresses()[0]:
@@ -881,10 +487,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         try:
             for i in ACLmsg.getReceivers():
-                # For every receiver,
-                # if there is more than one address in the receiver or
-                # the only address is not an xmpp address,
-                # we need the full receiver AID field
+                #For every receiver,
+                #if there is more than one address in the receiver or
+                #the only address is not an xmpp address,
+                #we need the full receiver AID field
                 if len(i.getAddresses()) > 1 or \
                     "xmpp" not in i.getAddresses()[0]:
                     envelope.addTo(i)
@@ -894,12 +500,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
         try:
-            # The same for 'reply_to'
+            #The same for 'reply_to'
             for i in ACLmsg.getReplyTo():
-                # For every receiver,
-                # if there is more than one address in the receiver or
-                # the only address is not an xmpp address,
-                # we need the full receiver AID field
+                #For every receiver,
+                #if there is more than one address in the receiver or
+                #the only address is not an xmpp address,
+                #we need the full receiver AID field
                 if len(i.getAddresses()) > 1 or \
                     "xmpp" not in i.getAddresses()[0]:
                     envelope.addIntendedReceiver(i)
@@ -907,33 +513,30 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         except Exception, e:
             self.DEBUG("Error setting reply-to: " + str(e),"err")
 
-        # Generate the envelope ONLY if it is needed
+        #Generate the envelope ONLY if it is needed
         if generate_envelope:
             xc = XMLCodec.XMLCodec()
             envxml = xc.encodeXML(envelope)
             xenv['content-type']='fipa.mts.env.rep.xml.std'
             xenv.addChild(node=simplexml.NodeBuilder(envxml).getDom())
 
-        #to = tojid[0]
-        # For each of the receivers, try to send the message
+        #For each of the receivers, try to send the message
         for to in tojid:
             isjabber = False
             for address in to.getAddresses():
                 if "xmpp://" in address:
-                    # If there is a jabber address for this receiver, send the message directly to it
+                    #If there is a jabber address for this receiver, send the message directly to it
                     jabber_id = address.split("://")[1]
                     isjabber = True
                     break
             if isjabber and str(self.getDomain()) in jabber_id:
-                #jabber_msg = xmpp.protocol.Message(jabber_id, payload, xmlns="")
                 jabber_msg = xmpp.protocol.Message(jabber_id, xmlns="")
                 jabber_msg.attrs.update(ACLmsg._attrs)
                 jabber_msg.addChild(node=xenv)
                 jabber_msg["from"]=self.getAID().getName()
                 jabber_msg.setBody(ACLmsg.getContent())
             else:
-                # I don't understand this address, relay the message to the platform
-                #jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(),payload, xmlns="")
+                #I don't understand this address, relay the message to the platform
                 jabber_msg = xmpp.protocol.Message(self.getSpadePlatformJID(), xmlns="")
                 jabber_id = self.getSpadePlatformJID()
                 jabber_msg.attrs.update(ACLmsg._attrs)
@@ -943,12 +546,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             if (not self._running and method=="auto") or method=="jabber":
                 self.jabber.send(jabber_msg)
-                #return
                 continue
 
-            # If the receiver is one of our p2p contacts, send the message through p2p.
-            # If it's not or it fails, send it through the jabber server
-            # We suppose method in ['p2p']
+            #If the receiver is one of our p2p contacts, send the message through p2p.
+            #If it's not or it fails, send it through the jabber server
+            #We suppose method in ['p2p']
             jabber_id = xmpp.JID(jabber_id).getStripped()
 
             if self.p2p_ready:
@@ -961,94 +563,89 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     sent = False
                 self.p2p_send_lock.release()
                 if not sent:
-		    # P2P failed, try to send it through jabber
+                    #P2P failed, try to send it through jabber
                     self.DEBUG("P2P failed, try to send it through jabber","warn")
                     jabber_msg.attrs.update({"method":"jabber"})
                     if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
             else:
-                # P2P is not available / not supported
-                # Try to send it through jabber
+                #P2P is not available / not supported
+                #Try to send it through jabber
+                self.DEBUG("P2P is not available/supported, try to send it through jabber","warn")
                 jabber_msg.attrs.update({"method":"jabber"})
                 if method in ["auto","p2p","p2ppy"]: self.jabber.send(jabber_msg)
 
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
 
-        # Get the address
+        #Get the address
         if not to:
             if not jabber_msg:
                 return False
             else:
                 to = str(jabber_msg.getTo())
         if jabber_msg:
-            self.DEBUG("Trying to send Jabber msg" + str(jabber_msg) + " through P2P")
+            self.DEBUG("Trying to send Jabber msg through P2P")
         elif ACLmsg:
-            self.DEBUG("Trying to send ACL msg" + str(ACLmsg) + " through P2P")
+            self.DEBUG("Trying to send ACL msg through P2P")
             
             
         try:
-            # Try to get the contact's url
+            #Try to get the contact's url
             url = self.p2p_routes[to]["url"]
         except:
-            # The contact is not in our routes
+            #The contact is not in our routes
             self.DEBUG("P2P: The contact is not in our routes. Starting negotiation","warn")
             self.initiateStream(to)
             if self.p2p_routes.has_key(to) and self.p2p_routes[to].has_key('p2p'):
-                # If this p2p connection is marked as faulty,
-                # check if enough time has passed to try again a possible p2p connection
+                #If this p2p connection is marked as faulty,
+                #check if enough time has passed to try again a possible p2p connection
                 if self.p2p_routes[to]['p2p'] == False:
                     try:
                         t1 = time.time()
                         t = t1 - self.p2p_routes[to]['failed_time']
-                        # If more than 10 seconds have passed . . .
+                        #If more than 10 seconds have passed . . .
                         if t > 10.0:
-			    self.p2p_lock.acquire()
+                            self.p2p_lock.acquire()
                             self.p2p_routes[to]['p2p'] = True
                             self.p2p_routes[to]['failed_time'] = 0.0
-			    self.p2p_lock.release()
+                            self.p2p_lock.release()
                     except:
-                        # The p2p connection is really faulty
+                        #The p2p connection is really faulty
                         self.DEBUG("P2P: The p2p connection is really faulty","warn")
                         return False
                 url = self.p2p_routes[to]["url"]
             else:
-                # There is no p2p for this contact
+                #There is no p2p for this contact
                 self.DEBUG("P2P: There is no p2p support for this contact","warn")
                 return False
 
 
-        # Check if there is already an open socket
+        #Check if there is already an open socket
         s = None
         if self.p2p_routes[to].has_key("socket"):
             s = self.p2p_routes[to]["socket"]
         if not s:
-            # Parse url
+            #Parse url
             scheme, address = url.split("://",1)
             if scheme == "spade":
-                # Check for address and port number
+                #Check for address and port number
                 l = address.split(":",1)
                 if len(l) > 1:
                     address = l[0]
                     port = int(l[1])
 
-            # Create a socket connection to the destination url
+            #Create a socket connection to the destination url
             connected = False
             tries = 2
             while not connected and tries > 0:
                 try:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.connect((address, port))
-		    self.p2p_lock.acquire()
+                    self.p2p_lock.acquire()
                     self.p2p_routes[to]["socket"] = s
-		    self.p2p_lock.release()
+                    self.p2p_lock.release()
                     connected = True
-                    """
-                    if not s:
-                        # Socket creation failed, throw a exception
-                        print colors.color_red + "Socket creation failed, throw a exception" + colors.color_none
-                        raise socket.error
-                    """
                 except:
                     tries -= 1
                     _exception = sys.exc_info()
@@ -1057,10 +654,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             if not connected:
                 self.DEBUG("Socket creation failed","warn")
-                #raise socket.error
-		return False
+                return False
 
-        # Send length + message
+        #Send length + message
         sent = False
         tries = 2
         while not sent and tries > 0:
@@ -1068,103 +664,98 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if method in ["p2p","auto"]:
                     jabber_msg.attrs.update({"method":"p2p"})
                     length = "%08d"%(len(str(jabber_msg)))
-                    # Send message through socket
+                    #Send message through socket
                     s.send(length+str(jabber_msg))
-                    self.DEBUG("P2P message sent throught p2p: "+str(jabber_msg),"ok")
+                    self.DEBUG("P2P message sent throught p2p","ok")
                 elif method in ["p2ppy"]:
                     ACLmsg._attrs.update({"method":"p2ppy"})
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
-                    self.DEBUG("P2P message sent throught p2ppy: "+str(id(ser)),"ok")
+                    self.DEBUG("P2P message sent throught p2ppy","ok")
                 sent = True
-                # Close socket
-                #s.close()
+
             except Exception, e:
                 self.DEBUG("Socket: send failed, threw an exception: " +str(e), "err")
-		self._p2p_failures += 1
-                #raise socket.error
+                self._p2p_failures += 1
                 # Dispose of old socket
-		self.p2p_lock.acquire()
+                self.p2p_lock.acquire()
                 s.close()
-		try:
-                	del s
-			del self.p2p_routes[to]["socket"]
-		except:
-			pass
-		self.p2p_lock.release()
-                # Get address and port AGAIN
+                try:
+                    del s
+                    del self.p2p_routes[to]["socket"]
+                except: pass
+                self.p2p_lock.release()
+                #Get address and port AGAIN
                 scheme, address = url.split("://",1)
                 if scheme == "spade":
-                    # Check for address and port number
+                    #Check for address and port number
                     l = address.split(":",1)
                     if len(l) > 1:
                         address = l[0]
                         port = int(l[1])
-                    # Try again
+                    #Try again
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.connect((address, port))
-		    self.p2p_lock.acquire()
+                    self.p2p_lock.acquire()
                     self.p2p_routes[to]["socket"] = s
-		    self.p2p_lock.release()
+                    self.p2p_lock.release()
                 else:
-                    #raise socket.error
-		    return False
+                    return False
                 tries -= 1
         if not sent:
             self.DEBUG("Socket send failed","warn")
-	    self.p2p_lock.acquire()
+            self.p2p_lock.acquire()
             self.p2p_routes[to]["p2p"] = False
             self.p2p_routes[to]["failed_time"] = time.time()
             self.p2p_lock.release()
-            #raise socket.error
-	    return False
+            return False
         else:
             return True
 
     def _kill(self):
-	"""
-	kills the agent
-	"""
-        #self._alive = False
-	self._forceKill.set()
+        """
+        kills the agent
+        """
+        self._forceKill.set()
 
     def isRunning(self):
-	"""
-	returns wether an agent is running or not
-	"""
-	return self._alive
+        """
+        returns wether an agent is running or not
+        """
+        return self._alive
 
     def stop(self, timeout=0):
-	"""
-	Stops the agent execution and blocks until the agent dies
-	"""
-	self._kill()
-	if timeout > 0:
-		to = time.now() + timeout
-		while self._alive and time.now() < to:
-			time.sleep(0.1)
-	# No timeout (true blocking)
-	else:
-		while self._alive:
-			time.sleep(0.1)
-	return True
+        """
+        Stops the agent execution and blocks until the agent dies
+        """
+        self._kill()
+        if timeout > 0:
+            to = time.now() + timeout
+            while self._alive and time.now() < to:
+                time.sleep(0.1)
+        #No timeout (true blocking)
+        else:
+            while self._alive:
+                time.sleep(0.1)
+        return True
+
 
     def forceKill(self):
-            return self._forceKill.isSet()
+        return self._forceKill.isSet()
 
     def _setup(self):
-	"""
-	setup agent method. configures the agent
-	must be overridden
+        """
+        setup agent method. configures the agent
+        must be overridden
         """
         pass
 
     def takeDown(self):
-	"""
-	stops the agent
-	must be overridden
-    (kind of a "onEnd" for the agent)
+        """
+        stops the agent
+        must be overridden
+        (kind of a "onEnd" for the agent)
         """
         pass
 
@@ -1184,23 +775,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.start()
 
-        # If this agent supports P2P, wait for P2PBEhaviour to properly start
+        #If this agent supports P2P, wait for P2PBEhaviour to properly start
         if self.p2p:
             while not self.p2p_ready:
                 time.sleep(0.1)
 
-        #Main Loop
+        #############
+        # Main Loop #
+        #############
         while not self.forceKill():
             try:
-                """
-                self.behavioursGo.acquire()
-                self.behavioursGo.notifyAll()
-                self.behavioursGo.release()
-                """
-
                 #Check for queued messages
                 proc = False
-                toRemove = []  # List of behaviours to remove after this pass
                 msg = self._receive(block=True, timeout=0.01)
                 if msg != None:
                     bL = copy.copy(self._behaviourList)
@@ -1209,11 +795,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (t != None):
                             if (t.match(msg) == True):
                                 if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
-                                    #print "Class or Type DETECTED"
-                                    #if issubclass(b, Behaviour.EventBehaviour):
-                                    #self.DEBUG("EventBehaviour DETECTED "+ str(b) + "type "+str(type(b)))
-                                    #if b.onetime:
-                                    #    toRemove.append(b)
                                     b = b()
                                     b.setAgent(self)
                                     b.postMessage(msg)
@@ -1221,14 +802,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 else:
                                     b.postMessage(msg)
                                 proc = True
-                                #print ">>>>>>MESSAGE " + str(msg) + " POSTEADO A BEHAV " + str(b)
 
                     if (proc == False):
-                        #print ">>>MESSAGE", str(msg), " DOES NOT MATCH BEHAVIOUR ", str(b)
+                        #If no template matches, post the message to the Default behaviour
                         if (self._defaultbehaviour != None):
-                               self._defaultbehaviour.postMessage(msg)
-                    #for beh in toRemove:
-                    #    self._behaviourList.remove(beh)
+                            self._defaultbehaviour.postMessage(msg)
 
             except Exception, e:
                 self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
@@ -1237,9 +815,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._shutdown()
 
     def setDefaultBehaviour(self, behaviour):
-	"""
-	sets a Behavior as Default
-	"""
+        """
+        sets a Behavior as Default
+        """
         class NotAllowed(Exception):
             """
             Not Allowed Exception: an EventBehaviour cannot be a default behaviour
@@ -1253,17 +831,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         behaviour.setAgent(self)
 
     def getDefaultBehaviour(self):
-	"""
-	returns the default behavior
-	"""
+        """
+        returns the default behavior
+        """
         return self._defaultbehaviour
 
     def addBehaviour(self, behaviour, template=None):
-	"""
-	adds a new behavior to the agent
-	"""
+        """
+        adds a new behavior to the agent
+        """
         if not issubclass(behaviour.__class__, Behaviour.EventBehaviour):  #and type(behaviour) != types.TypeType:
-            # Event behaviour do not start inmediately
+            #Event behaviour do not start inmediately
             self._behaviourList[behaviour] = copy.copy(template)
             behaviour.setAgent(self)
             behaviour.start()
@@ -1271,30 +849,53 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.DEBUG("Adding Event Behaviour "+str(behaviour.__class__))
             self._behaviourList[behaviour.__class__] = copy.copy(template)
 
+    def runBehaviourOnce(self, behaviour,template=None):
+        """
+        Runs the behaviour offline
+        Executes its process once
+        @warning Only for OneShotBehaviour
+        """
+        if not issubclass(behaviour.__class__, Behaviour.OneShotBehaviour):
+            self.DEBUG("Only OneShotBehaviour execution is allowed offline","err")
+            return False
+            
+        if not self._running:
+            try:
+                behaviour._receive = self._receive
+                behaviour.onStart()
+                behaviour._process()
+                behaviour.onEnd()
+                del behaviour
+                return True
+            except:
+                self.DEBUG("Failed the execution of the OFFLINE behaviour "+str(behaviour),"err")
+                return False
+        else:
+            self.addBehaviour(behaviour,template)
+
 
     def removeBehaviour(self, behaviour):
-	"""
-	removes a behavior from the agent
-	"""
+        """
+        removes a behavior from the agent
+        """
         if (type(behaviour) not in [types.ClassType,types.TypeType]) and (not issubclass(behaviour.__class__, Behaviour.EventBehaviour)):
-            #self.DEBUG("Killing "+str(behaviour) + " with type "+str(type(behaviour)) ,"warn")
             behaviour.kill()
         try:
             self._behaviourList.pop(behaviour)
         except KeyError:
-	    self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +"with type " +str(type(behaviour))+ " is not registered in "+str(self._behaviourList),"warn")
+            self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +"with type " +str(type(behaviour))+ " is not registered in "+str(self._behaviourList),"warn")
 
 
     def subscribeToFriend(self, aid):
-	"""
-	presence subscription to another agent
-	"""
+        """
+        presence subscription to another agent
+        """
         pass
 
     def unsubscribeToFriend(self, aid):
-	"""
-	presence unsubscription to another agent
-	"""
+        """
+        presence unsubscription to another agent
+        """
         pass
 
     def getSocialNetwork(self, nowait=False):
@@ -1309,436 +910,59 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 time.sleep(0.3)
             return self._roster
 
-    def printSocialNetwork(self):
-        s = "{"
-        for j, v in self._socialnetwork.items():
-            s = s + str(j) + ": " + str(v)
-        s = s + "}"
-        print s
 
-    def createOrganization(self,organization):
+    ##################
+    # FIPA procedures #
+    ##################
+    
+    def searchAgent(self, AAD):
         """
-        Creates an organization.
-        Returns an instance of AgentOrganization.
+        searches an agent in the AMS
+        the search template is an AmsAgentDescription class
         """
-        organization.create=True
-        self.addBehaviour(organization)
-
-    def joinOrganization(self, organization):
-        """
-        Joins an agent organization
-        """
-        if organization.name not in self.getOrganizationList():
-            print "The Organization does not exist"
-            return
-        organization.create=False
-        self.addBehaviour(organization)
-
-
-
-    def getOrganizationInfo(self,OrgName):
-        #en el df comprobar que se trata de una organizaciï¿½n
-        if OrgName not in self.getOrganizationList():
-            print "The Organization does not exist"
-            return {}
-        #consultar la informaciï¿½n
-        ID="".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(5)])
-        iq = Iq(frm=OrgName+"@"+self.getMUC(),typ='result', attrs={"id":ID})
-        t1 = Behaviour.MessageTemplate(iq)
-        b=self.GetOrganizationInfoBehaviour(self.getMUC(),OrgName,ID)
-        self.addBehaviour(b, t1)
-        b.join()
-        return b.dir
-
-
-    class GetOrganizationInfoBehaviour(Behaviour.OneShotBehaviour):
-            def __init__(self,muc_name,roomname,ID):
-                Behaviour.OneShotBehaviour.__init__(self)
-                self.ID=ID
-                self.dir = {}
-                self.muc_name=muc_name
-                self.roomname=roomname
-
-            def _process(self):
-                iq = Iq(to=self.roomname+"@"+self.muc_name,typ='get', attrs={"id":self.ID})
-                query = Protocol('query',xmlns="http://jabber.org/protocol/disco#info ")
-                iq.addChild(node=query)
-                self.myAgent.jabber.send(iq)
-                msg = self._receive(True,10)
-                if msg:
-                    query = msg.getTag("query")
-                    if query:
-                        x = query.getTag("x")
-                        if x:
-                            items =x.getChildren()
-                            for item in items:
-                                if item.getAttr("var")=="muc#roominfo_subject":
-                                    val=item.getTags("value")[0].getData()
-                                    self.dir["goal"]=str(val)
-                                if item.getAttr("var")=="muc#roominfo_description":
-                                    val=item.getTags("value")[0].getData()
-                                    self.dir["type"]=str(val)
-                                if item.getAttr("var")=="muc#roominfo_lang":
-                                    val=item.getTags("value")[0].getData()
-                                    self.dir["contentLanguage"]=str(val)
-                else:
-                    print "Error"
-
-
-
-
-    def getOrganizationList(self):
-      ID="".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(5)])
-      iq = Iq(frm=self.getMUC(), attrs={"id":ID})
-      t = Behaviour.MessageTemplate(iq)
-      b=self.GetOrganizationList(ID,self.getMUC())
-      self.addBehaviour(b, t)
-      b.join()
-      return b.result
-
-
-
-
-
-    class GetOrganizationList(Behaviour.OneShotBehaviour):
-        def __init__(self,ID,muc_name):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self.ID=ID
-            self.result = []
-            self.muc_name=muc_name
-
-        def _process(self):
-           self.result=[]
-           iq = Iq(to=self.muc_name,typ='get', attrs={"id":self.ID})
-           query = Protocol('query',xmlns="http://jabber.org/protocol/disco#items")
-           iq.addChild(node=query)
-           self.myAgent.jabber.send(iq)
-           msg = self._receive(True,10)
-           if msg:
-                   items = msg.getQueryChildren()
-                   for item in items:
-                       if item.getAttr("jid"):
-                            template= Iq(frm=item.getAttr("jid"),typ="result", attrs={"id":self.ID})
-                            t = Behaviour.MessageTemplate(template)
-                            self.setTemplate(t)
-                            iq = Iq(to=item.getAttr("jid"),typ='get', attrs={"id":self.ID})
-                            query = Protocol('query',xmlns="http://jabber.org/protocol/disco#info")
-                            iq.addChild(node=query)
-                            self.myAgent.jabber.send(iq)
-                            msg = self._receive(True,10)
-                            if msg:
-                                query = msg.getTag("query")
-                                if query:
-                                    x = query.getTag("x")
-                                    if x:
-                                        items =x.getChildren()
-                                        for item2 in items:
-                                            if item2.getAttr("var") == "muc#roominfo_type":
-                                                if item2.getTags("value"):
-                                                    value=str(item2.getTags("value")[0].getData())
-                                                    if value=="Organization":
-                                                        self.result.append(str(item.getAttr("name")))
-
-
-    def registerSubscribeHandler(self, handler):
-	"""
-	register the handler that will manage incoming presence subscriptions (agent level)
-	"""
-	self._subscribeHandler = handler
-
-    def registerUnsubscribeHandler(self, handler):
-	"""
-	register the handler that will manage incoming presence unsubscriptions (agent level)
-	"""
-	self._unsubscribeHandler = handler
-
-
-
-
-
-
-    class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, msg, AAD, debug = False):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self.AAD = AAD
-            self.debug = debug
-            self.result = None
-            self.finished = False
-            self._msg = msg
-            self.p = SL0Parser.SL0Parser()
-
-        def _process(self):
-            self._msg.addReceiver( self.myAgent.getAMS() )
-            self._msg.setPerformative('request')
-            #self._msg.setLanguage('fipa-sl0')
-            self._msg.setLanguage('rdf')
-            self._msg.setProtocol('fipa-request')
-            self._msg.setOntology('FIPA-Agent-Management')
-
-            #content = "((action "
-            #content += str(self.myAgent.getAID())
-            #content += "(search "+ str(self.AAD) +")"
-            #content +=" ))"
-
-            #self._msg.setContent(content)
-
-            content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-            content["fipa:action"] = ContentObject()
-            content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-            content["fipa:action"]["fipa:act"] = "search"
-            content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
-            self._msg.setContentObject(content)
-
-            self.myAgent.send(self._msg)
-            msg = self._receive(True,10)
-            if msg == None or str(msg.getPerformative()) != 'agree':
-                #print "%s : There was an error searching the Agent %s (not agree)"%(self.myAgent.getName(),self.AAD.getAID().getName())
-                self.finished = True
-                return None
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() != 'inform':
-                #print "There was an error searching the Agent. (not inform)"
-                self.finished = True
-                return None
-            else:
-		try:
-			#print msg.getContent()
-			#content = msg.getContent()
-			#content = str(content)
-			#print "STR"
-			#content = content.strip()
-			#print "STRIP"
-			#print content
-			#conpar = SL0Parser.SL0Parser()
-			##content_p = conpar.parse(content)
-			#content_p = None
-			#print "PARSE"
-                	##content = p.parse(str(msg.getContent()).strip())
-			co = msg.getContentObject()
-			#print co
-                except:
-			self.DEBUG("PARSE EXCEPTION","err")
-			self.result = []
-			return None
-
-		self.result = [] #content.result.set
-		#for i in content_p.result.set:
-		#	#self.result.append(AmsAgentDescription(i)) #TODO: no puedo importar AMS :(
-		#	#print str(i[1])
-		#	self.result.append(i[1])
-
-		from AMS import AmsAgentDescription
-		for i in co["fipa:result"]:
-			self.result.append(AmsAgentDescription(co=i))
-
-            self.finished = True
-
-    def searchAgent(self, AAD, debug=False):
-	"""
-	searches an agent in the AMS
-	the search template is an AmsAgentDescription class
-	"""
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
-        b = AbstractAgent.SearchAgentBehaviour(msg, AAD, debug)
+        b = fipa.SearchAgentBehaviour(msg, AAD)
 
         self.addBehaviour(b,t)
         b.join()
         return b.result
 
 
-    class ModifyAgentBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, msg, AAD, debug = False):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self.AAD = AAD
-            self.debug = debug
-            self.result = None
-            self.finished = False
-            self._msg = msg
 
-        def _process(self):
-            p = SL0Parser.SL0Parser()
-            self._msg.addReceiver( self.myAgent.getAMS() )
-            self._msg.setPerformative('request')
-            self._msg.setLanguage('rdf')
-            self._msg.setProtocol('fipa-request')
-            self._msg.setOntology('FIPA-Agent-Management')
-
-            #content = "((action "
-            #content += str(self.myAgent.getAID())
-            #content += "(modify "+ str(self.AAD) + ")"
-            #content +=" ))"
-            #self._msg.setContent(content)
-
-            content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-            content["fipa:action"] = ContentObject()
-            content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-            content["fipa:action"]["fipa:act"] = "modify"
-            content["fipa:action"]["fipa:argument"] = self.AAD.asContentObject()
-            self._msg.setContentObject(content)
-
-            self.myAgent.send(self._msg)
-
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() != 'agree':
-                #print "There was an error modifying the Agent. (not agree)"
-                self.result = False
-                return -1
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() != 'inform':
-                #print "There was an error modifying the Agent. (not inform)"
-                self.result = False
-                return -1
-            self.result = True
-            return 1
-
-    def modifyAgent(self, AAD, debug=False):
-	"""
-	modifies the AmsAgentDescription of an agent in the AMS
-	"""
-	msg = ACLMessage.ACLMessage()
+    def modifyAgent(self, AAD):
+        """
+        modifies the AmsAgentDescription of an agent in the AMS
+        """
+        msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
-        b = AbstractAgent.ModifyAgentBehaviour(msg, AAD, debug)
+        b = fipa.ModifyAgentBehaviour(msg, AAD)
 
         self.addBehaviour(b,t)
         b.join()
         return b.result
 
 
-    class getPlatformInfoBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, msg, debug = False):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self._msg = msg
-            self.debug = debug
-            self.result = None
-            self.finished = False
 
-    	def _process(self):
-    		msg = self._msg
-    		msg.addReceiver( self.myAgent.getAMS() )
-    		msg.setPerformative('request')
-    		#msg.setLanguage('fipa-sl0')
-    		msg.setLanguage('rdf')
-    		msg.setProtocol('fipa-request')
-    		msg.setOntology('FIPA-Agent-Management')
-
-    		"""
-    		content = "((action "
-    		content += str(self.myAgent.getAID())
-    		content += "(get-description platform)"
-    		content +=" ))"
-
-    		msg.setContent(content)
-    		"""
-
-    		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-    		content["fipa:action"] = ContentObject()
-    		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-    		content["fipa:action"]["fipa:act"] = "get-description"
-    		msg.setContentObject(content)
-
-    		self.myAgent.send(msg)
-
-    		msg = self._receive(True,20)
-    		if msg == None or msg.getPerformative() != 'agree':
-    			#print "There was an error modifying the Agent. (not agree)"
-
-    			return -1
-    		msg = self._receive(True,20)
-    		if msg == None or msg.getPerformative() != 'inform':
-    			self.DEBUG("There was an error modifying the Agent. (not inform)","err")
-
-    			return -1
-
-    		#self.result = msg.getContent()
-    		self.result = msg.getContentObject()
-
-    def getPlatformInfo(self, debug=False):
-	"""
-	returns the Plarform Info
-	"""
-	msg = ACLMessage.ACLMessage()
+    def getPlatformInfo(self):
+        """
+        returns the Plarform Info
+        """
+        msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
-        b = AbstractAgent.getPlatformInfoBehaviour(msg, debug)
+        b = fipa.getPlatformInfoBehaviour(msg)
 
         self.addBehaviour(b,t)
         b.join()
         return b.result
 
 
-	##################################
-
-    class registerServiceBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, msg, DAD, debug = False, otherdf = None):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self._msg = msg
-            self.DAD = DAD
-            self.debug = debug
-            self.result = None
-            self.finished = False
-            self.otherdf = otherdf
-
-        def _process(self):
-            force_sl0 = False
-            if self.otherdf and isinstance(self.otherdf, AID.aid):
-                self._msg.addReceiver( self.otherdf )
-                force_sl0 = True
-            else:
-                self._msg.addReceiver( self.myAgent.getDF() )
-            self._msg.setPerformative('request')
-            #self._msg.setLanguage('fipa-sl0')
-            #self._msg.setLanguage('rdf')
-            self._msg.setProtocol('fipa-request')
-            self._msg.setOntology('FIPA-Agent-Management')
-
-            if force_sl0:
-                self._msg.setLanguage('fipa-sl0')
-                content = "((action "
-                content += str(self.myAgent.getAID())
-                content += "(register " + str(self.DAD) + ")"
-                content +=" ))"
-                self._msg.setContent(content)
-
-            else:
-                self._msg.setLanguage('rdf')
-                content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-                content["fipa:action"] = ContentObject()
-                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-                content["fipa:action"]["fipa:act"] = "register"
-                content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-                self._msg.setContentObject(content)
-                #print "#################"
-                #print "AGENT:REGISTERSERVICE"
-                #print content.pprint()
-                #print "#################"
-
-            self.myAgent.send(self._msg)
-
-            msg = self._receive(True,20)
-            #if msg == None or msg.getPerformative() != 'agree':
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                #print "There was an error registering the Service. (not agree)"
-                self.result = False
-                return
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(True,20)
-                if msg == None or msg.getPerformative() != 'inform':
-                    if not msg:
-                        self.DEBUG("There was an error registering the Service. (timeout)","err")
-                    elif msg.getPerformative() == 'failure':
-                        self.DEBUG("There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
-                    else:
-                        self.DEBUG("There was an error registering the Service. (not inform)","err")
-                    self.result = False
-                    return
-
-            self.result = True
 
     def registerService(self, DAD, debug=False, otherdf=None):
         """
@@ -1753,126 +977,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             template.setSender(self.getDF())
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
+        b = fipa.registerServiceBehaviour(msg=msg, DAD=DAD, otherdf=otherdf)
         if self._running:
             # Online
-            b = AbstractAgent.registerServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
             self.addBehaviour(b,t)
             b.join()
             return b.result
         else:
-            # Offline operation, done when the agent is starting
-            self.DEBUG("OFFLINE REGISTERSERVICE")
-            if otherdf and isinstance(otherdf, AID.aid):
-                msg.addReceiver( otherdf )
-                force_sl0 = True
-            else:
-                msg.addReceiver( self.getDF() )
-                force_sl0 = False
-            msg.setPerformative('request')
-            #msg.setLanguage('fipa-sl0')
-            msg.setProtocol('fipa-request')
-            msg.setOntology('FIPA-Agent-Management')
-
-            if force_sl0:
-                content = "((action "
-                content += str(self.getAID())
-                content += "(register " + str(DAD) + ")"
-                content +=" ))"
-                msg.setContent(content)
-
-            else:
-                self._msg.setLanguage('rdf')
-                content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-                content["fipa:action"] = ContentObject()
-                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-                content["fipa:action"]["fipa:act"] = "register"
-                content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-                self._msg.setContentObject(content)
-
-            self.send(msg)
-
-            msg = self._receive(block=True, timeout=20, template=t)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                #print "There was an error registering the Service. (not agree)", str(msg)
-                return False
-
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(block=True, timeout=20, template=t)
-                if msg == None or msg.getPerformative() != 'inform':
-                    if msg.getPerformative() == 'failure':
-                        self.DEBUG("There was an error registering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
-                    else:
-                        self.DEBUG("There was an error registering the Service. (not inform)","err")
-                    return False
-
-            return True
+            self.runBehaviourOnce(b,t)
+            return b.result
 
 
-    class deregisterServiceBehaviour(Behaviour.OneShotBehaviour):
-        def __init__(self, msg, DAD, debug=False, otherdf=None):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self._msg = msg
-            self.DAD = DAD
-            self.debug = debug
-            self.result = None
-            self.finished = False
-            self.otherdf = otherdf
-
-        def _process(self):
-            force_sl0 = False
-            if self.otherdf and isinstance(self.otherdf, AID.aid):
-                self._msg.addReceiver( self.otherdf )
-                force_sl0 = True
-            else:
-                self._msg.addReceiver( self.myAgent.getDF() )
-            self._msg.setPerformative('request')
-            #self._msg.setLanguage('fipa-sl0')
-            #self._msg.setLanguage('rdf')
-            self._msg.setProtocol('fipa-request')
-            self._msg.setOntology('FIPA-Agent-Management')
-
-            if force_sl0:
-            	self._msg.setLanguage('fipa-sl0')
-            	content = "((action "
-            	content += str(self.myAgent.getAID())
-            	content += "(deregister " + str(self.DAD) + ")"
-            	content +=" ))"
-            	self._msg.setContent(content)
-
-            else:
-                self._msg.setLanguage('rdf')
-            	content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-           	content["fipa:action"] = ContentObject()
-            	content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-            	content["fipa:action"]["fipa:act"] = "deregister"
-            	content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-            	self._msg.setContentObject(content)
-                #print "#################"
-                #print "AGENT:REGISTERSERVICE"
-                #print content.pprint()
-                #print "#################"
-
-            self.myAgent.send(self._msg)
-
-            msg = self._receive(True,20)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-            #if msg == None or msg.getPerformative() != 'agree':
-                #print "There was an error registering the Service. (not agree)"
-                self.result = False
-                return
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(True,20)
-                if msg == None or msg.getPerformative() != 'inform':
-                    if not msg:
-                        self.DEBUG("There was an error deregistering the Service. (timeout)","err")
-                    elif msg.getPerformative() == 'failure':
-                        self.DEBUG("There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
-                    else:
-                        self.DEBUG("There was an error deregistering the Service. (not inform)","err")
-                    self.result = False
-                    return
-
-            self.result = True
 
     def deregisterService(self, DAD, debug=False, otherdf=None):
         """
@@ -1885,131 +1000,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             template.setSender(otherdf)
         else:
             template.setSender(self.getDF())
+
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
+        b = fipa.deregisterServiceBehaviour(msg=msg, DAD=DAD, otherdf=otherdf)
         if self._running:
             # Online
-            b = AbstractAgent.deregisterServiceBehaviour(msg=msg, DAD=DAD, debug=debug, otherdf=otherdf)
             self.addBehaviour(b,t)
             b.join()
             return b.result
         else:
-            # Offline operation, done when the agent is starting
-            self.DEBUG("OFFLINE DEREGISTERSERVICE")
-            if otherdf and isinstance(otherdf, AID.aid):
-                msg.addReceiver( otherdf )
-                force_sl0 = True
-            else:
-                msg.addReceiver( self.getDF() )
-                force_sl0 = False
-            msg.setPerformative('request')
-            #msg.setLanguage('fipa-sl0')
-            msg.setProtocol('fipa-request')
-            msg.setOntology('FIPA-Agent-Management')
-
-            if force_sl0:
-                content = "((action "
-                content += str(self.getAID())
-                content += "(deregister " + str(DAD) + ")"
-                content +=" ))"
-                msg.setContent(content)
-
-            else:
-                self._msg.setLanguage('rdf')
-                content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-                content["fipa:action"] = ContentObject()
-                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-                content["fipa:action"]["fipa:act"] = "deregister"
-                content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-                self._msg.setContentObject(content)
-
-            self.send(msg)
-
-            msg = self._receive(block=True, timeout=20, template=t)
-            if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                #print "There was an error registering the Service. (not agree)", str(msg)
-                return False
-
-            elif msg == None or msg.getPerformative() == 'agree':
-                msg = self._receive(block=True, timeout=20, template=t)
-                if msg == None or msg.getPerformative() != 'inform':
-                    if msg.getPerformative() == 'failure':
-                        self.DEBUG("There was an error deregistering the Service. failure:" +  msg.getContentObject()['fipa:error'],"err")
-                    else:
-                        self.DEBUG("There was an error deregistering the Service. (not inform)","err")
-                    return False
-
-            return True
-
-    class searchServiceBehaviour(Behaviour.OneShotBehaviour):
-
-    	def __init__(self, msg, DAD, debug=False):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self._msg = msg
-    	    self.DAD = DAD
-            self.debug = debug
-            self.result = None
-            self.finished = False
-
-        def _process(self):
-            try:
-                self._msg.addReceiver( self.myAgent.getDF() )
-                self._msg.setPerformative('request')
-                #self._msg.setLanguage('fipa-sl0')
-                self._msg.setLanguage('rdf')
-                self._msg.setProtocol('fipa-request')
-                self._msg.setOntology('FIPA-Agent-Management')
-
-                """
-		content = "((action "
-                content += str(self.myAgent.getAID())
-                content += "(search "+ str(self.DAD) +")"
-                content +=" ))"
-		"""
-
-		content = ContentObject()
-		content["fipa:action"] = ContentObject()
-            	content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-            	content["fipa:action"]["fipa:act"] = "search"
-            	content["fipa:action"]["fipa:argument"] = ContentObject()
-		content["fipa:action"]["fipa:argument"]["fipa:max_results"] = "0"
-		content["fipa:action"]["fipa:argument"]["fipa:df_agent_description"] = self.DAD.asContentObject()
-            	self._msg.setContentObject(content)
-
-                #self._msg.setContent(content)
-
-                self.myAgent.send(self._msg)
-
-                msg = self._receive(True,20)
-                if msg == None:
-                    #print "%s : There was an error searching the Service (timeout on agree)"%(self.myAgent.getName())
-                    return
-                elif msg.getPerformative() not in ['agree', 'inform']:
-                    self.DEBUG("%s : There was an error searching the Service (not agree) Failure: %s"%(self.myAgent.getName(), msg.getContentObject()["fipa:error"]),"err")
-                    return
-                elif msg.getPerformative() == 'agree':
-                    msg = self._receive(True, 10)
-                    if msg == None:
-                        self.DEBUG("There was an error searching the Service (timeout on inform)","err")
-                        return
-                    elif msg.getPerformative() != 'inform':
-                        self.DEBUG("There was an error searching the Service (not inform) " +  msg.getContentObject()['fipa:error'],"err")
-                        return
-
-                #p = SL0Parser.SL0Parser()
-                #content = p.parse(msg.getContent())
-		content = msg.getContentObject()
-                self.result = []
-		#print "CONT:",content.pprint()
-                for dfd in content.result:  #[0]#.asList()
-                    d = DF.DfAgentDescription(co = dfd)
-                    #print "DFD:",d.asRDFXML()
-                    self.result.append(d)
-
-            except Exception, e:
-                #print "###Exception in searchServiceBehav", str(e)
-                return
-	    return
+            self.runBehaviourOnce(b,t)
+            return b.result
 
 
     def searchService(self, DAD, debug=True):
@@ -2018,142 +1020,42 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     	the service template is a DfAgentDescriptor
 
     	"""
-        a=11
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
+        b = fipa.searchServiceBehaviour(msg, DAD)
         if self._running:
-            b = AbstractAgent.searchServiceBehaviour(msg, DAD, debug)
             self.addBehaviour(b,t)
             b.join()
             return b.result
         else:
-            # (Offline) Inline operation (done when the agent is starting)
-            result = []
-            try:
-                msg.addReceiver( self.getDF() )
-                msg.setPerformative('request')
-                #msg.setLanguage('fipa-sl0')
-                msg.setLanguage('rdf')
-                msg.setProtocol('fipa-request')
-                msg.setOntology('FIPA-Agent-Management')
+            self.runBehaviourOnce(b,t)
+            return b.result
 
-                """
-		content = "((action "
-                content += str(self.getAID())
-                content += "(search "+ str(DAD) +")"
-                content +=" ))"
-                msg.setContent(content)
-		"""
-
-		content = ContentObject()
-                content["fipa:action"] = ContentObject()
-                content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-                content["fipa:action"]["fipa:act"] = "search"
-                content["fipa:action"]["fipa:argument"] = ContentObject()
-                content["fipa:action"]["fipa:argument"]["fipa:max_results"] = "0"
-                content["fipa:action"]["fipa:argument"]["fipa:df_agent_description"] = self.DAD.asContentObject()
-                msg.setContentObject(content)
-
-                self.send(msg)
-
-                msg = self._receive(block=True, timeout=10, template=t)
-
-                if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-                    self.DEBUG("There was an error searching the Service. (not agree)","err")
-                    return result
-
-                elif msg == None or msg.getPerformative() == 'agree':
-                    msg = self._receive(True, 10, t)
-
-                    if msg == None or msg.getPerformative() != 'inform':
-                        self.DEBUG("There was an error searching the Service. (not inform) " +  msg.getContentObject()['fipa:error'],"err")
-                        return result
-
-                #p = SL0Parser.SL0Parser()
-                #content = p.parse(msg.getContent())
-                content = msg.getContentObject()
-                for dfd in content.result:  #[0]#.asList()
-                    d = DF.DfAgentDescription(co = dfd)
-                    result.append(d)
-                return result
-            except:
-                _exception = sys.exc_info()
-                if _exception[0]:
-                    self.DEBUG('\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
-                #print "EXCEPTION IN SEARCHSERVICE", str(e)
-                return result
-
-
-
-    class modifyServiceBehaviour(Behaviour.OneShotBehaviour):
-	def __init__(self, msg, DAD, debug=False):
-            Behaviour.OneShotBehaviour.__init__(self)
-            self._msg = msg
-            self.DAD = DAD
-            self.debug = debug
-            self.result = None
-
-	def _process(self):
-
-		#p = SL0Parser.SL0Parser()
-
-		#self._msg = ACLMessage.ACLMessage()
-		self._msg.addReceiver( self.myAgent.getDF() )
-		self._msg.setPerformative('request')
-		self._msg.setLanguage('rdf')
-		self._msg.setProtocol('fipa-request')
-		self._msg.setOntology('FIPA-Agent-Management')
-
-		#content = "((action "
-		#content += str(self.myAgent.getAID())
-		#content += "(modify "+ str(self.DAD) + ")"
-		#content +=" ))"
-		#self._msg.setContent(content)
-
-
-		content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-		content["fipa:action"] = ContentObject()
-		content["fipa:action"]["fipa:actor"] = self.myAgent.getAID().asContentObject()
-		content["fipa:action"]["fipa:act"] = "modify"
-		content["fipa:action"]["fipa:argument"] = self.DAD.asContentObject()
-		self._msg.setContentObject(content)
-
-		self.myAgent.send(self._msg)
-
-		msg = self._receive(True,20)
-		if msg == None or msg.getPerformative() != 'agree':
-		    self.DEBUG("There was an error modifying the Service. (not agree) ","err")
-		    if msg: self.DEBUG(msg.getContentObject()['fipa:error'],"err")
-		    self.result=False
-		    return
-		msg = self._receive(True,20)
-		if msg == None or msg.getPerformative() != 'inform':
-		    self.DEBUG( "There was an error modifying the Service. (not inform) " +  str(msg.getContentObject()['fipa:error']),"err")
-		    self.result = False
-		    return
-		self.result = True
-		return
 
 		
-    def modifyService(self, DAD, debug=False):
-	"""
-	modifies a service in the DF
-	the service template is a DfAgentDescriptor
-	"""
-	msg = ACLMessage.ACLMessage()
+    def modifyService(self, DAD):
+        """
+        modifies a service in the DF
+        the service template is a DfAgentDescriptor
+        """
+        msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
-        b = AbstractAgent.modifyServiceBehaviour(msg, DAD, debug)
+        b = fipa.modifyServiceBehaviour(msg, DAD)
 
-        self.addBehaviour(b,t)
-        b.join()
-        return b.result
+        if self._running:
+            # Online
+            self.addBehaviour(b,t)
+            b.join()
+            return b.result
+        else:
+            self.runBehaviourOnce(b,t)
+            return b.result
 
-
-	##################################
+##################################
 
 # Changed to be a 'daemonic' python Thread
 class jabberProcess(threading.Thread):
@@ -2184,7 +1086,6 @@ class jabberProcess(threading.Thread):
 		while not self.forceKill():
 		    try:
 			err = self.jabber.Process(0.4)
-			#print "Process returns " + str(err) + " " + str(type(err))
 		    except Exception, e:
 			_exception = sys.exc_info()
 			if _exception[0]:
@@ -2212,7 +1113,8 @@ class PlatformAgent(AbstractAgent):
         self.config = config
         self.debug = debug
         self.jabber = xmpp.Component(server=server, port=port, debug=self.debug)
-        self._register(password)
+        if not self._register(password):
+            self._shutdown()
 
     def _register(self, password, autoregister=True):
         """
@@ -2222,15 +1124,18 @@ class PlatformAgent(AbstractAgent):
         jid = xmpp.protocol.JID(self._aid.getName())
         name = jid.getNode()
 
-        #TODO: Que pasa si no conectamos? Hay que controlarlo!!!
-        while not self.jabber.connect():
+        tries = 5
+        while not self.jabber.connect() and tries >0:
               time.sleep(0.005)
+              tries -=1
+        if tries <= 0:
+            self.DEBUG("The agent could not connect to the platform "+ str(self.getDomain()),"err")
+            return False
 
 
         if (self.jabber.auth(name=name,password=password) == None):
               raise NotImplementedError
 
-        #print "Auth ok", name
         self.jabber.RegisterHandler('message',self._jabber_messageCB)
         self.jabber.RegisterHandler('presence',self._jabber_messageCB)
         self.jabber.RegisterHandler('iq',self._jabber_messageCB)
@@ -2239,7 +1144,7 @@ class PlatformAgent(AbstractAgent):
 
         self.jabber_process = jabberProcess(self.jabber, owner=self)
         self.jabber_process.start()
-        #thread.start_new_thread(self._jabber_process, tuple())
+        return True
 
     def _shutdown(self):
 
@@ -2252,7 +1157,7 @@ class PlatformAgent(AbstractAgent):
                 b.kill()
             except:
                 pass
-            #self.removeBehaviour(b)
+                
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.kill()
         #DeInit the Agent
@@ -2265,207 +1170,21 @@ class Agent(AbstractAgent):
     This is the main class which may be inherited to build a SPADE agent
     """
 
-    class OutOfBandBehaviour(Behaviour.EventBehaviour):
-        def openP2P(self, url):
-            """
-            Open a P2P connection with a remote agent
-            """
-
-            # Parse url
-            scheme, address = url.split("://",1)
-            if scheme == "spade":
-                # Check for address and port number
-                l = address.split(":",1)
-                if len(l) > 1:
-                    address = l[0]
-                    port = l[1]
-                else:
-                    port = self.myAgent.P2PPORT
-            """
-            NOT FOR THE MOMENT
-            # Create a socket connection to the destination url
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((address, port))
-            if not s:
-                # Socket creation failed, throw a exception
-                raise socket.error
-
-            # Return socket
-            return s
-            """
-            return None
-
-
-        def _process(self):
-            self.msg = self._receive(False)
-            if self.msg != None:
-                #print "OOB IQ RECEIVED"
-                # Check type of oob iq
-                if self.msg.getType() == "error":
-                    # Check error code
-                    try:
-                        if self.msg.getTag('error').getAttr("code") == "404":
-                            pass
-                        elif self.msg.getTag('error').getAttr("code") == "406":
-                            pass
-                    except:
-                        # WTF
-                        pass
-                elif self.msg.getType() == "set":
-                    # OOB proposal
-                    if self.myAgent.p2p_ready:
-                        # Accept p2p proposal
-                        try:
-                            # Add remote oob data to p2p routes
-                            url = msg.getTag("query").getTag("url").getData()
-                            remote = {'url':url, 'socket':self.openP2P(url)}
-                            d = {self.msg.getSender().getName():remote}
-			    self.myAgent.p2p_lock.acquire()
-                            self.myAgent.p2p_routes.update(d)
-			    self.myAgent.p2p_lock.release()
-                            # Send result INCLUDING our own p2p url
-                            reply = msg.buildReply("result")
-                            reply.getTag("query").delChild("url")
-                            reply.getTag("query").addChild("url")
-                            reply.getTag("query").getTag("url").setData(self.myAgent.getP2PUrl())
-                            self.myAgent.jabber.send(reply)
-                        except:
-                            # The oob-iq was not well formed. Send 404
-                            reply = self.msg.buildReply("error")
-                            err = Node("error", {'code':'404', 'type':'cancel'})
-                            err.addChild("not-found")
-                            err.setNamespace('urn:ietf:params:xml:ns:xmpp-stanzas')
-                            reply.addChild(err)
-                            self.myAgent.jabber.send(reply)
-                    else:
-                        # Reject p2p proposal
-                        reply = self.msg.buildReply("error")
-                        err = xmpp.Node("error", {'code':'406', 'type':'modify'})
-                        err.addChild("not-acceptable")
-                        err.setNamespace('urn:ietf:params:xml:ns:xmpp-stanzas')
-                        reply.addChild(err)
-                        self.myAgent.jabber.send(reply)
-                elif self.msg.getType() == "result":
-                    # Check for remote P2P url
-                    try:
-                        url = msg.getTag("query").getTag("url").getData()
-                        remote = {'url':url, 'socket':self.openP2P(url)}
-                        d = {self.msg.getSender().getName():remote}
-			self.myAgent.p2p_lock.acquire()
-                        self.myAgent.p2p_routes.update(d)
-			self.myAgent.p2p_lock.release()
-                    except:
-                        # No url info came
-                        pass
-
-
-
-
-    class PresenceBehaviour(Behaviour.EventBehaviour):
-        def _process(self):
-            self.msg = self._receive(False)
-            if self.msg != None:
-                #print "PRESENCEBEHAVIOUR CALLED WITH", self.msg
-                if self.msg.getType() == "subscribe":
-                    # Subscribe petition
-                    # Answer YES
-                    rep = Presence(to=self.msg.getFrom())
-                    rep.setType("subscribed")
-                    self.myAgent.jabber.send(rep)
-                    self.DEBUG( str(self.msg.getFrom())  + " subscribes to me")
-                    rep.setType("subscribe")
-                    self.myAgent.jabber.send(rep)
-                    #print "Subscription request sent in return"
-                if self.msg.getType() == "subscribed":
-                    if self.msg.getFrom() == self.myAgent.getAMS().getName():
-                        # Subscription confirmation from AMS
-                        self.DEBUG( "Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)","ok")
-                    else:
-                        self.DEBUG(str(self.msg.getFrom()) + "has subscribed me")
-                elif self.msg.getType() == "unsubscribed":
-                    # Unsubscription from AMS
-                    if self.msg.getFrom() == self.myAgent.getAMS().getName():
-                        self.DEBUG("There was an error registering in the AMS: " + str(self.getAID().getName()),"err")
-                    else:
-                        self.DEBUG(str(self.msg.getFrom()) + " has unsubscribed me")
-                elif self.msg.getType() in ["available", ""]:
-                    #print "Agent " + str(self.msg.getFrom()) + " is online"
-                    self.myAgent.setSocialItem(self.msg.getFrom(), "available")
-                elif self.msg.getType() == "unavailable":
-                    #print "Agent " + str(self.msg.getFrom()) + " is offline"
-                    self.myAgent.setSocialItem(self.msg.getFrom(), "unavailable")
-
-                self.myAgent.getSocialNetwork()
-                #self.myAgent.printSocialNetwork()
-
-
-    class RosterBehaviour(Behaviour.EventBehaviour):
-        def _process(self):
-            stanza = self._receive(False)
-            if stanza != None:
-                #print "ROSTERBEHAV LLAMADO"
-                for item in stanza.getTag('query').getTags('item'):
-                    jid=item.getAttr('jid')
-                    if item.getAttr('subscription')=='remove':
-                        if self.myAgent._roster.has_key(jid): del self.myAgent.roster[jid]
-                    elif not self.myAgent._roster.has_key(jid): self.myAgent._roster[jid]={}
-                    self.myAgent._roster[jid]['name']=item.getAttr('name')
-                    self.myAgent._roster[jid]['ask']=item.getAttr('ask')
-                    self.myAgent._roster[jid]['subscription']=item.getAttr('subscription')
-                    self.myAgent._roster[jid]['groups']=[]
-                    if not self.myAgent._roster[jid].has_key('resources'): self.myAgent._roster[jid]['resources']={}
-                    for group in item.getTags('group'): self.myAgent._roster[jid]['groups'].append(group.getData())
-                #self.myAgent._roster[self._owner.User+'@'+self._owner.Server]={'resources':{},'name':None,'ask':None,'subscription':None,'groups':None,}
-                self.myAgent._waitingForRoster = False
-                #print "TENGO UN ROSTER", str(self.myAgent._roster)
-                #self.myAgent.printSocialNetwork()
-
-
-    class SocialItem:
-        """
-        A member of an agent's Social Network
-        AID, presence & subscription
-        """
-        def __init__(self, agent, jid, presence=""):
-            self.presence = ""
-
-            # Generate AID
-            self._aid = AID.aid(name=jid, addresses=["xmpp://"+str(jid)])
-
-            # Get subscription from roster
-            roster = agent._roster
-            if roster.has_key(jid):
-                if roster[jid].has_key("subscription"):
-                    self._subscription = roster[jid]["subscription"]
-                else:
-                    self._subscription = "none"
-            else:
-                self._subscription = "none"
-
-            if presence:
-                self._presence = presence
-
-        def setPresence(self, presence):
-            self._presence = presence
-
-        def getPresence(self):
-            return self._presence
-
 
     def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
         self.port = port
         self.debug = debug
-        AbstractAgent.__init__(self, agentjid, self.server,p2p=p2p)
-        self.jabber = xmpp.Client(self.server, self.port, self.debug)
-
-        self.remote_services = {}  # Services of remote agents
+        AbstractAgent.__init__(self, agentjid, jid.getDomain(),p2p=p2p)
+        
+        self.jabber = xmpp.Client(jid.getDomain(), port, debug)
 
         # Try to register
         try:
             self.DEBUG("Trying to register agent " + agentjid)
-            self._register(password)
+            if not self._register(password):
+                self.stop()
         except NotImplementedError:
             self.DEBUG("NotImplementedError: Could not register agent %s"%(agentjid),"err")
             self.stop()
@@ -2476,16 +1195,16 @@ class Agent(AbstractAgent):
             return
 
         # Add Presence Control Behaviour
-        self.addBehaviour(Agent.PresenceBehaviour(), Behaviour.MessageTemplate(Presence()))
+        self.addBehaviour(socialnetwork.PresenceBehaviour(), Behaviour.MessageTemplate(Presence()))
 
         # Add Roster Behaviour
-        self.addBehaviour(Agent.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
+        self.addBehaviour(socialnetwork.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
         self.DEBUG("Agent %s registered"%(agentjid),"ok")
 
         if not self.__register_in_AMS():
             self.DEBUG("Agent " + str(self.getAID().getName()) + " dying ...","err")
-            sys.exit(-1)
+            self.stop()
 
         # Ask for roster
         ##self.getSocialNetwork(nowait=True)
@@ -2496,7 +1215,7 @@ class Agent(AbstractAgent):
                 # If we have no previous presence information, update it
                 self._socialnetwork[jid].setPresence(presence)
         else:
-            self._socialnetwork[jid] = Agent.SocialItem(self, jid, presence)
+            self._socialnetwork[jid] = socialnetwork.SocialItem(self, jid, presence)
 
 
     def _register(self, password, autoregister=True):
@@ -2507,37 +1226,29 @@ class Agent(AbstractAgent):
         jid = xmpp.protocol.JID(self._aid.getName())
         name = jid.getNode()
 
-        c = ''
-        while not self.jabber.connect(use_srv=None): time.sleep(0.005)
-        #print "### Agent %s got connected to the server"%(self._aid.getName())
 
-        #TODO:  Que pasa si no nos identificamos? Hay que controlarlo!!!
-        #       Registrarse automaticamente o algo..
+        tries = 5
+        while not self.jabber.connect(use_srv=None) and tries >0:
+            time.sleep(0.005)
+            tries -=1
+        if tries <=0 : return False
+
+
         if (self.jabber.auth(name,password,"spade") == None):
-            #raise NotImplementedError
 
-        #print "### Agent %s: First auth attempt failed"%(self._aid.getName())
+            self.DEBUG("First auth attempt failed. Trying to register","warn")
 
             if (autoregister == True):
                 xmpp.features.getRegInfo(self.jabber,jid.getDomain())
                 xmpp.features.register(self.jabber,jid.getDomain(),\
                 {'username':name, 'password':str(password), 'name':name})
 
-                """
-                self.jabber.disconnect()
-
-                del self.jabber
-                self.jabber = xmpp.Client(self.server, self.port, self.debug)
-
-                self.jabber.connect(use_srv=False)
-                """
 
                 if not self.jabber.reconnectAndReauth():
-                    #if (self.jabber.auth(name,password,"spade") == None):
-                    self.DEBUG("Agent %s: Second auth attempt failed"%(self._aid.getName()), "err")
-                    raise NotImplementedError
+                    self.DEBUG("Second auth attempt failed (username="+str(name)+")", "err")
+                    return False
             else:
-                    raise NotImplementedError
+                    return False
 
         self.DEBUG("Agent %s got authed"%(self._aid.getName()),"ok")
 
@@ -2546,16 +1257,15 @@ class Agent(AbstractAgent):
         self.jabber.RegisterHandler('iq',self._jabber_messageCB)
         #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
 
-        #thread.start_new_thread(self._jabber_process, tuple())
         self.jabber_process = jabberProcess(self.jabber, owner=self)
         self.jabber_process.start()
-        #print "### Agent %s: Started jabber process"%(self._aid.getName())
 
         # Request roster and send initial presence
+        #self.getSocialNetwork()
 
         self.jabber.sendInitPresence()
-
-        #print "ROSTER: ", str(self._roster.getItems())
+        
+        return True
 
 
     def _shutdown(self):
@@ -2568,7 +1278,6 @@ class Agent(AbstractAgent):
             except:
                 pass
 
-            #self.removeBehaviour(b)
         if (self._defaultbehaviour != None):
             self._defaultbehaviour.kill()
 
@@ -2588,8 +1297,6 @@ class Agent(AbstractAgent):
 
 
     def __register_in_AMS(self, state='active', ownership=None, debug=False):
-
-        #presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='subscribed')
         # Let's change it to "subscribe"
         presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='subscribe')
 
