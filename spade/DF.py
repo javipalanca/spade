@@ -640,6 +640,11 @@ class DfAgentDescription:
 
     def getAID(self):
         return self.name
+        
+    def getName(self):
+        if self.name != None:
+            return self.name.getName()
+        else: return ""
 
     def setAID(self, a):
         self.name = a

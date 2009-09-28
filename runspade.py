@@ -3,6 +3,7 @@
 
 import os #, signal
 import sys
+import traceback
 import time
 import thread
 from os.path import *
@@ -13,8 +14,8 @@ try:
 #	from spade import SpadeConfigParser
 	from spade import colors
 	#from xmppd.filters import acc
-except ImportError:
-	print "Could not import spade package!!!"
+except ImportError, e:
+	print "Could not import spade package!!! " + str(e)
 	#from libspade import spade_backend
 	#from libspade import SpadeConfigParser
 	#from libspade import colors
@@ -136,6 +137,9 @@ def main():
 
 
   except Exception,e:
+    _exception = sys.exc_info()
+    if _exception[0]:
+        print '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
 	print str(e)
 	print colors.color_red + " [failed]" + colors.color_none
 	platform.shutdown()

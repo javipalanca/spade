@@ -78,8 +78,10 @@ class DFTestCase(unittest.TestCase):
     def setUp(self):
 
     	self.a = MyAgent("a@"+host, "secret")
+    	self.a._debug=True
     	self.a.start()
     	self.b = MyAgent("b@"+host, "secret")
+    	self.b._debug=True
     	self.b.start()
 
     def tearDown(self):

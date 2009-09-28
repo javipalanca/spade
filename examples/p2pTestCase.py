@@ -108,7 +108,7 @@ class p2pRecvMultiMsgBehav(spade.Behaviour.OneShotBehaviour):
         
         for i in range(self.nmsg):
             self.myAgent.msg = None
-            self.myAgent.msg = self._receive(block=True,timeout=10)
+            self.myAgent.msg = self._receive(block=True,timeout=20)
             if self.myAgent.msg.getContent()!=str(i+1):
                 self.myAgent.errorTag.append(i+1)
             if self.myAgent.msg: self.myAgent.receivedmsg+=1
@@ -208,9 +208,10 @@ class BasicTestCase(unittest.TestCase):
         while self.b.msg == None and counter < 10:
             time.sleep(1)
             counter += 1
+
+        self.assertEqual(self.b.receivedmsg,nmsg)
         self.assertNotEqual(self.b.msg,None)
         self.assertEqual(self.b.msg._attrs["method"],"p2p")
-        self.assertEqual(self.b.receivedmsg,nmsg)
         self.assertEqual(self.b.errorTag,[])
         self.assertEqual(self.a.routeTag,[])
 

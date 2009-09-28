@@ -468,7 +468,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     return
         except Exception, e:
             self.DEBUG("Could not send throught P2PPY: "+str(e), "warn")
-        method = "jabber"
+            method = "jabber"
 
         # Second, try it the old way
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
