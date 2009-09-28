@@ -32,7 +32,7 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             elif self.msg.getType() == "unavailable":
                 self.myAgent.setSocialItem(self.msg.getFrom(), "unavailable")
 
-            self.myAgent.getSocialNetwork()
+            #self.myAgent.getSocialNetwork()
 
 
 class RosterBehaviour(Behaviour.EventBehaviour):
