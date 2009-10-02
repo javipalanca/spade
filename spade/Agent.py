@@ -385,7 +385,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return self._serverplatform
 
     def getP2PUrl(self):
-        return str("spade://"+socket.gethostname()+":"+str(self.P2PPORT))
+        return str("spade://"+socket.gethostbyname(socket.gethostname())+":"+str(self.P2PPORT))
 
 
     def requestDiscoInfo(self, to):
@@ -578,6 +578,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
 
+        #If this agent supports P2P, wait for P2PBEhaviour to properly start
+        if self.p2p:
+            while not self.p2p_ready:
+                time.sleep(0.1)
+        else:
+            # send_p2p should not be called in a P2P-disabled agent !
+            self.DEBUG("This agent does not support sending p2p messages", "warn")
+            return False
+
         #Get the address
         if not to:
             if not jabber_msg:
@@ -595,7 +604,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             url = self.p2p_routes[to]["url"]
         except:
             #The contact is not in our routes
-            self.DEBUG("P2P: The contact is not in our routes. Starting negotiation","warn")
+            self.DEBUG("P2P: The contact " + str(to) + " is not in our routes. Starting negotiation","warn")
             self.initiateStream(to)
             if self.p2p_routes.has_key(to) and self.p2p_routes[to].has_key('p2p'):
                 #If this p2p connection is marked as faulty,
@@ -793,7 +802,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     for b in bL:
                         t = bL[b]
                         if (t != None):
-                            if (t.match(msg) == True):
+			    if (t.match(msg) == True):
                                 if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
                                     b = b()
                                     b.setAgent(self)

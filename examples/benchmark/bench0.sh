@@ -37,7 +37,7 @@ do
 			h=`expr $i + 1`
 			#ssh magentix@$ip.$h java -jar /home/magentix/benchmarks/libmagentix2.jar 1 receptor qpid://receptor$i@$ip.$h:8080 &
 			echo "Launching receiver $i"
-			ssh 192.168.1.$h python2.6 $dir/bench1_receiver.py 1 receptor$i@$ip.1 2> /dev/null &
+			python2.6 $dir/bench1_receiver.py 1 receptor$i@$ip.1 2> /dev/null &
 			#sleep 2
 		done
 
@@ -59,7 +59,7 @@ do
 		for n in `seq 1 1 $nemisores`
 		do
 			h=`expr $n + 1`		
-			ssh 192.168.1.$h python2.6 $dir/bench1_sender.py 1 emisor$n@$ip.1 $nmsgt $tmsg $nemisores $n 2> /dev/null &
+			python2.6 $dir/bench1_sender.py 1 emisor$n@$ip.1 $nmsgt $tmsg $nemisores $n 2> /dev/null &
 			echo "Launching sender $n"
 			#sleep 1
 		done
@@ -74,12 +74,11 @@ do
 			h=`expr $i + 1`
 			#ssh magentix@$ip.$h java -jar /home/magentix/benchmarks/libmagentix2.jar 1 receptor qpid://receptor$i@$ip.$h:8080 &
 			echo "Killing receiver $i"
-		    #pid=`ps ax | grep bench1_controller.py | awk '{print $1}'`
-			#for pid in `ps ax|grep receiver|grep -v grep|awk '{print $1}'`; do
-			#	echo "Matar a receptor de pid $pid" ;
-			#	kill -9 $pid ;
-			#done
-			ssh 192.168.1.$h killall -9 python2.6
+		    pid=`ps ax | grep bench1_controller.py | awk '{print $1}'`
+			for pid in `ps ax|grep receiver|grep -v grep|awk '{print $1}'`; do
+				echo "Matar a receptor de pid $pid" ;
+				kill -9 $pid ;
+			done
 			#sleep 2
 		done
 
