@@ -20,3 +20,5 @@ import peer2peer
 import socialnetwork
 import content
 import colors
+import logic
+import bdi
