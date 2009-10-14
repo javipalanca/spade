@@ -463,9 +463,10 @@ class Behaviour(MessageReceiver.MessageReceiver):
         except Exception,e:
             self.myAgent.DEBUG("Exception in Behaviour "+str(self)+": "+str(e), "err")
         self.onEnd()
-        if issubclass(self.__class__, EventBehaviour):
-            self.myAgent.removeBehaviour(self.__class__)
-        else:
+        #if issubclass(self.__class__, EventBehaviour):
+        #    self.myAgent.removeBehaviour(self.__class__)
+        #else:
+        if not issubclass(self.__class__, EventBehaviour):
             self.myAgent.removeBehaviour(self)
             
     def registerPresenceHandler(self, template, handler):
@@ -709,10 +710,10 @@ class EventBehaviour(OneShotBehaviour):
     the template arrives. This can be changed by setting 'onetime'
     to True, which renders the behaviour for one use only
     """
-    onetime = False
-    def __init__(self, onetime=False):
-        self.onetime = onetime
+    #onetime = False
+    def __init__(self, onetime=False):        
         OneShotBehaviour.__init__(self)
+        self.onetime = onetime
 
     #def run(self):
 

@@ -108,6 +108,12 @@ class ACLMessage:
 		"""
 		if recv in self.receivers:
 			self.receivers.remove(recv)
+	
+	def resetReceivers(self):
+	    """
+	    clears the list of receivers
+	    """
+	    self.receivers = []
 
 	def getReceivers(self):
 		"""

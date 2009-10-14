@@ -90,6 +90,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.setName(str(agentjid))
         
         self._debug = False
+        self._debug_filename = ""
+        self._debug_file = None
         
         self.wui = WUI(self)
         self.wui.registerController("admin", self.WUIController_admin)
@@ -145,7 +147,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #self._agent_log[component] = {}
         pass
 
-    def DEBUG(self, dmsg, typ="info", component=""):
+    def DEBUG(self, dmsg, typ="info", component="spade"):
         # Record at log
         t = time.time()
         dmsg = dmsg.replace("&gt;",">")
@@ -156,14 +158,46 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if self._debug:
             # Print on screen
             if typ == "info":
-                print colors.color_none + "DEBUG: " + dmsg + " , info" + colors.color_none
+                print colors.color_none + "DEBUG:[" + component + "] " + dmsg + " , info" + colors.color_none
             elif typ == "err":
-                print colors.color_none + "DEBUG: " + colors.color_red + dmsg + " , error" + colors.color_none
+                print colors.color_none + "DEBUG:[" + component + "] " + color_red + dmsg + " , error" + colors.color_none
             elif typ == "ok":
-                print colors.color_none + "DEBUG: " + colors.color_green + dmsg + " , ok" + colors.color_none
+                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_green + dmsg + " , ok" + colors.color_none
             elif typ == "warn":
-                print colors.color_none + "DEBUG: " + colors.color_yellow + dmsg + " , warn" + colors.color_none
-				
+                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_yellow + dmsg + " , warn" + colors.color_none
+
+        # Log to file
+        if self._debug_file:
+            if typ == "info":
+                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , info\n")
+            elif typ == "err":
+                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , error\n")
+            elif typ == "ok":
+                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , ok\n")
+            elif typ == "warn":
+                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , warn\n")
+            self._debug_file.flush()
+
+    def setDebug(self, activate = True):
+        self.setDebugToScreen(activate)
+        self.setDebugToFile(activate)
+
+    def setDebugToScreen(self, activate = True):
+        self._debug = activate
+
+    def setDebugToFile(self, activate = True, fname = "" ):
+        if not fname:
+            self._debug_filename = self.getName() + ".log"
+        else:
+            self._debug_filename = fname
+
+        try:
+            if self._debug_file:
+                self._debug_file.close()
+            self._debug_file = open(self._debug_filename, "a+")
+        except:
+            self.DEBUG("Could not open file " + self._debug_filename + " as log file", "err")
+
     def getLog(self):
         keys = self._agent_log.keys()
         keys.sort()
@@ -315,6 +349,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                 if raiseFlag: raise xmpp.NodeProcessed
                                 return True
 
+        self.DEBUG("Posting message " + str(mess), "info", "msg")
         self.postMessage(mess)
         if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
         return True
@@ -395,11 +430,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         t = Behaviour.MessageTemplate(rdif.temp_iq)
         if self._running:
             # Online way
+            self.DEBUG("Request Disco Info ONLINE", "info")
             self.addBehaviour(rdif, t)
             rdif.join()
             return rdif.result
         else:
             # Offline way
+            self.DEBUG("Request Disco Info OFFLINE", "info")
             self.runBehaviourOnce(rdif, t)
             return rdif.result
 
@@ -467,7 +504,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     #There is no one left to send the message to
                     return
         except Exception, e:
-            self.DEBUG("Could not send throught P2PPY: "+str(e), "warn")
+            self.DEBUG("Could not send through P2PPY: "+str(e), "warn")
             method = "jabber"
 
         # Second, try it the old way
@@ -675,13 +712,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     length = "%08d"%(len(str(jabber_msg)))
                     #Send message through socket
                     s.send(length+str(jabber_msg))
-                    self.DEBUG("P2P message sent throught p2p","ok")
+                    self.DEBUG("P2P message sent through p2p","ok")
                 elif method in ["p2ppy"]:
                     ACLmsg._attrs.update({"method":"p2ppy"})
                     ser = pickle.dumps(ACLmsg)
                     length = "%08d"%(len(str(ser)))
                     s.send(length+ser)
-                    self.DEBUG("P2P message sent throught p2ppy","ok")
+                    self.DEBUG("P2P message sent through p2ppy","ok")
                 sent = True
 
             except Exception, e:
@@ -796,6 +833,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             try:
                 #Check for queued messages
                 proc = False
+                toRemove = []  # List of EventBehaviours to remove after this pass
                 msg = self._receive(block=True, timeout=0.01)
                 if msg != None:
                     bL = copy.copy(self._behaviourList)
@@ -804,18 +842,23 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if (t != None):
 			    if (t.match(msg) == True):
                                 if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
-                                    b = b()
-                                    b.setAgent(self)
-                                    b.postMessage(msg)
-                                    b.start()
+                                    ib = b()
+                                    if ib.onetime:
+                                        toRemove.append(b)
+                                    ib.setAgent(self)
+                                    ib.postMessage(msg)
+                                    ib.start()
                                 else:
                                     b.postMessage(msg)
                                 proc = True
 
                     if (proc == False):
                         #If no template matches, post the message to the Default behaviour
-                        if (self._defaultbehaviour != None):
+                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "warn", "msg")
+                        if (self._defaultbehaviour != None):                            
                             self._defaultbehaviour.postMessage(msg)
+                    for beh in toRemove:
+                        self.removeBehaviour(beh)
 
             except Exception, e:
                 self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
@@ -891,6 +934,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             behaviour.kill()
         try:
             self._behaviourList.pop(behaviour)
+            self.DEBUG("Behaviour removed: " + str(behaviour), "info", "behaviour")
         except KeyError:
             self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) +"with type " +str(type(behaviour))+ " is not registered in "+str(self._behaviourList),"warn")
 

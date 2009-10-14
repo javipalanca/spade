@@ -152,6 +152,8 @@ class DiscoBehaviour(Behaviour.EventBehaviour):
                         except:
                             pass
                         self.myAgent.p2p_lock.release()
+        else:
+            self.myAgent.DEBUG("DiscoBehaviour returned with no message", "warn")
                         
 class SendStreamInitiationBehav(Behaviour.OneShotBehaviour):
     
@@ -224,10 +226,15 @@ class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
         self.myAgent.DEBUG("Send IQ message: "+str(iq))
         
         self.myAgent.jabber.send(iq)
-        msg = self._receive(True, 3)
+        #msg = self._receive(True, 10)
+        msg = self._receive(True)
         if msg:
             if msg.getType() == "result":
                 for child in msg.getQueryChildren():
                     self.result.append(str(child.getAttr("var")))
                 self.myAgent.DEBUG("Retrieved services: " + str(self.result))
-                
+            else:
+                self.myAgent.DEBUG("Disco Info returned no results from " + str(self.to), "warn")
+        else:
+            self.myAgent.DEBUG("No Disco Info retrieved from " + str(self.to), "warn")
+
