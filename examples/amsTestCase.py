@@ -71,7 +71,7 @@ class BasicTestCase(unittest.TestCase):
         if len(self.a.search)>1:  self.fail("Too many agents found")
         if len(self.a.search)==0: self.fail("No agents found")    
 
-        self.assertEqual(self.a.search[0]["fipa:aid"]["fipa:name"], "a@"+host)
+        self.assertEqual(self.a.search[0].getAID().getName(), "a@"+host)
         
     def testSearchOther(self):
         self.a.addBehaviour(SearchBehav("b"), None)
@@ -83,7 +83,7 @@ class BasicTestCase(unittest.TestCase):
         if len(self.a.search)>1:  self.fail("Too many agents found")
         if len(self.a.search)==0: self.fail("No agents found")
 
-        self.assertEqual(self.a.search[0]["fipa:aid"]["fipa:name"], "b@"+host)
+        self.assertEqual(self.a.search[0].getAID().getName(), "b@"+host)
         
     def testSearchNotPresent(self):
         self.b.stop()
@@ -106,7 +106,8 @@ class BasicTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, True)
         self.assertEqual(len(self.a.search), 1)
-        self.assertEqual(self.a.search[0]["fipa:ownership"], "UNITTEST")
+        #self.assertEqual(self.a.search[0]["fipa:ownership"], "UNITTEST")
+        self.assertEqual(self.a.search[0].getOwnership(), "UNITTEST")
 
     def testModifyNotAllowed(self):
 
@@ -118,7 +119,7 @@ class BasicTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, False)
         self.assertEqual(len(self.a.search), 1)
-        self.assertNotEqual(self.a.search[0]["fipa:ownership"], "UNITTEST")
+        self.assertNotEqual(self.a.search[0].getOwnership(), "UNITTEST")
 
 
 if __name__ == "__main__":

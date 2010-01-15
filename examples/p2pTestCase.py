@@ -8,8 +8,7 @@ sys.path.append('..')
 
 import spade
 
-#host = "127.0.0.1"
-host = "192.168.1.1"
+host = "127.0.0.1"
 
 class MyAgent(spade.Agent.Agent):
 

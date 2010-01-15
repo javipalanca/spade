@@ -132,6 +132,7 @@ class BDIAgent(Agent.Agent):
         else:
             self.kb.tell(sentence)
         self._needDeliberate = True
+        self.newBelieveCB(sentence)
         
     def removeBelieve(self, sentence):
         if isinstance(sentence,types.StringType):
@@ -173,6 +174,7 @@ class BDIAgent(Agent.Agent):
                         #self.DEBUG("askBelieve plan.P -> " + str(self.askBelieve(plan.P)))
                         if self.askBelieve(plan.P)!=False: #preconditions of the plan must be acomplished
                             self.intentions.append(plan)   #instantiate plan as intention
+                            self.intentionSelectedCB(plan)
                             goal.selected = True #flag goal as selected
                             break #stop searching plans for this goal
         
@@ -214,6 +216,7 @@ class BDIAgent(Agent.Agent):
                                 goal.selected = False
                             else:
                                 self.goals.remove(goal)
+                            self.goalCompletedCB(goal)
                     #for intention in copy(self.intentions):
                     #    if self.bk.ask(intention.Q):
                     #        self.intentions.remove(intention)
@@ -244,6 +247,7 @@ class BDIAgent(Agent.Agent):
                         service.run()
                         if self.askBelieve(service.Q)==False:
                             raise PostConditionFailed()
+                        else: self.serviceCompletedCB(service)
                     if self._needDeliberate: break
                 
             except Exception, e:
@@ -276,3 +280,20 @@ class BDIAgent(Agent.Agent):
             #    #If no template matches, post the message to the Default behaviour
             #    if (self._defaultbehaviour != None):
             #        self._defaultbehaviour.postMessage(msg)
+
+    def intentionSelectedCB(self, intention=None):
+        #callback executed when a new intention is selected for execution
+        #must be overloaded
+        pass
+    def goalCompletedCB(self, goal=None):
+        #callback executed when a goal is completed succesfully
+        #must be overloaded
+        pass
+    def serviceCompletedCB(self, service=None):
+        #callback executed when a service is completed succesfully
+        #must be overloaded
+        pass
+    def newBelieveCB(self, believe=None):
+        #callback executed when a believe is added to the knowledge base
+        #must be overloaded
+        pass
