@@ -62,7 +62,9 @@ color_purple       = chr(27) + "[35;1m"
 color_bright_cyan  = chr(27) + "[36;1m"
 color_white        = chr(27) + "[37;1m"
 
-threading.stack_size(64 * 1024)  # 64k compo
+try:
+    threading.stack_size(64 * 1024)  # 64k compo
+except: pass
 
 class AbstractAgent(MessageReceiver.MessageReceiver):
     """

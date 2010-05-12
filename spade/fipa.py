@@ -82,12 +82,13 @@ class ModifyAgentBehaviour(Behaviour.OneShotBehaviour):
 
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() != 'agree':
-            self.myAgent.DEBUG("There was an error modifying the Agent " +str(self.AAD.getAID().getName())+ "(not agree)","warn")
+            self.myAgent.DEBUG("There was an error modifying the requested Agent (not agree)","warn")
             self.result = False
             return False
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() != 'inform':
-            self.myAgent.DEBUG("There was an error modifying the Agent " +str(self.AAD.getAID().getName())+ "(not inform)","warn")
+            self.myAgent.DEBUG("There was an error modifying the requested Agent (not inform)","warn")
+            self.myAgent.DEBUG(str(msg.getContent()))
             self.result = False
             return False
         self.result = True

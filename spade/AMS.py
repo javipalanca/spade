@@ -590,6 +590,9 @@ class AMS(Agent.PlatformAgent):
 
 
 	def _setup(self):
+	    
+		self.wui.start()
+	    
 		self.agentdb = dict()
 
 		AAD = AmsAgentDescription()
