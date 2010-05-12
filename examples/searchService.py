@@ -22,17 +22,16 @@ from time import sleep
 from xmpp import *
 
 class SearchService(Agent.Agent):
-    class BehaviourDef(Behaviour.Behaviour):
+    class BehaviourDef(Behaviour.OneShotBehaviour):
         def _process(self):
-            sleep(1)
-
-        def onStart(self):
             dad = DF.DfAgentDescription()
             ds = DF.ServiceDescription()
             ds.setType("testservice")
             dad.addService(ds)
+            print "SEARCHING..."
             search = self.myAgent.searchService(dad)
-            print "SEARCH:",str(search)
+            print "RESULT:"
+            for r in search: print str(r.asRDFXML())
 
     def _setup(self):
         db = self.BehaviourDef()
@@ -40,11 +39,8 @@ class SearchService(Agent.Agent):
 
 
 if __name__ == "__main__":
-    host = os.getenv("HOSTNAME")
-    if host == None:
-        host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
-        if host == None:
-            host = "127.0.0.1"
+ 
+    host = "127.0.0.1"
 
     ag = SearchService("search@"+host, "secret")
     ag.setDebugToScreen()

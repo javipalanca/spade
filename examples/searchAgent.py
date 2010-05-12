@@ -24,7 +24,7 @@ class MyAgent(spade.Agent.Agent):
 			aad = spade.AMS.AmsAgentDescription()
 			search = self.myAgent.searchAgent(aad)
 			for a in search:
-				print a.pprint()
+				print a.asRDFXML()
 
 		def onEnd(self):
 			print "Ending behaviour . . ."

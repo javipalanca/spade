@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import sys
+sys.path.append("../..")
+
 import spade
 import random
 import time
@@ -8,8 +10,8 @@ import string
 from cartas import Carta
 from cartas import jugada
 
-servidor="host"
-gameManager = spade.AID.aid(name="dalmuti@"+servidor,addresses=["xmpp://dalmuti@"+servidor])
+servidor="localhost"
+
 nombreAgente = ""
 
 class jugador(spade.Agent.Agent):
@@ -278,6 +280,7 @@ class jugador(spade.Agent.Agent):
          msg.setPerformative( perf )
          msg.setConversationId( id )
          msg.setContent( content )
+         gameManager = spade.AID.aid(name="dalmuti@127.0.0.1",addresses=["xmpp://dalmuti@127.0.0.1"])
          msg.addReceiver( gameManager )
          # Enviamos al gameManager
          self.send(msg)

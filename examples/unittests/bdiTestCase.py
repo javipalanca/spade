@@ -1,8 +1,7 @@
 import os
 import sys
 import unittest
-sys.path.append('..'+os.sep+'trunk')
-sys.path.append('..')
+sys.path.append('../..')
 
 import spade
 from spade.bdi import *

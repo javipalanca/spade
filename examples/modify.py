@@ -21,7 +21,7 @@ class MyAgent(spade.Agent.Agent):
 		def _process(self):
 			print "I'm going to modify my data"
 			aad = spade.AMS.AmsAgentDescription()
-			aad.setAID(spade.AID.aid("agent@127.0.0.1",["xmpp://agent@127.0.0.1"]))
+			#aad.setAID(spade.AID.aid("agent@127.0.0.1",["xmpp://agent@127.0.0.1"]))
 			aad.ownership = "FREE" 
 			result = self.myAgent.modifyAgent(aad)
 			if result:

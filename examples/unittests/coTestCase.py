@@ -3,8 +3,7 @@ import sys
 import time
 import unittest
 
-sys.path.append('..'+os.sep+'trunk')
-sys.path.append('..')
+sys.path.append('../..')
 
 import spade
 import xmpp

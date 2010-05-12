@@ -2,8 +2,7 @@
 
 import sys
 import os
-#sys.path.append('..'+os.sep+'trunk')
-sys.path.append('..')
+sys.path.append('../..')
 
 from spade import *
 import time
