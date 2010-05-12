@@ -362,8 +362,8 @@ class Auctioner(Agent.Agent):
 
     def _setup(self):
         self.auctions = {}
-        self.auctions["WII"] = {'price':10, 'name':'Wii', 'desc':'Nintendo Wii Game Console','time':1600,'image':'http://wii.nintendo.com/images/04_hardware/feature_img_main_hardware.jpg','countdown':False,'bidders':[],"current_winner":""}
-        self.auctions["PS3"] = {'price':600, 'name':'PS3', 'desc':'Playstation 3 Giant Crab','time':50,'image':'http://ps3.pspfreak.de/wp-content/ps3-konsole.jpg','countdown':False,'bidders':[],"current_winner":""}
+        self.auctions["WII"] = {'price':10, 'name':'Wii', 'desc':'Nintendo Wii Game Console','time':1600,'image':'http://www.sinmiedo.es/wp-content/uploads/2009/01/wii.jpg','countdown':False,'bidders':[],"current_winner":""}
+        self.auctions["PS3"] = {'price':600, 'name':'PS3', 'desc':'Playstation 3 Giant Crab','time':50,'image':'http://www.hoytecnologia.com/img/noticias/foto_104367.jpg','countdown':False,'bidders':[],"current_winner":""}
         self.auctions["XBX"] = {'price':490, 'name':'Xbox', 'desc':'Microsoft Xbox 360','time':2200,'image':'http://cache.gizmodo.com/images/xbox360.jpg','countdown':False,'bidders':[],"current_winner":""}
         print "Starting main Behaviour"
         self.setDefaultBehaviour(self.MainBehav())

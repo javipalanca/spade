@@ -117,13 +117,14 @@ class emissor(Agent.Agent):
         
 
 if __name__ == "__main__":
-    host = os.getenv("HOSTNAME")
+    '''host = os.getenv("HOSTNAME")
     if host == None:
         host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
         if host == None:
             host = "sandoval.dsic.upv.es"
             print "No s'ha pogut obtindre nom de host, utilitzant: "+host+" per defecte"
-
+    '''
+    host = "127.0.0.1"
     emissors = {}
     nagents = atoi(sys.argv[1])
     tmsg = atoi(sys.argv[2])

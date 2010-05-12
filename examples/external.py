@@ -42,7 +42,7 @@ class external(Agent.Agent):
             dad.addService(sd)
             dad.setAID(self.myAgent.getAID())
             #print dad
-            otherdf = AID.aid("df@thx1138.dsic.upv.es:1099/JADE", ["http://thx1138.dsic.upv.es:7778/acc"])
+            otherdf = AID.aid("df@"+self.myAgent.host+":1099/JADE", ["http://"+self.myAgent.host+":7778/acc"])
             res = self.myAgent.registerService(dad, otherdf=otherdf)
             print "DF Register sent: ", str(res)
         
@@ -58,7 +58,7 @@ class external(Agent.Agent):
             dad.addService(sd)
             dad.setAID(self.myAgent.getAID())
             #print dad
-            otherdf = AID.aid("df@thx1138.dsic.upv.es:1099/JADE", ["http://thx1138.dsic.upv.es:7778/acc"])
+            otherdf = AID.aid("df@"+self.myAgent.host+":1099/JADE", ["http://"+self.myAgent.host+":7778/acc"])
             res = self.myAgent.deregisterService(dad, otherdf=otherdf)
             print "DF Register sent: ", str(res)
 	    print "SERVICIO DES-REGISTRADO"   
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     if host == None:
         host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
         if host == None:
-            host = "thx1138.dsic.upv.es"
+            host = "127.0.0.1"
             print "Using: "+host+" as default hostname"
             
     ext = external("external@"+host, "secret")
