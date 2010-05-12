@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 # encoding: utf-8
+#####################################
+#  REGISTER EXAMPLE                 #
+#####################################
+'''
+This file shows a simple agent which just registers
+a service in the DF. Then it searches for the same service
+in order to check it is properly registered.
+You need to be running a SPADE platform on the same host
+'''
+
+
 import sys
 import os
 sys.path.append('..'+os.sep+'trunk')
@@ -12,7 +23,7 @@ from time import sleep
 from xmpp import *
 
 class RegisterAgent(Agent.Agent):
-    class BehaviourDefecte(Behaviour.Behaviour):
+    class BehaviourDef(Behaviour.Behaviour):
         def _process(self):
             sleep(1)
 
@@ -45,7 +56,7 @@ class RegisterAgent(Agent.Agent):
                 print "EXCEPTION ONSTART",str(e)
 
     def _setup(self):
-        db = self.BehaviourDefecte()
+        db = self.BehaviourDef()
         self.addBehaviour(db, Behaviour.MessageTemplate(Behaviour.ACLTemplate()))
 
 if __name__ == "__main__":
@@ -55,6 +66,7 @@ if __name__ == "__main__":
 
     print "Using HOST:",host
     ag = RegisterAgent("register@"+host, "secret")
+    ag.setDebugToScreen()
     ag.start()
 
     while True:

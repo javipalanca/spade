@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 # encoding: utf-8
+#####################################
+#  SEARCH SERVICE EXAMPLE           #
+#####################################
+'''
+This file shows a simple agent that just searches for a
+service, which type is "testservice", and prints it.
+You need to be running a SPADE platform on the same host
+'''
+
+
 import sys
 import os
 sys.path.append('..'+os.sep+'trunk')
@@ -11,8 +21,8 @@ from string import *
 from time import sleep
 from xmpp import *
 
-class SearchAgent(Agent.Agent):
-    class BehaviourDefecte(Behaviour.Behaviour):
+class SearchService(Agent.Agent):
+    class BehaviourDef(Behaviour.Behaviour):
         def _process(self):
             sleep(1)
 
@@ -20,13 +30,12 @@ class SearchAgent(Agent.Agent):
             dad = DF.DfAgentDescription()
             ds = DF.ServiceDescription()
             ds.setType("testservice")
-            #ds.addProperty({'item':self._item})
             dad.addService(ds)
             search = self.myAgent.searchService(dad)
             print "SEARCH:",str(search)
 
     def _setup(self):
-        db = self.BehaviourDefecte()
+        db = self.BehaviourDef()
         self.addBehaviour(db, Behaviour.MessageTemplate(Behaviour.ACLTemplate()))
 
 
@@ -35,10 +44,10 @@ if __name__ == "__main__":
     if host == None:
         host = split(os.getenv("SESSION_MANAGER"),"/")[1][:-1]
         if host == None:
-            host = "thx1138.dsic.upv.es"
-            print "No s'ha pogut obtindre nom de host, utilitzant: "+host+" per defecte"
+            host = "127.0.0.1"
 
-    ag = SearchAgent("search@"+host, "secret")
+    ag = SearchService("search@"+host, "secret")
+    ag.setDebugToScreen()
     ag.start()
 
     while True:

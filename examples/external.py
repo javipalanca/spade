@@ -1,5 +1,17 @@
 #! /usr/bin/python
 
+#####################################
+#  EXTERNAL EXAMPLE                 #
+#####################################
+'''
+This file communicates a SPADE Agent with
+the JADE DF agent, both running on the same host.
+The SPADE agent registers a service on the JADE
+platform.
+You need to be running a SPADE platform and 
+a JADE platform on the same host
+'''
+
 import sys
 import os
 
@@ -19,17 +31,11 @@ class external(Agent.Agent):
             msg.setPerformative("request")
             msg.addReceiver(AID.aid("external@"+self.myAgent.host, ["http://"+self.myAgent.host+":1099/JADE"]))
             msg.setSender(self.myAgent.getAID())
-            msg.setContent("MENSAJE")
+            msg.setContent("MESSAGE")
             self.myAgent.send(msg)
             print "SENT HTTP MESSAGE"
     
-    class SendIqBehav(Behaviour.OneShotBehaviour):
-        def _process(self):
-            #sleep(2)
-            iq = Iq('get','http://jabber.org/protocol/muc#owner', to="muc."+self.myAgent.host)
-            self.myAgent.jabber.send(iq)
-            print "JABBER IQ SENT"
-            
+
     class RegisterBehav(Behaviour.OneShotBehaviour):
         def _process(self):
             print "REGISTER BEHAV"
@@ -61,20 +67,19 @@ class external(Agent.Agent):
             otherdf = AID.aid("df@"+self.myAgent.host+":1099/JADE", ["http://"+self.myAgent.host+":7778/acc"])
             res = self.myAgent.deregisterService(dad, otherdf=otherdf)
             print "DF Register sent: ", str(res)
-	    print "SERVICIO DES-REGISTRADO"   
+	    print "SERVICE DEREGISTERED"   
 	 
     class RecvBehav(Behaviour.Behaviour):
         def _process(self):
             msg = self._receive(True)
             if msg:
-                print "Mensaje recibido", str(msg)
+                print "Message Received", str(msg)
             
     def _setup(self):
         self.getAID().addAddress("http://"+self.host+":2099/acc")
         self.setDefaultBehaviour(self.RecvBehav())
-        #self.addBehaviour(self.RegisterBehav())
-        #self.addBehaviour(self.SenderBehav())
-        self.addBehaviour(self.SendIqBehav())
+        self.addBehaviour(self.RegisterBehav())
+        self.addBehaviour(self.SenderBehav())
 
 
 if __name__ == "__main__":
@@ -87,6 +92,7 @@ if __name__ == "__main__":
             
     ext = external("external@"+host, "secret")
     ext.host = host
+    ext.setDebugToScreen()
     ext.start()
 
     try:

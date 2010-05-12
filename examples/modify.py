@@ -1,3 +1,12 @@
+#####################################
+#  MODIFY EXAMPLE                   #
+#####################################
+'''
+This file shows a simple agent which just modifies its
+own information stored in the AMS agent.
+You need to be running a SPADE platform on the same host
+'''
+
 import sys,os
 sys.path.append('..'+os.sep+'trunk')
 sys.path.append('..')
@@ -30,5 +39,14 @@ class MyAgent(spade.Agent.Agent):
 
 if __name__ == "__main__":
 	a = MyAgent("agent@127.0.0.1", "secret")
+	a.setDebugToScreen()
 	a.start()
-
+	alive = True
+	import time
+	while alive:
+	    try:
+	        time.sleep(1)
+	    except KeyboardInterrupt:
+	        alive=False
+	a.stop()
+	sys.exit(0)

@@ -1,3 +1,14 @@
+#####################################
+#  BASIC EXAMPLE                    #
+#####################################
+'''
+This file shows a simple agent which just asks for the 
+Platform Information (pi) to the AMS agent and prints it 
+to the debug system.
+It uses a OneShot Behaviour
+You need to be running a SPADE platform on the same host
+'''
+
 import os
 import sys
 sys.path.append('..'+os.sep+'trunk')
@@ -11,7 +22,7 @@ class MyAgent(spade.Agent.Agent):
 			self.myAgent.DEBUG("Starting behaviour . . .")
 
 		def _process(self):
-			print "Hello World from a OneShot"
+			self.myAgent.DEBUG("Hello World from a OneShot")
 			pi = self.myAgent.getPlatformInfo()
 			self.myAgent.DEBUG(str(pi))
 
@@ -30,6 +41,7 @@ if __name__ == "__main__":
 		host = sys.argv[1]
 	a = MyAgent("agent@"+host, "secret")
 	a.wui.start()
+	a.setDebugToScreen()
 	a.start()
 	
 	alive = True

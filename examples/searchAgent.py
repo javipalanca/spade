@@ -1,3 +1,12 @@
+#####################################
+#  SEARCH AGENT EXAMPLE             #
+#####################################
+'''
+This file shows a simple agent which just searches for
+an agent. Then it prints the results to the screen.
+You need to be running a SPADE platform on the same host
+'''
+
 import os
 import sys
 sys.path.append('..'+os.sep+'trunk')
@@ -13,7 +22,6 @@ class MyAgent(spade.Agent.Agent):
 		def _process(self):
 			print "I'm going to search for an agent"
 			aad = spade.AMS.AmsAgentDescription()
-			#print "AAD:",aad
 			search = self.myAgent.searchAgent(aad)
 			for a in search:
 				print a.pprint()
@@ -31,7 +39,18 @@ if __name__ == "__main__":
 		host = "127.0.0.1"
 	else:
 		host = sys.argv[1]
+		
 	a = MyAgent("agent@"+host, "secret")
+	a.setDebugToScreen()
 	a.start()
 	print "Agent started"
 
+	alive = True
+	import time
+	while alive:
+	    try:
+	        time.sleep(1)
+	    except KeyboardInterrupt:
+	        alive=False
+	a.stop()
+	sys.exit(0)
