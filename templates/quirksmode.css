@@ -318,7 +318,6 @@ p.hr {
 /* FOOTER */
 
 div#footer {
-	/*background-image:   url(file:///E|/USUARIOS/svalero/WEB/Personal/GTI-IA-Sole/archivos/sma/pix/ppk_onder.gif);*/
 	background-repeat: no-repeat;
 	background-position: left bottom;
 	margin: 10px -20px;
@@ -514,14 +513,15 @@ p.intro a,p.intro a:visited:hover {
   left:0;
   top:0;
   height:55px;*/ 
-  background:#000466;
+  /*background:#000466;*/
+  background:#000000;
   color:#33FFFF;
   border-style:solid;
   border-color: #000466;
   border-width:0px;
   width:100%;
   text-align:center;
-  padding: 2px 0px 10px 0px;
+  padding: 2px 0px 6px 0px;
 }   
 .menuNav
 { 

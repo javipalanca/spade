@@ -13,7 +13,7 @@
 <body>
 
 	<div class="container">
-		<div class="imgPlaceHolder"> <img src="http://spade.gti-ia.dsic.upv.es/archivos/images/spade_book_trsp.png" border="0"></img> </div>
+		<div class="imgPlaceHolder"> <img src="http://spade2.googlecode.com/files/Logo.png" border="0"></img> </div>
 		<div class="menuNav">
 		<!--(if "acc." in name)-->
 			<a class="vertical" href="index">Home</a> 
@@ -63,13 +63,7 @@
     <tbody>
       <tr> 
         <td align="left" width="15%">
-		<a href="http://www.dsic.upv.es/" target="_blank"><img src="http://spade.gti-ia.dsic.upv.es/archivos/images/dsicnaranja_peque.gif" border="0" height="62" width="122"></a></td>
-		<td><p><a href="http://www.dsic.upv.es/users/ia/ia.html">GTI-IA Grupo de Tecnologia Informatica - Inteligencia Artificial</a><br>
-
-            Departamento de Sistemas Informaticos y Computacion<br>
-        Universidad Politecnica de Valencia</p></td>
-        <td align="right" width="25%"><a href="http://www.upv.es/" target="_blank"><img src="http://www.upv.es/images/logo_upv.gif" width="233" height="83" border="0"></a> 
-        </td>
+	</td>
       </tr>
     </tbody>
   </table>
