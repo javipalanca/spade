@@ -521,7 +521,7 @@ p.intro a,p.intro a:visited:hover {
   border-width:0px;
   width:100%;
   text-align:center;
-  padding: 2px 0px 6px 0px;
+  padding: 6px 0px 6px 0px;
 }   
 .menuNav
 { 
@@ -530,6 +530,8 @@ p.intro a,p.intro a:visited:hover {
  /*border:solid #000466 1px;*/
   width:100%;
   text-align:center;
+  height: 20px;
+
 }
 .menuMain
 {
