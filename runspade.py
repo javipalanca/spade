@@ -25,8 +25,8 @@ from xmppd.xmppd import Server
 
 
 __author__    = "Gustavo Aranda <garanda@dsic.upv.es> and Javier Palanca <jpalanca@dsic.upv.es>"
-__version__   = "2.0-RC3"
-__copyright__ = "Copyright (C) 2009 Grupo de Tecnologia Informatica - Inteligencia Artificial (DSIC-UPV)"
+__version__   = "2.0-RC4"
+__copyright__ = "Copyright (C) 2010"
 __license__   = "GPL"
 
 
