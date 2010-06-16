@@ -1286,7 +1286,10 @@ class Agent(AbstractAgent):
         while not self.jabber.connect(use_srv=None) and tries >0:
             time.sleep(0.005)
             tries -=1
-        if tries <=0 : return False
+        if tries <=0 :
+            self.setDebugToScreen()
+            self.DEBUG("There is no SPADE platform at " + self.server + " . Agent dying...","err")
+            return False
 
 
         if (self.jabber.auth(name,password,"spade") == None):
