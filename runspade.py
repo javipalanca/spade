@@ -104,6 +104,10 @@ def main():
   sys.stdout.flush()
 
   jabberxml =  os.path.abspath(jabberxml)
+  if not os.path.exists(jabberxml):
+        print '\n There is no jabber config file (xmppd.xml)'+ colors.color_red + " [failed]" + colors.color_none
+	raise SystemExit
+	
   #s = xmppd.xmppd.Server(cfgfile=jabberxml, debug = dbg)
   os.chdir("xmppd")
   #s = xmppd.Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
@@ -124,6 +128,9 @@ def main():
   try:
 	sys.stdout.write(".")
   	sys.stdout.flush()
+  	if not os.path.exists(configfilename):
+        	print '\n There is no SPADE config file (spade.xml)'+ colors.color_red + " [failed]" + colors.color_none
+		raise SystemExit
   	platform = spade_backend.SpadeBackend(configfilename)
 	sys.stdout.write(".")
   	sys.stdout.flush()
