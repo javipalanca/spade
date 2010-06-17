@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
 
-<title>SPADE Web Interface: Agents</title>
+<title>SPADE Web Interface: Admin</title>
 </head>
 
 <body>
@@ -52,7 +52,17 @@
 					<tr><td class="servBodL">@!id!@</td><td class="servBodL">@!str(b)!@</td></tr>
 				<!--(end)-->
 			</table>
+
+			<table class="servicesT" cellspacing="0">
+				<tr><td class="servHd">Attribute</td><td class="servHd">Value</td></tr>
+
+				<!--(for k,v in attrs.items())-->
+					<tr><td class="servBodL">@!k!@</td><td class="servBodL">@!v!@</td></tr>
+				<!--(end)-->
+			</table>
+
 		</div>
+			
 
 
 </div>
