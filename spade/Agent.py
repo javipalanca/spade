@@ -136,10 +136,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def WUIController_admin(self):
+        import types
         behavs = {}
+        attrs = {}
         for k in self._behaviourList.keys():
             behavs[id(k)]=k
-        return "admin.pyra", {"aid":self.getAID(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes}
+        for attribute in dir(self):
+            if eval( "type(self."+attribute+") not in [types.MethodType]" ):
+                attrs[attribute] = eval( "str(self."+attribute+")" )
+        return "admin.pyra", {"aid":self.getAID(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs}
         
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}

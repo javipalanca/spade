@@ -162,7 +162,8 @@ class SpadePlatform(Agent.PlatformAgent):
         platform = self.getName()        
         version = str(sys.version)
         the_time = str(time.ctime())
-        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time)
+	doc_path = abspath('.')
+        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, doc_path=doc_path)
 
     def agents(self):
         import sys
