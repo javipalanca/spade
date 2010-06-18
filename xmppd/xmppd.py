@@ -95,6 +95,11 @@ class fake_select:
         ## ignored
         self.POLLHUP = 0x0010
         self.POLLNVAL = 0x0020
+
+    """def select(self, rlist, wlist, xlist, timeout=1.0):
+	    import select	    
+	    return select.select(rlist, wlist, xlist, timeout)"""
+ 
     class poll:
         def __init__(self):
             ## poll flags
@@ -136,6 +141,12 @@ class fake_select:
                 if y['mask']&self.POLLIN == self.POLLIN: poll['in'] += [y['fd']]
                 if y['mask']&self.POLLOUT == self.POLLOUT: poll['out'] += [y['fd']]
                 if y['mask']&self.POLLERR == self.POLLERR: poll['err'] += [y['fd']]
+
+	    #Select does not work with every list empty. PATCH:
+	    if len(poll['in'])==0 and len(poll['out'])==0 and len(poll['err'])==0: 
+		    if timeout: time.sleep(timeout/1000.0)
+		    return out
+
             if timeout < 1 or timeout == None:
                 pi,po,pe = select.select(poll['in'],poll['out'],poll['err'])
             else:
@@ -166,6 +177,16 @@ class fake_select:
             for k,d in data.iteritems():
                 out += [(k,d['mask'])]
             return out
+
+
+try:
+	select.poll()
+except:
+	import select as original_select
+	select = fake_select()
+	select.select = original_select.select
+
+
 
 #Import all of the localization files
 globals().update({'LANG_LIST':[]})
