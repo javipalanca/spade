@@ -24,10 +24,10 @@ from xmppd.xmppd import Server
 
 
 
-__author__    = "Gustavo Aranda <garanda@dsic.upv.es> and Javier Palanca <jpalanca@dsic.upv.es>"
+__author__    = "Gustavo Aranda <gusarba@gmail.com> and Javier Palanca <jpalanca@gmail.com>"
 __version__   = "2.0-RC4"
 __copyright__ = "Copyright (C) 2010"
-__license__   = "GPL"
+__license__   = "LGPL"
 
 
 def print_help():
@@ -154,6 +154,8 @@ def main():
 	raise SystemExit
 
   print colors.color_green + " [done]" + colors.color_none
+  if platform.acc.wui:
+      print colors.color_yellow + " [info] " + colors.color_none + "WebUserInterface serving at port " + str(platform.acc.wui.port)
 
 
   alive=True
@@ -176,12 +178,13 @@ def main():
 		sys.stdout.write(".")
 		sys.stdout.flush()
 		time.sleep(1)
+		del s
 		sys.stdout.write(".")
 		sys.stdout.flush()
 		print colors.color_green + " Bye." + colors.color_none
 		alive=False
-		#sys.exit(0)
-  sys.exit(0)
+		sys.exit(0)
+  #sys.exit(0)
   raise SystemExit
 
 if __name__ == '__main__': main()

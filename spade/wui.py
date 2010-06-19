@@ -38,11 +38,12 @@ class WUI(Thread):
              try:
                  self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
                  self.httpd.owner = self
-                 self.owner.DEBUG("WebUserInterface serving at port "+str(self.port))
-                 print "WebUserInterface serving at port "+str(self.port)
+                 #print "WebUserInterface serving at port "+str(self.port)
                  self.notifyAMS()
              except:
                  self.port = random.randint(1024,65536)
+                 
+        self.owner.DEBUG("WebUserInterface serving at port "+str(self.port))
         self.registerController("error404", self.error404)
         self.registerController("error501", self.error501)
         self.registerController("error503", self.error503)
