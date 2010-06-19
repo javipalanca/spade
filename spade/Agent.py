@@ -783,6 +783,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         Stops the agent execution and blocks until the agent dies
         """
+
+	self.wui.stop()
+
         self._kill()
         if timeout > 0:
             to = time.now() + timeout
@@ -1420,7 +1423,7 @@ class Agent(AbstractAgent):
 
     def __deregister_from_AMS(self, state=None, ownership=None, debug=False):
 
-        presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribed')
+        presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribe')
 
         self.jabber.send(presence)
         self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)","ok")

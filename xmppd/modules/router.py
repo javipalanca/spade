@@ -724,7 +724,7 @@ class Router(PlugIn):
             raise NodeProcessed
 
         elif stanza.getType() == "unsubscribe":
-            print "### IT'S UNSUBSCRIBE"
+            #print "### IT'S UNSUBSCRIBE"
             """
             3. UNSUBSCRIBE
                 3.1 Check if the contact is already subscribed
@@ -1194,7 +1194,7 @@ class Router(PlugIn):
 
         name=stanza.getName()
         self.DEBUG('Router handler called','info')
-	self.DEBUG('Recent Errors', "error")
+	#self.DEBUG('Recent Errors', "error")
 
         if name == "presence":
 	    	# They won't catch me alive !

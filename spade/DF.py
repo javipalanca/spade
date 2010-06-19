@@ -560,6 +560,8 @@ class DF(PlatformAgent):
         #self.addAddress("http://"+self.getDomain()+":2099/acc")  # HACK
 
     def _setup(self):
+
+	self.wui.start()
         self.servicedb = dict()
 
         self.setDefaultBehaviour(self.DefaultBehaviour())

@@ -38,7 +38,7 @@ class AMS(Agent.PlatformAgent):
 				msg = None
 				msg = self._receive(block=True)
 				if msg:
-					self.myAgent.DEBUG("AMS RECEIVED SUBSCRIPTION MESSAGE"+ str(msg),"info")
+					self.myAgent.DEBUG("AMS received presence message "+ str(msg),"info")
 					typ = msg.getType()
 					frm = msg.getFrom()
 					status = msg.getStatus()
@@ -62,15 +62,16 @@ class AMS(Agent.PlatformAgent):
 							self.myAgent.jabber.send(presence)
 							return
 
-						self.myAgent.DEBUG("AMS SUCCESFULLY REGISTERED AGENT " + frm.getName(),"ok")
+						self.myAgent.DEBUG("AMS succesfully registered agent " + frm.getName(),"ok")
 						presence = xmpp.Presence(reply_address,typ="subscribed")
-						self.myAgent.DEBUG("AMS SENDS "+str(presence),"info")
+						self.myAgent.DEBUG("AMS sends "+str(presence),"info")
 						self.myAgent.jabber.send(presence)
-					elif typ == "unsubscribed":
-						frm=AID.aid(name=frm, adresses=["xmpp://"+frm])
-						if self.myAgent.agentdb.has_key(frm.getName()):
-							del self.myAgent.agentdb[frm.getName()]
-						self.myAgent.DEBUG("Agent " + frm.getName() + " deregistered from AMS","ok")
+					elif typ == "unsubscribe":
+						if self.myAgent.agentdb.has_key(str(frm)):
+							del self.myAgent.agentdb[str(frm)]
+							self.myAgent.DEBUG("Agent " + str(frm) + " deregistered from AMS","ok")
+						else:
+							self.myAgent.DEBUG("Agent " + str(frm) + " deregistered from AMS","error")
 				return
 
 

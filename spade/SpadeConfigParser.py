@@ -23,8 +23,7 @@ class ParseObject(dict):
         def __getattr__(self, name): return self[name]
 
 class spadeXML:
-	'''Analizador de cadenas XML especificamente configurado
-	para SPADE'''
+	'''SPADE XML analyzer'''
 	def __init__(self):
 		self.ch = spadeXMLHandler()
 	
@@ -46,7 +45,7 @@ class spadeXMLHandler(ContentHandler):
 		self.content = ParseObject()
 		
 	def startElement(self, name, attrs):
-		'''Llamado cuando empieza un nodo XML en el flujo'''
+		'''Called when a node starts'''
 		self.chars = ""
 		self.tag_name = name
 		if name == "platform":
@@ -76,13 +75,11 @@ class spadeXMLHandler(ContentHandler):
 			self.tag_name = name
 
 	def characters(self, ch):
-		'''Caracteres incluidos en un nodo'''
+		'''Characters included in a node'''
 		self.chars = str(self.chars + ch)
 		
 	def endElement(self, name):
-		'''Llamado al finalizar un nodo'''
-		#print 'Final de: ' + name + ' con current_tag: ' + self.current_tag
-		#print 'Caracteres : ' + self.chars
+		'''Called when a node ends'''
 		if name == "hostname":
 			if self.current_tag == "platform":
 				self.content.platform['hostname'] = self.chars
