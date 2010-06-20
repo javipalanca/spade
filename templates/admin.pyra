@@ -58,8 +58,8 @@
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Attribute</td><td class="servHd">Value</td></tr>
 
-				<!--(for k,v in attrs.items())-->
-					<tr><td class="servBodL">@!k!@</td><td class="servBodL">@!v!@</td></tr>
+				<!--(for k in sorted_attrs)-->
+					<tr><td class="servBodL">@!k!@</td><td class="servBodL">@!attrs[k]!@</td></tr>
 				<!--(end)-->
 			</table>
 

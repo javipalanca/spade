@@ -175,6 +175,9 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     page = self.server.owner.template_path + os.sep + page
                 elif os.path.exists(self.server.owner.spade_path + os.sep + "templates" + os.sep + page):
                     page = self.server.owner.spade_path + os.sep + "templates" + os.sep + page
+                elif page.startswith("doc") and os.path.exists(self.server.owner.spade_path + os.sep + page):
+                    # For serving the SPADE API docs from the WUI
+                    page = self.server.owner.spade_path + os.sep + page
                 else:
                     raise Exception
                 f = open(page, "r")
@@ -182,10 +185,11 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 f.close()
             except:
                 self.server.owner.owner.DEBUG("Could not open file: "+ page, "err")
-    
+        
         else:
             try:
                 # Check wether controller exists
+                # Get the first section of the URL path (e.g. the "admin" of "admin/foo/bar")
                 eval("self.server.owner.controllers['"+str(page)+"']")
             except:
                 # The controller doesn't exist

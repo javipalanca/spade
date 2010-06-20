@@ -20,7 +20,7 @@
 		<a class="vertical" href="organizations">Organizations</a>
 		<a class="vertical" href="admin">Admin</a>
 		<a class="vertical" href="log">Log</a>
-		<a  href="@!doc_path!@/doc/html/index.html">API</a></div>
+		<a class="vertical" href="doc/html/index.html">API</a></div>
 		</div>
 
 
