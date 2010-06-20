@@ -471,15 +471,18 @@ class AMS(Agent.PlatformAgent):
 					aad = AmsAgentDescription(self.content.action.modify['ams-agent-description'])
 				except Exception,err:
 					error = "(missing-argument ams-agent-description)"
+					self.myAgent.DEBUG("Modify: Missing argument in ams-agent-description",'error')
 				#print "aad: " + str(aad.getAID().getName())
 				#print "aid: " + str(self.msg.getSender())
 
-				if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
-					error = "(unauthorised)"
-
 				# If there is no AID in the AAD, fill it with the sender of the message
-				if not aad.getAID():
+				if aad.getAID() and aad.getAID().getName() == None:
 					aad.setAID(self.msg.getSender())
+					self.myAgent.DEBUG("Modify: Overwriting missing AID with sender AID "+ str(self.msg.getSender()),'warn')
+
+				if aad and (not aad.getAID() == self.msg.getSender()):
+					error = "(unauthorised)"
+					self.myAgent.DEBUG("Modify: Unauthorised. AID does not match with sender",'error')
 
 				if error:
 					reply = self.msg.createReply()
@@ -528,15 +531,21 @@ class AMS(Agent.PlatformAgent):
 					aad = AmsAgentDescription(co=co["fipa:action"]["fipa:argument"])
 				else:
 					error = "missing-argument ams-agent-description"
+					self.myAgent.DEBUG("Modify: Missing argument in ams-agent-description",'error')
 				#print "aad: " + str(aad.getAID().getName())
 				#print "aid: " + str(self.msg.getSender())
 
-				if aad and aad.getAID() and (not aad.getAID() == self.msg.getSender()):
-					error = "unauthorised"
-
 				# If there is no AID in the AAD, fill it with the sender of the message
-				if not aad.getAID():
+				if aad.getAID() and aad.getAID().getName() == None:
+					self.myAgent.DEBUG("Modify: Overwriting missing AID with sender AID "+ str(self.msg.getSender()),'warn')
 					aad.setAID(self.msg.getSender())
+
+				#An agent is only allowed to modify itself
+				if aad and (not aad.getAID() == self.msg.getSender()):
+					error = "unauthorised"
+					self.myAgent.DEBUG("Modify: Unauthorised. AID does not match with sender",'error')
+
+
 
 				if error:
 					reply = self.msg.createReply()

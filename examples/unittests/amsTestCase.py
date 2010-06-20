@@ -35,7 +35,7 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
         def _process(self):
 
             aad = spade.AMS.AmsAgentDescription()
-            aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
+            #aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
             aad.ownership = "UNITTEST" 
             self.myAgent.result = self.myAgent.modifyAgent(aad)
 
@@ -43,14 +43,28 @@ class ModifyBehav(spade.Behaviour.OneShotBehaviour):
             aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
             self.myAgent.search = self.myAgent.searchAgent(aad)
             
-            
+class NotModifyBehav(spade.Behaviour.OneShotBehaviour):
+
+        def __init__(self, s):
+            self.s = s
+            spade.Behaviour.OneShotBehaviour.__init__(self)
+
+        def _process(self):
+
+            aad = spade.AMS.AmsAgentDescription()
+            aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
+            aad.ownership = "NOT_ALLOWED" 
+            self.myAgent.result = self.myAgent.modifyAgent(aad)
+
+            aad = spade.AMS.AmsAgentDescription()
+            aad.setAID(spade.AID.aid(self.s+"@"+host,["xmpp://"+self.s+"@"+host]))
+            self.myAgent.search = self.myAgent.searchAgent(aad)
 
 
 
 class BasicTestCase(unittest.TestCase):
     
     def setUp(self):
-
     	self.a = MyAgent("a@"+host, "secret")
     	self.a.start()
     	self.b = MyAgent("b@"+host, "secret")
@@ -96,7 +110,6 @@ class BasicTestCase(unittest.TestCase):
             self.assertEqual(len(self.a.search), 0)
             
     def testModifyAllowed(self):
-
         self.a.addBehaviour(ModifyBehav("a"), None)
         counter = 0
         while self.a.search == None and counter < 20:
@@ -110,7 +123,7 @@ class BasicTestCase(unittest.TestCase):
 
     def testModifyNotAllowed(self):
 
-        self.a.addBehaviour(ModifyBehav("b"), None)
+        self.a.addBehaviour(NotModifyBehav("b"), None)
         counter = 0
         while self.a.search == None and counter < 20:
             time.sleep(1)
@@ -118,7 +131,7 @@ class BasicTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, False)
         self.assertEqual(len(self.a.search), 1)
-        self.assertNotEqual(self.a.search[0].getOwnership(), "UNITTEST")
+        self.assertNotEqual(self.a.search[0].getOwnership(), "NOT_ALLOWED")
 
 
 if __name__ == "__main__":
