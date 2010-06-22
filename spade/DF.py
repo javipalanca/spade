@@ -357,7 +357,7 @@ class DF(PlatformAgent):
                 return 1
 
             else:
-                # Content is in RDF/XML
+                # Content is in RDF/XML                
                 max = 50
                 if self.content.action.argument.max_results:
                     try:

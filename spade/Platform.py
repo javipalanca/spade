@@ -198,9 +198,12 @@ class SpadePlatform(Agent.PlatformAgent):
         platform = self.getName()        
         version = str(sys.version)
         the_time = str(time.ctime())
-        search = self.searchService(DF.DfAgentDescription())
+        try:        
+            search = self.searchService(DfAgentDescription())
+        except Exception, e:
+            print "Exception: " + str(e)
         servs = {}
-        idn = 0
+        idn = 0        
         for dad in search:
             for service in dad.getServices():
                 if service.getType() not in servs.keys():
@@ -211,8 +214,9 @@ class SpadePlatform(Agent.PlatformAgent):
                 servs[service.getType()][idn]["addresses"] = ""
                 for address in dad.getAID().getAddresses():
                     servs[service.getType()][idn]["addresses"] += str(address)+" "
-                idn += 1
-        print servs
+                idn += 1        
+        #print servs
+        self.DEBUG("Services: " + str(servs))
         return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=servs)
 
     def sendmessage(self, to):

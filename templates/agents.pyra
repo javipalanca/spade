@@ -17,17 +17,18 @@
 <div class="container">
 
 	<div class="container">
-		<div class="imgPlaceHolder"> <img src="http://spade2.googlecode.com/files/Logo.png" border="0"></img> </div>
+		<div class="imgPlaceHolder">
+			<img src="http://spade2.googlecode.com/files/Logo.png" border="0"></img>
+		</div>
 		<div class="menuNav"> 
 			<a class="vertical" href="index">Home</a> 
 			<a class="vertical" href="agents">Agents</a>
 			<a class="vertical" href="services">Services</a>			
 			<a class="vertical" href="admin">Admin</a>
 			<a class="vertical" href="log">Log</a>
-			<a class="vertical" href="doc/html/index.html">API</a></div>
-
-
+			<a class="vertical" href="doc/html/index.html">API</a>
 		</div>
+	</div>
 
 	<div class="main">
 		

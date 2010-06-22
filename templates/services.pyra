@@ -6,7 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="default.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
 
 <title>SPADE Web Interface: Services</title>
@@ -16,20 +16,18 @@
 
 <div class="container">
 
-	<div class="header">
-		
-		<div class="title">
-			<h1>SPADE</h1>
+	<div class="container">
+		<div class="imgPlaceHolder">
+			<img src="http://spade2.googlecode.com/files/Logo.png" border="0"></img>
 		</div>
-
-		<div class="navigation">
-			<a href="index">Home</a>
-			<a href="agents">Agents</a>
-			<a href="services">Services</a>			
-			<a href="index">Plugins</a>
-			<div class="clearer"><span></span></div>
+		<div class="menuNav"> 
+			<a class="vertical" href="index">Home</a> 
+			<a class="vertical" href="agents">Agents</a>
+			<a class="vertical" href="services">Services</a>			
+			<a class="vertical" href="admin">Admin</a>
+			<a class="vertical" href="log">Log</a>
+			<a class="vertical" href="doc/html/index.html">API</a>
 		</div>
-
 	</div>
 
 	<div class="main">
@@ -88,7 +86,16 @@
 
 </div>
 
-<div class="footer">&copy; 2007 <a href="spade.gti-ia.dsic.upv.es">spade.gti-ia.dsic.upv.es</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se/">Website template</a> by <a href="http://arcsin.se/">Arcsin</a>
+<div class="pageFooter">
+  <table width="100%">
+
+    <tbody>
+      <tr> 
+        <td align="left" width="15%">
+       </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 </body>
