@@ -805,7 +805,7 @@ class ServiceDescription:
         self.ontologies = []
         self.languages = []
         self.ownership = None
-        self.properties = []
+        self.properties = {}
 
         if content != None:
             self.loadSL0(content)
@@ -826,7 +826,7 @@ class ServiceDescription:
                 self.ownership = co.ownership
             if co.properties:
                 for k,v in co.properties:
-                    self.properties.append({"name":k, "value":v})
+                    self.properties[k]=v
             #print "SD DONE:",self.asRDFXML()
 
 
@@ -870,13 +870,12 @@ class ServiceDescription:
         return self.properties
 
     def getProperty(self, prop):
-        for p in self.properties:
-            if p["name"] == prop:
-                return p["value"]
+        if prop in self.properties.keys():
+            return self.properties[prop]
         return ""
 
-    def addProperty(self, p):
-        self.properties.append(p)
+    def addProperty(self, key,value):
+        self.properties[key]=value
 
     #def __eq__(self,y):
     def match(self,y):
@@ -900,6 +899,9 @@ class ServiceDescription:
             if self.ownership != y.getOwnership():
                 return False
         #properties
+        for k,v in self.properties.items():
+            if y.getProperties().has_key(k):
+                if y.getProperty(k) != v: return False
         return True
 
     def __ne__(self,y):
@@ -931,8 +933,7 @@ class ServiceDescription:
                 #print str(content.properties.set)
                 #print "##########"
                 for p in content.properties.set.asDict().values():
-                    #print p
-                    self.properties.append({'name':str(p['name']).lower().strip("[']"),'value':str(p['value']).lower().strip("[']")})
+                    self.properties[str(p['name']).lower().strip("[']")] = str(p['value']).lower().strip("[']")
 
     def __str__(self):
 
@@ -965,8 +966,8 @@ class ServiceDescription:
 
         if len(self.properties) > 0:
             sb += ":properties \n (set\n"
-            for i in self.properties:
-                sb += " (property :name " + i['name'] + " :value " + i['value'] +")\n"
+            for k,v in self.properties.items():
+                sb += " (property :name " + str(k) + " :value " + str(v) +")\n"
             sb += ")\n"
 
 
@@ -997,8 +998,8 @@ class ServiceDescription:
             co["ownership"] = self.ownership
         if self.properties:
             co["properties"] = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-            for p in self.properties:
-                co["properties"][p["name"]] = p["value"]
+            for k,v in self.properties.items():
+                co["properties"][str(k)] = str(v)
         return co
 
     def asRDFXML(self):
@@ -1006,3 +1007,64 @@ class ServiceDescription:
         returns a printable version of the SD in RDF/XML format
         """
         return str(self.asContentObject())
+
+class Service:
+    
+    def __init__(self, name, owner, P, Q, inputs=[], outputs=[], description= None, ontology=None, dad = None):
+        
+        if dad:
+            self.setDAD(dad)
+            
+        else:
+            self.name  = name
+            self.owner = owner
+            self.ontology = ontology
+            self.description = description
+            self.inputs = inputs
+            self.outputs = outputs
+            self.P = P
+            self.Q = Q
+        
+            sd = ServiceDescription()
+            sd.setName(name)
+            sd.setOwnership(owner)
+            sd.addProperty("P":P)
+            sd.addProperty("Q":Q)
+            sd.addProperty("inputs":inputs)
+            sd.addProperty("outputs":outputs)
+            if ontology: sd.addOntologies(ontology)
+            if description: sd.addProperty("description":description)
+        
+            self.dad = DfAgentDescription()
+            self.dad.setAID(owner)
+            if ontology: self.dad.addOntologies(ontology)
+            self.dad.addService(sd)
+
+    def setDAD(self,dad):
+        sd = dad.getServices()
+        if len(sd)==1: sd = sd[0]
+        else: return None
+        self.name = sd.getName()
+        self.owner = dad.getAID()
+        if len(dad.getOntologies())>=1:
+            self.ontology = dad.getOntologies()[0]
+        if sd.getProperty("description"):
+            self.description = sd.getProperty("description")
+        self.inputs = sd.getProperty("inputs")
+        self.outputs = sd.getProperty("outputs")
+        self.P = sd.getProperty("P")
+        self.Q = sd.getProperty("Q")
+        
+        self.dad = dad
+        
+    def getDAD(self):
+        return self.dad
+        
+    def match(self,y):
+        return self.dad.match(y.dad)
+        
+    def __eq__(self,y):
+        return self.match(y)
+        
+    def __str__(self):
+        return str(self.dad)
