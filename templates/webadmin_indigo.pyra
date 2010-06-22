@@ -16,8 +16,7 @@
 		<div class="menuNav"> 
 		<a class="vertical" href="index">Home</a> 
 		<a class="vertical" href="agents">Agents</a>
-		<a class="vertical" href="services">Services</a>
-		<a class="vertical" href="organizations">Organizations</a>
+		<a class="vertical" href="services">Services</a>		
 		<a class="vertical" href="admin">Admin</a>
 		<a class="vertical" href="log">Log</a>
 		<a class="vertical" href="doc/html/index.html">API</a></div>

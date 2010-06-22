@@ -25,8 +25,7 @@
 		<div class="navigation">
 			<a href="index">Home</a>
 			<a href="agents">Agents</a>
-			<a href="services">Services</a>
-			<a href="index">Organizations</a>
+			<a href="services">Services</a>			
 			<a href="index">Plugins</a>
 			<div class="clearer"><span></span></div>
 		</div>

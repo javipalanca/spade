@@ -19,8 +19,7 @@
 	<!--(if "acc." in name)-->
 		<a class="vertical" href="index">Home</a> 
 		<a class="vertical" href="agents">Agents</a>
-		<a class="vertical" href="services">Services</a>
-		<a class="vertical" href="organizations">Organizations</a>
+		<a class="vertical" href="services">Services</a>		
 	<!--(end)-->
 	<a class="vertical" href="admin">Admin</a> 
 	<a class="vertical" href="log">Log</a></div>
