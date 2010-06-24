@@ -146,9 +146,9 @@ class registerServiceBehaviour(Behaviour.OneShotBehaviour):
             force_sl0 = True
         else:
             self._msg.addReceiver( self.myAgent.getDF() )
-        self._msg.setPerformative('request')
-        self._msg.setProtocol('fipa-request')
-        self._msg.setOntology('FIPA-Agent-Management')
+            self._msg.setPerformative('request')
+            self._msg.setProtocol('fipa-request')
+            self._msg.setOntology('FIPA-Agent-Management')
 
         if force_sl0:
             self._msg.setLanguage('fipa-sl0')
@@ -171,18 +171,18 @@ class registerServiceBehaviour(Behaviour.OneShotBehaviour):
 
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-            self.myAgent.DEBUG("There was an error registering the service " +str(self.DAD.getName())+ "(not agree)","warn")
+            self.myAgent.DEBUG("There was an error registering the service " +str(self.DAD)+ "(not agree)","warn")
             self.result = False
             return False
         elif msg == None or msg.getPerformative() == 'agree':
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
                 if not msg:
-                    self.DEBUG("There was an error registering the Service " +str(self.DAD.getName())+ ". (timeout)","warn")
+                    self.DEBUG("There was an error registering the Service " +str(self.DAD)+ ". (timeout)","warn")
                 elif msg.getPerformative() == 'failure':
-                    self.DEBUG("There was an error registering the Service " +str(self.DAD.getName())+ ". Failure: " +  msg.getContentObject()['fipa:error'],"warn")
+                    self.DEBUG("There was an error registering the Service " +str(self.DAD)+ ". Failure: " +  msg.getContentObject()['fipa:error'],"warn")
                 else:
-                    self.DEBUG("There was an error registering the Service " +str(self.DAD.getName())+ ". (not inform)","warn")
+                    self.DEBUG("There was an error registering the Service " +str(self.DAD)+ ". (not inform)","warn")
                 self.result = False
                 return False
 
@@ -229,18 +229,18 @@ class deregisterServiceBehaviour(Behaviour.OneShotBehaviour):
 
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-            self.myAgent.DEBUG("There was an error registering the Service "+str(self.DAD.getName()),"warn")
+            self.myAgent.DEBUG("There was an error registering the Service "+str(self.DAD),"warn")
             self.result = False
             return
         elif msg == None or msg.getPerformative() == 'agree':
             msg = self._receive(True,20)
             if msg == None or msg.getPerformative() != 'inform':
                 if not msg:
-                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD.getName())+". (timeout)","warn")
+                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD)+". (timeout)","warn")
                 elif msg.getPerformative() == 'failure':
-                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD.getName())+". failure:" +  msg.getContentObject()['fipa:error'],"warn")
+                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD)+". failure:" +  msg.getContentObject()['fipa:error'],"warn")
                 else:
-                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD.getName())+". (not inform)","warn")
+                    self.DEBUG("There was an error deregistering the Service "+str(self.DAD)+". (not inform)","warn")
                 self.result = False
                 return
 

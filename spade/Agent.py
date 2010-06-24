@@ -1036,6 +1036,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         registers a service in the DF
         the service template is a DfAgentDescriptor
         """
+        if isinstance(DAD,DF.Service):
+            DAD=DAD.getDAD()
+        
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         if otherdf and isinstance(otherdf, AID.aid):
@@ -1061,6 +1064,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         deregisters a service in the DF
         the service template is a DfAgentDescriptor
         """
+
+        if isinstance(DAD,DF.Service):
+            DAD=DAD.getDAD()
+        
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         if otherdf and isinstance(otherdf, AID.aid):
@@ -1087,6 +1094,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     	the service template is a DfAgentDescriptor
 
     	"""
+    	if isinstance(DAD,DF.Service):
+            DAD=DAD.getDAD()
+            returnDAD=False
+        else: returnDAD=True
+    	
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -1095,10 +1107,27 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if self._running:
             self.addBehaviour(b,t)
             b.join()
-            return b.result
         else:
             self.runBehaviourOnce(b,t)
-            return b.result
+
+
+        if b.result==None: return None
+        if returnDAD: return b.result
+        else:
+            r = []
+            for dad in b.result:
+                for sd in  dad.getServices():
+                    s=DF.Service()
+                    s.setName(sd.getName())
+                    s.setOwner(dad.getAID())
+                    for o in sd.getOntologies(): s.setOntology(o)
+                    s.setDescription(sd.getProperty("description"))
+                    s.setInputs(sd.getProperty("inputs"))
+                    s.setOutputs(sd.getProperty("outputs"))
+                    s.setP(sd.getProperty("P"))
+                    s.setQ(sd.getProperty("Q"))
+                    r.append(s)
+            return r
 
 
 		
@@ -1107,6 +1136,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         modifies a service in the DF
         the service template is a DfAgentDescriptor
         """
+        
+        if isinstance(DAD,DF.Service):
+            DAD=DAD.getDAD()
+        
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
