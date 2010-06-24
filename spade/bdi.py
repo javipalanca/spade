@@ -8,6 +8,7 @@ import Behaviour
 
 class PreConditionFailed (Exception): pass
 class PostConditionFailed(Exception): pass
+class ServiceFailed(Exception): pass
 
 class Goal:
     
@@ -19,23 +20,45 @@ class Goal:
         self.persistent = False
         self.priority = 0
         self.selected = False
+        self.unreachable = False
 
     def testConflict(self, goal):
         # No conflict test at the moment
         return False
         
     def __str__(self):
-        return str(self.expression)
+        if self.unreachable:
+            return "UNREACHABLE("+str(self.expression)+")"
+        else:
+            return str(self.expression)
+
+    def __repr__(self):
+       return self.__str__()
 
 class Service:
-    def __init__(self, P=None, Q=None, inputs={},outputs={}):
+    def __init__(self, P=None, Q=None):
         self.P = P #precondition
         self.Q = Q #postcontidion
-        self.inputs  = inputs
-        self.outputs = outputs
         
         self.myAgent = None
-            
+ 
+    def setP(self, P): self.P = P
+
+    def setQ(self, Q): self.Q = Q
+
+    def getP(self): return self.P
+
+    def getQ(self): return self.Q
+
+    def reward(self):
+        self.trust -= 1
+        if self.trust<0: self.trust=0
+        #print "Service "+self.name+" rewarded!"
+
+    def punish(self):
+        self.trust += 10
+        if self.trust>1000: self.trust=1000
+        #print "Service "+self.name+" punished!"
         
     def run(self):
         raise NotImplementedError

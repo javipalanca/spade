@@ -25,6 +25,7 @@ import SL0Parser
 import fipa
 import peer2peer as P2P
 import socialnetwork
+import RPC
 
 import mutex
 import types
@@ -132,7 +133,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.P2PPORT = random.randint(1025,65535)  # Random P2P port number
             p2pb = P2P.P2PBehaviour()
             self.addBehaviour(p2pb)
-
+            
+        #Remote Procedure Calls support
+        self.RPC = {}
+        self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS="jabber:iq:rpc")))
 
 
     def WUIController_admin(self):
@@ -1031,11 +1035,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def registerService(self, DAD, debug=False, otherdf=None):
+    def registerService(self, DAD, methodCall=None, otherdf=None):
         """
         registers a service in the DF
         the service template is a DfAgentDescriptor
         """
+        
+        if methodCall:
+            if not isinstance(DAD,DF.Service):
+                self.DEBUG("Could not register RPC Service. It's not a DF.Service class","error")
+                return False
+
+            self.RPC[DAD.getName()] = (DAD, methodCall)
+        
         if isinstance(DAD,DF.Service):
             DAD=DAD.getDAD()
         
@@ -1059,11 +1071,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def deregisterService(self, DAD, debug=False, otherdf=None):
+    def deregisterService(self, DAD, otherdf=None):
         """
         deregisters a service in the DF
         the service template is a DfAgentDescriptor
         """
+
+        if self.RPC.has_key(DAD.getName()):
+            del self.RPC[DAD.getName()]
 
         if isinstance(DAD,DF.Service):
             DAD=DAD.getDAD()
@@ -1088,7 +1103,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return b.result
 
 
-    def searchService(self, DAD, debug=True):
+    def searchService(self, DAD):
     	"""
     	search a service in the DF
     	the service template is a DfAgentDescriptor
@@ -1131,11 +1146,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 		
-    def modifyService(self, DAD):
+    def modifyService(self, DAD, methodCall=None):
         """
         modifies a service in the DF
         the service template is a DfAgentDescriptor
         """
+
+        if methodCall:
+            if not isinstance(DAD,DF.Service):
+                self.DEBUG("Could not modify RPC Service. It's not a DF.Service class","error")
+                return False
+
+            self.RPC[DAD.getName()] = (DAD, methodCall)
         
         if isinstance(DAD,DF.Service):
             DAD=DAD.getDAD()
@@ -1145,6 +1167,28 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         template.setConversationId(msg.getConversationId())
         t = Behaviour.MessageTemplate(template)
         b = fipa.modifyServiceBehaviour(msg, DAD)
+
+        if self._running:
+            # Online
+            self.addBehaviour(b,t)
+            b.join()
+            return b.result
+        else:
+            self.runBehaviourOnce(b,t)
+            return b.result
+
+    def invokeService(self, service):
+        """
+        invokes a service using jabber-rpc (XML-RPC)
+        the service template is a DF.Service
+        """
+
+        if not isinstance(service,DF.Service):
+            self.DEBUG("Service MUST be a DF.Service instance",'error')
+            return False
+
+        b = RPC.RPCClientBehaviour(service)
+        t = Behaviour.MessageTemplate(Iq(queryNS="jabber:iq:rpc",attrs={'id':str(random.getrandbits(32))}))
 
         if self._running:
             # Online
