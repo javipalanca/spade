@@ -30,7 +30,7 @@ class Router(PlugIn):
         server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_CLIENT)
         server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_SERVER)
         #server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_SERVER)
-        #server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_CLIENT)
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_INFO,xmlns=NS_CLIENT)
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_INFO,xmlns=NS_SERVER)
         server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_ITEMS,xmlns=NS_CLIENT)

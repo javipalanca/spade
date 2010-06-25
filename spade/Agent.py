@@ -136,7 +136,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             
         #Remote Procedure Calls support
         self.RPC = {}
-        self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS="jabber:iq:rpc")))
+        self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS=NS_RPC)))
 
 
     def WUIController_admin(self):
@@ -1035,21 +1035,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
 
-    def registerService(self, DAD, methodCall=None, otherdf=None):
+    def registerService(self, service, methodCall=None, otherdf=None):
         """
         registers a service in the DF
         the service template is a DfAgentDescriptor
         """
         
-        if methodCall:
-            if not isinstance(DAD,DF.Service):
-                self.DEBUG("Could not register RPC Service. It's not a DF.Service class","error")
-                return False
-
-            self.RPC[DAD.getName()] = (DAD, methodCall)
-        
-        if isinstance(DAD,DF.Service):
-            DAD=DAD.getDAD()
+        if isinstance(service,DF.Service): DAD=service.getDAD()
+        else: DAD = service
         
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
@@ -1064,11 +1057,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             # Online
             self.addBehaviour(b,t)
             b.join()
-            return b.result
         else:
             self.runBehaviourOnce(b,t)
-            return b.result
 
+        if methodCall and b.result==True:
+            if not isinstance(service,DF.Service):
+                self.DEBUG("Could not register RPC Service. It's not a DF.Service class","error")
+                return False
+
+            name = service.getName()
+            self.DEBUG("Registering RPC service "+ name)
+            self.RPC[name.lower()] = (service, methodCall)
+            
+        return b.result
 
 
     def deregisterService(self, DAD, otherdf=None):
@@ -1133,14 +1134,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             for dad in b.result:
                 for sd in  dad.getServices():
                     s=DF.Service()
-                    s.setName(sd.getName())
-                    s.setOwner(dad.getAID())
+                    if sd.getName(): s.setName(sd.getName())
+                    if dad.getAID(): s.setOwner(dad.getAID())
                     for o in sd.getOntologies(): s.setOntology(o)
-                    s.setDescription(sd.getProperty("description"))
-                    s.setInputs(sd.getProperty("inputs"))
-                    s.setOutputs(sd.getProperty("outputs"))
-                    s.setP(sd.getProperty("P"))
-                    s.setQ(sd.getProperty("Q"))
+                    if sd.getProperty("description"): s.setDescription(sd.getProperty("description"))
+                    if sd.getProperty("inputs"): s.setInputs(sd.getProperty("inputs"))
+                    if sd.getProperty("outputs"): s.setOutputs(sd.getProperty("outputs"))
+                    if sd.getProperty("P"): s.setP(sd.getProperty("P"))
+                    if sd.getProperty("Q"): s.setQ(sd.getProperty("Q"))
                     r.append(s)
             return r
 
@@ -1187,8 +1188,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.DEBUG("Service MUST be a DF.Service instance",'error')
             return False
 
-        b = RPC.RPCClientBehaviour(service)
-        t = Behaviour.MessageTemplate(Iq(queryNS="jabber:iq:rpc",attrs={'id':str(random.getrandbits(32))}))
+        num = str(random.getrandbits(32))
+        b = RPC.RPCClientBehaviour(service,num)
+        t = Behaviour.MessageTemplate(Iq(queryNS="jabber:iq:rpc",attrs={'id':num}))
 
         if self._running:
             # Online

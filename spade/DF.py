@@ -210,12 +210,12 @@ class DF(PlatformAgent):
                             del self.myAgent.servicedb[dad.getAID().getName()]
                         else:
                             for ss in dad.getServices():
-                                for s in services:
+                                for s in services.getServices():
                                     if ss.match(s):
                                         self.myAgent.servicedb[dad.getAID().getName()].delService(s)
                     except Exception, err:
                         reply.setPerformative("failure")
-                        reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister agent"))')
+                        reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister service"))')
                         self.myAgent.send(reply)
                         self.myAgent.DEBUG("FAILURE: Service could not be deregistered: "+str(err),'error')
                         return -1
@@ -326,20 +326,21 @@ class DF(PlatformAgent):
 
                     try:
                         services = copy.copy(self.myAgent.servicedb[dad.getAID().getName()])
+                        self.myAgent.DEBUG("Deregistering "+str(services) + " AND " + str(dad.getServices()))
                         if dad.getServices() == []:
                             del self.myAgent.servicedb[dad.getAID().getName()]
                         else:
                             for ss in dad.getServices():
-                                for s in services:
+                                for s in services.getServices():
                                     if ss.match(s):
                                         self.myAgent.servicedb[dad.getAID().getName()].delService(s)
                     except Exception, err:
                         reply.setPerformative("failure")
                         co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
-                        co_error["fipa:error"] = 'internal-error "could not deregister agent"'
+                        co_error["fipa:error"] = 'internal-error "could not deregister service"'
                         reply.setContentObject(co_error)
                         self.myAgent.send(reply)
-                        self.myAgent.DEBUG("FAILURE: internal-error 'could not deregister agent': "+str(err),'error')
+                        self.myAgent.DEBUG("FAILURE: internal-error 'could not deregister service': "+str(err),'error')
                         return -1
 
                     reply.setPerformative("inform")
@@ -788,7 +789,7 @@ class DfAgentDescription:
     def getName(self):
         if self.name != None:
             return self.name.getName()
-        else: return ""
+        else: return AID.aid()
 
     def setAID(self, a):
         self.name = a
@@ -895,7 +896,7 @@ class DfAgentDescription:
                 self.name.loadSL0(content.name)
 
             if "services" in content:
-                #TODO: el parser solo detecta 1 service-description!!!
+                #TODO: the parser only detects 1 service-description!!!
                 self.services = [] #ServiceDescription()
                 #self.services.loadSL0(content.services.set['service-description'])
                 for i in content.services.set:
@@ -920,6 +921,9 @@ class DfAgentDescription:
                 self.scope = content.scope.set.asList()
 
     def __str__(self):
+        return self.asRDFXML()
+        
+    def asSL0(self):
 
         sb = ''
         if self.name != None:
@@ -991,9 +995,11 @@ class ServiceDescription:
             if co.ownership:
                 self.ownership = co.ownership
             if co.properties:
+                #print co.properties
                 for k,v in co.properties.items():
-                    self.properties[k]=v
-            #print "SD DONE:",self.asRDFXML()
+                    if ":" in k: ns,key = k.split(":")
+                    else: key=k
+                    self.properties[key]=v
 
 
     def getName(self):
@@ -1038,9 +1044,11 @@ class ServiceDescription:
     def getProperty(self, prop):
         if prop in self.properties.keys():
             return self.properties[prop]
-        return ""
+        return None
 
-    def addProperty(self, key,value):
+    def addProperty(self, k,value):
+        if ":" in k: ns,key = k.split(":")
+        else: key=k
         self.properties[key]=value
 
     #def __eq__(self,y):
@@ -1102,6 +1110,9 @@ class ServiceDescription:
                     self.properties[str(p['name']).lower().strip("[']")] = str(p['value']).lower().strip("[']")
 
     def __str__(self):
+        return self.asRDFXML()
+        
+    def asSL0(self):
 
         sb = ""
         if self.name != None:
@@ -1145,7 +1156,7 @@ class ServiceDescription:
         """
         Returns a version of the SD in ContentObject format
         """
-        co = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+        co = ContentObject()#namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
         if self.name:
             co["name"] = str(self.name)
         else:
@@ -1162,10 +1173,12 @@ class ServiceDescription:
             co["languages"] = copy.copy(self.languages)
         if self.ownership:
             co["ownership"] = self.ownership
-        if self.properties:
-            co["properties"] = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
+        if self.properties != {}:
+            co["properties"] = ContentObject()#namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
             for k,v in self.properties.items():
-                co["properties"][str(k)] = str(v)
+                if ":" in k: ns,key = k.split(":")
+                else: key=k
+                co["properties"][str(key)] = str(v)
         return co
 
     def asRDFXML(self):
@@ -1196,16 +1209,16 @@ class Service:
             if ontology: self.dad.addOntologies(ontology)
         
             
-            if name:
+            if name!=None:
                 sd = ServiceDescription()
                 sd.setName(name)
-                if owner:       sd.setOwnership(owner)
-                if P:           sd.addProperty("P",P)
-                if Q:           sd.addProperty("Q",Q)
-                if inputs:      sd.addProperty("inputs",inputs)
-                if outputs:     sd.addProperty("outputs",outputs)
-                if ontology:    sd.addOntologies(ontology)
-                if description: sd.addProperty("description",description)
+                if owner!=None:       sd.setOwnership(owner.getName())
+                if P!=None:           sd.addProperty("P",str(P))
+                if Q!=None:           sd.addProperty("Q",str(Q))
+                if inputs!=[]:        sd.addProperty("inputs",inputs)
+                if outputs!=[]:       sd.addProperty("outputs",outputs)
+                if ontology!=None:    sd.addOntologies(str(ontology))
+                if description!=None: sd.addProperty("description",str(description))
         
                 self.dad.addService(sd)
             
@@ -1315,12 +1328,12 @@ class Service:
         self.name = sd.getName()
         self.owner = dad.getAID()
         self.ontology = dad.getOntologies()
-        if sd.getProperty("description"):
+        if sd.getProperty("description")!=None:
             self.description = sd.getProperty("description")
-        self.inputs = sd.getProperty("inputs")
-        self.outputs = sd.getProperty("outputs")
-        self.P = sd.getProperty("P")
-        self.Q = sd.getProperty("Q")
+        if sd.getProperty("inputs")  !=None: self.inputs = sd.getProperty("inputs")
+        if sd.getProperty("outputs") !=None: self.outputs = sd.getProperty("outputs")
+        if sd.getProperty("P")       !=None: self.P = sd.getProperty("P")
+        if sd.getProperty("Q")       !=None: self.Q = sd.getProperty("Q")
         
         self.dad = dad
         
