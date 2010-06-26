@@ -152,7 +152,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		    attrs[attribute] = eval( "str(self."+attribute+")" )
         sorted_attrs = attrs.keys()
         sorted_attrs.sort()
-        return "admin.pyra", {"aid":self.getAID(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs, "sorted_attrs":sorted_attrs}
+	import pygooglechart
+	chart=pygooglechart.QRChart(125,125)
+	chart.add_data(self.getAID().asXML())
+	chart.set_ec('H',0)
+        return "admin.pyra", {"aid":self.getAID(), "qrcode":chart.get_url(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs, "sorted_attrs":sorted_attrs}
         
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
@@ -1140,7 +1144,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if sd.getProperty("description"): s.setDescription(sd.getProperty("description"))
                     if sd.getProperty("inputs"): s.setInputs(sd.getProperty("inputs"))
                     if sd.getProperty("outputs"): s.setOutputs(sd.getProperty("outputs"))
-                    if sd.getProperty("P"): s.setP(sd.getProperty("P"))
+                    if sd.getProperty("P"):
+                        for p in sd.getProperty("P"): s.addP(p)
                     if sd.getProperty("Q"): s.setQ(sd.getProperty("Q"))
                     r.append(s)
             return r
@@ -1190,7 +1195,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         num = str(random.getrandbits(32))
         b = RPC.RPCClientBehaviour(service,num)
-        t = Behaviour.MessageTemplate(Iq(queryNS="jabber:iq:rpc",attrs={'id':num}))
+        t = Behaviour.MessageTemplate(Iq(typ='result',queryNS="jabber:iq:rpc",attrs={'id':num}))
+        t2 = Behaviour.MessageTemplate(Iq(typ='error',queryNS="jabber:iq:rpc",attrs={'id':num}))
 
         if self._running:
             # Online

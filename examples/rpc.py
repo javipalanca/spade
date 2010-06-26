@@ -49,8 +49,10 @@ class MyAgent(spade.Agent.Agent):
             self.addBehaviour(b, None)
 
         def RPCmethod(self,P):
-            #return "PROCESSED"
-            return str(P)+"_processed"
+            s = ""
+            for p in P:
+                s+=p+"_"
+            return [s+"_processed",1000]
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:

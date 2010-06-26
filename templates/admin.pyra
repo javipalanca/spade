@@ -32,8 +32,13 @@
 
 	<div class="main">
 		
-		<div class="content">		
-			
+		<div class="content">
+			<table class="servicesT" cellspacing="0">
+				<tr><td class="servHd">QRCode</td><td class="servBodL"><img src="@!qrcode!@" border=0 width=256 height=256 alt="QRCode"></img></td></tr>
+			</table>
+
+			<br>
+
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Name</td><td class="servBodL">@!aid.getName()!@</td></tr>
 				<tr><td class="servHd">Addresses</td><td class="servBodL">@!str(aid.getAddresses())!@</td></tr>

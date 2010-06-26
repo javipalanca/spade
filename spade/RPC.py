@@ -67,7 +67,7 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
         self.result=None
         
         #send IQ methodCall
-        params = [self.service.getP()]
+        params = self.service.getP()
         params = tuple(params,)
         self.myAgent.DEBUG("Params processed: "+str(params))
         
@@ -95,14 +95,15 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
             self.myAgent.DEBUG("Response received for method "+self.service.getName(),'ok')
             if self.msg.getType() == "result":
                 params, method = xmlrpclib.loads("<?xml version='1.0'?>%s" % self.msg)
-                self.results = params
+                self.DEBUG("method "+str(method)+" returned params "+str(params),'ok')
+                self.result = params[0]
                 #if agent is a BDIAgent add result params as postconditions
                 if "addBelieve" in dir(self.myAgent):
-                    for q in params:
+                    for q in params[0]:
                         self.myAgent.addBelieve(q)
-                return
+                return params[0]
         else:
-            self.results = False
-            return
+            self.result = False
+            return False
 
 

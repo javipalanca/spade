@@ -94,7 +94,7 @@ def Register(agent, param):
             s = spade.DF.Service()
             s.setName("unittest_name_1_"+param)
             s.setOwner(agent.getAID())
-            s.setP("service_precondition")
+            s.addP("service_precondition")
             s.setQ("service_postcondition")
             s.setInputs(['login','password'])
             s.setOutputs(['account_id'])

@@ -1178,7 +1178,7 @@ class ServiceDescription:
             for k,v in self.properties.items():
                 if ":" in k: ns,key = k.split(":")
                 else: key=k
-                co["properties"][str(key)] = str(v)
+                co["properties"][str(key)] = v
         return co
 
     def asRDFXML(self):
@@ -1189,7 +1189,7 @@ class ServiceDescription:
 
 class Service:
     
-    def __init__(self, name=None, owner=None, P=None, Q=None, inputs=[], outputs=[], description= None, ontology=None, dad = None):
+    def __init__(self, name=None, owner=None, P=[], Q=[], inputs=[], outputs=[], description= None, ontology=None, dad = None):
         
         if dad:
             self.setDAD(dad)
@@ -1213,8 +1213,8 @@ class Service:
                 sd = ServiceDescription()
                 sd.setName(name)
                 if owner!=None:       sd.setOwnership(owner.getName())
-                if P!=None:           sd.addProperty("P",str(P))
-                if Q!=None:           sd.addProperty("Q",str(Q))
+                if P!=[]:             sd.addProperty("P",P)
+                if Q!=[]:             sd.addProperty("Q",Q)
                 if inputs!=[]:        sd.addProperty("inputs",inputs)
                 if outputs!=[]:       sd.addProperty("outputs",outputs)
                 if ontology!=None:    sd.addOntologies(str(ontology))
@@ -1261,13 +1261,16 @@ class Service:
         
     def getOntology(self): return self.ontology
 
-    def setP(self,P):
-        self.P = P
+    def addP(self,P):
+        self.P.append(P)
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
         for s in self.dad.getServices():
-            s.properties['P']=P
+            p = s.getProperty("P")
+            if not p: p=[]
+            p.append(P)
+            s.addProperty('P',p)
             services.append(s)
         self.dad.services = services
 
