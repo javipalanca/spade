@@ -1195,7 +1195,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         num = str(random.getrandbits(32))
         b = RPC.RPCClientBehaviour(service,num)
-        t = Behaviour.MessageTemplate(Iq(typ='result',queryNS="jabber:iq:rpc",attrs={'id':num}))
+        t  = Behaviour.MessageTemplate(Iq(typ='result',queryNS="jabber:iq:rpc",attrs={'id':num}))
         t2 = Behaviour.MessageTemplate(Iq(typ='error',queryNS="jabber:iq:rpc",attrs={'id':num}))
 
         if self._running:
