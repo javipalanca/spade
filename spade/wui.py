@@ -78,7 +78,7 @@ class WUI(Thread):
         msg.setLanguage("rdf")
         msg.setOntology("fipa-agent-management")  # Pretend to be a FIPA message
         co = self.owner.newContentObject()
-        co.addNamespace("http://spade.gti-ia.dsic.upv.es", "spade")
+        co.addNamespace("http://spade2.googlecode.com", "spade")
         co["spade:action"] = "register_awui"
         co["spade:argument"] = str(socket.gethostbyname(socket.gethostname()))+":"+str(self.port)
         msg.setContentObject(co)

@@ -10,18 +10,15 @@
 <title>SPADE Web Interface</title>
 </head>
 
-<body>
-	<div class="container">
-		<div class="imgPlaceHolder"> <img src="http://spade2.googlecode.com/files/Logo.png" border="0"></img> </div>
-		<div class="menuNav"> 
-		<a class="vertical" href="index">Home</a> 
-		<a class="vertical" href="agents">Agents</a>
-		<a class="vertical" href="services">Services</a>		
-		<a class="vertical" href="admin">Admin</a>
-		<a class="vertical" href="log">Log</a>
-		<a class="vertical" href="doc/html/index.html">API</a></div>
-		</div>
-
+<!--(if "acc." in name)-->
+	<!--(include)-->
+	header_platform.pyra 
+	<!--(end)-->
+<!--(else)-->
+	<!--(include)-->
+	header.pyra
+	<!--(end)-->
+<!--(end)-->
 
 	<div class="main">
 		
@@ -30,7 +27,7 @@
 			<h1>Welcome to SPADE ! ! !</h1>
 			<div class="descr"><span>@!time!@</span></div>
 
-			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. You can check the online documentation for the SPADE project <a href="http://spade.gti-ia.dsic.upv.es/documentation.html">here</a>.<!--In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.html">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.--></p>
+			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. You can check the online documentation for the SPADE project <a href="http://spade.gti-ia.dsic.upv.es/documentation.html">here</a>.</p>
 
 			<cite>SPADE is the ultimate solution for all your agent needs -- Gustavo Aranda, SPADE developer</cite>
 			
@@ -44,23 +41,7 @@
 			<p>The SPADE Agent Library is a module for the Python programming language for building SPADE agents. It is a collection of classes, functions and tools for creating new SPADE agents that can work with the SPADE Agent Platform. Using it is the best way to start developing your own SPADE agents. In the future, we would like to offer bindings of the SPADE Agent Library for more programming languages, like Java or C#, but for now only Python is supported.</p>
 
 			<p>If you have worked with Python before, you will find the SPADE Agent Library easy to understand and use, with classes ready to use and expand, and many functionalities already built in the library. If you have worked with other high-level behavioral agent platforms (like Jade or MadKit) you will find some similarities in the way the library works, although the agent model present in SPADE is a bit different.</p>
-			<!--<ul>
-				<li>Tristique</li>
-				<li>Aenean</li>
-				<li>Pretium</li>
-			</ul>
-			<p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, nunc eget pretium porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est. Sed sodales nisl sit amet augue. Donec ultrices, augue ullamcorper posuere laoreet, turpis massa tristique justo, sed egestas metus magna sed purus. Fusce eleifend, dui ut posuere auctor, justo elit posuere sapien, at blandit enim quam fringilla mi.</p>
-
-			<h1>Interdum</h1>
-			<div class="descr">May 24, 2006 by Lectus</div>
-
-			<p>Praesent nisi sem, bibendum in, ultrices sit amet, euismod sit amet, dui. Donec varius tincidunt nisi. Ut ut sapien. Integer porta. Fusce nibh. Curabitur pellentesque, lectus at <a href="index.html">volutpat interdum</a>, sem justo placerat elit, eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie. Nullam semper massa eget ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque a nibh quis nunc volutpat aliquam</p>
-			<code>margin-bottom: 12px;
-font: normal 1.1em "Lucida Sans Unicode",serif;
-background: url(img/quote.gif) no-repeat;
-padding-left: 28px;
-color: #555;</code>
-			<p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>-->
+	
 
 		</div>
 
@@ -77,22 +58,12 @@ color: #555;</code>
 			<ul>
 				<li><a href="index">Hostname <strong><span>@!servername!@</span></strong></a></li>
 				<li><a href="index">Platform <strong><span>@!platform!@<span></strong></a></li>
-				<!--<li><a href="index.html">convallis</a></li>-->
 			</ul>
 
 			<h1>System</h1>
 			<ul>
 				<li><a href="index">Python version <strong><span>@!version!@</span></strong></a></li>
-				<!--<li><a href="index.html">sem justo</a></li>-->
-				<!--<li><a href="index.html">semper</a></li>-->
 			</ul>
-
-			<!--<h1>Third and last</h1>
-			<ul>
-				<li><a href="index.html">sociis natoque</a></li>
-				<li><a href="index.html">magna sed purus</a></li>
-				<li><a href="index.html">tincidunt</a></li>
-			</ul>-->
 
 		</div>
 	
@@ -102,18 +73,7 @@ color: #555;</code>
 
 </div>
 
-<div class="pageFooter">
-  <table width="100%">
 
-    <tbody>
-      <tr> 
-        <td align="left" width="15%">
-	</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-</body>
-
-</html>
+<!--(include)-->
+footer.pyra
+<!--(end)-->

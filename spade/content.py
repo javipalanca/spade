@@ -235,7 +235,7 @@ if __name__=="__main__":
 
     #sco = RDFXML2CO(f.read())
     sco = RDFXML2CO(ex)
-    sco.addNamespace("http://spade.gti-ia-dsic.upv.es/ns/2.0/", "spade:")
+    sco.addNamespace("http://spade2.googlecode.com/ns/2.0/", "spade:")
     sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"] = []
     sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"].append("John Doe")
     sco["rdf:Description"]["foaf:primaryTopic"]["spade:friend"].append("Chuck Bartowski")

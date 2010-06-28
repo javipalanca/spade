@@ -96,9 +96,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._debug_filename = ""
         self._debug_file = None
         
+        self._messages={}
+        self._messages_mutex = thread.allocate_lock()
+        
         self.wui = WUI(self)
         self.wui.registerController("admin", self.WUIController_admin)
         self.wui.registerController("log", self.WUIController_log)
+        self.wui.registerController("messages",self.WUIController_messages)
+        self._aclparser = ACLParser.ACLxmlParser()
 
         #self._friend_list = []  # Legacy
         #self._muc_list= {}
@@ -138,7 +143,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.RPC = {}
         self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS=NS_RPC)))
 
-
     def WUIController_admin(self):
         import types
         behavs = {}
@@ -156,11 +160,52 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 	chart=pygooglechart.QRChart(125,125)
 	chart.add_data(self.getAID().asXML())
 	chart.set_ec('H',0)
-        return "admin.pyra", {"aid":self.getAID(), "qrcode":chart.get_url(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs, "sorted_attrs":sorted_attrs}
+        return "admin.pyra", {"name":self.getName(),"aid":self.getAID(), "qrcode":chart.get_url(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs, "sorted_attrs":sorted_attrs}
         
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
 
+    def WUIController_messages(self):
+        index=0
+        mess = {}
+        msc = ""
+        agents = []
+        for ts,m in self._messages.items():
+            if isinstance(m,ACLMessage.ACLMessage):
+                strm=self._aclparser.encodeXML(m)
+                frm = m.getSender()
+                if frm: frm = str(frm.getName())
+                else: frm = "Unknown"
+                r = m.getReceivers()
+                if len(r)>=1:
+                    to = r[0].getName()
+                else:
+                    to = "Unknown"
+                msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
+            else:
+                strm=str(m)
+                strm = strm.replace("&gt;",">")
+                strm = strm.replace("&lt;","<")
+                strm = strm.replace("&quot;",'"')
+                frm = str(m.getFrom())
+                if frm=="": frm = "Unknown"
+                to  = str(m.getTo())
+                if to == "": to = "Unknown"
+                msc += frm+"-->"+to+':'+str(index)+' '+str(m.getType())+'\n'
+                
+            #if to not in agents: agents.append(to)
+            #if frm not in agents: agents.append(frm)
+
+            mess[index]=(ts,strm)
+            index+=1
+
+        try:
+            import diagram
+            url = diagram.getSequenceDiagram(msc,style="napkin")
+        except:
+            url=False
+        
+        return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": url}
 
     def registerLogComponent(self, component):
         #self._agent_log[component] = {}
@@ -268,6 +313,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
+        
+        self._messages_mutex.acquire()
+        timestamp = time.time()
+        self._messages[timestamp]=mess
+        self._messages_mutex.release()
 
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
@@ -326,7 +376,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if self.p2p_ready:
                             reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
                             reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-                        self.jabber.send(reply)
+                        self.send(reply)
                         if raiseFlag: raise xmpp.NodeProcessed
                         return True
                 # Check if it's an offline stream initiation request
@@ -364,7 +414,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                                     err = reply.addChild("error", attrs={"code":"403","type":"cancel"})
                                     err.addChild("forbidden")
                                     err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
-                                self.jabber.send(reply)
+                                self.send(reply)
                                 if raiseFlag: raise xmpp.NodeProcessed
                                 return True
 
@@ -491,6 +541,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         sends an ACLMessage
         """
+        self._messages_mutex.acquire()
+        timestamp = time.time()
+        self._messages[timestamp]=ACLmsg
+        self._messages_mutex.release()
+        
+        #if it is a jabber Iq or Presence message just send it
+        if isinstance(ACLmsg,xmpp.Iq) or isinstance(ACLmsg,xmpp.Presence) or isinstance(ACLmsg,xmpp.Message):
+            self.jabber.send(ACLmsg)
+            return
+        
         ACLmsg._attrs.update({"method":method})
         # Check for the sender field!!! (mistake #1)
         if not ACLmsg.getSender():
@@ -979,7 +1039,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         self._waitingForRoster = True
         iq = Iq("get", NS_ROSTER)
-        self.jabber.send(iq)
+        self.send(iq)
         if not nowait:
             while self._waitingForRoster:
                 time.sleep(0.3)
@@ -1455,7 +1515,7 @@ class Agent(AbstractAgent):
         # Let's change it to "subscribe"
         presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='subscribe')
 
-        self.jabber.send(presence)
+        self.send(presence)
 
         self.DEBUG("Agent: " + str(self.getAID().getName()) + " registered correctly (inform)","ok")
         return True
@@ -1513,7 +1573,7 @@ class Agent(AbstractAgent):
 
         presence = xmpp.Presence(to=self.getAMS().getName(),frm=self.getName(),typ='unsubscribe')
 
-        self.jabber.send(presence)
+        self.send(presence)
         self.DEBUG("Agent: " + str(self.getAID().getName()) + " deregistered correctly (inform)","ok")
 
         return True

@@ -163,7 +163,7 @@ class SpadePlatform(Agent.PlatformAgent):
         version = str(sys.version)
         the_time = str(time.ctime())
 	doc_path = abspath('.')
-        return "webadmin_indigo.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, doc_path=doc_path)
+        return "webadmin_indigo.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, doc_path=doc_path)
 
     def agents(self):
         import sys
@@ -189,7 +189,7 @@ class SpadePlatform(Agent.PlatformAgent):
                         break
                 awuis[agent.getAID().getName()] = aw
         self.DEBUG("AWUIs: "+str(awuis))
-        return "agents.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, agents=search, awuis=awuis)
+        return "agents.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, agents=search, awuis=awuis)
 
     def services(self):
         import sys
@@ -217,7 +217,7 @@ class SpadePlatform(Agent.PlatformAgent):
                 idn += 1        
         #print servs
         self.DEBUG("Services: " + str(servs))
-        return "services.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, services=servs)
+        return "services.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, services=servs)
 
     def sendmessage(self, to):
         import sys

@@ -5,6 +5,7 @@ import string
 import cPickle as pickle
 #random.seed(time.time())
 import content
+import ACLParser
 
 class ACLMessage:
 	"""
@@ -28,7 +29,7 @@ class ACLMessage:
 	REQUEST          = 'request'
 	REQUEST_WHEN     = 'request-when'
 	REQUEST_WHENEVER = 'request-whenever'
-	SUBSCRIBE	 = 'subscribe'
+	SUBSCRIBE    	 = 'subscribe'
 	INFORM_IF        = 'inform-if'
 	PROXY            = 'proxy'
 	PROPAGATE        = 'propagate'
@@ -191,7 +192,6 @@ class ACLMessage:
 		"""
 		returns the message content
 		"""
-		#print "$$$$$$$ GETCONTENT: ", str(self.content)
 		try:
 			return self.content.asRDFXML()
 		except:
@@ -321,6 +321,10 @@ class ACLMessage:
 
 
 	def __str__(self):
+	    p = ACLParser.ACLxmlParser()
+	    return p.encodeXML(self)
+	    
+	def asString(self):
 		"""
 		returns a printable version of the message in ACL string representation
 		"""

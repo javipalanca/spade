@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+
+<script language="javascript" type="text/javascript"> 
+<!-- 
+function showdiv( form ) {
+
+var pass = form.inputbox.value;
+var divs = document.getElementsByName( 'message' ) ;
+
+for( i=0; i<divs.length; i++ ) {
+
+if( divs[i].id.match( pass ) ) {
+
+if( document.getElementById ) // DOM3 = IE5, NS6 
+divs[i].style.visibility="visible" ; 
+else if( document.layers ) // Netscape 4 
+document.layers[divs[i]].display = 'visible' ; 
+else // IE 4 
+document.all.divs[i].visibility = 'visible' ; 
+} else {
+
+if( document.getElementById ) 
+divs[i].style.visibility="hidden" ; 
+else if( document.layers ) 
+document.divs[i].visibility = 'hidden' ; 
+else 
+document.all.divs[i].visibility = 'hidden' ; 
+} 
+} 
+} 
+//--> 
+</script>
+
+
+<title>@!name!@ - SPADE Web Interface</title>
+</head>
+
+
+<!--(if "acc." in name)-->
+	<!--(include)-->
+	header_platform.pyra 
+	<!--(end)-->
+<!--(else)-->
+	<!--(include)-->
+	header.pyra
+	<!--(end)-->
+<!--(end)-->
+
+	
+
+	<div class="main">
+				<h1>@!name!@</h1>
+		<div class="content">
+			
+			<!--(if diagram!=False)-->
+			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
+			<!--(end)-->
+			
+			<FORM NAME="myform" ACTION="" METHOD="GET">
+			Enter message ID: <BR>
+			<INPUT TYPE="text" NAME="inputbox" VALUE=""><INPUT TYPE="button" NAME="button" Value="Show" onClick="showdiv(this.form)">
+			</FORM>
+			
+			<ul>
+			<!--(for index,mess in messages.items())-->
+				<div id="@!index!@" name='message' style="position:absolute; visibility:hidden">
+					<li>
+					<tt>@!mess[0]!@: </tt>
+						@!mess[1]!@
+					</li>
+				</div>
+			<!--(end)-->
+			</ul>
+		</div>
+
+
+
+</div>
+
+<!--(include)-->
+footer.pyra
+<!--(end)-->
