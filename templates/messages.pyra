@@ -36,6 +36,22 @@ document.all.divs[i].visibility = 'hidden' ;
 } 
 } 
 } 
+
+function hidediv() {
+
+var divs = document.getElementsByName( 'message' ) ;
+
+for( i=0; i<divs.length; i++ ) {
+
+if( document.getElementById ) 
+divs[i].style.visibility="hidden" ; 
+else if( document.layers ) 
+document.divs[i].visibility = 'hidden' ; 
+else 
+document.all.divs[i].visibility = 'hidden' ; 
+ 
+} 
+}
 //--> 
 </script>
 
@@ -64,17 +80,17 @@ document.all.divs[i].visibility = 'hidden' ;
 			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
 			<!--(end)-->
 			
-			<FORM NAME="myform" ACTION="" METHOD="GET">
+			<FORM class="msgForm" NAME="myform" ACTION="showdiv(this.form)" METHOD="GET">
 			Enter message ID: <BR>
-			<INPUT TYPE="text" NAME="inputbox" VALUE=""><INPUT TYPE="button" NAME="button" Value="Show" onClick="showdiv(this.form)">
+			<INPUT TYPE="text" NAME="inputbox" VALUE="" SIZE="6"><INPUT TYPE="button" NAME="button" Value="Show" onClick="showdiv(this.form)">
 			</FORM>
 			
 			<ul>
 			<!--(for index,mess in messages.items())-->
 				<div id="@!index!@" name='message' style="position:absolute; visibility:hidden">
-					<li>
-					<tt>@!mess[0]!@: </tt>
-						@!mess[1]!@
+					<li class="xml">
+					<tt>@!mess[0]!@: </tt> <a style="text-align:right; margin-right:0px; margin-left:auto;" href="#" onClick="hidediv()">[Close]</a>
+						<pre>@!mess[1]!@</pre>
 					</li>
 				</div>
 			<!--(end)-->

@@ -111,6 +111,26 @@ li {
 	text-align: left;
 }
 
+.xml {
+    -webkit-transition: opacity 0.2s linear;
+    overflow: auto;
+    display: block;
+    
+	background-color: #eaeaea;
+	list-style-type: none;
+	border: 1px dashed #5e5e5e;
+	padding: 10px;
+	margin: 8px;
+	text-align: left;
+	width: 75%;
+	height: 15cm;
+	position: fixed;
+	top: 3cm;
+	left: 2cm;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .spacing li {
 	margin-bottom: 15px;
 }
@@ -409,32 +429,26 @@ a
 	text-decoration: none;
 	color: #778caa;
 	
-	color: #f4f4f4;
-    	text-shadow: #222 0 -1px 1px;
     	padding: 1px 3px;
     	border-radius: 5px;
     	-webkit-border-radius: 5px;
     	-moz-border-radius: 5px;
-    	border-top: thin solid #737474;
-    	border-bottom: thin solid #222;
-    	background: #3b4655 -webkit-gradient(linear, 0% 0%, 0% 94%, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0)));
+
 }
 
 a:hover
 {
-    text-shadow: #bebebe 0 1px 1px;
 	font-style: normal;
 	font-weight: normal;
 	color: #000;
-	background-color: #778caa;
+
 	
-	border-top: thin solid #a8a9ab;
-	border-bottom: thin solid #222;
-	background: #3b4655 -webkit-gradient(linear, 0% 0%, 0% 94%, from(rgba(255,255,255,0.5)), to(rgba(0,0,0,0)));
+
 	
 /*  color:#333399;
   text-decoration:underline;*/
 }
+
 
 
 a.external:visited {
@@ -673,4 +687,15 @@ form.bugreport p {
 form.bugreport p.explanation {
 	margin: 10px 0 10px 200px;
 	font-size: 90%;
+}
+
+form.msgForm {
+	background-color: #DADEE4;
+	color: #000000;
+	width: 4cm;
+	padding: 4px;
+	text-align: center;
+	top: 3cm;
+	position: fixed;
+	left: 10px;
 }

@@ -7,6 +7,7 @@ except ImportError:
     pass #self.DEBUG("Psyco optimizing compiler not found","warn")
 
 import sys
+import xml.dom.minidom
 import traceback
 import xmpp
 import threading
@@ -173,28 +174,40 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         for ts,m in self._messages.items():
             if isinstance(m,ACLMessage.ACLMessage):
                 strm=self._aclparser.encodeXML(m)
+                x = xml.dom.minidom.parseString(strm)
+                strm = x.toprettyxml()
                 frm = m.getSender()
-                if frm: frm = str(frm.getName())
+                if frm!=None: frm = str(frm.getName())
                 else: frm = "Unknown"
+                if "/" in frm: frm=frm.split("/")[0]
                 r = m.getReceivers()
                 if len(r)>=1:
                     to = r[0].getName()
                 else:
                     to = "Unknown"
+                if "/" in to: to=to.split("/")[0]
                 msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
             else:
                 strm=str(m)
                 strm = strm.replace("&gt;",">")
                 strm = strm.replace("&lt;","<")
                 strm = strm.replace("&quot;",'"')
-                frm = str(m.getFrom())
-                if frm=="": frm = "Unknown"
-                to  = str(m.getTo())
-                if to == "": to = "Unknown"
-                msc += frm+"-->"+to+':'+str(index)+' '+str(m.getType())+'\n'
-                
-            #if to not in agents: agents.append(to)
-            #if frm not in agents: agents.append(frm)
+                x = xml.dom.minidom.parseString(strm)
+                strm = x.toprettyxml()
+                frm = m.getFrom()
+                if frm==None: frm = "Unknown"
+                else: frm = str(frm)
+                if "/" in frm: frm=frm.split("/")[0]
+                to = m.getTo()
+                if to==None: to = "Unknown"
+                else: to = str(to)
+                if "/" in to: to=to.split("/")[0]
+                msc += frm+"-->"+to+':'+str(index)+' '+str(m.getName())
+                if m.getType(): msc+=" " + str(m.getType())+'\n'
+                elif m.getName()=="message":
+                    if m.getAttr("performative"): msc+=" " + str(m.getAttr("performative"))+'\n'
+                    else: msc+='\n'
+                else: msc+='\n'
 
             mess[index]=(ts,strm)
             index+=1
@@ -217,6 +230,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         dmsg = dmsg.replace("&gt;",">")
         dmsg = dmsg.replace("&lt;","<")
         dmsg = dmsg.replace("&quot;",'"')
+
         self._agent_log[t] = (typ,dmsg,component,time.ctime(t))
 
         if self._debug:
@@ -315,7 +329,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         
         self._messages_mutex.acquire()
-        timestamp = time.time()
+        timestamp = time.ctime()
         self._messages[timestamp]=mess
         self._messages_mutex.release()
 
@@ -542,7 +556,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         sends an ACLMessage
         """
         self._messages_mutex.acquire()
-        timestamp = time.time()
+        timestamp = time.ctime()
         self._messages[timestamp]=ACLmsg
         self._messages_mutex.release()
         
