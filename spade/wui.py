@@ -38,6 +38,7 @@ class WUI(Thread):
              try:
                  self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
                  self.httpd.owner = self
+                 self.httpd.timeout = 1
                  #print "WebUserInterface serving at port "+str(self.port)
                  self.notifyAMS()
              except:
