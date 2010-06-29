@@ -23,6 +23,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     reply = self.msg.buildReply("error")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                     reply.setType("result")
+                    reply.setFrom(self.myAgent.JID)
                     self.myAgent.send(reply)
                     return
                     
@@ -38,6 +39,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                         reply = self.msg.buildReply("error")
                         reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                         reply.setType("result")
+                        reply.setFrom(self.myAgent.JID)
                         self.myAgent.send(reply)
                         return
                 
@@ -58,6 +60,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     reply = self.msg.buildReply("error")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                     reply.setType("result")
+                    reply.setFrom(self.myAgent.JID)
                     self.myAgent.send(reply)
                     return
         
@@ -91,7 +94,7 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
         self.myAgent.DEBUG("Marshalled "+payload)
         payload_node = xmpp.simplexml.XML2Node(payload)
         to = xmpp.protocol.JID(self.service.getOwner().getName())
-        iq = xmpp.protocol.Iq(typ='set',queryNS="jabber:iq:rpc",to=to,attrs={'id':self.num})
+        iq = xmpp.protocol.Iq(typ='set',queryNS="jabber:iq:rpc",frm=self.myAgent.JID,to=to,attrs={'id':self.num})
         iq.setQueryPayload([payload_node])
         self.myAgent.DEBUG("Calling method with: "+str(iq))
         self.myAgent.send(iq)
@@ -104,7 +107,7 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
             if self.msg.getType() == "result":
                 try:
                     params, method = xmlrpclib.loads("<?xml version='1.0'?>%s" % self.msg)
-                    self.DEBUG("method "+str(method)+" returned params "+str(params),'ok')
+                    self.DEBUG("Returned params "+str(params),'ok')
                     self.result = [params[0]]
                     #if agent is a BDIAgent add result params as postconditions
                     if "addBelieve" in dir(self.myAgent):

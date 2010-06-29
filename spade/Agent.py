@@ -97,7 +97,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._debug_filename = ""
         self._debug_file = None
         
-        self._messages={}
+        self._messages=[]
         self._messages_mutex = thread.allocate_lock()
         
         self.wui = WUI(self)
@@ -170,7 +170,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         index=0
         mess = {}
         msc = ""
-        for ts,m in self._messages.items():
+        for ts,m in self._messages:
             if isinstance(m,ACLMessage.ACLMessage):
                 strm=self._aclparser.encodeXML(m)
                 x = xml.dom.minidom.parseString(strm)
@@ -369,7 +369,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                 self._messages_mutex.acquire()
                 timestamp = time.time()
-                self._messages[timestamp]=ACLmsg
+                self._messages.append((timestamp,ACLmsg))
                 self._messages_mutex.release()
                 self.postMessage(ACLmsg)
                 if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
@@ -378,7 +378,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         # Not a jabber-fipa message
         self._messages_mutex.acquire()
         timestamp = time.time()
-        self._messages[timestamp]=mess
+        self._messages.append((timestamp,mess))
         self._messages_mutex.release()
 
         # Check wether is an offline action
@@ -561,7 +561,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         self._messages_mutex.acquire()
         timestamp = time.time()
-        self._messages[timestamp]=ACLmsg
+        self._messages.append((timestamp,ACLmsg))
         self._messages_mutex.release()
         
         #if it is a jabber Iq or Presence message just send it

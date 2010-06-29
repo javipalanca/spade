@@ -59,11 +59,13 @@ class AMS(Agent.PlatformAgent):
 						else:
 							#presence = xmpp.Presence(frm,typ="unsubscribe")
 							presence = xmpp.Presence(reply_address,typ="unsubscribed",xmlns=xmpp.NS_CLIENT)
+							presence.setFrom(self.myAgent.JID)
 							self.myAgent.send(presence)
 							return
 
 						self.myAgent.DEBUG("AMS succesfully registered agent " + frm.getName(),"ok")
 						presence = xmpp.Presence(reply_address,typ="subscribed")
+						presence.setFrom(self.myAgent.JID)
 						self.myAgent.DEBUG("AMS sends "+str(presence),"info")
 						self.myAgent.send(presence)
 					elif typ == "unsubscribe":

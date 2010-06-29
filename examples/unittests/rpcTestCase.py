@@ -56,7 +56,7 @@ class RPCTestCase(unittest.TestCase):
     	self.a.wui.start()
     	self.b.wui.start()
     	
-    def tearDown2(self):
+    def tearDown(self):
         self.a.stop()
         self.b.stop()
         
@@ -154,7 +154,7 @@ if __name__ == "__main__":
     unittest.main()
     sys.exit()
     suite = unittest.TestSuite()
-    suite.addTest(RPCTestCase('testInvokeTwice'))
+    suite.addTest(RPCTestCase('testSearchAndInvoke'))
     result = unittest.TestResult()
     
     suite.run(result)
