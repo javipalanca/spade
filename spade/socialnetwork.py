@@ -11,10 +11,10 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
                 # Answer YES
                 rep = Presence(to=self.msg.getFrom())
                 rep.setType("subscribed")
-                self.myAgent.jabber.send(rep)
+                self.myAgent.send(rep)
                 self.DEBUG( str(self.msg.getFrom())  + " subscribes to me")
                 rep.setType("subscribe")
-                self.myAgent.jabber.send(rep)
+                self.myAgent.send(rep)
             if self.msg.getType() == "subscribed":
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
                     # Subscription confirmation from AMS

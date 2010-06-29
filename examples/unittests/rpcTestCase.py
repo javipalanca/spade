@@ -53,8 +53,10 @@ class RPCTestCase(unittest.TestCase):
     	#self.b.setDebugToScreen()
     	#self.a.setDebugToScreen()
     	self.b.start()
+    	self.a.wui.start()
+    	self.b.wui.start()
     	
-    def tearDown(self):
+    def tearDown2(self):
         self.a.stop()
         self.b.stop()
         
@@ -159,4 +161,13 @@ if __name__ == "__main__":
     for f in  result.failures: 
         print f[0]
         print f[1]
+    print "Done."    
+    alive = True
+    import time
+    while alive:
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            alive=False
+    sys.exit(0)
 

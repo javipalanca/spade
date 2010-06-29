@@ -59,13 +59,13 @@ class AMS(Agent.PlatformAgent):
 						else:
 							#presence = xmpp.Presence(frm,typ="unsubscribe")
 							presence = xmpp.Presence(reply_address,typ="unsubscribed",xmlns=xmpp.NS_CLIENT)
-							self.myAgent.jabber.send(presence)
+							self.myAgent.send(presence)
 							return
 
 						self.myAgent.DEBUG("AMS succesfully registered agent " + frm.getName(),"ok")
 						presence = xmpp.Presence(reply_address,typ="subscribed")
 						self.myAgent.DEBUG("AMS sends "+str(presence),"info")
-						self.myAgent.jabber.send(presence)
+						self.myAgent.send(presence)
 					elif typ == "unsubscribe":
 						if self.myAgent.agentdb.has_key(str(frm)):
 							del self.myAgent.agentdb[str(frm)]

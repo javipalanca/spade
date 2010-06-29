@@ -23,7 +23,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     reply = self.msg.buildReply("error")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                     reply.setType("result")
-                    self.myAgent.jabber.send(reply)
+                    self.myAgent.send(reply)
                     return
                     
                 service,methodCall = self.myAgent.RPC[name]
@@ -38,7 +38,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                         reply = self.msg.buildReply("error")
                         reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                         reply.setType("result")
-                        self.myAgent.jabber.send(reply)
+                        self.myAgent.send(reply)
                         return
                 
                 try:
@@ -50,7 +50,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     xmlrpc_res = xmlrpclib.dumps( tuple([result]) , methodresponse=True,allow_none=True)
                     reply = self.msg.buildReply("result")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
-                    self.myAgent.jabber.send(reply)
+                    self.myAgent.send(reply)
                     self.myAgent.DEBUG("RPC: method succesfully served: "+ str(reply),'ok')
                 except Exception,e:
                     self.myAgent.DEBUG("RPC: 500 method error: "+str(e),'error')
@@ -58,7 +58,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     reply = self.msg.buildReply("error")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                     reply.setType("result")
-                    self.myAgent.jabber.send(reply)
+                    self.myAgent.send(reply)
                     return
         
         else:
@@ -94,7 +94,7 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
         iq = xmpp.protocol.Iq(typ='set',queryNS="jabber:iq:rpc",to=to,attrs={'id':self.num})
         iq.setQueryPayload([payload_node])
         self.myAgent.DEBUG("Calling method with: "+str(iq))
-        self.myAgent.jabber.send(iq)
+        self.myAgent.send(iq)
         self.myAgent.DEBUG(self.service.getName() + " method called. Waiting for response",'ok')
         
         #receive IQ methodResponse

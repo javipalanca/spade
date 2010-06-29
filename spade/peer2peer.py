@@ -59,7 +59,7 @@ class P2PBehaviour(Behaviour.Behaviour):
             iq = xmpp.Iq("result",queryNS=xmpp.NS_DISCO_INFO)
             for to in self.myAgent.p2p_routes.keys():
                 iq.setTo(to)
-                self.myAgent.jabber.send(iq)
+                self.myAgent.send(iq)
             self.finished = True
 
     def onStart(self):
@@ -121,7 +121,7 @@ class StreamInitiationBehaviour(Behaviour.EventBehaviour):
                         err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
                         self.myAgent.DEBUG("P2P: Refuse offer from "+str(self.msg.getFrom())+"."+str(reply))
 
-                    self.myAgent.jabber.send(reply)
+                    self.myAgent.send(reply)
 
 
 class DiscoBehaviour(Behaviour.EventBehaviour):
@@ -135,7 +135,7 @@ class DiscoBehaviour(Behaviour.EventBehaviour):
                 if self.myAgent.p2p_ready:
                     reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si"})
                     reply.getTag("query").addChild("feature", {"var":"http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-                self.myAgent.jabber.send(reply)
+                self.myAgent.send(reply)
                 self.myAgent.DEBUG(self.myAgent.getName()+": Sent Disco reply to "+ str(reply.getTo()))
             elif self.msg.getType() == "result":
                 services = []
@@ -180,7 +180,7 @@ class SendStreamInitiationBehav(Behaviour.OneShotBehaviour):
             p2pnode.setData(self.myAgent.getP2PUrl())
             si.addChild(node=p2pnode)
         iq.addChild(node=si)
-        self.myAgent.jabber.send(iq)
+        self.myAgent.send(iq)
 
         msg = self._receive(True, 4)
         if msg:
@@ -225,7 +225,7 @@ class RequestDiscoInfoBehav(Behaviour.OneShotBehaviour):
         iq.setType("get")
         self.myAgent.DEBUG("Send IQ message: "+str(iq))
         
-        self.myAgent.jabber.send(iq)
+        self.myAgent.send(iq)
         #msg = self._receive(True, 10)
         msg = self._receive(True)
         if msg:

@@ -170,7 +170,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         index=0
         mess = {}
         msc = ""
-        agents = []
         for ts,m in self._messages.items():
             if isinstance(m,ACLMessage.ACLMessage):
                 strm=self._aclparser.encodeXML(m)
@@ -214,6 +213,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         try:
             import diagram
+            self.DEBUG("Generating diagram with: " + msc)
             url = diagram.getSequenceDiagram(msc,style="napkin")
         except:
             url=False
@@ -328,11 +328,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         read the message envelope and post the message to the agent
         """
         
-        self._messages_mutex.acquire()
-        timestamp = time.ctime()
-        self._messages[timestamp]=mess
-        self._messages_mutex.release()
-
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
@@ -372,11 +367,20 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     ACLmsg.setSender(AID.aid(str(mess.getFrom().getStripped()), ["xmpp://"+str(mess.getFrom().getStripped())]))
                     ACLmsg.addReceiver(AID.aid(str(mess.getTo().getStripped()), ["xmpp://"+str(mess.getTo().getStripped())]))
 
+                self._messages_mutex.acquire()
+                timestamp = time.time()
+                self._messages[timestamp]=ACLmsg
+                self._messages_mutex.release()
                 self.postMessage(ACLmsg)
                 if raiseFlag: raise xmpp.NodeProcessed  # Forced by xmpp.py for not returning an error stanza
                 return True
 
         # Not a jabber-fipa message
+        self._messages_mutex.acquire()
+        timestamp = time.time()
+        self._messages[timestamp]=mess
+        self._messages_mutex.release()
+
         # Check wether is an offline action
         if not self._running:
             if mess.getName() == "iq":
@@ -556,7 +560,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         sends an ACLMessage
         """
         self._messages_mutex.acquire()
-        timestamp = time.ctime()
+        timestamp = time.time()
         self._messages[timestamp]=ACLmsg
         self._messages_mutex.release()
         
