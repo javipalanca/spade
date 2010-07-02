@@ -1,3 +1,6 @@
+<!--(set_escape)-->
+None
+<!--(end)-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -8,6 +11,9 @@
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
+<link type="text/css" media="screen" rel="stylesheet" href="colorbox.css" /> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+<script src="jquery.colorbox.js"></script>
 
 <title>SPADE Web Interface: Services</title>
 </head>
@@ -29,16 +35,29 @@
 			<h2>@!str(service)!@</h2>
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Service Name</td><td class="servHd">Provider</td>
-					<td class="servHd">Addresses</td></tr>
-				<!--(for s in v.values())-->
-				<tr><td class="servBodL"><a href="#">@!str(s["name"])!@</a></td>
-					<td class="servBodL">@!str(s["provider"])!@</td>
-				    <td class="servBodL">@!str(s["addresses"])!@</td></tr>
+					<td class="servHd">Addresses</td>
+					<td class="servHd">Actions</td></tr>
+				<!--(for s in v)-->
+				<tr><td class="servBodL"><a href="#">@!str(s.getName())!@</a></td>
+					<td class="servBodL">@!str(s.getOwner().getName())!@</td>
+				    <td class="servBodL">@!str(s.getOwner().getAddresses())!@</td>
+					<td class="servBodL"><INPUT TYPE="button" NAME="button" Value="Inspect" rel="message" onClick="$.fn.colorbox({width:'75%',height:'75%', inline:true, arrowKey:true, rel:'message', href:'#'+'@!s.getName()!@'})" ></td></tr>
 				<!--(end)-->
 			</table>
 			<!--(end)-->
 
 		</div>
+
+		<div style="display:none">
+		<!--(for v in services.values())-->
+			<!--(for s in v)-->
+				<div id="@!s.getName()!@" style='padding:10px; background:#fff;' rel='service'>
+					@!s.asHTML()!@
+				</div>
+			<!--(end)-->
+		<!--(end)-->
+		</div>
+
 
 		<div class="sidenav">
 

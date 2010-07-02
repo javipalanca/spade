@@ -267,6 +267,7 @@ class DF(PlatformAgent):
                             for s in self.myAgent.servicedb[dad.getAID().getName()].getServices():                        
                                 if s.match(ss):
                                     found=True
+                                    break
                             if found:
                                 reply.setPerformative("failure")
                                 co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
@@ -587,15 +588,9 @@ class DF(PlatformAgent):
                 if self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
                     try:
-                        services = copy.copy(self.myAgent.servicedb[dad.getAID().getName()].getServices())
                         for ss in dad.getServices():
-                            found=False
-                            for s in services:
-                                if ss.getName() == s.getName():
-                                    self.myAgent.servicedb[dad.getAID().getName()].delService(s)
-                                    self.myAgent.servicedb[dad.getAID().getName()].addService(ss)
-                                    found=True
-                            if not found:
+                            result=self.myAgent.servicedb[dad.getAID().getName()].updateService(ss)
+                            if not result:
                                 reply.setPerformative("failure")
                                 co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                                 co_error["fipa:error"] = "not-registered"
@@ -662,15 +657,9 @@ class DF(PlatformAgent):
                 if self.myAgent.servicedb.has_key(dad.getAID().getName()):
 
                     try:
-                        services = copy.copy(self.myAgent.servicedb[dad.getAID().getName()].getServices())
                         for ss in dad.getServices():
-                            found=False
-                            for s in services:
-                                if ss.getName() == s.getName():
-                                    self.myAgent.servicedb[dad.getAID().getName()].delService(s)
-                                    self.myAgent.servicedb[dad.getAID().getName()].addService(ss)
-                                    found=True
-                            if not found:
+                            result=self.myAgent.servicedb[dad.getAID().getName()].updateService(ss)
+                            if not result:
                                 reply.setPerformative("failure")
                                 reply.setContent("("+self.msg.getContent() + "(not-registered))")
                                 self.myAgent.send(reply)
@@ -798,6 +787,9 @@ class DfAgentDescription:
         return self.services
 
     def addService(self, s):
+        #FIX
+        for ss in self.services:
+            assert not s.match(ss)
         self.services.append(s)
         for p in s.getProtocols():
             if p not in self.protocols: self.addProtocol(p)
@@ -807,7 +799,13 @@ class DfAgentDescription:
             if l not in self.languages: self.addLanguage(l)
             
     def delService(self,s):
-        self.services.remove(s)
+        index=None
+        for i in range(len(self.services)):
+            if self.services[i].match(s):
+                index = i
+                break
+        if index: self.services.pop(i)
+        else: return False
         for p in s.getProtocols():
             found = False
             for pp in self.protocols:
@@ -823,6 +821,29 @@ class DfAgentDescription:
             for pp in self.languages:
                 if p ==pp: found = True
             if not found: self.languages.remove(pp)
+            
+    def updateService(self,s):
+        found = False
+        for ss in self.services:
+            if s.getName() == ss.getName():
+                found = True
+                if s.getType(): ss.setType(s.getType())
+                if s.getProtocols(): 
+                    ss.protocols = s.getProtocols()
+                    for p in s.getProtocols():
+                        if p not in self.protocols: self.addProtocol(p)
+                if s.getOntologies():
+                    ss.ontologies = s.getOntologies()
+                    for o in s.getOntologies():
+                        if o not in self.ontologies: self.addOntologies(o)
+                if s.getLanguages():
+                    ss.languages = s.getLanguages()
+                    for l in s.getLanguages():
+                        if l not in self.languages: self.addLanguage(l)
+                if s.getOwnership(): ss.setOwnership(s.getOwnership())
+                for k,v in s.getProperties().items():
+                    ss.addProperty(k,v)
+        return found
 
     def getProtocols(self):
         return self.protocols
@@ -1051,7 +1072,9 @@ class ServiceDescription:
         else: key=k
         self.properties[key]=value
 
-    #def __eq__(self,y):
+    def __eq__(self,y):
+        return self.match(y)
+        
     def match(self,y):
 
         if self.name:
@@ -1197,13 +1220,6 @@ class Service:
         else:
             self.name  = name
             self.owner = owner
-            self.ontology = ontology
-            self.description = description
-            self.inputs = inputs
-            self.outputs = outputs
-            self.P = P
-            self.Q = Q
-
             self.dad = DfAgentDescription()
             self.dad.setAID(owner)
             if ontology: self.dad.addOntologies(ontology)
@@ -1249,7 +1265,6 @@ class Service:
         return self.owner
 
     def setOntology(self,ontology):
-        self.ontology = ontology
         self.dad.addOntologies(ontology)
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
@@ -1259,10 +1274,9 @@ class Service:
             services.append(s)
         self.dad.services = services
         
-    def getOntology(self): return self.ontology
+    def getOntology(self): return self.dad.getOntologies()
 
     def addP(self,P):
-        self.P.append(P)
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
@@ -1274,10 +1288,9 @@ class Service:
             services.append(s)
         self.dad.services = services
 
-    def getP(self): return self.P
+    def getP(self): return self.dad.getServices()[0].getProperty("P")
 
     def setQ(self,Q):
-        self.Q = Q
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
@@ -1286,10 +1299,9 @@ class Service:
             services.append(s)
         self.dad.services = services
 
-    def getQ(self): return self.Q
+    def getQ(self): return self.dad.getServices()[0].getProperty("Q")
 
     def setInputs(self,inputs):
-        self.inputs = inputs
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
@@ -1298,10 +1310,9 @@ class Service:
             services.append(s)
         self.dad.services = services
 
-    def getInputs(self): return self.inputs
+    def getInputs(self): return self.dad.getServices()[0].getProperty("inputs")
 
     def setOutputs(self,outputs):
-        self.outputs = outputs
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
@@ -1310,10 +1321,9 @@ class Service:
             services.append(s)
         self.dad.services = services
         
-    def getOutputs(self): return self.outputs
+    def getOutputs(self): return self.dad.getServices()[0].getProperty("outputs")
 
     def setDescription(self,description):
-        self.description = description
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
@@ -1322,7 +1332,7 @@ class Service:
             services.append(s)
         self.dad.services = services
         
-    def getDescription(self): return self.description
+    def getDescription(self): return self.dad.getServices()[0].getProperty("description")
 
     def setDAD(self,dad):
         sd = dad.getServices()
@@ -1331,12 +1341,6 @@ class Service:
         self.name = sd.getName()
         self.owner = dad.getAID()
         self.ontology = dad.getOntologies()
-        if sd.getProperty("description")!=None:
-            self.description = sd.getProperty("description")
-        if sd.getProperty("inputs")  !=None: self.inputs = sd.getProperty("inputs")
-        if sd.getProperty("outputs") !=None: self.outputs = sd.getProperty("outputs")
-        if sd.getProperty("P")       !=None: self.P = sd.getProperty("P")
-        if sd.getProperty("Q")       !=None: self.Q = sd.getProperty("Q")
         
         self.dad = dad
         
@@ -1351,3 +1355,23 @@ class Service:
         
     def __str__(self):
         return str(self.dad)
+        
+    def asHTML(self):
+        s = "<table>"
+        s += "<tr><td>Name</td><td>"+self.getName()+"</td></tr>"
+        s += "<tr><td>Owner</td><td>"+self.getOwner().getName()+"</td></tr>"
+        if self.getDescription():
+            s += "<tr><td>Description</td><td>"+str(self.getDescription())+"</td></tr>"
+        if self.getOntology():
+            s += "<tr><td>Ontologies</td><td>"+str(self.getOntology())+"</td></tr>"
+        if self.getP():
+            s += "<tr><td>Preconditions</td><td>"+str(self.getP())+"</td></tr>"
+        if self.getQ():
+            s += "<tr><td>Postconditions</td><td>"+str(self.getQ())+"</td></tr>"
+        if self.getInputs():
+            s += "<tr><td>Inputs</td><td>"+str(self.getInputs())+"</td></tr>"
+        if self.getOutputs():
+            s += "<tr><td>Outputs</td><td>"+str(self.getOutputs())+"</td></tr>"
+        s+="</table>"
+        
+        return s

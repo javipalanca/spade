@@ -8,6 +8,10 @@
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
 
+<link type="text/css" media="screen" rel="stylesheet" href="colorbox.css" /> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+<script src="jquery.colorbox.js"></script>
+
 <script language="javascript" type="text/javascript"> 
 <!-- 
 function showdiv( form ) {
@@ -80,21 +84,20 @@ document.all.divs[i].visibility = 'hidden' ;
 			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
 			<!--(end)-->
 			
-			<FORM class="msgForm" NAME="myform" ACTION="showdiv(this.form)" METHOD="GET">
+
+			<FORM class="msgForm" NAME="myform" ACTION="#" METHOD="GET">
 			Enter message ID: <BR>
-			<INPUT TYPE="text" NAME="inputbox" VALUE="" SIZE="6"><INPUT TYPE="button" NAME="button" Value="Show" onClick="showdiv(this.form)">
+			<INPUT TYPE="text" NAME="inputbox" VALUE="" SIZE="6"><INPUT TYPE="button" NAME="button" Value="Show" rel="message" onClick="$.fn.colorbox({width:'75%',height:'75%', inline:true, arrowKey:true, rel:'message', href:'#'+document.myform.inputbox.value})" >
 			</FORM>
 			
-			<ul>
+			<div style="display:none">
 			<!--(for index,mess in messages.items())-->
-				<div id="@!index!@" name='message' style="position:absolute; visibility:hidden">
-					<li class="xml">
-					<tt>@!mess[0]!@: </tt> <a style="text-align:right; margin-right:0px; margin-left:auto;" href="#" onClick="hidediv()">[Close]</a>
+				<div id="@!index!@" style='padding:10px; background:#fff;' rel='message'>
+					<tt>@!mess[0]!@: </tt>
 						<pre>@!mess[1]!@</pre>
-					</li>
 				</div>
 			<!--(end)-->
-			</ul>
+			</div>
 		</div>
 
 

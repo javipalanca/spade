@@ -113,7 +113,7 @@ def Search(agent, param):
             s = spade.DF.Service()
             s.setName("unittest_name_1_"+param)
             #s.setOwner(spade.AID.aid(param+"@"+host,["xmpp://"+param+"@"+host]))
-            s.setInputs(['login','password'])
+            #s.setInputs(['login','password'])
             
             agent.result = agent.searchService(s)
 
@@ -146,6 +146,14 @@ class DFTestCase(unittest.TestCase):
     	self.b.start()
 
     def tearDown(self):
+        DeRegister_DAD(self.a,"a")
+        DeRegister_DAD(self.a,"b")
+        DeRegister_DAD(self.b,"a")
+        DeRegister_DAD(self.b,"b")
+        DeRegister(self.a,"a")
+        DeRegister(self.a,"b")
+        DeRegister(self.b,"a")
+        DeRegister(self.b,"b")
         self.a.stop()
         self.b.stop()
         
@@ -740,7 +748,7 @@ class DFTestCase(unittest.TestCase):
             self.fail()
         
 
-        self.assertEqual(self.a.result[0].getOntology(),"account_managing")
+        self.assertEqual(self.a.result[0].getOntology(),["account_managing"])
 
         self.a.result = None
 
@@ -761,7 +769,7 @@ class DFTestCase(unittest.TestCase):
 
         self.assertEqual(len(self.a.result), 1)
 
-        self.assertEqual(self.a.result[0].getOntology(),"new_ontology")
+        self.assertEqual(self.a.result[0].getOntology(),["new_ontology"])
 
         self.a.result = None
 
@@ -802,7 +810,7 @@ class DFTestCase(unittest.TestCase):
         if self.a.result[0].getName() not in ['unittest_name_1_a']:
             self.fail()
             
-        self.assertEqual(self.a.result[0].getOntology(),"account_managing")
+        self.assertEqual(self.a.result[0].getOntology(),["account_managing"])
 
         self.a.result = None
         self.b.result = None
@@ -825,7 +833,7 @@ class DFTestCase(unittest.TestCase):
         if self.a.result[0].getName() not in ['unittest_name_1_a']:
             self.fail()
             
-        self.assertEqual(self.a.result[0].getOntology(),"account_managing")
+        self.assertEqual(self.a.result[0].getOntology(),["account_managing"])
 
         self.a.result = None
 
@@ -977,9 +985,10 @@ class DFTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    sys.exit()
     
-    '''suite = unittest.TestSuite()
-    suite.addTest(DFTestCase('testEmptySearch'))
+    suite = unittest.TestSuite()
+    suite.addTest(DFTestCase('testDoubleRegister'))
     result = unittest.TestResult()
     
     suite.run(result)
@@ -987,5 +996,5 @@ if __name__ == "__main__":
         print f[0]
         print f[1]
 
-'''
+
 

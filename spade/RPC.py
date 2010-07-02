@@ -78,8 +78,10 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
         self.result=None
         
         #send IQ methodCall
-        params = self.service.getP()
-        params = tuple(params,)
+        params = None
+        ps     = None
+        ps = self.service.getP() #self.service.getDAD().getServices()[0].getProperty("P")
+        params = tuple(ps)
         self.myAgent.DEBUG("Params processed: "+str(params))
         
         #if agent is a BDIAgent check preconditions

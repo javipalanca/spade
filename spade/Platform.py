@@ -1,5 +1,5 @@
 from AMS import AmsAgentDescription
-from DF import DfAgentDescription, ServiceDescription
+from DF import DfAgentDescription, ServiceDescription, Service
 import xmpp
 import threading
 import Agent
@@ -203,19 +203,14 @@ class SpadePlatform(Agent.PlatformAgent):
         except Exception, e:
             print "Exception: " + str(e)
         servs = {}
-        idn = 0        
         for dad in search:
             for service in dad.getServices():
                 if service.getType() not in servs.keys():
-                    servs[service.getType()] = {}
-                servs[service.getType()][idn] = {}
-                servs[service.getType()][idn]["name"] = str(service.getName())
-                servs[service.getType()][idn]["provider"] = str(dad.getAID().getName())
-                servs[service.getType()][idn]["addresses"] = ""
-                for address in dad.getAID().getAddresses():
-                    servs[service.getType()][idn]["addresses"] += str(address)+" "
-                idn += 1        
-        #print servs
+                    servs[service.getType()] = []
+                new_dad = dad
+                new_dad.services = [service]
+                s = Service(dad=new_dad)
+                servs[service.getType()].append(s)
         self.DEBUG("Services: " + str(servs))
         return "services.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, services=servs)
 
