@@ -6,7 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
 
 <title>SPADE Web Interface: Agents</title>
@@ -22,9 +22,12 @@
 	<!--(end)-->
 <!--(end)-->
 
-	<div class="main">
+	<div id="templatemo_background_section_mid">
 		
-		<div class="content">		
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section">
+		   <div class='main section' id='main'>		
 			
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>
@@ -44,47 +47,32 @@
 				<!--(end)-->
 			</table>
 
+		   </div>
 		</div>
+		<div id="templatemo_middle_section">
+		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
+			<div class="widget">
 
-		<div class="sidenav">
-
-			<h1>Search Agents and Services</h1>
-			<form action="index.html">
-			<div>
-				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
-			</div>
-			</form>
-
-			<h1>Platform Info</h1>
+			<h2>Platform Info</h2>
 			<ul>
-				<li><a href="index.html">Hostname <strong><span>@!servername!@</span></strong></a></li>
-				<li><a href="index.html">Platform <strong><span>@!platform!@<span></strong></a></li>
-				<!--<li><a href="index.html">convallis</a></li>-->
+				<li>Hostname <strong><span>@!servername!@</span></strong></li>
+				<li>Platform <strong><span>@!platform!@<span></strong></li>
 			</ul>
 
-			<h1>System</h1>
+			<h2>System</h2>
 			<ul>
-				<li><a href="index.html">Python version <strong><span>@!version!@</span></strong></a></li>
-				<!--<li><a href="index.html">sem justo</a></li>-->
-				<!--<li><a href="index.html">semper</a></li>-->
+				<li>Python version <strong><span>@!version!@</span></strong></li>
 			</ul>
 
-			<!--<h1>Third and last</h1>
-			<ul>
-				<li><a href="index.html">sociis natoque</a></li>
-				<li><a href="index.html">magna sed purus</a></li>
-				<li><a href="index.html">tincidunt</a></li>
-			</ul>-->
-
+		    </div>
+		  </div>
 		</div>
-	
-		<div class="clearer"><span></span></div>
+		<!--<div id="templatemo_right_section">		  
+		</div>-->
+		<div class="cleaner_with_height"></div>
 
-	</div>
 
 </div>
-
-
 <!--(include)-->
 footer.pyra
 <!--(end)-->

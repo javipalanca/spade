@@ -1357,21 +1357,21 @@ class Service:
         return str(self.dad)
         
     def asHTML(self):
-        s = "<table>"
-        s += "<tr><td>Name</td><td>"+self.getName()+"</td></tr>"
-        s += "<tr><td>Owner</td><td>"+self.getOwner().getName()+"</td></tr>"
+        s = '<table class="servicesT" cellspacing="0">'
+        s += '<tr><td class="servHd">Name</td><td class="servBodL">'+self.getName()+'</td></tr>'
+        s += '<tr><td class="servHd">Owner</td><td class="servBodL">'+self.getOwner().getName()+'</td></tr>'
         if self.getDescription():
-            s += "<tr><td>Description</td><td>"+str(self.getDescription())+"</td></tr>"
+            s += '<tr><td class="servHd">Description</td><td class="servBodL">'+str(self.getDescription())+'</td></tr>'
         if self.getOntology():
-            s += "<tr><td>Ontologies</td><td>"+str(self.getOntology())+"</td></tr>"
+            s += '<tr><td class="servHd">Ontologies</td><td class="servBodL">'+str(self.getOntology())+'</td></tr>'
         if self.getP():
-            s += "<tr><td>Preconditions</td><td>"+str(self.getP())+"</td></tr>"
+            s += '<tr><td class="servHd">Preconditions</td><td class="servBodL">'+str(self.getP())+'</td></tr>'
         if self.getQ():
-            s += "<tr><td>Postconditions</td><td>"+str(self.getQ())+"</td></tr>"
+            s += '<tr><td class="servHd">Postconditions</td><td class="servBodL">'+str(self.getQ())+'</td></tr>'
         if self.getInputs():
-            s += "<tr><td>Inputs</td><td>"+str(self.getInputs())+"</td></tr>"
+            s += '<tr><td class="servHd">Inputs</td><td class="servBodL">'+str(self.getInputs())+'</td></tr>'
         if self.getOutputs():
-            s += "<tr><td>Outputs</td><td>"+str(self.getOutputs())+"</td></tr>"
-        s+="</table>"
+            s += '<tr><td class="servHd">Outputs</td><td class="servBodL">'+str(self.getOutputs())+'</td></tr>'
+        s+='</table>'
         
         return s

@@ -6,7 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 
 <title>@!name!@ - SPADE Web Interface</title>
 </head>
@@ -22,12 +22,16 @@
 <!--(end)-->
 
 
-	<div class="main">
-				<h1>@!name!@</h1>
-		<div class="content">
-			<ul>
+	<div id="templatemo_background_section_mid">
+		
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section_big">
+		   <div class='main section' id='main'>
+		    <h2 class="templatemo_left_section_box_top_big">@!name!@</h2>
+			<!--<ul>-->
 			<!--(for line in log)-->
-				<li class="@!line[0]!@"><tt>@!line[3]!@: </tt>
+				<p class="@!line[0]!@ logentry"><tt>@!line[3]!@: </tt>
 					<!--(if line[0]=="ok")-->
 				 		<font color="green"><strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@</font>
 					<!--(elif line[0]=="warn")-->
@@ -45,15 +49,34 @@
 					<!--(else)-->
 						<strong>(@!line[0]!@)</strong>&nbsp; @!line[1]!@
 					<!--(end)-->
-					</li>
+				</p>
 			<!--(end)-->
-			</ul>
+			<!--</ul>-->
 		</div>
+		</div>
+		<!--<div id="templatemo_middle_section">
+		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
+			<div class="widget">
 
+			<h2>Platform Info</h2>
+			<ul>
+				
+			</ul>
+
+			<h2>System</h2>
+			<ul>
+				
+			</ul>
+
+		    </div>
+		  </div>
+		</div>-->
+		<!--<div id="templatemo_right_section">		  
+		</div>-->
+		<div class="cleaner_with_height"></div>
 
 
 </div>
-
 <!--(include)-->
 footer.pyra
 <!--(end)-->

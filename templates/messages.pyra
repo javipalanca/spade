@@ -6,7 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 
 <link type="text/css" media="screen" rel="stylesheet" href="colorbox.css" /> 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
@@ -76,20 +76,24 @@ document.all.divs[i].visibility = 'hidden' ;
 
 	
 
-	<div class="main">
-				<h1>@!name!@</h1>
-		<div class="content">
-			
-			<!--(if diagram!=False)-->
-			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
-			<!--(end)-->
-			
+	<div id="templatemo_background_section_mid">
 
+                <div class="templatemo_container">
+                 <div id="templatemo_content_area">
+                  <div id="templatemo_left_section">
+                   <div class='main section' id='main'>
+
+			<h1>@!name!@</h1>
+			
 			<FORM class="msgForm" NAME="myform" ACTION="#" METHOD="GET">
 			Enter message ID: <BR>
 			<INPUT TYPE="text" NAME="inputbox" VALUE="" SIZE="6"><INPUT TYPE="button" NAME="button" Value="Show" rel="message" onClick="$.fn.colorbox({width:'75%',height:'75%', inline:true, arrowKey:true, rel:'message', href:'#'+document.myform.inputbox.value})" >
 			</FORM>
-			
+
+			<!--(if diagram!=False)-->
+			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
+			<!--(end)-->
+									
 			<div style="display:none">
 			<!--(for index,mess in messages.items())-->
 				<div id="@!index!@" style='padding:10px; background:#fff;' rel='message'>
@@ -98,12 +102,31 @@ document.all.divs[i].visibility = 'hidden' ;
 				</div>
 			<!--(end)-->
 			</div>
-		</div>
 
+		 </div>
+                </div>
+                <div id="templatemo_middle_section">
+                  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
+                        <div class="widget">
+
+                        <h2>Platform Info</h2>
+                        <ul>
+                        </ul>
+
+                        <h2>System</h2>
+                        <ul>
+                        </ul>
+
+                    </div>
+                  </div>
+                </div>
+                <!--<div id="templatemo_right_section">
+                </div>-->
+                <div class="cleaner_with_height"></div>
 
 
 </div>
-
 <!--(include)-->
 footer.pyra
 <!--(end)-->
+

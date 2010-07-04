@@ -6,7 +6,8 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <title>SPADE Web Interface</title>
 </head>
 
@@ -20,14 +21,17 @@
 	<!--(end)-->
 <!--(end)-->
 
-	<div class="main">
+	<div id="templatemo_background_section_mid">
 		
-		<div class="content">
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section">
+		   <div class='main section' id='main'>
+				
+			<h1 class="templatemo_left_section_box_top">Welcome to SPADE ! ! !</h1>
+			<div><span>@!time!@</span></div>
 
-			<h1>Welcome to SPADE ! ! !</h1>
-			<div class="descr"><span>@!time!@</span></div>
-
-			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. You can check the online documentation for the SPADE project <a href="http://spade.gti-ia.dsic.upv.es/documentation.html">here</a>.</p>
+			<p>If you are reading this, <strong>congratulations!</strong> You have successfully deployed the SPADE platform in your system. Now, please take some time to configure your SPADE platform. You can check the online documentation for the SPADE project <a href="http://spade2.googlecode.com">in the project page</a>.</p>
 
 			<cite>SPADE is the ultimate solution for all your agent needs -- Gustavo Aranda, SPADE developer</cite>
 			
@@ -35,7 +39,7 @@
 
 			<p>The SPADE Agent Platform does not require (but strongly recommends) the operation of agents made with the SPADE Agent Library. The platform itself uses the library to empower its internals, but aside from that, you can develop your own agents in the programming language of your choice and use them with SPADE. The only requirement those agents must fulfill is to be able to communicate through the XMPP protocol. The FIPA-ACL messages will be embedded in XMPP messages. Be warned, however, that some features of the whole SPADE experience may not be available if you do not use the SPADE Agent Library to build your agents.</p>
 
-			<h1>The SPADE Agent Library</h1>
+			<h1 class="templatemo_left_section_box_top">The SPADE Agent Library</h1>
 			<!--<div class="descr">Jun 11, 2006 by Laoreet</div>-->
 
 			<p>The SPADE Agent Library is a module for the Python programming language for building SPADE agents. It is a collection of classes, functions and tools for creating new SPADE agents that can work with the SPADE Agent Platform. Using it is the best way to start developing your own SPADE agents. In the future, we would like to offer bindings of the SPADE Agent Library for more programming languages, like Java or C#, but for now only Python is supported.</p>
@@ -44,36 +48,31 @@
 	
 
 		</div>
-
-		<div class="sidenav">
-
-			<h1>Search Agents and Services</h1>
-			<form action="index">
-			<div>
-				<input type="text" name="search" class="styled" /> <input type="submit" value="submit" class="button" />
-			</div>
-			</form>
-
-			<h1>Platform Info</h1>
-			<ul>
-				<li><a href="index">Hostname <strong><span>@!servername!@</span></strong></a></li>
-				<li><a href="index">Platform <strong><span>@!platform!@<span></strong></a></li>
-			</ul>
-
-			<h1>System</h1>
-			<ul>
-				<li><a href="index">Python version <strong><span>@!version!@</span></strong></a></li>
-			</ul>
-
 		</div>
-	
-		<div class="clearer"><span></span></div>
+		<div id="templatemo_middle_section">
+		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
+			<div class="widget">
 
-	</div>
+			<h2>Platform Info</h2>
+			<ul>
+				<li>Hostname <strong><span>@!servername!@</span></strong></li>
+				<li>Platform <strong><span>@!platform!@<span></strong></li>
+			</ul>
+
+			<h2>System</h2>
+			<ul>
+				<li>Python version <strong><span>@!version!@</span></strong></li>
+			</ul>
+
+		    </div>
+		  </div>
+		</div>
+		<!--<div id="templatemo_right_section">		  
+		</div>-->
+		<div class="cleaner_with_height"></div>
+
 
 </div>
-
-
 <!--(include)-->
 footer.pyra
 <!--(end)-->

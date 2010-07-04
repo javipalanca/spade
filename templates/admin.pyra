@@ -6,7 +6,7 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
 
 <title>SPADE Web Interface: Admin</title>
@@ -22,9 +22,12 @@
 	<!--(end)-->
 <!--(end)-->
 
-	<div class="main">
+	<div id="templatemo_background_section_mid">
 		
-		<div class="content">
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section">
+		   <div class='main section' id='main'>
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">QRCode</td><td class="servBodL"><img src="@!qrcode!@" border=0 width=256 height=256 alt="QRCode"></img></td></tr>
 			</table>
@@ -60,11 +63,30 @@
 			</table>
 
 		</div>
-			
+		</div>
+		<div id="templatemo_middle_section">
+		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
+			<div class="widget">
+
+			<!--<h2>Platform Info</h2>
+			<ul>
+				
+			</ul>
+
+			<h2>System</h2>
+			<ul>
+				
+			</ul>-->
+
+		    </div>
+		  </div>
+		</div>
+		<!--<div id="templatemo_right_section">		  
+		</div>-->
+		<div class="cleaner_with_height"></div>
 
 
 </div>
-
 <!--(include)-->
 footer.pyra
 <!--(end)-->
