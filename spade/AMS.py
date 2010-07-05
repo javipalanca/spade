@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-import Agent
+from Agent import PlatformAgent
 import AID
 import Behaviour
 from SL0Parser import *
@@ -11,7 +11,7 @@ import xmpp
 from spade.msgtypes import *
 from content import ContentObject
 
-class AMS(Agent.PlatformAgent):
+class AMS(PlatformAgent):
 	"""
 	Agent Management System
 	"""
@@ -346,7 +346,6 @@ class AMS(Agent.PlatformAgent):
 
 			if "rdf" in self.msg.getLanguage().lower():
 				rdf = True
-				#print "$$$$$$$$$$ AMS SEARCHBEHAVIOUR"
 				co = self.msg.getContentObject()
 				co["fipa:done"] = "true"
 				reply.setContentObject(co)
@@ -377,12 +376,9 @@ class AMS(Agent.PlatformAgent):
 				result = []
 				if "ams-agent-description" in self.content.action.search:
 					aad = AmsAgentDescription(self.content.action.search['ams-agent-description'])
-					#print str( self.myAgent.agentdb.values())
 					for a in self.myAgent.agentdb.values():
 						if max >= 0:
-							#print "comparo " +str(a)+ " con " +str(aad)
-							if a == aad:
-								#print "TRUE!"
+							if a.match(aad):
 								result.append(a)
 								max -= 1
 						else: break
@@ -391,7 +387,6 @@ class AMS(Agent.PlatformAgent):
 					result = self.myAgent.agentdb.values()
 
 				content = "((result " #TODO: + self.msg.getContent()
-				#print "He encontrado: " + str(len(result))
 				if len(result)>0:
 					content += " (set "
 					for i in result:
@@ -428,9 +423,7 @@ class AMS(Agent.PlatformAgent):
 					aad = AmsAgentDescription(co=co["fipa:action"]["fipa:argument"])
 					for a in self.myAgent.agentdb.values():
 						if max >= 0:
-							#print "compare " +str(a)+ " with " +str(aad)
-							if a == aad:
-								#print "TRUE!"
+							if a.match(aad):
 								result.append(a)
 								max -= 1
 						else: break
@@ -442,7 +435,7 @@ class AMS(Agent.PlatformAgent):
 				for i in result:
 					co2["fipa:result"].append(i.asContentObject())
 				reply.setContentObject(co2)
-				#print "$$$$$$ AMS CONTENT: ",co2.pprint()
+
 
 			reply.setPerformative("inform")
 			self.myAgent.send(reply)
@@ -598,7 +591,7 @@ class AMS(Agent.PlatformAgent):
 
 
 	def __init__(self,node,passw,server="localhost",port=5347):
-		Agent.PlatformAgent.__init__(self,node,passw,server,port)
+		PlatformAgent.__init__(self,node,passw,server,port)
 
 
 	def _setup(self):
@@ -677,17 +670,40 @@ class AmsAgentDescription:
 		"""
 		return self.name
 
+	def setOwnership(self,owner):
+		"""
+		sets the ownership
+		"""
+		self.ownership = str(owner)
+
 	def getOwnership(self):
 		"""
 		returns the ownership
 		"""
 		return self.ownership
 
+	def setState(self,state):
+		"""sets state"""
+		self.state = str(state)
+
 	def getState(self):
 		"""
 		returns the state of the agent
 		"""
 		return self.state
+
+	def match(self,y):
+		"""
+		returns True if y is part of the AAD
+		"""        
+		if (not self.name.match(y.getAID())) and self.name != None and y.getAID() != None:
+			return False
+		if self.ownership != None and y.getOwnership() != None and not (y.getOwnership().lower() in self.ownership.lower()):
+			return False
+		if self.state != None and y.getState() != None and not (y.getState().lower() in self.state.lower()):
+			return False
+
+		return True
 
 
 	def __eq__(self,y):

@@ -12,15 +12,15 @@
 <title>SPADE Web Interface: Admin</title>
 </head>
 
-<!--(if "acc." in name)-->
-	<!--(include)-->
-	header_platform.pyra 
-	<!--(end)-->
-<!--(else)-->
-	<!--(include)-->
-	header.pyra
-	<!--(end)-->
+<!--(include)-->
+header.pyra
 <!--(end)-->
+<!--(if "acc" in name)-->
+@!header(item="admin",admin="True")!@
+<!--(else)-->
+@!header(item="admin",admin="False")!@
+<!--(end)-->
+
 
 	<div id="templatemo_background_section_mid">
 		
@@ -28,11 +28,6 @@
 		 <div id="templatemo_content_area">
 		  <div id="templatemo_left_section">
 		   <div class='main section' id='main'>
-			<table class="servicesT" cellspacing="0">
-				<tr><td class="servHd">QRCode</td><td class="servBodL"><img src="@!qrcode!@" border=0 width=256 height=256 alt="QRCode"></img></td></tr>
-			</table>
-
-			<br>
 
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Name</td><td class="servBodL">@!aid.getName()!@</td></tr>
@@ -66,19 +61,7 @@
 		</div>
 		<div id="templatemo_middle_section">
 		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
-			<div class="widget">
-
-			<!--<h2>Platform Info</h2>
-			<ul>
-				
-			</ul>
-
-			<h2>System</h2>
-			<ul>
-				
-			</ul>-->
-
-		    </div>
+			@!qrcodetab!@
 		  </div>
 		</div>
 		<!--<div id="templatemo_right_section">		  
@@ -87,6 +70,4 @@
 
 
 </div>
-<!--(include)-->
-footer.pyra
-<!--(end)-->
+@!footer!@

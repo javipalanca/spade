@@ -849,19 +849,22 @@ class DfAgentDescription:
         return self.protocols
 
     def addProtocol(self, p):
-        self.protocols.append(p)
+        if p not in self.protocols:
+            self.protocols.append(p)
 
     def getOntologies(self):
         return self.ontologies
 
     def addOntologies(self, o):
-        self.ontologies.append(o)
+        if o not in self.ontologies:
+            self.ontologies.append(o)
 
     def getLanguages(self):
         return self.languages
 
     def addLanguage(self, l):
-        self.languages.append(l)
+        if l not in self.languages:
+            self.languages.append(l)
 
     def getLeaseTime(self):
         return self.lease_time
@@ -1027,31 +1030,34 @@ class ServiceDescription:
         return self.name
 
     def setName(self, name):
-        self.name = name.lower()
+        self.name = name
 
     def getType(self):
         return self.type
 
     def setType(self, t):
-        self.type = t.lower()
+        self.type = t
 
     def getProtocols(self):
         return self.protocols
 
     def addProtocol(self, p):
-        self.protocols.append(p)
+        if p not in self.protocols:
+            self.protocols.append(p)
 
     def getOntologies(self):
         return self.ontologies
 
     def addOntologies(self, o):
-        self.ontologies.append(o)
+        if o not in self.ontologies:
+            self.ontologies.append(o)
 
     def getLanguages(self):
         return self.languages
 
     def addLanguage(self, l):
-        self.languages.append(l)
+        if l not in self.languages:
+            self.languages.append(l)
 
     def getOwnership(self):
         return self.ownership
@@ -1348,10 +1354,10 @@ class Service:
         return self.dad
         
     def match(self,y):
-        return self.dad.match(y.dad)
+        return y.dad.match(self.dad)
         
     def __eq__(self,y):
-        return self.match(y)
+        return y.match(self)
         
     def __str__(self):
         return str(self.dad)

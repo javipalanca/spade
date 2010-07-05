@@ -1,6 +1,3 @@
-<!--(set_escape)-->
-None
-<!--(end)-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -11,30 +8,18 @@ None
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
-<link type="text/css" media="screen" rel="stylesheet" href="colorbox.css" /> 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
-<script src="jquery.colorbox.js"></script>
 
-<title>SPADE Web Interface: Services</title>
+<title>SPADE Web Interface: Search Results</title>
 </head>
 
 <!--(include)-->
 header.pyra
 <!--(end)-->
-
-@!header(item="services",admin="True")!@
-
-
-
-        <div style="display:none">
-		<!--(for v in services.values())-->
-			<!--(for s in v)-->
-				<div id="@!s.getName()!@" style='padding:10px; background:#fff;' rel='service'>
-					@!s.asHTML()!@
-				</div>
-			<!--(end)-->
-		<!--(end)-->
-		</div>
+<!--(if "acc" in name)-->
+@!header(item="admin",admin="True")!@
+<!--(else)-->
+@!header(item="admin",admin="False")!@
+<!--(end)-->
 
 
 	<div id="templatemo_background_section_mid">
@@ -42,8 +27,37 @@ header.pyra
 		<div class="templatemo_container">
 		 <div id="templatemo_content_area">
 		  <div id="templatemo_left_section">
-		   <div class='main section' id='main'>
-			<!--(if len(services)!=0)-->		
+		   <div class='main section' id='main'>		
+			
+			<h1>Search Results:</h1>
+			
+			<!--(if len(agentslist) > 0)-->
+				<h1 class="templatemo_left_section_box_top">Agents</h1>
+				<table class="servicesT" cellspacing="0">
+					<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>
+						<td class="servHd">State</td><td class="servHd">Ownership</td></tr>
+					<!--(for agent in agentslist)-->
+					<tr><td class="servBodL">
+						<!--(if agent.getAID())-->						
+						<a href="@!awuis[agent.getAID().getName()]!@/admin">@!str(agent.getAID().getName())!@</a></td>
+						<!--(end)-->
+						<td class="servBodL">
+							<!--(if agent.getAID())-->
+							@!str(agent.getAID().getAddresses()).strip("[']")!@
+							<!--(end)-->
+							</td>
+					    <td class="servBodL">@!str(agent.getState())!@</td>
+						<td class="servBodL">@!str(agent.getOwnership())!@</td></tr>
+					<!--(end)-->
+				</table>
+			<!--(else)-->
+				<h2>No agents found.</h2>
+			<!--(end)-->
+
+			<br/>
+
+			<!--(if len(services)!=0)-->
+				<h1 class="templatemo_left_section_box_top">Services</h1>
 				<!--(for service,v in services.items())-->
 				<h2 class="templatemo_left_section_box_top">@!str(service)!@</h2>
 				<table class="servicesT" cellspacing="0">
@@ -62,12 +76,12 @@ header.pyra
 			<h2>No services found.</h2>
 			<!--(end)-->
 
-		</div>
+		   </div>
 		</div>
 		<div id="templatemo_middle_section">
 		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
 
-			@!systemtab!@
+			
 		  </div>
 		</div>
 		<!--<div id="templatemo_right_section">		  

@@ -10,16 +10,10 @@
 <title>SPADE Web Interface</title>
 </head>
 
-<!--(if "acc." in name)-->
-	<!--(include)-->
-	header_platform.pyra 
-	<!--(end)-->
-<!--(else)-->
-	<!--(include)-->
-	header.pyra
-	<!--(end)-->
+<!--(include)-->
+header.pyra
 <!--(end)-->
-
+@!header(item="404",admin="False")!@
 	<div class="main">
 		
 		<div class="content">
@@ -47,6 +41,4 @@
 </div>
 
 
-<!--(include)-->
-footer.pyra
-<!--(end)-->
+@!footer!@

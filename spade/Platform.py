@@ -179,15 +179,16 @@ class SpadePlatform(Agent.PlatformAgent):
         """
         # Build AWUIs dict
         awuis = {}
-        aw = ""
-        for agent in search:
-            if agent.getAID():
-                aw = "#"
-                for addr in agent.getAID().getAddresses():                    
-                    if "awui://" in addr:
-                        aw = addr.replace("awui://", "http://")
-                        break
-                awuis[agent.getAID().getName()] = aw
+        if search:
+            aw = ""
+            for agent in search:
+                if agent.getAID():
+                    aw = "#"
+                    for addr in agent.getAID().getAddresses():                    
+                        if "awui://" in addr:
+                            aw = addr.replace("awui://", "http://")
+                            break
+                    awuis[agent.getAID().getName()] = aw
         self.DEBUG("AWUIs: "+str(awuis))
         return "agents.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, agents=search, awuis=awuis)
 

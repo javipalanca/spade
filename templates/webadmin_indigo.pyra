@@ -11,15 +11,12 @@
 <title>SPADE Web Interface</title>
 </head>
 
-<!--(if "acc." in name)-->
-	<!--(include)-->
-	header_platform.pyra 
-	<!--(end)-->
-<!--(else)-->
-	<!--(include)-->
-	header.pyra
-	<!--(end)-->
+<!--(include)-->
+header.pyra
 <!--(end)-->
+
+@!header(item="index",admin="True")!@
+
 
 	<div id="templatemo_background_section_mid">
 		
@@ -51,28 +48,14 @@
 		</div>
 		<div id="templatemo_middle_section">
 		  <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
-			<div class="widget">
 
-			<h2>Platform Info</h2>
-			<ul>
-				<li>Hostname <strong><span>@!servername!@</span></strong></li>
-				<li>Platform <strong><span>@!platform!@<span></strong></li>
-			</ul>
-
-			<h2>System</h2>
-			<ul>
-				<li>Python version <strong><span>@!version!@</span></strong></li>
-			</ul>
-
-		    </div>
+			@!systemtab!@
 		  </div>
 		</div>
-		<!--<div id="templatemo_right_section">		  
-		</div>-->
-		<div class="cleaner_with_height"></div>
+			<!--<div id="templatemo_right_section">		  
+			</div>-->
+			<div class="cleaner_with_height"></div>
 
 
 </div>
-<!--(include)-->
-footer.pyra
-<!--(end)-->
+@!footer!@

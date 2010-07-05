@@ -11,16 +11,14 @@
 <title>@!name!@ - SPADE Web Interface</title>
 </head>
 
-<!--(if "acc." in name)-->
-	<!--(include)-->
-	header_platform.pyra 
-	<!--(end)-->
-<!--(else)-->
-	<!--(include)-->
-	header.pyra
-	<!--(end)-->
+<!--(include)-->
+header.pyra
 <!--(end)-->
-
+<!--(if "acc" in name)-->
+@!header(item="log",admin="True")!@
+<!--(else)-->
+@!header(item="log",admin="False")!@
+<!--(end)-->
 
 	<div id="templatemo_background_section_mid">
 		
@@ -77,6 +75,4 @@
 
 
 </div>
-<!--(include)-->
-footer.pyra
-<!--(end)-->
+@!footer!@

@@ -81,8 +81,25 @@ class aid:
 	def getProperties(self):
 		return self.__userDefinedProperties
 
-	def addPropertie(self,prop):
+	def addProperty(self,prop):
 		self.__userDefinedProperties.append(prop)
+
+	def match(self, other):
+		"""
+		returns True if two AIDs are similar
+		else returns False
+		"""
+		if other != None:
+			if (self.getName() != None and other.getName() != None \
+			and (other.getName() in self.getName()) ):
+				return True
+			if (len(self.getAddresses())>0 and len(other.getAddresses())>0):
+			    for oaddr in other.getAddresses():
+			        for saddr in self.getAddresses():
+						if oaddr in saddr: return True
+			return False
+
+		else: return False
 
 	def __eq__(self, other):
 		"""

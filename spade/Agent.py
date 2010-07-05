@@ -104,6 +104,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.wui.registerController("admin", self.WUIController_admin)
         self.wui.registerController("log", self.WUIController_log)
         self.wui.registerController("messages",self.WUIController_messages)
+        self.wui.registerController("search",self.WUIController_search)
         self._aclparser = ACLParser.ACLxmlParser()
 
         #self._friend_list = []  # Legacy
@@ -166,10 +167,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
 
-    def WUIController_messages(self):
+    def WUIController_messages(self,agents=None):
         index=0
         mess = {}
         msc = ""
+        agentslist=[]
         for ts,m in self._messages:
             if isinstance(m,ACLMessage.ACLMessage):
                 strm=self._aclparser.encodeXML(m)
@@ -185,7 +187,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 else:
                     to = "Unknown"
                 if "/" in to: to=to.split("/")[0]
-                msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
+                if agents:
+                    if to in agents or frm in agents:
+                        msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
+                else:
+                    msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
             else:
                 strm=str(m)
                 strm = strm.replace("&gt;",">")
@@ -201,24 +207,157 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if to==None: to = "Unknown"
                 else: to = str(to)
                 if "/" in to: to=to.split("/")[0]
-                msc += frm+"-->"+to+':'+str(index)+' '+str(m.getName())
-                if m.getType(): msc+=" " + str(m.getType())+'\n'
-                elif m.getName()=="message":
-                    if m.getAttr("performative"): msc+=" " + str(m.getAttr("performative"))+'\n'
+                if agents:
+                    if to in agents or frm in agents:
+                        msc += frm+"-->"+to+':'+str(index)+' '+str(m.getName())
+                        if m.getType(): msc+=" " + str(m.getType())+'\n'
+                        elif m.getName()=="message":
+                            if m.getAttr("performative"): msc+=" " + str(m.getAttr("performative"))+'\n'
+                            else: msc+='\n'
+                        else: msc+='\n'
+                else:
+                    msc += frm+"-->"+to+':'+str(index)+' '+str(m.getName())
+                    if m.getType(): msc+=" " + str(m.getType())+'\n'
+                    elif m.getName()=="message":
+                        if m.getAttr("performative"): msc+=" " + str(m.getAttr("performative"))+'\n'
+                        else: msc+='\n'
                     else: msc+='\n'
-                else: msc+='\n'
+            
+            if frm not in agentslist: agentslist.append(frm)
+            if to not in agentslist: agentslist.append(to)
 
             mess[index]=(ts,strm)
             index+=1
 
         try:
             import diagram
-            self.DEBUG("Generating diagram with: " + msc)
+            self.DEBUG("Generating diagram with: " + str(agents) + " and " + msc)
             url = diagram.getSequenceDiagram(msc,style="napkin")
         except:
             url=False
         
-        return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": url}
+        return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": url, "agentslist":agentslist}
+
+    def WUIController_search(self, query):
+        
+        #FIRST SEARCH AGENTS
+        from AMS import AmsAgentDescription        
+        agentslist = []
+
+        #search by name
+        aad = AmsAgentDescription()
+        aad.setAID(AID.aid(name=query))
+        res = self.searchAgent(aad)
+        if res:
+            agentslist += res
+        #search by address
+        aad = AmsAgentDescription()
+        aad.setAID(AID.aid(addresses=[query]))
+        res = self.searchAgent(aad)
+        if res:
+            for a in res:
+                if not a in agentslist: agentslist.append(a)
+
+        #search by ownership
+        aad = AmsAgentDescription()
+        aad.setOwnership(query)
+        res = self.searchAgent(aad)
+        if res:
+            for a in res:
+                if not a in agentslist: agentslist.append(a)
+        #search by state
+        aad = AmsAgentDescription()
+        aad.setState(query)
+        res = self.searchAgent(aad)
+        if res:
+            for a in res:
+                if not a in agentslist: agentslist.append(a)
+        
+        # Build AWUIs dict
+        awuis = {}
+        if agentslist:
+            aw = ""
+            for agent in agentslist:
+                if agent.getAID():
+                    aw = "#"
+                    for addr in agent.getAID().getAddresses():                    
+                        if "awui://" in addr:
+                            aw = addr.replace("awui://", "http://")
+                            break
+                    awuis[agent.getAID().getName()] = aw
+            self.DEBUG("AWUIs: "+str(awuis))
+            
+        #NOW SEARCH SERVICES
+        from DF import Service,DfAgentDescription, ServiceDescription
+        servs = {}
+                
+        #search by name
+        s = Service(name=query)
+        search = self.searchService(s)
+
+        for service in search:
+                if service.getDAD().getServices()[0].getType() not in servs.keys():
+                    servs[service.getDAD().getServices()[0].getType()] = []
+                if service not in servs[service.getDAD().getServices()[0].getType()]:
+                    print "found by name:" +str(service) 
+                    servs[service.getDAD().getServices()[0].getType()].append(service)
+
+        #search by type
+        s = Service()
+        sd = ServiceDescription()
+        sd.setType(query)
+        dad = DfAgentDescription()
+        dad.addService(sd)
+        s.setDAD(dad)
+        search = self.searchService(s)
+
+        for service in search:
+                if service.getDAD().getServices()[0].getType() not in servs.keys():
+                    servs[service.getDAD().getServices()[0].getType()] = []
+                if service not in servs[service.getDAD().getServices()[0].getType()]:
+                    print "found by type:" +str(service)
+                    servs[service.getDAD().getServices()[0].getType()].append(service)
+                    
+        #search by owner
+        s = Service(owner=AID.aid(name=query))
+        search = self.searchService(s)
+
+        for service in search:
+                if service.getDAD().getServices()[0].getType() not in servs.keys():
+                    servs[service.getDAD().getServices()[0].getType()] = []
+                if service not in servs[service.getDAD().getServices()[0].getType()]:
+                    print "found by owner:" +str(service)
+                    servs[service.getDAD().getServices()[0].getType()].append(service)
+
+        #search by ontology
+        s = Service()
+        dad = DfAgentDescription()
+        dad.addOntologies(query)
+        dad.addService(sd)
+        s.setDAD(dad)
+        search = self.searchService(s)
+
+        for service in search:
+                if service.getDAD().getServices()[0].getType() not in servs.keys():
+                    servs[service.getDAD().getServices()[0].getType()] = []
+                if service not in servs[service.getDAD().getServices()[0].getType()]:
+                    print "found by ontology:" +str(service)
+                    servs[service.getDAD().getServices()[0].getType()].append(service)
+
+        #search by description
+        '''s = Service()
+        s.setDescription(query)
+        search = self.searchService(s)
+
+        for service in search:
+                if service.getDAD().getServices()[0].getType() not in servs.keys():
+                    servs[service.getDAD().getServices()[0].getType()] = []
+                if service not in servs[service.getDAD().getServices()[0].getType()]:
+                    print "found by description:" +str(service)
+                    servs[service.getDAD().getServices()[0].getType()].append(service)'''
+
+        
+        return "search.pyra", {"name":self.getName(), "agentslist": agentslist, "awuis":awuis, "services":servs}
 
     def registerLogComponent(self, component):
         #self._agent_log[component] = {}
@@ -1225,6 +1364,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if sd.getProperty("P"):
                         for p in sd.getProperty("P"): s.addP(p)
                     if sd.getProperty("Q"): s.setQ(sd.getProperty("Q"))
+                    s.getDAD().getServices()[0].setType(sd.getType())
+                    for o in sd.getOntologies(): s.setOntology(o)
                     r.append(s)
             return r
 

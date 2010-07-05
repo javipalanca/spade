@@ -118,11 +118,11 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     if var[0] in d.keys():
                         try:
                             # Try to append value to the list
-                            d[var[0]].append(var[1])
+                            d[var[0]].append(urllib.unquote_plus(var[1]))
                         except:
                             # Create a list with the current value and append the new one
                             d[var[0]] = [d[var[0]]]
-                            d[var[0]].append(var[1])
+                            d[var[0]].append(urllib.unquote_plus(var[1]))
                     else:
                         d[urllib.unquote_plus(var[0])] = urllib.unquote_plus(var[1])
                 else:
@@ -164,12 +164,16 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         
         s_vars=""
         for k,v in vars.items():
-            s_vars+= str(k) + "=" + str(v)+","
+            if k:
+                v = str(v)
+                if not v.startswith('"') and not v.startswith("'") and not v.startswith("["):
+                    v = '"'+ v +'"'
+                s_vars+= str(k) + "=" + v +","
         if s_vars.endswith(","): s_vars = s_vars[:-1]
             
         # Switch page
         #if page.endswith("css"):
-        if "." in page:
+        if page.endswith(".css") or page.endswith(".png") or page.endswith(".html") or page.endswith(".js"):
             #self.copyfile(urllib.urlopen(self.path), self.wfile)
             try:
                 if os.path.exists(self.server.owner.template_path + os.sep + page):
@@ -201,7 +205,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 ret = {"template":page, "error":str(_err),"name":self.server.owner.owner.getName()}
             try:
                 if not ret:
-                    func = self.server.owner.controllers[str(page)]
+                    func = self.server.owner.controllers[str(page)]                    
                     template, ret = eval("func"+"("+s_vars+")")
             except Exception, e:
                 #No controller

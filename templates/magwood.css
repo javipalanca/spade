@@ -288,6 +288,7 @@ background: url(images/templatemo_middle_section_box_bg.png) repeat-y;
 border: 1px solid #C2C0B1;
 margin: 0 0 15px 0 ;
 padding: 10px 0 10px 20px;
+position: fixed;
 }
 .templatemo_middle_section_box h2{
 color: #963;

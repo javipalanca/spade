@@ -64,14 +64,13 @@ document.all.divs[i].visibility = 'hidden' ;
 </head>
 
 
-<!--(if "acc." in name)-->
-	<!--(include)-->
-	header_platform.pyra 
-	<!--(end)-->
+<!--(include)-->
+header.pyra
+<!--(end)-->
+<!--(if "acc" in name)-->
+@!header(item="messages",admin="True")!@
 <!--(else)-->
-	<!--(include)-->
-	header.pyra
-	<!--(end)-->
+@!header(item="messages",admin="False")!@
 <!--(end)-->
 
 	
@@ -85,11 +84,6 @@ document.all.divs[i].visibility = 'hidden' ;
 
 			<h1>@!name!@</h1>
 			
-			<FORM class="msgForm" NAME="myform" ACTION="#" METHOD="GET">
-			Enter message ID: <BR>
-			<INPUT TYPE="text" NAME="inputbox" VALUE="" SIZE="6"><INPUT TYPE="button" NAME="button" Value="Show" rel="message" onClick="$.fn.colorbox({width:'75%',height:'75%', inline:true, arrowKey:true, rel:'message', href:'#'+document.myform.inputbox.value})" >
-			</FORM>
-
 			<!--(if diagram!=False)-->
 			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
 			<!--(end)-->
@@ -107,17 +101,7 @@ document.all.divs[i].visibility = 'hidden' ;
                 </div>
                 <div id="templatemo_middle_section">
                   <div class="templatemo_middle_section_box section" id="templatemo_middle_section_box">
-                        <div class="widget">
-
-                        <h2>Platform Info</h2>
-                        <ul>
-                        </ul>
-
-                        <h2>System</h2>
-                        <ul>
-                        </ul>
-
-                    </div>
+                 @!filtermsgtab!@
                   </div>
                 </div>
                 <!--<div id="templatemo_right_section">
@@ -126,7 +110,5 @@ document.all.divs[i].visibility = 'hidden' ;
 
 
 </div>
-<!--(include)-->
-footer.pyra
-<!--(end)-->
+@!footer!@
 
