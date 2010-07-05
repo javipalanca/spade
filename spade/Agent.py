@@ -250,13 +250,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         res = self.searchAgent(aad)
         if res:
             agentslist += res
+
         #search by address
         aad = AmsAgentDescription()
         aad.setAID(AID.aid(addresses=[query]))
         res = self.searchAgent(aad)
         if res:
             for a in res:
-                if not a in agentslist: agentslist.append(a)
+                if not a in agentslist:
+                    agentslist.append(a)
 
         #search by ownership
         aad = AmsAgentDescription()
@@ -264,14 +266,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         res = self.searchAgent(aad)
         if res:
             for a in res:
-                if not a in agentslist: agentslist.append(a)
+                if not a in agentslist: 
+                    agentslist.append(a)
+
         #search by state
         aad = AmsAgentDescription()
         aad.setState(query)
         res = self.searchAgent(aad)
         if res:
             for a in res:
-                if not a in agentslist: agentslist.append(a)
+                if not a in agentslist:
+                    agentslist.append(a)
         
         # Build AWUIs dict
         awuis = {}
@@ -299,7 +304,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if service.getDAD().getServices()[0].getType() not in servs.keys():
                     servs[service.getDAD().getServices()[0].getType()] = []
                 if service not in servs[service.getDAD().getServices()[0].getType()]:
-                    print "found by name:" +str(service) 
                     servs[service.getDAD().getServices()[0].getType()].append(service)
 
         #search by type
@@ -315,7 +319,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if service.getDAD().getServices()[0].getType() not in servs.keys():
                     servs[service.getDAD().getServices()[0].getType()] = []
                 if service not in servs[service.getDAD().getServices()[0].getType()]:
-                    print "found by type:" +str(service)
                     servs[service.getDAD().getServices()[0].getType()].append(service)
                     
         #search by owner
@@ -326,7 +329,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if service.getDAD().getServices()[0].getType() not in servs.keys():
                     servs[service.getDAD().getServices()[0].getType()] = []
                 if service not in servs[service.getDAD().getServices()[0].getType()]:
-                    print "found by owner:" +str(service)
                     servs[service.getDAD().getServices()[0].getType()].append(service)
 
         #search by ontology
@@ -341,7 +343,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 if service.getDAD().getServices()[0].getType() not in servs.keys():
                     servs[service.getDAD().getServices()[0].getType()] = []
                 if service not in servs[service.getDAD().getServices()[0].getType()]:
-                    print "found by ontology:" +str(service)
                     servs[service.getDAD().getServices()[0].getType()].append(service)
 
         #search by description

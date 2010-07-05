@@ -1,3 +1,7 @@
+<!--(set_escape)-->
+None
+<!--(end)-->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -8,6 +12,9 @@
 <meta name="author" content="author"/> 
 <link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
+<link type="text/css" media="screen" rel="stylesheet" href="colorbox.css" /> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+<script src="jquery.colorbox.js"></script>
 
 <title>SPADE Web Interface: Search Results</title>
 </head>
@@ -57,6 +64,15 @@ header.pyra
 			<br/>
 
 			<!--(if len(services)!=0)-->
+				<div style="display:none">
+				<!--(for v in services.values())-->
+					<!--(for s in v)-->
+						<div id="@!s.getName()!@" style='padding:10px; background:#fff;' rel='service'>
+							@!s.asHTML()!@
+						</div>
+					<!--(end)-->
+				<!--(end)-->
+				</div>
 				<h1 class="templatemo_left_section_box_top">Services</h1>
 				<!--(for service,v in services.items())-->
 				<h2 class="templatemo_left_section_box_top">@!str(service)!@</h2>

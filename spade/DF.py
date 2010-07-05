@@ -1339,6 +1339,12 @@ class Service:
         self.dad.services = services
         
     def getDescription(self): return self.dad.getServices()[0].getProperty("description")
+    
+    def getType(self):
+        return self.dad.getServices()[0].getType()
+        
+    def setType(self, typ):
+        self.dad.getServices()[0].setType(typ)
 
     def setDAD(self,dad):
         sd = dad.getServices()
@@ -1366,6 +1372,8 @@ class Service:
         s = '<table class="servicesT" cellspacing="0">'
         s += '<tr><td class="servHd">Name</td><td class="servBodL">'+self.getName()+'</td></tr>'
         s += '<tr><td class="servHd">Owner</td><td class="servBodL">'+self.getOwner().getName()+'</td></tr>'
+        if self.getType():
+            s += '<tr><td class="servHd">Type</td><td class="servBodL">'+str(self.getType())+'</td></tr>'
         if self.getDescription():
             s += '<tr><td class="servHd">Description</td><td class="servBodL">'+str(self.getDescription())+'</td></tr>'
         if self.getOntology():

@@ -12,7 +12,6 @@ class aid:
 			ContentObject co
 		"""
 		if co:
-		    #print "AID FROM:\n",co.pprint()
 		    self.__name = co.name
 		    if "list" in str(type(co.addresses)):
 		        self.__addresses = copy.copy(co.addresses)
@@ -91,13 +90,13 @@ class aid:
 		"""
 		if other != None:
 			if (self.getName() != None and other.getName() != None \
-			and (other.getName() in self.getName()) ):
-				return True
+			and not (other.getName() in self.getName()) ):
+				return False
 			if (len(self.getAddresses())>0 and len(other.getAddresses())>0):
 			    for oaddr in other.getAddresses():
 			        for saddr in self.getAddresses():
-						if oaddr in saddr: return True
-			return False
+						if not (oaddr in saddr): return False
+			return True
 
 		else: return False
 

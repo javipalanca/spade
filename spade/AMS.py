@@ -640,7 +640,7 @@ class AmsAgentDescription:
 
 		self.name = None #AID.aid()
 		self.ownership = None
-		self.state = None
+		self.state = "active"
 
 		if co:
 			try:
@@ -696,7 +696,7 @@ class AmsAgentDescription:
 		"""
 		returns True if y is part of the AAD
 		"""        
-		if (not self.name.match(y.getAID())) and self.name != None and y.getAID() != None:
+		if self.name != None and y.getAID() != None and (not self.name.match(y.getAID())):
 			return False
 		if self.ownership != None and y.getOwnership() != None and not (y.getOwnership().lower() in self.ownership.lower()):
 			return False
