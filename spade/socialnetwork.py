@@ -57,8 +57,8 @@ class SocialItem:
     A member of an agent's Social Network
     AID, presence & subscription
     """
-    def __init__(self, agent, jid, presence=""):
-        self.presence = ""
+    def __init__(self, agent, jid, presence=''):
+        self._presence = presence
 
         # Generate AID
         self._aid = AID.aid(name=jid, addresses=["xmpp://"+str(jid)])
@@ -72,9 +72,6 @@ class SocialItem:
                 self._subscription = "none"
         else:
             self._subscription = "none"
-
-        if presence:
-            self._presence = presence
 
     def setPresence(self, presence):
         self._presence = presence
