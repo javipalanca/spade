@@ -58,6 +58,8 @@ class SocialItem:
     AID, presence & subscription
     """
     def __init__(self, agent, jid, presence=''):
+        self.myAgent = agent
+        self._jid = jid
         self._presence = presence
 
         # Generate AID
@@ -78,4 +80,3 @@ class SocialItem:
 
     def getPresence(self):
         return self._presence
-
