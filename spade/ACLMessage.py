@@ -384,3 +384,49 @@ class ACLMessage:
 		returns a serialized version of the message
 		"""
 		return pickle.dumps(self)
+
+	def asHTML(self):
+		"""
+		returns an HTML version of the message ready to be displayed at the WUI
+		"""
+		s = '<table class="servicesT" cellspacing="0">'
+		s += '<tr><td class="servHd">Performative</td><td class="servBodL">'+self.getPerformative()+'</td></tr>'
+		sndr = self.sender.asXML()
+		sndr = sndr.replace(">", "&gt;")
+		sndr = sndr.replace("<", "&lt;")
+		sndr = sndr.replace('"', "&quot;")
+		s += '<tr><td class="servHd">Sender</td><td class="servBodL">'+sndr+'</td></tr>'
+		recvs = ""
+		for r in self.receivers:
+			escaped = r.asXML()
+			escaped = escaped.replace(">", "&gt;")
+			escaped = escaped.replace("<", "&lt;")
+			escaped = escaped.replace('"', "&quot;")
+			recvs += escaped + "<br />"
+		s += '<tr><td class="servHd">Receivers</td><td class="servBodL">'+recvs+'</td></tr>'
+		if self.content:
+			cont = str(self.content)
+			cont = cont.replace(">", "&gt;")
+			cont = cont.replace("<", "&lt;")
+			cont = cont.replace('"', "&quot;")	
+			s += '<tr><td class="servHd">Content</td><td class="servBodL">'+cont+'</td></tr>'
+		if self.getReplyWith():
+			s += '<tr><td class="servHd">Reply With</td><td class="servBodL">'+str(self.getReplyWith())+'</td></tr>'
+		if self.getReplyBy():
+			s += '<tr><td class="servHd">Reply By</td><td class="servBodL">'+str(self.getReplyBy())+'</td></tr>'
+		if self.getInReplyTo():
+			s += '<tr><td class="servHd">In Reply To</td><td class="servBodL">'+str(self.getInReplyTo())+'</td></tr>'
+		if self.getReplyTo():
+			s += '<tr><td class="servHd">Reply To</td><td class="servBodL">'+str(self.getReplyTo())+'</td></tr>'
+		if self.getLanguage():
+			s += '<tr><td class="servHd">Language</td><td class="servBodL">'+str(self.getLanguage())+'</td></tr>'
+		if self.getEncoding():
+			s += '<tr><td class="servHd">Encoding</td><td class="servBodL">'+str(self.getEncoding())+'</td></tr>'
+		if self.getOntology():
+			s += '<tr><td class="servHd">Ontology</td><td class="servBodL">'+str(self.getOntology())+'</td></tr>'
+		if self.getProtocol():
+			s += '<tr><td class="servHd">Protocol</td><td class="servBodL">'+str(self.getProtocol())+'</td></tr>'
+		if self.getConversationId():
+			s += '<tr><td class="servHd">Conversation ID</td><td class="servBodL">'+str(self.getConversationId())+'</td></tr>'
+		s += '</table>'
+		return s

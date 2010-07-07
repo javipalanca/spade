@@ -176,7 +176,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             if isinstance(m,ACLMessage.ACLMessage):
                 strm=self._aclparser.encodeXML(m)
                 x = xml.dom.minidom.parseString(strm)
-                strm = x.toprettyxml()
+                #strm = x.toprettyxml()
+                strm = m.asHTML()
                 frm = m.getSender()
                 if frm!=None: frm = str(frm.getName())
                 else: frm = "Unknown"
@@ -194,11 +195,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     msc += frm+"->"+to+':'+str(index)+" "+str(m.getPerformative())+'\n'
             else:
                 strm=str(m)
-                strm = strm.replace("&gt;",">")
+                """strm = strm.replace("&gt;",">")
                 strm = strm.replace("&lt;","<")
-                strm = strm.replace("&quot;",'"')
+                strm = strm.replace("&quot;",'"')"""
                 x = xml.dom.minidom.parseString(strm)
                 strm = x.toprettyxml()
+		# Quick'n dirty hack to display jabber messages on the WUI
+		# Will fix with a proper display
+                strm = strm.replace(">", "&gt;")
+                strm = strm.replace("<", "&lt;")
+                strm = strm.replace('"', "&quot;")
                 frm = m.getFrom()
                 if frm==None: frm = "Unknown"
                 else: frm = str(frm)
