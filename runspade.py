@@ -43,7 +43,7 @@ def print_help():
 
 def print_version():
   print "SPADE %s by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others" % colors.color_yellow + __version__ + colors.color_none
-  print "gusarba@gmail.com - http://spade2.googleprojects.com"
+  print "gusarba@gmail.com - http://spade2.googlecode.com"
   raise SystemExit
 
 # Actually start the program running.
@@ -82,7 +82,7 @@ def main():
   except:
 	pass
 
-  print "SPADE ", colors.color_yellow + __version__ + colors.color_none, " <gusarba@gmail.com> - http://spade2.googleprojects.com"
+  print "SPADE ", colors.color_yellow + __version__ + colors.color_none, " <gusarba@gmail.com> - http://spade2.googlecode.com"
 
   try:
   	import psyco

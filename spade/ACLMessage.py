@@ -6,6 +6,7 @@ import cPickle as pickle
 #random.seed(time.time())
 import content
 import ACLParser
+import xml
 
 class ACLMessage:
 	"""
@@ -395,7 +396,7 @@ class ACLMessage:
 		sndr = sndr.replace(">", "&gt;")
 		sndr = sndr.replace("<", "&lt;")
 		sndr = sndr.replace('"', "&quot;")
-		s += '<tr><td class="servHd">Sender</td><td class="servBodL">'+sndr+'</td></tr>'
+		s += '<tr><td class="servHd">Sender</td><td class="servBodL"><pre>'+sndr+'</pre></td></tr>'
 		recvs = ""
 		for r in self.receivers:
 			escaped = r.asXML()
@@ -403,13 +404,19 @@ class ACLMessage:
 			escaped = escaped.replace("<", "&lt;")
 			escaped = escaped.replace('"', "&quot;")
 			recvs += escaped + "<br />"
-		s += '<tr><td class="servHd">Receivers</td><td class="servBodL">'+recvs+'</td></tr>'
+		s += '<tr><td class="servHd">Receivers</td><td class="servBodL"><pre>'+recvs+'</pre></td></tr>'
 		if self.content:
-			cont = str(self.content)
+			cont = self.getContent()
+			try:
+				# Try to beautify the content if it is XML
+				x = xml.dom.minidom.parseString(cont)
+				cont = x.toprettyxml()
+			except:
+				pass
 			cont = cont.replace(">", "&gt;")
 			cont = cont.replace("<", "&lt;")
 			cont = cont.replace('"', "&quot;")	
-			s += '<tr><td class="servHd">Content</td><td class="servBodL">'+cont+'</td></tr>'
+			s += '<tr><td class="servHd">Content</td><td class="servBodL"><pre>'+cont+'</pre></td></tr>'
 		if self.getReplyWith():
 			s += '<tr><td class="servHd">Reply With</td><td class="servBodL">'+str(self.getReplyWith())+'</td></tr>'
 		if self.getReplyBy():

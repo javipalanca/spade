@@ -93,7 +93,7 @@ header.pyra
 			<!--(for index,mess in messages.items())-->
 				<div id="@!index!@" style='padding:10px; background:#fff;' rel='message'>
 					<tt>@!mess[0]!@: </tt>
-						$!mess[1]!$
+					$!mess[1]!$
 				</div>
 			<!--(end)-->
 			</div>

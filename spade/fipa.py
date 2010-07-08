@@ -30,12 +30,20 @@ class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
         self.myAgent.send(self._msg)
         msg = self._receive(True,10)
         if msg == None or str(msg.getPerformative()) != 'agree':
-            self.myAgent.DEBUG("There was an error searching the Agent " +str(self.AAD.getAID().getName())+ "(not agree)","warn")
+            try:
+                addname = str(self.AAD.getAID().getName())
+            except:
+                addname = "<unknown>"
+            self.myAgent.DEBUG("There was an error searching the Agent " + aadname + "(not agree)","warn")
             self.finished = True
             return None
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() != 'inform':
-            self.myAgent.DEBUG("There was an error searching the Agent " +str(self.AAD.getAID().getName())+ "(not inform)","warn")
+            try:
+                addname = str(self.AAD.getAID().getName())
+            except:
+                addname = "<unknown>"
+            self.myAgent.DEBUG("There was an error searching the Agent " + aadname + "(not inform)","warn")
             self.finished = True
             return None
         else:
