@@ -42,6 +42,7 @@ class SL0Parser:
 		returns a pyparsing.ParseResults
 		"""
 
+		m = None
 		try:
 			m = self.bnf.parseString(str(string))
 		except ParseException, err:

@@ -80,7 +80,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         inits an agent with a JID (user@server) and a platform JID (acc.platformserver)
         """
         MessageReceiver.MessageReceiver.__init__(self)
-        self._agent_log = {}  # Log system
+        self._agent_log = []  # Log system
         self._aid = AID.aid(name=agentjid, addresses=["xmpp://"+agentjid])
         self._jabber = None
         self._serverplatform = serverplatform
@@ -96,6 +96,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._debug = False
         self._debug_filename = ""
         self._debug_file = None
+        self._debug_mutex = thread.allocate_lock()
         
         self._messages=[]
         self._messages_mutex = thread.allocate_lock()
@@ -372,12 +373,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def DEBUG(self, dmsg, typ="info", component="spade"):
         # Record at log
-        t = time.time()
+        t = time.ctime()
         dmsg = dmsg.replace("&gt;",">")
         dmsg = dmsg.replace("&lt;","<")
         dmsg = dmsg.replace("&quot;",'"')
 
-        self._agent_log[t] = (typ,dmsg,component,time.ctime(t))
+        self._debug_mutex.acquire()
+        self._agent_log.append((typ,dmsg,component,t))
+        self._debug_mutex.release()
 
         if self._debug:
             # Print on screen
@@ -393,13 +396,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         # Log to file
         if self._debug_file:
             if typ == "info":
-                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , info\n")
+                self._debug_file.write( t + ": [" + component + "] " + dmsg + " , info\n")
             elif typ == "err":
-                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , error\n")
+                self._debug_file.write( t + ": [" + component + "] " + dmsg + " , error\n")
             elif typ == "ok":
-                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , ok\n")
+                self._debug_file.write( t + ": [" + component + "] " + dmsg + " , ok\n")
             elif typ == "warn":
-                self._debug_file.write( self._agent_log[t][3] + ": [" + component + "] " + dmsg + " , warn\n")
+                self._debug_file.write( t + ": [" + component + "] " + dmsg + " , warn\n")
             self._debug_file.flush()
 
     def setDebug(self, activate = True):
@@ -423,6 +426,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.DEBUG("Could not open file " + self._debug_filename + " as log file", "err")
 
     def getLog(self):
+        l = copy.copy(self._agent_log)
+        l.reverse()
+        return l
+        '''
         keys = self._agent_log.keys()
         keys.sort()
         keys.reverse()
@@ -430,6 +437,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         for k in keys:
             l.append(self._agent_log[k])
         return l
+        '''
 
     def newMessage(self):
         """Creates and returns an empty ACL message"""

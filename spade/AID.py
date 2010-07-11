@@ -19,9 +19,13 @@ class aid:
 		        self.__addresses = []
 		        if co.addresses:
 		            self.__addresses.append(co.addresses)
-		    self.__resolvers = list()
+		    if "list" in str(type(co.resolvers)):
+		        self.__resolvers = copy.copy(co.resolvers)
+		    else:
+		        self.__resolvers = []
+		        if co.resolvers:
+		            self.__resolvers.append(co.resolvers)
 		    self.__userDefinedProperties = list()
-		    #print "AID:",str(self.asXML())
 		    return
 		    
 		if name != None:
@@ -84,21 +88,39 @@ class aid:
 		self.__userDefinedProperties.append(prop)
 
 	def match(self, other):
-		"""
-		returns True if two AIDs are similar
-		else returns False
-		"""
-		if other != None:
-			if (self.getName() != None and other.getName() != None \
-			and not (other.getName() in self.getName()) ):
-				return False
-			if (len(self.getAddresses())>0 and len(other.getAddresses())>0):
-			    for oaddr in other.getAddresses():
-			        for saddr in self.getAddresses():
-						if not (oaddr in saddr): return False
-			return True
+	        """
+	        returns True if two AIDs are similar
+	        else returns False
+	        """
 
-		else: return False
+	        if other==None: return True
+	    
+		if (self.getName() != None and other.getName() != None \
+		and not (other.getName() in self.getName()) ):
+			return False
+		if (len(self.getAddresses())>0 and len(other.getAddresses())>0):
+		    for oaddr in other.getAddresses():
+		        found=False
+		        for saddr in self.getAddresses():
+					if (oaddr in saddr): found=True
+		        if not found:
+		            return False
+		if (len(self.getResolvers())>0 and len(other.getResolvers())>0):
+		    for oaddr in other.getResolvers():
+		        found=False
+		        for saddr in self.getResolvers():
+					if (oaddr in saddr): found=True
+		        if not found:
+		            return False
+		if (len(self.getProperties())>0 and len(other.getProperties())>0):
+		    for oaddr in other.getProperties():
+		        found=False
+		        for saddr in self.getProperties():
+					if (oaddr in saddr): found=True
+		        if not found:
+		            return False
+		return True
+
 
 	def __eq__(self, other):
 		"""
@@ -106,16 +128,26 @@ class aid:
 		returns True if two AIDs are equal
 		else returns False
 		"""
-		if other != None:
-			if (self.getName() != None and other.getName() != None \
-			and self.getName() != other.getName()):
-				return False
-			if (len(self.getAddresses())>0 and len(other.getAddresses())>0 \
-			and self.getAddresses().sort() != other.getAddresses().sort()):
-				return False
+		if other==None: return False
+		
+		if (self.getName() != None and other.getName() != None \
+		and self.getName() != other.getName()):
+			return False
+		addr1 = self.getAddresses()
+		addr2 = other.getAddresses()
+		addr1.sort()
+		addr2.sort()
+		if addr1 != addr2:
+			return False
+			
+		res1 = self.getResolvers()
+		res2 = other.getResolvers()
+		res1.sort()
+		res2.sort()
+		if res1 != res2:
+			return False
 
-			return True
-		else: return False
+		return True
 
 	def __ne__(self,other):
 		"""
@@ -124,7 +156,7 @@ class aid:
 		else returns True
 		"""
 
-		return not self == other
+		return not (self == other)
 
 
         def __hash__(self):
@@ -170,6 +202,12 @@ class aid:
 	    co["addresses"] = []
 	    for addr in self.getAddresses():
 	        co["addresses"].append(addr)
+	    co["resolvers"] = []
+	    for r in self.getResolvers():
+	        co["resolvers"].append(r)
+	    co["properties"] = []
+	    for p in self.getProperties():
+	        co["properties"].append(p)
 	    return co
 
 	def asXML(self):
@@ -184,6 +222,7 @@ class aid:
 			sb = sb + "\t\t" + self.encodeTag( "url", addr ) + "\n"
 
 		sb = sb + "\t</addresses>\n"
+		
 	 	sb = sb + "</agent-identifier>\n"
 
 		return sb
@@ -218,7 +257,7 @@ class aid:
 
 			if "resolvers" in content["agent-identifier"]:
 				for res in content["agent-identifier"].resolvers.sequence:
-					self.addResolvers(self.loadSL0(res))#[0]))
+					self.addResolvers(res)#[0]))
 
 		else: return -1
 

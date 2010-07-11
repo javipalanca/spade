@@ -8,6 +8,7 @@ import BasicFipaDateTime
 from SL0Parser import *
 from content import ContentObject
 import copy
+import thread
 
 class DF(PlatformAgent):
     """
@@ -147,7 +148,9 @@ class DF(PlatformAgent):
                 if self.content.action == "register":
                     
                     if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
+                        self.myAgent.db_mutex.acquire()
                         self.myAgent.servicedb[dad.getAID().getName()] = dad
+                        self.myAgent.db_mutex.release()
                     else:
                         #check if already-registered    
                         for ss in dad.getServices():
@@ -165,7 +168,9 @@ class DF(PlatformAgent):
 
                         try:
                             for s in dad.getServices():
+                                self.myAgent.db_mutex.acquire()
                                 self.myAgent.servicedb[dad.getAID().getName()].addService(s)
+                                self.myAgent.db_mutex.release()
                                 self.myAgent.DEBUG("Service successfully registered: "+str(s),'ok')
                         except Exception, err:
                             reply.setPerformative("failure")
@@ -207,12 +212,16 @@ class DF(PlatformAgent):
                     try:
                         services = copy.copy(self.myAgent.servicedb[dad.getAID().getName()])
                         if dad.getServices() == []:
+                            self.myAgent.db_mutex.acquire()
                             del self.myAgent.servicedb[dad.getAID().getName()]
+                            self.myAgent.db_mutex.release()
                         else:
                             for ss in dad.getServices():
                                 for s in services.getServices():
                                     if ss.match(s):
+                                        self.myAgent.db_mutex.acquire()
                                         self.myAgent.servicedb[dad.getAID().getName()].delService(s)
+                                        self.myAgent.db_mutex.release()
                     except Exception, err:
                         reply.setPerformative("failure")
                         reply.setContent("("+self.msg.getContent() + '(internal-error "could not deregister service"))')
@@ -259,7 +268,9 @@ class DF(PlatformAgent):
 
                 if co["fipa:action"]["fipa:act"] == "register":
                     if not self.myAgent.servicedb.has_key(dad.getAID().getName()):
+                        self.myAgent.db_mutex.acquire()
                         self.myAgent.servicedb[dad.getAID().getName()] = dad
+                        self.myAgent.db_mutex.release()
                     else:
                         #check if already-registered    
                         for ss in dad.getServices():
@@ -276,11 +287,13 @@ class DF(PlatformAgent):
                                 self.myAgent.send(reply)
                                 self.myAgent.DEBUG("FAILURE: Service already registered! ",'warn')
                                 return -1
-                                
+
 
                         try:
                             for s in dad.getServices():
+                                self.myAgent.db_mutex.acquire()
                                 self.myAgent.servicedb[dad.getAID().getName()].addService(s)
+                                self.myAgent.db_mutex.release()
                                 self.myAgent.DEBUG("Service successfully registered: "+str(s),'ok')
                         except Exception, err:
                             reply.setPerformative("failure")
@@ -290,8 +303,8 @@ class DF(PlatformAgent):
                             self.myAgent.send(reply)
                             self.myAgent.DEBUG("FAILURE: Service could not be registered: "+str(err),'error')
                             return -1
-                        
-                        
+
+
                     reply.setPerformative("inform")
                     co_rep = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_rep["fipa:done"] = "true"
@@ -329,12 +342,16 @@ class DF(PlatformAgent):
                         services = copy.copy(self.myAgent.servicedb[dad.getAID().getName()])
                         self.myAgent.DEBUG("Deregistering "+str(services) + " AND " + str(dad.getServices()))
                         if dad.getServices() == []:
+                            self.myAgent.db_mutex.acquire()
                             del self.myAgent.servicedb[dad.getAID().getName()]
+                            self.myAgent.db_mutex.release()
                         else:
                             for ss in dad.getServices():
                                 for s in services.getServices():
                                     if ss.match(s):
+                                        self.myAgent.db_mutex.acquire()
                                         self.myAgent.servicedb[dad.getAID().getName()].delService(s)
+                                        self.myAgent.db_mutex.release()
                     except Exception, err:
                         reply.setPerformative("failure")
                         co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
@@ -402,11 +419,11 @@ class DF(PlatformAgent):
                     except Exception, err:
                         self.myAgent.DEBUG("FAILURE: Could not extract DfAgentDescription from content: "+str(err),'error')
 
-
+                self.myAgent.db_mutex.acquire()
                 if max in [-1, 0]:
                     # No limit
                     for agentid,dads in self.myAgent.servicedb.items():
-                        if dad.match(dads):
+                        if dads.match(dad):
                             d = copy.copy(dads)
                             if dad.services == []:
                                 d.services = dads.getServices()
@@ -414,14 +431,14 @@ class DF(PlatformAgent):
                                 d.services=[]
                             for ss in dad.getServices():
                                 for s in dads.getServices():
-                                    if ss.match(s):
+                                    if s.match(ss):
                                         d.addService(s)
                             result.append(d)
                 else:
                     max = abs(max)
                     for agentid,dads in self.myAgent.servicedb.items():
                         if max >= 0:
-                            if dad.match(dads):
+                            if dads.match(dad):
                                 d = copy.copy(dads)
                                 if dad.services == []:
                                     d.services = dads.getServices()
@@ -429,12 +446,13 @@ class DF(PlatformAgent):
                                     d.services=[]
                                 for ss in dad.getServices():
                                     for s in dads.getServices():
-                                        if ss.match(s):
+                                        if s.match(ss):
                                             d.addService(s)
                                 result.append(d)
                                 max -= 1
                         else: break
 
+                self.myAgent.db_mutex.release()
                 content = "((result " + self.msg.getContent().strip("\n")[1:-1]
                 if len(result)>0:
                     content += " (sequence "
@@ -478,13 +496,16 @@ class DF(PlatformAgent):
                     if self.content.action.argument.df_agent_description:
                         try:
                             dad = DfAgentDescription(co = self.content.action.argument.df_agent_description)
+                            self.myAgent.DEBUG("Searching for: " +str(dad) + " in ServiceDB: " + str(map(lambda s: str(s), self.myAgent.servicedb.values())) )
                         except Exception, err:
                             self.myAgent.DEBUG("FAILURE: Could not extract DfAgentDescription from content: "+str(err),'error')
                         
+                        self.myAgent.db_mutex.acquire()
                         if max in [-1, 0]:
                             # No limit
                             for agentid,dads in self.myAgent.servicedb.items():
-                                if dad.match(dads):
+                                self.myAgent.DEBUG("Comparing " + str(dad) + " WITH " + str(dads) + " ==> " + str(dads.match(dad)),'ok')
+                                if dads.match(dad):
                                     d = copy.copy(dads)
                                     if dad.services == []:
                                         d.services = dads.getServices()
@@ -492,14 +513,14 @@ class DF(PlatformAgent):
                                         d.services=[]
                                     for ss in dad.getServices():
                                         for s in dads.getServices():
-                                            if ss.match(s):
+                                            if s.match(ss):
                                                 d.addService(s)
                                     result.append(d)
                         else:
                             max = abs(max)
                             for agentid,dads in self.myAgent.servicedb.items():
                                 if max >= 0:
-                                    if dad.match(dads):
+                                    if dads.match(dad):
                                         d = copy.copy(dads)
                                         if dad.services == []:
                                             d.services = dads.getServices()
@@ -507,11 +528,12 @@ class DF(PlatformAgent):
                                             d.services=[]
                                         for ss in dad.getServices():
                                             for s in dads.getServices():
-                                                if ss.match(s):
+                                                if s.match(ss):
                                                     d.addService(s)
                                         result.append(d)
                                         max -= 1
                                 else: break
+                        self.myAgent.db_mutex.release()
 
                     content = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     content["fipa:result"] = []
@@ -589,7 +611,9 @@ class DF(PlatformAgent):
 
                     try:
                         for ss in dad.getServices():
+                            self.myAgent.db_mutex.acquire()
                             result=self.myAgent.servicedb[dad.getAID().getName()].updateService(ss)
+                            self.myAgent.db_mutex.release()
                             if not result:
                                 reply.setPerformative("failure")
                                 co_error = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
@@ -658,7 +682,9 @@ class DF(PlatformAgent):
 
                     try:
                         for ss in dad.getServices():
+                            self.myAgent.db_mutex.acquire()
                             result=self.myAgent.servicedb[dad.getAID().getName()].updateService(ss)
+                            self.myAgent.db_mutex.release()
                             if not result:
                                 reply.setPerformative("failure")
                                 reply.setContent("("+self.msg.getContent() + "(not-registered))")
@@ -695,6 +721,7 @@ class DF(PlatformAgent):
 
         self.wui.start()
         self.servicedb = dict()
+        self.db_mutex = thread.allocate_lock()
 
         self.setDefaultBehaviour(self.DefaultBehaviour())
 
@@ -715,10 +742,8 @@ class DfAgentDescription:
             self.loadSL0(content)
 
         if co:
-            #print "DAD FROM:\n",co.pprint()
             if co.name:
                 self.name = AID.aid(co = co.name)
-                #print "DAD NAME:",str(self.name.asContentObject())
             if co.services:
                 self.services = []
                 if "ContentObject" in str(type(co.services)):
@@ -728,7 +753,9 @@ class DfAgentDescription:
                     for s in co.services:
                         self.services.append(ServiceDescription(co = s))
             if co.lease_time:
-                self.name = co.lease_time
+                self.lease_time = co.lease_time
+            if co.has_key("lease-time"):
+                self.lease_time = co["lease-time"]
             if co.protocols:
                 self.protocols = copy.copy(co.protocols)
             if co.ontologies:
@@ -737,7 +764,6 @@ class DfAgentDescription:
                 self.languages = copy.copy(co.languages)
             if co.scope:
                 self.scope = copy.copy(co.scope)
-            #print "DAD DONE:", self.asRDFXML()
 
 
     def asContentObject(self):
@@ -789,7 +815,7 @@ class DfAgentDescription:
     def addService(self, s):
         #FIX
         for ss in self.services:
-            assert not s.match(ss)
+            assert not ss.match(s)
         self.services.append(s)
         for p in s.getProtocols():
             if p not in self.protocols: self.addProtocol(p)
@@ -804,23 +830,16 @@ class DfAgentDescription:
             if self.services[i].match(s):
                 index = i
                 break
-        if index: self.services.pop(i)
+        if index!=None: self.services.pop(i)
         else: return False
         for p in s.getProtocols():
-            found = False
-            for pp in self.protocols:
-                if p ==pp: found = True
-            if not found: self.protocols.remove(pp)
+            if p in self.protocols:
+                self.protocols.remove(p)
         for p in s.getOntologies():
-            found = False
-            for pp in self.ontologies:
-                if p ==pp: found = True
-            if not found: self.ontologies.remove(pp)
+            if p in self.ontologies: self.ontologies.remove(p)
         for p in s.getLanguages():
-            found = False
-            for pp in self.languages:
-                if p ==pp: found = True
-            if not found: self.languages.remove(pp)
+            if p in self.languages: self.languages.remove(p)
+        return True
             
     def updateService(self,s):
         found = False
@@ -881,32 +900,38 @@ class DfAgentDescription:
     #def __eq__(self,y):
     def match(self,y):
 
-        if self.name:
-            if self.name != y.getAID():
+        if y.name:
+            if not self.getAID().match(y.name):
                 return False
-        if self.protocols:
-            if self.protocols.sort() != y.getProtocols().sort():
+        if y.protocols:
+            for p in y.protocols:
+                if not (p in self.protocols):
+                    return False
+        if y.ontologies:
+            for o in y.ontologies:
+                if not (o in self.ontologies):
+                    return False
+        if y.languages:
+            for l in y.languages:
+                if not (l in self.languages):
+                    return False
+        if y.lease_time:
+            if self.lease_time != y.getLeaseTime():
                 return False
-        if self.ontologies:
-            if self.ontologies.sort() != y.getOntologies().sort():
-                return False
-        if self.languages:
-            if self.languages.sort() != y.getLanguages().sort():
-                return False
-        if self.lease_time:
-            if self.lease_time != None and y.getLeaseTime() != None:
-                return False
-        if self.scope:
-            if self.scope.sort() != y.getScope().sort():
+        if y.scope:
+            if self.scope != y.getScope():
                 return False
 
         if len(self.services)>0 and len(y.getServices())>0:
-            for i in self.services:
-                for j in y.getServices():
+            for i in y.services:
+                matched = False
+                for j in self.getServices():
                     #if i == j:
-                    if i.match(j):
-                        return True
-            return False
+                    if j.match(i):
+                        matched=True
+                        break
+                if not matched: return False
+            return True
         else:
             return True
 
@@ -942,7 +967,7 @@ class DfAgentDescription:
                 self.lease_time = content["lease-time"][0]
 
             if "scope" in content:
-                self.scope = content.scope.set.asList()
+                self.scope = content["scope"][0]
 
     def __str__(self):
         return self.asRDFXML()
@@ -952,12 +977,6 @@ class DfAgentDescription:
         sb = ''
         if self.name != None:
             sb = sb + ":name " + str(self.name) + "\n"
-
-        if len(self.services) > 0:
-            sb = sb + ":services \n(set\n"
-            for i in self.services:
-                sb = sb + str(i) + '\n'
-            sb = sb + ")\n"
 
         if len(self.protocols) > 0:
             sb = sb + ":protocols \n(set\n"
@@ -978,12 +997,15 @@ class DfAgentDescription:
             sb = sb + ")\n"
 
         if self.lease_time != None:
-            sb = sb + ":lease-time " + str(self.lease_time)
+            sb = sb + ":lease-time " + str(self.lease_time) + '\n'
 
-        if len(self.scope) > 0:
-            sb = sb + ":scope \n(set\n"
-            for i in self.scope:
-                sb = sb + str(i) + '\n'
+        if self.scope != None:
+            sb = sb + ":scope " + str(self.scope) + '\n'
+
+        if len(self.services) > 0:
+            sb = sb + ":services \n(set\n"
+            for i in self.services:
+                sb = sb + str(i.asSL0()) +'\n'
             sb = sb + ")\n"
 
         sb = "(df-agent-description \n" + sb + ")\n"
@@ -1083,28 +1105,32 @@ class ServiceDescription:
         
     def match(self,y):
 
-        if self.name:
+        if y.name:
             if self.name != y.getName():
                 return False
-        if self.type:
+        if y.type:
             if self.type != y.getType():
                 return False
-        if self.protocols:
-            if self.protocols.sort() != y.getProtocols().sort():
-                return False
-        if self.ontologies:
-            if self.ontologies.sort() != y.getOntologies().sort():
-                return False
-        if self.languages:
-            if self.languages.sort() != y.getLanguages().sort():
-                return False
-        if self.ownership:
+        if y.protocols:
+            for p in y.protocols:
+                if not (p in self.protocols):
+                    return False
+        if y.ontologies:
+            for o in y.ontologies:
+                if not (o in self.ontologies):
+                    return False
+        if y.languages:
+            for l in y.languages:
+                if not (l in self.languages):
+                    return False
+        if y.ownership:
             if self.ownership != y.getOwnership():
                 return False
         #properties
-        for k,v in self.properties.items():
-            if y.getProperties().has_key(k):
+        for k,v in y.properties.items():
+            if self.getProperties().has_key(k):
                 if y.getProperty(k) != v: return False
+            else: return False
         return True
 
     def __ne__(self,y):
@@ -1131,10 +1157,6 @@ class ServiceDescription:
                 self.ownership = content.ownership
 
             if "properties" in content:
-                #print "##########"
-                #print "PROPERTIES"
-                #print str(content.properties.set)
-                #print "##########"
                 for p in content.properties.set.asDict().values():
                     self.properties[str(p['name']).lower().strip("[']")] = str(p['value']).lower().strip("[']")
 
@@ -1165,10 +1187,10 @@ class ServiceDescription:
             sb = sb + ":languages \n(set\n"
             for i in self.languages:
                 sb += str(i) + " "
-            sb += ")"
+            sb += ")\n"
 
         if self.ownership:
-            sb += ":ownership" + str(self.ownership) + "\n"
+            sb += ":ownership " + str(self.ownership) + "\n"
 
         if len(self.properties) > 0:
             sb += ":properties \n (set\n"

@@ -988,7 +988,7 @@ if __name__ == "__main__":
     sys.exit()
     
     suite = unittest.TestSuite()
-    suite.addTest(DFTestCase('testDoubleRegister'))
+    suite.addTest(DFTestCase('testRegisterService'))
     result = unittest.TestResult()
     
     suite.run(result)
