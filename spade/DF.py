@@ -25,7 +25,6 @@ class DF(PlatformAgent):
             error = False
             msg = self._receive(True)
             if msg != None:
-                #print "DF RECEIVED A MESSAGE", str(msg)
                 if msg.getPerformative().lower() == 'request':
                     if msg.getOntology().lower() == "fipa-agent-management":
                         if msg.getLanguage().lower() == "fipa-sl0":
@@ -109,7 +108,6 @@ class DF(PlatformAgent):
             Behaviour.OneShotBehaviour.__init__(self)
             self.msg = msg
             self.content = content
-            #print "Constructor"
 
         def _process(self):
             #The DF agrees and then informs dummy of the successful execution of the action
@@ -262,8 +260,8 @@ class DF(PlatformAgent):
                     reply = self.msg.createReply()
                     reply.setSender(self.myAgent.getAID())
                     reply.setPerformative("agree")
-                    #co["fipa:done"] = "true"
-                    #reply.setContentObject(co)
+                    co["fipa:done"] = "true"
+                    reply.setContentObject(co)
                     self.myAgent.send(reply)
 
                 if co["fipa:action"]["fipa:act"] == "register":
@@ -323,7 +321,6 @@ class DF(PlatformAgent):
                         return -1
                     
                     #check if service is not registered    
-                    #self.DEBUG("Comparing "+ str(dad.getServices()[0]),'ok')
                     for ss in dad.getServices():
                         found=False
                         for s in self.myAgent.servicedb[dad.getAID().getName()].getServices():
@@ -389,7 +386,6 @@ class DF(PlatformAgent):
                 reply.setContent("(" + str(self.msg.getContent()) + " true)")
             else:
                 rdf = False
-            #reply.setConversationId(self.msg.getConversationId())
             self.myAgent.send(reply)
 
             if not rdf:
@@ -460,7 +456,6 @@ class DF(PlatformAgent):
                         content += str(i) + " "
                     content += ")"
                 else:
-                    #content+= "None"  # ??????
                     pass
                 content += "))"
                 self.myAgent.DEBUG("Found " +str(len(result)) + " services",'ok')
@@ -723,7 +718,13 @@ class DF(PlatformAgent):
         self.servicedb = dict()
         self.db_mutex = thread.allocate_lock()
 
-        self.setDefaultBehaviour(self.DefaultBehaviour())
+        #self.setDefaultBehaviour()
+        db = self.DefaultBehaviour()
+        mt = Behaviour.ACLTemplate()
+        mt.setOntology("FIPA-Agent-Management")
+        mt.setPerformative("request")
+        mt.setProtocol('fipa-request')
+        self.addBehaviour(db,Behaviour.MessageTemplate(mt))
 
 
 class DfAgentDescription:

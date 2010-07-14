@@ -15,7 +15,6 @@ class MyAgent(spade.Agent.Agent):
             self.result = None
             #self.setDebugToScreen()
 
-
 #with DAD
 def Register_DAD(agent, param):
 

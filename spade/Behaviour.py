@@ -33,6 +33,9 @@ class ACLTemplate:
         self.protocol = None
         self.conversation_id = None
         #self.userDefProps = None
+        
+    def __str__(self):
+        return str({"performative":self.performative,"sender":str(self.sender),"receivers":str(self.receivers),"reply_to":self.reply_to, "content":self.content,"reply_with":self.reply_with, "reply_by":self.reply_by, "in_reply_to":self.in_reply_to,"encoding":self.encoding, "language":self.language, "ontology":self.ontology,"protocol":self.protocol, "conversation_id":self.conversation_id})
 
     def reset(self):
         self.__init__()
@@ -222,20 +225,22 @@ class MessageTemplate(BehaviourTemplate):
 
 
     def acl_match(self, message):
-        #print "acl_match called with", str(self.template), str(message)
+        #print "acl_match called with " + str(self.template) + " template and message: " + str(message)
         if message.__class__ != ACLMessage.ACLMessage: return False
         if (self.template.getPerformative() != None):
             if (self.template.getPerformative() != message.getPerformative()): return False
         if (self.template.getConversationId() != None):
             if (str(self.template.getConversationId()) != str(message.getConversationId())):
-                #print "CID DIFERENTES (",str(self.template.conversation_id),",",str(message.conversation_id),")"
-                #print "PERF: (",str(message.performative),")"
-                #print "SENDER: <",str(message.getSender().getName()),">"
                 return False
         if (self.template.sender != None):
-            if (self.template.sender != message.sender): return False
+            if not message.sender.match(self.template.sender): return False
         if (self.template.receivers != []):
-            if (self.template.receivers != message.receivers): return False
+            for tr in self.template.receivers:
+                found=False
+                for mr in message.receivers:
+                    if mr.match(tr): found=True
+                    break
+                if not found: return False
         if (self.template.getReplyTo() != []):
             if (self.template.getReplyTo() != message.getReplyTo()): return False
         if (self.template.content != None):

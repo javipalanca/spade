@@ -6,23 +6,31 @@
 <meta name="description" content="description"/>
 <meta name="keywords" content="keywords"/> 
 <meta name="author" content="author"/> 
-<link rel="stylesheet" type="text/css" href="quirksmode.css" media="screen"/>
+
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
 <title>SPADE Web Interface</title>
 </head>
 
 <!--(include)-->
 header.pyra
 <!--(end)-->
-@!header(item="None",admin="False")!@
+<!--(if "acc" in name)-->
+@!header(item=None,admin="True")!@
+<!--(else)-->
+@!header(item=None,admin="False")!@
+<!--(end)-->
 
-	<div class="main">
+	<div id="templatemo_background_section_mid">
 		
-		<div class="content">
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section">
+		   <div class='main section' id='main'>
 
 			<h1>501 Internal Error!</h1>
 
 			<p>The page "@!template!@" you followed produced an <strong>error:</strong>.</p>
-			<p>@!error!@</p>
+			<p class="logentry"><tt>@!error!@</tt></p>
 			<p>Please try the following:
 				<ul>
 					<li>If you are <strong>obsessive-compulsive</strong>, please check the URL repeatedly.</li>
@@ -39,8 +47,8 @@ header.pyra
 		</div>
 
 
+				<div class="cleaner_with_height"></div>
+
 
 </div>
-
-
 @!footer!@

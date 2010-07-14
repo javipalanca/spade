@@ -124,7 +124,7 @@ gone -- 302 -- modify -- The recipient or server can no longer be contacted at t
 internal-server-error -- 500 -- wait -- The server could not process the stanza because of a misconfiguration or an otherwise-undefined internal server error.
 item-not-found -- 404 -- cancel -- The addressed JID or item requested cannot be found.
 jid-malformed -- 400 -- modify -- The value of the 'to' attribute in the sender's stanza does not adhere to the syntax defined in Addressing Scheme.
-not-acceptable -- 406 -- cancel -- The recipient or server understands the request but is refusing to process it because it does not meet criteria defined by the recipient or server.
+not-acceptable -- 406 -- modify -- The recipient or server understands the request but is refusing to process it because it does not meet criteria defined by the recipient or server.
 not-allowed -- 405 -- cancel -- The recipient or server does not allow any entity to perform the action.
 not-authorized -- 401 -- auth -- The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.
 payment-required -- 402 -- auth -- The requesting entity is not authorized to access the requested service because payment is required.

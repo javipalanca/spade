@@ -73,19 +73,14 @@ class WUI(Thread):
     
     def notifyAMS(self):
         """Notify AMS of current AWUI URL"""
-        msg = self.owner.newMessage()
-        msg.setSender(self.owner.getAID())
-        msg.setPerformative("request")
-        msg.setLanguage("rdf")
-        msg.setOntology("fipa-agent-management")  # Pretend to be a FIPA message
-        co = self.owner.newContentObject()
-        co.addNamespace("http://spade2.googlecode.com", "spade")
-        co["spade:action"] = "register_awui"
-        co["spade:argument"] = str(socket.gethostbyname(socket.gethostname()))+":"+str(self.port)
-        msg.setContentObject(co)
-        msg.addReceiver(self.owner.getAMS())
-        self.owner.send(msg)
-            
+        #return
+        from spade.AMS import AmsAgentDescription
+        aad = AmsAgentDescription()
+        aid = self.owner.getAID()
+        aid.addAddress("awui://"+str(socket.gethostbyname(socket.gethostname()))+":"+str(self.port))
+        aad.setAID(aid)
+        self.owner.modifyAgent(aad)
+        
     #Controllers
 
     def error404(self):

@@ -2,6 +2,7 @@ import Behaviour
 import SL0Parser
 import DF
 from content import *
+import random
 
 
 class SearchAgentBehaviour(Behaviour.OneShotBehaviour):
@@ -237,7 +238,7 @@ class deregisterServiceBehaviour(Behaviour.OneShotBehaviour):
 
         msg = self._receive(True,20)
         if msg == None or msg.getPerformative() not in ['agree', 'inform']:
-            self.myAgent.DEBUG("There was an error registering the Service "+str(self.DAD),"warn")
+            self.myAgent.DEBUG("There was an error deregistering the Service "+str(self.DAD) +". (not-agree)","warn")
             self.result = False
             return
         elif msg == None or msg.getPerformative() == 'agree':

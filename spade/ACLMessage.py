@@ -7,6 +7,7 @@ import cPickle as pickle
 import content
 import ACLParser
 import xml
+import uuid
 
 class ACLMessage:
 	"""
@@ -74,8 +75,9 @@ class ACLMessage:
 		self.cid_autocount +=1
 		"""
 
-		self._attrs['id'] = str(ACLMessage.cid_base + str(ACLMessage.cid_autocount))
-		ACLMessage.cid_autocount += 1
+		#self._attrs['id'] = str(ACLMessage.cid_base + str(ACLMessage.cid_autocount))
+		#ACLMessage.cid_autocount += 1
+		self._attrs['id'] = str(uuid.uuid4()).replace("-","")
 
 		#self.userDefProps = None
 
@@ -315,8 +317,8 @@ class ACLMessage:
 		if self.getReplyWith():
 			m.setInReplyTo(self.getReplyWith())
 
-		if self.getReplyWith() != None:
-			m.setConversationId(str(self.getReplyWith()))
+		#if self.getReplyWith() != None:
+		#	m.setConversationId(str(self.getReplyWith()))
 
 		return m
 

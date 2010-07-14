@@ -106,6 +106,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.wui.registerController("log", self.WUIController_log)
         self.wui.registerController("messages",self.WUIController_messages)
         self.wui.registerController("search",self.WUIController_search)
+        self.wui.registerController("send",self.WUIController_sendmsg)
+        self.wui.registerController("sent",self.WUIController_sent)
         self._aclparser = ACLParser.ACLxmlParser()
 
         #self._friend_list = []  # Legacy
@@ -366,6 +368,46 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         
         return "search.pyra", {"name":self.getName(), "agentslist": agentslist, "awuis":awuis, "services":servs}
+
+    def WUIController_sendmsg(self, to=None):
+        from AMS import AmsAgentDescription        
+        agentslist = []
+        aad = AmsAgentDescription()
+        res = self.searchAgent(aad)
+        if res==None: res=[self]
+        for a in res:
+            agentslist.append(a.getAID().getName())
+        return "message.pyra", {"name":self.getName(), "keys":agentslist, "to":to}
+        
+    def WUIController_sent(self, receivers=[],performative=None,sender=None,reply_with=None,reply_by=None,reply_to=None,in_reply_to=None,encoding=None,language=None,ontology=None,protocol=None,conversation_id=None,content=""):
+        msg = ACLMessage.ACLMessage()
+        import types
+        if type(receivers)==types.StringType:
+            a = AID.aid(name=receivers,addresses=["xmpp://"+receivers])
+            msg.addReceiver(a)
+        elif type(receivers)==types.ListType:
+            for r in receivers:
+                a = AID.aid(name=r,addresses=["xmpp://"+r])
+                msg.addReceiver(a)
+        if performative: msg.setPerformative(performative)
+        if sender:
+            a = AID.aid(name=sender,addresses=["xmpp://"+sender])
+            msg.setSender(a)
+        if reply_to: msg.setReplyTo(reply_to)
+        if reply_with: msg.setReplyWith(reply_with)
+        if reply_by: msg.setReplyBy(reply_by)
+        if in_reply_to: msg.setInReplyTo(in_reply_to)
+        if encoding: msg.setEncoding(encoding)
+        if language: msg.setLanguage(language)
+        if ontology: msg.setOntology(ontology)
+        if conversation_id: msg.setConversationId(conversation_id)
+        if content: msg.setContent(content)
+        
+        self.send(msg)
+        
+        return "sentmsg.pyra", {"name":self.getName(), "msg":msg}
+
+
 
     def registerLogComponent(self, component):
         #self._agent_log[component] = {}
@@ -1108,7 +1150,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                     if (proc == False):
                         #If no template matches, post the message to the Default behaviour
-                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "warn", "msg")
+                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "info", "msg")
                         if (self._defaultbehaviour != None):                            
                             self._defaultbehaviour.postMessage(msg)
                     for beh in toRemove:
@@ -1230,6 +1272,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.SearchAgentBehaviour(msg, AAD)
 
@@ -1246,6 +1292,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.ModifyAgentBehaviour(msg, AAD)
 
@@ -1262,6 +1312,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.getPlatformInfoBehaviour(msg)
 
@@ -1287,6 +1341,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         else:
             template.setSender(self.getDF())
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.registerServiceBehaviour(msg=msg, DAD=DAD, otherdf=otherdf)
         if self._running:
@@ -1328,6 +1386,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             template.setSender(self.getDF())
 
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.deregisterServiceBehaviour(msg=msg, DAD=DAD, otherdf=otherdf)
         if self._running:
@@ -1354,6 +1416,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.searchServiceBehaviour(msg, DAD)
         if self._running:
@@ -1405,6 +1471,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
+        import uuid
+        r = str(uuid.uuid4()).replace("-","")
+        msg.setReplyWith(r)
+        template.setInReplyTo(r)
         t = Behaviour.MessageTemplate(template)
         b = fipa.modifyServiceBehaviour(msg, DAD)
 

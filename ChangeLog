@@ -1,3 +1,1020 @@
+2010-07-11 23:13  jpalanca
+
+	* trunk/examples/unittests/aidTestCase.py,
+	  trunk/examples/unittests/dadTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/setup.py,
+	  trunk/spade/AID.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/SL0Parser.py, trunk/spade/fipa.py: - Fixed more bugs
+	  on DF and AID - Added AID unittests - Added DAD unittests - Fixed
+	  some bugs in setup.py
+
+2010-07-08 12:33  gusarba
+
+	* trunk/runspade.py, trunk/spade/ACLMessage.py, trunk/spade/fipa.py,
+	  trunk/templates/header.pyra, trunk/templates/messages.pyra: -
+	  Fixed a potential bug in fipa.SearchAgentBehaviour when displaying
+	  a "not agree" or "not inform" debug message with a faulty AAD -
+	  WUI: More beautifying of the ACL messages in the 'Messages' tab
+
+2010-07-07 00:55  gusarba
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/templates/messages.pyra: WUI: Started work on beautifying
+	  message inspector with ACLMessage.asHTML() method
+
+2010-07-06 09:38  cooldwind
+
+	* trunk/spade/socialnetwork.py: Save agent and jid in SocialItem as
+	  attributes.
+
+2010-07-06 09:38  cooldwind
+
+	* trunk/spade/socialnetwork.py: Fix bug in socialinetwork.py. Bad
+	  attribute name, self.presence -> self._presence.
+
+2010-07-05 20:51  jpalanca
+
+	* trunk/spade/AID.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/templates/search.pyra: - Fixed agent
+	  search in WUI - Fixed AID match bug - Services inspection in
+	  search page - Added set/get Type to DF.Service
+
+2010-07-05 18:55  jpalanca
+
+	* trunk/spade/AID.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/Platform.py, trunk/spade/wui.py,
+	  trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/clients.kid,
+	  trunk/templates/favicon.old.ico, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/img, trunk/templates/log.pyra,
+	  trunk/templates/login.kid, trunk/templates/login.pyra,
+	  trunk/templates/magwood.css, trunk/templates/master.html,
+	  trunk/templates/message-old.kid, trunk/templates/message.kid,
+	  trunk/templates/messages.pyra, trunk/templates/orgs.kid,
+	  trunk/templates/plugins.kid, trunk/templates/prefs.kid,
+	  trunk/templates/search.pyra, trunk/templates/services.kid,
+	  trunk/templates/services.pyra, trunk/templates/swimaster.kid,
+	  trunk/templates/webadmin-old.kid, trunk/templates/webadmin.pyra,
+	  trunk/templates/webadmin_indigo.pyra, trunk/templates/welcome.kid:
+	  - WUI: Fixed a bug in CSS. Now menu items are highlighted
+	  correctly. - WUI: Header and footer are now macros. - WUI: Deleted
+	  old web templates and images. - WUI: Added an agent (from and to)
+	  filter to the message inspector. - WUI: Widgetified some elements
+	  to a sidebar. - WUI: Started Search Box. Seems we have broken the
+	  agent empty search :(
+
+2010-07-04 14:59  gusarba
+
+	* trunk/spade/DF.py, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/images/spade_logo_noalpha.png,
+	  trunk/templates/images/templatemo_background_section_top_bg.png,
+	  trunk/templates/images/templatemo_middle_section_box_bg.png,
+	  trunk/templates/log.pyra, trunk/templates/magwood.css,
+	  trunk/templates/messages.pyra, trunk/templates/services.pyra,
+	  trunk/templates/table.css, trunk/templates/table_blue.css,
+	  trunk/templates/webadmin_indigo.pyra: - Corrected SPADE url to
+	  spade2.googlecode.com in some spots. - WUI: Changed the default
+	  CSS to a custom one based on our blog style (magwood.css). -
+	  Changed all the pyra templates to match the new CSS style. -
+	  Modified the Service asHTML() method to match new CSS style.
+
+2010-07-02 15:25  jpalanca
+
+	* trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/rpcTestCase.py, trunk/spade/DF.py,
+	  trunk/spade/Platform.py, trunk/spade/RPC.py,
+	  trunk/templates/colorbox.css, trunk/templates/images,
+	  trunk/templates/images/border.png,
+	  trunk/templates/images/controls.png,
+	  trunk/templates/images/internet_explorer,
+	  trunk/templates/images/internet_explorer/borderBottomCenter.png,
+	  trunk/templates/images/internet_explorer/borderBottomLeft.png,
+	  trunk/templates/images/internet_explorer/borderBottomRight.png,
+	  trunk/templates/images/internet_explorer/borderMiddleLeft.png,
+	  trunk/templates/images/internet_explorer/borderMiddleRight.png,
+	  trunk/templates/images/internet_explorer/borderTopCenter.png,
+	  trunk/templates/images/internet_explorer/borderTopLeft.png,
+	  trunk/templates/images/internet_explorer/borderTopRight.png,
+	  trunk/templates/images/loading.gif,
+	  trunk/templates/images/loading_background.png,
+	  trunk/templates/images/overlay.png,
+	  trunk/templates/jquery.colorbox-min.js,
+	  trunk/templates/jquery.colorbox.js, trunk/templates/messages.pyra,
+	  trunk/templates/services.pyra: - Solved data inconsistency in
+	  DF.Service class. Now unittests are passed. Fixes issue 54. - New
+	  style for message inspector. Now using the colorbox javascript
+	  library. - Now modifying a service overwrites common parameters
+	  (ontologies, protocols and languages). - Service class has now
+	  function asHTML, which returns the service informations as html
+	  for the service wui controller.
+
+2010-06-29 23:39  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/RPC.py: More little problems
+	  solved in Message Inspector: 1)timestamp was not a good key for
+	  storing messages. 2) all messages have a From attr. No unknown
+	  message
+
+2010-06-29 20:27  cooldwind
+
+	* trunk/spade/wui.py: Add timeout for WUI's httpd. Otherwise, agents
+	  can't stop. Fixes Issue #53. Signed-off-by: Santiago M. Mola
+	  <coldwind@coldwind.org>
+
+2010-06-29 19:24  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/MTP.py, trunk/spade/RPC.py,
+	  trunk/spade/peer2peer.py, trunk/spade/socialnetwork.py: Improved
+	  diagram logging for Message Inspector
+
+2010-06-28 21:39  jpalanca
+
+	* trunk/spade/Agent.py, trunk/templates/messages.pyra,
+	  trunk/templates/quirksmode.css: Improved Message Inspector style
+
+2010-06-28 16:33  jpalanca
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/Platform.py, trunk/spade/content.py,
+	  trunk/spade/diagram.py, trunk/spade/wui.py,
+	  trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/log.pyra, trunk/templates/messages.pyra,
+	  trunk/templates/services.pyra, trunk/templates/webadmin.pyra,
+	  trunk/templates/webadmin_indigo.pyra: - Added new gorgeous Message
+	  Inspector with javascript and web services. Still needs a better
+	  CSS, but it is great. Fixes issue 46. - ACLMessages return now its
+	  XML representation by default. To get the ACL representation use
+	  the method asString() - Header and footer automatically included
+	  in templates - Removed some old references to gti-ia namespace.
+	  Spade namespace is now spade2.googlecode.com
+
+2010-06-27 21:08  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/spade/Agent.py,
+	  trunk/spade/RPC.py: Added RPC unittests. Closes issue 50
+
+2010-06-26 13:49  jpalanca
+
+	* trunk/examples/rpc.py, trunk/examples/unittests/dfTestCase.py,
+	  trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/spade/pygooglechart.py, trunk/templates/admin.pyra: -Added
+	  new amazing feature: QR Codes at UI! Every agent shows a qrcode
+	  that shows its AID -Some corrections in RPC service invocation
+
+2010-06-25 17:40  jpalanca
+
+	* trunk/examples/rpc.py: added an rpc example. unittests remain to
+	  be implemented
+
+2010-06-25 17:39  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/xmppd/modules/router.py: corrected some errors in RPC
+	  service invocation
+
+2010-06-24 23:31  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/RPC.py, trunk/spade/__init__.py,
+	  trunk/spade/bdi.py: Added Remote Service call using jabber-rpc.
+	  Need to write testcases
+
+2010-06-24 17:53  jpalanca
+
+	* trunk/examples/unittests/dfTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/fipa.py: -Added a new Service()
+	  class that makes more easier the way of working with Services and
+	  with the DF -The old way of working with DfAgentDescriptors is
+	  still available, but the service-related methods now support
+	  *also* the new Service class. -All dfTestCases have been rewriting
+	  and now there are DAD and not DAD TestCases -Some new DF TestCases
+	  have been added -In future work a invokeService will be added to
+	  the Agent class
+
+2010-06-22 15:25  jpalanca
+
+	* doc/manual/book.xml, doc/manual/ch06-bdi.xml,
+	  doc/manual/html/ch05s03.html, doc/manual/html/index.html,
+	  doc/manual/html/spade.advanced.eventbehaviour.html,
+	  doc/manual/html/spade.advanced.fsm.html,
+	  doc/manual/html/spade.advanced.html,
+	  doc/manual/html/spade.basic.html,
+	  doc/manual/html/spade.basic.im.html,
+	  doc/manual/html/spade.basic.mas.html,
+	  doc/manual/html/spade.basic.spadelibrary.html,
+	  doc/manual/html/spade.basic.spadeplatform.html,
+	  doc/manual/html/spade.basic.whatsnext.html,
+	  doc/manual/html/spade.basicagents.agentmodel.communication.html,
+	  doc/manual/html/spade.basicagents.agentmodel.html,
+	  doc/manual/html/spade.basicagents.behav.html,
+	  doc/manual/html/spade.basicagents.first.html,
+	  doc/manual/html/spade.basicagents.html,
+	  doc/manual/html/spade.basicagents.library.html,
+	  doc/manual/html/spade.basicagents.whatsnext.html,
+	  doc/manual/html/spade.bdi.future.html,
+	  doc/manual/html/spade.bdi.goals.html,
+	  doc/manual/html/spade.bdi.intro.html,
+	  doc/manual/html/spade.bdi.kb.html,
+	  doc/manual/html/spade.bdi.plans.html,
+	  doc/manual/html/spade.bdi.running.html,
+	  doc/manual/html/spade.foreword.html,
+	  doc/manual/html/spade.fundamental.html,
+	  doc/manual/html/spade.fundamental.platform.html,
+	  doc/manual/html/spade.platform.ams.html,
+	  doc/manual/html/spade.platform.df.html,
+	  doc/manual/html/spade.platform.html,
+	  doc/manual/html/spade.quickstart.html,
+	  doc/manual/html/spade.quickstart.installation.html,
+	  doc/manual/html/spade.quickstart.requirements.html,
+	  trunk/spade/DF.py: Corrected BDI documentation. Added a generic
+	  Service class to the DF
+
+2010-06-22 14:20  juagargi
+
+	* trunk/spade/DF.py, trunk/spade/Platform.py,
+	  trunk/templates/agents.pyra, trunk/templates/services.pyra: WUI:
+	  Services tab works again. Fixes Issue 47
+
+2010-06-22 13:37  juagargi
+
+	* trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/log.pyra,
+	  trunk/templates/message.pyra, trunk/templates/services.pyra,
+	  trunk/templates/webadmin_indigo.pyra: WUI: Organizations tab
+	  removed. Fixes Issue 48
+
+2010-06-21 13:56  jpalanca
+
+	* trunk/examples/unittests/eventbehavTestCase.py: Event Behaviour
+	  unittest added
+
+2010-06-21 13:15  juagargi
+
+	* trunk/examples/event.py: Developed an EventBehaviour example
+
+2010-06-20 21:07  jpalanca
+
+	* trunk/xmpp/transports.py: Commented the dns import error. Tried to
+	  import dnspython and did not work, so we choose to hide the error.
+
+2010-06-20 14:45  jpalanca
+
+	* trunk/examples/unittests/amsTestCase.py, trunk/spade/AMS.py: Now
+	  Modifying an agent entry in the AMS does not require to provide an
+	  AID. AMS checks errors and completes the missing information.
+	  Fixes issue 34
+
+2010-06-20 11:01  gusarba
+
+	* trunk/spade/Agent.py, trunk/spade/wui.py,
+	  trunk/templates/admin.pyra, trunk/templates/agents.pyra,
+	  trunk/templates/webadmin_indigo.pyra: WUI: The platform serves
+	  correctly its own documentation via a new 'API' tab. Fix #43
+
+2010-06-19 21:28  jpalanca
+
+	* trunk/spade/AMS.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/SpadeConfigParser.py, trunk/spade/spade_backend.py,
+	  trunk/xmppd/modules/router.py:
+
+2010-06-19 01:39  jpalanca
+
+	* trunk/runspade.py, trunk/spade/wui.py: improving the WUI debug
+
+2010-06-18 17:31  gusarba
+
+	* trunk/spade/Agent.py, trunk/templates/admin.pyra: Pyra templates:
+	  Cleared up 'Admin' tab removing the agent log from the debug table
+	  and adding other minor enhancements
+
+2010-06-18 15:57  juagargi
+
+	* trunk/xmppd/xmppd.py: Solved issues with xmppd server in windows.
+	  Now fake select and poll work in any OS
+
+2010-06-17 13:07  gusarba
+
+	* trunk/templates/admin.pyra, trunk/templates/webadmin_indigo.pyra:
+	  Pyra templates: experimental attribute navigation in 'Admin' tab
+
+2010-06-17 13:07  gusarba
+
+	* trunk/spade/Agent.py, trunk/spade/Platform.py: Pyra templates:
+	  experimental attribute navigation in 'Admin' tab
+
+2010-06-16 14:34  jpalanca
+
+	* trunk/spade/Agent.py: Now agents notices when cannot connect to a
+	  SPADE platform. Fixes issue 45
+
+2010-06-16 13:51  jpalanca
+
+	* trunk/runspade.py: Now runspade script shows an error message when
+	  there is no config file. fixes #27
+
+2010-06-15 14:07  gusarba
+
+	* trunk/templates/agents.pyra: Fixed a bug in the WUI 'Agents' tab:
+	  the AWUI links now point to the 'Admin' tab instead of to a
+	  non-existent index page
+
+2010-06-11 08:33  jpalanca
+
+	* trunk/runspade.py: updated copyright and version number (from RC3
+	  to RC4)
+
+2010-06-10 20:34  gusarba
+
+	* trunk/templates/favicon.ico: Pyra templates: favicon changed
+
+2010-06-10 20:33  gusarba
+
+	* trunk/templates/favicon.ico, trunk/templates/favicon.old.ico,
+	  trunk/templates/quirksmode.css: Pyra templates: Minor changes and
+	  favicon changed
+
+2010-06-10 20:15  gusarba
+
+	* trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/log.pyra,
+	  trunk/templates/quirksmode.css,
+	  trunk/templates/webadmin_indigo.pyra: Pyra templates: Removed some
+	  old corporate logos. Replaced logo with the new one. Some color
+	  changes
+
+2010-06-09 19:15  jpalanca
+
+	* doc/manual/ch01-quickstart-guide.xml,
+	  doc/manual/ch02-fundamental-concepts.xml,
+	  doc/manual/ch03-basic-agents.xml, trunk/runspade.py: removing old
+	  corporative references
+
+2010-05-26 14:27  root
+
+	* trunk/doc/api.tar.gz, trunk/doc/html,
+	  trunk/doc/html/api-objects.txt, trunk/doc/html/class-tree.html,
+	  trunk/doc/html/crarr.png, trunk/doc/html/epydoc.css,
+	  trunk/doc/html/epydoc.js, trunk/doc/html/frames.html,
+	  trunk/doc/html/help.html, trunk/doc/html/identifier-index-A.html,
+	  trunk/doc/html/identifier-index-B.html,
+	  trunk/doc/html/identifier-index-C.html,
+	  trunk/doc/html/identifier-index-D.html,
+	  trunk/doc/html/identifier-index-E.html,
+	  trunk/doc/html/identifier-index-F.html,
+	  trunk/doc/html/identifier-index-G.html,
+	  trunk/doc/html/identifier-index-H.html,
+	  trunk/doc/html/identifier-index-I.html,
+	  trunk/doc/html/identifier-index-J.html,
+	  trunk/doc/html/identifier-index-K.html,
+	  trunk/doc/html/identifier-index-L.html,
+	  trunk/doc/html/identifier-index-M.html,
+	  trunk/doc/html/identifier-index-N.html,
+	  trunk/doc/html/identifier-index-O.html,
+	  trunk/doc/html/identifier-index-P.html,
+	  trunk/doc/html/identifier-index-Q.html,
+	  trunk/doc/html/identifier-index-R.html,
+	  trunk/doc/html/identifier-index-S.html,
+	  trunk/doc/html/identifier-index-T.html,
+	  trunk/doc/html/identifier-index-U.html,
+	  trunk/doc/html/identifier-index-V.html,
+	  trunk/doc/html/identifier-index-W.html,
+	  trunk/doc/html/identifier-index-X.html,
+	  trunk/doc/html/identifier-index-Y.html,
+	  trunk/doc/html/identifier-index-Z.html,
+	  trunk/doc/html/identifier-index-_.html,
+	  trunk/doc/html/identifier-index.html, trunk/doc/html/index.html,
+	  trunk/doc/html/mimetools.Message-class.html,
+	  trunk/doc/html/module-tree.html, trunk/doc/html/redirect.html,
+	  trunk/doc/html/spade-module.html, trunk/doc/html/spade-pysrc.html,
+	  trunk/doc/html/spade.ACLMessage-module.html,
+	  trunk/doc/html/spade.ACLMessage-pysrc.html,
+	  trunk/doc/html/spade.ACLMessage.ACLMessage-class.html,
+	  trunk/doc/html/spade.ACLParser-module.html,
+	  trunk/doc/html/spade.ACLParser-pysrc.html,
+	  trunk/doc/html/spade.ACLParser.ACLParser-class.html,
+	  trunk/doc/html/spade.ACLParser.ACLxmlParser-class.html,
+	  trunk/doc/html/spade.AID-module.html,
+	  trunk/doc/html/spade.AID-pysrc.html,
+	  trunk/doc/html/spade.AID.aid-class.html,
+	  trunk/doc/html/spade.AMS-module.html,
+	  trunk/doc/html/spade.AMS-pysrc.html,
+	  trunk/doc/html/spade.AMS.AMS-class.html,
+	  trunk/doc/html/spade.AMS.AMS.DefaultBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.DefaultBehaviour.SubscribeBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.ModifyBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.PlatformBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.RegisterBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.SearchBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AmsAgentDescription-class.html,
+	  trunk/doc/html/spade.Agent-module.html,
+	  trunk/doc/html/spade.Agent-pysrc.html,
+	  trunk/doc/html/spade.Agent.AbstractAgent-class.html,
+	  trunk/doc/html/spade.Agent.Agent-class.html,
+	  trunk/doc/html/spade.Agent.PlatformAgent-class.html,
+	  trunk/doc/html/spade.Agent.jabberProcess-class.html,
+	  trunk/doc/html/spade.BasicFipaDateTime-module.html,
+	  trunk/doc/html/spade.BasicFipaDateTime-pysrc.html,
+	  trunk/doc/html/spade.BasicFipaDateTime.BasicFipaDateTime-class.html,
+	  trunk/doc/html/spade.Behaviour-module.html,
+	  trunk/doc/html/spade.Behaviour-pysrc.html,
+	  trunk/doc/html/spade.Behaviour.ACLTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.ANDTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.Behaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.BehaviourTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.EventBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.FSMBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.MessageTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.NOTTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.ORTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.OneShotBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.PeriodicBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.TimeOutBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.XORTemplate-class.html,
+	  trunk/doc/html/spade.DF-module.html,
+	  trunk/doc/html/spade.DF-pysrc.html,
+	  trunk/doc/html/spade.DF.DF-class.html,
+	  trunk/doc/html/spade.DF.DF.DefaultBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.ModifyBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.RegisterBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.SearchBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DfAgentDescription-class.html,
+	  trunk/doc/html/spade.DF.ServiceDescription-class.html,
+	  trunk/doc/html/spade.Envelope-module.html,
+	  trunk/doc/html/spade.Envelope-pysrc.html,
+	  trunk/doc/html/spade.Envelope.Envelope-class.html,
+	  trunk/doc/html/spade.FIPAMessage-module.html,
+	  trunk/doc/html/spade.FIPAMessage-pysrc.html,
+	  trunk/doc/html/spade.FIPAMessage.FipaMessage-class.html,
+	  trunk/doc/html/spade.MTP-module.html,
+	  trunk/doc/html/spade.MTP-pysrc.html,
+	  trunk/doc/html/spade.MTP.MTP-class.html,
+	  trunk/doc/html/spade.MessageReceiver-module.html,
+	  trunk/doc/html/spade.MessageReceiver-pysrc.html,
+	  trunk/doc/html/spade.MessageReceiver.MessageReceiver-class.html,
+	  trunk/doc/html/spade.Organization-module.html,
+	  trunk/doc/html/spade.Organization-pysrc.html,
+	  trunk/doc/html/spade.Organization.BanedUser-class.html,
+	  trunk/doc/html/spade.Organization.CreationError-class.html,
+	  trunk/doc/html/spade.Organization.DestroyError-class.html,
+	  trunk/doc/html/spade.Organization.JoinError-class.html,
+	  trunk/doc/html/spade.Organization.LastOwner-class.html,
+	  trunk/doc/html/spade.Organization.LockedOrganization-class.html,
+	  trunk/doc/html/spade.Organization.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Organization.MemberOfFederation-class.html,
+	  trunk/doc/html/spade.Organization.MembersOnly-class.html,
+	  trunk/doc/html/spade.Organization.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Organization.NotOwner-class.html,
+	  trunk/doc/html/spade.Organization.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Organization.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Organization.NotValidName-class.html,
+	  trunk/doc/html/spade.Organization.NotValidType-class.html,
+	  trunk/doc/html/spade.Organization.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Organization.Organization-class.html,
+	  trunk/doc/html/spade.Organization.Organization.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.CreateTeamBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetUnitInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetUnitListBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.IsMemberBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.SendRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Organization.Unavailable-class.html,
+	  trunk/doc/html/spade.Organization.UnavailableFunction-class.html,
+	  trunk/doc/html/spade.Organization_new-module.html,
+	  trunk/doc/html/spade.Organization_new-pysrc.html,
+	  trunk/doc/html/spade.Organization_new.BanedUser-class.html,
+	  trunk/doc/html/spade.Organization_new.CreationError-class.html,
+	  trunk/doc/html/spade.Organization_new.DestroyError-class.html,
+	  trunk/doc/html/spade.Organization_new.JoinError-class.html,
+	  trunk/doc/html/spade.Organization_new.LastOwner-class.html,
+	  trunk/doc/html/spade.Organization_new.LockedOrganization-class.html,
+	  trunk/doc/html/spade.Organization_new.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Organization_new.MemberOfFederation-class.html,
+	  trunk/doc/html/spade.Organization_new.MembersOnly-class.html,
+	  trunk/doc/html/spade.Organization_new.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Organization_new.NotCreatePermision-class.html,
+	  trunk/doc/html/spade.Organization_new.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidName-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidType-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.IsMemberBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Organization_new.Unavailable-class.html,
+	  trunk/doc/html/spade.Organization_new.UnavailableFunction-class.html,
+	  trunk/doc/html/spade.Platform-module.html,
+	  trunk/doc/html/spade.Platform-pysrc.html,
+	  trunk/doc/html/spade.Platform.PlatformRestart-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform.GetMembersBehav-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform.RouteBehaviour-class.html,
+	  trunk/doc/html/spade.RDF0Parser-module.html,
+	  trunk/doc/html/spade.RDF0Parser-pysrc.html,
+	  trunk/doc/html/spade.RDF0Parser.Newdict-class.html,
+	  trunk/doc/html/spade.RDF0Parser.RDF0Parser-class.html,
+	  trunk/doc/html/spade.ReceivedObject-module.html,
+	  trunk/doc/html/spade.ReceivedObject-pysrc.html,
+	  trunk/doc/html/spade.ReceivedObject.ReceivedObject-class.html,
+	  trunk/doc/html/spade.SIMBA-module.html,
+	  trunk/doc/html/spade.SIMBA-pysrc.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.InboxBehaviour-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.InboxBehaviour.SimbaRequestHandler-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.OutboxBehaviour-class.html,
+	  trunk/doc/html/spade.SL0Parser-module.html,
+	  trunk/doc/html/spade.SL0Parser-pysrc.html,
+	  trunk/doc/html/spade.SL0Parser.SL0Parser-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser-module.html,
+	  trunk/doc/html/spade.SpadeConfigParser-pysrc.html,
+	  trunk/doc/html/spade.SpadeConfigParser.ConfigParser-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.ParseObject-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.spadeXML-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.spadeXMLHandler-class.html,
+	  trunk/doc/html/spade.Unit-module.html,
+	  trunk/doc/html/spade.Unit-pysrc.html,
+	  trunk/doc/html/spade.Unit.BanedUser-class.html,
+	  trunk/doc/html/spade.Unit.CreationError-class.html,
+	  trunk/doc/html/spade.Unit.DestroyError-class.html,
+	  trunk/doc/html/spade.Unit.JoinError-class.html,
+	  trunk/doc/html/spade.Unit.LastOwner-class.html,
+	  trunk/doc/html/spade.Unit.LockedUnit-class.html,
+	  trunk/doc/html/spade.Unit.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Unit.MembersOnly-class.html,
+	  trunk/doc/html/spade.Unit.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Unit.NotAdmin-class.html,
+	  trunk/doc/html/spade.Unit.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Unit.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Unit.NotValidGoalChange-class.html,
+	  trunk/doc/html/spade.Unit.NotValidName-class.html,
+	  trunk/doc/html/spade.Unit.NotValidType-class.html,
+	  trunk/doc/html/spade.Unit.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Unit.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Unit.Unavailable-class.html,
+	  trunk/doc/html/spade.Unit.Unit-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddOwnerBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetAdminListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetBanAgentListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMemberListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetModeratorListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetOwnerListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GiveVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.KickAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveOwnerBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RevokeVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SendMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SendPrivateMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new-module.html,
+	  trunk/doc/html/spade.Unit_new-pysrc.html,
+	  trunk/doc/html/spade.Unit_new.BanedUser-class.html,
+	  trunk/doc/html/spade.Unit_new.CreationError-class.html,
+	  trunk/doc/html/spade.Unit_new.DestroyError-class.html,
+	  trunk/doc/html/spade.Unit_new.JoinError-class.html,
+	  trunk/doc/html/spade.Unit_new.LastOwner-class.html,
+	  trunk/doc/html/spade.Unit_new.LockedUnit-class.html,
+	  trunk/doc/html/spade.Unit_new.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Unit_new.MembersOnly-class.html,
+	  trunk/doc/html/spade.Unit_new.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Unit_new.NotCreatePermision-class.html,
+	  trunk/doc/html/spade.Unit_new.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidGoalChange-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidName-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidType-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Unit_new.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Unit_new.Unavailable-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.KickAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SendMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.XMLCodec-module.html,
+	  trunk/doc/html/spade.XMLCodec-pysrc.html,
+	  trunk/doc/html/spade.XMLCodec.XMLCodec-class.html,
+	  trunk/doc/html/spade.bdi-module.html,
+	  trunk/doc/html/spade.bdi-pysrc.html,
+	  trunk/doc/html/spade.bdi.BDIAgent-class.html,
+	  trunk/doc/html/spade.bdi.Goal-class.html,
+	  trunk/doc/html/spade.bdi.Plan-class.html,
+	  trunk/doc/html/spade.bdi.PostConditionFailed-class.html,
+	  trunk/doc/html/spade.bdi.PreConditionFailed-class.html,
+	  trunk/doc/html/spade.bdi.Service-class.html,
+	  trunk/doc/html/spade.colors-module.html,
+	  trunk/doc/html/spade.colors-pysrc.html,
+	  trunk/doc/html/spade.content-module.html,
+	  trunk/doc/html/spade.content-pysrc.html,
+	  trunk/doc/html/spade.content.ContentObject-class.html,
+	  trunk/doc/html/spade.fipa-module.html,
+	  trunk/doc/html/spade.fipa-pysrc.html,
+	  trunk/doc/html/spade.fipa.ModifyAgentBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.SearchAgentBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.deregisterServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.getPlatformInfoBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.modifyServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.registerServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.searchServiceBehaviour-class.html,
+	  trunk/doc/html/spade.logic-module.html,
+	  trunk/doc/html/spade.logic-pysrc.html,
+	  trunk/doc/html/spade.logic.Expr-class.html,
+	  trunk/doc/html/spade.logic.FolKB-class.html,
+	  trunk/doc/html/spade.logic.KB-class.html,
+	  trunk/doc/html/spade.logic.PropHornKB-class.html,
+	  trunk/doc/html/spade.logic.PropKB-class.html,
+	  trunk/doc/html/spade.logic.logicTest-class.html,
+	  trunk/doc/html/spade.msgtypes-module.html,
+	  trunk/doc/html/spade.msgtypes-pysrc.html,
+	  trunk/doc/html/spade.peer2peer-module.html,
+	  trunk/doc/html/spade.peer2peer-pysrc.html,
+	  trunk/doc/html/spade.peer2peer.DiscoBehaviour-class.html,
+	  trunk/doc/html/spade.peer2peer.P2PBehaviour-class.html,
+	  trunk/doc/html/spade.peer2peer.P2PBehaviour.P2PRequestHandler-class.html,
+	  trunk/doc/html/spade.peer2peer.RequestDiscoInfoBehav-class.html,
+	  trunk/doc/html/spade.peer2peer.SendStreamInitiationBehav-class.html,
+	  trunk/doc/html/spade.peer2peer.StreamInitiationBehaviour-class.html,
+	  trunk/doc/html/spade.pyparsing-module.html,
+	  trunk/doc/html/spade.pyparsing-pysrc.html,
+	  trunk/doc/html/spade.pyparsing.And-class.html,
+	  trunk/doc/html/spade.pyparsing.CaselessLiteral-class.html,
+	  trunk/doc/html/spade.pyparsing.CharsNotIn-class.html,
+	  trunk/doc/html/spade.pyparsing.Combine-class.html,
+	  trunk/doc/html/spade.pyparsing.Dict-class.html,
+	  trunk/doc/html/spade.pyparsing.Each-class.html,
+	  trunk/doc/html/spade.pyparsing.Empty-class.html,
+	  trunk/doc/html/spade.pyparsing.FollowedBy-class.html,
+	  trunk/doc/html/spade.pyparsing.Forward-class.html,
+	  trunk/doc/html/spade.pyparsing.GoToColumn-class.html,
+	  trunk/doc/html/spade.pyparsing.Group-class.html,
+	  trunk/doc/html/spade.pyparsing.Keyword-class.html,
+	  trunk/doc/html/spade.pyparsing.LineEnd-class.html,
+	  trunk/doc/html/spade.pyparsing.LineStart-class.html,
+	  trunk/doc/html/spade.pyparsing.Literal-class.html,
+	  trunk/doc/html/spade.pyparsing.MatchFirst-class.html,
+	  trunk/doc/html/spade.pyparsing.NoMatch-class.html,
+	  trunk/doc/html/spade.pyparsing.NotAny-class.html,
+	  trunk/doc/html/spade.pyparsing.OneOrMore-class.html,
+	  trunk/doc/html/spade.pyparsing.Optional-class.html,
+	  trunk/doc/html/spade.pyparsing.Or-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseBaseException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseElementEnhance-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseExpression-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseFatalException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseResults-class.html,
+	  trunk/doc/html/spade.pyparsing.ParserElement-class.html,
+	  trunk/doc/html/spade.pyparsing.PositionToken-class.html,
+	  trunk/doc/html/spade.pyparsing.RecursiveGrammarException-class.html,
+	  trunk/doc/html/spade.pyparsing.SkipTo-class.html,
+	  trunk/doc/html/spade.pyparsing.StringEnd-class.html,
+	  trunk/doc/html/spade.pyparsing.StringStart-class.html,
+	  trunk/doc/html/spade.pyparsing.Suppress-class.html,
+	  trunk/doc/html/spade.pyparsing.Token-class.html,
+	  trunk/doc/html/spade.pyparsing.TokenConverter-class.html,
+	  trunk/doc/html/spade.pyparsing.Upcase-class.html,
+	  trunk/doc/html/spade.pyparsing.White-class.html,
+	  trunk/doc/html/spade.pyparsing.Word-class.html,
+	  trunk/doc/html/spade.pyparsing.ZeroOrMore-class.html,
+	  trunk/doc/html/spade.pyparsing._ForwardNoRecurse-class.html,
+	  trunk/doc/html/spade.pyratemp-module.html,
+	  trunk/doc/html/spade.pyratemp-pysrc.html,
+	  trunk/doc/html/spade.pyratemp.FileLoader-class.html,
+	  trunk/doc/html/spade.pyratemp.Parser-class.html,
+	  trunk/doc/html/spade.pyratemp.PseudoSandbox-class.html,
+	  trunk/doc/html/spade.pyratemp.Renderer-class.html,
+	  trunk/doc/html/spade.pyratemp.StringLoader-class.html,
+	  trunk/doc/html/spade.pyratemp.Template-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateBase-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateEval-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateException-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateIncludeError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateParseError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateRenderError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateSyntaxError-class.html,
+	  trunk/doc/html/spade.pyratemp._dontescape-class.html,
+	  trunk/doc/html/spade.socialnetwork-module.html,
+	  trunk/doc/html/spade.socialnetwork-pysrc.html,
+	  trunk/doc/html/spade.socialnetwork.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.socialnetwork.RosterBehaviour-class.html,
+	  trunk/doc/html/spade.socialnetwork.SocialItem-class.html,
+	  trunk/doc/html/spade.spade_backend-module.html,
+	  trunk/doc/html/spade.spade_backend-pysrc.html,
+	  trunk/doc/html/spade.spade_backend.SpadeBackend-class.html,
+	  trunk/doc/html/spade.wui-module.html,
+	  trunk/doc/html/spade.wui-pysrc.html,
+	  trunk/doc/html/spade.wui.WUI-class.html,
+	  trunk/doc/html/spade.wui.WUIHandler-class.html,
+	  trunk/doc/html/spade.xmpp-module.html,
+	  trunk/doc/html/spade.xmpp-pysrc.html,
+	  trunk/doc/html/spade.xmpp.auth-module.html,
+	  trunk/doc/html/spade.xmpp.auth-pysrc.html,
+	  trunk/doc/html/spade.xmpp.auth.Bind-class.html,
+	  trunk/doc/html/spade.xmpp.auth.ComponentBind-class.html,
+	  trunk/doc/html/spade.xmpp.auth.NonSASL-class.html,
+	  trunk/doc/html/spade.xmpp.auth.SASL-class.html,
+	  trunk/doc/html/spade.xmpp.browser-module.html,
+	  trunk/doc/html/spade.xmpp.browser-pysrc.html,
+	  trunk/doc/html/spade.xmpp.browser.Browser-class.html,
+	  trunk/doc/html/spade.xmpp.client-module.html,
+	  trunk/doc/html/spade.xmpp.client-pysrc.html,
+	  trunk/doc/html/spade.xmpp.client.Client-class.html,
+	  trunk/doc/html/spade.xmpp.client.CommonClient-class.html,
+	  trunk/doc/html/spade.xmpp.client.Component-class.html,
+	  trunk/doc/html/spade.xmpp.client.PlugIn-class.html,
+	  trunk/doc/html/spade.xmpp.commands-module.html,
+	  trunk/doc/html/spade.xmpp.commands-pysrc.html,
+	  trunk/doc/html/spade.xmpp.commands.Command_Handler_Prototype-class.html,
+	  trunk/doc/html/spade.xmpp.commands.Commands-class.html,
+	  trunk/doc/html/spade.xmpp.commands.TestCommand-class.html,
+	  trunk/doc/html/spade.xmpp.debug-module.html,
+	  trunk/doc/html/spade.xmpp.debug-pysrc.html,
+	  trunk/doc/html/spade.xmpp.debug.Debug-class.html,
+	  trunk/doc/html/spade.xmpp.debug.NoDebug-class.html,
+	  trunk/doc/html/spade.xmpp.dispatcher-module.html,
+	  trunk/doc/html/spade.xmpp.dispatcher-pysrc.html,
+	  trunk/doc/html/spade.xmpp.dispatcher.Dispatcher-class.html,
+	  trunk/doc/html/spade.xmpp.features-module.html,
+	  trunk/doc/html/spade.xmpp.features-pysrc.html,
+	  trunk/doc/html/spade.xmpp.filetransfer-module.html,
+	  trunk/doc/html/spade.xmpp.filetransfer-pysrc.html,
+	  trunk/doc/html/spade.xmpp.filetransfer.IBB-class.html,
+	  trunk/doc/html/spade.xmpp.protocol-module.html,
+	  trunk/doc/html/spade.xmpp.protocol-pysrc.html,
+	  trunk/doc/html/spade.xmpp.protocol.BadFormat-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.BadNamespacePrefix-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Conflict-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ConnectionTimeout-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.DataField-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.DataForm-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Error-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ErrorNode-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.HostGone-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.HostUnknown-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ImproperAddressing-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InternalServerError-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidFrom-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidID-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidNamespace-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidXML-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Iq-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.JID-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Message-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.NodeProcessed-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.NotAuthorized-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.PolicyViolation-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Presence-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Protocol-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.RemoteConnectionFailed-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ResourceConstraint-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.RestrictedXML-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.SeeOtherHost-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.StreamError-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.SystemShutdown-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UndefinedCondition-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedEncoding-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedStanzaType-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedVersion-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.XMLNotWellFormed-class.html,
+	  trunk/doc/html/spade.xmpp.roster-module.html,
+	  trunk/doc/html/spade.xmpp.roster-pysrc.html,
+	  trunk/doc/html/spade.xmpp.roster.Roster-class.html,
+	  trunk/doc/html/spade.xmpp.session-module.html,
+	  trunk/doc/html/spade.xmpp.session-pysrc.html,
+	  trunk/doc/html/spade.xmpp.session.Session-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml-module.html,
+	  trunk/doc/html/spade.xmpp.simplexml-pysrc.html,
+	  trunk/doc/html/spade.xmpp.simplexml.NT-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.Node-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.NodeBuilder-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.T-class.html,
+	  trunk/doc/html/spade.xmpp.transports-module.html,
+	  trunk/doc/html/spade.xmpp.transports-pysrc.html,
+	  trunk/doc/html/spade.xmpp.transports.HTTPPROXYsocket-class.html,
+	  trunk/doc/html/spade.xmpp.transports.TCPsocket-class.html,
+	  trunk/doc/html/spade.xmpp.transports.TLS-class.html,
+	  trunk/doc/html/spade.xmpp.transports.error-class.html,
+	  trunk/doc/html/spade.xmppd-module.html,
+	  trunk/doc/html/spade.xmppd-pysrc.html,
+	  trunk/doc/html/spade.xmppd.locales-module.html,
+	  trunk/doc/html/spade.xmppd.locales-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules-module.html,
+	  trunk/doc/html/spade.xmppd.modules-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.config-module.html,
+	  trunk/doc/html/spade.xmppd.modules.config-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.config.Config-class.html,
+	  trunk/doc/html/spade.xmppd.modules.config.xmppdXML-class.html,
+	  trunk/doc/html/spade.xmppd.modules.config.xmppdXMLHandler-class.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake-module.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake.AUTH-class.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake.DB-class.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback-module.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback.Dialback-class.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077-module.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077.IBR-class.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078-module.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078.NSA-class.html,
+	  trunk/doc/html/spade.xmppd.modules.message-module.html,
+	  trunk/doc/html/spade.xmppd.modules.message-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.message.MessageCatcher-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc-module.html,
+	  trunk/doc/html/spade.xmppd.modules.muc-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.BadPassword-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Blacklisted-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.MUC-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.MaxUsers-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NickLockedDown-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NoVoice-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NotAMember-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Participant-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Room-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.SerializableRoom-class.html,
+	  trunk/doc/html/spade.xmppd.modules.oob-module.html,
+	  trunk/doc/html/spade.xmppd.modules.oob-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.oob.OOB-class.html,
+	  trunk/doc/html/spade.xmppd.modules.roster-module.html,
+	  trunk/doc/html/spade.xmppd.modules.roster-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.roster.ROSTER-class.html,
+	  trunk/doc/html/spade.xmppd.modules.router-module.html,
+	  trunk/doc/html/spade.xmppd.modules.router-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.router.Router-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream-module.html,
+	  trunk/doc/html/spade.xmppd.modules.stream-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Bind-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Handshake-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.SASL-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Session-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.TLS-class.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin-module.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin.WebAdmin-class.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin.WebAdminHandler-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq-module.html,
+	  trunk/doc/html/spade.xmppd.modules.wq-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.Conflict-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.Group-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.ItemNotFound-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.WQ-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd-module.html,
+	  trunk/doc/html/spade.xmppd.xmppd-pysrc.html,
+	  trunk/doc/html/spade.xmppd.xmppd.RPC_Client-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Server-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session_Dummy-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session_Dummy.Stream-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Socker_client-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.fake_select-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.fake_select.poll-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.get_input-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.localizer-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.multisession_manager-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.multisession_manager.multisession_thread-class.html,
+	  trunk/doc/html/toc-everything.html,
+	  trunk/doc/html/toc-spade-module.html,
+	  trunk/doc/html/toc-spade.ACLMessage-module.html,
+	  trunk/doc/html/toc-spade.ACLParser-module.html,
+	  trunk/doc/html/toc-spade.AID-module.html,
+	  trunk/doc/html/toc-spade.AMS-module.html,
+	  trunk/doc/html/toc-spade.Agent-module.html,
+	  trunk/doc/html/toc-spade.BasicFipaDateTime-module.html,
+	  trunk/doc/html/toc-spade.Behaviour-module.html,
+	  trunk/doc/html/toc-spade.DF-module.html,
+	  trunk/doc/html/toc-spade.Envelope-module.html,
+	  trunk/doc/html/toc-spade.FIPAMessage-module.html,
+	  trunk/doc/html/toc-spade.MTP-module.html,
+	  trunk/doc/html/toc-spade.MessageReceiver-module.html,
+	  trunk/doc/html/toc-spade.Organization-module.html,
+	  trunk/doc/html/toc-spade.Organization_new-module.html,
+	  trunk/doc/html/toc-spade.Platform-module.html,
+	  trunk/doc/html/toc-spade.RDF0Parser-module.html,
+	  trunk/doc/html/toc-spade.ReceivedObject-module.html,
+	  trunk/doc/html/toc-spade.SIMBA-module.html,
+	  trunk/doc/html/toc-spade.SL0Parser-module.html,
+	  trunk/doc/html/toc-spade.SpadeConfigParser-module.html,
+	  trunk/doc/html/toc-spade.Unit-module.html,
+	  trunk/doc/html/toc-spade.Unit_new-module.html,
+	  trunk/doc/html/toc-spade.XMLCodec-module.html,
+	  trunk/doc/html/toc-spade.bdi-module.html,
+	  trunk/doc/html/toc-spade.colors-module.html,
+	  trunk/doc/html/toc-spade.content-module.html,
+	  trunk/doc/html/toc-spade.fipa-module.html,
+	  trunk/doc/html/toc-spade.logic-module.html,
+	  trunk/doc/html/toc-spade.msgtypes-module.html,
+	  trunk/doc/html/toc-spade.peer2peer-module.html,
+	  trunk/doc/html/toc-spade.pyparsing-module.html,
+	  trunk/doc/html/toc-spade.pyratemp-module.html,
+	  trunk/doc/html/toc-spade.socialnetwork-module.html,
+	  trunk/doc/html/toc-spade.spade_backend-module.html,
+	  trunk/doc/html/toc-spade.wui-module.html,
+	  trunk/doc/html/toc-spade.xmpp-module.html,
+	  trunk/doc/html/toc-spade.xmpp.auth-module.html,
+	  trunk/doc/html/toc-spade.xmpp.browser-module.html,
+	  trunk/doc/html/toc-spade.xmpp.client-module.html,
+	  trunk/doc/html/toc-spade.xmpp.commands-module.html,
+	  trunk/doc/html/toc-spade.xmpp.debug-module.html,
+	  trunk/doc/html/toc-spade.xmpp.dispatcher-module.html,
+	  trunk/doc/html/toc-spade.xmpp.features-module.html,
+	  trunk/doc/html/toc-spade.xmpp.filetransfer-module.html,
+	  trunk/doc/html/toc-spade.xmpp.protocol-module.html,
+	  trunk/doc/html/toc-spade.xmpp.roster-module.html,
+	  trunk/doc/html/toc-spade.xmpp.session-module.html,
+	  trunk/doc/html/toc-spade.xmpp.simplexml-module.html,
+	  trunk/doc/html/toc-spade.xmpp.transports-module.html,
+	  trunk/doc/html/toc-spade.xmppd-module.html,
+	  trunk/doc/html/toc-spade.xmppd.locales-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.config-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.db_fake-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.dialback-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.jep0077-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.jep0078-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.message-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.muc-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.oob-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.roster-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.router-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.stream-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.webadmin-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.wq-module.html,
+	  trunk/doc/html/toc-spade.xmppd.xmppd-module.html,
+	  trunk/doc/html/toc.html: updated API documentation
+
+2010-05-25 09:25  jpalanca
+
+	* trunk/ChangeLog: 
+
 2010-05-12 17:03  jpalanca
 
 	* ChangeLog, TODO, examples/OracleAgent.py, examples/benchmark,

@@ -27,7 +27,9 @@ header.pyra
 			
 			<table class="servicesT" cellspacing="0">
 				<tr><td class="servHd">Name</td><td class="servHd">Addresses</td>
-					<td class="servHd">State</td><td class="servHd">Ownership</td></tr>
+					<td class="servHd">State</td><td class="servHd">Ownership</td>
+					<td class="servHd">Actions</td>
+				</tr>
 				<!--(for agent in agents)-->
 				<tr><td class="servBodL">
 					<!--(if agent.getAID())-->						
@@ -39,7 +41,9 @@ header.pyra
 						<!--(end)-->
 						</td>
 				    <td class="servBodL">@!str(agent.getState())!@</td>
-					<td class="servBodL">@!str(agent.getOwnership())!@</td></tr>
+					<td class="servBodL">@!str(agent.getOwnership())!@</td>
+					<td class="servBodL"><form action="send" method="post"><input type="submit" Value="Send Msg" rel="send_message"><input type="hidden" name="to" value="@!str(agent.getAID().getName())!@"></form></td>
+					</tr>
 				<!--(end)-->
 			</table>
 

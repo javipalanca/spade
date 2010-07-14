@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="magwood.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="table.css" media="screen"/>
+
+<title>SPADE Web Interface: Send message</title>
+</head>
+
+<!--(include)-->
+header.pyra
+<!--(end)-->
+<!--(if "acc" in name)-->
+@!header(item=None,admin="True")!@
+<!--(else)-->
+@!header(item=None,admin="False")!@
+<!--(end)-->
+
+
+	<div id="templatemo_background_section_mid">
+		
+		<div class="templatemo_container">
+		 <div id="templatemo_content_area">
+		  <div id="templatemo_left_section">
+		   <div class='main section' id='main'>
+				<h2 class="title">Message succesfully sent.</h2>
+
+				$!msg.asHTML()!$
+				
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+			<div class="cleaner_with_height"></div>
+
+
+	</div>
+	@!footer!@

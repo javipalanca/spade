@@ -48,16 +48,17 @@ class SpadePlatform(Agent.PlatformAgent):
                 to_list = msg.getReceivers()
                 d = {}
                 for to in to_list:
-                    if not to.getAddresses()[0] in d:
-                        d[to.getAddresses()[0]]=list()
-                    d[to.getAddresses()[0]].append(to)
+                    if (self.myAgent.getAID().getName() != to.getName()):
+                        if not to.getAddresses()[0] in d:
+                            d[to.getAddresses()[0]]=list()
+                        d[to.getAddresses()[0]].append(to)
                 for k,v in d.items():
                     newmsg = msg
                     newmsg.to = v
                     try:
                         protocol, receiver_URI = k.split("://")
                     except:
-                        print ">>> Malformed Agent Address URI: " + str(k)
+                        self.myAgent.DEBUG("Malformed Agent Address URI: " + str(k),"error")
                         break
 
                     # Check if one of our MTPs handles this protocol
@@ -118,7 +119,6 @@ class SpadePlatform(Agent.PlatformAgent):
         self.wui.registerController("index",self.index)
         self.wui.registerController("agents", self.agents)
         self.wui.registerController("services", self.services)
-        self.wui.registerController("sendmessage", self.sendmessage)
         self.wui.setPort(8008)
         self.wui.start()
         
@@ -214,23 +214,6 @@ class SpadePlatform(Agent.PlatformAgent):
                 servs[service.getType()].append(s)
         self.DEBUG("Services: " + str(servs))
         return "services.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, services=servs)
-
-    def sendmessage(self, to):
-        import sys
-        import time
-        servername = self.getDomain()
-        platform = self.getName()        
-        version = str(sys.version)
-        the_time = str(time.ctime())
-
-        search = self.searchAgent(AmsAgentDescription())
-        agents = []
-        for agent in search:
-            agents.append(agent.getAID().getName())
-
-        return "message.pyra", dict(servername=servername, platform=platform, version=version, time=the_time, keys=agents, to=to)
-
-
 
 
 

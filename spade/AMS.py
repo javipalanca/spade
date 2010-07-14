@@ -57,7 +57,6 @@ class AMS(PlatformAgent):
 						elif self.myAgent.agentdb[frm.getName()].getOwnership() == aad.getOwnership():
 							self.myAgent.agentdb[frm.getName()] = aad
 						else:
-							#presence = xmpp.Presence(frm,typ="unsubscribe")
 							presence = xmpp.Presence(reply_address,typ="unsubscribed",xmlns=xmpp.NS_CLIENT)
 							presence.setFrom(self.myAgent.JID)
 							self.myAgent.send(presence)
@@ -80,12 +79,10 @@ class AMS(PlatformAgent):
 		def _process(self):
 			error = False
 			msg = self._receive(True)
-			#print ">>>>>>>>>>>>>>>>>>>AMS MSG RECEIVED"
 			if msg != None:
 				if msg.getPerformative().lower() == 'request':
 					if msg.getOntology() and msg.getOntology().lower() == "fipa-agent-management":
 						if msg.getLanguage().lower() == "fipa-sl0":
-							#print str(msg.getContent())
 							content = self.sl0parser.parse(msg.getContent())
 							ACLtemplate = Behaviour.ACLTemplate()
 							ACLtemplate.setConversationId(msg.getConversationId())
@@ -96,7 +93,6 @@ class AMS(PlatformAgent):
 								self.myAgent.DEBUG("AMS: "+str(content.action)+ " request. " + str(content),"info")
 								if "register" in content.action \
 								or "deregister" in content.action:
-									#print ">>>>>>>>AMS REGISTER REQUEST"
 									self.myAgent.addBehaviour(AMS.RegisterBehaviour(msg,content), template)
 								elif "get-description" in content.action:
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
@@ -121,7 +117,6 @@ class AMS(PlatformAgent):
 							ACLtemplate.setConversationId(msg.getConversationId())
 							ACLtemplate.setSender(msg.getSender())
 							template = (Behaviour.MessageTemplate(ACLtemplate))
-							#print ">>>>>>>>AMS CONTENT RDF ",co
                             
 							if co.has_key("fipa:action") and co["fipa:action"].has_key("fipa:act"):
 								self.myAgent.DEBUG("AMS: "+str(co["fipa:action"]["fipa:act"])+ " request. " + str(co.asRDFXML()),"info")
@@ -130,14 +125,9 @@ class AMS(PlatformAgent):
 								elif co["fipa:action"]["fipa:act"] == "get-description":
 									self.myAgent.addBehaviour(AMS.PlatformBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "search":
-									#print ">>>>>>>>AMS SEARCH"
 									self.myAgent.addBehaviour(AMS.SearchBehaviour(msg,content), template)
 								elif co["fipa:action"]["fipa:act"] == "modify":
 									self.myAgent.addBehaviour(AMS.ModifyBehaviour(msg,content), template)
-							elif co.has_key("spade:action"):
-							    self.myAgent.DEBUG("AMS: "+str(co["spade:action"])+ " request. " + str(co.asRDFXML()),"info")
-							    if co["spade:action"] == "register_awui":
-							        self.myAgent.registerWUI(msg.getSender(), co["spade:argument"])
 							else:
 								reply = msg.createReply()
 								reply.setSender(self.myAgent.getAID())
@@ -596,8 +586,6 @@ class AMS(PlatformAgent):
 
 	def _setup(self):
 	    
-		self.wui.start()
-	    
 		self.agentdb = dict()
 
 		AAD = AmsAgentDescription()
@@ -617,14 +605,13 @@ class AMS(PlatformAgent):
 		db = self.DefaultBehaviour()
 		#db.setPeriod(0.25)
 		#self.setDefaultBehaviour(db)
-		self.addBehaviour(db, Behaviour.MessageTemplate(Behaviour.ACLTemplate()))
-	
-	def registerWUI(self, sndr, url):
-	    if self.agentdb.has_key(sndr.getName()):
-	        AAD = self.agentdb[sndr.getName()]
-	        AAD.getAID().addAddress("awui://"+url)
-	    
+		mt = Behaviour.ACLTemplate()
+		mt.setOntology("FIPA-Agent-Management")
+		mt.setPerformative("request")
+		mt.setProtocol('fipa-request')
+		self.addBehaviour(db,Behaviour.MessageTemplate(mt))
 
+		self.wui.start()	
 
 class AmsAgentDescription:
 	"""
