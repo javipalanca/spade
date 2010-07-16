@@ -27,6 +27,7 @@ import fipa
 import peer2peer as P2P
 import socialnetwork
 import RPC
+import pubsub
 
 import mutex
 import types
@@ -84,6 +85,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._aid = AID.aid(name=agentjid, addresses=["xmpp://"+agentjid])
         self._jabber = None
         self._serverplatform = serverplatform
+        self.server = serverplatform
         self._defaultbehaviour = None
         self._behaviourList = dict()
         self._alive = True
@@ -116,6 +118,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._socialnetwork = {}
         self._subscribeHandler   = lambda frm,typ,stat,show: False
         self._unsubscribeHandler = lambda frm,typ,stat,show: False
+        
+        self._pubsub = pubsub.PubSub(self)
 
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
@@ -1510,6 +1514,22 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         else:
             self.runBehaviourOnce(b,t)
             return b.result
+            
+            
+            
+    ####################
+    #PubSub services
+    ####################
+    def publishEvent(self, name, event):
+        return self._pubsub.publish(name,event)
+    def subscribeToEvent(self, name, server=None,jid=None):
+        return self._pubsub.subscribe(name,server,jid)
+    def unsubscribeFromEvent(self, name,server=None,jid=None):
+        return self._pubsub.unsubscribe(name,server,jid)
+    def createEvent(self, name, server=None, type='leaf', parent=None, access=None):
+        return self._pubsub.createNode(name, server=None, type='leaf', parent=None, access=None)
+    def deleteEvent(self, name, server=None):
+        return self._pubsub.deleteNode(name, server=None)
 
 ##################################
 

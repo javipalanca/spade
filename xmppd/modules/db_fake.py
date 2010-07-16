@@ -383,6 +383,13 @@ class DB(PlugIn):
                 self.DEBUG('load_database: Could not load user database', 'error')
                 return False
 
+    def __str__(self):
+        return str(db)
+
+    @property
+    def db(self):
+        return db
+
     def print_database(self):
-	print db
+	print str(self)
 	

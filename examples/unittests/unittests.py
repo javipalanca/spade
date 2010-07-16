@@ -7,4 +7,5 @@ from rpcTestCase   import *
 from aidTestCase   import *
 from dadTestCase   import *
 from eventbehavTestCase import *
+from pubsubTestCase import *
 unittest.main()

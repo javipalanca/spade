@@ -80,3 +80,7 @@ class SocialItem:
 
     def getPresence(self):
         return self._presence
+
+    def subscribe(self):
+        self.myAgent.jabber.Roster.Subscribe(self._jid)
+

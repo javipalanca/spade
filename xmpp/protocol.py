@@ -65,7 +65,10 @@ NS_PHYSLOC      ='http://jabber.org/protocol/physloc'                   # JEP-01
 NS_PRESENCE     ='presence'                                             # Jabberd2
 NS_PRIVACY      ='jabber:iq:privacy'
 NS_PRIVATE      ='jabber:iq:private'
-NS_PUBSUB       ='http://jabber.org/protocol/pubsub'                    # JEP-0060
+NS_PUBSUB       ='http://jabber.org/protocol/pubsub'                    # XEP-0060
+NS_PUBSUB_ERRORS=NS_PUBSUB+'#errors'
+NS_PUBSUB_EVENTS=NS_PUBSUB+'#events'
+NS_PUBSUB_OWNER =NS_PUBSUB+'#owner'
 NS_REGISTER     ='jabber:iq:register'
 NS_ROSTER       ='jabber:iq:roster'
 NS_ROSTERX      ='http://jabber.org/protocol/rosterx'                   # JEP-0144
@@ -286,7 +289,7 @@ class Protocol(Node):
             frn - from attribure, attrs - other attributes mapping, payload - same meaning as for simplexml payload definition
             timestamp - the time value that needs to be stamped over stanza
             xmlns - namespace of top stanza node
-            node - parsed or unparsed stana to be taken as prototype.
+            node - parsed or unparsed stanza to be taken as prototype.
         """
         if not attrs: attrs={}
         if to: attrs['to']=to
