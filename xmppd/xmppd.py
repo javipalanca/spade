@@ -32,7 +32,7 @@ from xmpp import *
 from math import *
 import traceback
 
-import socket,select,random,os,sys,thread,errno,time,threading,sha
+import socket,select,random,os,sys,thread,errno,time,threading,hashlib
 globals()['DEFAULT_LANG'] = 'en'
 #globals()['LANG_LIST'] = []
 
@@ -974,7 +974,7 @@ class Server:
 	if cmd_options.setdefault('socker_info',False): import xmlrpclib
 
 	if not cmd_options.setdefault('password',None):
-	    globals()['RPC_PASSWORD'] = sha.new(str(time.time())+globals()['SOCKER_TGUID']+sha.new(str(time.time())).hexdigest()).hexdigest()
+	    globals()['RPC_PASSWORD'] = hashlib.sha1(str(time.time())+globals()['SOCKER_TGUID']+hashlib.sha1(str(time.time())).hexdigest()).hexdigest()
 	else:
 	    globals()['RPC_PASSWORD'] = cmd_options['password']
 

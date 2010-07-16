@@ -7,7 +7,7 @@
 from xmpp import *
 from xmppd import *
 #from xmppd import SESSION_OPENED
-import sha
+import hashlib
 
 class NSA(PlugIn):
     NS=NS_AUTH
@@ -33,7 +33,7 @@ class NSA(PlugIn):
         servername=stanza['to'].getDomain()
         username=stanza.T.query.T.username.getData().lower()
         password=self._owner.AUTH.getpassword(username,servername)
-        if password is not None: digest=sha.new(session.ID+password).hexdigest()
+        if password is not None: digest=hashlib.sha1(session.ID+password).hexdigest()
 	try:
 		query_password = stanza.T.query.T.password.getData()
 	except:

@@ -21,11 +21,11 @@ Can be used both for client and transport authentication.
 
 from protocol import *
 from client import PlugIn
-import sha,base64,random,dispatcher
-import md5
+import base64,random,dispatcher
+import hashlib
 
-def HH(some): return md5.new(some).hexdigest()
-def H(some): return md5.new(some).digest()
+def HH(some): return hashlib.md5(some).hexdigest()
+def H(some): return hashlab.md5(some).digest()
 def C(some): return ':'.join(some)
 
 class NonSASL(PlugIn):
@@ -54,15 +54,15 @@ class NonSASL(PlugIn):
 
         if query.getTag('digest'):
             self.DEBUG("Performing digest authentication",'ok')
-            query.setTagData('digest',sha.new(owner.Dispatcher.Stream._document_attrs['id']+self.password).hexdigest())
+            query.setTagData('digest',hashlib.sha1(owner.Dispatcher.Stream._document_attrs['id']+self.password).hexdigest())
             if query.getTag('password'): query.delChild('password')
             method='digest'
         elif query.getTag('token'):
             token=query.getTagData('token')
             seq=query.getTagData('sequence')
             self.DEBUG("Performing zero-k authentication",'ok')
-            hash = sha.new(sha.new(self.password).hexdigest()+token).hexdigest()
-            for foo in xrange(int(seq)): hash = sha.new(hash).hexdigest()
+            hash = hashlib.sha1(hashlib.sha1(self.password).hexdigest()+token).hexdigest()
+            for foo in xrange(int(seq)): hash = hashlib.sha1(hash).hexdigest()
             query.setTagData('hash',hash)
             method='0k'
         else:
@@ -81,7 +81,7 @@ class NonSASL(PlugIn):
     def authComponent(self,owner):
         """ Authenticate component. Send handshake stanza and wait for result. Returns "ok" on success. """
         self.handshake=0
-        owner.send(Node(NS_COMPONENT_ACCEPT+' handshake',payload=[sha.new(owner.Dispatcher.Stream._document_attrs['id']+self.password).hexdigest()]))
+        owner.send(Node(NS_COMPONENT_ACCEPT+' handshake',payload=[hashlib.sha1(owner.Dispatcher.Stream._document_attrs['id']+self.password).hexdigest()]))
         owner.RegisterHandler('handshake',self.handshakeHandler,xmlns=NS_COMPONENT_ACCEPT)
         while not self.handshake:
             self.DEBUG("waiting on handshake",'notify')

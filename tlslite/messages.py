@@ -8,8 +8,7 @@ from constants import *
 from X509 import X509
 from X509CertChain import X509CertChain
 
-import sha
-import md5
+import hashlib
 
 class RecordHeader3:
     def __init__(self):
@@ -405,7 +404,7 @@ class ServerKeyExchange(HandshakeMsg):
         try:
             bytes = clientRandom + serverRandom + self.write()[4:]
             s = bytesToString(bytes)
-            return stringToBytes(md5.md5(s).digest() + sha.sha(s).digest())
+            return stringToBytes(hashlib.md5(s).digest() + hashlib.sha1(s).digest())
         finally:
             self.cipherSuite = oldCipherSuite
 

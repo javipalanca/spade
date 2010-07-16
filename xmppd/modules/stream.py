@@ -11,7 +11,7 @@ except:
 	from xmppd import *
 import socket,thread
 from tlslite.api import *
-import sha
+import hashlib
 
 class TLS(PlugIn):
     """ 3.                        <features/>
@@ -113,10 +113,10 @@ class TLS(PlugIn):
             session.send(Node('starttls',{'xmlns':NS_TLS}))
         raise NodeProcessed
 
-import sha,base64,random,md5
+import hashlib,base64,random
 
-def HH(some): return md5.new(some).hexdigest()
-def H(some): return md5.new(some).digest()
+def HH(some): return hashlib.md5(some).hexdigest()
+def H(some): return hashlib.md5(some).digest()
 def C(some): return ':'.join(some)
 
 class SASL(PlugIn):
@@ -374,7 +374,7 @@ class Handshake(PlugIn):
 		handshake = str(stanza.getData())
 		for k,v in self.server.components.items():
 			try:
-				truehs = sha.new(str(session.ID)+v['password']).hexdigest()
+				truehs = hashlib.sha1(str(session.ID)+v['password']).hexdigest()
 				if handshake == truehs:
 					# We have a match!! It's THIS component!!
         				session.peer=v['jid'].lower()

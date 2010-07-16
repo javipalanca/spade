@@ -6,7 +6,7 @@
 
 from xmpp import *
 from xmppd import *
-import socket,thread,sha
+import socket,thread,hashlib
 
 class Dialback(PlugIn):
     """ 4. <db:result from= to= /> ->
@@ -51,7 +51,7 @@ class Dialback(PlugIn):
             id=stanza['id']
             key=stanza.getData()
             self.DEBUG('Received dialback key %s for verification against id %s.'%(key,id),'info')
-            if key.strip()==sha.new(id+self._owner.ID).hexdigest(): typ='valid'
+            if key.strip()==hashlib.sha1(id+self._owner.ID).hexdigest(): typ='valid'
             else: typ='invalid'
             rep=Node('db:verify',{'from':to,'to':frm,'id':id,'type':typ})
             session.send(rep)
@@ -78,7 +78,7 @@ class Dialback(PlugIn):
 
     def __call__(self,session):
         # Server connected, send request
-        key=sha.new(session.ID+self._owner.ID).hexdigest()
+        key=hashlib.sha1(session.ID+self._owner.ID).hexdigest()
         req=Node('db:result',{'from':session.ourname,'to':session.peer},[key])
         session.send(req)
 

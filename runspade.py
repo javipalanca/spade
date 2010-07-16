@@ -11,18 +11,11 @@ from os.path import *
 from getopt import getopt
 try:
 	from spade import spade_backend
-#	from spade import SpadeConfigParser
 	from spade import colors
-	#from xmppd.filters import acc
 except ImportError, e:
 	print "Could not import spade package!!! " + str(e)
-	#from libspade import spade_backend
-	#from libspade import SpadeConfigParser
-	#from libspade import colors
 
 from xmppd.xmppd import Server
-
-
 
 __author__    = "Gustavo Aranda <gusarba@gmail.com> and Javier Palanca <jpalanca@gmail.com>"
 __version__   = "2.0-RC4"
@@ -31,35 +24,42 @@ __license__   = "LGPL"
 
 
 def print_help():
+  configfilename = "/etc/spade/spade.xml"
+  jabberxml = "/etc/spade/xmppd.xml"
+  if sys.platform[:6] == 'netbsd':
+      configfilename = os.sep + "usr" + os.sep + "pkg" + configfilename
+      jabberxml = os.sep+ "usr" + os.sep + "pkg" + jabberxml
   print
   print "Usage: %s [options]" % sys.argv[0]
   print " -h, --help         display this help text and exit"
   print " -v, --version      display the version and exit"
   print " -d, --debug        enable the debug execution"
-  print " -c, --configfile   load the configuration file (default /etc/spade/spade.xml)"
-  print " -j, --jabber       load the jabber configuration file (default /usr/share/spade/jabberd/jabber.xml)"
-  #print " -w, --web          load the TurboGears(tm) web interface"
+  print " -c, --configfile   load the configuration file (default "+configfilename+")"
+  print " -j, --jabber       load the jabber configuration file (default "+jabberxml+")"
+  #print " -w, --web          load the web interface"
   raise SystemExit
 
 def print_version():
-  print "SPADE %s by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others" % colors.color_yellow + __version__ + colors.color_none
+  print "SPADE "+colors.color_yellow + __version__ + colors.color_none+" by Javier Palanca, Gustavo Aranda, Miguel Escriva, Natalia Criado and others"
   print "gusarba@gmail.com - http://spade2.googlecode.com"
   raise SystemExit
 
 # Actually start the program running.
 def main():
 
-  gui = False
+  configfilename = "/etc/spade/spade.xml"
+  jabberxml = "/etc/spade/xmppd.xml"
+  if sys.platform[:6] == 'netbsd':
+      configfilename = os.sep + "usr" + os.sep + "pkg" + configfilename
+      jabberxml = os.sep+ "usr" + os.sep + "pkg" + jabberxml
+
+
   web = False
   if len(sys.argv) < 2: pass
   elif sys.argv[1] in ["--help", "-h"]: print_help()
   elif sys.argv[1] in ["--version", "-v"]: print_version()
-  elif sys.argv[1] in ["--gui", "-g"]: gui = True
   #elif sys.argv[1] in ["--web", "-w"]: web = True
 
-
-  configfilename = "/etc/spade/spade.xml"
-  jabberxml = "/etc/spade/xmppd.xml"
   dbg = []
 
   if os.name != "posix" or not os.path.exists(jabberxml) or not os.path.exists(configfilename):
@@ -70,13 +70,12 @@ def main():
 
   try:
   	for opt, arg in getopt(sys.argv[1:],
-                         "hvdgwc:j:", ["help", "version", "debug", "gui", "web", "configfile=",
+                         "hvdwc:j:", ["help", "version", "debug", "web", "configfile=",
                                       "jabber="])[0]:
     		if opt in ["-h", "--help"]: print_help()
     		elif opt in ["-v", "--version"]: print_version()
     		elif opt in ["-c", "--configfile"]: configfilename = arg
     		elif opt in ["-j", "--jabber"]: jabberxml = arg
-    		elif opt in ["-g", "--gui"]: gui = True
     		#elif opt in ["-w", "--web"]: web = True
     		elif opt in ["-d", "--debug"]: dbg = ['always']
   except:
@@ -108,18 +107,15 @@ def main():
         print '\n There is no jabber config file (xmppd.xml)'+ colors.color_red + " [failed]" + colors.color_none
 	raise SystemExit
 	
-  #s = xmppd.xmppd.Server(cfgfile=jabberxml, debug = dbg)
-  os.chdir("xmppd")
-  #s = xmppd.Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
-  #s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':True})
+  if sys.platform[:6] == 'netbsd':
+    pyvers= 'python'+str(numb)
+    path = "/usr/pkg/lib" + os.sep + pyvers + "/site-packages/xmppd/"
+    os.chdir(path)
+  else:
+    os.chdir("xmppd")
+
   s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':False})
-  #s = xmppd.Server(cfgfile=jabberxml)
   os.chdir("..")
-  """
-  for filter in s.router_filters:
-  	if isinstance(filter, acc.ACC):
-		filter.loadConfig(configfilename)
-  """
   sys.stdout.write(".")
   sys.stdout.flush()
 
