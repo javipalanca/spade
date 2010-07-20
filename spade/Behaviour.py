@@ -208,18 +208,9 @@ class MessageTemplate(BehaviourTemplate):
         if type(Template) == types.InstanceType:
             if Template.__class__ == ACLTemplate:
                 self.match = self.acl_match
-            elif Template.__class__ == Message:
-                self.match = self.node_match
-            elif Template.__class__ == Presence:
-                self.match = self.node_match
-            elif Template.__class__ == Iq:
-                self.match = self.node_match
-            elif Template.__class__ == Node:
-                self.match = self.node_match
             else:
                 # Default template option
                 self.match = self.node_match
-                print "MATCH: DEFAULT OPTION SHOULD NOT BE CALLED"
 
         self.template = copy.copy(Template)
 

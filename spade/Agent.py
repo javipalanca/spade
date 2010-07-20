@@ -120,6 +120,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._unsubscribeHandler = lambda frm,typ,stat,show: False
         
         self._pubsub = pubsub.PubSub(self)
+        self._events = {}
 
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
@@ -1522,10 +1523,24 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     ####################
     def publishEvent(self, name, event):
         return self._pubsub.publish(name,event)
-    def subscribeToEvent(self, name, server=None,jid=None):
-        return self._pubsub.subscribe(name,server,jid)
+    def subscribeToEvent(self, name, behaviour=None, server=None,jid=None):
+        r =  self._pubsub.subscribe(name,server,jid)
+        if r[0]=='ok' and behaviour!=None:
+            if not issubclass(behaviour.__class__, Behaviour.EventBehaviour):
+                self.DEBUG("Behaviour MUST be an EventBehaviour to subscribe to events.","error","pubsub")
+                return ("error",["not-event-behaviour"])
+            self._events[name]=behaviour
+            n = xmpp.Node(node='<message xmlns="jabber:client"><event xmlns="http://jabber.org/protocol/pubsub#events"><items node="'+name+'" /></event></message>')
+            template = xmpp.Message(node=n)
+            mt = Behaviour.MessageTemplate(template)
+            self.addBehaviour(behaviour,mt)
+        return r
     def unsubscribeFromEvent(self, name,server=None,jid=None):
-        return self._pubsub.unsubscribe(name,server,jid)
+        r =  self._pubsub.unsubscribe(name,server,jid)
+        if name in self._events.keys():
+            self.removeBehaviour(self._events[name])
+            del self._events[name]
+        return r
     def createEvent(self, name, server=None, type='leaf', parent=None, access=None):
         return self._pubsub.createNode(name, server=None, type='leaf', parent=None, access=None)
     def deleteEvent(self, name, server=None):

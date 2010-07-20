@@ -10,6 +10,12 @@ from xmpp.simplexml import Node
 
 host = "127.0.0.1"
 
+class SubscribeBehaviour(spade.Behaviour.EventBehaviour):
+    
+    def _process(self):
+        msg = self._receive(True)
+        self.myAgent.eventmsg = msg
+
 class PubSubTestCase(unittest.TestCase):
     
     def setUp(self):
@@ -74,13 +80,25 @@ class PubSubTestCase(unittest.TestCase):
         result = self.a.createEvent("ExistsNode")
         self.assertEqual(result, ('ok', ['ExistsNode']))
         
-        result = self.b.subscribeToEvent("ExistsNode")
+        result = self.b.subscribeToEvent("ExistsNode", SubscribeBehaviour())
         self.assertEqual( result, ('ok', []) )
+        #TODO: Check that the last published item is sent after subscription.
+        
+        self.b.eventmsg = None
         
         self.a.publishEvent('ExistsNode', Node(tag='foo'))
-        #TODO: Check that the last published item is sent after subscription.
+        
+        import time
+        time.sleep(3) #wait for the event
+        #Check that the event is received in the callback
+        self.assertNotEqual(self.b.eventmsg,None)
+        
+        n = self.b.eventmsg.T.event.T.items.T.item
+        self.assertNotEqual(n.getTag("foo"),None)
+        
+        if not "a@"+host in n.getAttr("publisher"): self.fail("Wrong publisher")
 
-        #TODO: Check that the new item published by Romeo is received too.
+        #TODO: Check that the new item published by 'a' is received too.
         
         self.b.unsubscribeFromEvent("ExistsNode")
         self.a.deleteEvent("ExistsNode")
@@ -120,11 +138,29 @@ class PubSubTestCase(unittest.TestCase):
         self.assertEqual( result, ('ok', [])) # OK
         #TODO: Check that the last published item is sent after subscription.
         
+    def testNotEventBehaviour(self):
+        
+        class Behav(spade.Behaviour.Behaviour): pass
+        self.a.deleteEvent("ExistsNode")
+        self.b.deleteEvent("ExistsNode")
+        self.a.createEvent("ExistsNode")
+        result = self.b.subscribeToEvent("ExistsNode",Behav())
+        self.assertEqual(result, ("error",["not-event-behaviour"]))
         
         
 
 if __name__ == "__main__":
     unittest.main()
+    sys.exit()
+
+    suite = unittest.TestSuite()
+    suite.addTest(PubSubTestCase('testPublishEvent'))
+    result = unittest.TestResult()
+
+    suite.run(result)
+    for f in  result.failures:
+        print f[0]
+        print f[1]
 
 
 
