@@ -7,6 +7,7 @@ import Behaviour
 import BasicFipaDateTime
 from SL0Parser import *
 from content import ContentObject
+import xmpp
 import copy
 import thread
 
@@ -178,9 +179,15 @@ class DF(PlatformAgent):
                             return -1
 
 
+                    self.DEBUG("Service succesfully deregistered: "+ str(dad),'ok')
                     reply.setPerformative("inform")
                     reply.setContent("(done "+self.msg.getContent() + ")")
                     self.myAgent.send(reply)
+                    
+                    #publish event
+                    s = Service(dad=dad).asContentObject()
+                    node = xmpp.Node(node=str(s))
+                    self.myAgent.publishEvent("DF:Service:Register",node)
 
                     return 1
 
@@ -227,9 +234,15 @@ class DF(PlatformAgent):
                         self.myAgent.DEBUG("FAILURE: Service could not be deregistered: "+str(err),'error')
                         return -1
 
+                    self.DEBUG("Service succesfully deregistered: "+ str(dad),'ok')
                     reply.setPerformative("inform")
                     reply.setContent("(done "+self.msg.getContent() + ")")
                     self.myAgent.send(reply)
+
+                    #publish event
+                    s = Service(dad=dad).asContentObject()
+                    node = xmpp.Node(node=str(s))
+                    self.myAgent.publishEvent("DF:Service:UnRegister",node)
 
                     return 1
 
@@ -303,11 +316,19 @@ class DF(PlatformAgent):
                             return -1
 
 
+                    self.DEBUG("Service succesfully registered: "+ str(dad),'ok')
                     reply.setPerformative("inform")
                     co_rep = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_rep["fipa:done"] = "true"
                     reply.setContentObject(co_rep)
                     self.myAgent.send(reply)
+
+                    #publish event
+                    self.myAgent.DEBUG("Publishing Event: "+str(dad))
+                    s = Service(dad=dad).asContentObject()
+                    node = xmpp.Node(node=str(s))
+                    self.myAgent.publishEvent("DF:Service:Register",node)
+                    
                     return 1
 
                 elif co["fipa:action"]["fipa:act"] == "deregister":
@@ -341,6 +362,7 @@ class DF(PlatformAgent):
                         if dad.getServices() == []:
                             self.myAgent.db_mutex.acquire()
                             del self.myAgent.servicedb[dad.getAID().getName()]
+                            self.DEBUG("Deleting all agent entries: " + str(not self.myAgent.servicedb.has_key(dad.getAID().getName())))
                             self.myAgent.db_mutex.release()
                         else:
                             for ss in dad.getServices():
@@ -358,11 +380,18 @@ class DF(PlatformAgent):
                         self.myAgent.DEBUG("FAILURE: internal-error 'could not deregister service': "+str(err),'error')
                         return -1
 
+                    self.DEBUG("Service succesfully deregistered: "+ str(dad),'ok')
                     reply.setPerformative("inform")
                     co_rep = ContentObject(namespaces={"http://www.fipa.org/schemas/fipa-rdf0#":"fipa:"})
                     co_rep["fipa:done"] = "true"
                     reply.setContentObject(co_rep)
                     self.myAgent.send(reply)
+
+                    #publish event
+                    s = Service(dad=dad).asContentObject()
+                    node = xmpp.Node(node=str(s))
+                    self.myAgent.publishEvent("DF:Service:UnRegister",node)
+                    
                     return 1
 
 
@@ -725,6 +754,10 @@ class DF(PlatformAgent):
         mt.setPerformative("request")
         mt.setProtocol('fipa-request')
         self.addBehaviour(db,Behaviour.MessageTemplate(mt))
+        
+        #create service events
+        self.createEvent("DF:Service:Register")
+        self.createEvent("DF:Service:UnRegister")
 
 
 class DfAgentDescription:
@@ -743,6 +776,8 @@ class DfAgentDescription:
             self.loadSL0(content)
 
         if co:
+            if co.has_key("df-agent-description"):
+                co = co["df-agent-description"]
             if co.name:
                 self.name = AID.aid(co = co.name)
             if co.services:
@@ -790,6 +825,7 @@ class DfAgentDescription:
             co["languages"] = copy.copy(self.languages)
         if self.scope:
             co["scope"] = copy.copy(self.scope)
+            
         return co
 
 
@@ -1241,31 +1277,42 @@ class ServiceDescription:
 
 class Service:
     
-    def __init__(self, name=None, owner=None, P=[], Q=[], inputs=[], outputs=[], description= None, ontology=None, dad = None):
+    def __init__(self, name=None, owner=None, P=[], Q=[], inputs=[], outputs=[], description= None, ontology=None, dad = None, co = None):
         
-        if dad:
-            self.setDAD(dad)
+        self.name  = name
+        self.owner = owner
+        self.dad   = DfAgentDescription()
+        sd = ServiceDescription()
+        
+        if co and co.has_key("service"):
+            if co.service.name:  name = co.service.name
+            if co.service.owner: owner = AID.aid(co=co.service.owner)
+            if co.service.ontology: ontology = co.service.ontology            
+            if co.service.P: P = co.service.P
+            if co.service.Q: Q = co.service.Q
+            if co.service.description: description = co.service.description
             
-        else:
-            self.name  = name
-            self.owner = owner
-            self.dad = DfAgentDescription()
-            self.dad.setAID(owner)
-            if ontology: self.dad.addOntologies(ontology)
+        #self.name  = name
+        #self.owner = owner
+        #self.dad = DfAgentDescription()
+        if owner: self.dad.setAID(owner)
+        if ontology: self.dad.addOntologies(ontology)
         
-            
-            if name!=None:
-                sd = ServiceDescription()
-                sd.setName(name)
-                if owner!=None:       sd.setOwnership(owner.getName())
-                if P!=[]:             sd.addProperty("P",P)
-                if Q!=[]:             sd.addProperty("Q",Q)
-                if inputs!=[]:        sd.addProperty("inputs",inputs)
-                if outputs!=[]:       sd.addProperty("outputs",outputs)
-                if ontology!=None:    sd.addOntologies(str(ontology))
-                if description!=None: sd.addProperty("description",str(description))
+
+                        
+        if name!=None:
+            sd.setName(name)
+            if owner!=None:       sd.setOwnership(owner.getName())
+            if P!=[]:             sd.addProperty("P",P)
+            if Q!=[]:             sd.addProperty("Q",Q)
+            if inputs!=[]:        sd.addProperty("inputs",inputs)
+            if outputs!=[]:       sd.addProperty("outputs",outputs)
+            if ontology!=None:    sd.addOntologies(str(ontology))
+            if description!=None: sd.addProperty("description",str(description))
         
-                self.dad.addService(sd)
+            self.dad.addService(sd)
+        
+        if dad: self.setDAD(dad)
             
     def setName(self,name):
         self.name = name
@@ -1317,18 +1364,29 @@ class Service:
             services.append(s)
         self.dad.services = services
 
-    def getP(self): return self.dad.getServices()[0].getProperty("P")
+    def getP(self):
+        if self.dad.getServices()==[]: return []
+        p = self.dad.getServices()[0].getProperty("P")
+        if p==None: return []
+        else: return p
 
-    def setQ(self,Q):
+    def addQ(self,Q):
         if self.dad.getServices() == []:
             self.dad.addService(ServiceDescription())
         services = []
         for s in self.dad.getServices():
-            s.properties['Q']=Q
+            q = s.getProperty("Q")
+            if not q: q=[]
+            q.append(Q)
+            s.addProperty('Q',q)
             services.append(s)
-        self.dad.services = services
+            self.dad.services = services
 
-    def getQ(self): return self.dad.getServices()[0].getProperty("Q")
+    def getQ(self):
+        if self.dad.getServices()==[]: return []
+        q = self.dad.getServices()[0].getProperty("Q")
+        if q==None: return []
+        else: return q
 
     def setInputs(self,inputs):
         if self.dad.getServices() == []:
@@ -1339,7 +1397,9 @@ class Service:
             services.append(s)
         self.dad.services = services
 
-    def getInputs(self): return self.dad.getServices()[0].getProperty("inputs")
+    def getInputs(self): 
+        if self.dad.getServices()==[]: return []
+        return self.dad.getServices()[0].getProperty("inputs")
 
     def setOutputs(self,outputs):
         if self.dad.getServices() == []:
@@ -1350,7 +1410,9 @@ class Service:
             services.append(s)
         self.dad.services = services
         
-    def getOutputs(self): return self.dad.getServices()[0].getProperty("outputs")
+    def getOutputs(self):
+        if self.dad.getServices()==[]: return []
+        return self.dad.getServices()[0].getProperty("outputs")
 
     def setDescription(self,description):
         if self.dad.getServices() == []:
@@ -1361,12 +1423,16 @@ class Service:
             services.append(s)
         self.dad.services = services
         
-    def getDescription(self): return self.dad.getServices()[0].getProperty("description")
+    def getDescription(self):
+        if self.dad.getServices()==[]: return []
+        return self.dad.getServices()[0].getProperty("description")
     
     def getType(self):
+        if self.dad.getServices()==[]: return []
         return self.dad.getServices()[0].getType()
         
     def setType(self, typ):
+        if self.dad.getServices()==[]: return []
         self.dad.getServices()[0].setType(typ)
 
     def setDAD(self,dad):
@@ -1390,6 +1456,22 @@ class Service:
         
     def __str__(self):
         return str(self.dad)
+        
+    def __repr__(self):
+        return str(self.asContentObject())
+
+    def asContentObject(self):
+        
+        co = ContentObject()
+        co["service"]=ContentObject()
+        if self.getName()!=None: co.service["name"] = self.getName()
+        if self.getOwner()!=None: co.service["owner"] = self.getOwner().asContentObject()
+        if self.getOntology()!=[]: co.service["ontology"] = self.getOntology()
+        if self.getP()!=[]: co.service["P"] = self.getP()
+        if self.getQ()!=[]: co.service["Q"] = self.getQ()
+        if self.getDescription()!=None: co.service["description"] = self.getDescription()
+        
+        return co
         
     def asHTML(self):
         s = '<table class="servicesT" cellspacing="0">'

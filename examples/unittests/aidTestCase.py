@@ -90,7 +90,7 @@ class AidTestCase(unittest.TestCase):
         co["name"]       ="name1"
         co["addresses"]  = ["addr1","addresses2"]
         co["resolvers"]  = ["resolver1"]
-        co["properties"] = []
+        #co["properties"] = []
         
         assert aid1.asContentObject() == co
                         

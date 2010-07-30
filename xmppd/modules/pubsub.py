@@ -42,8 +42,7 @@ class PSNode(object):
             self.items_timestamp[id] = datetime.utcnow().isoformat().split('.')[0] + 'Z'
             #print self.items_timestamp[id], self.items[id], id
         except Exception,e:
-            print 'Exception in addItem'
-            print e
+            self.DEBUG('Exception in addItem: '+str(e),"error")
 
     def __repr__(self):
         return 'PSNode(%s, %s)' % (self.id, self.type)
@@ -61,6 +60,7 @@ class PubSubServer(PlugIn):
 
         for ns in (NS_PUBSUB, NS_PUBSUB_ERRORS, NS_PUBSUB_EVENTS, NS_PUBSUB_OWNER):
             server.Dispatcher.RegisterHandler('iq', self.PubSubIqHandler, typ='set', ns=ns, xmlns=NS_CLIENT)
+            server.Dispatcher.RegisterHandler('iq', self.PubSubIqHandler, typ='set', ns=ns, xmlns=NS_COMPONENT_ACCEPT)
 
     def _getIqError(self, iq, name, specific=None):
         if specific is None:
@@ -95,8 +95,7 @@ class PubSubServer(PlugIn):
                 s = self._owner.getsession(jid)
                 s.send(msg)
         except Exception,e:
-            print 'Exception in sendItem'
-            print e
+            self.DEBUG('Exception in sendItem: '+str(e),"error")
 
 
         #TODO: If we had a maximum, we should remove the first item here. Doing a FIFO.
@@ -152,8 +151,12 @@ class PubSubServer(PlugIn):
                 # Add node
                 #print self.nodes
                 self.DEBUG('Creating node: %s' % create_node, 'info')
+                
+                id = stanza.getAttr('id')
+                if isinstance(stanza,Protocol): stanza = Iq(node=stanza)
 
                 iq = stanza.buildReply('result')
+                if id: iq.setID(id)
                 pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB})
                 pubsub_node.addChild(node=create_node)
                 iq.addChild(node=pubsub_node)
@@ -368,4 +371,4 @@ class PubSubServer(PlugIn):
         except NodeProcessed:
             raise NodeProcessed
         except Exception,e:
-            print e
+            self.DEBUG("Exception in PubSub Handler: " + str(e),"error")

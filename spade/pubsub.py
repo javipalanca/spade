@@ -1,4 +1,4 @@
-from spade.Behaviour import MessageTemplate, OneShotBehaviour
+from Behaviour import MessageTemplate, OneShotBehaviour
 
 from xmpp.protocol import *
 from xmpp.simplexml import Node
@@ -39,8 +39,12 @@ class PubSub(object):
         iq.setID(id)
         b = self._sendAndReceiveBehav(iq,getContents)
         
-        self.myAgent.addBehaviour(b,t)
-        b.join()
+        if self.myAgent._running:
+            self.myAgent.addBehaviour(b,t)
+            b.join()
+        else:
+            self.myAgent.runBehaviourOnce(b,t)
+        
         return b.result
         
     class _sendAndReceiveBehav(OneShotBehaviour):
@@ -49,6 +53,8 @@ class PubSub(object):
                 self.iq = iq
                 self.getContents = getContents
                 self.timeout = 15
+                self.result = (None,None)
+                
             def _process(self):
                 #print 'Sending ', str(self.iq)
                 self.myAgent.send(self.iq)

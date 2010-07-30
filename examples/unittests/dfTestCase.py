@@ -94,7 +94,7 @@ def Register(agent, param):
             s.setName("unittest_name_1_"+param)
             s.setOwner(agent.getAID())
             s.addP("service_precondition")
-            s.setQ("service_postcondition")
+            s.addQ("service_postcondition")
             s.setInputs(['login','password'])
             s.setOutputs(['account_id'])
             s.setDescription("Login Service")
@@ -310,27 +310,6 @@ class DFTestCase(unittest.TestCase):
 
         self.a.result = None
 
-        '''
-        #It is not necessary to re-check the Register function. There is a unittest for it.
-        #check service is registered
-        Search_DAD(self.a,"a")
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
-        self.assertEqual(len(self.a.result[0].getServices()), 2)
-
-        if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-        if self.a.result[0].getServices()[1].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-
-        self.assertEqual(self.a.result[0].getServices()[0].getType(),"unittest_type_1")
-
-        self.a.result = None
-        '''
-        
         #modify service
         Modify_DAD(self.a,"a")
 
@@ -357,14 +336,6 @@ class DFTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, True)
 
-        '''
-        #check service is deregistered
-        self.a.result = False
-        Search_DAD(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
-
-
 
     def testModifyNotAllowed_DAD(self):
 
@@ -378,28 +349,6 @@ class DFTestCase(unittest.TestCase):
 
         self.a.result = None
 
-        '''
-        #check service is registered
-        Search_DAD(self.a,"a")
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
-        self.assertEqual(len(self.a.result[0].getServices()), 2)
-
-        if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-        if self.a.result[0].getServices()[1].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-
-        self.assertEqual(self.a.result[0].getServices()[0].getType(),"unittest_type_1")
-        self.assertEqual(self.a.result[0].getServices()[1].getType(),"unittest_type_2")
-
-        self.a.result = None
-        self.b.result = None
-        '''
-        
         #modify service
         Modify_DAD(self.b,"a")
 
@@ -426,13 +375,6 @@ class DFTestCase(unittest.TestCase):
         DeRegister_DAD(self.a,"a")
 
         self.assertEqual(self.a.result, True)
-
-        '''
-        #check service is deregistered
-        self.a.result = False
-        Search_DAD(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
 
     def testModifyNotRegistered_DAD(self):
 
@@ -513,26 +455,6 @@ class DFTestCase(unittest.TestCase):
         DeRegister_DAD(self.a,"a")
         DeRegister_DAD(self.b,"b")
 
-        '''
-        self.assertEqual(self.a.result, True)
-
-        self.a.result = None
-
-        #check number of services is 1
-        EmptySearch_DAD(self.a)
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.a.result = None
-
-        self.assertEqual(self.a.result, True)
-
-        #check service is deregistered
-        self.a.result = False
-        Search_DAD(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
 
     def testAlreadyRegistered_DAD(self):
 
@@ -545,22 +467,6 @@ class DFTestCase(unittest.TestCase):
         #self.assertEqual(self.a.result, True)
 
         self.a.result = None
-
-        '''
-        #check service is registered
-        Search_DAD(self.a,"a")
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(self.a.result[0].getAID(), self.a.getAID())
-        self.assertEqual(len(self.a.result[0].getServices()), 2)
-
-        if self.a.result[0].getServices()[0].getName() not in ['unittest_name_1','unittest_name_2']:
-            self.fail()
-
-        self.a.result = None
-        '''
 
         #register service ALREADY registered
         Register_DAD(self.a,"a")
@@ -684,14 +590,6 @@ class DFTestCase(unittest.TestCase):
         DeRegister(self.a,"a")
         DeRegister(self.b,"a")
         
-        '''
-        #check service is not registered
-        Search(self.a,"a")
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 0)
-        '''
-
         self.a.result = None
 
         #register service
@@ -841,13 +739,6 @@ class DFTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, True)
 
-        '''
-        #check service is deregistered
-        self.a.result = False
-        Search(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
-
     def testModifyNotRegistered(self):
         #deregister service
         DeRegister(self.a,"a")
@@ -924,14 +815,6 @@ class DFTestCase(unittest.TestCase):
 
         self.a.result = None
         
-        '''
-        #check service is deregistered
-        self.a.result = False
-        Search(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
-
-
     def testAlreadyRegistered(self):
 
         #deregister service
@@ -943,22 +826,6 @@ class DFTestCase(unittest.TestCase):
         self.assertEqual(self.a.result, True)
 
         self.a.result = None
-
-        '''
-        #check service is registered
-        Search(self.a,"a")
-
-        self.assertNotEqual(self.a.result, None)
-        self.assertEqual(len(self.a.result), 1)
-
-        self.assertEqual(len(self.a.result), 1)
-        self.assertEqual(self.a.result[0].getOwner(), self.a.getAID())
-
-        if self.a.result[0].getName() not in ['unittest_name_1']:
-            self.fail()
-
-        self.a.result = None
-        '''
 
         #register service ALREADY registered
         Register(self.a,"a")
@@ -973,18 +840,11 @@ class DFTestCase(unittest.TestCase):
 
         self.assertEqual(self.a.result, True)
 
-        '''
-        #check service is deregistered
-        self.a.result = False
-        Search(self.a,"a")
-        self.assertEqual(self.a.result, [])
-        '''
-
 
 
 if __name__ == "__main__":
-    unittest.main()
-    sys.exit()
+    #unittest.main()
+    #sys.exit()
     
     suite = unittest.TestSuite()
     suite.addTest(DFTestCase('testRegisterService'))

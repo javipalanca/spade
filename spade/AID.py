@@ -199,15 +199,18 @@ class aid:
 	    """
 	    co = ContentObject()	    
 	    co["name"] = self.getName()
-	    co["addresses"] = []
-	    for addr in self.getAddresses():
-	        co["addresses"].append(addr)
-	    co["resolvers"] = []
-	    for r in self.getResolvers():
-	        co["resolvers"].append(r)
-	    co["properties"] = []
-	    for p in self.getProperties():
-	        co["properties"].append(p)
+            if self.getAddresses()!=[]:
+	        co["addresses"] = []
+	        for addr in self.getAddresses():
+	            co["addresses"].append(addr)
+	    if self.getResolvers()!=[]:
+	        co["resolvers"] = []
+	        for r in self.getResolvers():
+	            co["resolvers"].append(r)
+	    if self.getProperties()!=[]:
+	        co["properties"] = []
+	        for p in self.getProperties():
+	            co["properties"].append(p)
 	    return co
 
 	def asXML(self):

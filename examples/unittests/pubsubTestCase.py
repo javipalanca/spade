@@ -150,11 +150,11 @@ class PubSubTestCase(unittest.TestCase):
         
 
 if __name__ == "__main__":
-    unittest.main()
-    sys.exit()
+    #unittest.main()
+    #sys.exit()
 
     suite = unittest.TestSuite()
-    suite.addTest(PubSubTestCase('testPublishEvent'))
+    suite.addTest(PubSubTestCase('testCreateEvent'))
     result = unittest.TestResult()
 
     suite.run(result)

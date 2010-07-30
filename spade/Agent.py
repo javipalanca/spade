@@ -38,6 +38,7 @@ import socket
 import SocketServer
 import colors
 import cPickle as pickle
+import uuid
 
 
 import DF
@@ -152,6 +153,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #Remote Procedure Calls support
         self.RPC = {}
         self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS=NS_RPC)))
+        
+        #BDI Support
+        self.KB = {} #Knowledge Base
 
     def WUIController_admin(self):
         import types
@@ -1215,13 +1219,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if not self._running:
             try:
                 behaviour._receive = self._receive
+                behaviour.myAgent  = self
                 behaviour.onStart()
                 behaviour._process()
                 behaviour.onEnd()
                 del behaviour
                 return True
-            except:
-                self.DEBUG("Failed the execution of the OFFLINE behaviour "+str(behaviour),"err")
+            except Exception,e:
+                self.DEBUG("Failed the execution of the OFFLINE behaviour "+str(behaviour)+": "+str(e),"err")
                 return False
         else:
             self.addBehaviour(behaviour,template)
@@ -1277,7 +1282,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1297,7 +1301,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1317,7 +1320,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1346,7 +1348,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         else:
             template.setSender(self.getDF())
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1391,7 +1392,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             template.setSender(self.getDF())
 
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1421,7 +1421,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1449,7 +1448,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     if sd.getProperty("outputs"): s.setOutputs(sd.getProperty("outputs"))
                     if sd.getProperty("P"):
                         for p in sd.getProperty("P"): s.addP(p)
-                    if sd.getProperty("Q"): s.setQ(sd.getProperty("Q"))
+                    if sd.getProperty("Q"):
+                        for q in sd.getProperty("Q"): s.addQ(q)
                     s.getDAD().getServices()[0].setType(sd.getType())
                     for o in sd.getOntologies(): s.setOntology(o)
                     r.append(s)
@@ -1476,7 +1476,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        import uuid
         r = str(uuid.uuid4()).replace("-","")
         msg.setReplyWith(r)
         template.setInReplyTo(r)
@@ -1492,7 +1491,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.runBehaviourOnce(b,t)
             return b.result
 
-    def invokeService(self, service):
+    def invokeService(self, service, inputs=None):
         """
         invokes a service using jabber-rpc (XML-RPC)
         the service template is a DF.Service
@@ -1502,10 +1501,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.DEBUG("Service MUST be a DF.Service instance",'error')
             return False
 
-        num = str(random.getrandbits(32))
-        b = RPC.RPCClientBehaviour(service,num)
-        t  = Behaviour.MessageTemplate(Iq(typ='result',queryNS="jabber:iq:rpc",attrs={'id':num}))
-        t2 = Behaviour.MessageTemplate(Iq(typ='error',queryNS="jabber:iq:rpc",attrs={'id':num}))
+        num = str(uuid.uuid4()).replace("-","")
+        
+        if inputs==None: inputs = self.KB
+        
+        b = RPC.RPCClientBehaviour(service,inputs,num)
+        t  = Behaviour.MessageTemplate(Iq(typ="result",attrs={'id':num}))
 
         if self._running:
             # Online
