@@ -247,14 +247,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             mess[index]=(ts,strm)
             index+=1
 
-        try:
-            import diagram
-            self.DEBUG("Generating diagram with: " + str(agents) + " and " + msc)
-            url = diagram.getSequenceDiagram(msc,style="napkin")
-        except:
-            url=False
-        
-        return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": url, "agentslist":agentslist}
+        return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": msc, "agentslist":agentslist}
 
     def WUIController_search(self, query):
         

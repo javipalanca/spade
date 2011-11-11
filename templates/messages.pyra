@@ -86,7 +86,9 @@ header.pyra
 			<h1>@!name!@</h1>
 			
 			<!--(if diagram!=False)-->
-			<img src="@!diagram!@" border=0 alt="Sequence Diagram"></img>
+			<div class=wsd wsd_style="napkin"><pre>
+			@!diagram!@
+			</pre></div><script type="text/javascript" src="http://www.websequencediagrams.com/service.js"></script>
 			<!--(end)-->
 									
 			<div style="display:none">
