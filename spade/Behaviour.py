@@ -14,7 +14,43 @@ import xmpp
 import re
 
 
-class ACLTemplate:
+class BehaviourTemplate:
+    """
+    Template operators
+    """
+        
+    def __init__(self, regex=False):
+        self.regex=regex
+        
+    def match(self, message):
+        return False
+
+    def __and__(self, other):
+        """Implementation of & operator"""
+        return ANDTemplate(self, other)
+    def __rand__(self, other):
+        """Implementation of &= operator"""
+        return (self & other)
+
+    def __or__(self, other):
+        """Implementation of | operator"""
+        return ORTemplate(self, other)
+    def __ror__(self, other):
+        """Implementation of |= operator"""
+        return (self | other)
+
+    def __xor__(self, other):
+        """Implementation of ^ operator"""
+        return XORTemplate(self, other)
+    def __rxor__(self, other):
+        """Implementation of ^= operator"""
+        return (self ^ other)
+    def __invert__(self):
+        """Implementation of ~ operator"""
+        return NOTTemplate(self)
+
+
+class ACLTemplate(BehaviourTemplate):
     """
     Template for message matching
     """
@@ -126,44 +162,6 @@ class ACLTemplate:
         return self.conversation_id
 
 
-
-
-
-class BehaviourTemplate:
-    """
-    Template operators
-    """
-    def __init__(self):
-        pass
-    def match(self, message):
-        return False
-
-    def __and__(self, other):
-        """Implementation of & operator"""
-        return ANDTemplate(self, other)
-    def __rand__(self, other):
-        """Implementation of &= operator"""
-        return (self & other)
-
-    def __or__(self, other):
-        """Implementation of | operator"""
-        return ORTemplate(self, other)
-    def __ror__(self, other):
-        """Implementation of |= operator"""
-        return (self | other)
-
-    def __xor__(self, other):
-        """Implementation of ^ operator"""
-        return XORTemplate(self, other)
-    def __rxor__(self, other):
-        """Implementation of ^= operator"""
-        return (self ^ other)
-    def __invert__(self):
-        """Implementation of ~ operator"""
-        return NOTTemplate(self)
-
-
-
 class NOTTemplate(BehaviourTemplate):
     def __init__(self, expr):
         self.expr = expr
@@ -203,8 +201,9 @@ class PresenceTemplate(BehaviourTemplate):
 
 
 class MessageTemplate(BehaviourTemplate):
-    def __init__(self, Template):
+    def __init__(self, Template, regex=False):
         # Discriminate Template class
+        BehaviourTemplate.__init__(self, regex)
         if type(Template) == types.InstanceType:
             if Template.__class__ == ACLTemplate:
                 self.match = self.acl_match
@@ -216,7 +215,7 @@ class MessageTemplate(BehaviourTemplate):
 
 
     def acl_match(self, message):
-        #print "acl_match called with " + str(self.template) + " template and message: " + str(message)
+#        print "acl_match called with \n +Template:" + str(self.template) + "\n +Messange: " + str(message)
         if message.__class__ != ACLMessage.ACLMessage: return False
         if (self.template.getPerformative() != None):
             if (self.template.getPerformative() != message.getPerformative()): return False
@@ -257,41 +256,52 @@ class MessageTemplate(BehaviourTemplate):
         """
         Function that matches a xmpp Node with another one
         """
-        #print "node_match called with", str(self.template), str(other)
+#        print "node_match called with \n %s \n AND\n %s" % (str(self.template), str(other))
         try:
             # Check types and classes
             if type(self.template) != types.InstanceType:
-                #print "node_match: First node not an instance"
+#                print "node_match: First node not an instance"
                 return False
             #if not issubclass(self.template.__class__, Node) and not issubclass(self.template.__class__, Protocol) and :
             if "Message" not in str(self.template.__class__) and "Presence" not in str(self.template.__class__) and "Iq" not in str(self.template.__class__) and "Node" not in str(self.template.__class__):
-                #print "node_match: First node not a node:", str(self.template.__class__)
+#                print "node_match: First node not a node:", str(self.template.__class__)
                 return False
 
             if type(other) != types.InstanceType:
-                #print "node_match: Second node not an instance"
+#                print "node_match: Second node not an instance"
                 return False
             #if not issubclass(other.__class__ , Node):
             if "Message" not in str(other.__class__) and "Presence" not in str(other.__class__) and "Iq" not in str(other.__class__) and "Node" not in str(self.template.__class__):
-                #print "node_match: Second node not a node"
+#                print "node_match: Second node not a node"
                 return False
 
             if self.template.name != None:
                 if self.template.name != other.name:
-                    #print "node_match: Different names: ", str(self.template.name), str(other.name)
+#                    print "node_match: Different names: ", str(self.template.name), str(other.name)
                     return False
             if self.template.attrs != None and self.template.attrs != {}:
-                for i in self.template.attrs.items():
-                    if i not in other.attrs.items():
-                        #print "node_match: Different attrs:", str(self.template.attrs), str(other.attrs)
-                        return False
+#                for i in self.template.attrs.items():
+#                    if i not in other.attrs.items():
+                for i,j in self.template.attrs.items():
+#                    print "****Comparing: i=%s (%s),%s (%s),other=%s (%s)" % (i,type(i),j,type(j),other.attrs[i],type(other.attrs[i]))
+                    if (i,j) not in (other.attrs.items()): # not in other.attrs.items():
+#                        print "node_match: Different attrs:", str(self.template.attrs), str(other.attrs)
+                        if not self.regex:
+                            return False
+                        if not re.match(str(j),str(other.attrs[i])):
+                            return False
             if self.template.data != None and self.template.data != []:
                 if self.template.data != other.data:
-                        #print "node_match: Different data:", str(self.template.data), str(other.data)
-                        return False
+#                        print "node_match: Different data:", str(self.template.data), str(other.data), re.match(str(self.template.data),str(other.data))
+                        if not self.regex:
+                            return False
+                        if not re.match(str(self.template.data[0]),str(other.data[0])):
+                            return False
+#                        print "node_match: Matched regex:", str(self.template.data), str(other.data), re.match(str(self.template.data),str(other.data))
+
             if self.template.namespace:
                 if self.template.namespace != other.namespace:
-                        #print "node_match: Different namespace:", str(self.template.namespace), str(other.namespace)
+#                        print "node_match: Different namespace:", str(self.template.namespace), str(other.namespace)
                         return False
 
             for kid in self.template.kids:
@@ -300,7 +310,7 @@ class MessageTemplate(BehaviourTemplate):
                 if not suspects: return False
                 value = False
                 for s in suspects:
-                    value = MessageTemplate(kid).node_match(s)
+                    value = MessageTemplate(kid,regex=self.regex).node_match(s)
                     #value = self.node_match(kid, s)
                     if value == True:
                         # There is a match among the supects
@@ -310,7 +320,7 @@ class MessageTemplate(BehaviourTemplate):
                     return False
 
         except Exception, e:
-            #print "Exception in node_match:", str(e)
+#            print "Exception in node_match:", e
             return False
         # Arriving here means this is a perfect match
         return True
@@ -682,8 +692,7 @@ class FSMBehaviour(Behaviour):
             self._transitionTo(self._firstStateName)
         #msg = self._receive(False)
         b = self._states[self._actualState]
-        #if msg: b.postMessage(msg)
-        b.done()
+        #if msg: buede .postMessage(msg)
         self._lastexitcode = b._process()
         if (b.done() or b._forceKill.isSet()):
             if not self._lastexitcode: self._lastexitcode = b.exitCode()
@@ -725,5 +734,3 @@ if __name__ == "__main__":
 
     a = TestBehaviour(5)
     a.start()
-
-
