@@ -808,7 +808,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         generate_envelope = False
         #If there is more than one address in the sender or
         #the only address is not an xmpp address,
-        #we need the full sender AID field
+        #we need the fill sender AID field
         try:
             if method=="xmppfipa" or len(ACLmsg.getSender().getAddresses()) > 1 or \
                 "xmpp" not in ACLmsg.getSender().getAddresses()[0]:
