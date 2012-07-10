@@ -737,8 +737,8 @@ class DF(PlatformAgent):
                     return -1
 
 
-    def __init__(self,node,passw,server="localhost",port=5347):
-        PlatformAgent.__init__(self,node,passw,server,port)
+    def __init__(self,node,passw,server="localhost",port=5347, config={}):
+        PlatformAgent.__init__(self,node,passw,server,port, config)
         #self.addAddress("http://"+self.getDomain()+":2099/acc")  # HACK
 
     def _setup(self):

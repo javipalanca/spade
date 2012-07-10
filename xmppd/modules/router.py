@@ -1385,7 +1385,6 @@ class Router(PlugIn):
 # 5. Else if the JID is of the form <user@domain> and there are no available resources associated with
 #    the user, how the stanza is handled depends on the stanza type:
 	    else:
-		print "SPOOOOOTTTTTTTSPOOOOOTTTTTTT 2"
 		self.intra_route(stanza) ## Try to outsource this guy!
 
 #       1. For presence stanzas of type "subscribe", "subscribed", "unsubscribe", and "unsubscribed",

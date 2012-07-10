@@ -112,10 +112,10 @@ def main():
     path = "/usr/pkg/lib" + os.sep + pyvers + "/site-packages/xmppd/"
     os.chdir(path)
   else:
-    os.chdir("xmppd")
+    pass #os.chdir("xmppd")
 
   s = Server(cfgfile=jabberxml, cmd_options={'enable_debug':dbg, 'enable_psyco':False})
-  os.chdir("..")
+  #os.chdir("..")
   sys.stdout.write(".")
   sys.stdout.flush()
 

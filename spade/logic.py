@@ -26,8 +26,6 @@ And a few other functions:
 
 from __future__ import generators
 import re
-#import agents
-#from utils import *
 
 def every(predicate, seq):
     """True if every element of seq satisfies predicate.

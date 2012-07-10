@@ -37,10 +37,12 @@ class SpadeBackend:
         server = config["platform"]['hostname']
         port = int( config[section]['port'] )
         jid = section + "." + server
+        if not "adminpasswd" in config.keys(): config["adminpasswd"]=None
         if section == "acc":
             agent = agentClass(jid, passwd, server, port, config=config)
         else:
             agent = agentClass(jid, passwd, server, port)
+            agent.setAdminPasswd(config["adminpasswd"])
         agent.start()
         return agent
     
@@ -56,7 +58,7 @@ class SpadeBackend:
         #TODO: this should be configurable
         self.acc = self.runAgent(self.config, "acc", Platform.SpadePlatform)
         #self.acc._debug=True
-	self.ams = self.runAgent(self.config, "ams", AMS.AMS)
+        self.ams = self.runAgent(self.config, "ams", AMS.AMS)
         #self.ams.DEBUG = self.acc.DEBUG
         self.df = self.runAgent(self.config, "df", DF.DF)
         #self.df.DEBUG = self.acc.DEBUG

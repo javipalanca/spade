@@ -7,7 +7,7 @@
 	<div id='templatemo_logo_section'> 
 	<div class='header section' id='header'><div class='widget Header' id='Header1'> 
 	<div id='header-inner'> 
-	<a href='http://spadeagents.blogspot.com/' style='display: block'> 
+	<a href='index' style='display: block'> 
 	<img alt='Smart Python multi-Agent Development Environment' height='40' id='Header1_headerimg' src='http://3.bp.blogspot.com/_huwkhz9gyDI/TBAefGNkLlI/AAAAAAAAAUs/JB5tJkmOcl8/S1600-R/spade_logo_alpha_bco.png' style='display: block'/> 
 	</a> 
 	</div> 
@@ -54,6 +54,12 @@
 	<!--(else)-->
 		<li><a href='log' title='Log'><span class='left'>Log</span></a></li>
 	<!--(end)-->
+
+	<!--(if authenticated==True)-->
+		<li><a href='logout' title='Logout'><span class='left'>Logout</span></a></li>
+	<!--(else)-->
+		<li><a href='login' title='Login'><span class='left'>Login</span></a></li>
+	<!--(end)-->
 	</ul> 
 	</div> 
 	</div> 
@@ -64,7 +70,7 @@
 
 <!--(macro footer)-->
 	<!--<div id='templatemo_footer'> 
-	        	Copyright &#169; 2010 <a href='http://spade2.googlecode.com/'>Smart Python multi-Agent Development Environment</a> 
+	        	Copyright &#169; 2006-2012 <a href='http://spade2.googlecode.com/'>Smart Python multi-Agent Development Environment</a> 
 	</div>-->
 	<br/>
 	</div></div>

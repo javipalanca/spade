@@ -70,6 +70,20 @@ try:
     threading.stack_size(64 * 1024)  # 64k compo
 except: pass
 
+
+def require_login(func):
+	self = func.__class__
+        def wrap(self, *args, **kwargs):
+            if (not hasattr(self.session,"user_authenticated") or getattr(self.session,"user_authenticated")==False) and self.wui.passwd!=None:
+                name = self.getName().split(".")[0].upper()
+                if name=="ACC": name="SPADE"
+                return "login.pyra", {"name":name,'message':"Authentication is required.", "forward_url":self.session.url}
+            return func(self,*args,**kwargs)
+        wrap.__doc__=func.__doc__
+        wrap.__name__=func.__name__
+        return wrap
+
+
 class AbstractAgent(MessageReceiver.MessageReceiver):
     """
     Abstract Agent
@@ -105,12 +119,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._messages_mutex = thread.allocate_lock()
         
         self.wui = WUI(self)
+        self.wui.registerController("index",self.WUIController_admin)
+        self.wui.registerController("login",self.WUIController_login)
+        self.wui.registerController("logout",self.WUIController_logout)
         self.wui.registerController("admin", self.WUIController_admin)
         self.wui.registerController("log", self.WUIController_log)
         self.wui.registerController("messages",self.WUIController_messages)
         self.wui.registerController("search",self.WUIController_search)
         self.wui.registerController("send",self.WUIController_sendmsg)
         self.wui.registerController("sent",self.WUIController_sent)
+        self.wui.passwd = None
+        
         self._aclparser = ACLParser.ACLxmlParser()
 
         #self._friend_list = []  # Legacy
@@ -157,6 +176,31 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         #BDI Support
         self.KB = {} #Knowledge Base
 
+    def setAdminPasswd(self, passwd):
+        self.wui.passwd = str(passwd)
+
+    def WUIController_login(self, password=None, forward_url="index"):
+    	if hasattr(self.session, "user_authenticated") and getattr(self.session,"user_authenticated")==True:
+    		raise HTTP_REDIRECTION, 'index'
+
+        name = self.getName().split(".")[0].upper()
+        if name=="ACC": name="SPADE"
+
+    	if password==None:
+    		return "login.pyra", {"name":name, "message":"Authentication is required.","forward_url":forward_url}
+    	if password!=self.wui.passwd:
+    		return "login.pyra", {"name":name, "message":"Password is incorrect. Try again.","forward_url":forward_url}
+
+    	else:
+    		setattr(self.session,"user_authenticated",True)
+    		raise HTTP_REDIRECTION, forward_url
+
+    def WUIController_logout(self):
+    	if hasattr(self.session, "user_authenticated"):
+    	    delattr(self.session,"user_authenticated")
+    	raise HTTP_REDIRECTION, "index"
+
+    @require_login
     def WUIController_admin(self):
         import types
         behavs = {}
@@ -170,15 +214,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 		    attrs[attribute] = eval( "str(self."+attribute+")" )
         sorted_attrs = attrs.keys()
         sorted_attrs.sort()
-	import pygooglechart
-	chart=pygooglechart.QRChart(125,125)
-	chart.add_data(self.getAID().asXML())
-	chart.set_ec('H',0)
+        import pygooglechart
+        chart=pygooglechart.QRChart(125,125)
+        chart.add_data(self.getAID().asXML())
+        chart.set_ec('H',0)
         return "admin.pyra", {"name":self.getName(),"aid":self.getAID(), "qrcode":chart.get_url(), "defbehav":(id(self._defaultbehaviour),self._defaultbehaviour), "behavs":behavs, "p2pready":self.p2p_ready, "p2proutes":self.p2p_routes, "attrs":attrs, "sorted_attrs":sorted_attrs}
         
+    @require_login
     def WUIController_log(self):
         return "log.pyra", {"name":self.getName(), "log":self.getLog()}
 
+    @require_login
     def WUIController_messages(self,agents=None):
         index=0
         mess = {}
@@ -249,6 +295,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         return "messages.pyra", {"name":self.getName(), "messages":mess, "diagram": msc, "agentslist":agentslist}
 
+    @require_login
     def WUIController_search(self, query):
         
         #FIRST SEARCH AGENTS
@@ -371,6 +418,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         
         return "search.pyra", {"name":self.getName(), "agentslist": agentslist, "awuis":awuis, "services":servs}
 
+    @require_login
     def WUIController_sendmsg(self, to=None):
         from AMS import AmsAgentDescription        
         agentslist = []
@@ -381,6 +429,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             agentslist.append(a.getAID().getName())
         return "message.pyra", {"name":self.getName(), "keys":agentslist, "to":to}
         
+    @require_login
     def WUIController_sent(self, receivers=[],performative=None,sender=None,reply_with=None,reply_by=None,reply_to=None,in_reply_to=None,encoding=None,language=None,ontology=None,protocol=None,conversation_id=None,content=""):
         msg = ACLMessage.ACLMessage()
         import types
@@ -1596,6 +1645,7 @@ class PlatformAgent(AbstractAgent):
     def __init__(self, node, password, server="localhost", port=5347, config=None ,debug = [], p2p=False):
         AbstractAgent.__init__(self, node, server, p2p=p2p)
         self.config = config
+        if config.has_key('adminpasswd'): self.wui.passwd = config['adminpasswd']
         self.debug = debug
         self.jabber = xmpp.Component(server=server, port=port, debug=self.debug)
         if not self._register(password):

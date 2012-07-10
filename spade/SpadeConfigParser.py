@@ -125,6 +125,9 @@ class spadeXMLHandler(ContentHandler):
 		elif name == "path":
 				self.content.platform["path"] = self.chars
 
+		elif name == "adminpasswd":
+		        self.content["adminpasswd"] = self.chars
+
 class ConfigParser:
 	
 	"""def get(self, section, keyword):

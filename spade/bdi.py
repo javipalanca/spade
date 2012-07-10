@@ -2,9 +2,15 @@ from logic import *
 from copy import copy
 import types
 
-#from spade import *
 import Agent
 import Behaviour
+
+import SPARQLKB
+import XSBKB
+import Flora2KB
+import SWIKB
+import ECLiPSeKB
+
 
 class PreConditionFailed (Exception): pass
 class PostConditionFailed(Exception): pass
@@ -148,27 +154,48 @@ class BDIAgent(Agent.Agent):
         
         self._needDeliberate = True
         
+    def configureKB(self, typ, sentence=None, path=None):
+        kbs = ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]
+        try:
+            if not (typ in kbs): raise Exception
+            typ+="KB"
+            #module = eval("__import__("+typ+")")
+
+            if path!=None:
+                self.kb = eval(typ+"."+typ+"("+str(sentence)+", '"+path+"')")
+            else:
+                self.kb = eval(typ+"."+typ+"("+str(sentence)+")")
+        except Exception, e:
+            print str(e)
+            self.DEBUG("Could not use " + typ + "KB. Using Fol KB.", 'warn')
+            self.kb = FolKB()
         
-    def addBelieve(self, sentence):
-        if isinstance(sentence,types.StringType):
+        
+    def addBelieve(self, sentence, type="insert"):
+        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
             self.kb.tell(expr(sentence))
-        else:
-            self.kb.tell(sentence)
+        elif issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+		self.kb.tell(sentence,type)
+
+	else:
+        	self.kb.tell(sentence)
         self._needDeliberate = True
         self.newBelieveCB(sentence)
         
-    def removeBelieve(self, sentence):
-        if isinstance(sentence,types.StringType):
+    def removeBelieve(self, sentence, type="delete"):
+        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
             self.kb.retract(expr(sentence))
+        elif issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+		self.kb.retract(sentence,type)
         else:
-            self.kb.retract(sentence)
+        	self.kb.retract(sentence)
         self._needDeliberate = True
 
     def askBelieve(self, sentence):
-        if isinstance(sentence,types.StringType):
+        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
             return self.kb.ask(expr(sentence))
         else:
-            return self.kb.ask(sentence)
+        	return self.kb.ask(sentence)
             
     def addPlan(self, plan):
         plan.addOwner(self)

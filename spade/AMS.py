@@ -580,8 +580,8 @@ class AMS(PlatformAgent):
 					return -1
 
 
-	def __init__(self,node,passw,server="localhost",port=5347):
-		PlatformAgent.__init__(self,node,passw,server,port)
+	def __init__(self,node,passw,server="localhost",port=5347,config={}):
+		PlatformAgent.__init__(self,node,passw,server,port,config)
 
 
 	def _setup(self):

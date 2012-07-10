@@ -11,8 +11,16 @@ import urllib
 import time
 import random
 import socket
+import Cookie
+import string
 
 from threading import Thread
+
+chars = string.ascii_letters + string.digits
+sessionDict = {} # dictionary mapping session id's to session objects
+
+class HTTP_REDIRECTION(Exception):
+    pass
 
 class WUI(Thread):
     def __init__(self, owner):
@@ -30,8 +38,7 @@ class WUI(Thread):
         self.controllers = {}
         
         self.is_running = False
-        
-        
+
     def run(self):
 
         while not self.httpd:
@@ -90,8 +97,37 @@ class WUI(Thread):
     def error503(self):
         return "503.pyra", {"page":"503.pyra"}
 
+
+class SessionElement(object):
+   """Arbitrary objects, referenced by the session id"""
+   pass
+
+def generateRandom(length):
+   """Return a random string of specified length (used for session id's)"""
+   return ''.join([random.choice(chars) for i in range(length)])
+
 class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
-    
+
+    def Session(self):
+        """Session management
+        If the client has sent a cookie named sessionId, take its value and 
+        return the corresponding SessionElement objet, stored in 
+        sessionDict
+        Otherwise create a new SessionElement objet and generate a random
+        8-letters value sent back to the client as the value for a cookie
+        called sessionId"""
+        if self.cookie.has_key("sessionId"):
+            sessionId=self.cookie["sessionId"].value
+        else:
+            sessionId=generateRandom(8)
+            self.cookie["sessionId"]=sessionId
+        try:
+            sessionObject = sessionDict[sessionId]
+        except KeyError:
+            sessionObject = SessionElement()
+            sessionDict[sessionId] = sessionObject
+        return sessionObject
+
     def getPage(self, req):
         """
         Return the page name from a raw GET line
@@ -143,28 +179,34 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         """
         GET petitions handler
         """
-
         ret = None
         request = self.raw_requestline.split()
         page = self.getPage(request[1])
+    
 
         if page == "/": page = "/index"
 
         if page.startswith("/"): page = page [1:]
-
+        
         try:
-            vars = self.getVars("?"+self._POST_REQ)
+            req_vars = self.getVars("?"+self._POST_REQ)
         except:
-            vars = self.getVars(request[1])
+            req_vars = self.getVars(request[1])
         
         s_vars=""
-        for k,v in vars.items():
+        for k,v in req_vars.items():
             if k:
                 v = str(v)
                 if not v.startswith('"') and not v.startswith("'") and not v.startswith("["):
                     v = '"'+ v +'"'
                 s_vars+= str(k) + "=" + v +","
         if s_vars.endswith(","): s_vars = s_vars[:-1]
+
+        #session management
+        if self.headers.has_key('cookie'):
+            self.cookie=Cookie.SimpleCookie(self.headers.getheader("cookie"))
+        else:
+            self.cookie=Cookie.SimpleCookie()
             
         # Switch page
         #if page.endswith("css"):
@@ -180,13 +222,23 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     page = self.server.owner.spade_path + os.sep + page
                 else:
                     raise Exception
-                f = open(page, "r")
-                self.copyfile(f, self.wfile)
-                f.close()
+
             except:
                 self.server.owner.owner.DEBUG("Could not open file: "+ page, "err")
+
+            try:
+                    self.send_response(200)
+                    for morsel in self.cookie.values():
+                        self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+                    self.end_headers()
+                    f = open(page, "r")
+                    self.copyfile(f, self.wfile)
+                    f.close()
+            except:
+                    self.server.owner.owner.DEBUG(sys.exc_info(), "err")
         
         else:
+            sess = self.Session()
             try:
                 # Check wether controller exists
                 # Get the first section of the URL path (e.g. the "admin" of "admin/foo/bar")
@@ -198,31 +250,52 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 template = "404.pyra"
                 ret = {"template":page, "error":str(_err),"name":self.server.owner.owner.getName()}
+                code=404
             try:
                 if not ret:
-                    func = self.server.owner.controllers[str(page)]                    
+                    func = self.server.owner.controllers[str(page)]
+                    #session object
+                    sess.url = page
+                    func.__self__.session = sess
                     template, ret = eval("func"+"("+s_vars+")")
+                    code=200
+            except HTTP_REDIRECTION,url:
+                self.send_response(302)
+                for morsel in self.cookie.values():
+                    self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+                self.send_header('Location', url)
+                self.end_headers()
+                self.wfile.write("")
+		return
+
             except Exception, e:
                 #No controller
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 template = "501.pyra"
-                ret = {"template":page, "error":str(_err)}
+                ret = {"template":page, "error":str(_err),"name":self.server.owner.owner.getName()}
+                code=501
             
             try:
                 if os.path.exists(self.server.owner.template_path+os.sep+template):
                     t = pyratemp.Template(filename=self.server.owner.template_path+os.sep+template, data=ret)
                 else:
-                    olddir = os.path.curdir
+                    #olddir = os.path.curdir
                     #os.chdir(self.server.spade_path)
+		    authenticated = False
+		    if hasattr(sess,"user_authenticated"):
+			if sess.user_authenticated==True: authenticated=True
+		    ret['authenticated'] = authenticated
                     t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+template, data=ret)
+                    #print template, ret
                     #os.chdir(olddir)
             except pyratemp.TemplateSyntaxError, e:
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err),"name":self.server.owner.owner.getName()})
+                code=501
             except Exception, e:
                 #No template
                 _exception = sys.exc_info()
@@ -230,6 +303,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 #print "###", _err, "###"
                 t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"503.pyra", data={"page":template,"name":self.server.owner.owner.getName()})
+                code=503
             try:
                 result = t()
             except Exception, e:
@@ -239,13 +313,15 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+"501.pyra", data={"template":template, "error":str(_err),"name":self.server.owner.owner.getName()})
                 result = t()
+                code=501
                 
             r = result.encode("ascii", 'xmlcharrefreplace')
             
+            self.send_response(code)
+            for morsel in self.cookie.values():
+                self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+            self.end_headers()
             self.wfile.write(r)
-
-
-
 
 
 

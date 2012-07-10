@@ -1,3 +1,107 @@
+2012-06-01 18:05  jpalanca
+
+	* trunk/examples/unittests/coverage-unittests.py: added unittests
+	  for coverage analysis
+
+2012-06-01 16:52  jpalanca
+
+	* trunk/examples/unittests/unittests.py: added
+	  unittest-xml-reporting
+
+2011-11-28 14:37  jpalanca
+
+	* ChangeLog, doc/manual/book.xml, doc/manual/ch03-basic-agents.xml,
+	  doc/manual/ch06-bdi.xml, doc/manual/html/spade.bdi.html,
+	  doc/manual/images/note.png, doc/manual/images/tip.png,
+	  doc/manual/images/warning.png, svn2cl, svn2cl.xsl,
+	  trunk/spade/Agent.py: -Solved some issues in documentation
+
+2011-11-16 16:33  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py: -Added
+	  retro-compatibility support for FIPA messages. Use the method
+	  attribute "xmppfipa" in the send function. -Added the regex patch
+	  to the message templates. Thanks to J. fernando Sanchez
+
+2011-11-11 16:02  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/diagram.py,
+	  trunk/templates/messages.pyra: -Changed sequencediagrams to
+	  Javascript API. Old API was not working. Still need to improve it.
+	  Websequencediagrams.com does not support large diagrams.
+
+2010-07-30 13:42  jpalanca
+
+	* trunk/examples/unittests/aidTestCase.py,
+	  trunk/examples/unittests/dadTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/pubsubTestCase.py,
+	  trunk/examples/unittests/rpcTestCase.py, trunk/spade/AID.py,
+	  trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/spade/pubsub.py, trunk/xmppd/modules/pubsub.py: - Modified
+	  RPC API. Now service P and Q are matched with inputs and outputs
+	  stored (optionally) in the agent KB - DF.Service class now has a
+	  asContentObject method, so it can be converted easy to a XML
+	  string - DF now publishes service registrations and
+	  unregistrations using pubsub events - Fixed some XML and CO
+	  generations - Fixed pubsub module. Now PlatformAgents (with
+	  namespace NS_COMPONENT_ACCEPT) can use pubsub. Fixes issue 60.
+
+2010-07-20 15:35  jpalanca
+
+	* trunk/examples/unittests/pubsubTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py: - Added EventBehaviour to the pubsub
+	  subscriptions. Now an agent can register a callback
+	  (EventBehaviour) when an event is received! - Added and improved
+	  more pubsub unittests.
+
+2010-07-16 17:41  jpalanca
+
+	* trunk/examples/pubsub, trunk/examples/pubsub/juliet.py,
+	  trunk/examples/pubsub/romeo.py,
+	  trunk/examples/unittests/pubsubTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/spade.sh,
+	  trunk/spade/Agent.py, trunk/spade/pubsub.py,
+	  trunk/spade/socialnetwork.py, trunk/xmpp/protocol.py,
+	  trunk/xmppd/modules/__init__.py, trunk/xmppd/modules/db_fake.py,
+	  trunk/xmppd/modules/pubsub.py: - Added Personal Event Publication
+	  and Subscription Protocol! This amazing new feature (developed by
+	  cooldwind and sangarb1) allows agents to create events and
+	  subscribe to friend events, when their contact publish events.
+	  This was done following the Jabber XEP #60. This is an inital
+	  version, in future work more features will be added to the pubsub
+	  protocol. - Pubsub unittest were added. There is still some work
+	  to check their reliability. - Also some pubsub examples in
+	  directory examples/pubsub - Old spade.sh was deleted.
+
+2010-07-16 10:06  jpalanca
+
+	* trunk/runspade.py, trunk/tlslite/TLSRecordLayer.py,
+	  trunk/tlslite/mathtls.py, trunk/tlslite/messages.py,
+	  trunk/tlslite/utils/cryptomath.py, trunk/xmpp/auth.py,
+	  trunk/xmppd/modules/dialback.py, trunk/xmppd/modules/jep0078.py,
+	  trunk/xmppd/modules/stream.py, trunk/xmppd/xmppd.py: - xmppd and
+	  tlslite now use hashlib instead of md5 and sha. Fixes issue 52 -
+	  runspade checks for netbsd OS
+
+2010-07-14 13:10  jpalanca
+
+	* trunk/ChangeLog, trunk/examples/unittests/dfTestCase.py,
+	  trunk/spade/ACLMessage.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/Behaviour.py, trunk/spade/DF.py,
+	  trunk/spade/Platform.py, trunk/spade/fipa.py, trunk/spade/wui.py,
+	  trunk/svn2cl, trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/agents.pyra,
+	  trunk/templates/message.pyra, trunk/templates/sentmsg.pyra,
+	  trunk/xmpp/protocol.py: - Added send message WUI page - Fixed
+	  not-acceptable protocol type - Added reply_with and in_reply_to to
+	  ams and df templates to allow agents sending messages to
+	  themselves - Fixed ACL template match algorithm - Fixed acc loop
+	  hole when sending a message to the acc agent - DF main behaviour
+	  is not the default behaviour. using templates - WUI: notifyAMS now
+	  uses the standard fipa modifyAgent procedure - Error templates use
+	  new CSS style
+
 2010-07-11 23:13  jpalanca
 
 	* trunk/examples/unittests/aidTestCase.py,

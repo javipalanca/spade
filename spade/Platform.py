@@ -1,8 +1,9 @@
 from AMS import AmsAgentDescription
 from DF import DfAgentDescription, ServiceDescription, Service
+from Agent import PlatformAgent, require_login
 import xmpp
 import threading
-import Agent
+#import Agent
 import Envelope
 import FIPAMessage
 import AID
@@ -31,7 +32,7 @@ class PlatformRestart(Exception):
 
 
 
-class SpadePlatform(Agent.PlatformAgent):
+class SpadePlatform(PlatformAgent):
     class RouteBehaviour(Behaviour.Behaviour):
         def __init__(self):
             Behaviour.Behaviour.__init__(self)
@@ -104,18 +105,15 @@ class SpadePlatform(Agent.PlatformAgent):
                     #print "Message to", to.getName(), "... Posting!"
                     """
             else:
-                print "ACC::dying... it shouldn't happen"
+                self.myAgent.DEBUG("ACC::dying... it shouldn't happen", 'err')
 
     def __init__(self, node, password, server, port, config=None):
-        Agent.PlatformAgent.__init__(self, node, password, server, port, config=config, debug=[])
+        PlatformAgent.__init__(self, node, password, server, port, config=config, debug=[])
         self.mtps = {}
 
     def _setup(self):
         self.setDefaultBehaviour(self.RouteBehaviour())
 
-        #self.addBehaviour(self.SWIBehaviour())
-        #swi.SWIHandler.platform = self
-        #self.wui = WUI(self)
         self.wui.registerController("index",self.index)
         self.wui.registerController("agents", self.agents)
         self.wui.registerController("services", self.services)
@@ -162,12 +160,14 @@ class SpadePlatform(Agent.PlatformAgent):
         platform = self.getName()        
         version = str(sys.version)
         the_time = str(time.ctime())
-	doc_path = abspath('.')
+        doc_path = abspath('.')
         return "webadmin_indigo.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, doc_path=doc_path)
 
+    @require_login
     def agents(self):
         import sys
         import time
+        so = self.session
         servername = self.getDomain()
         platform = self.getName()        
         version = str(sys.version)
@@ -192,6 +192,7 @@ class SpadePlatform(Agent.PlatformAgent):
         self.DEBUG("AWUIs: "+str(awuis))
         return "agents.pyra", dict(name=platform,servername=servername, platform=platform, version=version, time=the_time, agents=search, awuis=awuis)
 
+    @require_login
     def services(self):
         import sys
         import time

@@ -29,15 +29,19 @@ class HMAC:
         digestmod: A module supporting PEP 247. Defaults to the md5 module.
         """
         if digestmod is None:
-            import md5
-            digestmod = md5
+            #import md5
+            import hashlib
+            #digestmod = md5
+            digestmod = hashlib
 
         if key == None: #TREVNEW - for faster copying
             return      #TREVNEW
 
         self.digestmod = digestmod
-        self.outer = digestmod.new()
-        self.inner = digestmod.new()
+        #self.outer = digestmod.new()
+        self.outer = digestmod.md5()
+        #self.inner = digestmod.new()
+        self.inner = digestmod.md5()
         self.digest_size = digestmod.digest_size
 
         blocksize = 64
@@ -45,7 +49,8 @@ class HMAC:
         opad = "\x5C" * blocksize
 
         if len(key) > blocksize:
-            key = digestmod.new(key).digest()
+            #key = digestmod.new(key).digest()
+            key = digestmod.md5(key).digest()
 
         key = key + chr(0) * (blocksize - len(key))
         self.outer.update(_strxor(key, opad))

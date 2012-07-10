@@ -3,9 +3,11 @@
 import os
 #from psyco.classes import *
 
-for m in os.listdir('modules'):
-    if m[:2]=='__' or m[-3:]<>'.py': continue
-    exec "import "+m[:-3]
+#for m in os.listdir('modules'):
+#    if m[:2]=='__' or m[-3:]<>'.py': continue
+#    exec "import "+m[:-3]
+
+import jep0078,roster,config,message,router,db_fake,muc,stream,dialback,oob,jep0077,pubsub,wq
 
 addons = [
 # System stuff
