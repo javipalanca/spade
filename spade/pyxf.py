@@ -440,25 +440,27 @@ class flora2:
 
 if __name__ == '__main__':
   x = xsb()
-  x.load( 'test_xsb' )
+  x.load( '../test/logic/test_xsb' )
   print x.query( 'dislikes( john, mushrooms )' )
   print x.query( 'likes( Person, Food )' )
   del x
+  
+  print "======="
 
   s = swipl()
-  s.load( 'test_swi' )
+  s.load( '../test/logic/test_swi' )
   print s.query( 'dislikes( john, mushrooms )' )
   print s.query( 'likes( Person, Food )' )
   del s
 
   e = eclipse() 
-  e.load( 'test_eclipse' )
+  e.load( '../test/logic/test_eclipse' )
   print e.query( 'dislikes( john, mushrooms )' )
   print e.query( 'likes( Person, Food )' )
   del e
   
   f = flora2()
-  f.load( 'test_flora' )
+  f.load( '../test/logic/test_flora' )
   print f.query( 'john[ dislikes->mushrooms ]' )
   print f.query( '?person[ likes->?food ]' )
   del f

@@ -1,0 +1,6 @@
+
+john[ likes->curry ].
+sandy[ likes->mushrooms ].
+
+?x[ dislikes->?y ] :-
+	?x[ not( likes->?y ) ].

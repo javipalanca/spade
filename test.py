@@ -9,6 +9,7 @@ from test.dadTestCase   import *
 from test.eventbehavTestCase import *
 from test.pubsubTestCase import *
 from test.kbTestCase import *
+from test.xfTestCase import *
 
 from spade import spade_backend
 from xmppd.xmppd import Server
