@@ -378,7 +378,7 @@ class flora2:
       self.engine.expect( flora2prompt )
       self.engine.expect( flora2prompt )
     except px.ExceptionPexpect:
-      raise SWIExecutableNotFound, 'Flora-2 executable not found on the specified path. Try using flora2( "/path/to/flora2/runflora" )'
+      raise Flora2ExecutableNotFound, 'Flora-2 executable not found on the specified path. Try using flora2( "/path/to/flora2/runflora" )'
    
   def load( self, module ):
     '''Loads module into self.engine

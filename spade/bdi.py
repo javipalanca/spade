@@ -5,16 +5,14 @@ import types
 import Agent
 import Behaviour
 
-import SPARQLKB
-import XSBKB
-import Flora2KB
-import SWIKB
-import ECLiPSeKB
-
-
 class PreConditionFailed (Exception): pass
 class PostConditionFailed(Exception): pass
 class ServiceFailed(Exception): pass
+class KBConfigurationFailed(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+    def __str__(self):
+        return repr(self.msg)
 
 class Goal:
     
@@ -155,9 +153,19 @@ class BDIAgent(Agent.Agent):
         self._needDeliberate = True
         
     def configureKB(self, typ, sentence=None, path=None):
-        kbs = ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]
+        """
+        Supported Knowledge Bases are: ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]
+        """
         try:
-            if not (typ in kbs): raise Exception
+            if typ not in ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]:
+                raise KBConfigurationFailed(typ + " is not a valid KB.")
+            if   typ=="SPARQL": import SPARQLKB
+            elif typ=="XSB":    import XSBKB
+            elif typ=="Flora2": import Flora2KB
+            elif typ=="SWI":    import SWIKB
+            elif typ=="ECLiPSe":import ECLiPSeKB
+            else: raise KBConfigurationFailed("Could not import "+str(typ)+" KB.")
+
             typ+="KB"
             #module = eval("__import__("+typ+")")
 
@@ -165,28 +173,36 @@ class BDIAgent(Agent.Agent):
                 self.kb = eval(typ+"."+typ+"("+str(sentence)+", '"+path+"')")
             else:
                 self.kb = eval(typ+"."+typ+"("+str(sentence)+")")
-        except Exception, e:
-            print str(e)
-            self.DEBUG("Could not use " + typ + "KB. Using Fol KB.", 'warn')
+        except KBConfigurationFailed as e:
+            self.DEBUG(str(e)+" Using Fol KB.", 'warn')
             self.kb = FolKB()
         
         
     def addBelieve(self, sentence, type="insert"):
-        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
-            self.kb.tell(expr(sentence))
-        elif issubclass(Flora2KB.Flora2KB,self.kb.__class__):
-		self.kb.tell(sentence,type)
-
-	else:
+        if isinstance(sentence,types.StringType):
+            try:
+                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+        		    self.kb.tell(sentence,type)
+            except:
+                if issubclass(FolKB, self.kb.__class__):
+                    self.kb.tell(expr(sentence))
+                else:
+                	self.kb.tell(sentence)
+        else:
         	self.kb.tell(sentence)
         self._needDeliberate = True
         self.newBelieveCB(sentence)
         
     def removeBelieve(self, sentence, type="delete"):
-        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
-            self.kb.retract(expr(sentence))
-        elif issubclass(Flora2KB.Flora2KB,self.kb.__class__):
-		self.kb.retract(sentence,type)
+        if isinstance(sentence,types.StringType):
+            try:
+                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+        		    self.kb.retract(sentence,type)
+            except:
+                if issubclass(FolKB, self.kb.__class__):
+                    self.kb.retract(expr(sentence))
+                else:
+                	self.kb.retract(sentence)
         else:
         	self.kb.retract(sentence)
         self._needDeliberate = True
