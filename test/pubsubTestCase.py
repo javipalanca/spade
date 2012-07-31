@@ -23,14 +23,14 @@ class PubSubTestCase(unittest.TestCase):
         self.Aaid = spade.AID.aid("a@"+host,["xmpp://a@"+host])
         self.Baid = spade.AID.aid("b@"+host,["xmpp://b@"+host])
 
-    	self.a = spade.Agent.Agent("a@"+host, "secret")
-    	self.a.wui.start()
-    	self.a.start()
-    	self.b = spade.Agent.Agent("b@"+host, "secret")
-    	self.b.wui.start()
-    	self.b.start()
-    	
-    	self.a.setSocialItem('b@'+host)
+        self.a = spade.Agent.Agent("a@"+host, "secret")
+        self.a.wui.start()
+        self.a.start()
+        self.b = spade.Agent.Agent("b@"+host, "secret")
+        self.b.wui.start()
+        self.b.start()
+        
+        self.a.setSocialItem('b@'+host)
         self.a._socialnetwork['b@'+host].subscribe()
         self.b.setSocialItem('a@'+host)
         self.b._socialnetwork['a@'+host].subscribe()
@@ -39,7 +39,7 @@ class PubSubTestCase(unittest.TestCase):
         self.b.deleteEvent("ExistsNode")
         self.a.deleteEvent("NENode")
         self.b.deleteEvent("NENode")
-    	
+        
     def tearDown(self):
         self.a.deleteEvent("ExistsNode")
         self.b.deleteEvent("ExistsNode")
@@ -76,7 +76,6 @@ class PubSubTestCase(unittest.TestCase):
         self.a.deleteEvent("ExistsNode")
         
     def testPublishEvent(self):
-        
         result = self.a.createEvent("ExistsNode")
         self.assertEqual(result, ('ok', ['ExistsNode']))
         
@@ -139,7 +138,6 @@ class PubSubTestCase(unittest.TestCase):
         #TODO: Check that the last published item is sent after subscription.
         
     def testNotEventBehaviour(self):
-        
         class Behav(spade.Behaviour.Behaviour): pass
         self.a.deleteEvent("ExistsNode")
         self.b.deleteEvent("ExistsNode")
@@ -150,8 +148,8 @@ class PubSubTestCase(unittest.TestCase):
         
 
 if __name__ == "__main__":
-    #unittest.main()
-    #sys.exit()
+    unittest.main()
+    sys.exit()
 
     suite = unittest.TestSuite()
     suite.addTest(PubSubTestCase('testCreateEvent'))

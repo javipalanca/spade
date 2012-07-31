@@ -1284,6 +1284,9 @@ class Service:
         self.dad   = DfAgentDescription()
         sd = ServiceDescription()
         
+        self.inputs  = inputs
+        self.outputs = outputs
+        
         if co and co.has_key("service"):
             if co.service.name:  name = co.service.name
             if co.service.owner: owner = AID.aid(co=co.service.owner)
@@ -1452,7 +1455,11 @@ class Service:
         return y.dad.match(self.dad)
         
     def __eq__(self,y):
+        if y==None: return False
         return y.match(self)
+
+    def __ne__(self,y):
+        return not self==y
         
     def __str__(self):
         return str(self.dad)

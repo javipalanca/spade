@@ -3,19 +3,17 @@ import sys
 import time
 import unittest
 
-sys.path.append('../..')
-
 import spade
 
 host = "127.0.0.1"
 
 class MyAgent(spade.Agent.Agent):
 
-	def _setup(self):
-		self.msg  = None
+    def _setup(self):
+        self.msg  = None
 
 
-		
+        
 class p2pSendMsgBehav(spade.Behaviour.OneShotBehaviour):
     
     def __init__(self,method):
@@ -65,10 +63,10 @@ class p2pAnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg = None
         msg = self._receive(block=True,timeout=10)
         if msg != None:
-			content = msg.getContent()
-			msg = msg.createReply()
-			msg.setContent(content)
-			self.myAgent.send(msg, method=self.method)
+            content = msg.getContent()
+            msg = msg.createReply()
+            msg.setContent(content)
+            self.myAgent.send(msg, method=self.method)
 
 class p2pSendMultiMsgBehav(spade.Behaviour.OneShotBehaviour):
 
@@ -119,12 +117,12 @@ class BasicTestCase(unittest.TestCase):
         self.Aaid = spade.AID.aid("a@"+host,["xmpp://a@"+host])
         self.Baid = spade.AID.aid("b@"+host,["xmpp://b@"+host])
 
-    	self.a = MyAgent("a@"+host, "secret",p2p=True)
-    	#self.a._debug = True
-    	self.a.start()
-    	self.b = MyAgent("b@"+host, "secret",p2p=True)
-    	#self.b._debug=True
-    	self.b.start()
+        self.a = MyAgent("a@"+host, "secret",p2p=True)
+        #self.a._debug = True
+        self.a.start()
+        self.b = MyAgent("b@"+host, "secret",p2p=True)
+        #self.b._debug=True
+        self.b.start()
 
     def tearDown(self):
         self.a.stop()
@@ -173,7 +171,7 @@ class BasicTestCase(unittest.TestCase):
         t = spade.Behaviour.MessageTemplate(template)
         self.a.addBehaviour(p2pSendAndRecvMsgBehav("p2p"),t)
         counter = 0
-        while self.a.msg == None and counter < 20:
+        while self.a.msg == None and counter < 10:
             time.sleep(1)
             counter += 1
         self.assertNotEqual(self.a.msg,None)
@@ -231,6 +229,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(self.b.receivedmsg,nmsg)
         self.assertEqual(self.b.errorTag,[])
         self.assertEqual(self.a.routeTag,[])
+
 
 if __name__ == "__main__":
     unittest.main()

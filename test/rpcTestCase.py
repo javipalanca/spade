@@ -4,16 +4,14 @@ import time
 import types
 import unittest
 
-sys.path.append('../..')
-
 import spade
-
+from spade.kb import *
 host = "127.0.0.1"
 
 class MyAgent(spade.Agent.Agent):
 
-	def _setup(self):
-		self.result  = None
+    def _setup(self):
+        self.result  = None
 
 def sumVec(vec):
     r = 0
@@ -21,8 +19,8 @@ def sumVec(vec):
        r+=int(i)
     return {"sum":r}
 
-def CreateService(name, owner, P=None,Q=None):
-    return spade.DF.Service(name, owner, P=P,Q=Q)
+def CreateService(name, owner, inputs=[],outputs=[]):
+    return spade.DF.Service(name, owner, inputs=inputs,outputs=outputs)
 
 def Invoke(agent, service,inputs=None):
 
@@ -49,15 +47,15 @@ class RPCTestCase(unittest.TestCase):
         self.Aaid = spade.AID.aid("a@"+host,["xmpp://a@"+host])
         self.Baid = spade.AID.aid("b@"+host,["xmpp://b@"+host])
 
-    	self.a = MyAgent("a@"+host, "secret")
-    	self.a.start()
-    	self.b = MyAgent("b@"+host, "secret")
-    	#self.b.setDebugToScreen()
-    	#self.a.setDebugToScreen()
-    	self.b.start()
-    	self.a.wui.start()
-    	self.b.wui.start()
-    	
+        self.a = MyAgent("a@"+host, "secret")
+        self.a.start()
+        self.b = MyAgent("b@"+host, "secret")
+        #self.b.setDebugToScreen()
+        #self.a.setDebugToScreen()
+        self.b.start()
+        #self.a.wui.start()
+        #self.b.wui.start()
+        
     def tearDown(self):
         DeRegisterService(self.b)
         self.a.stop()
@@ -66,7 +64,7 @@ class RPCTestCase(unittest.TestCase):
     def testInvokeService(self):
         DeRegisterService(self.b)
         
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
         
         Invoke(self.a, s,inputs={"vec":[10,20]})
@@ -79,11 +77,31 @@ class RPCTestCase(unittest.TestCase):
         self.assertEqual(self.b.result,True)
         services = SearchService(self.a,s)
         self.assertEqual(len(services),0)
+
+
+    def testInvokeService_withPostCondition(self):
+        DeRegisterService(self.b)
+        
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
+        s.addQ("Var(sum,x,Int)")
+        RegisterService(self.b, s, sumVec)
+        
+        Invoke(self.a, s,inputs={"vec":[10,20]})
+        self.assertNotEqual(self.a.result,None)
+        self.assertNotEqual(self.a.result,False)
+        self.assertEqual(type(self.a.result),types.DictType)
+        self.assertEqual(self.a.result,{"sum":30})
+        
+        DeRegisterService(self.b)
+        self.assertEqual(self.b.result,True)
+        services = SearchService(self.a,s)
+        self.assertEqual(len(services),0)
+ 
     
     def testInvokeOwnService(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
         
         Invoke(self.b, s, inputs={"vec":[10,20]})
@@ -98,10 +116,10 @@ class RPCTestCase(unittest.TestCase):
     def testSearchAndInvoke(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
         
-        s2 = CreateService("VecSum",self.b.getAID(),P=["vec"])
+        s2 = CreateService("VecSum",self.b.getAID(),inputs=["vec"])
         services = SearchService(self.a,s2)
         self.assertNotEqual(services,None)
         self.assertEqual(len(services),1)
@@ -118,19 +136,21 @@ class RPCTestCase(unittest.TestCase):
     def testInvokeBadParams(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
         
         s2 = CreateService("VecSum",self.b.getAID())
         Invoke(self.a, s2, inputs={"vec":["param1","param2"]})
-        self.assertEqual(self.a.result,False)
+        #self.assertEqual(self.a.result,False)
+        if self.a.result!=False:
+            self.fail(str(self.a.result))
         
         DeRegisterService(self.b)
         
     def testInvokeNotExistingService(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"])
 
         Invoke(self.a, s)
         self.assertNotEqual(self.a.result,None)
@@ -139,7 +159,7 @@ class RPCTestCase(unittest.TestCase):
     def testInvokeTwice(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
 
         Invoke(self.a, s, inputs={"vec":[10,20]})
@@ -160,44 +180,94 @@ class RPCTestCase(unittest.TestCase):
     def testInvokeService_withKB(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
         
-        self.a.KB["vec"] = [10,20]
+        self.a.kb.set("vec",[10,20])
 
         Invoke(self.a, s)
         self.assertNotEqual(self.a.result,None)
         self.assertNotEqual(self.a.result,False)
-        self.assertEqual(self.a.KB["sum"],30)
+        self.assertEqual(self.a.kb.get("sum"),30)
 
         DeRegisterService(self.b)
         self.assertEqual(self.b.result,True)
         services = SearchService(self.a,s)
         self.assertEqual(len(services),0)
 
-        del self.a.KB["sum"]
-        del self.a.KB["vec"]
+        #del self.a.KB["sum"]
+        #del self.a.KB["vec"]
+        self.a.kb.configure(typ="Spade")
 
     def testInvokeServiceMissingParams_withKB(self):
         DeRegisterService(self.b)
 
-        s = CreateService("VecSum",self.b.getAID(),P=["vec"],Q=["sum"])
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
         RegisterService(self.b, s, sumVec)
 
         Invoke(self.a, s)
         self.assertEqual(self.a.result,False)
-        if self.a.KB.has_key("sum"): self.fail()
+        if self.a.kb.get("sum")!=None: self.fail()
 
         DeRegisterService(self.b)
         self.assertEqual(self.b.result,True)
         services = SearchService(self.a,s)
         self.assertEqual(len(services),0)
+
+    def testInvokeService_withKB_withPreCondition(self):
+        DeRegisterService(self.b)
+
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
+        s.addP("Var(vec,x,List)")
+        RegisterService(self.b, s, sumVec)
+        
+        self.a.kb.set("vec",[10,20])
+
+        Invoke(self.a, s)
+
+        self.assertNotEqual(self.a.result,None)
+        self.assertNotEqual(self.a.result,False)
+        self.assertEqual(self.a.kb.get("sum"),30)
+
+        DeRegisterService(self.b)
+
+        self.assertEqual(self.b.result,True)
+        services = SearchService(self.a,s)
+
+        self.assertEqual(len(services),0)
+
+        #del self.a.KB["sum"]
+        #del self.a.KB["vec"]
+        self.a.kb.configure(typ="Spade")
+
+    def testInvokeService_withKB_withFailedPreCondition(self):
+        DeRegisterService(self.b)
+
+        s = CreateService("VecSum",self.b.getAID(),inputs=["vec"],outputs=["sum"])
+        s.addP("Var(MyVec,x,List)")
+        RegisterService(self.b, s, sumVec)
+        
+        self.a.kb.set("vec",[10,20])
+
+        Invoke(self.a, s)
+        self.assertNotEqual(self.a.result,None)
+        self.assertEqual(self.a.result,False)
+
+        DeRegisterService(self.b)
+        self.assertEqual(self.b.result,True)
+        services = SearchService(self.a,s)
+        self.assertEqual(len(services),0)
+
+        #del self.a.KB["sum"]
+        #del self.a.KB["vec"]
+        self.a.kb.configure(typ="Spade")
+
 
 if __name__ == "__main__":
     unittest.main()
     sys.exit()
     suite = unittest.TestSuite()
-    suite.addTest(RPCTestCase('testInvokeService_withKB'))
+    suite.addTest(RPCTestCase('testInvokeService_withKB_withPreCondition'))
     result = unittest.TestResult()
     
     suite.run(result)

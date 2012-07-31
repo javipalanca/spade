@@ -28,6 +28,9 @@ import peer2peer as P2P
 import socialnetwork
 import RPC
 import pubsub
+import bdi
+from logic import *
+from kb import *
 
 import mutex
 import types
@@ -39,6 +42,7 @@ import SocketServer
 import colors
 import cPickle as pickle
 import uuid
+import json
 
 
 import DF
@@ -72,16 +76,17 @@ except: pass
 
 
 def require_login(func):
-	self = func.__class__
-        def wrap(self, *args, **kwargs):
+    '''decorator for requiring login in wui controllers'''
+    self = func.__class__
+    def wrap(self, *args, **kwargs):
             if (not hasattr(self.session,"user_authenticated") or getattr(self.session,"user_authenticated")==False) and self.wui.passwd!=None:
                 name = self.getName().split(".")[0].upper()
                 if name=="ACC": name="SPADE"
                 return "login.pyra", {"name":name,'message':"Authentication is required.", "forward_url":self.session.url}
             return func(self,*args,**kwargs)
-        wrap.__doc__=func.__doc__
-        wrap.__name__=func.__name__
-        return wrap
+    wrap.__doc__=func.__doc__
+    wrap.__name__=func.__name__
+    return wrap
 
 
 class AbstractAgent(MessageReceiver.MessageReceiver):
@@ -138,9 +143,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._socialnetwork = {}
         self._subscribeHandler   = lambda frm,typ,stat,show: False
         self._unsubscribeHandler = lambda frm,typ,stat,show: False
-        
+
+        #PubSub
         self._pubsub = pubsub.PubSub(self)
         self._events = {}
+        
+        #Knowledge base
+        self.kb = KB() # knowledge base
+        
 
         self._waitingForRoster = False  # Indicates that a request for the roster is in progress
 
@@ -173,45 +183,43 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.RPC = {}
         self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set',queryNS=NS_RPC)))
         
-        #BDI Support
-        self.KB = {} #Knowledge Base
 
     def setAdminPasswd(self, passwd):
         self.wui.passwd = str(passwd)
 
     def WUIController_login(self, password=None, forward_url="index"):
-    	if hasattr(self.session, "user_authenticated") and getattr(self.session,"user_authenticated")==True:
-    		raise HTTP_REDIRECTION, 'index'
+        if hasattr(self.session, "user_authenticated") and getattr(self.session,"user_authenticated")==True:
+            raise HTTP_REDIRECTION, 'index'
 
         name = self.getName().split(".")[0].upper()
         if name=="ACC": name="SPADE"
 
-    	if password==None:
-    		return "login.pyra", {"name":name, "message":"Authentication is required.","forward_url":forward_url}
-    	if password!=self.wui.passwd:
-    		return "login.pyra", {"name":name, "message":"Password is incorrect. Try again.","forward_url":forward_url}
+        if password==None:
+            return "login.pyra", {"name":name, "message":"Authentication is required.","forward_url":forward_url}
+        if password!=self.wui.passwd:
+            return "login.pyra", {"name":name, "message":"Password is incorrect. Try again.","forward_url":forward_url}
 
-    	else:
-    		setattr(self.session,"user_authenticated",True)
-    		raise HTTP_REDIRECTION, forward_url
+        else:
+            setattr(self.session,"user_authenticated",True)
+            raise HTTP_REDIRECTION, forward_url
 
     def WUIController_logout(self):
-    	if hasattr(self.session, "user_authenticated"):
-    	    delattr(self.session,"user_authenticated")
-    	raise HTTP_REDIRECTION, "index"
+        if hasattr(self.session, "user_authenticated"):
+            delattr(self.session,"user_authenticated")
+        raise HTTP_REDIRECTION, "index"
 
     @require_login
     def WUIController_admin(self):
         import types
         behavs = {}
         attrs = {}
-        sorted_attrs = []	
+        sorted_attrs = []   
         for k in self._behaviourList.keys():
             behavs[id(k)]=k
         for attribute in self.__dict__:
             if eval( "type(self."+attribute+") not in [types.MethodType, types.BuiltinFunctionType, types.BuiltinMethodType, types.FunctionType]" ):
                 if attribute not in ["_agent_log"]:
-		    attrs[attribute] = eval( "str(self."+attribute+")" )
+                    attrs[attribute] = eval( "str(self."+attribute+")" )
         sorted_attrs = attrs.keys()
         sorted_attrs.sort()
         import pygooglechart
@@ -258,8 +266,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 strm = strm.replace("&quot;",'"')"""
                 x = xml.dom.minidom.parseString(strm)
                 strm = x.toprettyxml()
-		# Quick'n dirty hack to display jabber messages on the WUI
-		# Will fix with a proper display
+                # Quick'n dirty hack to display jabber messages on the WUI
+                # Will fix with a proper display
                 strm = strm.replace(">", "&gt;")
                 strm = strm.replace("<", "&lt;")
                 strm = strm.replace('"', "&quot;")
@@ -1120,7 +1128,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         Stops the agent execution and blocks until the agent dies
         """
 
-	self.wui.stop()
+        self.wui.stop()
 
         self._kill()
         if timeout > 0:
@@ -1143,6 +1151,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         must be overridden
         """
         pass
+        
+    def _initBdiBehav(self):
+        """
+        starts the BDI behaviour ONLY
+        if self is a subclass of bdi.BDIAgent
+        """
+        if issubclass(self.__class__, BDIAgent):
+            self._startBdiBehav()
 
     def takeDown(self):
         """
@@ -1187,7 +1203,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                     for b in bL:
                         t = bL[b]
                         if (t != None):
-			    if (t.match(msg) == True):
+                            if (t.match(msg) == True):
                                 if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
                                     ib = b()
                                     if ib.onetime:
@@ -1450,16 +1466,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
 
     def searchService(self, DAD):
-    	"""
-    	search a service in the DF
-    	the service template is a DfAgentDescriptor
+        """
+        search a service in the DF
+        the service template is a DfAgentDescriptor
 
-    	"""
-    	if isinstance(DAD,DF.Service):
+        """
+        if isinstance(DAD,DF.Service):
             DAD=DAD.getDAD()
             returnDAD=False
         else: returnDAD=True
-    	
+        
         msg = ACLMessage.ACLMessage()
         template = Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
@@ -1498,7 +1514,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return r
 
 
-		
+        
     def modifyService(self, DAD, methodCall=None):
         """
         modifies a service in the DF
@@ -1533,10 +1549,14 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.runBehaviourOnce(b,t)
             return b.result
 
+    ####################
+    #RPC invokation
+    ####################
     def invokeService(self, service, inputs=None):
         """
         invokes a service using jabber-rpc (XML-RPC)
         the service template is a DF.Service
+	if inputs is None, they are extracted from the agent's KB
         """
 
         if not isinstance(service,DF.Service):
@@ -1545,8 +1565,17 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         num = str(uuid.uuid4()).replace("-","")
         
-        if inputs==None: inputs = self.KB
-        
+        if inputs==None: #inputs = self.KB
+            inputs={}
+            for i in service.getInputs():
+                r = self.kb.get(str(i))
+                if r==None:
+                    self.DEBUG("Can not invoke Service, input not found: " + str(i),'error')
+                    return False
+                self.DEBUG("Adding input: "+str(i)+" = "+str(r))
+                inputs[i] = r
+
+        self.DEBUG("Invoking service " + str(service.getName()) + " with inputs = "+ str(inputs))
         b = RPC.RPCClientBehaviour(service,inputs,num)
         t  = Behaviour.MessageTemplate(Iq(typ="result",attrs={'id':num}))
 
@@ -1588,52 +1617,92 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return self._pubsub.createNode(name, server=None, type='leaf', parent=None, access=None)
     def deleteEvent(self, name, server=None):
         return self._pubsub.deleteNode(name, server=None)
+        
+        
+    ########################
+    #Knowledge Base services
+    ########################
+        
+    def addBelieve(self, sentence, type="insert"):
+        if isinstance(sentence,types.StringType):
+            try:
+                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+                    self.kb.tell(sentence,type)
+            except:
+                self.kb.tell(sentence)
+        else:
+            self.kb.tell(sentence)
+        self._needDeliberate = True
+        ###self.newBelieveCB(sentence) #TODO
+
+    def removeBelieve(self, sentence, type="delete"):
+        if isinstance(sentence,types.StringType):
+            try:
+                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
+                    self.kb.retract(sentence,type)
+            except:
+                self.kb.retract(sentence)
+        else:
+            self.kb.retract(sentence)
+        self._needDeliberate = True
+
+    def askBelieve(self, sentence):
+            return self.kb.ask(sentence)
+
+    def configureKB(self, typ, sentence=None, path=None):
+	self.kb.configure(typ,sentence,path)
+            
+    def saveFact(self, name, sentence):
+        self.kb.set(name, sentence)
+
+    def getFact(self, name):
+        return self.kb.get(name)
 
 ##################################
 
 # Changed to be a 'daemonic' python Thread
 class jabberProcess(threading.Thread):
 
-	def __init__(self, socket, owner):
-		self.jabber = socket
-		#self._alive = True
-		self._forceKill = threading.Event()
-		self._forceKill.clear()
-		threading.Thread.__init__(self)
-		self.setDaemon(False)
-		self._owner = owner
+    def __init__(self, socket, owner):
+        self.jabber = socket
+        #self._alive = True
+        self._forceKill = threading.Event()
+        self._forceKill.clear()
+        threading.Thread.__init__(self)
+        self.setDaemon(False)
+        self._owner = owner
 
-	def _kill(self):
-		try:
-			self._forceKill.set()
-		except:
-			#Agent is already dead
-			pass
+    def _kill(self):
+        try:
+            self._forceKill.set()
+        except:
+            #Agent is already dead
+            pass
 
-	def forceKill(self):
-		return self._forceKill.isSet()
+    def forceKill(self):
+        return self._forceKill.isSet()
 
-	def run(self):
-		"""
-		periodic jabber update
-		"""
-		while not self.forceKill():
-		    try:
-			err = self.jabber.Process(0.4)
-		    except Exception, e:
-			_exception = sys.exc_info()
-			if _exception[0]:
-			    self._owner.DEBUG( '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
-			    self._owner.DEBUG("Exception in jabber process: "+ str(e),"err")
-			    self._owner.DEBUG("Jabber connection failed: "+self._owner.getAID().getName()+" (dying)","err")
-			    self._kill()
-			    self._owner.stop()
-			    err = None
+    def run(self):
+        """
+        periodic jabber update
+        """
+        while not self.forceKill():
+            try:
+                err = self.jabber.Process(0.4)
+            except Exception, e:
+                _exception = sys.exc_info()
+                if _exception[0]:
+                    self._owner.DEBUG( '\n'+''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(),"err")
+                    self._owner.DEBUG("Exception in jabber process: "+ str(e),"err")
+                    self._owner.DEBUG("Jabber connection failed: "+self._owner.getAID().getName()+" (dying)","err")
+                    self._kill()
+                    self._owner.stop()
+                    err = None
 
-		    if err == None or err == 0:  # None or zero the integer, socket closed
-			self._owner.DEBUG("Agent disconnected: "+self._owner.getAID().getName()+" (dying)","err")
-			self._kill()
-			self._owner.stop()
+            if err == None or err == 0:  # None or zero the integer, socket closed
+                self._owner.DEBUG("Agent disconnected: "+self._owner.getAID().getName()+" (dying)","err")
+                self._kill()
+                self._owner.stop()
 
 
 
@@ -1734,6 +1803,9 @@ class Agent(AbstractAgent):
 
         # Add Roster Behaviour
         self.addBehaviour(socialnetwork.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
+
+        # Add BDI Behaviour #only for BDI agents   
+        self._initBdiBehav() 
 
         self.DEBUG("Agent %s registered"%(agentjid),"ok")
 
@@ -1950,3 +2022,34 @@ class Agent(AbstractAgent):
             return False
 
         return True
+
+class BDIAgent(Agent):
+    def _startBdiBehav(self):
+        self.bdiBehav = bdi.BDIBehaviour(period=1)
+        self.addBehaviour(self.bdiBehav,None)
+        self.DEBUG("BDI behaviour added.",'info')
+
+    def setPeriod(self, period):
+        self.bdiBehav.setPeriod(period)
+
+    def getPeriod(self):
+        return self.bdiBehav.getPeriod()
+
+    def addPlan(self, inputs=[], outputs=[],P=[],Q=[],services=[]):
+        return self.bdiBehav.addPlan(inputs,outputs,P,Q,services)
+
+    def addGoal(self, goal):
+        self.bdiBehav.addGoal(goal)
+
+    def setPlanSelectedCB(self, func):
+        '''func MUST have as input parameter a plan'''
+        self.bdiBehav.planSelectedCB = func
+
+    def setGoalCompletedCB(self, func):
+        '''func MUST have as input parameter a goal'''
+        self.bdiBehav.goalCompletedCB = func
+
+    def setServiceCompletedCB(self, func):
+        '''func MUST have as input parameter a DF.Service'''
+        self.bdiBehav.serviceCompletedCB = func
+

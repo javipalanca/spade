@@ -85,6 +85,8 @@ class KB:
     def ask(self, query):
         """Ask returns a substitution that makes the query true, or
         it returns False. It is implemented in terms of ask_generator."""
+        if issubclass(query.__class__,str):
+            query = expr(query)
         try: 
             return self.ask_generator(query).next()
         except StopIteration:

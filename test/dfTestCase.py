@@ -3,8 +3,6 @@ import sys
 import time
 import unittest
 
-sys.path.append('../..')
-
 import spade
 
 host = "127.0.0.1"
@@ -843,8 +841,8 @@ class DFTestCase(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #unittest.main()
-    #sys.exit()
+    unittest.main()
+    sys.exit()
     
     suite = unittest.TestSuite()
     suite.addTest(DFTestCase('testRegisterService'))

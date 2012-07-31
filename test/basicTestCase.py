@@ -3,24 +3,22 @@ import sys
 import time
 import unittest
 
-sys.path.append('../..')
-
 import spade
 
 host = "127.0.0.1"
 
 class MyAgent(spade.Agent.Agent):
 
-	def _setup(self):
-		self.pi  = None
-		self.msg  = None
+    def _setup(self):
+        self.pi  = None
+        self.msg  = None
 
 
 class GetPIBehav(spade.Behaviour.OneShotBehaviour):
 
-	def _process(self):
-		self.myAgent.pi = self.myAgent.getPlatformInfo()
-		
+    def _process(self):
+        self.myAgent.pi = self.myAgent.getPlatformInfo()
+        
 class SendMsgBehav(spade.Behaviour.OneShotBehaviour):
 
     def _process(self):
@@ -54,10 +52,10 @@ class AnswerMsgBehav(spade.Behaviour.OneShotBehaviour):
         msg = None
         msg = self._receive(block=True,timeout=10)
         if msg != None:
-			content = msg.getContent()
-			msg = msg.createReply()
-			msg.setContent(content)
-			self.myAgent.send(msg)
+            content = msg.getContent()
+            msg = msg.createReply()
+            msg.setContent(content)
+            self.myAgent.send(msg)
 
 
 
@@ -68,14 +66,14 @@ class BasicTestCase(unittest.TestCase):
         self.Aaid = spade.AID.aid("a@"+host,["xmpp://a@"+host])
         self.Baid = spade.AID.aid("b@"+host,["xmpp://b@"+host])
 
-    	self.a = MyAgent("a@"+host, "secret")
-    	self.a.start()
-    	self.b = MyAgent("b@"+host, "secret")
-    	self.b.start()
-    	
-    	#self.rdf = """<rdf:ap-description><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses>acc.127.0.0.1</rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description>"""
-    	self.rdf = """<rdf:RDF xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:ap-description><rdf:ap-services list="true"><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses list="true"><rdf:addresses>acc.127.0.0.1</rdf:addresses></rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description></rdf:RDF>"""
-    	#self.pi = spade.content.RDFXML2CO(self.rdf)
+        self.a = MyAgent("a@"+host, "secret")
+        self.a.start()
+        self.b = MyAgent("b@"+host, "secret")
+        self.b.start()
+        
+        #self.rdf = """<rdf:ap-description><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses>acc.127.0.0.1</rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description>"""
+        self.rdf = """<rdf:RDF xmlns:fipa="http://www.fipa.org/schemas/fipa-rdf0#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:ap-description><rdf:ap-services list="true"><rdf:ap-services><rdf:ap-service><rdf:type>fipa.agent-management.ams</rdf:type><rdf:addresses list="true"><rdf:addresses>acc.127.0.0.1</rdf:addresses></rdf:addresses><rdf:name>xmpp://ams.127.0.0.1</rdf:name></rdf:ap-service></rdf:ap-services></rdf:ap-services><rdf:name>xmpp://acc.127.0.0.1</rdf:name></rdf:ap-description></rdf:RDF>"""
+        #self.pi = spade.content.RDFXML2CO(self.rdf)
 
     def tearDown(self):
         self.a.stop()
@@ -83,7 +81,10 @@ class BasicTestCase(unittest.TestCase):
         
     def testGetPlatformInfo(self):
         self.a.addBehaviour(GetPIBehav(), None)
-        while self.a.pi == None: time.sleep(2)
+        counter = 0
+        while self.a.pi == None and counter<10:
+            time.sleep(1)
+            counter += 1
         #print self.a.pi
         from coTestCase import isEqualElement,isEqualXML
         #self.assertEqual( str(self.a.pi),  self.rdf) # 'Incorrect Platform Info'        

@@ -18,7 +18,7 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                 params, name = xmlrpclib.loads("<?xml version='1.0'?>%s" % str(mc))
                 name=name.lower()
                 self.myAgent.DEBUG("Params processed: name="+name+" params="+str(params) + " in " + str(self.myAgent.RPC.keys()),"info","rpc")
-                    
+
                 if not self.myAgent.RPC.has_key(name):
                     self.myAgent.DEBUG("RPC: 404 method not found",'error',"rpc")
                     xmlrpc_res = xmlrpclib.dumps( xmlrpclib.Fault(404, "method not found"))
@@ -33,12 +33,13 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                 
                 self.myAgent.DEBUG("service and method: "+ str(service) + " --> " + str(methodCall),"info","rpc")
                 
-                self.myAgent.DEBUG("Comparing service.getP(): "+ str(service.getP()) + " with params--> " + str(params),"info","rpc")
+                self.myAgent.DEBUG("Comparing service.getInputs(): "+ str(service.getInputs()) + " with params--> " + str(params),"info","rpc")
                 ps = params[0].keys()
-                for p in service.getP():
+                for p in eval(str(service.getInputs())): #service.getP():
+                    self.myAgent.DEBUG("Comparing input "+str(p)+ " with "+str(ps))
                     if str(p) not in ps:
-                        self.myAgent.DEBUG("RPC: 500 missing precondition: "+str(p)+ " is not in "+str(params),'error',"rpc")
-                        xmlrpc_res = xmlrpclib.dumps( xmlrpclib.Fault(500, "missing precondition"))
+                        self.myAgent.DEBUG("RPC: 500 missing input: "+str(p)+ " is not in "+str(params),'error',"rpc")
+                        xmlrpc_res = xmlrpclib.dumps( xmlrpclib.Fault(500, "missing input"))
                         reply = self.msg.buildReply("error")
                         reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                         reply.setType("result")
@@ -66,12 +67,12 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                     self.myAgent.send(reply)
                     return
 
-                #Check postconditions
+                #Check outputs
                 try:
                     fail=False
                     outputs={}
                     if type(result) == types.DictType:
-                        for q in service.getQ():
+                        for q in eval(str(service.getOutputs())): #service.getQ():
                             if q not in result.keys():
                                 fail=True
                                 break
@@ -83,8 +84,8 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
                 except:
                     fail=True
                 if fail:
-                    self.myAgent.DEBUG("RPC: 500 missing postcondition: "+str(service.getQ()),'error',"rpc")
-                    xmlrpc_res = xmlrpclib.dumps( xmlrpclib.Fault(500, "missing postcondition"))
+                    self.myAgent.DEBUG("RPC: 500 missing output: "+str(service.getQ()),'error',"rpc")
+                    xmlrpc_res = xmlrpclib.dumps( xmlrpclib.Fault(500, "missing output"))
                     reply = self.msg.buildReply("error")
                     reply.setQueryPayload([xmpp.simplexml.XML2Node(xmlrpc_res)])
                     reply.setType("result")
@@ -106,6 +107,13 @@ class RPCServerBehaviour(Behaviour.EventBehaviour):
 class RPCClientBehaviour(Behaviour.OneShotBehaviour):
     
     def __init__(self, service, inputs, num):
+        '''
+        This behaviour makes the Remote Procedure Call to the server
+        Usage:
+        service - DF.Service to be called
+        inputs  - dictionary of inputs where key=input name, value=input value
+        num     - a numeric id
+        '''
         Behaviour.OneShotBehaviour.__init__(self)
         self.service = service
         self.inputs = inputs
@@ -115,17 +123,16 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
         self.result=None
         
         #send IQ methodCall
-        params = {}
+        params = self.inputs
         ps     = None
         ps = self.service.getP() #self.service.getDAD().getServices()[0].getProperty("P")
         for p in ps: #check all Preconditions are True
-            if not p in self.inputs.keys():
-                #if "askBelieve" in dir(self.myAgent):
-                #    if not self.myAgent.askBelieve(p):
+            #if not p in self.inputs.keys():
+            if not self.myAgent.askBelieve(p):
                 self.myAgent.DEBUG("Precondition "+ str(p) + " is not satisfied. Can't call method "+self.service.getName(),'error',"rpc")
                 self.result=False
                 return
-            else: params[p] = self.inputs[p]
+            #else: params[p] = self.inputs[p]
         
         #params = tuple(ps)
         self.myAgent.DEBUG("Params processed: "+str(params),"info","rpc")
@@ -158,10 +165,11 @@ class RPCClientBehaviour(Behaviour.OneShotBehaviour):
                     self.DEBUG("Returned params "+str(params),'ok',"rpc")
                     self.result = params[0]
                     #if agent is a BDIAgent add result params as postconditions
-                    #if "addBelieve" in dir(self.myAgent):
-                    for k,q in self.result.items(): #[0]:
-                            #self.myAgent.addBelieve(q)
-                            self.myAgent.KB[k]=q
+                    for k,v in self.result.items(): #[0]:
+                            self.myAgent.kb.set(k,v)
+                    for q in self.service.getQ():
+                        if not self.myAgent.askBelieve(q):
+                            raise Exception("PostCondition "+str(q)+ " not satisfied.")
                     return self.result
                 except Exception,e:
                     self.myAgent.DEBUG("Error executing RPC service: "+str(e),"error","rpc")

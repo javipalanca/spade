@@ -1,19 +1,23 @@
-from test.basicTestCase import *
-from test.amsTestCase   import *
-from test.dfTestCase    import *
-from test.coTestCase    import *
-from test.p2pTestCase   import *
-from test.rpcTestCase   import *
 from test.aidTestCase   import *
+from test.amsTestCase   import *
+from test.basicTestCase import *
+from test.bdiTestCase   import *
+from test.coTestCase    import *
 from test.dadTestCase   import *
+from test.dfTestCase    import *
 from test.eventbehavTestCase import *
+from test.factsTestCase import *
+from test.kbTestCase    import *
+from test.p2pTestCase   import *
 from test.pubsubTestCase import *
-from test.kbTestCase import *
-from test.xfTestCase import *
+from test.rpcTestCase   import *
+from test.tbcbpTestCase import *
+from test.xfTestCase    import *
 
 from spade import spade_backend
 from xmppd.xmppd import Server
 import thread
+import sys
 
 import os
 d="test"+os.sep
@@ -40,4 +44,4 @@ else:
 
 platform.shutdown()
 s.shutdown("Jabber server terminated...")
-
+sys.exit(0)

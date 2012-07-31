@@ -1,18 +1,17 @@
 from logic import *
 from copy import copy
 import types
+import random
 
-import Agent
 import Behaviour
+import tbcbp
+import DF
+from FlexQueue import FlexQueue
+from Queue import Queue
 
 class PreConditionFailed (Exception): pass
 class PostConditionFailed(Exception): pass
 class ServiceFailed(Exception): pass
-class KBConfigurationFailed(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-    def __str__(self):
-        return repr(self.msg)
 
 class Goal:
     
@@ -25,6 +24,7 @@ class Goal:
         self.priority = 0
         self.selected = False
         self.unreachable = False
+        self.done = False
 
     def testConflict(self, goal):
         # No conflict test at the moment
@@ -33,190 +33,85 @@ class Goal:
     def __str__(self):
         if self.unreachable:
             return "UNREACHABLE("+str(self.expression)+")"
+        elif self.done:
+            return "DONE("+str(self.expression)+")"
         else:
             return str(self.expression)
 
     def __repr__(self):
        return self.__str__()
 
-class Service:
-    def __init__(self, P=None, Q=None):
-        self.P = P #precondition
-        self.Q = Q #postcontidion
-        
-        self.myAgent = None
- 
-    def setP(self, P): self.P = P
 
-    def setQ(self, Q): self.Q = Q
+class PlanList(dict):
+    #plans hash table. PID is the PlanID
+    def add(self, plan):
+        pid = random.randint(1,100000000)
+        while self.has_key(pid):
+            pid = random.randint(1,100000000)
+        self[pid]=plan
+        plan.pid = pid
+        return pid
 
-    def getP(self): return self.P
 
-    def getQ(self): return self.Q
+#class BDIAgent(Agent.Agent):
+class BDIBehaviour(Behaviour.PeriodicBehaviour):
 
-    def reward(self):
-        self.trust -= 1
-        if self.trust<0: self.trust=0
-        #print "Service "+self.name+" rewarded!"
-
-    def punish(self):
-        self.trust += 10
-        if self.trust>1000: self.trust=1000
-        #print "Service "+self.name+" punished!"
-        
-    def run(self):
-        raise NotImplementedError
-        
-    def addBelieve(self,sentence):
-        if self.myAgent:
-            self.myAgent.addBelieve(sentence)
-        else:
-            raise NotImplementedError
-    def removeBelieve(self,sentence):
-        if self.myAgent:
-            self.myAgent.removeBelieve(sentence)
-        else:
-            raise NotImplementedError
-    def askBelieve(self,sentence):
-        if self.myAgent:
-            return self.myAgent.askBelieve(sentence)
-        else:
-            raise NotImplementedError
-            
-    def __str__(self):
-        return "[P:"+str(self.P)+" Q:"+str(self.Q)+"]"
-
-class Plan:
-    def __init__(self, P=None, Q=None):
-        self.P = P
-        self.Q = Q
-        
-        self.myAgent = None
-        
-        self.services = []
-        self.next = None
-        
-    def addOwner(self, owner):
-        self.myAgent = owner
-        for service in self.services:
-            service.myAgent = owner
-        
-    def appendService(self, service):
-        if len(self.services)>0:
-            lastService = self.services[len(self.services)-1]
-            out = copy(lastService.outputs.keys()).sort()
-            ins = copy(service.inputs.keys()).sort()
-        
-            if out == ins:
-                if self.myAgent:
-                    service.myAgent = self.myAgent
-                self.services.append(service)
-        else:
-            if self.myAgent:
-                service.myAgent = self.myAgent
-            self.services.append(service)
-        
-    def nextService(self):
-        if self.next==None:
-            self.next = 0
-        elif self.next == len(self.services)-1:
-            return None
-        else:
-            outs = self.services[self.next].outputs
-            self.next += 1
-            self.services[self.next].inputs.update(outs)
-
-        if self.myAgent.askBelieve(self.services[self.next].P) != False:
-            return self.services[self.next]
-        else:
-            raise PreconditionFailed()
-
-    def __str__(self):
-        s = "Plan(P:"+str(self.P)+" Q:"+str(self.Q)+") => "
-        for i in range(len(self.services)):
-            s+= "S"+str(i)+":"+str(self.services[i])+", "
-        return s
-
-class BDIAgent(Agent.Agent):
-    
-    def __init__(self,agentjid, password, port=5222, debug=[], p2p=False):
-        Agent.Agent.__init__(self,agentjid, password, port=port, debug=debug, p2p=p2p)
-        
+    #def __init__(self,agentjid, password, port=5222, debug=[], p2p=False):
+    #    Agent.Agent.__init__(self,agentjid, password, port=port, debug=debug, p2p=p2p)
+    def __init__(self, period):
+        Behaviour.PeriodicBehaviour.__init__(self, period)
         self.goals           = [] # active goals
-        self.kb              = FolKB() # knowledge base
-        self.plans           = [] # plan library
+        self.plans           = PlanList() # plan library
         self.intentions      = [] # selected plans for execution
-        self.services        = [] # services offered by the agent
-        
-        self.defaultMailbox  = []
-        
+        #self.services        = [] # services offered by the agent
+        self.TBCBP           = tbcbp.TBCBP()
+        self.active_goals    = FlexQueue()
+        self.prepared_goals  = FlexQueue()
+        self.scheduler       = Queue()
+
         self._needDeliberate = True
         
     def configureKB(self, typ, sentence=None, path=None):
-        """
-        Supported Knowledge Bases are: ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]
-        """
-        try:
-            if typ not in ["ECLiPSe", "Flora2", "SPARQL", "SWI", "XSB"]:
-                raise KBConfigurationFailed(typ + " is not a valid KB.")
-            if   typ=="SPARQL": import SPARQLKB
-            elif typ=="XSB":    import XSBKB
-            elif typ=="Flora2": import Flora2KB
-            elif typ=="SWI":    import SWIKB
-            elif typ=="ECLiPSe":import ECLiPSeKB
-            else: raise KBConfigurationFailed("Could not import "+str(typ)+" KB.")
+        self.myAgent.kb.configure(typ,sentence,path)
 
-            typ+="KB"
-            #module = eval("__import__("+typ+")")
-
-            if path!=None:
-                self.kb = eval(typ+"."+typ+"("+str(sentence)+", '"+path+"')")
-            else:
-                self.kb = eval(typ+"."+typ+"("+str(sentence)+")")
-        except KBConfigurationFailed as e:
-            self.DEBUG(str(e)+" Using Fol KB.", 'warn')
-            self.kb = FolKB()
-        
-        
     def addBelieve(self, sentence, type="insert"):
-        if isinstance(sentence,types.StringType):
-            try:
-                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
-        		    self.kb.tell(sentence,type)
-            except:
-                if issubclass(FolKB, self.kb.__class__):
-                    self.kb.tell(expr(sentence))
-                else:
-                	self.kb.tell(sentence)
-        else:
-        	self.kb.tell(sentence)
+        self.myAgent.addBelieve(sentence,type)
         self._needDeliberate = True
-        self.newBelieveCB(sentence)
-        
+
     def removeBelieve(self, sentence, type="delete"):
-        if isinstance(sentence,types.StringType):
-            try:
-                if issubclass(Flora2KB.Flora2KB,self.kb.__class__):
-        		    self.kb.retract(sentence,type)
-            except:
-                if issubclass(FolKB, self.kb.__class__):
-                    self.kb.retract(expr(sentence))
-                else:
-                	self.kb.retract(sentence)
-        else:
-        	self.kb.retract(sentence)
-        self._needDeliberate = True
+        self.myAgent.removeBelieve(sentence,type)
 
     def askBelieve(self, sentence):
-        if isinstance(sentence,types.StringType) and issubclass(FolKB, self.kb.__class__):
-            return self.kb.ask(expr(sentence))
-        else:
-        	return self.kb.ask(sentence)
-            
-    def addPlan(self, plan):
-        plan.addOwner(self)
-        self.plans.append(plan)
-        self.DEBUG("Plan added: "+str(plan),"ok")
+        return self.myAgent.askBelieve(sentence)
+
+    def saveFact(self, name, sentence):
+        self.myAgent.kb.set(name, sentence)
+        self._needDeliberate = True
+
+    def getFact(self, name):
+        return self.myAgent.kb.get(name)
+
+    def addPlan(self, P,Q,inputs, outputs, services):
+        '''Adds a new plan to the Planner (TBCBP)
+        Usage: addPlan (P, Q, services)
+        P - precondition of the plan
+        Q - postcondition of the plan
+        services - list of services names (strings)
+        
+        Return: None'''
+        cases=[]
+        for s in services:
+            c = self.TBCBP.getCaseOfService(str(s))
+            if c==None:
+                self.myAgent.DEBUG("Plan was not added. Service "+str(s) + " does not exist.","err",'bdi')
+                return False
+            cases.append(c)
+
+        plan = tbcbp.Plan(cases)
+        self.TBCBP.addPlan(plan)
+        self.myAgent.DEBUG("Plan added: "+str(plan),"ok",'bdi')
+        self._needDeliberate = True
+        return True
 
     def addGoal(self, goal):
         #First add the goal if no conflicts
@@ -227,139 +122,263 @@ class BDIAgent(Agent.Agent):
                     conflict = True
                     break
             if not conflict and self.askBelieve(goal.expression)==False:
-                self.DEBUG("Goal added: "+str(goal),"ok")
+                self.myAgent.DEBUG("Goal added: "+str(goal),"ok", 'bdi')
                 self.goals.append(goal)
+                self._needDeliberate = True
+                
+    def registerServiceInTBCBP(self, service, time=1):
+        '''Registers new service in the Planner (TBCBP)
+        Usage: registerService(service, time)
+        service - A DF.Service class
+        time    - the estimated execution time of the service (optional)
+        
+        Returns: None'''
+        
+        self.TBCBP.registerService(service=service,time=time)
+        self._needDeliberate = True
+
+    def unregisterServiceInTBCBP(self, name=None, service=None):
+        if not name: name= service.getName()
+        self.TBCBP.delService(name)
+        self._needDeliberate = True
+
+    def getPlan(self, goal):
+        '''Finds a plan for a specified goal.
+        If there is not an existing plan, it composes a new one (when possible)
+        Usage getPlan( goal )
+        goal - a Goal object to be achieved
+        
+        Returns: TBCBP.Plan object or None is there is no available plan'''
+        
+        self.myAgent.DEBUG("Composing a plan for goal "+str(goal),'info','bdi')
+        plan = self.composePlan(goal)
+
+        if plan == None:
+            #goal is unreachable
+            self.myAgent.DEBUG("No plan found for Goal "+str(goal), 'warn','bdi')
+            return None
+
+        plan['index'] = 0
+        plan['goal']  = goal
+        plan.agent_owner = self.myAgent
+        return plan
+
+    def composePlan(self, goal, tout=-1):
+        '''
+        calls the Temporal-Bounded Case Based Planner
+        '''
+        return self.TBCBP.composePlan(goal,self.myAgent.kb,tout=20)
             
     def selectIntentions(self):
-        for goal in self.goals: #deliberate over goals
-            if not goal.selected: #if the goal is not already selected for execution
-                self.DEBUG("Found not selected goal")
-                for plan in self.plans: #search for a plan
-                    self.DEBUG("Compare plan.Q " + str(plan.Q) + " with goal " + str(goal.expression),"ok")
-                    if plan.Q == goal.expression: #plan must pursue for the goal
-                        #self.DEBUG("askBelieve plan.P -> " + str(self.askBelieve(plan.P)))
-                        if self.askBelieve(plan.P)!=False: #preconditions of the plan must be acomplished
-                            self.intentions.append(plan)   #instantiate plan as intention
-                            self.intentionSelectedCB(plan)
-                            goal.selected = True #flag goal as selected
-                            break #stop searching plans for this goal
-        
-        
-    def run(self):
-        """
-        periodic agent execution
-        """
-        #Init The agent
-        self._setup()
-        self.behavioursGo.acquire()
-        self._running = True
-        self.behavioursGo.notifyAll()
-        self.behavioursGo.release()
+        '''
+        Prepares new plan for active goals
+        Looks for all prepared goals and selects a new plan for it.
+        then the goal is archived in prepared_goals
+        and the plan is stored in self.plans
+        '''
 
-        #Start the Behaviours
-        #if (self._defaultbehaviour != None):
-        #    self._defaultbehaviour.start()
+        #while not self.prepared_goals.empty(): #return
+        goal = self.prepared_goals.get()
+        self.myAgent.DEBUG("Got goal "+ str(goal),'info','bdi')
 
-        #If this agent supports P2P, wait for P2PBEhaviour to properly start
-        if self.p2p:
-            while not self.p2p_ready:
-                time.sleep(0.1)
+        if goal!=None:
+            if self.askBelieve(goal.expression)==True:
+                goal.done=True
+                return None #continue
+            if goal in self.active_goals: return None #continue
+
+            self.myAgent.DEBUG("Activate Goal: " + str(goal), 'info','bdi')
+            plan = self.getPlan(goal)
+            if plan!=None:
+                #activate plan
+                self.myAgent.DEBUG("Got a plan for goal " + str(goal), 'info','bdi')
+                goal.selected = True
+                self.active_goals.put(goal)
+                plan.agent = self
+                #init plan        
+                pid = self.plans.add(plan)
+                #activate first service
+                self.insertNextService(plan,pid)
+                self.planSelectedCB(plan)
+            else:
+                goal.unreachable = True
+                self.myAgent.DEBUG("Goal is Unreachable: "+str(goal), 'warn','bdi')
+                return None
+
+    def insertNextService(self,plan,pid):
+        '''Selects the next service of a plan to be executed
+        Usage: insertNextService( plan, pid)
+        plan - the running plan (TBCBP.Plan)
+        pid  - the plan identifier'''
+        
+        service_name = plan.getNextService()
+        self.myAgent.DEBUG("next service is " + str(service_name),'info','bdi')
+        if service_name == None:
+            self.EndPlan(pid, plan)
+            return
+        service = self.TBCBP.getService(service_name)
+        if service:
+            service.pid = pid
+            service.agent_owner = self
+
+            self.scheduler.put(service)
+
+        else: #plan has finished
+            self.EndPlan(pid, plan)
+
+    def EndPlan(self,pid,plan):
+        '''Finishes the execution of a plan.
+        If the plan run well, its case is rewarded. Otherwise, it is punished.
+        Finally goal is setted as done and not active.
+        Usage: EndPlan ( pid, plan)
+        pid  - Plan identifier
+        plan - TBCBP.Plan object
+        '''
+        del self.plans[pid]
+        #check its postcondition
+        if len(plan.getQ()) > 0 and self.askBelieve(plan.getQ()[0])==False:
+            #logging.error(color_red+"PLAN FAILED "+str(plan)+color_none)
+            self.TBCBP.punish(plan.getCase())
+            for goal in self.goals: #deselect the goal that raised the plan
+                if goal.expression == plan.getQ():
+                    goal.selected = False
+                    goal.done = False
+                    self.active_goals.remove(goal)
+        else:
+            self.TBCBP.reward(plan.getCase())
+            self.myAgent.DEBUG("Rewarding Plan",'ok','bdi')
+            for goal in self.goals: #delete the goal that raised the intention
+                if goal.expression in plan.getQ():
+                    if goal.persistent: #if goal is persistent, deselect it
+                        self.prepared_goals.put(goal)
+                    self.active_goals.remove(goal)
+                    goal.done = True
+                    goal.selected = False
+                    self.myAgent.DEBUG("Goal "+str(goal.expression)+" was completed!",'ok','bdi')
+                    self.myAgent.DEBUG("Calling goal completed CB: "+ str(self.goalCompletedCB),'info','bdi')
+                    self.goalCompletedCB(goal)
+
+    def EndService(self,service,plan):
+        '''Finishes the execution of a service.
+        If the service failed, it is punished and the plan is finished.
+        Otherwise, the next service of the plan is selected.
+        Usage: EndService ( service, plan)
+        service - the current running DF.Service
+        plan    - the TBCBP.Plan where the service belongs
+        '''
+
+        agent = self
+        pid = plan.pid
+        #service has been executed
+        if len(service.getQ()) > 0 and self.askBelieve(service.getQ()[0])==False:
+            #service failed
+            self.myAgent.DEBUG("Service execution failed: "+str(service.getQ()))
+            self.punishService(service)
+            #cancel plan and reactivate goal
+            self.EndPlan(pid,plan)
+            return
+
+        #5.2.1 select next service
+        self.insertNextService(plan, pid)
+
+        self.serviceCompletedCB(service)
+
+    def deliberate(self):
+        self.myAgent.DEBUG("deliberate about current goals: "+str(self.goals),'info','bdi')
+        for goal in self.goals:
+            if (goal.unreachable == False) and (goal.done==False): # or ((goal.done==True) and (goal.persistent==True))):
+                if self.askBelieve(goal.expression)==False:
+                    self.myAgent.DEBUG("Deliberate about " + str(goal),'info','bdi')
+                    if goal not in self.active_goals:
+                        self.prepared_goals.put(goal)
+                else:
+                    self.myAgent.DEBUG("Goal " + str(goal) + "is already in the KB: " + str(self.askBelieve(goal.expression)),'warn','bdi')
+                    goal.done = True
+
+
+    def discover(self):
+        #TODO: use PubSub features
+        s = DF.Service()
+        results = self.myAgent.searchService(s)
+        if results!=None:
+            self.myAgent.DEBUG("Discovered "+str(len(results))+ " services.", 'info','bdi')
+            for service in results:
+                if self.TBCBP.getService(service.getName()) == None:
+                    self.registerServiceInTBCBP(service)
+
+    def punishService(self, service):
+        P = service.getP()
+        Q = service.getQ()
+        I = service.getInputs()
+        O = service.getOutputs()
+        self.TBCBP.punish(Case(P=P,Q=Q,inputs=I,outputs=O,services=[service.getName()]))
+        return
+                        
+
+        ####Init The agent
+        ###self._setup()
+        ###self.behavioursGo.acquire()
+        ###self._running = True
+        ###self.behavioursGo.notifyAll()
+        ###self.behavioursGo.release()
 
         #############
         # Main Loop #
         #############
-        while not self.forceKill():
-            try:
-                #get and process all messages
-                self.getMessages()
-                
-                #deliberate about current goals
-                #self.DEBUG("deliberate about current goals")
-                if self._needDeliberate:
-                    for goal in copy(self.goals):
-                        if self.askBelieve(goal.expression)!=False:
-                            if goal.persistent:
-                                goal.selected = False
-                            else:
-                                self.goals.remove(goal)
-                            self.goalCompletedCB(goal)
-                    #for intention in copy(self.intentions):
-                    #    if self.bk.ask(intention.Q):
-                    #        self.intentions.remove(intention)
-                    self._needDeliberate = False
-                    
-                #select intentions
-                #self.DEBUG("select intentions")
-                self.selectIntentions()
-                
-                #run intentions
-                #self.DEBUG("run intentions")
-                for intention in copy(self.intentions):
-                    service = intention.nextService()
-                    
-                    if service == None: #intention has finished
-                        self.DEBUG("Intention finished: "+ str(intention),"ok")
-                        self.intentions.remove(intention) #delete intention
-                        if self.askBelieve(intention.Q)==False: #check its postcondition
-                            raise PostConditionFailed()
-                        else:
-                            for goal in copy(self.goals): #delete the goal that raised the intention
-                                if goal == intention.Q:
-                                    if goal.persistent: #if goal is persistent, deselect it
-                                        goal.selected = False
-                                    else:
-                                        self.goals.remove(goal)
-                    else:
-                        service.run()
-                        if self.askBelieve(service.Q)==False:
-                            raise PostConditionFailed()
-                        else: self.serviceCompletedCB(service)
-                    if self._needDeliberate: break
-                
-            except Exception, e:
-                self.DEBUG("Agent " + self.getName() + " Exception in run: " + str(e), "err")
-                self._kill()
+        ###while not self.forceKill():
+        ###    try:
+        ###        #get and process all messages
+        ###        self.getMessages()
 
-        self._shutdown()
+    def _onTick(self):
+        """
+        periodic behaviour execution
+        """
+        #discover new services
+        self.myAgent.DEBUG("Discover new services...", 'info','bdi')
+        self.discover()
         
-    def getMessages(self):
-        #Check for queued messages
-        proc = False
-        msg = self._receive(block=True, timeout=0.01)
-        if msg != None:
-            bL = copy(self._behaviourList)
-            for b in bL:
-                t = bL[b]
-                if (t != None):
-                    if (t.match(msg) == True):
-                        if ((b == types.ClassType or type(b) == types.TypeType) and issubclass(b, Behaviour.EventBehaviour)):
-                            b = b()
-                            b.setAgent(self)
-                            b.postMessage(msg)
-                            b.start()
-                        else:
-                            b.postMessage(msg)
-                        proc = True
+        #deliberate about current goals
+        #if self._needDeliberate:
+        self.myAgent.DEBUG("Deliberating...", 'info','bdi')
+        self.deliberate()
+        #self._needDeliberate = False
+            
+        #select intentions
+        self.DEBUG("select intentions", 'info','bdi')
+        self.selectIntentions()
+        
+        self.myAgent.DEBUG("Init scheduler", 'info','bdi')
+        #run a service each iteration
+        if not self.scheduler.empty():
+            service = self.scheduler.get()
+            self.myAgent.DEBUG("Got service for execution: " + str(service),'info','bdi')
+        
+            #if service!=None:
+            pid = service.pid
+            plan = self.plans[pid]
+            try: 
+                result = self.myAgent.invokeService(service)
+            except:
+                self.myAgent.DEBUG("Service failed!", 'warn','bdi')
 
-            if (proc == False):
-                self.defaultMailbox.append(msg)
-            #    #If no template matches, post the message to the Default behaviour
-            #    if (self._defaultbehaviour != None):
-            #        self._defaultbehaviour.postMessage(msg)
+            self.EndService(service, plan)
+        else:
+            self.myAgent.DEBUG("NOP", 'info', 'bdi')
 
-    def intentionSelectedCB(self, intention=None):
-        #callback executed when a new intention is selected for execution
+        self.myAgent.DEBUG("Restarting BDI cycle", 'info','bdi')
+
+
+    def planSelectedCB(self, plan):
+        #callback executed when a new plan is selected for execution
         #must be overloaded
         pass
-    def goalCompletedCB(self, goal=None):
+    def goalCompletedCB(self, goal):
         #callback executed when a goal is completed succesfully
         #must be overloaded
         pass
-    def serviceCompletedCB(self, service=None):
+    def serviceCompletedCB(self, service):
         #callback executed when a service is completed succesfully
         #must be overloaded
         pass
-    def newBelieveCB(self, believe=None):
-        #callback executed when a believe is added to the knowledge base
-        #must be overloaded
-        pass
+
