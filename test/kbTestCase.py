@@ -1,13 +1,12 @@
 import os
 import sys
 import unittest
-sys.path.append('../..')
+
 
 import spade
-from spade.bdi import *
-from spade.Agent import BDIAgent
+from spade.Agent import Agent
 from spade.pyxf import ECLiPSeExecutableNotFound, Flora2ExecutableNotFound, SWIExecutableNotFound, XSBExecutableNotFound
-host = "127.0.0.1"
+host = '127.0.0.1'
 
 sparql1='''
 PREFIX gr:<http://purl.org/goodrelations/v1#>
@@ -36,17 +35,18 @@ class KBTestCase(unittest.TestCase):
     
     def setUp(self):
 
-        self.a = BDIAgent("kb@"+host,"secret")
+        self.a = Agent("kbagent@"+host,"secret")
+        self.a.start()
 
     def tearDown(self):
         self.a.stop()
-        
+
     def testSPARQLopenlink(self):
         
         try:
             from spade import SPARQLKB
         except:
-            self.fail("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
+            self.skipTest("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
             
         self.a.configureKB("SPARQL", sentence=None, path='http://lod.openlinksw.com/sparql')
         for result in self.a.askBelieve(sparql1):
@@ -57,7 +57,7 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import SPARQLKB
         except:
-            self.fail("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
+            self.skipTest("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
             
         self.a.configureKB("SPARQL", sentence=None, path='http://dbpedia.org/sparql')
         for result in self.a.askBelieve(sparql2):
@@ -67,12 +67,12 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import ECLiPSeKB
         except:
-            self.fail("Could not import ECLiPSeKB")
+            self.skipTest("Could not import ECLiPSeKB")
 
         try:
             self.a.configureKB("ECLiPSe", None, "eclipse")
         except ECLiPSeExecutableNotFound:
-            self.fail('ECLiPSe Prolog executable not found on the specified path.')
+            self.skipTest('ECLiPSe Prolog executable not found on the specified path.')
 
         if not issubclass(self.a.kb.kb.__class__,ECLiPSeKB.ECLiPSeKB):
             self.fail("ECLiPSe was not properly configured.")
@@ -89,7 +89,7 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import ECLiPSeKB
         except:
-            self.fail("Could not import ECLiPSeKB")
+            self.skipTest("Could not import ECLiPSeKB")
 
         self.assertRaises(ECLiPSeExecutableNotFound, self.a.configureKB, "ECLiPSe", None, "dummyeclipse" )
 
@@ -98,11 +98,11 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import Flora2KB
         except:
-            self.fail("Could not import Flora2KB")
+            self.skipTest("Could not import Flora2KB")
         try:    
             self.a.configureKB("Flora2", None, "runflora")
         except Flora2ExecutableNotFound:
-            self.fail('Flora-2 executable not found on the specified path. Try installing flora2')
+            self.skipTest('Flora-2 executable not found on the specified path. Try installing flora2')
 
         if not issubclass(self.a.kb.kb.__class__,Flora2KB.Flora2KB):
             self.fail("Flora2 was not properly configured.")
@@ -122,7 +122,7 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import Flora2KB
         except:
-            self.fail("Could not import Flora2KB")
+            self.skipTest("Could not import Flora2KB")
 
         self.assertRaises(Flora2ExecutableNotFound, self.a.configureKB, "Flora2", None, "dummyrunflora" )
 
@@ -130,12 +130,12 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import SWIKB
         except:
-            self.fail("Could not import SWIKB")
+            self.skipTest("Could not import SWIKB")
 
         try:
             self.a.configureKB("SWI", None, "swipl")
         except SWIExecutableNotFound:
-            self.fail('SWI-Prolog executable not found on the specified path. Try installing swi-prolog.')
+            self.skipTest('SWI-Prolog executable not found on the specified path. Try installing swi-prolog.')
 
         if not issubclass(self.a.kb.kb.__class__,SWIKB.SWIKB):
             self.fail("SWI was not properly configured.")
@@ -160,7 +160,8 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import SWIKB
         except:
-            self.fail("Could not import SWIKB")
+            print "WOWWW"
+            self.skipTest("Could not import SWIKB")
 
         self.assertRaises(SWIExecutableNotFound, self.a.configureKB, "SWI", None, "dummyswipl" )
 
@@ -168,12 +169,12 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import XSBKB
         except:
-            self.fail("Could not import XSBKB")
+            self.skipTest("Could not import XSBKB")
 
         try:
             self.a.configureKB("XSB", None, "xsb")
         except XSBExecutableNotFound:
-            self.fail('XSB executable not found on the specified path. Try installing xsb')
+            self.skipTest('XSB executable not found on the specified path. Try installing xsb')
 
         if not issubclass(self.a.kb.kb.__class__,XSBKB.XSBKB):
             self.fail("XSB was not properly configured.")
@@ -198,10 +199,24 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import XSBKB
         except:
-            self.fail("Could not import XSBKB")
+            self.skipTest("Could not import XSBKB")
 
         self.assertRaises(XSBExecutableNotFound, self.a.configureKB, "XSB", None, "dummyxsb" )
 
 
 if __name__ == "__main__":
     unittest.main()
+    sys.exit()
+    suite = unittest.TestSuite()
+    suite.addTest(KBTestCase('testSWINotFound'))
+    result = unittest.TestResult()
+
+    suite.run(result)
+    print str(result)
+    for f in  result.errors: 
+        print f[0]
+        print f[1]
+    
+    for f in  result.failures: 
+        print f[0]
+        print f[1]

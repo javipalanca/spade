@@ -1,0 +1,4346 @@
+2012-07-31 13:58  jpalanca
+
+	* trunk/ChangeLog, trunk/DEPENDENCIES.txt, trunk/examples/bdi,
+	  trunk/examples/bdi/clientBDI.py, trunk/examples/bdi/server1BDI.py,
+	  trunk/examples/bdi/server2BDI.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/FlexQueue.py, trunk/spade/RPC.py,
+	  trunk/spade/bdi.py, trunk/spade/dblite.py, trunk/spade/kb.py,
+	  trunk/spade/logic.py, trunk/spade/odict.py, trunk/spade/tbcbp.py,
+	  trunk/test.py, trunk/test/basicTestCase.py,
+	  trunk/test/bdiTestCase.py, trunk/test/dfTestCase.py,
+	  trunk/test/factsTestCase.py, trunk/test/kbTestCase.py,
+	  trunk/test/p2pTestCase.py, trunk/test/pubsubTestCase.py,
+	  trunk/test/rpcTestCase.py, trunk/test/tbcbpTestCase.py: (1) RPC
+	  module now has preconditions, postconditions, inputs and outputs.
+	  outputs are stored in the agent's KB and inputs can be retrieved
+	  from the agent's KB too. (2) created kb module. agents can save
+	  variables in its KB using kb.set(varname,value) and
+	  kb.get(varname). (3) added new unittests for the kb component.
+	  assert raises executable not found exceptions when needed. (4)
+	  added new unittests for the tbcbp component. this is a Case-Based
+	  Planner for the bdi agents. (5) added the new BDI agents. At this
+	  moment they are tested only with the SpadeKB knowledge base. (6)
+	  solved some unittests whose behaviour have changed with the new
+	  bdi agents (df tests, rpc tests, ...). (7) added some helper
+	  classes: dblite, FlexQueue and odict.
+
+2012-07-11 12:26  jpalanca
+
+	* trunk/spade/pyxf.py, trunk/test.py, trunk/test/logic,
+	  trunk/test/logic/test_eclipse.ecl,
+	  trunk/test/logic/test_flora.flr, trunk/test/logic/test_swi.pl,
+	  trunk/test/logic/test_xsb.P, trunk/test/xfTestCase.py: Added new
+	  unit tests for the pyxf module.
+
+2012-07-11 11:18  jpalanca
+
+	* trunk/spade/bdi.py, trunk/spade/pyxf.py, trunk/test/kbTestCase.py:
+	  Solved some issues with the new KBs module. Import exceptions are
+	  now catched. Unit tests fail if executable is not available. Also
+	  for the SPARQLWrapper module. Removed custom paths.
+
+2012-07-10 23:56  jpalanca
+
+	* trunk/test, trunk/test/__init__.py, trunk/test/aidTestCase.py,
+	  trunk/test/amsTestCase.py, trunk/test/basicTestCase.py,
+	  trunk/test/bdiTestCase.py, trunk/test/coTestCase.py,
+	  trunk/test/dadTestCase.py, trunk/test/dfTestCase.py,
+	  trunk/test/eventbehavTestCase.py, trunk/test/kbTestCase.py,
+	  trunk/test/p2pTestCase.py, trunk/test/pubsubTestCase.py,
+	  trunk/test/rpcTestCase.py, trunk/test/unittests_spade.xml,
+	  trunk/test/unittests_xmppd.xml: (1) unittests now run their own
+	  platform. (2) unittests moved to the test directory. (3) support
+	  for session objects in WUI. Use self.session object in
+	  controllers. (4) login and logout functions in web user interface.
+	  (5) support for new KB interfaces: XSB, Flora2, SPARQL, ECLiPSe
+	  and SWI. Thanks to Markus Schatten.
+
+2012-07-10 23:56  jpalanca
+
+	* trunk/ChangeLog, trunk/examples/unittests, trunk/runspade.py,
+	  trunk/spade/AMS.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/ECLiPSeKB.py, trunk/spade/Flora2KB.py,
+	  trunk/spade/Platform.py, trunk/spade/SPARQLKB.py,
+	  trunk/spade/SWIKB.py, trunk/spade/SpadeConfigParser.py,
+	  trunk/spade/XSBKB.py, trunk/spade/bdi.py, trunk/spade/logic.py,
+	  trunk/spade/pyxf.py, trunk/spade/spade_backend.py,
+	  trunk/spade/wui.py, trunk/templates/header.pyra,
+	  trunk/templates/login.pyra, trunk/test.py,
+	  trunk/tlslite/utils/hmac.py, trunk/xmppd/modules/__init__.py,
+	  trunk/xmppd/modules/router.py: (1) unittests now run their own
+	  platform. (2) unittests moved to the test directory. (3) support
+	  for session objects in WUI. Use self.session object in
+	  controllers. (4) login and logout functions in web user interface.
+	  (5) support for new KB interfaces: XSB, Flora2, SPARQL, ECLiPSe
+	  and SWI. Thanks to Markus Schatten.
+
+2012-06-01 18:05  jpalanca
+
+	* trunk/examples/unittests/coverage-unittests.py: added unittests
+	  for coverage analysis
+
+2012-06-01 16:52  jpalanca
+
+	* trunk/examples/unittests/unittests.py: added
+	  unittest-xml-reporting
+
+2011-11-28 14:37  jpalanca
+
+	* ChangeLog, doc/manual/book.xml, doc/manual/ch03-basic-agents.xml,
+	  doc/manual/ch06-bdi.xml, doc/manual/html/spade.bdi.html,
+	  doc/manual/images/note.png, doc/manual/images/tip.png,
+	  doc/manual/images/warning.png, svn2cl, svn2cl.xsl,
+	  trunk/spade/Agent.py: -Solved some issues in documentation
+
+2011-11-16 16:33  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py: -Added
+	  retro-compatibility support for FIPA messages. Use the method
+	  attribute "xmppfipa" in the send function. -Added the regex patch
+	  to the message templates. Thanks to J. fernando Sanchez
+
+2011-11-11 16:02  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/diagram.py,
+	  trunk/templates/messages.pyra: -Changed sequencediagrams to
+	  Javascript API. Old API was not working. Still need to improve it.
+	  Websequencediagrams.com does not support large diagrams.
+
+2010-07-30 13:42  jpalanca
+
+	* trunk/examples/unittests/aidTestCase.py,
+	  trunk/examples/unittests/dadTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/pubsubTestCase.py,
+	  trunk/examples/unittests/rpcTestCase.py, trunk/spade/AID.py,
+	  trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/spade/pubsub.py, trunk/xmppd/modules/pubsub.py: - Modified
+	  RPC API. Now service P and Q are matched with inputs and outputs
+	  stored (optionally) in the agent KB - DF.Service class now has a
+	  asContentObject method, so it can be converted easy to a XML
+	  string - DF now publishes service registrations and
+	  unregistrations using pubsub events - Fixed some XML and CO
+	  generations - Fixed pubsub module. Now PlatformAgents (with
+	  namespace NS_COMPONENT_ACCEPT) can use pubsub. Fixes issue 60.
+
+2010-07-20 15:35  jpalanca
+
+	* trunk/examples/unittests/pubsubTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py: - Added EventBehaviour to the pubsub
+	  subscriptions. Now an agent can register a callback
+	  (EventBehaviour) when an event is received! - Added and improved
+	  more pubsub unittests.
+
+2010-07-16 17:41  jpalanca
+
+	* trunk/examples/pubsub, trunk/examples/pubsub/juliet.py,
+	  trunk/examples/pubsub/romeo.py,
+	  trunk/examples/unittests/pubsubTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/spade.sh,
+	  trunk/spade/Agent.py, trunk/spade/pubsub.py,
+	  trunk/spade/socialnetwork.py, trunk/xmpp/protocol.py,
+	  trunk/xmppd/modules/__init__.py, trunk/xmppd/modules/db_fake.py,
+	  trunk/xmppd/modules/pubsub.py: - Added Personal Event Publication
+	  and Subscription Protocol! This amazing new feature (developed by
+	  cooldwind and sangarb1) allows agents to create events and
+	  subscribe to friend events, when their contact publish events.
+	  This was done following the Jabber XEP #60. This is an inital
+	  version, in future work more features will be added to the pubsub
+	  protocol. - Pubsub unittest were added. There is still some work
+	  to check their reliability. - Also some pubsub examples in
+	  directory examples/pubsub - Old spade.sh was deleted.
+
+2010-07-16 10:06  jpalanca
+
+	* trunk/runspade.py, trunk/tlslite/TLSRecordLayer.py,
+	  trunk/tlslite/mathtls.py, trunk/tlslite/messages.py,
+	  trunk/tlslite/utils/cryptomath.py, trunk/xmpp/auth.py,
+	  trunk/xmppd/modules/dialback.py, trunk/xmppd/modules/jep0078.py,
+	  trunk/xmppd/modules/stream.py, trunk/xmppd/xmppd.py: - xmppd and
+	  tlslite now use hashlib instead of md5 and sha. Fixes issue 52 -
+	  runspade checks for netbsd OS
+
+2010-07-14 13:10  jpalanca
+
+	* trunk/ChangeLog, trunk/examples/unittests/dfTestCase.py,
+	  trunk/spade/ACLMessage.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/Behaviour.py, trunk/spade/DF.py,
+	  trunk/spade/Platform.py, trunk/spade/fipa.py, trunk/spade/wui.py,
+	  trunk/svn2cl, trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/agents.pyra,
+	  trunk/templates/message.pyra, trunk/templates/sentmsg.pyra,
+	  trunk/xmpp/protocol.py: - Added send message WUI page - Fixed
+	  not-acceptable protocol type - Added reply_with and in_reply_to to
+	  ams and df templates to allow agents sending messages to
+	  themselves - Fixed ACL template match algorithm - Fixed acc loop
+	  hole when sending a message to the acc agent - DF main behaviour
+	  is not the default behaviour. using templates - WUI: notifyAMS now
+	  uses the standard fipa modifyAgent procedure - Error templates use
+	  new CSS style
+
+2010-07-11 23:13  jpalanca
+
+	* trunk/examples/unittests/aidTestCase.py,
+	  trunk/examples/unittests/dadTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/setup.py,
+	  trunk/spade/AID.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/SL0Parser.py, trunk/spade/fipa.py: - Fixed more bugs
+	  on DF and AID - Added AID unittests - Added DAD unittests - Fixed
+	  some bugs in setup.py
+
+2010-07-08 12:33  gusarba
+
+	* trunk/runspade.py, trunk/spade/ACLMessage.py, trunk/spade/fipa.py,
+	  trunk/templates/header.pyra, trunk/templates/messages.pyra: -
+	  Fixed a potential bug in fipa.SearchAgentBehaviour when displaying
+	  a "not agree" or "not inform" debug message with a faulty AAD -
+	  WUI: More beautifying of the ACL messages in the 'Messages' tab
+
+2010-07-07 00:55  gusarba
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/templates/messages.pyra: WUI: Started work on beautifying
+	  message inspector with ACLMessage.asHTML() method
+
+2010-07-06 09:38  cooldwind
+
+	* trunk/spade/socialnetwork.py: Save agent and jid in SocialItem as
+	  attributes.
+
+2010-07-06 09:38  cooldwind
+
+	* trunk/spade/socialnetwork.py: Fix bug in socialinetwork.py. Bad
+	  attribute name, self.presence -> self._presence.
+
+2010-07-05 20:51  jpalanca
+
+	* trunk/spade/AID.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/templates/search.pyra: - Fixed agent
+	  search in WUI - Fixed AID match bug - Services inspection in
+	  search page - Added set/get Type to DF.Service
+
+2010-07-05 18:55  jpalanca
+
+	* trunk/spade/AID.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/Platform.py, trunk/spade/wui.py,
+	  trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/clients.kid,
+	  trunk/templates/favicon.old.ico, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/img, trunk/templates/log.pyra,
+	  trunk/templates/login.kid, trunk/templates/login.pyra,
+	  trunk/templates/magwood.css, trunk/templates/master.html,
+	  trunk/templates/message-old.kid, trunk/templates/message.kid,
+	  trunk/templates/messages.pyra, trunk/templates/orgs.kid,
+	  trunk/templates/plugins.kid, trunk/templates/prefs.kid,
+	  trunk/templates/search.pyra, trunk/templates/services.kid,
+	  trunk/templates/services.pyra, trunk/templates/swimaster.kid,
+	  trunk/templates/webadmin-old.kid, trunk/templates/webadmin.pyra,
+	  trunk/templates/webadmin_indigo.pyra, trunk/templates/welcome.kid:
+	  - WUI: Fixed a bug in CSS. Now menu items are highlighted
+	  correctly. - WUI: Header and footer are now macros. - WUI: Deleted
+	  old web templates and images. - WUI: Added an agent (from and to)
+	  filter to the message inspector. - WUI: Widgetified some elements
+	  to a sidebar. - WUI: Started Search Box. Seems we have broken the
+	  agent empty search :(
+
+2010-07-04 14:59  gusarba
+
+	* trunk/spade/DF.py, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/images/spade_logo_noalpha.png,
+	  trunk/templates/images/templatemo_background_section_top_bg.png,
+	  trunk/templates/images/templatemo_middle_section_box_bg.png,
+	  trunk/templates/log.pyra, trunk/templates/magwood.css,
+	  trunk/templates/messages.pyra, trunk/templates/services.pyra,
+	  trunk/templates/table.css, trunk/templates/table_blue.css,
+	  trunk/templates/webadmin_indigo.pyra: - Corrected SPADE url to
+	  spade2.googlecode.com in some spots. - WUI: Changed the default
+	  CSS to a custom one based on our blog style (magwood.css). -
+	  Changed all the pyra templates to match the new CSS style. -
+	  Modified the Service asHTML() method to match new CSS style.
+
+2010-07-02 15:25  jpalanca
+
+	* trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/rpcTestCase.py, trunk/spade/DF.py,
+	  trunk/spade/Platform.py, trunk/spade/RPC.py,
+	  trunk/templates/colorbox.css, trunk/templates/images,
+	  trunk/templates/images/border.png,
+	  trunk/templates/images/controls.png,
+	  trunk/templates/images/internet_explorer,
+	  trunk/templates/images/internet_explorer/borderBottomCenter.png,
+	  trunk/templates/images/internet_explorer/borderBottomLeft.png,
+	  trunk/templates/images/internet_explorer/borderBottomRight.png,
+	  trunk/templates/images/internet_explorer/borderMiddleLeft.png,
+	  trunk/templates/images/internet_explorer/borderMiddleRight.png,
+	  trunk/templates/images/internet_explorer/borderTopCenter.png,
+	  trunk/templates/images/internet_explorer/borderTopLeft.png,
+	  trunk/templates/images/internet_explorer/borderTopRight.png,
+	  trunk/templates/images/loading.gif,
+	  trunk/templates/images/loading_background.png,
+	  trunk/templates/images/overlay.png,
+	  trunk/templates/jquery.colorbox-min.js,
+	  trunk/templates/jquery.colorbox.js, trunk/templates/messages.pyra,
+	  trunk/templates/services.pyra: - Solved data inconsistency in
+	  DF.Service class. Now unittests are passed. Fixes issue 54. - New
+	  style for message inspector. Now using the colorbox javascript
+	  library. - Now modifying a service overwrites common parameters
+	  (ontologies, protocols and languages). - Service class has now
+	  function asHTML, which returns the service informations as html
+	  for the service wui controller.
+
+2010-06-29 23:39  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/RPC.py: More little problems
+	  solved in Message Inspector: 1)timestamp was not a good key for
+	  storing messages. 2) all messages have a From attr. No unknown
+	  message
+
+2010-06-29 20:27  cooldwind
+
+	* trunk/spade/wui.py: Add timeout for WUI's httpd. Otherwise, agents
+	  can't stop. Fixes Issue #53. Signed-off-by: Santiago M. Mola
+	  <coldwind@coldwind.org>
+
+2010-06-29 19:24  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/MTP.py, trunk/spade/RPC.py,
+	  trunk/spade/peer2peer.py, trunk/spade/socialnetwork.py: Improved
+	  diagram logging for Message Inspector
+
+2010-06-28 21:39  jpalanca
+
+	* trunk/spade/Agent.py, trunk/templates/messages.pyra,
+	  trunk/templates/quirksmode.css: Improved Message Inspector style
+
+2010-06-28 16:33  jpalanca
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/Platform.py, trunk/spade/content.py,
+	  trunk/spade/diagram.py, trunk/spade/wui.py,
+	  trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/footer.pyra,
+	  trunk/templates/header.pyra, trunk/templates/header_platform.pyra,
+	  trunk/templates/log.pyra, trunk/templates/messages.pyra,
+	  trunk/templates/services.pyra, trunk/templates/webadmin.pyra,
+	  trunk/templates/webadmin_indigo.pyra: - Added new gorgeous Message
+	  Inspector with javascript and web services. Still needs a better
+	  CSS, but it is great. Fixes issue 46. - ACLMessages return now its
+	  XML representation by default. To get the ACL representation use
+	  the method asString() - Header and footer automatically included
+	  in templates - Removed some old references to gti-ia namespace.
+	  Spade namespace is now spade2.googlecode.com
+
+2010-06-27 21:08  jpalanca
+
+	* trunk/examples/unittests/rpcTestCase.py,
+	  trunk/examples/unittests/unittests.py, trunk/spade/Agent.py,
+	  trunk/spade/RPC.py: Added RPC unittests. Closes issue 50
+
+2010-06-26 13:49  jpalanca
+
+	* trunk/examples/rpc.py, trunk/examples/unittests/dfTestCase.py,
+	  trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/spade/pygooglechart.py, trunk/templates/admin.pyra: -Added
+	  new amazing feature: QR Codes at UI! Every agent shows a qrcode
+	  that shows its AID -Some corrections in RPC service invocation
+
+2010-06-25 17:40  jpalanca
+
+	* trunk/examples/rpc.py: added an rpc example. unittests remain to
+	  be implemented
+
+2010-06-25 17:39  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/RPC.py,
+	  trunk/xmppd/modules/router.py: corrected some errors in RPC
+	  service invocation
+
+2010-06-24 23:31  jpalanca
+
+	* trunk/spade/Agent.py, trunk/spade/RPC.py, trunk/spade/__init__.py,
+	  trunk/spade/bdi.py: Added Remote Service call using jabber-rpc.
+	  Need to write testcases
+
+2010-06-24 17:53  jpalanca
+
+	* trunk/examples/unittests/dfTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/fipa.py: -Added a new Service()
+	  class that makes more easier the way of working with Services and
+	  with the DF -The old way of working with DfAgentDescriptors is
+	  still available, but the service-related methods now support
+	  *also* the new Service class. -All dfTestCases have been rewriting
+	  and now there are DAD and not DAD TestCases -Some new DF TestCases
+	  have been added -In future work a invokeService will be added to
+	  the Agent class
+
+2010-06-22 15:25  jpalanca
+
+	* doc/manual/book.xml, doc/manual/ch06-bdi.xml,
+	  doc/manual/html/ch05s03.html, doc/manual/html/index.html,
+	  doc/manual/html/spade.advanced.eventbehaviour.html,
+	  doc/manual/html/spade.advanced.fsm.html,
+	  doc/manual/html/spade.advanced.html,
+	  doc/manual/html/spade.basic.html,
+	  doc/manual/html/spade.basic.im.html,
+	  doc/manual/html/spade.basic.mas.html,
+	  doc/manual/html/spade.basic.spadelibrary.html,
+	  doc/manual/html/spade.basic.spadeplatform.html,
+	  doc/manual/html/spade.basic.whatsnext.html,
+	  doc/manual/html/spade.basicagents.agentmodel.communication.html,
+	  doc/manual/html/spade.basicagents.agentmodel.html,
+	  doc/manual/html/spade.basicagents.behav.html,
+	  doc/manual/html/spade.basicagents.first.html,
+	  doc/manual/html/spade.basicagents.html,
+	  doc/manual/html/spade.basicagents.library.html,
+	  doc/manual/html/spade.basicagents.whatsnext.html,
+	  doc/manual/html/spade.bdi.future.html,
+	  doc/manual/html/spade.bdi.goals.html,
+	  doc/manual/html/spade.bdi.intro.html,
+	  doc/manual/html/spade.bdi.kb.html,
+	  doc/manual/html/spade.bdi.plans.html,
+	  doc/manual/html/spade.bdi.running.html,
+	  doc/manual/html/spade.foreword.html,
+	  doc/manual/html/spade.fundamental.html,
+	  doc/manual/html/spade.fundamental.platform.html,
+	  doc/manual/html/spade.platform.ams.html,
+	  doc/manual/html/spade.platform.df.html,
+	  doc/manual/html/spade.platform.html,
+	  doc/manual/html/spade.quickstart.html,
+	  doc/manual/html/spade.quickstart.installation.html,
+	  doc/manual/html/spade.quickstart.requirements.html,
+	  trunk/spade/DF.py: Corrected BDI documentation. Added a generic
+	  Service class to the DF
+
+2010-06-22 14:20  juagargi
+
+	* trunk/spade/DF.py, trunk/spade/Platform.py,
+	  trunk/templates/agents.pyra, trunk/templates/services.pyra: WUI:
+	  Services tab works again. Fixes Issue 47
+
+2010-06-22 13:37  juagargi
+
+	* trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/log.pyra,
+	  trunk/templates/message.pyra, trunk/templates/services.pyra,
+	  trunk/templates/webadmin_indigo.pyra: WUI: Organizations tab
+	  removed. Fixes Issue 48
+
+2010-06-21 13:56  jpalanca
+
+	* trunk/examples/unittests/eventbehavTestCase.py: Event Behaviour
+	  unittest added
+
+2010-06-21 13:15  juagargi
+
+	* trunk/examples/event.py: Developed an EventBehaviour example
+
+2010-06-20 21:07  jpalanca
+
+	* trunk/xmpp/transports.py: Commented the dns import error. Tried to
+	  import dnspython and did not work, so we choose to hide the error.
+
+2010-06-20 14:45  jpalanca
+
+	* trunk/examples/unittests/amsTestCase.py, trunk/spade/AMS.py: Now
+	  Modifying an agent entry in the AMS does not require to provide an
+	  AID. AMS checks errors and completes the missing information.
+	  Fixes issue 34
+
+2010-06-20 11:01  gusarba
+
+	* trunk/spade/Agent.py, trunk/spade/wui.py,
+	  trunk/templates/admin.pyra, trunk/templates/agents.pyra,
+	  trunk/templates/webadmin_indigo.pyra: WUI: The platform serves
+	  correctly its own documentation via a new 'API' tab. Fix #43
+
+2010-06-19 21:28  jpalanca
+
+	* trunk/spade/AMS.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/SpadeConfigParser.py, trunk/spade/spade_backend.py,
+	  trunk/xmppd/modules/router.py:
+
+2010-06-19 01:39  jpalanca
+
+	* trunk/runspade.py, trunk/spade/wui.py: improving the WUI debug
+
+2010-06-18 17:31  gusarba
+
+	* trunk/spade/Agent.py, trunk/templates/admin.pyra: Pyra templates:
+	  Cleared up 'Admin' tab removing the agent log from the debug table
+	  and adding other minor enhancements
+
+2010-06-18 15:57  juagargi
+
+	* trunk/xmppd/xmppd.py: Solved issues with xmppd server in windows.
+	  Now fake select and poll work in any OS
+
+2010-06-17 13:07  gusarba
+
+	* trunk/templates/admin.pyra, trunk/templates/webadmin_indigo.pyra:
+	  Pyra templates: experimental attribute navigation in 'Admin' tab
+
+2010-06-17 13:07  gusarba
+
+	* trunk/spade/Agent.py, trunk/spade/Platform.py: Pyra templates:
+	  experimental attribute navigation in 'Admin' tab
+
+2010-06-16 14:34  jpalanca
+
+	* trunk/spade/Agent.py: Now agents notices when cannot connect to a
+	  SPADE platform. Fixes issue 45
+
+2010-06-16 13:51  jpalanca
+
+	* trunk/runspade.py: Now runspade script shows an error message when
+	  there is no config file. fixes #27
+
+2010-06-15 14:07  gusarba
+
+	* trunk/templates/agents.pyra: Fixed a bug in the WUI 'Agents' tab:
+	  the AWUI links now point to the 'Admin' tab instead of to a
+	  non-existent index page
+
+2010-06-11 08:33  jpalanca
+
+	* trunk/runspade.py: updated copyright and version number (from RC3
+	  to RC4)
+
+2010-06-10 20:34  gusarba
+
+	* trunk/templates/favicon.ico: Pyra templates: favicon changed
+
+2010-06-10 20:33  gusarba
+
+	* trunk/templates/favicon.ico, trunk/templates/favicon.old.ico,
+	  trunk/templates/quirksmode.css: Pyra templates: Minor changes and
+	  favicon changed
+
+2010-06-10 20:15  gusarba
+
+	* trunk/templates/404.pyra, trunk/templates/501.pyra,
+	  trunk/templates/503.pyra, trunk/templates/admin.pyra,
+	  trunk/templates/agents.pyra, trunk/templates/log.pyra,
+	  trunk/templates/quirksmode.css,
+	  trunk/templates/webadmin_indigo.pyra: Pyra templates: Removed some
+	  old corporate logos. Replaced logo with the new one. Some color
+	  changes
+
+2010-06-09 19:15  jpalanca
+
+	* doc/manual/ch01-quickstart-guide.xml,
+	  doc/manual/ch02-fundamental-concepts.xml,
+	  doc/manual/ch03-basic-agents.xml, trunk/runspade.py: removing old
+	  corporative references
+
+2010-05-26 14:27  root
+
+	* trunk/doc/api.tar.gz, trunk/doc/html,
+	  trunk/doc/html/api-objects.txt, trunk/doc/html/class-tree.html,
+	  trunk/doc/html/crarr.png, trunk/doc/html/epydoc.css,
+	  trunk/doc/html/epydoc.js, trunk/doc/html/frames.html,
+	  trunk/doc/html/help.html, trunk/doc/html/identifier-index-A.html,
+	  trunk/doc/html/identifier-index-B.html,
+	  trunk/doc/html/identifier-index-C.html,
+	  trunk/doc/html/identifier-index-D.html,
+	  trunk/doc/html/identifier-index-E.html,
+	  trunk/doc/html/identifier-index-F.html,
+	  trunk/doc/html/identifier-index-G.html,
+	  trunk/doc/html/identifier-index-H.html,
+	  trunk/doc/html/identifier-index-I.html,
+	  trunk/doc/html/identifier-index-J.html,
+	  trunk/doc/html/identifier-index-K.html,
+	  trunk/doc/html/identifier-index-L.html,
+	  trunk/doc/html/identifier-index-M.html,
+	  trunk/doc/html/identifier-index-N.html,
+	  trunk/doc/html/identifier-index-O.html,
+	  trunk/doc/html/identifier-index-P.html,
+	  trunk/doc/html/identifier-index-Q.html,
+	  trunk/doc/html/identifier-index-R.html,
+	  trunk/doc/html/identifier-index-S.html,
+	  trunk/doc/html/identifier-index-T.html,
+	  trunk/doc/html/identifier-index-U.html,
+	  trunk/doc/html/identifier-index-V.html,
+	  trunk/doc/html/identifier-index-W.html,
+	  trunk/doc/html/identifier-index-X.html,
+	  trunk/doc/html/identifier-index-Y.html,
+	  trunk/doc/html/identifier-index-Z.html,
+	  trunk/doc/html/identifier-index-_.html,
+	  trunk/doc/html/identifier-index.html, trunk/doc/html/index.html,
+	  trunk/doc/html/mimetools.Message-class.html,
+	  trunk/doc/html/module-tree.html, trunk/doc/html/redirect.html,
+	  trunk/doc/html/spade-module.html, trunk/doc/html/spade-pysrc.html,
+	  trunk/doc/html/spade.ACLMessage-module.html,
+	  trunk/doc/html/spade.ACLMessage-pysrc.html,
+	  trunk/doc/html/spade.ACLMessage.ACLMessage-class.html,
+	  trunk/doc/html/spade.ACLParser-module.html,
+	  trunk/doc/html/spade.ACLParser-pysrc.html,
+	  trunk/doc/html/spade.ACLParser.ACLParser-class.html,
+	  trunk/doc/html/spade.ACLParser.ACLxmlParser-class.html,
+	  trunk/doc/html/spade.AID-module.html,
+	  trunk/doc/html/spade.AID-pysrc.html,
+	  trunk/doc/html/spade.AID.aid-class.html,
+	  trunk/doc/html/spade.AMS-module.html,
+	  trunk/doc/html/spade.AMS-pysrc.html,
+	  trunk/doc/html/spade.AMS.AMS-class.html,
+	  trunk/doc/html/spade.AMS.AMS.DefaultBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.DefaultBehaviour.SubscribeBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.ModifyBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.PlatformBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.RegisterBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AMS.SearchBehaviour-class.html,
+	  trunk/doc/html/spade.AMS.AmsAgentDescription-class.html,
+	  trunk/doc/html/spade.Agent-module.html,
+	  trunk/doc/html/spade.Agent-pysrc.html,
+	  trunk/doc/html/spade.Agent.AbstractAgent-class.html,
+	  trunk/doc/html/spade.Agent.Agent-class.html,
+	  trunk/doc/html/spade.Agent.PlatformAgent-class.html,
+	  trunk/doc/html/spade.Agent.jabberProcess-class.html,
+	  trunk/doc/html/spade.BasicFipaDateTime-module.html,
+	  trunk/doc/html/spade.BasicFipaDateTime-pysrc.html,
+	  trunk/doc/html/spade.BasicFipaDateTime.BasicFipaDateTime-class.html,
+	  trunk/doc/html/spade.Behaviour-module.html,
+	  trunk/doc/html/spade.Behaviour-pysrc.html,
+	  trunk/doc/html/spade.Behaviour.ACLTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.ANDTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.Behaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.BehaviourTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.EventBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.FSMBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.MessageTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.NOTTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.ORTemplate-class.html,
+	  trunk/doc/html/spade.Behaviour.OneShotBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.PeriodicBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.TimeOutBehaviour-class.html,
+	  trunk/doc/html/spade.Behaviour.XORTemplate-class.html,
+	  trunk/doc/html/spade.DF-module.html,
+	  trunk/doc/html/spade.DF-pysrc.html,
+	  trunk/doc/html/spade.DF.DF-class.html,
+	  trunk/doc/html/spade.DF.DF.DefaultBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.ModifyBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.RegisterBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DF.SearchBehaviour-class.html,
+	  trunk/doc/html/spade.DF.DfAgentDescription-class.html,
+	  trunk/doc/html/spade.DF.ServiceDescription-class.html,
+	  trunk/doc/html/spade.Envelope-module.html,
+	  trunk/doc/html/spade.Envelope-pysrc.html,
+	  trunk/doc/html/spade.Envelope.Envelope-class.html,
+	  trunk/doc/html/spade.FIPAMessage-module.html,
+	  trunk/doc/html/spade.FIPAMessage-pysrc.html,
+	  trunk/doc/html/spade.FIPAMessage.FipaMessage-class.html,
+	  trunk/doc/html/spade.MTP-module.html,
+	  trunk/doc/html/spade.MTP-pysrc.html,
+	  trunk/doc/html/spade.MTP.MTP-class.html,
+	  trunk/doc/html/spade.MessageReceiver-module.html,
+	  trunk/doc/html/spade.MessageReceiver-pysrc.html,
+	  trunk/doc/html/spade.MessageReceiver.MessageReceiver-class.html,
+	  trunk/doc/html/spade.Organization-module.html,
+	  trunk/doc/html/spade.Organization-pysrc.html,
+	  trunk/doc/html/spade.Organization.BanedUser-class.html,
+	  trunk/doc/html/spade.Organization.CreationError-class.html,
+	  trunk/doc/html/spade.Organization.DestroyError-class.html,
+	  trunk/doc/html/spade.Organization.JoinError-class.html,
+	  trunk/doc/html/spade.Organization.LastOwner-class.html,
+	  trunk/doc/html/spade.Organization.LockedOrganization-class.html,
+	  trunk/doc/html/spade.Organization.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Organization.MemberOfFederation-class.html,
+	  trunk/doc/html/spade.Organization.MembersOnly-class.html,
+	  trunk/doc/html/spade.Organization.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Organization.NotOwner-class.html,
+	  trunk/doc/html/spade.Organization.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Organization.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Organization.NotValidName-class.html,
+	  trunk/doc/html/spade.Organization.NotValidType-class.html,
+	  trunk/doc/html/spade.Organization.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Organization.Organization-class.html,
+	  trunk/doc/html/spade.Organization.Organization.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.CreateTeamBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetUnitInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.GetUnitListBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.IsMemberBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.SendRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.Organization.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Organization.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Organization.Unavailable-class.html,
+	  trunk/doc/html/spade.Organization.UnavailableFunction-class.html,
+	  trunk/doc/html/spade.Organization_new-module.html,
+	  trunk/doc/html/spade.Organization_new-pysrc.html,
+	  trunk/doc/html/spade.Organization_new.BanedUser-class.html,
+	  trunk/doc/html/spade.Organization_new.CreationError-class.html,
+	  trunk/doc/html/spade.Organization_new.DestroyError-class.html,
+	  trunk/doc/html/spade.Organization_new.JoinError-class.html,
+	  trunk/doc/html/spade.Organization_new.LastOwner-class.html,
+	  trunk/doc/html/spade.Organization_new.LockedOrganization-class.html,
+	  trunk/doc/html/spade.Organization_new.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Organization_new.MemberOfFederation-class.html,
+	  trunk/doc/html/spade.Organization_new.MembersOnly-class.html,
+	  trunk/doc/html/spade.Organization_new.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Organization_new.NotCreatePermision-class.html,
+	  trunk/doc/html/spade.Organization_new.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidName-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidType-class.html,
+	  trunk/doc/html/spade.Organization_new.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.IsMemberBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Organization_new.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Organization_new.Unavailable-class.html,
+	  trunk/doc/html/spade.Organization_new.UnavailableFunction-class.html,
+	  trunk/doc/html/spade.Platform-module.html,
+	  trunk/doc/html/spade.Platform-pysrc.html,
+	  trunk/doc/html/spade.Platform.PlatformRestart-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform.GetMembersBehav-class.html,
+	  trunk/doc/html/spade.Platform.SpadePlatform.RouteBehaviour-class.html,
+	  trunk/doc/html/spade.RDF0Parser-module.html,
+	  trunk/doc/html/spade.RDF0Parser-pysrc.html,
+	  trunk/doc/html/spade.RDF0Parser.Newdict-class.html,
+	  trunk/doc/html/spade.RDF0Parser.RDF0Parser-class.html,
+	  trunk/doc/html/spade.ReceivedObject-module.html,
+	  trunk/doc/html/spade.ReceivedObject-pysrc.html,
+	  trunk/doc/html/spade.ReceivedObject.ReceivedObject-class.html,
+	  trunk/doc/html/spade.SIMBA-module.html,
+	  trunk/doc/html/spade.SIMBA-pysrc.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.InboxBehaviour-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.InboxBehaviour.SimbaRequestHandler-class.html,
+	  trunk/doc/html/spade.SIMBA.SIMBA.OutboxBehaviour-class.html,
+	  trunk/doc/html/spade.SL0Parser-module.html,
+	  trunk/doc/html/spade.SL0Parser-pysrc.html,
+	  trunk/doc/html/spade.SL0Parser.SL0Parser-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser-module.html,
+	  trunk/doc/html/spade.SpadeConfigParser-pysrc.html,
+	  trunk/doc/html/spade.SpadeConfigParser.ConfigParser-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.ParseObject-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.spadeXML-class.html,
+	  trunk/doc/html/spade.SpadeConfigParser.spadeXMLHandler-class.html,
+	  trunk/doc/html/spade.Unit-module.html,
+	  trunk/doc/html/spade.Unit-pysrc.html,
+	  trunk/doc/html/spade.Unit.BanedUser-class.html,
+	  trunk/doc/html/spade.Unit.CreationError-class.html,
+	  trunk/doc/html/spade.Unit.DestroyError-class.html,
+	  trunk/doc/html/spade.Unit.JoinError-class.html,
+	  trunk/doc/html/spade.Unit.LastOwner-class.html,
+	  trunk/doc/html/spade.Unit.LockedUnit-class.html,
+	  trunk/doc/html/spade.Unit.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Unit.MembersOnly-class.html,
+	  trunk/doc/html/spade.Unit.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Unit.NotAdmin-class.html,
+	  trunk/doc/html/spade.Unit.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Unit.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Unit.NotValidGoalChange-class.html,
+	  trunk/doc/html/spade.Unit.NotValidName-class.html,
+	  trunk/doc/html/spade.Unit.NotValidType-class.html,
+	  trunk/doc/html/spade.Unit.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Unit.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Unit.Unavailable-class.html,
+	  trunk/doc/html/spade.Unit.Unit-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.AddOwnerBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetAdminListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetBanAgentListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMemberListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetModeratorListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GetOwnerListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.GiveVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.KickAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RemoveOwnerBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.RevokeVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SendMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SendPrivateMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.SetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit.Unit.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new-module.html,
+	  trunk/doc/html/spade.Unit_new-pysrc.html,
+	  trunk/doc/html/spade.Unit_new.BanedUser-class.html,
+	  trunk/doc/html/spade.Unit_new.CreationError-class.html,
+	  trunk/doc/html/spade.Unit_new.DestroyError-class.html,
+	  trunk/doc/html/spade.Unit_new.JoinError-class.html,
+	  trunk/doc/html/spade.Unit_new.LastOwner-class.html,
+	  trunk/doc/html/spade.Unit_new.LockedUnit-class.html,
+	  trunk/doc/html/spade.Unit_new.MaximumUsers-class.html,
+	  trunk/doc/html/spade.Unit_new.MembersOnly-class.html,
+	  trunk/doc/html/spade.Unit_new.NickNameConflict-class.html,
+	  trunk/doc/html/spade.Unit_new.NotCreatePermision-class.html,
+	  trunk/doc/html/spade.Unit_new.NotSupervisor-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidGoal-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidGoalChange-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidName-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidType-class.html,
+	  trunk/doc/html/spade.Unit_new.NotValidUnit-class.html,
+	  trunk/doc/html/spade.Unit_new.PaswordNeeded-class.html,
+	  trunk/doc/html/spade.Unit_new.Unavailable-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.DestroyBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetInfoBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.KickAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SendMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetGoalBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html,
+	  trunk/doc/html/spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html,
+	  trunk/doc/html/spade.XMLCodec-module.html,
+	  trunk/doc/html/spade.XMLCodec-pysrc.html,
+	  trunk/doc/html/spade.XMLCodec.XMLCodec-class.html,
+	  trunk/doc/html/spade.bdi-module.html,
+	  trunk/doc/html/spade.bdi-pysrc.html,
+	  trunk/doc/html/spade.bdi.BDIAgent-class.html,
+	  trunk/doc/html/spade.bdi.Goal-class.html,
+	  trunk/doc/html/spade.bdi.Plan-class.html,
+	  trunk/doc/html/spade.bdi.PostConditionFailed-class.html,
+	  trunk/doc/html/spade.bdi.PreConditionFailed-class.html,
+	  trunk/doc/html/spade.bdi.Service-class.html,
+	  trunk/doc/html/spade.colors-module.html,
+	  trunk/doc/html/spade.colors-pysrc.html,
+	  trunk/doc/html/spade.content-module.html,
+	  trunk/doc/html/spade.content-pysrc.html,
+	  trunk/doc/html/spade.content.ContentObject-class.html,
+	  trunk/doc/html/spade.fipa-module.html,
+	  trunk/doc/html/spade.fipa-pysrc.html,
+	  trunk/doc/html/spade.fipa.ModifyAgentBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.SearchAgentBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.deregisterServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.getPlatformInfoBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.modifyServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.registerServiceBehaviour-class.html,
+	  trunk/doc/html/spade.fipa.searchServiceBehaviour-class.html,
+	  trunk/doc/html/spade.logic-module.html,
+	  trunk/doc/html/spade.logic-pysrc.html,
+	  trunk/doc/html/spade.logic.Expr-class.html,
+	  trunk/doc/html/spade.logic.FolKB-class.html,
+	  trunk/doc/html/spade.logic.KB-class.html,
+	  trunk/doc/html/spade.logic.PropHornKB-class.html,
+	  trunk/doc/html/spade.logic.PropKB-class.html,
+	  trunk/doc/html/spade.logic.logicTest-class.html,
+	  trunk/doc/html/spade.msgtypes-module.html,
+	  trunk/doc/html/spade.msgtypes-pysrc.html,
+	  trunk/doc/html/spade.peer2peer-module.html,
+	  trunk/doc/html/spade.peer2peer-pysrc.html,
+	  trunk/doc/html/spade.peer2peer.DiscoBehaviour-class.html,
+	  trunk/doc/html/spade.peer2peer.P2PBehaviour-class.html,
+	  trunk/doc/html/spade.peer2peer.P2PBehaviour.P2PRequestHandler-class.html,
+	  trunk/doc/html/spade.peer2peer.RequestDiscoInfoBehav-class.html,
+	  trunk/doc/html/spade.peer2peer.SendStreamInitiationBehav-class.html,
+	  trunk/doc/html/spade.peer2peer.StreamInitiationBehaviour-class.html,
+	  trunk/doc/html/spade.pyparsing-module.html,
+	  trunk/doc/html/spade.pyparsing-pysrc.html,
+	  trunk/doc/html/spade.pyparsing.And-class.html,
+	  trunk/doc/html/spade.pyparsing.CaselessLiteral-class.html,
+	  trunk/doc/html/spade.pyparsing.CharsNotIn-class.html,
+	  trunk/doc/html/spade.pyparsing.Combine-class.html,
+	  trunk/doc/html/spade.pyparsing.Dict-class.html,
+	  trunk/doc/html/spade.pyparsing.Each-class.html,
+	  trunk/doc/html/spade.pyparsing.Empty-class.html,
+	  trunk/doc/html/spade.pyparsing.FollowedBy-class.html,
+	  trunk/doc/html/spade.pyparsing.Forward-class.html,
+	  trunk/doc/html/spade.pyparsing.GoToColumn-class.html,
+	  trunk/doc/html/spade.pyparsing.Group-class.html,
+	  trunk/doc/html/spade.pyparsing.Keyword-class.html,
+	  trunk/doc/html/spade.pyparsing.LineEnd-class.html,
+	  trunk/doc/html/spade.pyparsing.LineStart-class.html,
+	  trunk/doc/html/spade.pyparsing.Literal-class.html,
+	  trunk/doc/html/spade.pyparsing.MatchFirst-class.html,
+	  trunk/doc/html/spade.pyparsing.NoMatch-class.html,
+	  trunk/doc/html/spade.pyparsing.NotAny-class.html,
+	  trunk/doc/html/spade.pyparsing.OneOrMore-class.html,
+	  trunk/doc/html/spade.pyparsing.Optional-class.html,
+	  trunk/doc/html/spade.pyparsing.Or-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseBaseException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseElementEnhance-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseExpression-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseFatalException-class.html,
+	  trunk/doc/html/spade.pyparsing.ParseResults-class.html,
+	  trunk/doc/html/spade.pyparsing.ParserElement-class.html,
+	  trunk/doc/html/spade.pyparsing.PositionToken-class.html,
+	  trunk/doc/html/spade.pyparsing.RecursiveGrammarException-class.html,
+	  trunk/doc/html/spade.pyparsing.SkipTo-class.html,
+	  trunk/doc/html/spade.pyparsing.StringEnd-class.html,
+	  trunk/doc/html/spade.pyparsing.StringStart-class.html,
+	  trunk/doc/html/spade.pyparsing.Suppress-class.html,
+	  trunk/doc/html/spade.pyparsing.Token-class.html,
+	  trunk/doc/html/spade.pyparsing.TokenConverter-class.html,
+	  trunk/doc/html/spade.pyparsing.Upcase-class.html,
+	  trunk/doc/html/spade.pyparsing.White-class.html,
+	  trunk/doc/html/spade.pyparsing.Word-class.html,
+	  trunk/doc/html/spade.pyparsing.ZeroOrMore-class.html,
+	  trunk/doc/html/spade.pyparsing._ForwardNoRecurse-class.html,
+	  trunk/doc/html/spade.pyratemp-module.html,
+	  trunk/doc/html/spade.pyratemp-pysrc.html,
+	  trunk/doc/html/spade.pyratemp.FileLoader-class.html,
+	  trunk/doc/html/spade.pyratemp.Parser-class.html,
+	  trunk/doc/html/spade.pyratemp.PseudoSandbox-class.html,
+	  trunk/doc/html/spade.pyratemp.Renderer-class.html,
+	  trunk/doc/html/spade.pyratemp.StringLoader-class.html,
+	  trunk/doc/html/spade.pyratemp.Template-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateBase-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateEval-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateException-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateIncludeError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateParseError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateRenderError-class.html,
+	  trunk/doc/html/spade.pyratemp.TemplateSyntaxError-class.html,
+	  trunk/doc/html/spade.pyratemp._dontescape-class.html,
+	  trunk/doc/html/spade.socialnetwork-module.html,
+	  trunk/doc/html/spade.socialnetwork-pysrc.html,
+	  trunk/doc/html/spade.socialnetwork.PresenceBehaviour-class.html,
+	  trunk/doc/html/spade.socialnetwork.RosterBehaviour-class.html,
+	  trunk/doc/html/spade.socialnetwork.SocialItem-class.html,
+	  trunk/doc/html/spade.spade_backend-module.html,
+	  trunk/doc/html/spade.spade_backend-pysrc.html,
+	  trunk/doc/html/spade.spade_backend.SpadeBackend-class.html,
+	  trunk/doc/html/spade.wui-module.html,
+	  trunk/doc/html/spade.wui-pysrc.html,
+	  trunk/doc/html/spade.wui.WUI-class.html,
+	  trunk/doc/html/spade.wui.WUIHandler-class.html,
+	  trunk/doc/html/spade.xmpp-module.html,
+	  trunk/doc/html/spade.xmpp-pysrc.html,
+	  trunk/doc/html/spade.xmpp.auth-module.html,
+	  trunk/doc/html/spade.xmpp.auth-pysrc.html,
+	  trunk/doc/html/spade.xmpp.auth.Bind-class.html,
+	  trunk/doc/html/spade.xmpp.auth.ComponentBind-class.html,
+	  trunk/doc/html/spade.xmpp.auth.NonSASL-class.html,
+	  trunk/doc/html/spade.xmpp.auth.SASL-class.html,
+	  trunk/doc/html/spade.xmpp.browser-module.html,
+	  trunk/doc/html/spade.xmpp.browser-pysrc.html,
+	  trunk/doc/html/spade.xmpp.browser.Browser-class.html,
+	  trunk/doc/html/spade.xmpp.client-module.html,
+	  trunk/doc/html/spade.xmpp.client-pysrc.html,
+	  trunk/doc/html/spade.xmpp.client.Client-class.html,
+	  trunk/doc/html/spade.xmpp.client.CommonClient-class.html,
+	  trunk/doc/html/spade.xmpp.client.Component-class.html,
+	  trunk/doc/html/spade.xmpp.client.PlugIn-class.html,
+	  trunk/doc/html/spade.xmpp.commands-module.html,
+	  trunk/doc/html/spade.xmpp.commands-pysrc.html,
+	  trunk/doc/html/spade.xmpp.commands.Command_Handler_Prototype-class.html,
+	  trunk/doc/html/spade.xmpp.commands.Commands-class.html,
+	  trunk/doc/html/spade.xmpp.commands.TestCommand-class.html,
+	  trunk/doc/html/spade.xmpp.debug-module.html,
+	  trunk/doc/html/spade.xmpp.debug-pysrc.html,
+	  trunk/doc/html/spade.xmpp.debug.Debug-class.html,
+	  trunk/doc/html/spade.xmpp.debug.NoDebug-class.html,
+	  trunk/doc/html/spade.xmpp.dispatcher-module.html,
+	  trunk/doc/html/spade.xmpp.dispatcher-pysrc.html,
+	  trunk/doc/html/spade.xmpp.dispatcher.Dispatcher-class.html,
+	  trunk/doc/html/spade.xmpp.features-module.html,
+	  trunk/doc/html/spade.xmpp.features-pysrc.html,
+	  trunk/doc/html/spade.xmpp.filetransfer-module.html,
+	  trunk/doc/html/spade.xmpp.filetransfer-pysrc.html,
+	  trunk/doc/html/spade.xmpp.filetransfer.IBB-class.html,
+	  trunk/doc/html/spade.xmpp.protocol-module.html,
+	  trunk/doc/html/spade.xmpp.protocol-pysrc.html,
+	  trunk/doc/html/spade.xmpp.protocol.BadFormat-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.BadNamespacePrefix-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Conflict-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ConnectionTimeout-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.DataField-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.DataForm-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Error-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ErrorNode-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.HostGone-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.HostUnknown-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ImproperAddressing-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InternalServerError-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidFrom-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidID-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidNamespace-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.InvalidXML-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Iq-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.JID-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Message-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.NodeProcessed-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.NotAuthorized-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.PolicyViolation-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Presence-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.Protocol-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.RemoteConnectionFailed-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.ResourceConstraint-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.RestrictedXML-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.SeeOtherHost-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.StreamError-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.SystemShutdown-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UndefinedCondition-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedEncoding-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedStanzaType-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.UnsupportedVersion-class.html,
+	  trunk/doc/html/spade.xmpp.protocol.XMLNotWellFormed-class.html,
+	  trunk/doc/html/spade.xmpp.roster-module.html,
+	  trunk/doc/html/spade.xmpp.roster-pysrc.html,
+	  trunk/doc/html/spade.xmpp.roster.Roster-class.html,
+	  trunk/doc/html/spade.xmpp.session-module.html,
+	  trunk/doc/html/spade.xmpp.session-pysrc.html,
+	  trunk/doc/html/spade.xmpp.session.Session-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml-module.html,
+	  trunk/doc/html/spade.xmpp.simplexml-pysrc.html,
+	  trunk/doc/html/spade.xmpp.simplexml.NT-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.Node-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.NodeBuilder-class.html,
+	  trunk/doc/html/spade.xmpp.simplexml.T-class.html,
+	  trunk/doc/html/spade.xmpp.transports-module.html,
+	  trunk/doc/html/spade.xmpp.transports-pysrc.html,
+	  trunk/doc/html/spade.xmpp.transports.HTTPPROXYsocket-class.html,
+	  trunk/doc/html/spade.xmpp.transports.TCPsocket-class.html,
+	  trunk/doc/html/spade.xmpp.transports.TLS-class.html,
+	  trunk/doc/html/spade.xmpp.transports.error-class.html,
+	  trunk/doc/html/spade.xmppd-module.html,
+	  trunk/doc/html/spade.xmppd-pysrc.html,
+	  trunk/doc/html/spade.xmppd.locales-module.html,
+	  trunk/doc/html/spade.xmppd.locales-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules-module.html,
+	  trunk/doc/html/spade.xmppd.modules-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.config-module.html,
+	  trunk/doc/html/spade.xmppd.modules.config-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.config.Config-class.html,
+	  trunk/doc/html/spade.xmppd.modules.config.xmppdXML-class.html,
+	  trunk/doc/html/spade.xmppd.modules.config.xmppdXMLHandler-class.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake-module.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake.AUTH-class.html,
+	  trunk/doc/html/spade.xmppd.modules.db_fake.DB-class.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback-module.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.dialback.Dialback-class.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077-module.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0077.IBR-class.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078-module.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.jep0078.NSA-class.html,
+	  trunk/doc/html/spade.xmppd.modules.message-module.html,
+	  trunk/doc/html/spade.xmppd.modules.message-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.message.MessageCatcher-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc-module.html,
+	  trunk/doc/html/spade.xmppd.modules.muc-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.BadPassword-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Blacklisted-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.MUC-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.MaxUsers-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NickLockedDown-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NoVoice-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.NotAMember-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Participant-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.Room-class.html,
+	  trunk/doc/html/spade.xmppd.modules.muc.SerializableRoom-class.html,
+	  trunk/doc/html/spade.xmppd.modules.oob-module.html,
+	  trunk/doc/html/spade.xmppd.modules.oob-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.oob.OOB-class.html,
+	  trunk/doc/html/spade.xmppd.modules.roster-module.html,
+	  trunk/doc/html/spade.xmppd.modules.roster-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.roster.ROSTER-class.html,
+	  trunk/doc/html/spade.xmppd.modules.router-module.html,
+	  trunk/doc/html/spade.xmppd.modules.router-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.router.Router-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream-module.html,
+	  trunk/doc/html/spade.xmppd.modules.stream-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Bind-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Handshake-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.SASL-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.Session-class.html,
+	  trunk/doc/html/spade.xmppd.modules.stream.TLS-class.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin-module.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin.WebAdmin-class.html,
+	  trunk/doc/html/spade.xmppd.modules.webadmin.WebAdminHandler-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq-module.html,
+	  trunk/doc/html/spade.xmppd.modules.wq-pysrc.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.Conflict-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.Group-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.ItemNotFound-class.html,
+	  trunk/doc/html/spade.xmppd.modules.wq.WQ-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd-module.html,
+	  trunk/doc/html/spade.xmppd.xmppd-pysrc.html,
+	  trunk/doc/html/spade.xmppd.xmppd.RPC_Client-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Server-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session_Dummy-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Session_Dummy.Stream-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.Socker_client-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.fake_select-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.fake_select.poll-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.get_input-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.localizer-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.multisession_manager-class.html,
+	  trunk/doc/html/spade.xmppd.xmppd.multisession_manager.multisession_thread-class.html,
+	  trunk/doc/html/toc-everything.html,
+	  trunk/doc/html/toc-spade-module.html,
+	  trunk/doc/html/toc-spade.ACLMessage-module.html,
+	  trunk/doc/html/toc-spade.ACLParser-module.html,
+	  trunk/doc/html/toc-spade.AID-module.html,
+	  trunk/doc/html/toc-spade.AMS-module.html,
+	  trunk/doc/html/toc-spade.Agent-module.html,
+	  trunk/doc/html/toc-spade.BasicFipaDateTime-module.html,
+	  trunk/doc/html/toc-spade.Behaviour-module.html,
+	  trunk/doc/html/toc-spade.DF-module.html,
+	  trunk/doc/html/toc-spade.Envelope-module.html,
+	  trunk/doc/html/toc-spade.FIPAMessage-module.html,
+	  trunk/doc/html/toc-spade.MTP-module.html,
+	  trunk/doc/html/toc-spade.MessageReceiver-module.html,
+	  trunk/doc/html/toc-spade.Organization-module.html,
+	  trunk/doc/html/toc-spade.Organization_new-module.html,
+	  trunk/doc/html/toc-spade.Platform-module.html,
+	  trunk/doc/html/toc-spade.RDF0Parser-module.html,
+	  trunk/doc/html/toc-spade.ReceivedObject-module.html,
+	  trunk/doc/html/toc-spade.SIMBA-module.html,
+	  trunk/doc/html/toc-spade.SL0Parser-module.html,
+	  trunk/doc/html/toc-spade.SpadeConfigParser-module.html,
+	  trunk/doc/html/toc-spade.Unit-module.html,
+	  trunk/doc/html/toc-spade.Unit_new-module.html,
+	  trunk/doc/html/toc-spade.XMLCodec-module.html,
+	  trunk/doc/html/toc-spade.bdi-module.html,
+	  trunk/doc/html/toc-spade.colors-module.html,
+	  trunk/doc/html/toc-spade.content-module.html,
+	  trunk/doc/html/toc-spade.fipa-module.html,
+	  trunk/doc/html/toc-spade.logic-module.html,
+	  trunk/doc/html/toc-spade.msgtypes-module.html,
+	  trunk/doc/html/toc-spade.peer2peer-module.html,
+	  trunk/doc/html/toc-spade.pyparsing-module.html,
+	  trunk/doc/html/toc-spade.pyratemp-module.html,
+	  trunk/doc/html/toc-spade.socialnetwork-module.html,
+	  trunk/doc/html/toc-spade.spade_backend-module.html,
+	  trunk/doc/html/toc-spade.wui-module.html,
+	  trunk/doc/html/toc-spade.xmpp-module.html,
+	  trunk/doc/html/toc-spade.xmpp.auth-module.html,
+	  trunk/doc/html/toc-spade.xmpp.browser-module.html,
+	  trunk/doc/html/toc-spade.xmpp.client-module.html,
+	  trunk/doc/html/toc-spade.xmpp.commands-module.html,
+	  trunk/doc/html/toc-spade.xmpp.debug-module.html,
+	  trunk/doc/html/toc-spade.xmpp.dispatcher-module.html,
+	  trunk/doc/html/toc-spade.xmpp.features-module.html,
+	  trunk/doc/html/toc-spade.xmpp.filetransfer-module.html,
+	  trunk/doc/html/toc-spade.xmpp.protocol-module.html,
+	  trunk/doc/html/toc-spade.xmpp.roster-module.html,
+	  trunk/doc/html/toc-spade.xmpp.session-module.html,
+	  trunk/doc/html/toc-spade.xmpp.simplexml-module.html,
+	  trunk/doc/html/toc-spade.xmpp.transports-module.html,
+	  trunk/doc/html/toc-spade.xmppd-module.html,
+	  trunk/doc/html/toc-spade.xmppd.locales-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.config-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.db_fake-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.dialback-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.jep0077-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.jep0078-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.message-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.muc-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.oob-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.roster-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.router-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.stream-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.webadmin-module.html,
+	  trunk/doc/html/toc-spade.xmppd.modules.wq-module.html,
+	  trunk/doc/html/toc-spade.xmppd.xmppd-module.html,
+	  trunk/doc/html/toc.html: updated API documentation
+
+2010-05-25 09:25  jpalanca
+
+	* trunk/ChangeLog: 
+
+2010-05-12 17:03  jpalanca
+
+	* ChangeLog, TODO, examples/OracleAgent.py, examples/benchmark,
+	  examples/example.py, examples/example2.py, examples/speed.py,
+	  examples/thomas.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/fipa.py, trunk/templates/quirksmode.css:
+
+2010-05-12 17:02  jpalanca
+
+	* trunk/examples/sendandrecv: 
+
+2010-05-12 17:02  jpalanca
+
+	* trunk/examples/auctions/auctioner.py,
+	  trunk/examples/auctions/bidder.py,
+	  trunk/examples/auctions/runTest.py,
+	  trunk/examples/auctions/webadmin.css, trunk/examples/benchmark,
+	  trunk/examples/dalmuti/jugador.py,
+	  trunk/examples/dalmuti/runTest.py, trunk/examples/emissor-gus.py,
+	  trunk/examples/emissor.py, trunk/examples/modify.py,
+	  trunk/examples/ping, trunk/examples/receptor.py,
+	  trunk/examples/searchAgent.py, trunk/examples/searchService.py,
+	  trunk/examples/sendAndRecv.py, trunk/examples/sendandrecv,
+	  trunk/examples/unittests/amsTestCase.py,
+	  trunk/examples/unittests/basicTestCase.py,
+	  trunk/examples/unittests/bdiTestCase.py,
+	  trunk/examples/unittests/coTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/p2pTestCase.py: Refined spade examples
+
+2010-05-12 14:00  jpalanca
+
+	* trunk/examples/modify.py: 
+
+2010-05-12 13:42  jpalanca
+
+	* trunk/examples/basic.py, trunk/examples/external.py,
+	  trunk/examples/fsm.py, trunk/examples/modify.py,
+	  trunk/examples/register.py, trunk/examples/search.py,
+	  trunk/examples/searchAgent.py, trunk/examples/searchService.py,
+	  trunk/examples/simbamtp, trunk/examples/speed.py,
+	  trunk/examples/testbdi.py, trunk/examples/thomas.py,
+	  trunk/examples/timeout.py, trunk/examples/webadmin.css:
+
+2010-05-12 13:10  jpalanca
+
+	* trunk/examples/amsTestCase.py, trunk/examples/basicTestCase.py,
+	  trunk/examples/bdiTestCase.py, trunk/examples/coTestCase.py,
+	  trunk/examples/dfTestCase.py, trunk/examples/p2pTestCase.py,
+	  trunk/examples/unittests, trunk/examples/unittests.py,
+	  trunk/examples/unittests/amsTestCase.py,
+	  trunk/examples/unittests/basicTestCase.py,
+	  trunk/examples/unittests/bdiTestCase.py,
+	  trunk/examples/unittests/coTestCase.py,
+	  trunk/examples/unittests/dfTestCase.py,
+	  trunk/examples/unittests/p2pTestCase.py,
+	  trunk/examples/unittests/unittests.py:
+
+2010-05-12 13:09  jpalanca
+
+	* trunk/examples/OracleAgent.py, trunk/examples/alfred,
+	  trunk/examples/auctioner.py, trunk/examples/auctions,
+	  trunk/examples/auctions/auctioner.py,
+	  trunk/examples/auctions/bidder.py,
+	  trunk/examples/auctions/client.js, trunk/examples/bidder.py,
+	  trunk/examples/client.js, trunk/examples/data,
+	  trunk/examples/emissor.py, trunk/examples/example.py,
+	  trunk/examples/example2.py, trunk/examples/external.py,
+	  trunk/examples/fsm.py, trunk/examples/modify.py,
+	  trunk/examples/oracle, trunk/examples/rdf:
+
+2010-01-15 18:33  jpalanca
+
+	* trunk/examples/amsTestCase.py, trunk/examples/bdiTestCase.py,
+	  trunk/examples/p2pTestCase.py, trunk/spade/bdi.py: Added BDI
+	  Testsuite
+
+2009-10-14 17:05  garanda
+
+	* trunk/examples/testbdi.py, trunk/spade/__init__.py,
+	  trunk/spade/bdi.py, trunk/spade/logic.py: Added BDI support
+
+2009-10-14 15:11  jsuch
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py, trunk/spade/peer2peer.py:
+
+2009-10-02 17:16  jsuch
+
+	* trunk/examples/benchmark/bench0.sh,
+	  trunk/examples/benchmark/bench1.sh,
+	  trunk/examples/benchmark/bench1_controller.py,
+	  trunk/examples/benchmark/bench1_receiver.py,
+	  trunk/examples/benchmark/bench1_sender.py,
+	  trunk/examples/p2pTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/spade_backend.py, trunk/xmpp/auth.py: benchmarks
+	  running
+
+2009-09-28 16:31  garanda
+
+	* trunk/examples/benchmark, trunk/examples/benchmark/bench1.sh,
+	  trunk/examples/benchmark/bench1_controller.py,
+	  trunk/examples/benchmark/bench1_receiver.py,
+	  trunk/examples/benchmark/bench1_sender.py,
+	  trunk/examples/benchmark/bench2.sh,
+	  trunk/examples/benchmark/bench3.sh,
+	  trunk/examples/benchmark/bench4_1.sh: Added benchmarking tools
+
+2009-09-28 16:27  garanda
+
+	* trunk/spade/socialnetwork.py: Disabled social network
+
+2009-09-28 16:01  garanda
+
+	* trunk/examples/dfTestCase.py: 
+
+2009-09-28 13:26  garanda
+
+	* trunk/examples/dfTestCase.py, trunk/examples/p2pTestCase.py,
+	  trunk/runspade.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/fipa.py: Spade is refactorized and running again
+
+2009-09-25 13:44  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Platform.py,
+	  trunk/spade/__init__.py, trunk/spade/fipa.py,
+	  trunk/spade/peer2peer.py, trunk/spade/socialnetwork.py:
+	  Refactoring SPADE. (still some errors)
+
+2009-09-21 12:53  garanda
+
+	* trunk/examples/p2pTestCase.py: 
+
+2009-09-21 11:35  garanda
+
+	* trunk/examples/p2pTestCase.py: 
+
+2009-09-21 10:54  garanda
+
+	* trunk/examples/p2pTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py:
+
+2009-09-18 22:01  garanda
+
+	* trunk/templates/favicon.ico: Added favicon.ico
+
+2009-09-18 14:14  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py: 
+
+2009-09-18 14:13  garanda
+
+	* trunk/examples/p2pTestCase.py, trunk/examples/unittests.py: 
+
+2009-09-17 17:29  garanda
+
+	* trunk/spade/Agent.py: 
+
+2009-09-17 17:29  garanda
+
+	* trunk/examples/p2pTestCase.py: 
+
+2009-09-17 13:57  garanda
+
+	* trunk/examples/p2pTestCase.py: 
+
+2009-09-17 13:57  garanda
+
+	* trunk/spade/Agent.py: 
+
+2009-09-15 14:10  garanda
+
+	* tags/2.0rc3/etc, tags/2.0rc3/examples, tags/2.0rc3/spade,
+	  tags/2.0rc3/tlslite, tags/2.0rc3/tlslite/integration,
+	  trunk/spade/Agent.py, trunk/templates/admin.pyra:
+
+2009-09-14 23:25  garanda
+
+	* trunk/spade/Platform.py: Added crappy AWUI register in AMS (fixed
+	  small aesthetic bugs)
+
+2009-09-14 23:20  garanda
+
+	* trunk/spade/AMS.py, trunk/spade/Agent.py, trunk/spade/Platform.py,
+	  trunk/spade/wui.py, trunk/templates/agents.pyra: Added crappy AWUI
+	  register in AMS
+
+2009-09-14 17:59  garanda
+
+	* trunk/runspade.py, trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/spade/Platform.py, trunk/spade/spade_backend.py,
+	  trunk/spade/wui.py, trunk/templates/404.pyra,
+	  trunk/templates/501.pyra, trunk/templates/503.pyra,
+	  trunk/templates/admin.pyra, trunk/templates/agents.pyra,
+	  trunk/templates/log.pyra, trunk/templates/message.pyra,
+	  trunk/templates/quirksmode.css, trunk/templates/services.pyra,
+	  trunk/templates/webadmin_indigo.pyra: More work on the spade WUI.
+	  Now with admin page
+
+2009-09-14 11:44  garanda
+
+	* trunk/examples/basic.py, trunk/spade/Agent.py, trunk/spade/wui.py,
+	  trunk/templates/log.pyra: WebUI log works as you shit yourself
+
+2009-09-14 09:26  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/wui.py,
+	  trunk/templates/log.pyra:
+
+2009-09-10 13:59  garanda
+
+	* trunk/examples/bidder.py, trunk/spade/Agent.py,
+	  trunk/spade/spade_backend.py, trunk/spade/wui.py,
+	  trunk/templates/404.pyra, trunk/templates/log.pyra:
+
+2009-09-10 12:56  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Platform.py, trunk/spade/swi.py,
+	  trunk/spade/wui.py:
+
+2009-09-04 15:44  garanda
+
+	* trunk/spade/swi.py, trunk/templates/agents.pyra: Fixed a bug in
+	  WUI that prevented the agents list to appear
+
+2009-06-16 17:06  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/swi.py,
+	  trunk/templates/501.pyra, trunk/templates/message.pyra: more work
+	  on 501 template
+
+2009-06-16 14:18  jpalanca
+
+	* trunk/spade/swi.py, trunk/templates/message.pyra: working on
+	  sending messages from web gui
+
+2009-06-04 18:16  garanda
+
+	* trunk/tlslite/Session.py, trunk/tlslite/SharedKeyDB.py,
+	  trunk/tlslite/TLSConnection.py, trunk/tlslite/TLSRecordLayer.py,
+	  trunk/tlslite/VerifierDB.py, trunk/tlslite/__init__.py,
+	  trunk/tlslite/api.py, trunk/tlslite/integration/ClientHelper.py,
+	  trunk/tlslite/integration/HTTPTLSConnection.py,
+	  trunk/tlslite/integration/IMAP4_TLS.py,
+	  trunk/tlslite/integration/IntegrationHelper.py,
+	  trunk/tlslite/integration/POP3_TLS.py,
+	  trunk/tlslite/integration/SMTP_TLS.py,
+	  trunk/tlslite/integration/XMLRPCTransport.py,
+	  trunk/tlslite/integration/__init__.py, trunk/tlslite/mathtls.py,
+	  trunk/tlslite/messages.py, trunk/tlslite/scripts,
+	  trunk/tlslite/utils/AES.py, trunk/tlslite/utils/ASN1Parser.py,
+	  trunk/tlslite/utils/RC4.py, trunk/tlslite/utils/TripleDES.py,
+	  trunk/tlslite/utils/__init__.py, trunk/tlslite/utils/codec.py,
+	  trunk/tlslite/utils/compat.py, trunk/tlslite/utils/cryptomath.py,
+	  trunk/tlslite/utils/keyfactory.py,
+	  trunk/tlslite/utils/win32prng.c, trunk/tlslite/utils/xmltools.py:
+	  updated tlslite version
+
+2009-06-04 17:49  garanda
+
+	* trunk/runspade.py, trunk/spade/spade_backend.py,
+	  trunk/xmppd/xmppd.py: solved exiting platform bug.
+
+2009-06-04 17:23  garanda
+
+	* trunk/examples/dfTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py: DF tests PASSED
+
+2009-05-31 19:21  jpalanca
+
+	* trunk/examples/dfTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py: working on modifying services
+
+2009-05-29 17:18  jpalanca
+
+	* trunk/stack_thread: 
+
+2009-05-29 15:01  jpalanca
+
+	* trunk/examples/unittests.py: 
+
+2009-05-29 14:24  jpalanca
+
+	* trunk/examples/dfTestCase.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py: df unittests passed
+
+2009-05-28 22:03  jpalanca
+
+	* trunk/examples/dfTestCase.py, trunk/spade/Agent.py: working on DF
+	  unittests. search does not work
+
+2009-05-28 17:11  garanda
+
+	* trunk/examples/amsTestCase.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py: all ams unit tests passed
+
+2009-05-28 16:11  jpalanca
+
+	* trunk/examples/amsTestCase.py, trunk/spade/AMS.py: solved
+	  AmsAgentDescription constructor bug with ContentObject
+
+2009-05-28 15:03  garanda
+
+	* trunk/examples/coTestCase.py: 
+
+2009-05-27 17:21  garanda
+
+	* trunk/examples/basicTestCase.py, trunk/examples/coTestCase.py:
+	  basic TC passed OK
+
+2009-05-27 16:20  garanda
+
+	* trunk/examples/coTestCase.py: working on xml compare
+
+2009-05-27 15:11  garanda
+
+	* trunk/examples/register.py, trunk/spade/Agent.py,
+	  trunk/spade/swi.py, trunk/templates/404.pyra,
+	  trunk/templates/501.pyra, trunk/templates/503.pyra,
+	  trunk/templates/services.pyra: Services SWI page working
+
+2009-05-27 14:58  garanda
+
+	* trunk/templates/services.pyra: New services.pyra
+
+2009-05-26 15:54  garanda
+
+	* trunk/examples/coTestCase.py, trunk/examples/register.py,
+	  trunk/spade/AID.py, trunk/spade/DF.py: COs pass most of their
+	  UnitTests
+
+2009-05-26 15:29  garanda
+
+	* trunk/spade/AID.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/content.py: ContentObject lists now work even with
+	  one-member lists
+
+2009-05-26 15:09  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/content.py:
+	  ContentObject lists work againpython content.py
+
+2009-05-26 14:38  garanda
+
+	* trunk/examples/coTestCase.py: CO unit tests work
+
+2009-05-26 13:21  garanda
+
+	* trunk/examples/coTestCase.py: started ContentObject unit tests
+
+2009-05-26 11:29  garanda
+
+	* trunk/examples/dfTestCase.py: 
+
+2009-05-26 11:22  garanda
+
+	* trunk/spade/DF.py: Service registration should work again
+
+2009-05-26 11:18  garanda
+
+	* trunk/examples/dfTestCase.py: DF unit tests finished (for the
+	  moment)
+
+2009-05-26 11:16  garanda
+
+	* trunk/examples/register.py, trunk/spade/DF.py: Service
+	  registration should work again
+
+2009-05-26 11:01  garanda
+
+	* trunk/spade/DF.py: Service registration should work again
+
+2009-05-25 18:54  garanda
+
+	* trunk/examples/dfTestCase.py: df unit tests work
+
+2009-05-25 17:30  garanda
+
+	* trunk/examples/register.py, trunk/spade/AID.py,
+	  trunk/spade/AMS.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/content.py: More work on service registration and
+	  search using COs
+
+2009-05-25 16:34  garanda
+
+	* trunk/examples/dfTestCase.py: more on df unit tests
+
+2009-05-25 16:16  garanda
+
+	* trunk/examples/dfTestCase.py: workint on DF unit tests
+
+2009-05-23 00:14  garanda
+
+	* trunk/examples/register.py, trunk/spade/AID.py,
+	  trunk/spade/Agent.py, trunk/spade/DF.py, trunk/spade/content.py:
+	  More work on ContentObject and DF
+
+2009-05-21 21:39  jpalanca
+
+	* trunk/examples/basicTestCase.py, trunk/examples/unittests.py: more
+	  work on unit tests
+
+2009-05-21 17:21  garanda
+
+	* trunk/spade/DF.py: More work in DF conversion to COs
+
+2009-05-21 17:21  garanda
+
+	* trunk/examples/amsTestCase.py: 
+
+2009-05-21 14:47  garanda
+
+	* trunk/examples/amsTestCase.py, trunk/examples/basicTestCase.py:
+	  started AMS unittests
+
+2009-05-20 17:58  jpalanca
+
+	* trunk/templates/services.pyra: working on SWI - services
+
+2009-05-20 17:57  jpalanca
+
+	* trunk/spade/swi.py, trunk/templates/agents.pyra,
+	  trunk/templates/webadmin_indigo.pyra: working on SWI
+
+2009-05-20 17:57  jpalanca
+
+	* trunk/examples/basicTestCase.py: Unit Tests started
+
+2009-05-20 15:16  garanda
+
+	* trunk/examples/register.py, trunk/spade/DF.py: ServiceDescription
+	  supports ContentObject
+
+2009-05-20 14:57  garanda
+
+	* trunk/spade/AMS.py, trunk/spade/Agent.py,
+	  trunk/templates/agents.pyra: PlatformInfo supported with rdf and
+	  ContentObjects
+
+2009-05-19 19:06  jpalanca
+
+	* trunk/autopackage, trunk/bin, trunk/dev.cfg, trunk/empaqueta.sh,
+	  trunk/gspade.py, trunk/gspade.sh, trunk/readme.txt,
+	  trunk/setup.iss, trunk/svn2cl, trunk/swi, trunk/usr,
+	  trunk/win_setup.py: exterminated stuff
+
+2009-04-29 14:26  garanda
+
+	* trunk/templates/table.css: 
+
+2009-04-29 12:54  garanda
+
+	* trunk/examples/dalmuti/gameManager.py: 
+
+2009-04-29 12:09  garanda
+
+	* trunk/examples/dalmuti, trunk/examples/dalmuti/cartas.py,
+	  trunk/examples/dalmuti/gameManager.py,
+	  trunk/examples/dalmuti/jugador.py: Added dalmuti example
+
+2009-04-29 12:07  garanda
+
+	* trunk/spade/swi.py, trunk/templates/agents.pyra: More work on
+	  Agents pyra template
+
+2009-04-28 13:57  jpalanca
+
+	* trunk/spade/swi.py, trunk/templates/404.pyra,
+	  trunk/templates/501.pyra, trunk/templates/503.pyra: added error
+	  codes to swi
+
+2009-04-28 11:52  garanda
+
+	* trunk/templates/agents.pyra: Adding agents pyra temp
+
+2009-04-28 11:52  garanda
+
+	* trunk/spade/content.py, trunk/spade/swi.py,
+	  trunk/templates/webadmin_indigo.pyra: Fixing bugs in pyra
+	  controllers
+
+2009-04-27 16:30  jpalanca
+
+	* trunk/spade/content.py: 
+
+2009-04-23 17:06  garanda
+
+	* trunk/examples/searchAgent.py, trunk/spade/ACLMessage.py,
+	  trunk/spade/AMS.py, trunk/spade/content.py: Fixed a bug that
+	  re-generated the rdf:RDF tag on every CO sub-branch
+
+2009-04-22 17:38  jpalanca
+
+	* trunk/spade/content.py: starting work on asSL0 method
+
+2009-04-21 21:54  jpalanca
+
+	* trunk/spade/content.py, trunk/spade/swi.py: solved swi bug and
+	  None returns in contentobject
+
+2009-04-21 20:40  garanda
+
+	* trunk/spade/content.py: 
+
+2009-04-21 20:34  garanda
+
+	* trunk/examples/searchAgent.py, trunk/spade/AMS.py,
+	  trunk/spade/content.py, trunk/templates/webadmin_indigo.pyra:
+
+2009-04-18 15:24  garanda
+
+	* trunk/spade/content.py: Fixed namespace access in COs
+
+2009-04-18 00:37  garanda
+
+	* trunk/spade/content.py: Even more work with COs
+
+2009-04-17 20:32  garanda
+
+	* trunk/examples/auctioner.py, trunk/examples/searchAgent.py,
+	  trunk/spade/ACLMessage.py, trunk/spade/AID.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py, trunk/spade/content.py: A lot of work
+	  regarding content objects. Many classes now can return a version
+	  of themselves in content object format
+
+2009-04-17 17:13  garanda
+
+	* trunk/spade/content.py: Omitting debug prints in content.py
+
+2009-04-17 13:37  garanda
+
+	* trunk/spade/content.py: More work on ContentObject: generating
+	  RDF/XML
+
+2009-04-16 23:35  garanda
+
+	* trunk/spade/content.py: 
+
+2009-04-16 23:28  garanda
+
+	* trunk/spade/content.py: Introducing SpadeContentObject as a fancy
+	  replacement for Newdict. It's actually the same :-)
+
+2009-04-16 22:30  garanda
+
+	* trunk/spade/rdfxml.py: Deleted rdfxml.py
+
+2009-04-16 19:52  garanda
+
+	* trunk/spade/swi.py: Changes for the 'Indigo' theme
+
+2009-04-16 19:51  garanda
+
+	* trunk/templates/default.css, trunk/templates/img,
+	  trunk/templates/img/bg.gif, trunk/templates/img/bgcode.gif,
+	  trunk/templates/img/bgfooter.gif, trunk/templates/img/bgmain.gif,
+	  trunk/templates/img/li.gif, trunk/templates/img/nav_li.gif,
+	  trunk/templates/img/quote.gif, trunk/templates/img/topleft.gif,
+	  trunk/templates/webadmin_indigo.pyra: Added 'Indigo' theme for swi
+
+2009-04-16 18:31  garanda
+
+	* trunk/spade/swi.py: Fixed bug in swi regarding template directory
+	  location, again
+
+2009-04-16 18:30  garanda
+
+	* trunk/spade/swi.py: Fixed bug in swi regarding template directory
+	  location
+
+2009-04-16 16:54  jpalanca
+
+	* trunk/spade/swi.py: 
+
+2009-04-16 16:08  jpalanca
+
+	* trunk/spade/Platform.py, trunk/spade/swi.py,
+	  trunk/spade/templates, trunk/templates,
+	  trunk/templates/__init__.py, trunk/templates/clients.kid,
+	  trunk/templates/login.kid, trunk/templates/master.html,
+	  trunk/templates/master.kid, trunk/templates/message-old.kid,
+	  trunk/templates/message.kid, trunk/templates/orgs.kid,
+	  trunk/templates/plugins.kid, trunk/templates/prefs.kid,
+	  trunk/templates/services.kid, trunk/templates/swimaster.kid,
+	  trunk/templates/webadmin-old.kid, trunk/templates/webadmin.kid,
+	  trunk/templates/webadmin.pyra, trunk/templates/welcome.kid: moved
+	  templates
+
+2009-04-16 15:34  jpalanca
+
+	* trunk/spade/swi.py: working on the templated web engine
+
+2009-04-16 15:34  jpalanca
+
+	* trunk/configure.py, trunk/spade/Platform.py: working on the
+	  templated web engine
+
+2009-04-16 15:33  jpalanca
+
+	* trunk/spade/templates/webadmin.html,
+	  trunk/spade/templates/webadmin.pyra:
+
+2009-04-16 15:33  jpalanca
+
+	* trunk/spade/templates/master.html,
+	  trunk/spade/templates/master.kid,
+	  trunk/spade/templates/webadmin.html,
+	  trunk/spade/templates/webadmin.kid:
+
+2009-04-16 15:15  garanda
+
+	* trunk/spade/rdfxml.py: Added rdfxml.py
+
+2009-04-16 09:26  jpalanca
+
+	* trunk/spade/Platform.py, trunk/spade/templates: 
+
+2009-04-16 07:55  jpalanca
+
+	* trunk/spade/pyratemp.py: added html template engine
+
+2009-04-15 22:38  garanda
+
+	* trunk/spade/RDF0Parser.py: Work on the RDF0 parser
+
+2009-04-13 22:34  garanda
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/RDF0Parser.py: Added call-for-proposal performative.
+	  There was already a cfp one
+
+2009-04-13 19:27  garanda
+
+	* trunk/examples/basic.py, trunk/examples/searchAgent.py: Basic
+	  example parametrized and works
+
+2008-12-10 18:04  garanda
+
+	* trunk/configure.py, trunk/examples/basic.py,
+	  trunk/examples/thomas.py, trunk/runspade.py, trunk/setup.py,
+	  trunk/spade/Agent.py, trunk/xmppd/xmppd.py: Small changes in the
+	  setup process
+
+2008-12-10 12:00  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/mtp/http.py: 
+
+2008-12-09 16:06  garanda
+
+	* trunk/examples/thomas.py: 
+
+2008-10-07 11:50  garanda
+
+	* trunk/examples/fsm.py: 
+
+2008-05-22 16:44  garanda
+
+	* trunk/spade/SL0Parser.py: Looking for bugs... refs #27
+
+2008-05-22 16:41  garanda
+
+	* trunk/examples/basic.py, trunk/examples/searchAgent.py,
+	  trunk/examples/timeout.py, trunk/spade/Agent.py,
+	  trunk/spade/FIPAMessage.py, trunk/spade/SL0Parser.py,
+	  trunk/xmppd/xmppd.py: Looking for bugs...
+
+2008-01-11 15:26  garanda
+
+	* trunk/examples/modify.py, trunk/examples/searchAgent.py:
+	  SearchAgent and ModifyAgent examples
+
+2008-01-11 15:26  garanda
+
+	* trunk/examples/timeout.py, trunk/spade/AMS.py,
+	  trunk/spade/Agent.py: Fixed a bug in ACLMessage. The sender and
+	  receiver were inheriting the '/spade' resource tail of the agent's
+	  JID. That situation was leading to patern-matching errors of the
+	  AID
+
+2007-12-14 17:03  garanda
+
+	* trunk/examples/basic.py, trunk/spade/Agent.py,
+	  trunk/spade/SL0Parser.py:
+
+2007-12-03 11:42  garanda
+
+	* trunk/setup.py, trunk/spade/Agent.py, trunk/xmppd/xmppd.py: 
+
+2007-11-26 18:34  garanda
+
+	* trunk/examples/basic.py, trunk/examples/timeout.py: 
+
+2007-11-26 17:10  garanda
+
+	* trunk/examples/basic.py, trunk/examples/emissor-gus.py,
+	  trunk/examples/receptor.py:
+
+2007-07-31 10:15  garanda
+
+	* trunk/spade/Agent.py: Fixed a bug in Agent's DiscoBehaviour that
+	  crashed agents when deleting a p2p route
+
+2007-07-30 22:17  jpalanca
+
+	* trunk/examples/emissor-gus.py: 
+
+2007-07-30 16:08  garanda
+
+	* trunk/examples/emissor-gus.py: 
+
+2007-07-30 15:42  garanda
+
+	* trunk/examples/emissor-gus.py: 
+
+2007-07-30 15:40  garanda
+
+	* trunk/examples/emissor-gus.py: 
+
+2007-07-30 15:25  garanda
+
+	* trunk/runspade.py, trunk/spade/Agent.py: Make agents use psyco
+
+2007-07-30 14:50  garanda
+
+	* trunk/spade/Agent.py: Yet another simplexml bug
+
+2007-07-30 14:45  garanda
+
+	* trunk/spade/Agent.py: Fixed a bug in send_p2p on exception
+	  handling
+
+2007-07-30 14:40  garanda
+
+	* trunk/spade/Agent.py: Fixed again a bug about simplexml. Good work
+	  boys
+
+2007-07-30 14:35  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py: Fixed a bug
+	  about simplexml bad handling of 'T' method
+
+2007-07-30 14:19  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py: Detailed debug info in Behaviour
+
+2007-07-30 12:48  garanda
+
+	* trunk/spade/Agent.py: Added p2p failures counter. The agents now
+	  try to send every message through jabber if p2p fails
+
+2007-07-27 15:17  jpalanca
+
+	* trunk/examples/receptor.py: 
+
+2007-07-27 15:12  jpalanca
+
+	* trunk/spade/Agent.py: new p2p Lock
+
+2007-07-27 15:08  jpalanca
+
+	* trunk/examples/emissor-gus.py, trunk/runspade.py,
+	  trunk/spade/Agent.py: new p2p Lock
+
+2007-07-27 14:04  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py: Fixed bug in
+	  emissor-gus that prevented the sending of p2p messages
+
+2007-07-25 16:20  jpalanca
+
+	* trunk/spade/Agent.py: Threading stack size value changed to 64K
+
+2007-07-25 16:02  jpalanca
+
+	* trunk/examples/emissor.py, trunk/runspade.py,
+	  trunk/spade/mtp/http.py, trunk/spade/mtp/simba.py: some prints
+	  removed. updated main maintainer
+
+2007-07-25 15:51  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/examples/receptor.py,
+	  trunk/spade/Agent.py: Changes for speed tests: receptor and
+	  emissor-gus
+
+2007-07-23 15:41  jpalanca
+
+	* trunk/runspade.py: Now -w or --web parameter is needed to launcg
+	  TG web interface
+
+2007-07-20 15:15  garanda
+
+	* trunk/swi/templates/plugins.kid, trunk/swi/templates/prefs.kid: A
+	  couple of new templates to swi
+
+2007-07-20 14:58  garanda
+
+	* trunk/spade/Agent.py: Agent 'send()' now puts the correct sender
+	  in the ACL message
+
+2007-07-20 14:10  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/examples/receptor.py,
+	  trunk/spade/Agent.py: References #24. Improved P2P speed by means
+	  of new Ultra-Fast(tm) cPickling technique.
+
+2007-07-19 16:33  garanda
+
+	* trunk/examples/receptor.py, trunk/spade/Agent.py: Optimized a bit
+	  p2p by means of cPickle
+
+2007-07-19 15:38  garanda
+
+	* trunk/examples/speed.py: Added jabber vs cPickle serialization
+	  test
+
+2007-07-19 15:17  garanda
+
+	* trunk/examples/receptor.py, trunk/spade/ACLMessage.py,
+	  trunk/spade/Agent.py: Fixed an uncharted bug that was breaking p2p
+	  communication. Sometimes, an agent would send a p2p message to a
+	  remotely closed socket and not get an EOF, thus not resetting that
+	  socket. A kind of 'StreamFinish' mechanism has been implemented.
+	  It is triggered at P2PBehaviour.onEnd
+
+2007-07-18 15:39  garanda
+
+	* trunk/spade/Behaviour.py: 
+
+2007-07-17 15:37  garanda
+
+	* trunk/spade/Agent.py: 
+
+2007-07-16 09:00  garanda
+
+	* trunk/spade/Agent.py: Agent level log system started
+
+2007-07-13 15:41  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py, trunk/spade/DF.py:
+	  Fixes #22
+
+2007-07-12 17:20  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py: 
+
+2007-07-12 17:08  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py,
+	  trunk/spade/MessageReceiver.py: Added a repetitive and persistent
+	  process to the ''send_p2p'' method of Agent in order to ensure the
+	  arrival of p2p messages (if possible)
+
+2007-07-12 15:03  garanda
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py: Fixed #17. ''Dead'' CTroops still do not get
+	  their service searches completed because they are deregistered
+	  from the platfom.
+
+2007-07-11 11:16  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py: Fixes #18 by means of the new
+	  "p2p_ready" attribute in every Abstract Agent
+
+2007-07-10 16:41  garanda
+
+	* trunk/spade/Agent.py, trunk/spade/Behaviour.py: 
+
+2007-07-10 15:52  garanda
+
+	* trunk/spade/ACLMessage.py, trunk/spade/Agent.py,
+	  trunk/spade/Behaviour.py: Fixed a bug in searchService and
+	  searchServiceBehaviour that treated correct "inform" messages as
+	  errors
+
+2007-07-10 15:19  garanda
+
+	* trunk/examples/register.py, trunk/examples/search.py,
+	  trunk/spade/Agent.py, trunk/spade/Behaviour.py: Added
+	  register/search examples. Placed a condition variable in every
+	  agent (behaviourGo) to synchronize the start of the initial
+	  behaviours.
+
+2007-07-09 11:07  jpalanca
+
+	* trunk/runspade.py: fixes #9
+
+2007-07-09 11:05  jpalanca
+
+	* trunk/runspade.py: fixes #9
+
+2007-07-09 11:01  jpalanca
+
+	* trunk/runspade.py: fixes #9
+
+2007-07-09 10:59  jpalanca
+
+	* trunk/runspade.py: fixes #9
+
+2007-07-09 10:56  jpalanca
+
+	* trunk/runspade.py: fixes #9
+
+2007-07-06 18:05  garanda
+
+	* trunk/spade/AID.py, trunk/spade/Agent.py, trunk/spade/DF.py,
+	  trunk/spade/MTP.py, trunk/spade/mtp/http.py,
+	  trunk/swi/controllers.py: SPADE and Jade start fighting against
+	  each other in JGOMAS
+
+2007-07-05 16:14  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py,
+	  trunk/spade/Envelope.py, trunk/spade/MTP.py: Working on #14
+
+2007-07-05 11:44  jpalanca
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py: New
+	  "addAddress" method for agents
+
+2007-07-05 11:34  garanda
+
+	* trunk/examples/emissor-gus.py, trunk/spade/Agent.py,
+	  trunk/spade/DF.py, trunk/spade/MTP.py, trunk/spade/Platform.py,
+	  trunk/spade/mtp/http.py, trunk/swi/controllers.py,
+	  trunk/swi/static/css/lasvegastoo.css,
+	  trunk/swi/templates/orgs.kid: Working on bug #14
+
+2007-07-04 14:21  garanda
+
+	* trunk/swi/templates/message-old.kid, trunk/swi/templates/orgs.kid,
+	  trunk/swi/templates/services.kid,
+	  trunk/swi/templates/swimaster.kid,
+	  trunk/swi/templates/webadmin-old.kid:
+
+2007-07-04 14:20  garanda
+
+	* trunk/swi/templates/__init__.pyc, trunk/swi/templates/master.pyc,
+	  trunk/swi/templates/welcome.pyc:
+
+2007-07-04 14:20  garanda
+
+	* trunk/swi/static/css/style2.css, trunk/swi/templates/__init__.pyc:
+	  
+
+2007-07-04 13:41  garanda
+
+	* branches/nofipa, trunk: Merged new trunk (from old 'nofipa')
+
+2007-07-03 15:51  garanda
+
+	* branches/nofipa/spade/Agent.py, branches/nofipa/spade/DF.py,
+	  branches/nofipa/spade/MTP.py, branches/nofipa/spade/Platform.py,
+	  branches/nofipa/spade/mtp/http.py,
+	  branches/nofipa/spade/mtp/simba.py,
+	  branches/nofipa/spade/spade_backend.py,
+	  branches/nofipa/swi/controllers.py,
+	  branches/nofipa/swi/static/css/lasvegastoo.css,
+	  branches/nofipa/swi/static/css/tform.css,
+	  branches/nofipa/swi/static/css/webadmin.css,
+	  branches/nofipa/swi/static/images/spade_book_azul.gif,
+	  branches/nofipa/swi/templates/clients.kid,
+	  branches/nofipa/swi/templates/message.kid,
+	  branches/nofipa/swi/templates/webadmin.kid: Even more work on TG
+
+2007-07-02 17:28  garanda
+
+	* branches/nofipa/swi/templates/webadmin.kid: New CSS for WebAdmin.
+	  Work on TG
+
+2007-07-02 17:27  garanda
+
+	* branches/nofipa/swi/static/css/desertsand.css,
+	  branches/nofipa/swi/static/css/lasvegastoo.css,
+	  branches/nofipa/swi/static/css/tform.css,
+	  branches/nofipa/swi/static/css/webadmin.css,
+	  branches/nofipa/swi/static/images/img01.jpg,
+	  branches/nofipa/swi/static/images/img02.jpg,
+	  branches/nofipa/swi/static/images/img03.jpg,
+	  branches/nofipa/swi/static/images/img04.jpg,
+	  branches/nofipa/swi/static/images/img05.jpg,
+	  branches/nofipa/swi/static/images/img06.gif,
+	  branches/nofipa/swi/static/images/img07.jpg,
+	  branches/nofipa/swi/static/images/img08.jpg,
+	  branches/nofipa/swi/static/images/img09.jpg,
+	  branches/nofipa/swi/static/images/lasvegastoo,
+	  branches/nofipa/swi/static/images/lasvegastoo/img1.jpg,
+	  branches/nofipa/swi/static/images/lasvegastoo/img2.jpg,
+	  branches/nofipa/swi/static/images/lasvegastoo/img3.gif,
+	  branches/nofipa/swi/static/images/lasvegastoo/img4.gif,
+	  branches/nofipa/swi/static/images/lasvegastoo/spacer.gif,
+	  branches/nofipa/swi/static/images/spacer.gif,
+	  branches/nofipa/swi/static/images/spade_book_trsp.png,
+	  branches/nofipa/swi/static/images/spadehello.jpg: New CSS for
+	  WebAdmin. Work on TG
+
+2007-07-02 17:26  garanda
+
+	* branches/nofipa/swi/__init__.pyc,
+	  branches/nofipa/swi/controllers.py,
+	  branches/nofipa/swi/controllers.pyc,
+	  branches/nofipa/swi/templates/clients.kid,
+	  branches/nofipa/swi/templates/message.kid:
+
+2007-06-29 17:15  garanda
+
+	* branches/nofipa/dev.cfg, branches/nofipa/runspade.py,
+	  branches/nofipa/spade/spade_backend.py,
+	  branches/nofipa/swi/controllers.py,
+	  branches/nofipa/swi/controllers.pyc,
+	  branches/nofipa/swi/templates/clients.kid,
+	  branches/nofipa/swi/templates/message.kid: More work with
+	  TurboGears
+
+2007-06-28 17:23  garanda
+
+	* branches/nofipa/dev.cfg, branches/nofipa/runspade.py,
+	  branches/nofipa/spade/Agent.py, branches/nofipa/spade/Platform.py,
+	  branches/nofipa/swi, branches/nofipa/swi/__init__.py,
+	  branches/nofipa/swi/__init__.pyc, branches/nofipa/swi/config,
+	  branches/nofipa/swi/config/__init__.py,
+	  branches/nofipa/swi/config/app.cfg,
+	  branches/nofipa/swi/config/log.cfg,
+	  branches/nofipa/swi/controllers.py,
+	  branches/nofipa/swi/controllers.pyc, branches/nofipa/swi/json.py,
+	  branches/nofipa/swi/model.py, branches/nofipa/swi/release.py,
+	  branches/nofipa/swi/sqlobject-history, branches/nofipa/swi/static,
+	  branches/nofipa/swi/static/css,
+	  branches/nofipa/swi/static/css/style.css,
+	  branches/nofipa/swi/static/images,
+	  branches/nofipa/swi/static/images/favicon.ico,
+	  branches/nofipa/swi/static/images/header_inner.png,
+	  branches/nofipa/swi/static/images/info.png,
+	  branches/nofipa/swi/static/images/ok.png,
+	  branches/nofipa/swi/static/images/tg_under_the_hood.png,
+	  branches/nofipa/swi/static/images/under_the_hood_blue.png,
+	  branches/nofipa/swi/static/javascript,
+	  branches/nofipa/swi/templates,
+	  branches/nofipa/swi/templates/__init__.py,
+	  branches/nofipa/swi/templates/__init__.pyc,
+	  branches/nofipa/swi/templates/login.kid,
+	  branches/nofipa/swi/templates/master.kid,
+	  branches/nofipa/swi/templates/master.pyc,
+	  branches/nofipa/swi/templates/welcome.kid,
+	  branches/nofipa/swi/templates/welcome.pyc,
+	  branches/nofipa/swi/tests, branches/nofipa/swi/tests/__init__.py,
+	  branches/nofipa/swi/tests/test_controllers.py,
+	  branches/nofipa/swi/tests/test_model.py: Started TurboGears
+	  embedding
+
+2007-06-27 15:09  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 15:07  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:58  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:46  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:41  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:39  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:28  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:18  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:17  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. closes #9
+
+2007-06-27 14:03  garanda
+
+	* branches/nofipa/spade/Agent.py: Testing trac changes. refs #1
+
+2007-06-27 14:02  garanda
+
+	* branches/nofipa/spade/Agent.py,
+	  branches/nofipa/spade/Behaviour.py: Testing trac changes.
+	  References #1
+
+2007-06-21 10:55  garanda
+
+	* branches/nofipa/spade/Agent.py: Added a lock in "send_p2p" that
+	  fixes a bug of concurrent socket send() calls.
+
+2007-06-15 15:48  garanda
+
+	* branches/nofipa/spade/Agent.py: 
+
+2007-06-15 13:15  garanda
+
+	* branches/nofipa/spade/Agent.py: 
+
+2007-06-14 15:53  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/examples/receptor.py,
+	  branches/nofipa/spade/Agent.py: More work on P2P
+
+2007-06-14 12:50  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/spade/Agent.py: P2P operative. Agents rejoice
+
+2007-06-14 11:33  garanda
+
+	* branches/nofipa/spade/Agent.py: Advanced work in P2PBehaviour.
+
+2007-06-14 09:59  garanda
+
+	* branches/nofipa/spade/Agent.py: 
+
+2007-06-13 17:51  garanda
+
+	* branches/nofipa/spade/Agent.py: P2PBehaviour Started
+
+2007-06-13 17:29  garanda
+
+	* branches/nofipa/spade/Agent.py: Advanced work in Stream
+	  Initiation. P2P communication is ready to begin implementation of
+	  SocketServer in agents
+
+2007-06-13 17:00  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/examples/receptor.py,
+	  branches/nofipa/spade/ACLMessage.py,
+	  branches/nofipa/spade/Agent.py,
+	  branches/nofipa/spade/Behaviour.py,
+	  branches/nofipa/xmppd/modules/router.py: Advanced work in Stream
+	  Initiation. Fixed a bug in Agent that misplaced the "xmlns"
+	  internal attribute of a Node with its "namespace" attribute. Fixed
+	  a bug in Agent and Behaviour that changed a Behaviour template on
+	  the fly when it was not meant to.
+
+2007-06-11 16:10  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/spade/Agent.py:
+
+2007-06-11 16:03  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/spade/Agent.py,
+	  branches/nofipa/xmppd/modules/__init__.py: Stream Initiation
+
+2007-06-11 11:50  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/spade/Agent.py: Added a "raise NodeProcessed" to
+	  _jabber_messageCB in order to prevent the chaining of multiple
+	  handlers and an error stanza to be sent back
+
+2007-06-11 11:49  garanda
+
+	* branches/nofipa/xmppd/modules/oob.py,
+	  branches/nofipa/xmppd/modules/router.py:
+
+2007-06-11 10:37  garanda
+
+	* branches/nofipa/xmppd/modules/__init__.py,
+	  branches/nofipa/xmppd/modules/oob.py: Added oob module to xmppd
+
+2007-06-11 09:50  garanda
+
+	* branches/nofipa/examples/emissor-gus.py,
+	  branches/nofipa/xmppd/modules/router.py:
+
+2007-06-11 09:03  garanda
+
+	* branches/nofipa/spade/Agent.py: 
+
+2007-06-09 10:55  garanda
+
+	* branches/nofipa/spade/Agent.py: openP2P()
+
+2007-06-08 21:39  garanda
+
+	* branches/nofipa/spade/ACLMessage.py,
+	  branches/nofipa/spade/Agent.py: Started work on p2p (oob)
+	  communication
+
+2007-06-08 11:59  garanda
+
+	* branches/nofipa/spade/Agent.py,
+	  branches/nofipa/spade/Behaviour.py:
+
+2007-06-08 10:30  garanda
+
+	* branches/nofipa/spade/Agent.py: 
+
+2007-06-07 17:41  garanda
+
+	* branches/nofipa/spade/ACLMessage.py: 
+
+2007-06-07 17:24  garanda
+
+	* branches/nofipa, branches/nofipa/spade/ACLMessage.py: Created
+	  nofipa branch
+
+2007-06-07 16:50  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/xmpp/session.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-06-07 10:49  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2007-06-07 10:32  ncriado
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/examples/example2.py:
+
+2007-06-07 10:06  ncriado
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/examples/example2.py:
+
+2007-06-07 09:55  ncriado
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization_new.py,
+	  branches/experimental/spade/Unit_new.py:
+
+2007-06-07 08:00  ncriado
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Organization_new.py,
+	  branches/experimental/spade/Unit_new.py:
+
+2007-06-06 17:16  ncriado
+
+	* branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Unit.py:
+
+2007-06-06 17:10  garanda
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmpp/dispatcher.py,
+	  branches/experimental/xmpp/session.py,
+	  branches/experimental/xmppd/xmppd.py: Introduced a mutex in
+	  Session (xmppd)
+
+2007-06-06 13:21  jpalanca
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-06-06 10:30  ncriado
+
+	* branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Unit.py:
+
+2007-06-06 10:29  ncriado
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/examples/example2.py:
+
+2007-06-05 17:36  jpalanca
+
+	* branches/experimental/spade/Behaviour.py: 
+
+2007-06-04 11:05  jpalanca
+
+	* branches/experimental/xmpp/session.py,
+	  branches/experimental/xmpp/transports.py:
+
+2007-06-04 11:01  garanda
+
+	* branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-06-04 10:19  garanda
+
+	* branches/experimental/svn2cl: 
+
+2007-06-04 10:18  garanda
+
+	* branches/experimental/svn2cl, branches/experimental/svn2cl.xsl:
+	  Added svn2cl to experimental branch
+
+2007-06-01 14:51  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/xmppd.py: New: Storage of message
+	  stanzas in the xmppd server. When a message stanza is delivered to
+	  a client that is not connected, it is stored in the DB for future
+	  relay.
+
+2007-06-01 14:21  garanda
+
+	* branches/experimental/spade/Agent.py: Fixed a bug that prevented
+	  any agent from deregistering its services
+
+2007-06-01 14:18  garanda
+
+	* branches/experimental/spade/Behaviour.py: Fixed a bug that
+	  prevented the last state of an FSM Behaviour to run its _process
+
+2007-06-01 11:47  ncriado
+
+	* branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Unit.py:
+
+2007-06-01 11:22  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Fixed a bug in muc.py:
+	  the report of a ban now has correct status code (301)
+
+2007-06-01 10:49  ncriado
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/examples/example2.py:
+
+2007-06-01 10:11  ncriado
+
+	* branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Unit.py:
+
+2007-06-01 10:11  ncriado
+
+	* branches/experimental/examples/example.py,
+	  branches/experimental/examples/example2.py:
+
+2007-05-31 18:45  garanda
+
+	* branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Unit.py:
+
+2007-05-31 16:48  ncriado
+
+	* branches/experimental/spade/Unit.py: 
+
+2007-05-31 16:48  ncriado
+
+	* branches/experimental/spade/Organization.py: 
+
+2007-05-31 15:54  ncriado
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization.py:
+
+2007-05-31 12:57  jpalanca
+
+	* branches/experimental/spade/Behaviour.py: 
+
+2007-05-30 18:31  jpalanca
+
+	* branches/experimental/spade/ACLMessage.py: 
+
+2007-05-30 17:32  garanda
+
+	* branches/experimental/spade/Behaviour.py: 
+
+2007-05-30 12:10  jpalanca
+
+	* branches/experimental/spade/MessageReceiver.py: 
+
+2007-05-30 11:50  jpalanca
+
+	* branches/experimental/spade/MessageReceiver.py: 
+
+2007-05-30 11:06  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-05-30 10:58  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-05-30 09:37  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/MessageReceiver.py: Fixed a bug in
+	  FSMBehaviour (setAgent) that launched a "Bus error"
+
+2007-05-29 16:31  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2007-05-29 15:57  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/MessageReceiver.py:
+
+2007-05-29 15:57  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml: now support for MinUsers in
+	  MUC
+
+2007-05-29 12:32  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/MessageReceiver.py:
+
+2007-05-29 11:38  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: other is
+	  self.participants[frm]
+
+2007-05-29 11:27  ncriado
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2007-05-29 11:20  garanda
+
+	* branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/MessageReceiver.py:
+
+2007-05-29 10:41  garanda
+
+	* branches/experimental/examples/emissor-gus.py,
+	  branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Resolved conflicts in
+	  Agent. Removed __getattr__ and __setattr__ overloads from
+	  Behaviour. Fixed a bug in emissor-gus that directed all the
+	  messages to the platform itself instead of the agent.
+
+2007-05-29 10:32  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/MessageReceiver.py: receive now
+	  matches a template
+
+2007-05-28 17:23  garanda
+
+	* branches/experimental/spade/Agent.py: Added new parameter
+	  (template) to Agent _receive
+
+2007-05-28 11:05  ncriado
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2007-05-25 12:48  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Fixed many bugs in Agent
+	  run. Added new functionality to "deregisterService" making it
+	  possible to call it even during the final stages of an agent's
+	  life cycle
+
+2007-05-24 17:52  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/Platform.py: Fixed bugs in Behaviour
+	  and Agent
+
+2007-05-24 15:35  garanda
+
+	* branches/experimental/spade/Behaviour.py: 
+
+2007-05-24 15:14  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/SL0Parser.py: Agent's searchService
+	  now returns a list of DfAgentDescription and NOT a parseResult
+	  object
+
+2007-05-24 10:11  jpalanca
+
+	* branches/experimental/spade/Behaviour.py: 
+
+2007-05-23 15:14  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2007-05-23 13:11  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Fixed bug in
+	  MUC-->Room-->IQ_cb that prevented iq "id" to be propagated to the
+	  replies
+
+2007-05-23 13:02  jpalanca
+
+	* branches/experimental/spade/Behaviour.py: exitcodes on behaviours
+	  checked
+
+2007-05-23 12:53  garanda
+
+	* branches/experimental/spade/Behaviour.py: Removed getattr and
+	  setattr from Behavior (conflict with inherited methods)
+
+2007-05-22 16:18  garanda
+
+	* branches/experimental/spade/Behaviour.py,
+	  branches/experimental/xmppd/modules/router.py: All the methods and
+	  attributes of "Agent" are now directly available through its
+	  Behaviours
+
+2007-05-22 14:22  jpalanca
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py:
+
+2007-05-22 14:15  garanda
+
+	* branches/experimental/examples/external.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/router.py: Fixed some bugs in
+	  xmppd router
+
+2007-05-21 10:32  ncriado
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization.py:
+
+2007-05-18 16:39  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/spade_backend.py: Started work in
+	  "Platform Restart" event
+
+2007-05-18 10:20  garanda
+
+	* branches/experimental/spade/mtp/http.py: 
+
+2007-05-18 10:19  garanda
+
+	* branches/experimental/spade/mtp/http.py: 
+
+2007-05-18 10:18  garanda
+
+	* branches/experimental/examples/external.py,
+	  branches/experimental/spade/mtp/http.py:
+
+2007-05-18 10:18  garanda
+
+	* branches/experimental/configure.py: 
+
+2007-05-17 15:21  garanda
+
+	* branches/experimental/examples/external.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Envelope.py: Changed the "Register in
+	  DF" protocol: the first "agree" message is not mandatory anymore.
+	  This has been done against the standard because is the way JADE
+	  does it. SPADE agents can now register their services in JADE's
+	  DF.
+
+2007-05-17 14:58  garanda
+
+	* branches/experimental/spade/Envelope.py,
+	  branches/experimental/spade/XMLCodec.py,
+	  branches/experimental/spade/mtp/http.py: JADE agents can register
+	  their services in SPADE's DF. Extended the Envelope adding
+	  "intended-receiver" so JADE can read it. F***ing Jade, not
+	  following the FIPA standard.
+
+2007-05-17 11:32  garanda
+
+	* branches/experimental/spade/Envelope.py,
+	  branches/experimental/spade/FIPAMessage.py,
+	  branches/experimental/spade/mtp/http.py: Payload-Length is now
+	  calculated on Envelope
+
+2007-05-17 10:41  garanda
+
+	* branches/experimental/examples/external.py: 
+
+2007-05-16 16:41  garanda
+
+	* branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/mtp/http.py: More work on SPADE->Jade
+	  communication
+
+2007-05-16 15:09  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-05-16 15:08  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/DF.py: Fixed cyclic dependencies
+	  between "DF" and "Agent"
+
+2007-05-16 14:21  garanda
+
+	* branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/spade/ACLParser.py,
+	  branches/experimental/spade/DF.py: Fixed many bugs in ACLParser
+	  that allow accepting complex strings as "conversation-id"s,
+	  "reply-with"s, etc... Jade agents can now register their services
+	  in Spade's DF !!!
+
+2007-05-16 10:51  garanda
+
+	* branches/experimental/spade/ACLParser.py: Fixed bug in ACLParser
+	  that prevented URLs to be used as agent names
+
+2007-05-16 10:06  garanda
+
+	* branches/experimental/spade/MTP.py,
+	  branches/experimental/spade/XMLCodec.py,
+	  branches/experimental/spade/mtp/http.py: Fixed bug in XMLCodec
+	  when encoding "Intended Receiver"s in an Envelope
+
+2007-05-15 17:43  garanda
+
+	* branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/mtp/http.py: WIP Spade-Jade
+	  interoperability
+
+2007-05-15 15:04  garanda
+
+	* branches/experimental/spade/Agent.py: DF Registers services coming
+	  from OUTSIDE the platform
+
+2007-05-15 11:40  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/mtp/http.py,
+	  branches/experimental/spade/mtp/simba.py: WIP registering services
+	  in other DFs
+
+2007-05-15 11:26  garanda
+
+	* branches/experimental/spade/mtp/http.py,
+	  branches/experimental/spade/mtp/simba.py,
+	  branches/experimental/usr/share/spade/mtp/http.py,
+	  branches/experimental/usr/share/spade/mtp/simba.py: HTTP Transport
+	  works again
+
+2007-05-14 18:03  garanda
+
+	* branches/experimental/spade/MTP.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/mtp/http.py: WIP Http transport
+
+2007-05-14 16:43  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/mtp/http.py: HTTP Messaging re-broken
+
+2007-05-14 16:14  garanda
+
+	* branches/experimental/spade/mtp/http.py: HTTP messaging works like
+	  a charm!!!
+
+2007-05-14 15:42  garanda
+
+	* branches/experimental/spade/mtp/http.pyc: 
+
+2007-05-14 15:42  garanda
+
+	* branches/experimental/spade/mtp/http.pyc: 
+
+2007-05-14 15:41  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/mtp,
+	  branches/experimental/spade/mtp/http.py,
+	  branches/experimental/spade/mtp/http.pyc:
+
+2007-05-14 12:31  garanda
+
+	* branches/experimental/spade/Agent.py: More work in Agent Presence
+	  Subscription
+
+2007-05-14 11:28  garanda
+
+	* branches/experimental/spade/Agent.py: Agent Presence Subscription
+	  working
+
+2007-05-10 18:50  garanda
+
+	* branches/experimental/spade/Agent.py: Started work in
+	  SocialNetwork
+
+2007-05-10 18:37  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-05-10 11:16  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Roster Behaviour
+	  implemented
+
+2007-05-09 15:21  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: EventBehaviour fixed
+
+2007-05-09 11:48  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/xmppd/modules/web/webadmin.css,
+	  branches/experimental/xmppd/modules/webadmin.py:
+
+2007-05-03 13:15  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Behaviour.py:
+
+2007-05-03 11:46  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Fixed presence templates
+	  on Behaviour
+
+2007-05-03 10:14  garanda
+
+	* branches/experimental/spade/Agent.py: indentation problems in
+	  Agent.py
+
+2007-05-02 18:30  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Fixing getRoster
+
+2007-05-02 16:59  garanda
+
+	* branches/experimental/spade/Behaviour.py: setTemplate Behaviour
+
+2007-04-27 17:12  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Behaviour.py: Agents can have no
+	  default behaviour
+
+2007-04-27 16:56  garanda
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/runspade.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/__init__.py,
+	  branches/experimental/spade/msgtypes.py: Mulyiple types of message
+	  arrive on _receive
+
+2007-04-26 15:20  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py: Node comparison function
+	  node_match
+
+2007-03-23 19:38  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py: First Complete version
+	  of bidder example
+
+2007-03-23 16:21  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py: Started work on
+	  conditional organization
+
+2007-03-23 16:19  jpalanca
+
+	* branches/experimental/examples/bidder.py: 
+
+2007-03-22 18:49  garanda
+
+	* branches/experimental/examples/bidder.py: Started work in relative
+	  coallitions
+
+2007-03-22 15:16  jpalanca
+
+	* branches/experimental/examples/bidder.py: money is controlled for
+	  each bid
+
+2007-03-21 19:29  jpalanca
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/Agent.py: auctioner uses AJAX
+
+2007-03-21 17:53  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/examples/client.js: More AJAX work
+
+2007-03-21 17:18  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/examples/client.js: Fixed css styles for
+	  dynamic content
+
+2007-03-21 15:37  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py,
+	  branches/experimental/examples/client.js: AJAX interface for
+	  bidders, OMG!
+
+2007-03-15 18:22  garanda
+
+	* branches/experimental/examples/bidder.py: Started Web Admin Log
+
+2007-03-15 17:54  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/xmppd/modules/router.py: Various bugfixes
+	  related to bidding
+
+2007-03-13 18:00  garanda
+
+	* branches/experimental/examples/auctioner.py: More bidders
+
+2007-03-13 17:54  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py: Multiple bidders
+
+2007-03-13 16:43  jpalanca
+
+	* branches/experimental/spade/Organization.py: pasamos de la FSM
+
+2007-03-13 16:34  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/Organization.py: Cambios en Behaviour
+	  Ahora puedes matar un nodo en una FSM
+
+2007-03-13 15:58  ncriado
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization.py:
+
+2007-03-13 12:38  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py:
+
+2007-03-12 17:18  garanda
+
+	* branches/experimental/examples/auctioner.py: Auctioner
+	  multi-auction support
+
+2007-03-09 15:59  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/Platform.py: Organization Members in
+	  Web Admin
+
+2007-03-09 11:23  garanda
+
+	* branches/experimental/spade/Behaviour.py: Patent -> Parent
+
+2007-03-08 19:22  jpalanca
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/Platform.py: organizations are shown
+	  in webserver
+
+2007-03-08 18:44  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/Platform.py: WebAdmin Services List
+	  Fixed
+
+2007-03-08 15:36  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/Platform.py: updating sources
+
+2007-03-08 12:17  garanda
+
+	* branches/experimental/spade/Platform.py: Added Services section to
+	  the Web Admin
+
+2007-03-07 20:15  garanda
+
+	* branches/experimental/spade/Platform.py: 
+
+2007-03-07 19:37  garanda
+
+	* branches/experimental/examples/auctioner.py: Fixed auctioner DF
+	  service registration
+
+2007-03-07 19:36  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/DF.py: Fixed DF registering services
+
+2007-03-07 19:36  garanda
+
+	* branches/experimental/examples/auctioner.py: 
+
+2007-03-07 19:01  garanda
+
+	* branches/experimental/examples/auctioner.py: 
+
+2007-03-07 17:19  garanda
+
+	* branches/experimental/examples/auctioner.py: 
+
+2007-03-07 17:16  garanda
+
+	* branches/experimental/examples/bidder.py: 
+
+2007-03-07 16:31  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/examples/webadmin.css:
+
+2007-03-07 16:10  garanda
+
+	* branches/experimental/examples/auctioner.py: bidder<->auctioner
+	  interaction
+
+2007-03-07 12:57  garanda
+
+	* branches/experimental/examples/bidder.py: bidder<->auctioner
+	  interaction
+
+2007-03-07 12:54  garanda
+
+	* branches/experimental/examples/bidder.py: Started
+	  bidder<->auctioner interaction
+
+2007-03-07 12:50  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py: Started
+	  bidder<->auctioner interaction
+
+2007-03-07 11:57  garanda
+
+	* branches/experimental/examples/auctioner.py,
+	  branches/experimental/examples/bidder.py:
+
+2007-03-07 11:48  garanda
+
+	* branches/experimental/xmppd/modules/router.py: Component detection
+	  in router.py fixed
+
+2007-03-06 18:31  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-03-06 18:14  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/Agent.py: Register fixed
+
+2007-03-05 11:56  garanda
+
+	* branches/experimental/examples/bidder.py: 
+
+2007-03-05 11:19  garanda
+
+	* branches/experimental/examples/bidder.py,
+	  branches/experimental/spade/Agent.py:
+
+2007-03-05 09:36  garanda
+
+	* branches/experimental/examples/bidder.py: 
+
+2007-03-03 12:02  garanda
+
+	* branches/experimental/examples/bidder.py: Bidder started
+
+2007-03-03 11:21  garanda
+
+	* branches/experimental/spade/Platform.py: 
+
+2007-02-27 18:13  garanda
+
+	* branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/xmpp/client.py,
+	  branches/experimental/xmpp/roster.py: Platform termination is
+	  correct
+
+2007-02-27 15:58  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/Organization.py: Working on fast
+	  organizations
+
+2007-02-27 14:30  garanda
+
+	* branches/experimental/spade/Platform.py: Translate @ and /
+	  correctly
+
+2007-02-27 14:23  garanda
+
+	* branches/experimental/spade/Platform.py,
+	  branches/experimental/xmppd/modules/router.py: WebAdmin Looks
+	  Beautiful
+
+2007-02-26 18:19  garanda
+
+	* branches/experimental/xmppd/modules/router.py: ESTO PUEDE PETAR
+
+2007-02-26 18:19  garanda
+
+	* branches/experimental/spade/Platform.py,
+	  branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/webadmin.py:
+
+2007-02-26 11:07  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Organization.py,
+	  branches/experimental/xmppd/modules/webadmin.py:
+
+2007-02-22 17:22  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2007-02-22 12:22  jpalanca
+
+	* branches/experimental/xmpp, branches/experimental/xmppblo: 
+
+2007-02-22 12:21  jpalanca
+
+	* branches/experimental/runspade.py, branches/experimental/xmpp,
+	  branches/experimental/xmppblo,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-02-21 17:55  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/webadmin.py:
+
+2007-02-21 17:14  jpalanca
+
+	* branches/.project, branches/.pydevproject,
+	  branches/experimental/runspade.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2007-02-20 00:40  garanda
+
+	* branches/experimental/xmppd/modules/web,
+	  branches/experimental/xmppd/modules/web/webadmin.css: css
+
+2007-02-20 00:40  garanda
+
+	* branches/experimental/xmppd/modules/webadmin.py: css
+
+2007-02-19 18:51  garanda
+
+	* branches/experimental/xmppd/modules/webadmin.py: 
+
+2007-02-19 18:40  garanda
+
+	* branches/experimental/xmppd/modules/webadmin.py: WebAdmin
+
+2007-02-19 18:38  garanda
+
+	* branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/webadmin.py: WebAdmin
+
+2007-02-19 15:19  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/modules/webadmin.py:
+
+2007-02-15 10:47  jpalanca
+
+	* ChangeLog, branches/experimental/runspade.py,
+	  doc/organizations/gti.bib, doc/organizations/pfc.tex: cambiado el
+	  changelog
+
+2007-01-17 19:57  garanda
+
+	* branches/experimental/spade/MTP.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2007-01-17 12:35  garanda
+
+	* branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/SpadeConfigParser.py:
+
+2007-01-16 17:41  garanda
+
+	* branches/experimental/configure.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/SpadeConfigParser.py,
+	  branches/experimental/spade/spade_backend.py:
+
+2007-01-11 18:36  garanda
+
+	* branches/experimental/spade/Agent.py: 
+
+2007-01-11 16:07  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2007-01-11 15:39  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2007-01-11 13:32  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py:
+
+2007-01-10 19:17  garanda
+
+	* branches/experimental/xmppd/modules/stream.py: 
+
+2007-01-10 19:17  garanda
+
+	* branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-10 12:22  garanda
+
+	* branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2007-01-10 11:25  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/Agent.py:
+
+2007-01-10 11:25  garanda
+
+	* branches/experimental/xmppd/__init__.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-09 16:19  garanda
+
+	* branches/experimental/configure.py,
+	  branches/experimental/runspade.py,
+	  branches/experimental/xmppd/locales.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2007-01-09 16:01  garanda
+
+	* branches/experimental/xmppd/xmppd.py: Locale working
+
+2007-01-09 16:00  garanda
+
+	* branches/experimental/xmppd/locale.py,
+	  branches/experimental/xmppd/locales,
+	  branches/experimental/xmppd/locales.py:
+
+2007-01-09 15:59  garanda
+
+	* branches/experimental/xmppd/locale.py,
+	  branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-09 15:52  garanda
+
+	* branches/experimental/xmppd/locale.py,
+	  branches/experimental/xmppd/modules/locale.py:
+
+2007-01-09 15:52  garanda
+
+	* branches/experimental/xmppd/modules/locale.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-09 15:17  garanda
+
+	* branches/experimental/xmppd/locales/xmppd.py,
+	  branches/experimental/xmppd/modules/locale.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-09 15:15  garanda
+
+	* branches/experimental/xmppd/locale,
+	  branches/experimental/xmppd/locales,
+	  branches/experimental/xmppd/xmppd.py:
+
+2007-01-09 12:40  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/xmppd/xmppd.py: Broken install
+
+2007-01-08 18:16  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml: Spade updated to work with
+	  latest (our) version of xmppd
+
+2006-12-21 17:31  jpalanca
+
+	* branches/experimental/xmppd/xmppd.py: 
+
+2006-12-21 17:02  jpalanca
+
+	* branches/experimental/xmppd/modules/jep0077.py: 
+
+2006-12-21 17:00  jpalanca
+
+	* branches/experimental/xmppd/modules/jep0077.py: 
+
+2006-12-21 16:59  jpalanca
+
+	* branches/experimental/xmppd/modules/jep0077.py: 
+
+2006-12-21 15:09  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-21 15:07  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-21 14:49  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-21 14:44  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-21 14:37  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-12-21 12:04  garanda
+
+	* branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/wq.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-21 09:29  garanda
+
+	* branches/experimental/xmppd/modules/wq.py,
+	  branches/experimental/xmppd/xmppd.xml: WQ
+
+2006-12-20 18:36  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Almost everything,
+	  Vicente
+
+2006-12-20 18:24  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-20 15:05  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-20 13:45  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-19 19:09  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-19 18:48  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-19 15:18  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-18 19:02  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-18 17:28  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-18 15:50  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Persistence
+
+2006-12-18 15:22  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Load Room DB
+
+2006-12-18 14:05  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Save Room DB
+
+2006-12-18 11:39  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Destroying Rooms
+
+2006-12-15 16:52  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-15 16:27  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-14 18:50  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-13 19:26  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-13 16:24  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-13 16:21  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-13 12:49  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-13 11:52  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-13 10:30  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-13 09:28  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: This doesn't work
+
+2006-12-12 17:42  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: Before putting the leg
+	  in
+
+2006-12-12 14:13  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-12 12:29  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-12 11:20  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-12-05 15:23  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: print2DEBUG
+
+2006-12-05 15:20  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: print2DEBUG
+
+2006-12-05 15:11  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: privileges finished
+
+2006-12-04 15:51  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-12-01 17:03  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: admins, owners, etc
+
+2006-12-01 16:43  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: declines an invitation
+
+2006-11-30 15:50  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: roles working
+
+2006-11-30 15:24  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: roles working
+
+2006-11-30 12:29  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-30 12:07  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-30 10:23  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-29 19:45  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-29 15:22  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-29 14:32  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-29 14:21  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-29 13:54  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-29 12:27  jpalanca
+
+	* branches/experimental/xmppd/modules/muc.py: private messages
+
+2006-11-29 11:43  jpalanca
+
+	* branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml: declines an invitation
+
+2006-11-28 18:43  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-28 17:58  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-28 12:01  garanda
+
+	* branches/experimental/xmppd/modules/muc.py: 
+
+2006-11-24 15:46  garanda
+
+	* branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/modules/router.py: MUC starts working
+	  again
+
+2006-11-24 12:14  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-24 12:13  garanda
+
+	* branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-23 18:34  jpalanca
+
+	* branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/muc.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-11-23 17:24  jpalanca
+
+	* branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml: Presence DO finally works.
+	  you fucking mother fucker
+
+2006-11-22 19:40  garanda
+
+	* branches/experimental/xmpp/dispatcher.py,
+	  branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml: Inbound-Outbound Shit
+
+2006-11-22 14:24  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/jep0077.py,
+	  branches/experimental/xmppd/modules/router.py: Intra-Presence
+	  Working
+
+2006-11-15 18:30  jpalanca
+
+	* branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-11-15 16:49  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-14 17:56  jpalanca
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-11-10 16:11  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-08 17:57  jpalanca
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-11-08 14:00  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: presence finished
+
+2006-11-07 16:01  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-06 15:37  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 18:16  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-11-02 18:05  garanda
+
+	* branches/experimental/xmppd/modules/dialback.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 17:38  garanda
+
+	* branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 17:33  jpalanca
+
+	* branches/experimental/xmppd/xmppd.pem,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 17:33  garanda
+
+	* branches/experimental/xmppd/user_db.xml: 
+
+2006-11-02 17:33  garanda
+
+	* branches/experimental/xmppd/user_db.xml,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-11-02 17:24  garanda
+
+	* branches/experimental/xmppd/user_db.xml,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-11-02 17:18  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/user_db.xml:
+
+2006-11-02 17:08  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/user_db.xml:
+
+2006-11-02 16:57  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/user_db.xml:
+
+2006-11-02 16:46  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-02 16:41  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-11-02 16:29  garanda
+
+	* branches/experimental/xmppd/generate-cert.py: 
+
+2006-11-02 16:27  garanda
+
+	* branches/experimental/xmppd/generate-cert.py: 
+
+2006-11-02 15:58  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/thx1138.pem,
+	  branches/experimental/xmppd/user_db.xml,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 15:23  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-11-02 15:23  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/user_db.xml:
+
+2006-10-31 17:15  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/user_db.xml,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-10-31 11:07  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-30 17:53  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-30 17:43  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-30 17:37  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-30 16:13  jpalanca
+
+	* branches/experimental/xmppd/user_db.xml: 
+
+2006-10-30 16:12  jpalanca
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-10-27 16:59  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-27 11:51  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-10-26 15:10  garanda
+
+	* branches/experimental/xmppd/modules/router.py: Presence Completely
+	  Implemented
+
+2006-10-26 14:09  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-25 18:39  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-25 18:03  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-25 17:12  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 17:26  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 17:20  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 16:29  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 16:12  garanda
+
+	* branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-10-24 13:42  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 11:38  garanda
+
+	* branches/experimental/xmppd/modules/router.py: 
+
+2006-10-24 11:25  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/roster.py,
+	  branches/experimental/xmppd/modules/router.py:
+
+2006-10-23 13:43  garanda
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/jep0077.py,
+	  branches/experimental/xmppd/modules/jep0078.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-10-10 13:23  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 13:19  garanda
+
+	* branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:41  garanda
+
+	* branches/experimental/spade/AMS.py: packaging
+
+2006-10-10 11:40  garanda
+
+	* branches/experimental/spade/AMS.py: packaging
+
+2006-10-10 11:33  garanda
+
+	* branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:32  garanda
+
+	* branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:26  garanda
+
+	* branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:25  garanda
+
+	* branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:24  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/spade/spade_backend.py: packaging
+
+2006-10-10 11:20  garanda
+
+	* branches/experimental/runspade.py: packaging
+
+2006-10-10 11:18  garanda
+
+	* branches/experimental/runspade.py: packaging
+
+2006-10-10 11:13  garanda
+
+	* branches/experimental/setup.py: packaging
+
+2006-10-10 11:09  garanda
+
+	* branches/experimental/runspade.py, branches/experimental/setup.py:
+	  packaging
+
+2006-10-10 11:06  garanda
+
+	* branches/experimental/runspade.py: packaging
+
+2006-10-10 11:04  garanda
+
+	* branches/experimental/setup.py: packaging
+
+2006-10-10 10:55  garanda
+
+	* branches/experimental/bin, branches/experimental/empaqueta.sh:
+	  packaging
+
+2006-07-14 10:08  garanda
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml:
+
+2006-07-13 15:23  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py,
+	  branches/experimental/xmppd/xmppd.xml: local config file
+
+2006-07-12 16:34  garanda
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-07-11 16:30  jpalanca
+
+	* branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py: first version of
+	  multisession_manager
+
+2006-07-10 16:32  jpalanca
+
+	* branches/experimental/spade/Agent.py,
+	  branches/experimental/xmpp/transports.py,
+	  branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/stream.py: tls makes it slower
+
+2006-07-10 15:22  jpalanca
+
+	* branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/xmppd.py: component JEP supported
+
+2006-07-06 16:51  garanda
+
+	* branches/experimental/examples/emissor-gus.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-07-06 13:47  jpalanca
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/jep0078.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py: handshake working
+
+2006-07-05 14:15  jpalanca
+
+	* branches/experimental/xmppd/xmppd.py,
+	  doc/articles/mates2006/gti.bib, doc/articles/mates2006/jabber.tex,
+	  examples/receptor.py, trunk/configure.py, trunk/spade/Agent.py:
+	  solved debug in agents. TODO mtps addition
+
+2006-07-04 16:56  jpalanca
+
+	* branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/xmppd.py: changing config options
+
+2006-07-03 17:35  jpalanca
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/xmpp/debug.py,
+	  branches/experimental/xmppd/modules/config.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-06-30 11:33  jpalanca
+
+	* branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/xmpp/auth.py,
+	  branches/experimental/xmpp/client.py,
+	  branches/experimental/xmpp/dispatcher.py,
+	  branches/experimental/xmpp/transports.py:
+
+2006-06-30 11:32  jpalanca
+
+	* branches/experimental/xmppd/modules/jep0077.py,
+	  branches/experimental/xmppd/xmppd.cfg,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-06-30 10:48  jpalanca
+
+	* branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/message.py,
+	  branches/experimental/xmppd/modules/router.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.py: updating bb server
+
+2006-06-29 15:48  garanda
+
+	* branches/experimental/runspade.py,
+	  branches/experimental/xmppd/modules/db_fake.py,
+	  branches/experimental/xmppd/modules/jep0077.py,
+	  branches/experimental/xmppd/modules/stream.py,
+	  branches/experimental/xmppd/xmppd.cfg,
+	  branches/experimental/xmppd/xmppd.py:
+
+2006-06-29 13:31  garanda
+
+	* branches/experimental/xmppd: bb server at experimental
+
+2006-06-29 13:30  garanda
+
+	* branches/experimental/xmppd: 
+
+2006-06-22 17:04  garanda
+
+	* branches/experimental/examples/OracleAgent.py,
+	  branches/experimental/examples/receptor.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/xmppd/router.py,
+	  branches/experimental/xmppd/stream.py:
+
+2006-06-22 15:44  garanda
+
+	* branches/experimental/examples: Added experimental example
+
+2006-06-21 18:10  jpalanca
+
+	* branches/experimental/COPYING, branches/experimental/autopackage,
+	  branches/experimental/autopackage/default.apspec,
+	  branches/experimental/configure.py, branches/experimental/doc,
+	  branches/experimental/doc/api.tar.gz,
+	  branches/experimental/empaqueta.sh, branches/experimental/etc,
+	  branches/experimental/gspade.py, branches/experimental/gspade.sh,
+	  branches/experimental/readme.txt,
+	  branches/experimental/runspade.py,
+	  branches/experimental/setup.iss, branches/experimental/setup.py,
+	  branches/experimental/spade, branches/experimental/spade.sh,
+	  branches/experimental/spade/ACLMessage.py,
+	  branches/experimental/spade/ACLParser.py,
+	  branches/experimental/spade/AID.py,
+	  branches/experimental/spade/AMS.py,
+	  branches/experimental/spade/Agent.py,
+	  branches/experimental/spade/BasicFipaDateTime.py,
+	  branches/experimental/spade/Behaviour.py,
+	  branches/experimental/spade/DF.py,
+	  branches/experimental/spade/Envelope.py,
+	  branches/experimental/spade/FIPAMessage.py,
+	  branches/experimental/spade/MTP.py,
+	  branches/experimental/spade/MessageReceiver.py,
+	  branches/experimental/spade/Organization.py,
+	  branches/experimental/spade/Platform.py,
+	  branches/experimental/spade/RDF0Parser.py,
+	  branches/experimental/spade/ReceivedObject.py,
+	  branches/experimental/spade/SIMBA.py,
+	  branches/experimental/spade/SL0Parser.py,
+	  branches/experimental/spade/SpadeConfigParser.py,
+	  branches/experimental/spade/XMLCodec.py,
+	  branches/experimental/spade/__init__.py,
+	  branches/experimental/spade/colors.py,
+	  branches/experimental/spade/pyparsing.py,
+	  branches/experimental/spade/spade_backend.py,
+	  branches/experimental/spade/xmpp,
+	  branches/experimental/spade/xmppd,
+	  branches/experimental/stack_thread,
+	  branches/experimental/stack_thread/Makefile,
+	  branches/experimental/stack_thread/old,
+	  branches/experimental/stack_thread/old/mymod.c,
+	  branches/experimental/stack_thread/old/stack_thread.c,
+	  branches/experimental/stack_thread/old/stack_thread.i,
+	  branches/experimental/stack_thread/old/stack_thread.py,
+	  branches/experimental/stack_thread/stackthread.c,
+	  branches/experimental/stack_thread/stackthread.h,
+	  branches/experimental/stack_thread/test.py,
+	  branches/experimental/stack_thread/threadmodule.c,
+	  branches/experimental/tlslite,
+	  branches/experimental/tlslite/BaseDB.py,
+	  branches/experimental/tlslite/Checker.py,
+	  branches/experimental/tlslite/FileObject.py,
+	  branches/experimental/tlslite/HandshakeSettings.py,
+	  branches/experimental/tlslite/Session.py,
+	  branches/experimental/tlslite/SessionCache.py,
+	  branches/experimental/tlslite/SharedKeyDB.py,
+	  branches/experimental/tlslite/TLSConnection.py,
+	  branches/experimental/tlslite/TLSRecordLayer.py,
+	  branches/experimental/tlslite/VerifierDB.py,
+	  branches/experimental/tlslite/X509.py,
+	  branches/experimental/tlslite/X509CertChain.py,
+	  branches/experimental/tlslite/__init__.py,
+	  branches/experimental/tlslite/api.py,
+	  branches/experimental/tlslite/constants.py,
+	  branches/experimental/tlslite/errors.py,
+	  branches/experimental/tlslite/integration,
+	  branches/experimental/tlslite/integration/AsyncStateMachine.py,
+	  branches/experimental/tlslite/integration/HTTPTLSConnection.py,
+	  branches/experimental/tlslite/integration/TLSAsyncDispatcherMixIn.py,
+	  branches/experimental/tlslite/integration/TLSSocketServerMixIn.py,
+	  branches/experimental/tlslite/integration/TLSTwistedProtocolWrapper.py,
+	  branches/experimental/tlslite/integration/XMLRPCTransport.py,
+	  branches/experimental/tlslite/integration/__init__.py,
+	  branches/experimental/tlslite/mathtls.py,
+	  branches/experimental/tlslite/messages.py,
+	  branches/experimental/tlslite/scripts,
+	  branches/experimental/tlslite/scripts/tls.py,
+	  branches/experimental/tlslite/scripts/tlsdb.py,
+	  branches/experimental/tlslite/utils,
+	  branches/experimental/tlslite/utils/AES.py,
+	  branches/experimental/tlslite/utils/ASN1Parser.py,
+	  branches/experimental/tlslite/utils/Cryptlib_AES.py,
+	  branches/experimental/tlslite/utils/Cryptlib_RC4.py,
+	  branches/experimental/tlslite/utils/Cryptlib_TripleDES.py,
+	  branches/experimental/tlslite/utils/OpenSSL_AES.py,
+	  branches/experimental/tlslite/utils/OpenSSL_RC4.py,
+	  branches/experimental/tlslite/utils/OpenSSL_RSAKey.py,
+	  branches/experimental/tlslite/utils/OpenSSL_TripleDES.py,
+	  branches/experimental/tlslite/utils/PyCrypto_AES.py,
+	  branches/experimental/tlslite/utils/PyCrypto_RC4.py,
+	  branches/experimental/tlslite/utils/PyCrypto_RSAKey.py,
+	  branches/experimental/tlslite/utils/PyCrypto_TripleDES.py,
+	  branches/experimental/tlslite/utils/Python_AES.py,
+	  branches/experimental/tlslite/utils/Python_RC4.py,
+	  branches/experimental/tlslite/utils/Python_RSAKey.py,
+	  branches/experimental/tlslite/utils/RC4.py,
+	  branches/experimental/tlslite/utils/RSAKey.py,
+	  branches/experimental/tlslite/utils/TripleDES.py,
+	  branches/experimental/tlslite/utils/__init__.py,
+	  branches/experimental/tlslite/utils/cipherfactory.py,
+	  branches/experimental/tlslite/utils/codec.py,
+	  branches/experimental/tlslite/utils/cryptomath.py,
+	  branches/experimental/tlslite/utils/dateFuncs.py,
+	  branches/experimental/tlslite/utils/entropy.c,
+	  branches/experimental/tlslite/utils/hmac.py,
+	  branches/experimental/tlslite/utils/jython_compat.py,
+	  branches/experimental/tlslite/utils/keyfactory.py,
+	  branches/experimental/tlslite/utils/rijndael.py,
+	  branches/experimental/tlslite/utils/win32prng.c,
+	  branches/experimental/tlslite/utils/xmltools.py,
+	  branches/experimental/usr, branches/experimental/usr/share,
+	  branches/experimental/usr/share/spade,
+	  branches/experimental/usr/share/spade/mtp,
+	  branches/experimental/usr/share/spade/mtp/http.py,
+	  branches/experimental/usr/share/spade/mtp/simba.py,
+	  branches/experimental/usr/share/spade/rma.glade,
+	  branches/experimental/win_setup.py, branches/experimental/xmpp,
+	  branches/experimental/xmpp/__init__.py,
+	  branches/experimental/xmpp/auth.py,
+	  branches/experimental/xmpp/browser.py,
+	  branches/experimental/xmpp/client.py,
+	  branches/experimental/xmpp/commands.py,
+	  branches/experimental/xmpp/debug.py,
+	  branches/experimental/xmpp/dispatcher.py,
+	  branches/experimental/xmpp/features.py,
+	  branches/experimental/xmpp/filetransfer.py,
+	  branches/experimental/xmpp/protocol.py,
+	  branches/experimental/xmpp/roster.py,
+	  branches/experimental/xmpp/session.py,
+	  branches/experimental/xmpp/simplexml.py,
+	  branches/experimental/xmpp/transports.py,
+	  branches/experimental/xmppd,
+	  branches/experimental/xmppd/__init__.py,
+	  branches/experimental/xmppd/accPlugin.py,
+	  branches/experimental/xmppd/ch.py,
+	  branches/experimental/xmppd/config.py,
+	  branches/experimental/xmppd/constants.py,
+	  branches/experimental/xmppd/db_fake.py,
+	  branches/experimental/xmppd/dialback.py,
+	  branches/experimental/xmppd/dummy.py,
+	  branches/experimental/xmppd/filter.py,
+	  branches/experimental/xmppd/filters,
+	  branches/experimental/xmppd/filters/__init__.py,
+	  branches/experimental/xmppd/filters/acc.py,
+	  branches/experimental/xmppd/filters/component.py,
+	  branches/experimental/xmppd/filters/console.py,
+	  branches/experimental/xmppd/filters/mifiltro.py,
+	  branches/experimental/xmppd/filters/mucfilter.py,
+	  branches/experimental/xmppd/jep0077.py,
+	  branches/experimental/xmppd/jep0078.py,
+	  branches/experimental/xmppd/modules,
+	  branches/experimental/xmppd/modules/__init__.py,
+	  branches/experimental/xmppd/muc.py,
+	  branches/experimental/xmppd/roster.py,
+	  branches/experimental/xmppd/router.py,
+	  branches/experimental/xmppd/server.py,
+	  branches/experimental/xmppd/stanza_queue.py,
+	  branches/experimental/xmppd/stream.py,
+	  branches/experimental/xmppd/xmpp,
+	  branches/experimental/xmppd/xmppd.cfg,
+	  branches/experimental/xmppd/xmppd.pem,
+	  branches/experimental/xmppd/xmppd.xml: finally added thef***ing
+	  experimental branch
+
+2006-06-21 18:09  jpalanca
+
+	* branches/experimental: 
+

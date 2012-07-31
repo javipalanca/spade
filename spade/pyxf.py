@@ -91,33 +91,33 @@ class xsb:
       self.engine.sendline( query )
       index = self.engine.expect( [ xsbprompt, xsberror ] )
       if index == 1:
-	raise XSBQueryError, 'Error while executing query "' + query + '". Error from XSB:\n' + self.engine.after
+        raise XSBQueryError, 'Error while executing query "' + query + '". Error from XSB:\n' + self.engine.after
       else:
-	if 'yes' in self.engine.before:
-	  return True
-	else:
-	  return False
+        if 'yes' in self.engine.before:
+            return True
+        else:
+            return False
     else: # normal query
       printer = self._printer( lvars, query )
       self.engine.sendline( printer )
       index = self.engine.expect( [ xsberror, xsbprompt ] )
       if index == 0:
-	raise XSBQueryError, 'Error while executing query "' + query + '". Error from XSB:\n' + self.engine.after
+        raise XSBQueryError, 'Error while executing query "' + query + '". Error from XSB:\n' + self.engine.after
       else:
-	res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
-	results = []
-	counter = 0
-	temp = []
-	for i in res:
-	  counter += 1
-	  temp.append( i )
-	  if counter % len( lvars ) == 0:
-	    results.append( dict( temp ) )
-	    temp = []
-	if results == []:
-	  return False
-	return results
-	
+        res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
+        results = []
+        counter = 0
+        temp = []
+        for i in res:
+          counter += 1
+          temp.append( i )
+          if counter % len( lvars ) == 0:
+            results.append( dict( temp ) )
+            temp = []
+        if results == []:
+          return False
+        return results
+    
   def _printer( self, lvars, query ):
     '''Private method for constructing a result printing query.
     Usage: instance._printer( lvars, query )
@@ -197,33 +197,33 @@ class swipl:
       self.engine.sendline( query )
       index = self.engine.expect( [ swiprompt, swierror ] )
       if index == 1:
-	raise SWIQueryError, 'Error while executing query "' + query + '". Error from SWI:\n' + self.engine.after
+        raise SWIQueryError, 'Error while executing query "' + query + '". Error from SWI:\n' + self.engine.after
       else:
-	if 'true' in self.engine.before:
-	  return True
-	else:
-	  return False
+        if 'true' in self.engine.before:
+            return True
+        else:
+            return False
     else: # normal query
       printer = self._printer( lvars, query )
       self.engine.sendline( printer )
       index = self.engine.expect( [ swierror, swiprompt ] )
       if index == 0:
-	raise SWIQueryError, 'Error while executing query "' + query + '". Error from SWI:\n' + self.engine.after
+        raise SWIQueryError, 'Error while executing query "' + query + '". Error from SWI:\n' + self.engine.after
       else:
-	res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
-	results = []
-	counter = 0
-	temp = []
-	for i in res:
-	  counter += 1
-	  temp.append( i )
-	  if counter % len( lvars ) == 0:
-	    results.append( dict( temp ) )
-	    temp = []
-	if results == []:
-	  return False
-	return results
-	
+        res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
+        results = []
+        counter = 0
+        temp = []
+        for i in res:
+          counter += 1
+          temp.append( i )
+          if counter % len( lvars ) == 0:
+            results.append( dict( temp ) )
+            temp = []
+        if results == []:
+          return False
+        return results
+    
   def _printer( self, lvars, query ):
     '''Private method for constructing a result printing query.
     Usage: instance._printer( lvars, query )
@@ -303,33 +303,33 @@ class eclipse:
       self.engine.sendline( query )
       index = self.engine.expect( [ eclipseprompt, eclipseerror ] )
       if index == 1:
-	raise ECLiPSeQueryError, 'Error while executing query "' + query + '". Error from ECLiPSe:\n' + self.engine.after
+            raise ECLiPSeQueryError, 'Error while executing query "' + query + '". Error from ECLiPSe:\n' + self.engine.after
       else:
-	if 'Yes' in self.engine.before:
-	  return True
-	else:
-	  return False
+        if 'Yes' in self.engine.before:
+            return True
+        else:
+            return False
     else: # normal query
       printer = self._printer( lvars, query )
       self.engine.sendline( printer )
       index = self.engine.expect( [ eclipseerror, eclipseprompt ] )
       if index == 0:
-	raise ECLiPSeQueryError, 'Error while executing query "' + query + '". Error from ECLiPSe:\n' + self.engine.after
+        raise ECLiPSeQueryError, 'Error while executing query "' + query + '". Error from ECLiPSe:\n' + self.engine.after
       else:
-	res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
-	results = []
-	counter = 0
-	temp = []
-	for i in res:
-	  counter += 1
-	  temp.append( i )
-	  if counter % len( lvars ) == 0:
-	    results.append( dict( temp ) )
-	    temp = []
-	if results == []:
-	  return False
-	return results
-	
+        res = res_re.findall( self.engine.before.split( ',nl,fail.\n' )[ -1 ] )
+        results = []
+        counter = 0
+        temp = []
+        for i in res:
+          counter += 1
+          temp.append( i )
+          if counter % len( lvars ) == 0:
+            results.append( dict( temp ) )
+            temp = []
+        if results == []:
+          return False
+        return results
+    
   def _printer( self, lvars, query ):
     '''Private method for constructing a result printing query.
     Usage: instance._printer( lvars, query )
@@ -414,29 +414,29 @@ class flora2:
       self.engine.sendline( query )
       index = self.engine.expect( [ flora2prompt, flora2error ] )
       if index == 1:
-	raise Flora2QueryError, 'Error while executing query "' + query + '". Error from Flora2:\n' + self.engine.after
+        raise Flora2QueryError, 'Error while executing query "' + query + '". Error from Flora2:\n' + self.engine.after
       else:
-	if 'Yes' in self.engine.before:
-	  return True
-	else:
-	  return False
+        if 'Yes' in self.engine.before:
+            return True
+        else:
+            return False
     else: # normal query
       self.engine.sendline( query )
       index = self.engine.expect( [ flora2error, flora2prompt ] )
       if index == 0:
-	raise Flora2QueryError, 'Error while executing query "' + query + '". Error from Flora2:\n' + self.engine.after
+        raise Flora2QueryError, 'Error while executing query "' + query + '". Error from Flora2:\n' + self.engine.after
       else:
-	res = fres_re.findall( self.engine.before )
-	results = []
-	counter = 0
-	temp = []
-	for i in res:
-	  counter += 1
-	  temp.append( i )
-	  if counter % len( lvars ) == 0:
-	    results.append( dict( temp ) )
-	    temp = []
-	return results
+        res = fres_re.findall( self.engine.before )
+        results = []
+        counter = 0
+        temp = []
+        for i in res:
+          counter += 1
+          temp.append( i )
+          if counter % len( lvars ) == 0:
+            results.append( dict( temp ) )
+            temp = []
+        return results
 
 if __name__ == '__main__':
   x = xsb()
