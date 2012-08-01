@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.Behaviour.BehaviourTemplate</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.Behaviour-module.html">Module&nbsp;Behaviour</a> ::
+        Class&nbsp;BehaviourTemplate
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.Behaviour.BehaviourTemplate-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class BehaviourTemplate</h1><p class="nomargin-top"><span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_be_5" name="uml_class_diagram_for_spade_be_5">
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__init__" title="spade.Behaviour.BehaviourTemplate.__init__" alt="" coords="359,39,520,57"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#match" title="spade.Behaviour.BehaviourTemplate.match" alt="" coords="359,57,520,76"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__and__" title="Implementation of &amp; operator" alt="" coords="359,76,520,95"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__rand__" title="Implementation of &amp;= operator" alt="" coords="359,95,520,113"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__or__" title="Implementation of | operator" alt="" coords="359,113,520,132"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__ror__" title="Implementation of |= operator" alt="" coords="359,132,520,151"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__xor__" title="Implementation of ^ operator" alt="" coords="359,151,520,169"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__rxor__" title="Implementation of ^= operator" alt="" coords="359,169,520,188"/>
+<area shape="rect" id="node336" href="spade.Behaviour.BehaviourTemplate-class.html#__invert__" title="Implementation of ~ operator" alt="" coords="359,188,520,207"/>
+<area shape="rect" id="node1" href="spade.Behaviour.BehaviourTemplate-class.html" title="Template operators" alt="" coords="347,6,531,213"/>
+<area shape="rect" id="node2" href="spade.Behaviour.ACLTemplate-class.html" title="Template for message matching" alt="" coords="5,233,123,271"/>
+<area shape="rect" id="node3" href="spade.Behaviour.XORTemplate-class.html" title="spade.Behaviour.XORTemplate" alt="" coords="152,233,272,271"/>
+<area shape="rect" id="node4" href="spade.Behaviour.NOTTemplate-class.html" title="spade.Behaviour.NOTTemplate" alt="" coords="301,233,419,271"/>
+<area shape="rect" id="node5" href="spade.Behaviour.MessageTemplate-class.html" title="spade.Behaviour.MessageTemplate" alt="" coords="448,233,592,271"/>
+<area shape="rect" id="node6" href="spade.Behaviour.ORTemplate-class.html" title="spade.Behaviour.ORTemplate" alt="" coords="621,233,731,271"/>
+<area shape="rect" id="node7" href="spade.Behaviour.ANDTemplate-class.html" title="spade.Behaviour.ANDTemplate" alt="" coords="760,233,880,271"/>
+</map>
+  <img src="uml_class_diagram_for_spade_be_5.gif" alt='' usemap="#uml_class_diagram_for_spade_be_5" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Template operators</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">regex</span>=<span class="summary-sig-default">False</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="match"></a><span class="summary-sig-name">match</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.match">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__and__"></a><span class="summary-sig-name">__and__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of &amp; operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__and__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__rand__"></a><span class="summary-sig-name">__rand__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of &amp;= operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__rand__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__or__"></a><span class="summary-sig-name">__or__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of | operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__or__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ror__"></a><span class="summary-sig-name">__ror__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of |= operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__ror__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__xor__"></a><span class="summary-sig-name">__xor__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of ^ operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__xor__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__rxor__"></a><span class="summary-sig-name">__rxor__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of ^= operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__rxor__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__invert__"></a><span class="summary-sig-name">__invert__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Implementation of ~ operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#BehaviourTemplate.__invert__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:35 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

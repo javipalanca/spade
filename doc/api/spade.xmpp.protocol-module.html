@@ -1,0 +1,2475 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        Module&nbsp;protocol
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.protocol-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module protocol</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html">source&nbsp;code</a></span></p>
+<p>Protocol module contains tools that is needed for processing of 
+  xmpp-related data structures.</p>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.NodeProcessed-class.html" class="summary-name">NodeProcessed</a><br />
+      Exception that should be raised by handler when the handling should
+        be stopped.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.StreamError-class.html" class="summary-name">StreamError</a><br />
+      Base exception class for stream errors.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.BadFormat-class.html" class="summary-name">BadFormat</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.BadNamespacePrefix-class.html" class="summary-name">BadNamespacePrefix</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Conflict-class.html" class="summary-name">Conflict</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.ConnectionTimeout-class.html" class="summary-name">ConnectionTimeout</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.HostGone-class.html" class="summary-name">HostGone</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.HostUnknown-class.html" class="summary-name">HostUnknown</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.ImproperAddressing-class.html" class="summary-name">ImproperAddressing</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.InternalServerError-class.html" class="summary-name">InternalServerError</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.InvalidFrom-class.html" class="summary-name">InvalidFrom</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.InvalidID-class.html" class="summary-name">InvalidID</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.InvalidNamespace-class.html" class="summary-name">InvalidNamespace</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.InvalidXML-class.html" class="summary-name">InvalidXML</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.NotAuthorized-class.html" class="summary-name">NotAuthorized</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.PolicyViolation-class.html" class="summary-name">PolicyViolation</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.RemoteConnectionFailed-class.html" class="summary-name">RemoteConnectionFailed</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.ResourceConstraint-class.html" class="summary-name">ResourceConstraint</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.RestrictedXML-class.html" class="summary-name">RestrictedXML</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.SeeOtherHost-class.html" class="summary-name">SeeOtherHost</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.SystemShutdown-class.html" class="summary-name">SystemShutdown</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.UndefinedCondition-class.html" class="summary-name">UndefinedCondition</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.UnsupportedEncoding-class.html" class="summary-name">UnsupportedEncoding</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.UnsupportedStanzaType-class.html" class="summary-name">UnsupportedStanzaType</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.UnsupportedVersion-class.html" class="summary-name">UnsupportedVersion</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.XMLNotWellFormed-class.html" class="summary-name">XMLNotWellFormed</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.JID-class.html" class="summary-name">JID</a><br />
+      JID object.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Protocol-class.html" class="summary-name">Protocol</a><br />
+      A &quot;stanza&quot; object class.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Message-class.html" class="summary-name">Message</a><br />
+      XMPP Message stanza - &quot;push&quot; mechanism.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Presence-class.html" class="summary-name">Presence</a><br />
+      XMPP Presence object.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Iq-class.html" class="summary-name">Iq</a><br />
+      XMPP Iq object - get/set dialog mechanism.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.ErrorNode-class.html" class="summary-name">ErrorNode</a><br />
+      XMPP-style error element.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.Error-class.html" class="summary-name">Error</a><br />
+      Used to quickly transform received stanza into error reply.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.DataField-class.html" class="summary-name">DataField</a><br />
+      This class is used in the DataForm class to describe the single 
+        data item.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol.DataForm-class.html" class="summary-name">DataForm</a><br />
+      DataForm class.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isResultNode"></a><span class="summary-sig-name">isResultNode</span>(<span class="summary-sig-arg">node</span>)</span><br />
+      Returns true if the node is a positive reply.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#isResultNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isErrorNode"></a><span class="summary-sig-name">isErrorNode</span>(<span class="summary-sig-arg">node</span>)</span><br />
+      Returns true if the node is a negative reply.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#isErrorNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_ACTIVITY"></a><span class="summary-name">NS_ACTIVITY</span> = <code title="'http://jabber.org/protocol/activity'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/activity</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_ADDRESS"></a><span class="summary-name">NS_ADDRESS</span> = <code title="'http://jabber.org/protocol/address'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/address</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_AGENTS"></a><span class="summary-name">NS_AGENTS</span> = <code title="'jabber:iq:agents'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:agents</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_AMP"></a><span class="summary-name">NS_AMP</span> = <code title="'http://jabber.org/protocol/amp'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/amp</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_AMP_ERRORS"></a><span class="summary-name">NS_AMP_ERRORS</span> = <code title="'http://jabber.org/protocol/amp#errors'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/amp#errors</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_AUTH"></a><span class="summary-name">NS_AUTH</span> = <code title="'jabber:iq:auth'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:auth</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_BIND"></a><span class="summary-name">NS_BIND</span> = <code title="'urn:ietf:params:xml:ns:xmpp-bind'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-bind</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_BROWSE"></a><span class="summary-name">NS_BROWSE</span> = <code title="'jabber:iq:browse'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:browse</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_BYTESTREAM"></a><span class="summary-name">NS_BYTESTREAM</span> = <code title="'http://jabber.org/protocol/bytestreams'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/bytestreams</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_CAPS"></a><span class="summary-name">NS_CAPS</span> = <code title="'http://jabber.org/protocol/caps'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/caps</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_CHATSTATES"></a><span class="summary-name">NS_CHATSTATES</span> = <code title="'http://jabber.org/protocol/chatstates'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/chatstates</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_CLIENT"></a><span class="summary-name">NS_CLIENT</span> = <code title="'jabber:client'"><code class="variable-quote">'</code><code class="variable-string">jabber:client</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_COMMANDS"></a><span class="summary-name">NS_COMMANDS</span> = <code title="'http://jabber.org/protocol/commands'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/commands</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_COMPONENT_ACCEPT"></a><span class="summary-name">NS_COMPONENT_ACCEPT</span> = <code title="'jabber:component:accept'"><code class="variable-quote">'</code><code class="variable-string">jabber:component:accept</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#NS_COMPONENT_1" class="summary-name">NS_COMPONENT_1</a> = <code title="'http://jabberd.jabberstudio.org/ns/component/1.0'"><code class="variable-quote">'</code><code class="variable-string">http://jabberd.jabberstudio.org/ns/component</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_COMPRESS"></a><span class="summary-name">NS_COMPRESS</span> = <code title="'http://jabber.org/protocol/compress'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/compress</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DATA"></a><span class="summary-name">NS_DATA</span> = <code title="'jabber:x:data'"><code class="variable-quote">'</code><code class="variable-string">jabber:x:data</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DELAY"></a><span class="summary-name">NS_DELAY</span> = <code title="'jabber:x:delay'"><code class="variable-quote">'</code><code class="variable-string">jabber:x:delay</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DIALBACK"></a><span class="summary-name">NS_DIALBACK</span> = <code title="'jabber:server:dialback'"><code class="variable-quote">'</code><code class="variable-string">jabber:server:dialback</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DISCO"></a><span class="summary-name">NS_DISCO</span> = <code title="'http://jabber.org/protocol/disco'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/disco</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DISCO_INFO"></a><span class="summary-name">NS_DISCO_INFO</span> = <code title="'http://jabber.org/protocol/disco#info'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/disco#info</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DISCO_ITEMS"></a><span class="summary-name">NS_DISCO_ITEMS</span> = <code title="'http://jabber.org/protocol/disco#items'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/disco#items</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_ENCRYPTED"></a><span class="summary-name">NS_ENCRYPTED</span> = <code title="'jabber:x:encrypted'"><code class="variable-quote">'</code><code class="variable-string">jabber:x:encrypted</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_EVENT"></a><span class="summary-name">NS_EVENT</span> = <code title="'jabber:x:event'"><code class="variable-quote">'</code><code class="variable-string">jabber:x:event</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_FEATURE"></a><span class="summary-name">NS_FEATURE</span> = <code title="'http://jabber.org/protocol/feature-neg'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/feature-neg</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_FILE"></a><span class="summary-name">NS_FILE</span> = <code title="'http://jabber.org/protocol/si/profile/file-transfer'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/si/profile/file-transfer</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_GEOLOC"></a><span class="summary-name">NS_GEOLOC</span> = <code title="'http://jabber.org/protocol/geoloc'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/geoloc</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_GROUPCHAT"></a><span class="summary-name">NS_GROUPCHAT</span> = <code title="'gc-1.0'"><code class="variable-quote">'</code><code class="variable-string">gc-1.0</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_HTTP_BIND"></a><span class="summary-name">NS_HTTP_BIND</span> = <code title="'http://jabber.org/protocol/httpbind'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/httpbind</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_IBB"></a><span class="summary-name">NS_IBB</span> = <code title="'http://jabber.org/protocol/ibb'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/ibb</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_INVISIBLE"></a><span class="summary-name">NS_INVISIBLE</span> = <code title="'presence-invisible'"><code class="variable-quote">'</code><code class="variable-string">presence-invisible</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_IQ"></a><span class="summary-name">NS_IQ</span> = <code title="'iq'"><code class="variable-quote">'</code><code class="variable-string">iq</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_LAST"></a><span class="summary-name">NS_LAST</span> = <code title="'jabber:iq:last'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:last</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MESSAGE"></a><span class="summary-name">NS_MESSAGE</span> = <code title="'message'"><code class="variable-quote">'</code><code class="variable-string">message</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MOOD"></a><span class="summary-name">NS_MOOD</span> = <code title="'http://jabber.org/protocol/mood'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/mood</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MUC"></a><span class="summary-name">NS_MUC</span> = <code title="'http://jabber.org/protocol/muc'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/muc</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MUC_USER"></a><span class="summary-name">NS_MUC_USER</span> = <code title="'http://jabber.org/protocol/muc#user'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/muc#user</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MUC_ADMIN"></a><span class="summary-name">NS_MUC_ADMIN</span> = <code title="'http://jabber.org/protocol/muc#admin'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/muc#admin</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_MUC_OWNER"></a><span class="summary-name">NS_MUC_OWNER</span> = <code title="'http://jabber.org/protocol/muc#owner'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/muc#owner</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_OFFLINE"></a><span class="summary-name">NS_OFFLINE</span> = <code title="'http://www.jabber.org/jeps/jep-0030.html'"><code class="variable-quote">'</code><code class="variable-string">http://www.jabber.org/jeps/jep-0030.html</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PHYSLOC"></a><span class="summary-name">NS_PHYSLOC</span> = <code title="'http://jabber.org/protocol/physloc'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/physloc</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PRESENCE"></a><span class="summary-name">NS_PRESENCE</span> = <code title="'presence'"><code class="variable-quote">'</code><code class="variable-string">presence</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PRIVACY"></a><span class="summary-name">NS_PRIVACY</span> = <code title="'jabber:iq:privacy'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:privacy</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PRIVATE"></a><span class="summary-name">NS_PRIVATE</span> = <code title="'jabber:iq:private'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:private</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PUBSUB"></a><span class="summary-name">NS_PUBSUB</span> = <code title="'http://jabber.org/protocol/pubsub'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/pubsub</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PUBSUB_ERRORS"></a><span class="summary-name">NS_PUBSUB_ERRORS</span> = <code title="'http://jabber.org/protocol/pubsub#errors'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/pubsub#errors</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PUBSUB_EVENTS"></a><span class="summary-name">NS_PUBSUB_EVENTS</span> = <code title="'http://jabber.org/protocol/pubsub#events'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/pubsub#events</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_PUBSUB_OWNER"></a><span class="summary-name">NS_PUBSUB_OWNER</span> = <code title="'http://jabber.org/protocol/pubsub#owner'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/pubsub#owner</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_REGISTER"></a><span class="summary-name">NS_REGISTER</span> = <code title="'jabber:iq:register'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:register</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_ROSTER"></a><span class="summary-name">NS_ROSTER</span> = <code title="'jabber:iq:roster'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:roster</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_ROSTERX"></a><span class="summary-name">NS_ROSTERX</span> = <code title="'http://jabber.org/protocol/rosterx'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/rosterx</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_RPC"></a><span class="summary-name">NS_RPC</span> = <code title="'jabber:iq:rpc'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:rpc</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SASL"></a><span class="summary-name">NS_SASL</span> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SEARCH"></a><span class="summary-name">NS_SEARCH</span> = <code title="'jabber:iq:search'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:search</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SERVER"></a><span class="summary-name">NS_SERVER</span> = <code title="'jabber:server'"><code class="variable-quote">'</code><code class="variable-string">jabber:server</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SESSION"></a><span class="summary-name">NS_SESSION</span> = <code title="'urn:ietf:params:xml:ns:xmpp-session'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-session</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SI"></a><span class="summary-name">NS_SI</span> = <code title="'http://jabber.org/protocol/si'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/si</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SI_PUB"></a><span class="summary-name">NS_SI_PUB</span> = <code title="'http://jabber.org/protocol/sipub'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/sipub</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_SIGNED"></a><span class="summary-name">NS_SIGNED</span> = <code title="'jabber:x:signed'"><code class="variable-quote">'</code><code class="variable-string">jabber:x:signed</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_STANZAS"></a><span class="summary-name">NS_STANZAS</span> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_STREAMS"></a><span class="summary-name">NS_STREAMS</span> = <code title="'http://etherx.jabber.org/streams'"><code class="variable-quote">'</code><code class="variable-string">http://etherx.jabber.org/streams</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_TIME"></a><span class="summary-name">NS_TIME</span> = <code title="'jabber:iq:time'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:time</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_TLS"></a><span class="summary-name">NS_TLS</span> = <code title="'urn:ietf:params:xml:ns:xmpp-tls'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-tls</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_VACATION"></a><span class="summary-name">NS_VACATION</span> = <code title="'http://jabber.org/protocol/vacation'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/vacation</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_VCARD"></a><span class="summary-name">NS_VCARD</span> = <code title="'vcard-temp'"><code class="variable-quote">'</code><code class="variable-string">vcard-temp</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_VERSION"></a><span class="summary-name">NS_VERSION</span> = <code title="'jabber:iq:version'"><code class="variable-quote">'</code><code class="variable-string">jabber:iq:version</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_WAITINGLIST"></a><span class="summary-name">NS_WAITINGLIST</span> = <code title="'http://jabber.org/protocol/waitinglist'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/waitinglist</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_XHTML_IM"></a><span class="summary-name">NS_XHTML_IM</span> = <code title="'http://jabber.org/protocol/xhtml-im'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/xhtml-im</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DATA_LAYOUT"></a><span class="summary-name">NS_DATA_LAYOUT</span> = <code title="'http://jabber.org/protocol/xdata-layout'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/xdata-layout</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_DATA_VALIDATE"></a><span class="summary-name">NS_DATA_VALIDATE</span> = <code title="'http://jabber.org/protocol/xdata-validate'"><code class="variable-quote">'</code><code class="variable-string">http://jabber.org/protocol/xdata-validate</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS_XMPP_STREAMS"></a><span class="summary-name">NS_XMPP_STREAMS</span> = <code title="'urn:ietf:params:xml:ns:xmpp-streams'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#xmpp_stream_error_conditions" class="summary-name">xmpp_stream_error_conditions</a> = <code title="'''
+bad-format --  --  -- The entity has sent XML that cannot be processed\
+.
+bad-namespace-prefix --  --  -- The entity has sent a namespace prefix\
+ that is unsupported, or has sent no namespace prefix on an element th\
+at requires such a prefix.
+conflict --  --  -- The server is closing the active stream for this e\
+ntity because a new stream has been initiated that conflicts with the \
+..."><code class="variable-quote">'</code><code class="variable-string">\nbad-format --  --  -- The en</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#xmpp_stanza_error_conditions" class="summary-name">xmpp_stanza_error_conditions</a> = <code title="'''
+bad-request -- 400 -- modify -- The sender has sent XML that is malfor\
+med or that cannot be processed.
+conflict -- 409 -- cancel -- Access cannot be granted because an exist\
+ing resource or session exists with the same name or address.
+feature-not-implemented -- 501 -- cancel -- The feature requested is n\
+ot implemented by the recipient or server and therefore cannot be proc\
+essed.
+..."><code class="variable-quote">'</code><code class="variable-string">\nbad-request -- 400 -- modify</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#sasl_error_conditions" class="summary-name">sasl_error_conditions</a> = <code title="'''
+aborted --  --  -- The receiving entity acknowledges an &lt;abort/&gt; eleme\
+nt sent by the initiating entity; sent in reply to the &lt;abort/&gt; elemen\
+t.
+incorrect-encoding --  --  -- The data provided by the initiating enti\
+ty could not be processed because the [BASE64]Josefsson, S., The Base1\
+6, Base32, and Base64 Data Encodings, July 2003. encoding is incorrect\
+ (e.g., because the encoding does not adhere to the definition in Sect\
+..."><code class="variable-quote">'</code><code class="variable-string">\naborted --  --  -- The receiving en</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#stream_exceptions" class="summary-name">stream_exceptions</a> = <code title="{'bad-format': &lt;class 'spade.xmpp.protocol.BadFormat'&gt;,
+ 'bad-namespace-prefix': &lt;class 'spade.xmpp.protocol.BadNamespacePrefi\
+x'&gt;,
+ 'conflict': &lt;class 'spade.xmpp.protocol.Conflict'&gt;,
+ 'connection-timeout': &lt;class 'spade.xmpp.protocol.ConnectionTimeout'&gt;\
+,
+ 'host-gone': &lt;class 'spade.xmpp.protocol.HostGone'&gt;,
+ 'host-unknown': &lt;class 'spade.xmpp.protocol.HostUnknown'&gt;,
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">bad-format</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERRORS" class="summary-name">ERRORS</a> = <code title="{'urn:ietf:params:xml:ns:xmpp-sasl aborted': ['',
+                                              '',
+                                              'The receiving entity ac\
+knowledges an &lt;abort/&gt; element sent by the initiating entity; sent in \
+reply to the &lt;abort/&gt; element.'],
+ 'urn:ietf:params:xml:ns:xmpp-sasl incorrect-encoding': ['',
+                                                         '',
+                                                         'The data pro\
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl aborted</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_BAD_REQUEST" class="summary-name">ERR_BAD_REQUEST</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas bad-request'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas bad-req</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ERR_CONFLICT"></a><span class="summary-name">ERR_CONFLICT</span> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas conflict'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas conflict</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_FEATURE_NOT_IMPLEMENTED" class="summary-name">ERR_FEATURE_NOT_IMPLEMENTED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas feature-not-implemented'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sta</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ERR_FORBIDDEN"></a><span class="summary-name">ERR_FORBIDDEN</span> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas forbidden'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas forbidden</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ERR_GONE"></a><span class="summary-name">ERR_GONE</span> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas gone'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas gone</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_INTERNAL_SERVER_ERROR" class="summary-name">ERR_INTERNAL_SERVER_ERROR</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas internal-server-error'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanz</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_ITEM_NOT_FOUND" class="summary-name">ERR_ITEM_NOT_FOUND</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas item-not-found'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas item</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_JID_MALFORMED" class="summary-name">ERR_JID_MALFORMED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas jid-malformed'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas jid-m</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_NOT_ACCEPTABLE" class="summary-name">ERR_NOT_ACCEPTABLE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas not-acceptable'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_NOT_ALLOWED" class="summary-name">ERR_NOT_ALLOWED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas not-allowed'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-all</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_NOT_AUTHORIZED" class="summary-name">ERR_NOT_AUTHORIZED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas not-authorized'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_PAYMENT_REQUIRED" class="summary-name">ERR_PAYMENT_REQUIRED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas payment-required'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas pa</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_RECIPIENT_UNAVAILABLE" class="summary-name">ERR_RECIPIENT_UNAVAILABLE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas recipient-unavailable'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanz</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ERR_REDIRECT"></a><span class="summary-name">ERR_REDIRECT</span> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas redirect'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas redirect</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_REGISTRATION_REQUIRED" class="summary-name">ERR_REGISTRATION_REQUIRED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas registration-required'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanz</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_REMOTE_SERVER_NOT_FOUND" class="summary-name">ERR_REMOTE_SERVER_NOT_FOUND</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas remote-server-not-found'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sta</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_REMOTE_SERVER_TIMEOUT" class="summary-name">ERR_REMOTE_SERVER_TIMEOUT</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas remote-server-timeout'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanz</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_RESOURCE_CONSTRAINT" class="summary-name">ERR_RESOURCE_CONSTRAINT</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas resource-constraint'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_SERVICE_UNAVAILABLE" class="summary-name">ERR_SERVICE_UNAVAILABLE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas service-unavailable'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_SUBSCRIPTION_REQUIRED" class="summary-name">ERR_SUBSCRIPTION_REQUIRED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas subscription-required'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanz</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_UNDEFINED_CONDITION" class="summary-name">ERR_UNDEFINED_CONDITION</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas undefined-condition'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#ERR_UNEXPECTED_REQUEST" class="summary-name">ERR_UNEXPECTED_REQUEST</a> = <code title="'urn:ietf:params:xml:ns:xmpp-stanzas unexpected-request'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SASL_ABORTED"></a><span class="summary-name">SASL_ABORTED</span> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl aborted'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl aborted</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_INCORRECT_ENCODING" class="summary-name">SASL_INCORRECT_ENCODING</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl incorrect-encoding'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl in</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_INVALID_AUTHZID" class="summary-name">SASL_INVALID_AUTHZID</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl invalid-authzid'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl inval</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_INVALID_MECHANISM" class="summary-name">SASL_INVALID_MECHANISM</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl invalid-mechanism'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl inv</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_MECHANISM_TOO_WEAK" class="summary-name">SASL_MECHANISM_TOO_WEAK</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl mechanism-too-weak'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl me</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_NOT_AUTHORIZED" class="summary-name">SASL_NOT_AUTHORIZED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl not-authorized'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl not-au</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#SASL_TEMPORARY_AUTH_FAILURE" class="summary-name">SASL_TEMPORARY_AUTH_FAILURE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl temporary-auth-failure'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sas</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_BAD_FORMAT" class="summary-name">STREAM_BAD_FORMAT</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams bad-format'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams bad-f</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_BAD_NAMESPACE_PREFIX" class="summary-name">STREAM_BAD_NAMESPACE_PREFIX</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams bad-namespace-prefix'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-str</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="STREAM_CONFLICT"></a><span class="summary-name">STREAM_CONFLICT</span> = <code title="'urn:ietf:params:xml:ns:xmpp-streams conflict'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams conflict</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_CONNECTION_TIMEOUT" class="summary-name">STREAM_CONNECTION_TIMEOUT</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams connection-timeout'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-strea</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_HOST_GONE" class="summary-name">STREAM_HOST_GONE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams host-gone'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams host-g</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_HOST_UNKNOWN" class="summary-name">STREAM_HOST_UNKNOWN</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams host-unknown'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams hos</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_IMPROPER_ADDRESSING" class="summary-name">STREAM_IMPROPER_ADDRESSING</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams improper-addressing'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stre</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_INTERNAL_SERVER_ERROR" class="summary-name">STREAM_INTERNAL_SERVER_ERROR</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams internal-server-error'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-st</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_INVALID_FROM" class="summary-name">STREAM_INVALID_FROM</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams invalid-from'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams inv</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_INVALID_ID" class="summary-name">STREAM_INVALID_ID</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams invalid-id'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams inval</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_INVALID_NAMESPACE" class="summary-name">STREAM_INVALID_NAMESPACE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams invalid-namespace'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stream</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_INVALID_XML" class="summary-name">STREAM_INVALID_XML</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams invalid-xml'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams inva</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_NOT_AUTHORIZED" class="summary-name">STREAM_NOT_AUTHORIZED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams not-authorized'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams n</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_POLICY_VIOLATION" class="summary-name">STREAM_POLICY_VIOLATION</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams policy-violation'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_REMOTE_CONNECTION_FAILED" class="summary-name">STREAM_REMOTE_CONNECTION_FAILED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams remote-connection-failed'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_RESOURCE_CONSTRAINT" class="summary-name">STREAM_RESOURCE_CONSTRAINT</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams resource-constraint'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stre</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_RESTRICTED_XML" class="summary-name">STREAM_RESTRICTED_XML</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams restricted-xml'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams r</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_SEE_OTHER_HOST" class="summary-name">STREAM_SEE_OTHER_HOST</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams see-other-host'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams s</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_SYSTEM_SHUTDOWN" class="summary-name">STREAM_SYSTEM_SHUTDOWN</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams system-shutdown'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_UNDEFINED_CONDITION" class="summary-name">STREAM_UNDEFINED_CONDITION</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams undefined-condition'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stre</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_UNSUPPORTED_ENCODING" class="summary-name">STREAM_UNSUPPORTED_ENCODING</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams unsupported-encoding'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-str</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_UNSUPPORTED_STANZA_TYPE" class="summary-name">STREAM_UNSUPPORTED_STANZA_TYPE</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams unsupported-stanza-type'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_UNSUPPORTED_VERSION" class="summary-name">STREAM_UNSUPPORTED_VERSION</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams unsupported-version'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stre</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#STREAM_XML_NOT_WELL_FORMED" class="summary-name">STREAM_XML_NOT_WELL_FORMED</a> = <code title="'urn:ietf:params:xml:ns:xmpp-streams xml-not-well-formed'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stre</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade.xmpp'"><code class="variable-quote">'</code><code class="variable-string">spade.xmpp</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmpp.protocol-module.html#_errorcodes" class="summary-name" onclick="show_private();">_errorcodes</a> = <code title="{'302': 'redirect',
+ '400': 'unexpected-request',
+ '401': 'not-authorized',
+ '402': 'payment-required',
+ '403': 'forbidden',
+ '404': 'remote-server-not-found',
+ '405': 'not-allowed',
+ '406': 'not-acceptable',
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">302</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">redirect</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">400</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">unexpected-request</code><code class="variable-quote">'</code><code class="variable-op">,</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="name"></a><span class="summary-name">name</span> = <code title="'SASL_TEMPORARY_AUTH_FAILURE'"><code class="variable-quote">'</code><code class="variable-string">SASL_TEMPORARY_AUTH_FAILURE</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="NS_COMPONENT_1"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">NS_COMPONENT_1</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">http://jabberd.jabberstudio.org/ns/component/1.0</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="xmpp_stream_error_conditions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">xmpp_stream_error_conditions</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">bad-format --  --  -- The entity has sent XML that cannot be processed</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">.</code>
+<code class="variable-string">bad-namespace-prefix --  --  -- The entity has sent a namespace prefix</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string"> that is unsupported, or has sent no namespace prefix on an element th</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">at requires such a prefix.</code>
+<code class="variable-string">conflict --  --  -- The server is closing the active stream for this e</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ntity because a new stream has been initiated that conflicts with the </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="xmpp_stanza_error_conditions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">xmpp_stanza_error_conditions</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">bad-request -- 400 -- modify -- The sender has sent XML that is malfor</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">med or that cannot be processed.</code>
+<code class="variable-string">conflict -- 409 -- cancel -- Access cannot be granted because an exist</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ing resource or session exists with the same name or address.</code>
+<code class="variable-string">feature-not-implemented -- 501 -- cancel -- The feature requested is n</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ot implemented by the recipient or server and therefore cannot be proc</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">essed.</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="sasl_error_conditions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">sasl_error_conditions</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">aborted --  --  -- The receiving entity acknowledges an &lt;abort/&gt; eleme</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">nt sent by the initiating entity; sent in reply to the &lt;abort/&gt; elemen</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">t.</code>
+<code class="variable-string">incorrect-encoding --  --  -- The data provided by the initiating enti</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">ty could not be processed because the [BASE64]Josefsson, S., The Base1</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">6, Base32, and Base64 Data Encodings, July 2003. encoding is incorrect</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string"> (e.g., because the encoding does not adhere to the definition in Sect</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stream_exceptions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">stream_exceptions</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">bad-format</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.BadFormat'&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">bad-namespace-prefix</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.BadNamespacePrefi<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+x'&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">conflict</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.Conflict'&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">connection-timeout</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.ConnectionTimeout'&gt;<code class="variable-op"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">host-gone</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.HostGone'&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">host-unknown</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class 'spade.xmpp.protocol.HostUnknown'&gt;<code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERRORS"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERRORS</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl aborted</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code>
+                                              <code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code>
+                                              <code class="variable-quote">'</code><code class="variable-string">The receiving entity ac</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">knowledges an &lt;abort/&gt; element sent by the initiating entity; sent in </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">reply to the &lt;abort/&gt; element.</code><code class="variable-quote">'</code><code class="variable-group">]</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl incorrect-encoding</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code>
+                                                         <code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code>
+                                                         <code class="variable-quote">'</code><code class="variable-string">The data pro</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_BAD_REQUEST"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_BAD_REQUEST</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas bad-request</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_FEATURE_NOT_IMPLEMENTED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_FEATURE_NOT_IMPLEMENTED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas feature-not-implemented</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_INTERNAL_SERVER_ERROR"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_INTERNAL_SERVER_ERROR</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas internal-server-error</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_ITEM_NOT_FOUND"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_ITEM_NOT_FOUND</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas item-not-found</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_JID_MALFORMED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_JID_MALFORMED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas jid-malformed</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_NOT_ACCEPTABLE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_NOT_ACCEPTABLE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-acceptable</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_NOT_ALLOWED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_NOT_ALLOWED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-allowed</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_NOT_AUTHORIZED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_NOT_AUTHORIZED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas not-authorized</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_PAYMENT_REQUIRED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_PAYMENT_REQUIRED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas payment-required</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_RECIPIENT_UNAVAILABLE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_RECIPIENT_UNAVAILABLE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas recipient-unavailable</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_REGISTRATION_REQUIRED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_REGISTRATION_REQUIRED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas registration-required</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_REMOTE_SERVER_NOT_FOUND"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_REMOTE_SERVER_NOT_FOUND</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas remote-server-not-found</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_REMOTE_SERVER_TIMEOUT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_REMOTE_SERVER_TIMEOUT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas remote-server-timeout</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_RESOURCE_CONSTRAINT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_RESOURCE_CONSTRAINT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas resource-constraint</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_SERVICE_UNAVAILABLE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_SERVICE_UNAVAILABLE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas service-unavailable</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_SUBSCRIPTION_REQUIRED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_SUBSCRIPTION_REQUIRED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas subscription-required</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_UNDEFINED_CONDITION"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_UNDEFINED_CONDITION</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas undefined-condition</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ERR_UNEXPECTED_REQUEST"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ERR_UNEXPECTED_REQUEST</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-stanzas unexpected-request</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_INCORRECT_ENCODING"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_INCORRECT_ENCODING</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl incorrect-encoding</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_INVALID_AUTHZID"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_INVALID_AUTHZID</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl invalid-authzid</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_INVALID_MECHANISM"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_INVALID_MECHANISM</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl invalid-mechanism</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_MECHANISM_TOO_WEAK"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_MECHANISM_TOO_WEAK</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl mechanism-too-weak</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_NOT_AUTHORIZED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_NOT_AUTHORIZED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl not-authorized</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SASL_TEMPORARY_AUTH_FAILURE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SASL_TEMPORARY_AUTH_FAILURE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl temporary-auth-failure</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_BAD_FORMAT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_BAD_FORMAT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams bad-format</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_BAD_NAMESPACE_PREFIX"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_BAD_NAMESPACE_PREFIX</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams bad-namespace-prefix</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_CONNECTION_TIMEOUT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_CONNECTION_TIMEOUT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams connection-timeout</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_HOST_GONE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_HOST_GONE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams host-gone</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_HOST_UNKNOWN"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_HOST_UNKNOWN</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams host-unknown</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_IMPROPER_ADDRESSING"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_IMPROPER_ADDRESSING</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams improper-addressing</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_INTERNAL_SERVER_ERROR"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_INTERNAL_SERVER_ERROR</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams internal-server-error</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_INVALID_FROM"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_INVALID_FROM</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams invalid-from</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_INVALID_ID"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_INVALID_ID</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams invalid-id</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_INVALID_NAMESPACE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_INVALID_NAMESPACE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams invalid-namespace</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_INVALID_XML"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_INVALID_XML</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams invalid-xml</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_NOT_AUTHORIZED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_NOT_AUTHORIZED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams not-authorized</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_POLICY_VIOLATION"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_POLICY_VIOLATION</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams policy-violation</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_REMOTE_CONNECTION_FAILED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_REMOTE_CONNECTION_FAILED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams remote-connection-failed</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_RESOURCE_CONSTRAINT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_RESOURCE_CONSTRAINT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams resource-constraint</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_RESTRICTED_XML"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_RESTRICTED_XML</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams restricted-xml</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_SEE_OTHER_HOST"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_SEE_OTHER_HOST</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams see-other-host</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_SYSTEM_SHUTDOWN"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_SYSTEM_SHUTDOWN</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams system-shutdown</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_UNDEFINED_CONDITION"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_UNDEFINED_CONDITION</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams undefined-condition</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_UNSUPPORTED_ENCODING"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_UNSUPPORTED_ENCODING</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams unsupported-encoding</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_UNSUPPORTED_STANZA_TYPE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_UNSUPPORTED_STANZA_TYPE</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams unsupported-stanza-type</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_UNSUPPORTED_VERSION"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_UNSUPPORTED_VERSION</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams unsupported-version</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STREAM_XML_NOT_WELL_FORMED"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">STREAM_XML_NOT_WELL_FORMED</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-streams xml-not-well-formed</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_errorcodes"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_errorcodes</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">302</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">redirect</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">400</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">unexpected-request</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">401</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">not-authorized</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">402</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">payment-required</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">403</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">forbidden</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">404</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">remote-server-not-found</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">405</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">not-allowed</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">406</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">not-acceptable</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

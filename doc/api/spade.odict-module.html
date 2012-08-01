@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.odict</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;odict
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.odict-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module odict</h1><p class="nomargin-top"><span class="codelink"><a href="spade.odict-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+
+odict
+~~~~~
+
+This module is an example implementation of an ordered dict for the
+collections module.  It's not written for performance (it actually
+performs pretty bad) but to show how the API works.
+
+
+Questions and Answers
+=====================
+
+Why would anyone need ordered dicts?
+
+    Dicts in python are unordered which means that the order of items when
+    iterating over dicts is undefined.  As a matter of fact it is most of
+    the time useless and differs from implementation to implementation.
+
+    Many developers stumble upon that problem sooner or later when
+    comparing the output of doctests which often does not match the order
+    the developer thought it would.
+
+    Also XML systems such as Genshi have their problems with unordered
+    dicts as the input and output ordering of tag attributes is often
+    mixed up because the ordering is lost when converting the data into
+    a dict.  Switching to lists is often not possible because the
+    complexity of a lookup is too high.
+
+    Another very common case is metaprogramming.  The default namespace
+    of a class in python is a dict.  With Python 3 it becomes possible
+    to replace it with a different object which could be an ordered dict.
+    Django is already doing something similar with a hack that assigns
+    numbers to some descriptors initialized in the class body of a
+    specific subclass to restore the ordering after class creation.
+
+    When porting code from programming languages such as PHP and Ruby
+    where the item-order in a dict is guaranteed it's also a great help
+    to have an equivalent data structure in Python to ease the transition.
+
+Where are new keys added?
+
+    At the end.  This behavior is consistent with Ruby 1.9 Hashmaps
+    and PHP Arrays.  It also matches what common ordered dict
+    implementations do currently.
+
+What happens if an existing key is reassigned?
+
+    The key is *not* moved.  This is consitent with existing
+    implementations and can be changed by a subclass very easily::
+
+        class movingodict(odict):
+            def __setitem__(self, key, value):
+                self.pop(key, None)
+                odict.__setitem__(self, key, value)
+
+    Moving keys to the end of a ordered dict on reassignment is not
+    very useful for most applications.
+
+Does it mean the dict keys are sorted by a sort expression?
+
+    That's not the case.  The odict only guarantees that there is an order
+    and that newly inserted keys are inserted at the end of the dict.  If
+    you want to sort it you can do so, but newly added keys are again added
+    at the end of the dict.
+
+I initializes the odict with a dict literal but the keys are not
+ordered like they should!
+
+    Dict literals in Python generate dict objects and as such the order of
+    their items is not guaranteed.  Before they are passed to the odict
+    constructor they are already unordered.
+
+What happens if keys appear multiple times in the list passed to the
+constructor?
+
+    The same as for the dict.  The latter item overrides the former.  This
+    has the side-effect that the position of the first key is used because
+    the key is actually overwritten:
+
+    &gt;&gt;&gt; odict([('a', 1), ('b', 2), ('a', 3)])
+    odict.odict([('a', 3), ('b', 2)])
+
+    This behavor is consistent with existing implementation in Python
+    and the PHP array and the hashmap in Ruby 1.9.
+
+This odict doesn't scale!
+
+    Yes it doesn't.  The delitem operation is O(n).  This is file is a
+    mockup of a real odict that could be implemented for collections
+    based on an linked list.
+
+Why is there no .insert()?
+
+    There are few situations where you really want to insert a key at
+    an specified index.  To now make the API too complex the proposed
+    solution for this situation is creating a list of items, manipulating
+    that and converting it back into an odict:
+
+    &gt;&gt;&gt; d = odict([('a', 42), ('b', 23), ('c', 19)])
+    &gt;&gt;&gt; l = d.items()
+    &gt;&gt;&gt; l.insert(1, ('x', 0))
+    &gt;&gt;&gt; odict(l)
+    odict.odict([('a', 42), ('x', 0), ('b', 23), ('c', 19)])
+
+:copyright: (c) 2008 by Armin Ronacher and PEP 273 authors.
+:license: modified BSD license.
+
+</pre>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.odict.odict-class.html" class="summary-name">odict</a><br />
+      Ordered dict example implementation.
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="missing"></a><span class="summary-name">missing</span> = <code title="missing">missing</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade'"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

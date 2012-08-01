@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.browser.Browser</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.browser-module.html">Module&nbsp;browser</a> ::
+        Class&nbsp;Browser
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.browser.Browser-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Browser</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_6" name="uml_class_diagram_for_spade_xm_6">
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#__init__" title="Initialises internal variables." alt="" coords="17,153,285,172"/>
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#plugin" title="Registers it&#39;s own iq handlers in your application dispatcher instance." alt="" coords="17,172,285,191"/>
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#plugout" title="Unregisters browser&#39;s iq handlers from your application dispatcher &#160;instance." alt="" coords="17,191,285,209"/>
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#setDiscoHandler" title="This is the main method that you will use in this class." alt="" coords="17,209,285,228"/>
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#getDiscoHandler" title="Returns the previously registered DISCO handler that is resonsible for this node/jid combination." alt="" coords="17,228,285,247"/>
+<area shape="rect" id="node2478" href="spade.xmpp.browser.Browser-class.html#delDiscoHandler" title="Unregisters DISCO handler that is resonsible for this node/jid combination." alt="" coords="17,247,285,265"/>
+<area shape="rect" id="node1" href="spade.xmpp.browser.Browser-class.html" title="WARNING! This class is for components only." alt="" coords="5,121,296,271"/>
+<area shape="rect" id="node2479" href="spade.xmpp.client.PlugIn-class.html#DEBUG" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="49,39,253,57"/>
+<area shape="rect" id="node2479" href="spade.xmpp.client.PlugIn-class.html#PlugIn" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="49,57,253,76"/>
+<area shape="rect" id="node2479" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="49,76,253,95"/>
+<area shape="rect" id="node2" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="37,6,264,101"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_6.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_6" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<pre class="literalblock">
+WARNING! This class is for components only. It will not work in client mode!
+
+Standart xmpppy class that is ancestor of PlugIn and can be attached
+to your application.
+All processing will be performed in the handlers registered in the browser
+instance. You can register any number of handlers ensuring that for each
+node/jid combination only one (or none) handler registered.
+You can register static information or the fully-blown function that will
+calculate the answer dynamically.
+Example of static info (see JEP-0030, examples 13-14):
+# cl - your xmpppy connection instance.
+b=xmpp.browser.Browser()
+b.PlugIn(cl)
+items=[]
+item={}
+item['jid']='catalog.shakespeare.lit'
+item['node']='books'
+item['name']='Books by and about Shakespeare'
+items.append(item)
+item={}
+item['jid']='catalog.shakespeare.lit'
+item['node']='clothing'
+item['name']='Wear your literary taste with pride'
+items.append(item)
+item={}
+item['jid']='catalog.shakespeare.lit'
+item['node']='music'
+item['name']='Music from the time of Shakespeare'
+items.append(item)
+info={'ids':[], 'features':[]}
+b.setDiscoHandler({'items':items,'info':info})
+
+items should be a list of item elements.
+every item element can have any of these four keys: 'jid', 'node', 'name', 'action'
+info should be a dicionary and must have keys 'ids' and 'features'.
+Both of them should be lists:
+    ids is a list of dictionaries and features is a list of text strings.
+Example (see JEP-0030, examples 1-2)
+# cl - your xmpppy connection instance.
+b=xmpp.browser.Browser()
+b.PlugIn(cl)
+items=[]
+ids=[]
+ids.append({'category':'conference','type':'text','name':'Play-Specific Chatrooms'})
+ids.append({'category':'directory','type':'chatroom','name':'Play-Specific Chatrooms'})
+features=[NS_DISCO_INFO,NS_DISCO_ITEMS,NS_MUC,NS_REGISTER,NS_SEARCH,NS_TIME,NS_VERSION]
+info={'ids':ids,'features':features}
+# info['xdata']=xmpp.protocol.DataForm() # JEP-0128
+b.setDiscoHandler({'items':[],'info':info})
+
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initialises internal variables.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#plugin" class="summary-sig-name">plugin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>)</span><br />
+      Registers it's own iq handlers in your application dispatcher 
+      instance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#plugout" class="summary-sig-name">plugout</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Unregisters browser's iq handlers from your application dispatcher 
+      instance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.plugout">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#_traversePath" class="summary-sig-name" onclick="show_private();">_traversePath</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>,
+        <span class="summary-sig-arg">jid</span>,
+        <span class="summary-sig-arg">set</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Returns dictionary and key or None,None None - root node (w/o 
+      &quot;node&quot; attribute) /a/b/c - node /a/b/  - branch Set returns
+      '' or None as the key get returns '' or None as the key or None as 
+      the dict.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser._traversePath">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#setDiscoHandler" class="summary-sig-name">setDiscoHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handler</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      This is the main method that you will use in this class.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.setDiscoHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#getDiscoHandler" class="summary-sig-name">getDiscoHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      Returns the previously registered DISCO handler that is resonsible 
+      for this node/jid combination.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.getDiscoHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#delDiscoHandler" class="summary-sig-name">delDiscoHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span><br />
+      Unregisters DISCO handler that is resonsible for this node/jid 
+      combination.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.delDiscoHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.browser.Browser-class.html#_DiscoveryHandler" class="summary-sig-name" onclick="show_private();">_DiscoveryHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">request</span>)</span><br />
+      Servers DISCO iq request from the remote client.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser._DiscoveryHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.PlugIn-class.html">client.PlugIn</a></code></b>:
+      <code><a href="spade.xmpp.client.PlugIn-class.html#DEBUG">DEBUG</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugIn">PlugIn</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugOut">PlugOut</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Initialises internal variables. Used internally.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#__init__">client.PlugIn.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">owner</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.plugin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Registers it's own iq handlers in your application dispatcher 
+  instance. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugout"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugout</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.plugout">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unregisters browser's iq handlers from your application dispatcher 
+  instance. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_traversePath"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_traversePath</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node</span>,
+        <span class="sig-arg">jid</span>,
+        <span class="sig-arg">set</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser._traversePath">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns dictionary and key or None,None None - root node (w/o 
+  &quot;node&quot; attribute) /a/b/c - node /a/b/  - branch Set returns '' 
+  or None as the key get returns '' or None as the key or None as the dict.
+  Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setDiscoHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setDiscoHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">handler</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">jid</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.setDiscoHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+This is the main method that you will use in this class.
+It is used to register supplied DISCO handler (or dictionary with static info)
+as handler of some disco tree branch.
+If you do not specify the node this handler will be used for all queried nodes.
+If you do not specify the jid this handler will be used for all queried JIDs.
+
+Usage:
+cl.Browser.setDiscoHandler(someDict,node,jid)
+or
+cl.Browser.setDiscoHandler(someDISCOHandler,node,jid)
+where
+
+someDict={
+    'items':[
+              {'jid':'jid1','action':'action1','node':'node1','name':'name1'},
+              {'jid':'jid2','action':'action2','node':'node2','name':'name2'},
+              {'jid':'jid3','node':'node3','name':'name3'},
+              {'jid':'jid4','node':'node4'}
+            ],
+    'info' :{
+              'ids':[
+                      {'category':'category1','type':'type1','name':'name1'},
+                      {'category':'category2','type':'type2','name':'name2'},
+                      {'category':'category3','type':'type3','name':'name3'},
+                    ], 
+              'features':['feature1','feature2','feature3','feature4'], 
+              'xdata':DataForm
+            }
+         }
+
+and/or
+
+def someDISCOHandler(session,request,TYR):
+    # if TYR=='items':  # returns items list of the same format as shown above
+    # elif TYR=='info': # returns info dictionary of the same format as shown above
+    # else: # this case is impossible for now.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getDiscoHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getDiscoHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">jid</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.getDiscoHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns the previously registered DISCO handler that is resonsible for
+  this node/jid combination. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="delDiscoHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delDiscoHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">jid</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser.delDiscoHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unregisters DISCO handler that is resonsible for this node/jid 
+  combination. When handler is unregistered the branch is handled in the 
+  same way that it's parent branch from this moment.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_DiscoveryHandler"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_DiscoveryHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">request</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.browser-pysrc.html#Browser._DiscoveryHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Servers DISCO iq request from the remote client. Automatically 
+  determines the best handler to use and calls it to handle the request. 
+  Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

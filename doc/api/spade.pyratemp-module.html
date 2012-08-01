@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyratemp</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;pyratemp
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyratemp-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pyratemp</h1><p class="nomargin-top"><span class="codelink"><a href="spade.pyratemp-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+
+Small, simple and powerful template-engine for python.
+
+This is a template-engine for python, which is very simple, easy to use,
+small, fast, powerful and pythonic.
+
+See documentation for a list of features, template-syntax etc.
+
+:Version:   0.1.4 (2008-12-21)
+:Status:    beta
+
+:Usage:
+    see class 'Template' and examples below.
+
+:Example:
+
+    quickstart::
+        &gt;&gt;&gt; t = Template(&quot;hello @!name!@&quot;)
+        &gt;&gt;&gt; print t(name=&quot;marvin&quot;)
+        hello marvin
+
+    generic usage::
+        &gt;&gt;&gt; t = Template(&quot;output is in Unicode &#228;&#246;&#252;&#8364;&quot;)
+        &gt;&gt;&gt; t                                           #doctest: +ELLIPSIS
+        &lt;...Template instance at 0x...&gt;
+        &gt;&gt;&gt; t()
+        u'output is in Unicode \xe4\xf6\xfc\u20ac'
+        &gt;&gt;&gt; unicode(t)
+        u'output is in Unicode \xe4\xf6\xfc\u20ac'
+
+    with data::
+        &gt;&gt;&gt; t = Template(&quot;hello @!name!@&quot;, data={&quot;name&quot;:&quot;world&quot;})
+        &gt;&gt;&gt; t()
+        u'hello world'
+        &gt;&gt;&gt; t(name=&quot;worlds&quot;)
+        u'hello worlds'
+
+        # &gt;&gt;&gt; t(note=&quot;data must be Unicode or ASCII&quot;, name=u&quot;&#228;&quot;)
+        # u'hello \xe4\xf6\xe4\u20ac'
+
+    python-expressions::
+        &gt;&gt;&gt; Template('formatted: @! &quot;%10.7f&quot; % value !@')(value=3.141592653)
+        u'formatted:  3.1415927'
+        &gt;&gt;&gt; Template(&quot;hello --@!name.upper().center(20)!@--&quot;)(name=&quot;world&quot;)
+        u'hello --       WORLD        --'
+        &gt;&gt;&gt; Template(&quot;calculate @!var*5+7!@&quot;)(var=7)
+        u'calculate 42'
+
+    escaping::
+        &gt;&gt;&gt; t = Template(&quot;hello escaped @!name!@&quot;)
+        &gt;&gt;&gt; t(name='''&lt;&gt;&amp;'&quot; ''')
+        u'hello escaped &amp;lt;&amp;gt;&amp;amp;&amp;#39;&amp;quot; '
+        &gt;&gt;&gt; t = Template(&quot;hello unescaped $!name!$&quot;)
+        &gt;&gt;&gt; t(name='''&lt;&gt;&amp;'&quot; ''')
+        u'hello unescaped &lt;&gt;&amp;\'&quot; '
+    
+    result-encoding::
+        # encode the unicode-object to your encoding with encode()
+        &gt;&gt;&gt; result = Template(&quot;hello &#228;&#246;&#252;&#8364;&quot;)()
+        &gt;&gt;&gt; result
+        u'hello \xe4\xf6\xfc\u20ac'
+        &gt;&gt;&gt; result.encode(&quot;utf-8&quot;)
+        'hello \xc3\xa4\xc3\xb6\xc3\xbc\xe2\x82\xac'
+        &gt;&gt;&gt; result.encode(&quot;ascii&quot;)
+        Traceback (most recent call last):
+          ...
+        UnicodeEncodeError: 'ascii' codec can't encode characters in position 6-9: ordinal not in range(128)
+        &gt;&gt;&gt; result.encode(&quot;ascii&quot;, 'xmlcharrefreplace')
+        'hello &amp;#228;&amp;#246;&amp;#252;&amp;#8364;'
+
+    default-values::
+        # non-existing variables raise an error
+        &gt;&gt;&gt; Template('hi @!optional!@')()
+        Traceback (most recent call last):
+          ...
+        TemplateRenderError: Cannot eval expression 'optional' (NameError: name 'optional' is not defined)
+
+        &gt;&gt;&gt; t = Template('hi @!default(&quot;optional&quot;,&quot;anyone&quot;)!@')
+        &gt;&gt;&gt; t()
+        u'hi anyone'
+        &gt;&gt;&gt; t(optional=None)
+        u'hi anyone'
+        &gt;&gt;&gt; t(optional=&quot;there&quot;)
+        u'hi there'
+
+        # also in blocks
+        &gt;&gt;&gt; t = Template('&lt;!--(if default(&quot;optional&quot;,False))--&gt;yes&lt;!--(else)--&gt;no&lt;!--(end)--&gt;')
+        &gt;&gt;&gt; t()
+        u'no'
+        &gt;&gt;&gt; t(optional=23)
+        u'yes'
+        
+        # the 1st parameter can be any eval-expression
+        &gt;&gt;&gt; t = Template('@!default(&quot;5*var1+var2&quot;,&quot;missing variable&quot;)!@')
+        &gt;&gt;&gt; t(var1=10)
+        u'missing variable'
+        &gt;&gt;&gt; t(var1=10, var2=2)
+        u'52'
+
+        # but make sure to put the expression in quotation marks, otherwise:
+        &gt;&gt;&gt; Template('@!default(optional,&quot;fallback&quot;)!@')()
+        Traceback (most recent call last):
+          ...
+        TemplateRenderError: Cannot eval expression 'default(optional,&quot;fallback&quot;)' (NameError: name 'optional' is not defined)
+
+    exists:
+        &gt;&gt;&gt; t = Template('&lt;!--(if exists(&quot;foo&quot;))--&gt;YES&lt;!--(else)--&gt;NO&lt;!--(end)--&gt;')
+        &gt;&gt;&gt; t()
+        u'NO'
+        &gt;&gt;&gt; t(foo=1)
+        u'YES'
+        &gt;&gt;&gt; t(foo=None)       # note this difference to 'default()'
+        u'YES'
+
+:Note:
+
+:Author:    Roland Koebler (rk at simple-is-better dot org)
+:Copyright: 2007-2008 by Roland Koebler
+:License:   MIT/X11-like, see __license__
+
+:TODO:
+    - enhance/extend escape()
+    - speedup:
+        - ? load/save parsed (marshal+check python-version)
+        - ? psyco
+        - ? escape -&gt; C ?
+        - ? compiler, (eval(&quot;\w+&quot;) -&gt; data[..])
+
+    - extensions:
+        - ? set/define variables / capture output ?
+          (i.e. &lt;!--(set var)--&gt;[1,2,3]&lt;!--(end)--&gt;)
+        - ? filter ? (function over block)
+
+</pre>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        0.1.4
+      </p>
+      <p><strong>Author:</strong>
+        Roland Koebler &lt;rk at simple-is-better dot org&gt;
+      </p>
+      <p><strong>License:</strong>
+        Copyright (c) 2007-2008 by Roland Koebler
+        
+        Permission is hereby granted, free of charge, to any person 
+        obtaining a copy
+        of this software and associated documentation files (the 
+        &quot;Software&quot;), to deal
+        in the Software without restriction, including without limitation 
+        the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, 
+        and/or sell
+        copies of the Software, and to permit persons to whom the Software 
+        is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be 
+        included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY
+        KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+        MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT 
+        SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR 
+        OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+        ARISING
+        FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+        DEALINGS
+        IN THE SOFTWARE.
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateException-class.html" class="summary-name">TemplateException</a><br />
+      Base class for template-exceptions.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateParseError-class.html" class="summary-name">TemplateParseError</a><br />
+      Template parsing failed.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateSyntaxError-class.html" class="summary-name">TemplateSyntaxError</a><br />
+      Template syntax-error.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateIncludeError-class.html" class="summary-name">TemplateIncludeError</a><br />
+      Template 'include' failed.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateRenderError-class.html" class="summary-name">TemplateRenderError</a><br />
+      Template rendering failed.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateBase-class.html" class="summary-name">TemplateBase</a><br />
+      Basic template-class.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Template-class.html" class="summary-name">Template</a><br />
+      Template-User-Interface.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.StringLoader-class.html" class="summary-name">StringLoader</a><br />
+      Load a template from a string.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.FileLoader-class.html" class="summary-name">FileLoader</a><br />
+      Load template from a file.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html" class="summary-name">Parser</a><br />
+      Parse a template into a parse-tree.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.PseudoSandbox-class.html" class="summary-name">PseudoSandbox</a><br />
+      A pseudo-eval-sandbox.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.TemplateEval-class.html" class="summary-name">TemplateEval</a><br />
+      PseudoSandbox with some additional functions, which are useful
+in the template.
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp._dontescape-class.html" class="summary-name" onclick="show_private();">_dontescape</a><br />
+      Unicode-string which should not be escaped.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Renderer-class.html" class="summary-name">Renderer</a><br />
+      Render a template-parse-tree.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp-module.html#srow" class="summary-sig-name">srow</a>(<span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">i</span>)</span><br />
+      Get row/lineno of string[i].</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#srow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp-module.html#scol" class="summary-sig-name">scol</a>(<span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">i</span>)</span><br />
+      Get column of string[i].</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#scol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp-module.html#sindex" class="summary-sig-name">sindex</a>(<span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">row</span>,
+        <span class="summary-sig-arg">col</span>)</span><br />
+      Get string-index of the character at row/lineno,col.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#sindex">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dictkeyclean"></a><span class="summary-sig-name">dictkeyclean</span>(<span class="summary-sig-arg">d</span>)</span><br />
+      Convert all keys of d to strings.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#dictkeyclean">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp-module.html#escape" class="summary-sig-name">escape</a>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Replace special characters by their escape sequence.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#escape">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dummy"></a><span class="summary-sig-name">dummy</span>(<span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Dummy function, doing nothing.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#dummy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp-module.html#dummy_raise" class="summary-sig-name">dummy_raise</a>(<span class="summary-sig-arg">exception</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Dummy-function-creater.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#dummy_raise">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_doctest"></a><span class="summary-sig-name">_doctest</span>()</span><br />
+      doctest this module.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#_doctest">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ESCAPE_SUPPORTED"></a><span class="summary-name">ESCAPE_SUPPORTED</span> = <code title="{'HTML': 0, 'LATEX': 1, 'NONE': None}"><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">HTML</code><code class="variable-quote">'</code><code class="variable-op">: </code>0<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">LATEX</code><code class="variable-quote">'</code><code class="variable-op">: </code>1<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">NONE</code><code class="variable-quote">'</code><code class="variable-op">: </code>None<code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="HTML"></a><span class="summary-name">HTML</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="LATEX"></a><span class="summary-name">LATEX</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade'"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="srow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">srow</span>(<span class="sig-arg">string</span>,
+        <span class="sig-arg">i</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#srow">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get row/lineno of string[i].</p>
+  <p>:Returns: row, starting at 1 :Note:    This works for text-strings 
+  with '\n' or '\r\n'.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="scol"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">scol</span>(<span class="sig-arg">string</span>,
+        <span class="sig-arg">i</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#scol">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get column of string[i].</p>
+  <p>:Returns: column, starting at 1 (but may be &lt;1 if i&lt;0) :Note:
+  This works for text-strings with '\n' or '\r\n'.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="sindex"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sindex</span>(<span class="sig-arg">string</span>,
+        <span class="sig-arg">row</span>,
+        <span class="sig-arg">col</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#sindex">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get string-index of the character at row/lineno,col.</p>
+  <p>:Parameters: row,col, starting at 1. :Returns:    i, starting at 0. 
+  (but may be &lt;1 if row/col&lt;0) :Note:       This works for 
+  text-strings with '\n' or '\r\n'.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="escape"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">escape</span>(<span class="sig-arg">s</span>,
+        <span class="sig-arg">format</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#escape">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Replace special characters by their escape sequence.
+
+:Parameters:
+    - `s`:      string or unicode-string to escape
+    - `format`:
+        - None:  nothing is replaced
+        - HTML:  replace &amp;&lt;&gt;'&quot; by &amp;...;
+        - LATEX: replace #$%&amp;_{}&quot;\ (TODO! - this is very incomplete!)
+:Returns:
+    the escaped string in unicode
+:TODO:  complete LaTeX-escaping
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="dummy_raise"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dummy_raise</span>(<span class="sig-arg">exception</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#dummy_raise">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Dummy-function-creater.</p>
+  <p>:Returns: dummy function, raising exception(value)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

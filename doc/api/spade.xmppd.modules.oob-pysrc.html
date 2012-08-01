@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmppd.modules.oob</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmppd-module.html">Package&nbsp;xmppd</a> ::
+        <a href="spade.xmppd.modules-module.html">Package&nbsp;modules</a> ::
+        Module&nbsp;oob
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmppd.modules.oob-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.xmppd.modules.oob-module.html">Module spade.xmppd.modules.oob</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: UTF-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package spade.xmpp=spade.xmpp-module.html"><a title="spade.xmpp" class="py-name" href="#" onclick="return doclink('link-0', 'xmpp', 'link-0');">xmpp</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="OOB"></a><div id="OOB-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="OOB-toggle" onclick="return toggle('OOB');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.xmppd.modules.oob.OOB-class.html">OOB</a><tt class="py-op">(</tt><tt class="py-base-class">PlugIn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OOB-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="OOB-expanded"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt id="link-1" class="py-name" targets="Variable spade.xmppd.modules.config.Config.NS=spade.xmppd.modules.config.Config-class.html#NS,Variable spade.xmppd.modules.db_fake.AUTH.NS=spade.xmppd.modules.db_fake.AUTH-class.html#NS,Variable spade.xmppd.modules.db_fake.DB.NS=spade.xmppd.modules.db_fake.DB-class.html#NS,Variable spade.xmppd.modules.dialback.Dialback.NS=spade.xmppd.modules.dialback.Dialback-class.html#NS,Variable spade.xmppd.modules.jep0077.IBR.NS=spade.xmppd.modules.jep0077.IBR-class.html#NS,Variable spade.xmppd.modules.jep0078.NSA.NS=spade.xmppd.modules.jep0078.NSA-class.html#NS,Variable spade.xmppd.modules.message.MessageCatcher.NS=spade.xmppd.modules.message.MessageCatcher-class.html#NS,Variable spade.xmppd.modules.muc.MUC.NS=spade.xmppd.modules.muc.MUC-class.html#NS,Variable spade.xmppd.modules.oob.OOB.NS=spade.xmppd.modules.oob.OOB-class.html#NS,Variable spade.xmppd.modules.pubsub.PubSubServer.NS=spade.xmppd.modules.pubsub.PubSubServer-class.html#NS,Variable spade.xmppd.modules.roster.ROSTER.NS=spade.xmppd.modules.roster.ROSTER-class.html#NS,Variable spade.xmppd.modules.router.Router.NS=spade.xmppd.modules.router.Router-class.html#NS,Variable spade.xmppd.modules.stream.Bind.NS=spade.xmppd.modules.stream.Bind-class.html#NS,Variable spade.xmppd.modules.stream.Handshake.NS=spade.xmppd.modules.stream.Handshake-class.html#NS,Variable spade.xmppd.modules.stream.SASL.NS=spade.xmppd.modules.stream.SASL-class.html#NS,Variable spade.xmppd.modules.stream.Session.NS=spade.xmppd.modules.stream.Session-class.html#NS,Variable spade.xmppd.modules.stream.TLS.NS=spade.xmppd.modules.stream.TLS-class.html#NS,Variable spade.xmppd.modules.webadmin.WebAdmin.NS=spade.xmppd.modules.webadmin.WebAdmin-class.html#NS,Variable spade.xmppd.modules.wq.WQ.NS=spade.xmppd.modules.wq.WQ-class.html#NS"><a title="spade.xmppd.modules.config.Config.NS
+spade.xmppd.modules.db_fake.AUTH.NS
+spade.xmppd.modules.db_fake.DB.NS
+spade.xmppd.modules.dialback.Dialback.NS
+spade.xmppd.modules.jep0077.IBR.NS
+spade.xmppd.modules.jep0078.NSA.NS
+spade.xmppd.modules.message.MessageCatcher.NS
+spade.xmppd.modules.muc.MUC.NS
+spade.xmppd.modules.oob.OOB.NS
+spade.xmppd.modules.pubsub.PubSubServer.NS
+spade.xmppd.modules.roster.ROSTER.NS
+spade.xmppd.modules.router.Router.NS
+spade.xmppd.modules.stream.Bind.NS
+spade.xmppd.modules.stream.Handshake.NS
+spade.xmppd.modules.stream.SASL.NS
+spade.xmppd.modules.stream.Session.NS
+spade.xmppd.modules.stream.TLS.NS
+spade.xmppd.modules.webadmin.WebAdmin.NS
+spade.xmppd.modules.wq.WQ.NS" class="py-name" href="#" onclick="return doclink('link-1', 'NS', 'link-1');">NS</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"jabber:iq:oob"</tt> </tt>
+<a name="OOB.plugin"></a><div id="OOB.plugin-def"><a name="L7"></a><tt class="py-lineno"> 7</tt> <a class="py-toggle" href="#" id="OOB.plugin-toggle" onclick="return toggle('OOB.plugin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.oob.OOB-class.html#plugin">plugin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">server</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OOB.plugin-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="OOB.plugin-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Class spade.xmpp.dispatcher.Dispatcher=spade.xmpp.dispatcher.Dispatcher-class.html"><a title="spade.xmpp.dispatcher.Dispatcher" class="py-name" href="#" onclick="return doclink('link-2', 'Dispatcher', 'link-2');">Dispatcher</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method spade.xmpp.dispatcher.Dispatcher.RegisterHandler()=spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandler"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-3', 'RegisterHandler', 'link-3');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method spade.xmppd.modules.oob.OOB.OOBIqHandler()=spade.xmppd.modules.oob.OOB-class.html#OOBIqHandler"><a title="spade.xmppd.modules.oob.OOB.OOBIqHandler" class="py-name" href="#" onclick="return doclink('link-4', 'OOBIqHandler', 'link-4');">OOBIqHandler</a></tt><tt class="py-op">,</tt><tt class="py-name">typ</tt><tt class="py-op">=</tt><tt class="py-string">'set'</tt><tt class="py-op">,</tt><tt class="py-name">ns</tt><tt class="py-op">=</tt><tt class="py-string">"jabber:iq:oob"</tt><tt class="py-op">,</tt><tt class="py-name">xmlns</tt><tt class="py-op">=</tt><tt id="link-5" class="py-name" targets="Variable spade.Agent.NS_CLIENT=spade.Agent-module.html#NS_CLIENT,Variable spade.MTP.NS_CLIENT=spade.MTP-module.html#NS_CLIENT,Variable spade.Organization.NS_CLIENT=spade.Organization-module.html#NS_CLIENT,Variable spade.Organization_new.NS_CLIENT=spade.Organization_new-module.html#NS_CLIENT,Variable spade.Unit.NS_CLIENT=spade.Unit-module.html#NS_CLIENT,Variable spade.Unit_new.NS_CLIENT=spade.Unit_new-module.html#NS_CLIENT,Variable spade.pubsub.NS_CLIENT=spade.pubsub-module.html#NS_CLIENT,Variable spade.socialnetwork.NS_CLIENT=spade.socialnetwork-module.html#NS_CLIENT,Variable spade.xmpp.NS_CLIENT=spade.xmpp-module.html#NS_CLIENT,Variable spade.xmpp.auth.NS_CLIENT=spade.xmpp.auth-module.html#NS_CLIENT,Variable spade.xmpp.browser.NS_CLIENT=spade.xmpp.browser-module.html#NS_CLIENT,Variable spade.xmpp.commands.NS_CLIENT=spade.xmpp.commands-module.html#NS_CLIENT,Variable spade.xmpp.dispatcher.NS_CLIENT=spade.xmpp.dispatcher-module.html#NS_CLIENT,Variable spade.xmpp.features.NS_CLIENT=spade.xmpp.features-module.html#NS_CLIENT,Variable spade.xmpp.filetransfer.NS_CLIENT=spade.xmpp.filetransfer-module.html#NS_CLIENT,Variable spade.xmpp.protocol.NS_CLIENT=spade.xmpp.protocol-module.html#NS_CLIENT,Variable spade.xmpp.roster.NS_CLIENT=spade.xmpp.roster-module.html#NS_CLIENT,Variable spade.xmpp.transports.NS_CLIENT=spade.xmpp.transports-module.html#NS_CLIENT,Variable spade.xmppd.modules.config.NS_CLIENT=spade.xmppd.modules.config-module.html#NS_CLIENT,Variable spade.xmppd.modules.db_fake.NS_CLIENT=spade.xmppd.modules.db_fake-module.html#NS_CLIENT,Variable spade.xmppd.modules.dialback.NS_CLIENT=spade.xmppd.modules.dialback-module.html#NS_CLIENT,Variable spade.xmppd.modules.jep0077.NS_CLIENT=spade.xmppd.modules.jep0077-module.html#NS_CLIENT,Variable spade.xmppd.modules.jep0078.NS_CLIENT=spade.xmppd.modules.jep0078-module.html#NS_CLIENT,Variable spade.xmppd.modules.message.NS_CLIENT=spade.xmppd.modules.message-module.html#NS_CLIENT,Variable spade.xmppd.modules.muc.NS_CLIENT=spade.xmppd.modules.muc-module.html#NS_CLIENT,Variable spade.xmppd.modules.oob.NS_CLIENT=spade.xmppd.modules.oob-module.html#NS_CLIENT,Variable spade.xmppd.modules.pubsub.NS_CLIENT=spade.xmppd.modules.pubsub-module.html#NS_CLIENT,Variable spade.xmppd.modules.roster.NS_CLIENT=spade.xmppd.modules.roster-module.html#NS_CLIENT,Variable spade.xmppd.modules.router.NS_CLIENT=spade.xmppd.modules.router-module.html#NS_CLIENT,Variable spade.xmppd.modules.stream.NS_CLIENT=spade.xmppd.modules.stream-module.html#NS_CLIENT,Variable spade.xmppd.modules.webadmin.NS_CLIENT=spade.xmppd.modules.webadmin-module.html#NS_CLIENT,Variable spade.xmppd.modules.wq.NS_CLIENT=spade.xmppd.modules.wq-module.html#NS_CLIENT,Variable spade.xmppd.xmppd.NS_CLIENT=spade.xmppd.xmppd-module.html#NS_CLIENT"><a title="spade.Agent.NS_CLIENT
+spade.MTP.NS_CLIENT
+spade.Organization.NS_CLIENT
+spade.Organization_new.NS_CLIENT
+spade.Unit.NS_CLIENT
+spade.Unit_new.NS_CLIENT
+spade.pubsub.NS_CLIENT
+spade.socialnetwork.NS_CLIENT
+spade.xmpp.NS_CLIENT
+spade.xmpp.auth.NS_CLIENT
+spade.xmpp.browser.NS_CLIENT
+spade.xmpp.commands.NS_CLIENT
+spade.xmpp.dispatcher.NS_CLIENT
+spade.xmpp.features.NS_CLIENT
+spade.xmpp.filetransfer.NS_CLIENT
+spade.xmpp.protocol.NS_CLIENT
+spade.xmpp.roster.NS_CLIENT
+spade.xmpp.transports.NS_CLIENT
+spade.xmppd.modules.config.NS_CLIENT
+spade.xmppd.modules.db_fake.NS_CLIENT
+spade.xmppd.modules.dialback.NS_CLIENT
+spade.xmppd.modules.jep0077.NS_CLIENT
+spade.xmppd.modules.jep0078.NS_CLIENT
+spade.xmppd.modules.message.NS_CLIENT
+spade.xmppd.modules.muc.NS_CLIENT
+spade.xmppd.modules.oob.NS_CLIENT
+spade.xmppd.modules.pubsub.NS_CLIENT
+spade.xmppd.modules.roster.NS_CLIENT
+spade.xmppd.modules.router.NS_CLIENT
+spade.xmppd.modules.stream.NS_CLIENT
+spade.xmppd.modules.webadmin.NS_CLIENT
+spade.xmppd.modules.wq.NS_CLIENT
+spade.xmppd.xmppd.NS_CLIENT" class="py-name" href="#" onclick="return doclink('link-5', 'NS_CLIENT', 'link-5');">NS_CLIENT</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher" class="py-name" href="#" onclick="return doclink('link-6', 'Dispatcher', 'link-2');">Dispatcher</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-7', 'RegisterHandler', 'link-3');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="spade.xmppd.modules.oob.OOB.OOBIqHandler" class="py-name" href="#" onclick="return doclink('link-8', 'OOBIqHandler', 'link-4');">OOBIqHandler</a></tt><tt class="py-op">,</tt><tt class="py-name">typ</tt><tt class="py-op">=</tt><tt class="py-string">'result'</tt><tt class="py-op">,</tt><tt class="py-name">ns</tt><tt class="py-op">=</tt><tt class="py-string">"jabber:iq:oob"</tt><tt class="py-op">,</tt><tt class="py-name">xmlns</tt><tt class="py-op">=</tt><tt id="link-9" class="py-name"><a title="spade.Agent.NS_CLIENT
+spade.MTP.NS_CLIENT
+spade.Organization.NS_CLIENT
+spade.Organization_new.NS_CLIENT
+spade.Unit.NS_CLIENT
+spade.Unit_new.NS_CLIENT
+spade.pubsub.NS_CLIENT
+spade.socialnetwork.NS_CLIENT
+spade.xmpp.NS_CLIENT
+spade.xmpp.auth.NS_CLIENT
+spade.xmpp.browser.NS_CLIENT
+spade.xmpp.commands.NS_CLIENT
+spade.xmpp.dispatcher.NS_CLIENT
+spade.xmpp.features.NS_CLIENT
+spade.xmpp.filetransfer.NS_CLIENT
+spade.xmpp.protocol.NS_CLIENT
+spade.xmpp.roster.NS_CLIENT
+spade.xmpp.transports.NS_CLIENT
+spade.xmppd.modules.config.NS_CLIENT
+spade.xmppd.modules.db_fake.NS_CLIENT
+spade.xmppd.modules.dialback.NS_CLIENT
+spade.xmppd.modules.jep0077.NS_CLIENT
+spade.xmppd.modules.jep0078.NS_CLIENT
+spade.xmppd.modules.message.NS_CLIENT
+spade.xmppd.modules.muc.NS_CLIENT
+spade.xmppd.modules.oob.NS_CLIENT
+spade.xmppd.modules.pubsub.NS_CLIENT
+spade.xmppd.modules.roster.NS_CLIENT
+spade.xmppd.modules.router.NS_CLIENT
+spade.xmppd.modules.stream.NS_CLIENT
+spade.xmppd.modules.webadmin.NS_CLIENT
+spade.xmppd.modules.wq.NS_CLIENT
+spade.xmppd.xmppd.NS_CLIENT" class="py-name" href="#" onclick="return doclink('link-9', 'NS_CLIENT', 'link-5');">NS_CLIENT</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher" class="py-name" href="#" onclick="return doclink('link-10', 'Dispatcher', 'link-2');">Dispatcher</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-11', 'RegisterHandler', 'link-3');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="spade.xmppd.modules.oob.OOB.OOBIqHandler" class="py-name" href="#" onclick="return doclink('link-12', 'OOBIqHandler', 'link-4');">OOBIqHandler</a></tt><tt class="py-op">,</tt><tt class="py-name">typ</tt><tt class="py-op">=</tt><tt class="py-string">'error'</tt><tt class="py-op">,</tt><tt class="py-name">ns</tt><tt class="py-op">=</tt><tt class="py-string">"jabber:iq:oob"</tt><tt class="py-op">,</tt><tt class="py-name">xmlns</tt><tt class="py-op">=</tt><tt id="link-13" class="py-name"><a title="spade.Agent.NS_CLIENT
+spade.MTP.NS_CLIENT
+spade.Organization.NS_CLIENT
+spade.Organization_new.NS_CLIENT
+spade.Unit.NS_CLIENT
+spade.Unit_new.NS_CLIENT
+spade.pubsub.NS_CLIENT
+spade.socialnetwork.NS_CLIENT
+spade.xmpp.NS_CLIENT
+spade.xmpp.auth.NS_CLIENT
+spade.xmpp.browser.NS_CLIENT
+spade.xmpp.commands.NS_CLIENT
+spade.xmpp.dispatcher.NS_CLIENT
+spade.xmpp.features.NS_CLIENT
+spade.xmpp.filetransfer.NS_CLIENT
+spade.xmpp.protocol.NS_CLIENT
+spade.xmpp.roster.NS_CLIENT
+spade.xmpp.transports.NS_CLIENT
+spade.xmppd.modules.config.NS_CLIENT
+spade.xmppd.modules.db_fake.NS_CLIENT
+spade.xmppd.modules.dialback.NS_CLIENT
+spade.xmppd.modules.jep0077.NS_CLIENT
+spade.xmppd.modules.jep0078.NS_CLIENT
+spade.xmppd.modules.message.NS_CLIENT
+spade.xmppd.modules.muc.NS_CLIENT
+spade.xmppd.modules.oob.NS_CLIENT
+spade.xmppd.modules.pubsub.NS_CLIENT
+spade.xmppd.modules.roster.NS_CLIENT
+spade.xmppd.modules.router.NS_CLIENT
+spade.xmppd.modules.stream.NS_CLIENT
+spade.xmppd.modules.webadmin.NS_CLIENT
+spade.xmppd.modules.wq.NS_CLIENT
+spade.xmppd.xmppd.NS_CLIENT" class="py-name" href="#" onclick="return doclink('link-13', 'NS_CLIENT', 'link-5');">NS_CLIENT</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">     </tt>
+<a name="OOB.OOBIqHandler"></a><div id="OOB.OOBIqHandler-def"><a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="OOB.OOBIqHandler-toggle" onclick="return toggle('OOB.OOBIqHandler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.oob.OOB-class.html#OOBIqHandler">OOBIqHandler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">session</tt><tt class="py-op">,</tt> <tt class="py-param">stanza</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="OOB.OOBIqHandler-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="OOB.OOBIqHandler-expanded"><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method spade.Agent.AbstractAgent.DEBUG()=spade.Agent.AbstractAgent-class.html#DEBUG,Method spade.spade_backend.SpadeBackend.DEBUG()=spade.spade_backend.SpadeBackend-class.html#DEBUG,Method spade.xmpp.client.PlugIn.DEBUG()=spade.xmpp.client.PlugIn-class.html#DEBUG,Method spade.xmpp.simplexml.NodeBuilder.DEBUG()=spade.xmpp.simplexml.NodeBuilder-class.html#DEBUG,Method spade.xmpp.transports.HTTPPROXYsocket.DEBUG()=spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-14', 'DEBUG', 'link-14');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"OOB Iq handler called"</tt><tt class="py-op">,</tt><tt class="py-string">"info"</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method spade.xmppd.xmppd.Server.getsession()=spade.xmppd.xmppd.Server-class.html#getsession"><a title="spade.xmppd.xmppd.Server.getsession" class="py-name" href="#" onclick="return doclink('link-15', 'getsession', 'link-15');">getsession</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">[</tt><tt class="py-string">'to'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">s</tt><tt class="py-op">:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">            <tt class="py-comment"># Relay stanza</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">            <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method spade.xmpp.session.Session.enqueue()=spade.xmpp.session.Session-class.html#enqueue,Method spade.xmppd.xmppd.Session.enqueue()=spade.xmppd.xmppd.Session-class.html#enqueue"><a title="spade.xmpp.session.Session.enqueue
+spade.xmppd.xmppd.Session.enqueue" class="py-name" href="#" onclick="return doclink('link-16', 'enqueue', 'link-16');">enqueue</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-17', 'DEBUG', 'link-14');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"OOB stanza relayed from %s to %s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-18" class="py-name" targets="Module spade.xmpp.session=spade.xmpp.session-module.html"><a title="spade.xmpp.session" class="py-name" href="#" onclick="return doclink('link-18', 'session', 'link-18');">session</a></tt><tt class="py-op">.</tt><tt class="py-name">peer</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">[</tt><tt class="py-string">'to'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">"info"</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-19" class="py-name" targets="Class spade.xmpp.protocol.NodeProcessed=spade.xmpp.protocol.NodeProcessed-class.html"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-19', 'NodeProcessed', 'link-19');">NodeProcessed</a></tt> </tt>
+</div></div><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:01 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

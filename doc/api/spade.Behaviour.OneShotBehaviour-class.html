@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.Behaviour.OneShotBehaviour</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.Behaviour-module.html">Module&nbsp;Behaviour</a> ::
+        Class&nbsp;OneShotBehaviour
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.Behaviour.OneShotBehaviour-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class OneShotBehaviour</h1><p class="nomargin-top"><span class="codelink"><a href="spade.Behaviour-pysrc.html#OneShotBehaviour">source&nbsp;code</a></span></p>
+<center>
+  <div class="private"><center>  <map id="uml_class_diagram_for_spade_be_11" name="uml_class_diagram_for_spade_be_11">
+<area shape="rect" id="node1" href="spade.Unit.Unit.GetModeratorListBehaviour-class.html" title="spade.Unit.Unit.GetModeratorListBehaviour" alt="" coords="5,822,256,861"/>
+<area shape="rect" id="node2" href="spade.AMS.AMS.RegisterBehaviour-class.html" title="spade.AMS.AMS.RegisterBehaviour" alt="" coords="285,822,493,861"/>
+<area shape="rect" id="node3" href="spade.Organization_new.Organization_new.IsMemberBehaviour-class.html" title="spade.Organization_new.Organization_new.IsMemberBehaviour" alt="" coords="523,822,891,861"/>
+<area shape="rect" id="node4" href="spade.Unit.Unit.GetAdminListBehaviour-class.html" title="spade.Unit.Unit.GetAdminListBehaviour" alt="" coords="920,822,1149,861"/>
+<area shape="rect" id="node5" href="spade.Organization.Organization.GetUnitInfoBehaviour-class.html" title="spade.Organization.Organization.GetUnitInfoBehaviour" alt="" coords="1179,822,1493,861"/>
+<area shape="rect" id="node6" href="spade.Unit.Unit-class.html" title="spade.Unit.Unit" alt="" coords="1523,822,1611,861"/>
+<area shape="rect" id="node44" href="spade.Organization.Organization-class.html" title="spade.Organization.Organization" alt="" coords="1473,881,1660,919"/>
+<area shape="rect" id="node7" href="spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveBanAgentBehaviour" alt="" coords="1640,822,1957,861"/>
+<area shape="rect" id="node8" href="spade.RPC.RPCClientBehaviour-class.html" title="spade.RPC.RPCClientBehaviour" alt="" coords="1987,822,2176,861"/>
+<area shape="rect" id="node9" href="spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html" title="spade.Unit_new.Unit_new.RevokeVoiceBehaviour" alt="" coords="2205,822,2496,861"/>
+<area shape="rect" id="node10" href="spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html" title="spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour" alt="" coords="2525,822,2853,861"/>
+<area shape="rect" id="node11" href="spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour" alt="" coords="2883,822,3216,861"/>
+<area shape="rect" id="node12" href="spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetBanAgentListBehaviour" alt="" coords="3245,822,3557,861"/>
+<area shape="rect" id="node13" href="spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html" title="spade.Unit_new.Unit_new.MyJoinRoomBehaviour" alt="" coords="3587,822,3875,861"/>
+<area shape="rect" id="node14" href="spade.Unit_new.Unit_new.SetGoalBehaviour-class.html" title="spade.Unit_new.Unit_new.SetGoalBehaviour" alt="" coords="3904,822,4163,861"/>
+<area shape="rect" id="node15" href="spade.Unit.Unit.TestRoomNameBehaviour-class.html" title="spade.Unit.Unit.TestRoomNameBehaviour" alt="" coords="4192,822,4437,861"/>
+<area shape="rect" id="node16" href="spade.Unit_new.Unit_new.GetInfoBehaviour-class.html" title="spade.Unit_new.Unit_new.GetInfoBehaviour" alt="" coords="4467,822,4723,861"/>
+<area shape="rect" id="node17" href="spade.fipa.modifyServiceBehaviour-class.html" title="spade.fipa.modifyServiceBehaviour" alt="" coords="4752,822,4955,861"/>
+<area shape="rect" id="node18" href="spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html" title="spade.Organization_new.Organization_new.SendRegistrationFormBehaviour" alt="" coords="4984,822,5424,861"/>
+<area shape="rect" id="node19" href="spade.fipa.ModifyAgentBehaviour-class.html" title="spade.fipa.ModifyAgentBehaviour" alt="" coords="5453,822,5645,861"/>
+<area shape="rect" id="node20" href="spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.SetMaxAgentsBehaviour" alt="" coords="5675,822,5973,861"/>
+<area shape="rect" id="node21" href="spade.Organization.Organization.DestroyBehaviour-class.html" title="spade.Organization.Organization.DestroyBehaviour" alt="" coords="6003,822,6296,861"/>
+<area shape="rect" id="node22" href="spade.Unit_new.Unit_new.KickAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.KickAgentBehaviour" alt="" coords="6325,822,6597,861"/>
+<area shape="rect" id="node23" href="spade.Unit_new.Unit_new.AddAdminBehaviour-class.html" title="spade.Unit_new.Unit_new.AddAdminBehaviour" alt="" coords="6627,822,6899,861"/>
+<area shape="rect" id="node24" href="spade.peer2peer.SendStreamInitiationBehav-class.html" title="spade.peer2peer.SendStreamInitiationBehav" alt="" coords="6928,822,7184,861"/>
+<area shape="rect" id="node25" href="spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.SetMinAgentsBehaviour" alt="" coords="7213,822,7507,861"/>
+<area shape="rect" id="node26" href="spade.DF.DF.SearchBehaviour-class.html" title="spade.DF.DF.SearchBehaviour" alt="" coords="7536,822,7715,861"/>
+<area shape="rect" id="node27" href="spade.Platform.SpadePlatform.GetMembersBehav-class.html" title="spade.Platform.SpadePlatform.GetMembersBehav" alt="" coords="7744,822,8035,861"/>
+<area shape="rect" id="node28" href="spade.fipa.registerServiceBehaviour-class.html" title="spade.fipa.registerServiceBehaviour" alt="" coords="8064,822,8269,861"/>
+<area shape="rect" id="node29" href="spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html" title="spade.Unit_new.Unit_new.TestRoomNameBehaviour" alt="" coords="8299,822,8608,861"/>
+<area shape="rect" id="node30" href="spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html" title="spade.Organization_new.Organization_new.CreateRoomBehaviour" alt="" coords="8637,822,9021,861"/>
+<area shape="rect" id="node31" href="spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMaxAgentsBehaviour" alt="" coords="9051,822,9349,861"/>
+<area shape="rect" id="node32" href="spade.Unit.Unit.GetGoalBehaviour-class.html" title="spade.Unit.Unit.GetGoalBehaviour" alt="" coords="9379,822,9576,861"/>
+<area shape="rect" id="node33" href="spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html" title="spade.Unit_new.Unit_new.CreateRoomBehaviour" alt="" coords="9605,822,9891,861"/>
+<area shape="rect" id="node34" href="spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html" title="spade.Organization_new.Organization_new.CreateTeamBehaviour" alt="" coords="9920,822,10301,861"/>
+<area shape="rect" id="node35" href="spade.DF.DF.RegisterBehaviour-class.html" title="spade.DF.DF.RegisterBehaviour" alt="" coords="10331,822,10517,861"/>
+<area shape="rect" id="node36" href="spade.Unit.Unit.AddAdminBehaviour-class.html" title="spade.Unit.Unit.AddAdminBehaviour" alt="" coords="10547,822,10757,861"/>
+<area shape="rect" id="node37" href="spade.Behaviour.EventBehaviour-class.html" title="A behaviour that is executed in response to a certain event." alt="" coords="10787,822,10915,861"/>
+<area shape="rect" id="node41" href="spade.RPC.RPCServerBehaviour-class.html" title="spade.RPC.RPCServerBehaviour" alt="" coords="10287,881,10481,919"/>
+<area shape="rect" id="node61" href="spade.socialnetwork.RosterBehaviour-class.html" title="spade.socialnetwork.RosterBehaviour" alt="" coords="10511,881,10727,919"/>
+<area shape="rect" id="node64" href="spade.peer2peer.DiscoBehaviour-class.html" title="spade.peer2peer.DiscoBehaviour" alt="" coords="10756,881,10945,919"/>
+<area shape="rect" id="node100" href="spade.peer2peer.StreamInitiationBehaviour-class.html" title="spade.peer2peer.StreamInitiationBehaviour" alt="" coords="10975,881,11220,919"/>
+<area shape="rect" id="node112" href="spade.socialnetwork.PresenceBehaviour-class.html" title="spade.socialnetwork.PresenceBehaviour" alt="" coords="11249,881,11481,919"/>
+<area shape="rect" id="node38" href="spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html" title="spade.Organization_new.Organization_new.GetUnitListBehaviour" alt="" coords="10944,822,11320,861"/>
+<area shape="rect" id="node39" href="spade.Unit.Unit.RemoveOwnerBehaviour-class.html" title="spade.Unit.Unit.RemoveOwnerBehaviour" alt="" coords="11349,822,11587,861"/>
+<area shape="rect" id="node40" href="spade.Organization.Organization.IsMemberBehaviour-class.html" title="spade.Organization.Organization.IsMemberBehaviour" alt="" coords="11616,822,11923,861"/>
+<area shape="rect" id="node42" href="spade.AMS.AMS.ModifyBehaviour-class.html" title="spade.AMS.AMS.ModifyBehaviour" alt="" coords="11952,822,12152,861"/>
+<area shape="rect" id="node43" href="spade.Unit.Unit.GetOwnerListBehaviour-class.html" title="spade.Unit.Unit.GetOwnerListBehaviour" alt="" coords="12181,822,12411,861"/>
+<area shape="rect" id="node45" href="spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveAdminBehaviour" alt="" coords="12440,822,12739,861"/>
+<area shape="rect" id="node46" href="spade.Organization.Organization.CreateRoomBehaviour-class.html" title="spade.Organization.Organization.CreateRoomBehaviour" alt="" coords="12768,822,13091,861"/>
+<area shape="rect" id="node47" href="spade.Unit.Unit.RemoveBanAgentBehaviour-class.html" title="spade.Unit.Unit.RemoveBanAgentBehaviour" alt="" coords="13120,822,13376,861"/>
+<area shape="rect" id="node48" href="spade.Organization.Organization.TestRoomNameBehaviour-class.html" title="spade.Organization.Organization.TestRoomNameBehaviour" alt="" coords="13405,822,13749,861"/>
+<area shape="rect" id="node49" href="spade.AMS.AMS.SearchBehaviour-class.html" title="spade.AMS.AMS.SearchBehaviour" alt="" coords="13779,822,13979,861"/>
+<area shape="rect" id="node50" href="spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.AddBanAgentBehaviour" alt="" coords="14008,822,14301,861"/>
+<area shape="rect" id="node51" href="spade.Unit.Unit.GetMinAgentsBehaviour-class.html" title="spade.Unit.Unit.GetMinAgentsBehaviour" alt="" coords="14331,822,14563,861"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.name" alt="" coords="14965,95,15133,113"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.ident" alt="" coords="14965,113,15133,132"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.daemon" alt="" coords="14965,132,15133,151"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="repr(x)" alt="" coords="14965,153,15133,172"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="14965,172,15133,191"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="14965,191,15133,209"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="14965,209,15133,228"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.is_alive" alt="" coords="14965,228,15133,247"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="14965,247,15133,265"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="14965,265,15133,284"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.getName" alt="" coords="14965,284,15133,303"/>
+<area shape="rect" id="node368" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="14965,303,15133,321"/>
+<area shape="rect" id="node52" href="javascript:void(0);" title="threading.Thread" alt="" coords="14953,70,15145,327"/>
+<area shape="rect" id="node367" href="spade.MessageReceiver.MessageReceiver-class.html#postMessage" title="spade.MessageReceiver.MessageReceiver.postMessage" alt="" coords="14941,380,15157,399"/>
+<area shape="rect" id="node57" href="spade.MessageReceiver.MessageReceiver-class.html" title="spade.MessageReceiver.MessageReceiver" alt="" coords="14929,347,15169,405"/>
+<area shape="rect" id="node53" href="spade.Unit.Unit.RevokeVoiceBehaviour-class.html" title="spade.Unit.Unit.RevokeVoiceBehaviour" alt="" coords="14592,822,14821,861"/>
+<area shape="rect" id="node54" href="spade.DF.DF.ModifyBehaviour-class.html" title="spade.DF.DF.ModifyBehaviour" alt="" coords="14851,822,15027,861"/>
+<area shape="rect" id="node55" href="spade.Unit.Unit.AddOwnerBehaviour-class.html" title="spade.Unit.Unit.AddOwnerBehaviour" alt="" coords="15056,822,15267,861"/>
+<area shape="rect" id="node56" href="spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMemberListBehaviour" alt="" coords="15296,822,15597,861"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#exitCode" title="returns the default exit code for the behavior" alt="" coords="14747,457,15351,476"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#getAgent" title="returns the agent which controls the behavior" alt="" coords="14747,476,15351,495"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#getParent" title="spade.Behaviour.Behaviour.getParent" alt="" coords="14747,495,15351,513"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#kill" title="stops the behavior" alt="" coords="14747,513,15351,532"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#managePresence" title="DEPRECATED manage a FIPA&#45;formed presence message" alt="" coords="14747,532,15351,551"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#onEnd" title="this method runs when the behavior stops" alt="" coords="14747,551,15351,569"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#onStart" title="this method runs when the behavior starts" alt="" coords="14747,569,15351,588"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#registerPresenceHandler" title="DEPRECATED register a handler that will manage all incoming presence &#160;notifications matching the given presence template" alt="" coords="14747,588,15351,607"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#root" title="spade.Behaviour.Behaviour.root" alt="" coords="14747,607,15351,625"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#run" title="spade.Behaviour.Behaviour.run" alt="" coords="14747,625,15351,644"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#setAgent" title="sets the agent which controls the behavior" alt="" coords="14747,644,15351,663"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#setParent" title="spade.Behaviour.Behaviour.setParent" alt="" coords="14747,663,15351,681"/>
+<area shape="rect" id="node366" href="spade.Behaviour.Behaviour-class.html#setTemplate" title="Set the message template for this behaviour" alt="" coords="14747,681,15351,700"/>
+<area shape="rect" id="node95" href="spade.Behaviour.Behaviour-class.html" title="spade.Behaviour.Behaviour" alt="" coords="14735,425,15361,706"/>
+<area shape="rect" id="node58" href="spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour" alt="" coords="15627,822,16019,861"/>
+<area shape="rect" id="node59" href="spade.AMS.AMS.PlatformBehaviour-class.html" title="spade.AMS.AMS.PlatformBehaviour" alt="" coords="16048,822,16256,861"/>
+<area shape="rect" id="node60" href="spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html" title="spade.Unit.Unit.GetNumberOfAgentsBehaviour" alt="" coords="16285,822,16557,861"/>
+<area shape="rect" id="node62" href="spade.Unit.Unit.AddModeratorBehaviour-class.html" title="spade.Unit.Unit.AddModeratorBehaviour" alt="" coords="16587,822,16819,861"/>
+<area shape="rect" id="node63" href="spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html" title="spade.Organization_new.Organization_new.MyJoinRoomBehaviour" alt="" coords="16848,822,17235,861"/>
+<area shape="rect" id="node65" href="spade.peer2peer.RequestDiscoInfoBehav-class.html" title="spade.peer2peer.RequestDiscoInfoBehav" alt="" coords="17264,822,17504,861"/>
+<area shape="rect" id="node66" href="spade.Unit.Unit.SendMessageBehaviour-class.html" title="spade.Unit.Unit.SendMessageBehaviour" alt="" coords="17533,822,17765,861"/>
+<area shape="rect" id="node67" href="spade.fipa.SearchAgentBehaviour-class.html" title="spade.fipa.SearchAgentBehaviour" alt="" coords="17795,822,17989,861"/>
+<area shape="rect" id="node68" href="spade.Organization_new.Organization_new.DestroyBehaviour-class.html" title="spade.Organization_new.Organization_new.DestroyBehaviour" alt="" coords="18019,822,18376,861"/>
+<area shape="rect" id="node69" href="spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetModeratorListBehaviour" alt="" coords="18405,822,18717,861"/>
+<area shape="rect" id="node70" href="spade.fipa.getPlatformInfoBehaviour-class.html" title="spade.fipa.getPlatformInfoBehaviour" alt="" coords="18747,822,18955,861"/>
+<area shape="rect" id="node71" href="spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html" title="spade.Organization_new.Organization_new.TestRoomNameBehaviour" alt="" coords="18984,822,19389,861"/>
+<area shape="rect" id="node72" href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html" title="spade.Organization.Organization.MyJoinRoomBehaviour" alt="" coords="19419,822,19744,861"/>
+<area shape="rect" id="node73" href="spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetAdminListBehaviour" alt="" coords="19773,822,20064,861"/>
+<area shape="rect" id="node74" href="spade.Unit.Unit.GetInfoBehaviour-class.html" title="spade.Unit.Unit.GetInfoBehaviour" alt="" coords="20093,822,20285,861"/>
+<area shape="rect" id="node75" href="spade.Unit_new.Unit_new-class.html" title="spade.Unit_new.Unit_new" alt="" coords="20315,822,20464,861"/>
+<area shape="rect" id="node110" href="spade.Organization_new.Organization_new-class.html" title="spade.Organization_new.Organization_new" alt="" coords="20265,881,20513,919"/>
+<area shape="rect" id="node76" href="spade.fipa.deregisterServiceBehaviour-class.html" title="spade.fipa.deregisterServiceBehaviour" alt="" coords="20493,822,20715,861"/>
+<area shape="rect" id="node77" href="spade.Unit.Unit.MyJoinRoomBehaviour-class.html" title="spade.Unit.Unit.MyJoinRoomBehaviour" alt="" coords="20744,822,20971,861"/>
+<area shape="rect" id="node78" href="spade.Organization.Organization.GetUnitListBehaviour-class.html" title="spade.Organization.Organization.GetUnitListBehaviour" alt="" coords="21000,822,21315,861"/>
+<area shape="rect" id="node79" href="spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html" title="spade.Unit_new.Unit_new.AddModeratorBehaviour" alt="" coords="21344,822,21637,861"/>
+<area shape="rect" id="node80" href="spade.Unit.Unit.RemoveModeratorBehaviour-class.html" title="spade.Unit.Unit.RemoveModeratorBehaviour" alt="" coords="21667,822,21923,861"/>
+<area shape="rect" id="node81" href="spade.Organization.Organization.CreateTeamBehaviour-class.html" title="spade.Organization.Organization.CreateTeamBehaviour" alt="" coords="21952,822,22272,861"/>
+<area shape="rect" id="node82" href="spade.Unit.Unit.GetMaxAgentsBehaviour-class.html" title="spade.Unit.Unit.GetMaxAgentsBehaviour" alt="" coords="22301,822,22539,861"/>
+<area shape="rect" id="node83" href="spade.Unit.Unit.DestroyBehaviour-class.html" title="spade.Unit.Unit.DestroyBehaviour" alt="" coords="22568,822,22765,861"/>
+<area shape="rect" id="node84" href="spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMinAgentsBehaviour" alt="" coords="22795,822,23091,861"/>
+<area shape="rect" id="node85" href="spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveModeratorBehaviour" alt="" coords="23120,822,23440,861"/>
+<area shape="rect" id="node86" href="spade.pubsub.PubSub._sendAndReceiveBehav-class.html" title="spade.pubsub.PubSub._sendAndReceiveBehav" alt="" coords="23469,822,23744,861"/>
+<area shape="rect" id="node365" href="spade.Behaviour.OneShotBehaviour-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="14993,759,15104,777"/>
+<area shape="rect" id="node365" href="spade.Behaviour.OneShotBehaviour-class.html#done" title="returns True if the behavior has finished else returns False" alt="" coords="14993,777,15104,796"/>
+<area shape="rect" id="node87" href="spade.Behaviour.OneShotBehaviour-class.html" title="this behavior is only executed once" alt="" coords="14981,726,15115,802"/>
+<area shape="rect" id="node88" href="spade.Unit.Unit.RemoveAdminBehaviour-class.html" title="spade.Unit.Unit.RemoveAdminBehaviour" alt="" coords="23773,822,24011,861"/>
+<area shape="rect" id="node89" href="spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html" title="spade.Organization_new.Organization_new.GetRegistrationFormBehaviour" alt="" coords="24040,822,24472,861"/>
+<area shape="rect" id="node90" href="spade.Unit.Unit.AddBanAgentBehaviour-class.html" title="spade.Unit.Unit.AddBanAgentBehaviour" alt="" coords="24501,822,24731,861"/>
+<area shape="rect" id="node91" href="spade.Unit.Unit.SetMaxAgentsBehaviour-class.html" title="spade.Unit.Unit.SetMaxAgentsBehaviour" alt="" coords="24760,822,24997,861"/>
+<area shape="rect" id="node92" href="spade.Unit.Unit.GetBanAgentListBehaviour-class.html" title="spade.Unit.Unit.GetBanAgentListBehaviour" alt="" coords="25027,822,25275,861"/>
+<area shape="rect" id="node93" href="spade.Unit_new.Unit_new.GetGoalBehaviour-class.html" title="spade.Unit_new.Unit_new.GetGoalBehaviour" alt="" coords="25304,822,25565,861"/>
+<area shape="rect" id="node94" href="spade.Unit_new.Unit_new.DestroyBehaviour-class.html" title="spade.Unit_new.Unit_new.DestroyBehaviour" alt="" coords="25595,822,25853,861"/>
+<area shape="rect" id="node96" href="spade.Unit.Unit.GiveVoiceBehaviour-class.html" title="spade.Unit.Unit.GiveVoiceBehaviour" alt="" coords="25883,822,26093,861"/>
+<area shape="rect" id="node97" href="spade.Organization.Organization.GetRegistrationFormBehaviour-class.html" title="spade.Organization.Organization.GetRegistrationFormBehaviour" alt="" coords="26123,822,26491,861"/>
+<area shape="rect" id="node98" href="spade.Organization.Organization.SendRegistrationFormBehaviour-class.html" title="spade.Organization.Organization.SendRegistrationFormBehaviour" alt="" coords="26520,822,26899,861"/>
+<area shape="rect" id="node99" href="spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetOwnerListBehaviour" alt="" coords="26928,822,27221,861"/>
+<area shape="rect" id="node101" href="spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html" title="spade.Unit_new.Unit_new.SendPrivateMessageBehaviour" alt="" coords="27251,822,27587,861"/>
+<area shape="rect" id="node102" href="spade.fipa.searchServiceBehaviour-class.html" title="spade.fipa.searchServiceBehaviour" alt="" coords="27616,822,27819,861"/>
+<area shape="rect" id="node103" href="spade.Unit.Unit.CreateRoomBehaviour-class.html" title="spade.Unit.Unit.CreateRoomBehaviour" alt="" coords="27848,822,28072,861"/>
+<area shape="rect" id="node104" href="spade.Unit.Unit.SendPrivateMessageBehaviour-class.html" title="spade.Unit.Unit.SendPrivateMessageBehaviour" alt="" coords="28101,822,28376,861"/>
+<area shape="rect" id="node105" href="spade.Unit.Unit.GetMemberListBehaviour-class.html" title="spade.Unit.Unit.GetMemberListBehaviour" alt="" coords="28405,822,28645,861"/>
+<area shape="rect" id="node107" href="spade.Unit.Unit.KickAgentBehaviour-class.html" title="spade.Unit.Unit.KickAgentBehaviour" alt="" coords="28675,822,28885,861"/>
+<area shape="rect" id="node108" href="spade.Unit_new.Unit_new.SendMessageBehaviour-class.html" title="spade.Unit_new.Unit_new.SendMessageBehaviour" alt="" coords="28915,822,29211,861"/>
+<area shape="rect" id="node109" href="spade.Unit.Unit.SetGoalBehaviour-class.html" title="spade.Unit.Unit.SetGoalBehaviour" alt="" coords="29240,822,29437,861"/>
+<area shape="rect" id="node111" href="spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html" title="spade.Unit_new.Unit_new.GiveVoiceBehaviour" alt="" coords="29467,822,29739,861"/>
+<area shape="rect" id="node113" href="spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html" title="spade.Organization_new.Organization_new.GetUnitInfoBehaviour" alt="" coords="29768,822,30144,861"/>
+<area shape="rect" id="node114" href="spade.Unit.Unit.SetMinAgentsBehaviour-class.html" title="spade.Unit.Unit.SetMinAgentsBehaviour" alt="" coords="30173,822,30405,861"/>
+<area shape="rect" id="node106" href="javascript:void(0);" title="threading._Verbose" alt="" coords="14980,6,15119,50"/>
+</map>
+  <img src="uml_class_diagram_for_spade_be_11.gif" alt='' usemap="#uml_class_diagram_for_spade_be_11" ismap="ismap" class="graph-without-title" />
+</center></div>
+  <div class="public" style="display:none"><center>  <map id="uml_class_diagram_for_spade_be_12" name="uml_class_diagram_for_spade_be_12">
+<area shape="rect" id="node1" href="spade.Unit.Unit.GetModeratorListBehaviour-class.html" title="spade.Unit.Unit.GetModeratorListBehaviour" alt="" coords="5,822,256,861"/>
+<area shape="rect" id="node2" href="spade.AMS.AMS.RegisterBehaviour-class.html" title="spade.AMS.AMS.RegisterBehaviour" alt="" coords="285,822,493,861"/>
+<area shape="rect" id="node3" href="spade.Organization_new.Organization_new.IsMemberBehaviour-class.html" title="spade.Organization_new.Organization_new.IsMemberBehaviour" alt="" coords="523,822,891,861"/>
+<area shape="rect" id="node4" href="spade.Unit.Unit.GetAdminListBehaviour-class.html" title="spade.Unit.Unit.GetAdminListBehaviour" alt="" coords="920,822,1149,861"/>
+<area shape="rect" id="node5" href="spade.Organization.Organization.GetUnitInfoBehaviour-class.html" title="spade.Organization.Organization.GetUnitInfoBehaviour" alt="" coords="1179,822,1493,861"/>
+<area shape="rect" id="node6" href="spade.Behaviour.EventBehaviour-class.html" title="A behaviour that is executed in response to a certain event." alt="" coords="1523,822,1651,861"/>
+<area shape="rect" id="node41" href="spade.RPC.RPCServerBehaviour-class.html" title="spade.RPC.RPCServerBehaviour" alt="" coords="1023,881,1217,919"/>
+<area shape="rect" id="node62" href="spade.socialnetwork.RosterBehaviour-class.html" title="spade.socialnetwork.RosterBehaviour" alt="" coords="1247,881,1463,919"/>
+<area shape="rect" id="node65" href="spade.peer2peer.DiscoBehaviour-class.html" title="spade.peer2peer.DiscoBehaviour" alt="" coords="1492,881,1681,919"/>
+<area shape="rect" id="node98" href="spade.peer2peer.StreamInitiationBehaviour-class.html" title="spade.peer2peer.StreamInitiationBehaviour" alt="" coords="1711,881,1956,919"/>
+<area shape="rect" id="node111" href="spade.socialnetwork.PresenceBehaviour-class.html" title="spade.socialnetwork.PresenceBehaviour" alt="" coords="1985,881,2217,919"/>
+<area shape="rect" id="node7" href="spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveBanAgentBehaviour" alt="" coords="1680,822,1997,861"/>
+<area shape="rect" id="node8" href="spade.RPC.RPCClientBehaviour-class.html" title="spade.RPC.RPCClientBehaviour" alt="" coords="2027,822,2216,861"/>
+<area shape="rect" id="node9" href="spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html" title="spade.Unit_new.Unit_new.RevokeVoiceBehaviour" alt="" coords="2245,822,2536,861"/>
+<area shape="rect" id="node10" href="spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html" title="spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour" alt="" coords="2565,822,2893,861"/>
+<area shape="rect" id="node11" href="spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour" alt="" coords="2923,822,3256,861"/>
+<area shape="rect" id="node12" href="spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetBanAgentListBehaviour" alt="" coords="3285,822,3597,861"/>
+<area shape="rect" id="node13" href="spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html" title="spade.Unit_new.Unit_new.MyJoinRoomBehaviour" alt="" coords="3627,822,3915,861"/>
+<area shape="rect" id="node14" href="spade.Unit_new.Unit_new.SetGoalBehaviour-class.html" title="spade.Unit_new.Unit_new.SetGoalBehaviour" alt="" coords="3944,822,4203,861"/>
+<area shape="rect" id="node15" href="spade.Unit.Unit.TestRoomNameBehaviour-class.html" title="spade.Unit.Unit.TestRoomNameBehaviour" alt="" coords="4232,822,4477,861"/>
+<area shape="rect" id="node16" href="spade.Unit_new.Unit_new.GetInfoBehaviour-class.html" title="spade.Unit_new.Unit_new.GetInfoBehaviour" alt="" coords="4507,822,4763,861"/>
+<area shape="rect" id="node17" href="spade.fipa.modifyServiceBehaviour-class.html" title="spade.fipa.modifyServiceBehaviour" alt="" coords="4792,822,4995,861"/>
+<area shape="rect" id="node18" href="spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html" title="spade.Organization_new.Organization_new.SendRegistrationFormBehaviour" alt="" coords="5024,822,5464,861"/>
+<area shape="rect" id="node19" href="spade.fipa.ModifyAgentBehaviour-class.html" title="spade.fipa.ModifyAgentBehaviour" alt="" coords="5493,822,5685,861"/>
+<area shape="rect" id="node20" href="spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.SetMaxAgentsBehaviour" alt="" coords="5715,822,6013,861"/>
+<area shape="rect" id="node21" href="spade.Organization.Organization.DestroyBehaviour-class.html" title="spade.Organization.Organization.DestroyBehaviour" alt="" coords="6043,822,6336,861"/>
+<area shape="rect" id="node22" href="spade.Unit_new.Unit_new.KickAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.KickAgentBehaviour" alt="" coords="6365,822,6637,861"/>
+<area shape="rect" id="node23" href="spade.Unit_new.Unit_new.AddAdminBehaviour-class.html" title="spade.Unit_new.Unit_new.AddAdminBehaviour" alt="" coords="6667,822,6939,861"/>
+<area shape="rect" id="node24" href="spade.peer2peer.SendStreamInitiationBehav-class.html" title="spade.peer2peer.SendStreamInitiationBehav" alt="" coords="6968,822,7224,861"/>
+<area shape="rect" id="node25" href="spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.SetMinAgentsBehaviour" alt="" coords="7253,822,7547,861"/>
+<area shape="rect" id="node26" href="spade.DF.DF.SearchBehaviour-class.html" title="spade.DF.DF.SearchBehaviour" alt="" coords="7576,822,7755,861"/>
+<area shape="rect" id="node27" href="spade.Platform.SpadePlatform.GetMembersBehav-class.html" title="spade.Platform.SpadePlatform.GetMembersBehav" alt="" coords="7784,822,8075,861"/>
+<area shape="rect" id="node28" href="spade.fipa.registerServiceBehaviour-class.html" title="spade.fipa.registerServiceBehaviour" alt="" coords="8104,822,8309,861"/>
+<area shape="rect" id="node29" href="spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html" title="spade.Unit_new.Unit_new.SendPrivateMessageBehaviour" alt="" coords="8339,822,8675,861"/>
+<area shape="rect" id="node30" href="spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html" title="spade.Organization_new.Organization_new.CreateRoomBehaviour" alt="" coords="8704,822,9088,861"/>
+<area shape="rect" id="node31" href="spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMaxAgentsBehaviour" alt="" coords="9117,822,9416,861"/>
+<area shape="rect" id="node32" href="spade.Unit.Unit.GetGoalBehaviour-class.html" title="spade.Unit.Unit.GetGoalBehaviour" alt="" coords="9445,822,9643,861"/>
+<area shape="rect" id="node33" href="spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html" title="spade.Unit_new.Unit_new.CreateRoomBehaviour" alt="" coords="9672,822,9957,861"/>
+<area shape="rect" id="node34" href="spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html" title="spade.Organization_new.Organization_new.CreateTeamBehaviour" alt="" coords="9987,822,10368,861"/>
+<area shape="rect" id="node35" href="spade.DF.DF.RegisterBehaviour-class.html" title="spade.DF.DF.RegisterBehaviour" alt="" coords="10397,822,10584,861"/>
+<area shape="rect" id="node36" href="spade.Unit.Unit.AddAdminBehaviour-class.html" title="spade.Unit.Unit.AddAdminBehaviour" alt="" coords="10613,822,10824,861"/>
+<area shape="rect" id="node37" href="spade.Unit.Unit.SetMaxAgentsBehaviour-class.html" title="spade.Unit.Unit.SetMaxAgentsBehaviour" alt="" coords="10853,822,11091,861"/>
+<area shape="rect" id="node38" href="spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html" title="spade.Organization_new.Organization_new.GetUnitListBehaviour" alt="" coords="11120,822,11496,861"/>
+<area shape="rect" id="node39" href="spade.Unit.Unit.RemoveOwnerBehaviour-class.html" title="spade.Unit.Unit.RemoveOwnerBehaviour" alt="" coords="11525,822,11763,861"/>
+<area shape="rect" id="node40" href="spade.Organization.Organization.IsMemberBehaviour-class.html" title="spade.Organization.Organization.IsMemberBehaviour" alt="" coords="11792,822,12099,861"/>
+<area shape="rect" id="node42" href="spade.AMS.AMS.ModifyBehaviour-class.html" title="spade.AMS.AMS.ModifyBehaviour" alt="" coords="12128,822,12328,861"/>
+<area shape="rect" id="node43" href="spade.Unit.Unit.GetOwnerListBehaviour-class.html" title="spade.Unit.Unit.GetOwnerListBehaviour" alt="" coords="12357,822,12587,861"/>
+<area shape="rect" id="node44" href="spade.Organization.Organization-class.html" title="spade.Organization.Organization" alt="" coords="24828,881,25015,919"/>
+<area shape="rect" id="node45" href="spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveAdminBehaviour" alt="" coords="12616,822,12915,861"/>
+<area shape="rect" id="node46" href="spade.Organization.Organization.CreateRoomBehaviour-class.html" title="spade.Organization.Organization.CreateRoomBehaviour" alt="" coords="12944,822,13267,861"/>
+<area shape="rect" id="node47" href="spade.Unit.Unit.RemoveBanAgentBehaviour-class.html" title="spade.Unit.Unit.RemoveBanAgentBehaviour" alt="" coords="13296,822,13552,861"/>
+<area shape="rect" id="node48" href="spade.Organization.Organization.TestRoomNameBehaviour-class.html" title="spade.Organization.Organization.TestRoomNameBehaviour" alt="" coords="13581,822,13925,861"/>
+<area shape="rect" id="node49" href="spade.AMS.AMS.SearchBehaviour-class.html" title="spade.AMS.AMS.SearchBehaviour" alt="" coords="13955,822,14155,861"/>
+<area shape="rect" id="node50" href="spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html" title="spade.Unit_new.Unit_new.AddBanAgentBehaviour" alt="" coords="14184,822,14477,861"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#exitCode" title="returns the default exit code for the behavior" alt="" coords="14812,457,15416,476"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#getAgent" title="returns the agent which controls the behavior" alt="" coords="14812,476,15416,495"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#getParent" title="spade.Behaviour.Behaviour.getParent" alt="" coords="14812,495,15416,513"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#kill" title="stops the behavior" alt="" coords="14812,513,15416,532"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#managePresence" title="DEPRECATED manage a FIPA&#45;formed presence message" alt="" coords="14812,532,15416,551"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#onEnd" title="this method runs when the behavior stops" alt="" coords="14812,551,15416,569"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#onStart" title="this method runs when the behavior starts" alt="" coords="14812,569,15416,588"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#registerPresenceHandler" title="DEPRECATED register a handler that will manage all incoming presence &#160;notifications matching the given presence template" alt="" coords="14812,588,15416,607"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#root" title="spade.Behaviour.Behaviour.root" alt="" coords="14812,607,15416,625"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#run" title="spade.Behaviour.Behaviour.run" alt="" coords="14812,625,15416,644"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#setAgent" title="sets the agent which controls the behavior" alt="" coords="14812,644,15416,663"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#setParent" title="spade.Behaviour.Behaviour.setParent" alt="" coords="14812,663,15416,681"/>
+<area shape="rect" id="node480" href="spade.Behaviour.Behaviour-class.html#setTemplate" title="Set the message template for this behaviour" alt="" coords="14812,681,15416,700"/>
+<area shape="rect" id="node51" href="spade.Behaviour.Behaviour-class.html" title="spade.Behaviour.Behaviour" alt="" coords="14800,425,15427,706"/>
+<area shape="rect" id="node479" href="spade.Behaviour.OneShotBehaviour-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="15059,759,15169,777"/>
+<area shape="rect" id="node479" href="spade.Behaviour.OneShotBehaviour-class.html#done" title="returns True if the behavior has finished else returns False" alt="" coords="15059,777,15169,796"/>
+<area shape="rect" id="node87" href="spade.Behaviour.OneShotBehaviour-class.html" title="this behavior is only executed once" alt="" coords="15047,726,15180,802"/>
+<area shape="rect" id="node52" href="spade.Unit.Unit.GetMinAgentsBehaviour-class.html" title="spade.Unit.Unit.GetMinAgentsBehaviour" alt="" coords="14507,822,14739,861"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.name" alt="" coords="15031,95,15199,113"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.ident" alt="" coords="15031,113,15199,132"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.daemon" alt="" coords="15031,132,15199,151"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="repr(x)" alt="" coords="15031,153,15199,172"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="15031,172,15199,191"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="15031,191,15199,209"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="15031,209,15199,228"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.is_alive" alt="" coords="15031,228,15199,247"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="15031,247,15199,265"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="15031,265,15199,284"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.getName" alt="" coords="15031,284,15199,303"/>
+<area shape="rect" id="node482" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="15031,303,15199,321"/>
+<area shape="rect" id="node53" href="javascript:void(0);" title="threading.Thread" alt="" coords="15019,70,15211,327"/>
+<area shape="rect" id="node481" href="spade.MessageReceiver.MessageReceiver-class.html#postMessage" title="spade.MessageReceiver.MessageReceiver.postMessage" alt="" coords="15007,380,15223,399"/>
+<area shape="rect" id="node58" href="spade.MessageReceiver.MessageReceiver-class.html" title="spade.MessageReceiver.MessageReceiver" alt="" coords="14995,347,15235,405"/>
+<area shape="rect" id="node54" href="spade.Unit.Unit.RevokeVoiceBehaviour-class.html" title="spade.Unit.Unit.RevokeVoiceBehaviour" alt="" coords="14768,822,14997,861"/>
+<area shape="rect" id="node55" href="spade.DF.DF.ModifyBehaviour-class.html" title="spade.DF.DF.ModifyBehaviour" alt="" coords="15027,822,15203,861"/>
+<area shape="rect" id="node56" href="spade.Unit.Unit.RemoveAdminBehaviour-class.html" title="spade.Unit.Unit.RemoveAdminBehaviour" alt="" coords="15232,822,15469,861"/>
+<area shape="rect" id="node57" href="spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMemberListBehaviour" alt="" coords="15499,822,15800,861"/>
+<area shape="rect" id="node59" href="spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour" alt="" coords="15829,822,16221,861"/>
+<area shape="rect" id="node60" href="spade.AMS.AMS.PlatformBehaviour-class.html" title="spade.AMS.AMS.PlatformBehaviour" alt="" coords="16251,822,16459,861"/>
+<area shape="rect" id="node61" href="spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html" title="spade.Unit.Unit.GetNumberOfAgentsBehaviour" alt="" coords="16488,822,16760,861"/>
+<area shape="rect" id="node63" href="spade.Unit.Unit.AddModeratorBehaviour-class.html" title="spade.Unit.Unit.AddModeratorBehaviour" alt="" coords="16789,822,17021,861"/>
+<area shape="rect" id="node64" href="spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html" title="spade.Organization_new.Organization_new.MyJoinRoomBehaviour" alt="" coords="17051,822,17437,861"/>
+<area shape="rect" id="node66" href="spade.peer2peer.RequestDiscoInfoBehav-class.html" title="spade.peer2peer.RequestDiscoInfoBehav" alt="" coords="17467,822,17707,861"/>
+<area shape="rect" id="node67" href="spade.Unit.Unit.SendMessageBehaviour-class.html" title="spade.Unit.Unit.SendMessageBehaviour" alt="" coords="17736,822,17968,861"/>
+<area shape="rect" id="node68" href="spade.fipa.SearchAgentBehaviour-class.html" title="spade.fipa.SearchAgentBehaviour" alt="" coords="17997,822,18192,861"/>
+<area shape="rect" id="node69" href="spade.Organization_new.Organization_new.DestroyBehaviour-class.html" title="spade.Organization_new.Organization_new.DestroyBehaviour" alt="" coords="18221,822,18579,861"/>
+<area shape="rect" id="node70" href="spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetModeratorListBehaviour" alt="" coords="18608,822,18920,861"/>
+<area shape="rect" id="node71" href="spade.fipa.getPlatformInfoBehaviour-class.html" title="spade.fipa.getPlatformInfoBehaviour" alt="" coords="18949,822,19157,861"/>
+<area shape="rect" id="node72" href="spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html" title="spade.Organization_new.Organization_new.TestRoomNameBehaviour" alt="" coords="19187,822,19592,861"/>
+<area shape="rect" id="node73" href="javascript:void(0);" title="threading._Verbose" alt="" coords="15045,6,15184,50"/>
+<area shape="rect" id="node74" href="spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetAdminListBehaviour" alt="" coords="19621,822,19912,861"/>
+<area shape="rect" id="node75" href="spade.Unit.Unit.GetInfoBehaviour-class.html" title="spade.Unit.Unit.GetInfoBehaviour" alt="" coords="19941,822,20133,861"/>
+<area shape="rect" id="node76" href="spade.Unit_new.Unit_new-class.html" title="spade.Unit_new.Unit_new" alt="" coords="20163,822,20312,861"/>
+<area shape="rect" id="node109" href="spade.Organization_new.Organization_new-class.html" title="spade.Organization_new.Organization_new" alt="" coords="20113,881,20361,919"/>
+<area shape="rect" id="node77" href="spade.fipa.deregisterServiceBehaviour-class.html" title="spade.fipa.deregisterServiceBehaviour" alt="" coords="20341,822,20563,861"/>
+<area shape="rect" id="node78" href="spade.Organization.Organization.GetUnitListBehaviour-class.html" title="spade.Organization.Organization.GetUnitListBehaviour" alt="" coords="20592,822,20907,861"/>
+<area shape="rect" id="node79" href="spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html" title="spade.Unit_new.Unit_new.AddModeratorBehaviour" alt="" coords="20936,822,21229,861"/>
+<area shape="rect" id="node80" href="spade.Unit.Unit.RemoveModeratorBehaviour-class.html" title="spade.Unit.Unit.RemoveModeratorBehaviour" alt="" coords="21259,822,21515,861"/>
+<area shape="rect" id="node81" href="spade.Organization.Organization.CreateTeamBehaviour-class.html" title="spade.Organization.Organization.CreateTeamBehaviour" alt="" coords="21544,822,21864,861"/>
+<area shape="rect" id="node82" href="spade.Unit.Unit.GetMaxAgentsBehaviour-class.html" title="spade.Unit.Unit.GetMaxAgentsBehaviour" alt="" coords="21893,822,22131,861"/>
+<area shape="rect" id="node83" href="spade.Unit.Unit.DestroyBehaviour-class.html" title="spade.Unit.Unit.DestroyBehaviour" alt="" coords="22160,822,22357,861"/>
+<area shape="rect" id="node84" href="spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html" title="spade.Unit_new.Unit_new.GetMinAgentsBehaviour" alt="" coords="22387,822,22683,861"/>
+<area shape="rect" id="node85" href="spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html" title="spade.Unit_new.Unit_new.RemoveModeratorBehaviour" alt="" coords="22712,822,23032,861"/>
+<area shape="rect" id="node86" href="spade.Unit.Unit.AddOwnerBehaviour-class.html" title="spade.Unit.Unit.AddOwnerBehaviour" alt="" coords="23061,822,23272,861"/>
+<area shape="rect" id="node88" href="spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html" title="spade.Organization_new.Organization_new.GetRegistrationFormBehaviour" alt="" coords="23301,822,23733,861"/>
+<area shape="rect" id="node89" href="spade.Unit.Unit.AddBanAgentBehaviour-class.html" title="spade.Unit.Unit.AddBanAgentBehaviour" alt="" coords="23763,822,23992,861"/>
+<area shape="rect" id="node90" href="spade.Unit.Unit.GetBanAgentListBehaviour-class.html" title="spade.Unit.Unit.GetBanAgentListBehaviour" alt="" coords="24021,822,24269,861"/>
+<area shape="rect" id="node91" href="spade.Unit_new.Unit_new.GetGoalBehaviour-class.html" title="spade.Unit_new.Unit_new.GetGoalBehaviour" alt="" coords="24299,822,24560,861"/>
+<area shape="rect" id="node92" href="spade.Unit_new.Unit_new.DestroyBehaviour-class.html" title="spade.Unit_new.Unit_new.DestroyBehaviour" alt="" coords="24589,822,24848,861"/>
+<area shape="rect" id="node93" href="spade.Unit.Unit-class.html" title="spade.Unit.Unit" alt="" coords="24877,822,24965,861"/>
+<area shape="rect" id="node94" href="spade.Unit.Unit.GiveVoiceBehaviour-class.html" title="spade.Unit.Unit.GiveVoiceBehaviour" alt="" coords="24995,822,25205,861"/>
+<area shape="rect" id="node95" href="spade.Organization.Organization.GetRegistrationFormBehaviour-class.html" title="spade.Organization.Organization.GetRegistrationFormBehaviour" alt="" coords="25235,822,25603,861"/>
+<area shape="rect" id="node96" href="spade.Organization.Organization.SendRegistrationFormBehaviour-class.html" title="spade.Organization.Organization.SendRegistrationFormBehaviour" alt="" coords="25632,822,26011,861"/>
+<area shape="rect" id="node97" href="spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html" title="spade.Unit_new.Unit_new.GetOwnerListBehaviour" alt="" coords="26040,822,26333,861"/>
+<area shape="rect" id="node99" href="spade.Unit.Unit.MyJoinRoomBehaviour-class.html" title="spade.Unit.Unit.MyJoinRoomBehaviour" alt="" coords="26363,822,26589,861"/>
+<area shape="rect" id="node100" href="spade.fipa.searchServiceBehaviour-class.html" title="spade.fipa.searchServiceBehaviour" alt="" coords="26619,822,26821,861"/>
+<area shape="rect" id="node101" href="spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html" title="spade.Unit_new.Unit_new.TestRoomNameBehaviour" alt="" coords="26851,822,27160,861"/>
+<area shape="rect" id="node102" href="spade.Unit.Unit.CreateRoomBehaviour-class.html" title="spade.Unit.Unit.CreateRoomBehaviour" alt="" coords="27189,822,27413,861"/>
+<area shape="rect" id="node103" href="spade.Unit.Unit.SendPrivateMessageBehaviour-class.html" title="spade.Unit.Unit.SendPrivateMessageBehaviour" alt="" coords="27443,822,27717,861"/>
+<area shape="rect" id="node104" href="spade.Unit.Unit.GetMemberListBehaviour-class.html" title="spade.Unit.Unit.GetMemberListBehaviour" alt="" coords="27747,822,27987,861"/>
+<area shape="rect" id="node105" href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html" title="spade.Organization.Organization.MyJoinRoomBehaviour" alt="" coords="28016,822,28341,861"/>
+<area shape="rect" id="node106" href="spade.Unit.Unit.KickAgentBehaviour-class.html" title="spade.Unit.Unit.KickAgentBehaviour" alt="" coords="28371,822,28581,861"/>
+<area shape="rect" id="node107" href="spade.Unit_new.Unit_new.SendMessageBehaviour-class.html" title="spade.Unit_new.Unit_new.SendMessageBehaviour" alt="" coords="28611,822,28907,861"/>
+<area shape="rect" id="node108" href="spade.Unit.Unit.SetGoalBehaviour-class.html" title="spade.Unit.Unit.SetGoalBehaviour" alt="" coords="28936,822,29133,861"/>
+<area shape="rect" id="node110" href="spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html" title="spade.Unit_new.Unit_new.GiveVoiceBehaviour" alt="" coords="29163,822,29435,861"/>
+<area shape="rect" id="node112" href="spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html" title="spade.Organization_new.Organization_new.GetUnitInfoBehaviour" alt="" coords="29464,822,29840,861"/>
+<area shape="rect" id="node113" href="spade.Unit.Unit.SetMinAgentsBehaviour-class.html" title="spade.Unit.Unit.SetMinAgentsBehaviour" alt="" coords="29869,822,30101,861"/>
+</map>
+  <img src="uml_class_diagram_for_spade_be_12.gif" alt='' usemap="#uml_class_diagram_for_spade_be_12" ismap="ismap" class="graph-without-title" />
+</center></div>
+</center>
+<hr />
+<p>this behavior is only executed once</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Behaviour.OneShotBehaviour-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#OneShotBehaviour.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Behaviour.OneShotBehaviour-class.html#done" class="summary-sig-name">done</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns True if the behavior has finished else returns False</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Behaviour-pysrc.html#OneShotBehaviour.done">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.Behaviour-class.html">Behaviour</a></code></b>:
+      <code><a href="spade.Behaviour.Behaviour-class.html#exitCode">exitCode</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#getAgent">getAgent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#kill">kill</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#managePresence">managePresence</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#onEnd">onEnd</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#onStart">onStart</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#registerPresenceHandler">registerPresenceHandler</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#root">root</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#run">run</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setAgent">setAgent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setTemplate">setTemplate</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.Behaviour-class.html">Behaviour</a></code></b> (private):
+      <code><a href="spade.Behaviour.Behaviour-class.html#_process" onclick="show_private();">_process</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b>:
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#postMessage">postMessage</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b> (private):
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#_receive" onclick="show_private();">_receive</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>__repr__</code>,
+      <code>getName</code>,
+      <code>isAlive</code>,
+      <code>isDaemon</code>,
+      <code>is_alive</code>,
+      <code>join</code>,
+      <code>setDaemon</code>,
+      <code>setName</code>,
+      <code>start</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_reset_internal_locks</code>,
+      <code>_set_daemon</code>,
+      <code>_set_ident</code>
+      </p></div>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading._Verbose</code></b> (private):
+      <code>_note</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.Behaviour-class.html">Behaviour</a></code></b> (private):
+      <code><a href="spade.Behaviour.Behaviour-class.html#_exitcode" onclick="show_private();">_exitcode</a></code>
+      </p></div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>daemon</code>,
+      <code>ident</code>,
+      <code>name</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_block</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Behaviour-pysrc.html#OneShotBehaviour.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="done"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">done</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Behaviour-pysrc.html#OneShotBehaviour.done">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>returns True if the behavior has finished else returns False</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.Behaviour.Behaviour-class.html#done">Behaviour.done</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:37 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

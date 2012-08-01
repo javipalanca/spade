@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.SL0Parser</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;SL0Parser
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.SL0Parser-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.SL0Parser-module.html">Module spade.SL0Parser</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module spade.pyparsing=spade.pyparsing-module.html"><a title="spade.pyparsing" class="py-name" href="#" onclick="return doclink('link-0', 'pyparsing', 'link-0');">pyparsing</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="SL0Parser"></a><div id="SL0Parser-def"><a name="L4"></a><tt class="py-lineno">  4</tt> <a class="py-toggle" href="#" id="SL0Parser-toggle" onclick="return toggle('SL0Parser');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.SL0Parser.SL0Parser-class.html">SL0Parser</a><tt class="py-op">:</tt> </tt>
+</div><div id="SL0Parser-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SL0Parser-expanded"><a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">        SL parser</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="SL0Parser.__init__"></a><div id="SL0Parser.__init__-def"><a name="L9"></a><tt class="py-lineno">  9</tt> <a class="py-toggle" href="#" id="SL0Parser.__init__-toggle" onclick="return toggle('SL0Parser.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SL0Parser.SL0Parser-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SL0Parser.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="SL0Parser.__init__-expanded"><a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">                <tt class="py-name">lpar</tt> <tt class="py-op">=</tt> <tt id="link-1" class="py-name" targets="Class spade.pyparsing.Literal=spade.pyparsing.Literal-class.html"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-1', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">"("</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method spade.pyparsing.ParserElement.suppress()=spade.pyparsing.ParserElement-class.html#suppress,Method spade.pyparsing.Suppress.suppress()=spade.pyparsing.Suppress-class.html#suppress"><a title="spade.pyparsing.ParserElement.suppress
+spade.pyparsing.Suppress.suppress" class="py-name" href="#" onclick="return doclink('link-2', 'suppress', 'link-2');">suppress</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">                <tt class="py-name">rpar</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-3', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">")"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="spade.pyparsing.ParserElement.suppress
+spade.pyparsing.Suppress.suppress" class="py-name" href="#" onclick="return doclink('link-4', 'suppress', 'link-2');">suppress</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">                 </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">                <tt class="py-name">word</tt> <tt class="py-op">=</tt> <tt class="py-op">~</tt><tt id="link-5" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-5', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">":"</tt><tt class="py-op">)</tt><tt class="py-op">+</tt> <tt id="link-6" class="py-name" targets="Class spade.pyparsing.Word=spade.pyparsing.Word-class.html"><a title="spade.pyparsing.Word" class="py-name" href="#" onclick="return doclink('link-6', 'Word', 'link-6');">Word</a></tt><tt class="py-op">(</tt><tt id="link-7" class="py-name" targets="Variable spade.ACLParser.alphanums=spade.ACLParser-module.html#alphanums,Variable spade.AMS.alphanums=spade.AMS-module.html#alphanums,Variable spade.DF.alphanums=spade.DF-module.html#alphanums,Variable spade.SL0Parser.alphanums=spade.SL0Parser-module.html#alphanums,Variable spade.pyparsing.alphanums=spade.pyparsing-module.html#alphanums"><a title="spade.ACLParser.alphanums
+spade.AMS.alphanums
+spade.DF.alphanums
+spade.SL0Parser.alphanums
+spade.pyparsing.alphanums" class="py-name" href="#" onclick="return doclink('link-7', 'alphanums', 'link-7');">alphanums</a></tt><tt class="py-op">+</tt><tt class="py-string">"-_@./\\:"</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">                <tt class="py-name">StringLiteral</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Class spade.pyparsing.Combine=spade.pyparsing.Combine-class.html"><a title="spade.pyparsing.Combine" class="py-name" href="#" onclick="return doclink('link-8', 'Combine', 'link-8');">Combine</a></tt><tt class="py-op">(</tt> <tt id="link-9" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-9', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">'"'</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt id="link-10" class="py-name" targets="Class spade.pyparsing.ZeroOrMore=spade.pyparsing.ZeroOrMore-class.html"><a title="spade.pyparsing.ZeroOrMore" class="py-name" href="#" onclick="return doclink('link-10', 'ZeroOrMore', 'link-10');">ZeroOrMore</a></tt><tt class="py-op">(</tt> <tt id="link-11" class="py-name" targets="Class spade.pyparsing.CharsNotIn=spade.pyparsing.CharsNotIn-class.html"><a title="spade.pyparsing.CharsNotIn" class="py-name" href="#" onclick="return doclink('link-11', 'CharsNotIn', 'link-11');">CharsNotIn</a></tt><tt class="py-op">(</tt><tt class="py-string">'\"'</tt><tt class="py-op">)</tt> <tt class="py-op">|</tt> <tt class="py-op">(</tt> <tt id="link-12" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-12', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">'\\"'</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt id="link-13" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-13', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">'"'</tt><tt class="py-op">)</tt> <tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method spade.pyparsing.Forward.streamline()=spade.pyparsing.Forward-class.html#streamline,Method spade.pyparsing.ParseElementEnhance.streamline()=spade.pyparsing.ParseElementEnhance-class.html#streamline,Method spade.pyparsing.ParseExpression.streamline()=spade.pyparsing.ParseExpression-class.html#streamline,Method spade.pyparsing.ParserElement.streamline()=spade.pyparsing.ParserElement-class.html#streamline"><a title="spade.pyparsing.Forward.streamline
+spade.pyparsing.ParseElementEnhance.streamline
+spade.pyparsing.ParseExpression.streamline
+spade.pyparsing.ParserElement.streamline" class="py-name" href="#" onclick="return doclink('link-14', 'streamline', 'link-14');">streamline</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">                <tt class="py-name">String</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">word</tt> <tt class="py-op">|</tt> <tt class="py-name">StringLiteral</tt> <tt class="py-op">)</tt>     <tt class="py-comment">#| ByteLengthEncodedString )</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">                <tt class="py-name">Constant</tt> <tt class="py-op">=</tt> <tt class="py-name">String</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">                 </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                <tt class="py-name">Key</tt> <tt class="py-op">=</tt> <tt class="py-name">String</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                <tt id="link-15" class="py-name" targets="Class spade.logic.Expr=spade.logic.Expr-class.html"><a title="spade.logic.Expr" class="py-name" href="#" onclick="return doclink('link-15', 'Expr', 'link-15');">Expr</a></tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name" targets="Class spade.pyparsing.Forward=spade.pyparsing.Forward-class.html"><a title="spade.pyparsing.Forward" class="py-name" href="#" onclick="return doclink('link-16', 'Forward', 'link-16');">Forward</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">                <tt class="py-name">Parameter</tt> <tt class="py-op">=</tt>  <tt id="link-17" class="py-name" targets="Class spade.pyparsing.Dict=spade.pyparsing.Dict-class.html"><a title="spade.pyparsing.Dict" class="py-name" href="#" onclick="return doclink('link-17', 'Dict', 'link-17');">Dict</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name" targets="Class spade.pyparsing.Group=spade.pyparsing.Group-class.html,Class spade.xmppd.modules.wq.Group=spade.xmppd.modules.wq.Group-class.html"><a title="spade.pyparsing.Group
+spade.xmppd.modules.wq.Group" class="py-name" href="#" onclick="return doclink('link-18', 'Group', 'link-18');">Group</a></tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="spade.pyparsing.Literal" class="py-name" href="#" onclick="return doclink('link-19', 'Literal', 'link-1');">Literal</a></tt><tt class="py-op">(</tt><tt class="py-string">":"</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="spade.pyparsing.ParserElement.suppress
+spade.pyparsing.Suppress.suppress" class="py-name" href="#" onclick="return doclink('link-20', 'suppress', 'link-2');">suppress</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">Key</tt> <tt class="py-op">+</tt> <tt id="link-21" class="py-name"><a title="spade.pyparsing.Group
+spade.xmppd.modules.wq.Group" class="py-name" href="#" onclick="return doclink('link-21', 'Group', 'link-18');">Group</a></tt><tt class="py-op">(</tt><tt class="py-name">Constant</tt><tt class="py-op">|</tt><tt id="link-22" class="py-name"><a title="spade.logic.Expr" class="py-name" href="#" onclick="return doclink('link-22', 'Expr', 'link-15');">Expr</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">                <tt id="link-23" class="py-name"><a title="spade.logic.Expr" class="py-name" href="#" onclick="return doclink('link-23', 'Expr', 'link-15');">Expr</a></tt> <tt class="py-op">&lt;&lt;</tt> <tt id="link-24" class="py-name"><a title="spade.pyparsing.Dict" class="py-name" href="#" onclick="return doclink('link-24', 'Dict', 'link-17');">Dict</a></tt><tt class="py-op">(</tt><tt id="link-25" class="py-name"><a title="spade.pyparsing.Group
+spade.xmppd.modules.wq.Group" class="py-name" href="#" onclick="return doclink('link-25', 'Group', 'link-18');">Group</a></tt><tt class="py-op">(</tt> <tt class="py-name">lpar</tt> <tt class="py-op">+</tt> <tt class="py-name">Key</tt> <tt class="py-op">+</tt> <tt id="link-26" class="py-name"><a title="spade.pyparsing.Group
+spade.xmppd.modules.wq.Group" class="py-name" href="#" onclick="return doclink('link-26', 'Group', 'link-18');">Group</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name" targets="Class spade.pyparsing.OneOrMore=spade.pyparsing.OneOrMore-class.html"><a title="spade.pyparsing.OneOrMore" class="py-name" href="#" onclick="return doclink('link-27', 'OneOrMore', 'link-27');">OneOrMore</a></tt><tt class="py-op">(</tt><tt class="py-name">Parameter</tt><tt class="py-op">)</tt><tt class="py-op">|</tt><tt id="link-28" class="py-name"><a title="spade.pyparsing.OneOrMore" class="py-name" href="#" onclick="return doclink('link-28', 'OneOrMore', 'link-27');">OneOrMore</a></tt><tt class="py-op">(</tt><tt class="py-name">Constant</tt><tt class="py-op">)</tt><tt class="py-op">|</tt><tt id="link-29" class="py-name"><a title="spade.pyparsing.OneOrMore" class="py-name" href="#" onclick="return doclink('link-29', 'OneOrMore', 'link-27');">OneOrMore</a></tt><tt class="py-op">(</tt><tt id="link-30" class="py-name"><a title="spade.logic.Expr" class="py-name" href="#" onclick="return doclink('link-30', 'Expr', 'link-15');">Expr</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">rpar</tt> <tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                <tt class="py-name">Content</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt> <tt class="py-name">lpar</tt> <tt class="py-op">+</tt> <tt id="link-31" class="py-name"><a title="spade.pyparsing.OneOrMore" class="py-name" href="#" onclick="return doclink('link-31', 'OneOrMore', 'link-27');">OneOrMore</a></tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="spade.logic.Expr" class="py-name" href="#" onclick="return doclink('link-32', 'Expr', 'link-15');">Expr</a></tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">rpar</tt> <tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">  </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bnf</tt> <tt class="py-op">=</tt> <tt class="py-name">Content</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                <tt class="py-comment">#self.bnf.setDebug()</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bnf</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method spade.pyparsing.Forward.validate()=spade.pyparsing.Forward-class.html#validate,Method spade.pyparsing.ParseElementEnhance.validate()=spade.pyparsing.ParseElementEnhance-class.html#validate,Method spade.pyparsing.ParseExpression.validate()=spade.pyparsing.ParseExpression-class.html#validate,Method spade.pyparsing.ParserElement.validate()=spade.pyparsing.ParserElement-class.html#validate"><a title="spade.pyparsing.Forward.validate
+spade.pyparsing.ParseElementEnhance.validate
+spade.pyparsing.ParseExpression.validate
+spade.pyparsing.ParserElement.validate" class="py-name" href="#" onclick="return doclink('link-33', 'validate', 'link-33');">validate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">                        <tt class="py-comment">#print "BNF VALID!!!"</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"ERROR: BNF NOT VALID!!!"</tt>  </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt> </tt>
+</div><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                        <tt class="py-comment">#sys.exit(-1)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="SL0Parser.parse"></a><div id="SL0Parser.parse-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="SL0Parser.parse-toggle" onclick="return toggle('SL0Parser.parse');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SL0Parser.SL0Parser-class.html#parse">parse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">string</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SL0Parser.parse-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="SL0Parser.parse-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">                parses a string</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">                returns a pyparsing.ParseResults</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">                        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bnf</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method spade.SpadeConfigParser.spadeXML.parseString()=spade.SpadeConfigParser.spadeXML-class.html#parseString,Method spade.pyparsing.ParserElement.parseString()=spade.pyparsing.ParserElement-class.html#parseString,Method spade.xmppd.modules.config.xmppdXML.parseString()=spade.xmppd.modules.config.xmppdXML-class.html#parseString"><a title="spade.SpadeConfigParser.spadeXML.parseString
+spade.pyparsing.ParserElement.parseString
+spade.xmppd.modules.config.xmppdXML.parseString" class="py-name" href="#" onclick="return doclink('link-34', 'parseString', 'link-34');">parseString</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">string</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt id="link-35" class="py-name" targets="Class spade.pyparsing.ParseException=spade.pyparsing.ParseException-class.html"><a title="spade.pyparsing.ParseException" class="py-name" href="#" onclick="return doclink('link-35', 'ParseException', 'link-35');">ParseException</a></tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Function spade.pyparsing.line()=spade.pyparsing-module.html#line"><a title="spade.pyparsing.line" class="py-name" href="#" onclick="return doclink('link-36', 'line', 'link-36');">line</a></tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">" "</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">err</tt><tt class="py-op">.</tt><tt class="py-name">column</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">"|"</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                        <tt class="py-comment">#sys.exit(-1)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"Unknown Parsing Exception"</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                        <tt class="py-comment">#sys.exit(-1)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="SL0Parser.parseFile"></a><div id="SL0Parser.parseFile-def"><a name="L60"></a><tt class="py-lineno"> 60</tt> <a class="py-toggle" href="#" id="SL0Parser.parseFile-toggle" onclick="return toggle('SL0Parser.parseFile');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SL0Parser.SL0Parser-class.html#parseFile">parseFile</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">file</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SL0Parser.parseFile-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="SL0Parser.parseFile-expanded"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">                parses a file</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">                returns a pyparsing.ParseResults</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bnf</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method spade.ACLParser.ACLParser.parseFile()=spade.ACLParser.ACLParser-class.html#parseFile,Method spade.ACLParser.ACLxmlParser.parseFile()=spade.ACLParser.ACLxmlParser-class.html#parseFile,Method spade.SL0Parser.SL0Parser.parseFile()=spade.SL0Parser.SL0Parser-class.html#parseFile,Method spade.pyparsing.ParserElement.parseFile()=spade.pyparsing.ParserElement-class.html#parseFile"><a title="spade.ACLParser.ACLParser.parseFile
+spade.ACLParser.ACLxmlParser.parseFile
+spade.SL0Parser.SL0Parser.parseFile
+spade.pyparsing.ParserElement.parseFile" class="py-name" href="#" onclick="return doclink('link-37', 'parseFile', 'link-37');">parseFile</a></tt><tt class="py-op">(</tt><tt class="py-name">file</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt id="link-38" class="py-name"><a title="spade.pyparsing.ParseException" class="py-name" href="#" onclick="return doclink('link-38', 'ParseException', 'link-35');">ParseException</a></tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.pyparsing.line" class="py-name" href="#" onclick="return doclink('link-39', 'line', 'link-36');">line</a></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">" "</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">err</tt><tt class="py-op">.</tt><tt class="py-name">column</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-string">"|"</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-string">"Unkwonw Exception"</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                        <tt class="py-keyword">print</tt> <tt class="py-name">err</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                        <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">m</tt> </tt>
+</div></div><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name" targets="Module spade.SL0Parser=spade.SL0Parser-module.html,Class spade.SL0Parser.SL0Parser=spade.SL0Parser.SL0Parser-class.html"><a title="spade.SL0Parser
+spade.SL0Parser.SL0Parser" class="py-name" href="#" onclick="return doclink('link-40', 'SL0Parser', 'link-40');">SL0Parser</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt id="link-41" class="py-name" targets="Variable spade.pyparsing.ParseBaseException.msg=spade.pyparsing.ParseBaseException-class.html#msg"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-41', 'msg', 'link-41');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method spade.ACLParser.ACLParser.parse()=spade.ACLParser.ACLParser-class.html#parse,Method spade.ACLParser.ACLxmlParser.parse()=spade.ACLParser.ACLxmlParser-class.html#parse,Method spade.RDF0Parser.RDF0Parser.parse()=spade.RDF0Parser.RDF0Parser-class.html#parse,Method spade.SL0Parser.SL0Parser.parse()=spade.SL0Parser.SL0Parser-class.html#parse,Method spade.SpadeConfigParser.ConfigParser.parse()=spade.SpadeConfigParser.ConfigParser-class.html#parse,Method spade.XMLCodec.XMLCodec.parse()=spade.XMLCodec.XMLCodec-class.html#parse,Method spade.pygooglechart.ChartGrammar.parse()=spade.pygooglechart.ChartGrammar-class.html#parse,Method spade.pyparsing.ParserElement.parse()=spade.pyparsing.ParserElement-class.html#parse,Method spade.pyratemp.Parser.parse()=spade.pyratemp.Parser-class.html#parse"><a title="spade.ACLParser.ACLParser.parse
+spade.ACLParser.ACLxmlParser.parse
+spade.RDF0Parser.RDF0Parser.parse
+spade.SL0Parser.SL0Parser.parse
+spade.SpadeConfigParser.ConfigParser.parse
+spade.XMLCodec.XMLCodec.parse
+spade.pygooglechart.ChartGrammar.parse
+spade.pyparsing.ParserElement.parse
+spade.pyratemp.Parser.parse" class="py-name" href="#" onclick="return doclink('link-42', 'parse', 'link-42');">parse</a></tt><tt class="py-op">(</tt><tt class="py-string">"((prueba :name (set (bla uno) (bla dos))))"</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-comment">#msg = p.parseFile("message.sl0")</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-comment">#print repr(msg)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt id="link-43" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-43', 'msg', 'link-41');">msg</a></tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method spade.AID.aid.asXML()=spade.AID.aid-class.html#asXML,Method spade.pyparsing.ParseResults.asXML()=spade.pyparsing.ParseResults-class.html#asXML"><a title="spade.AID.aid.asXML
+spade.pyparsing.ParseResults.asXML" class="py-name" href="#" onclick="return doclink('link-44', 'asXML', 'link-44');">asXML</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt id="link-45" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-45', 'msg', 'link-41');">msg</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method spade.pyparsing.ParseResults.asList()=spade.pyparsing.ParseResults-class.html#asList"><a title="spade.pyparsing.ParseResults.asList" class="py-name" href="#" onclick="return doclink('link-46', 'asList', 'link-46');">asList</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-comment">#print "--------------------"</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-comment">#print msg.action['agent-identifier'].addresses.keys()</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-comment">#print msg.action['agent-identifier'].addresses.sequence[1]</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt id="link-47" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-47', 'msg', 'link-41');">msg</a></tt><tt class="py-op">.</tt><tt class="py-name">prueba</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-48', 'name', 'link-48');">name</a></tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method spade.kb.KB.set()=spade.kb.KB-class.html#set"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-49', 'set', 'link-49');">set</a></tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">cosa</tt> <tt class="py-keyword">in</tt> <tt id="link-50" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-50', 'msg', 'link-41');">msg</a></tt><tt class="py-op">.</tt><tt class="py-name">prueba</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-51', 'name', 'link-48');">name</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-52', 'set', 'link-49');">set</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">cosa</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-string">"""</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-string">    print msg.prueba.name.set.bla</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-string">    print msg.prueba.name.set.bla.keys()</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-string">    print msg.prueba.name.set.bla.values()</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-string">    print msg.prueba.name.set.bla[0]</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string">    print "--"</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">    print msg.prueba.name.set.values()</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string">    """</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-string">"--"</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">     </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt class="py-name">slgrande</tt> <tt class="py-op">=</tt> <tt class="py-string">"""((result</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-string">      (search        </tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-string">        (set</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-string">          (df-agent-description</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-string">            :name</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-string">              (agent-identifier</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-string">                :name scheduler-agent@foo.com</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-string">                :addresses (sequence iiop://foo.com/acc))</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-string">            :ontology (set meeting-scheduler FIPA-Agent-Management)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-string">            :languages (set FIPA-SL0 FIPA-SL1 KIF)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-string">            :services (set</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-string">              (service-description</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-string">                :name profiling</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-string">                :type meeting-scheduler-service)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-string">              (service-description</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-string">                :name profiling</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-string">                :type user-profiling-service)))))))"""</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-name">slgrande</tt><tt class="py-op">=</tt><tt class="py-string">"""((result  (set (ams-agent-description</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-string">:name (agent-identifier</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-string">:name agent@alien3.dsic.upv.es</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-string">:addresses </tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-string">(sequence</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-string">xmpp://agent@alien3.dsic.upv.es</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-string">:ownership agent@alien3.dsic.upv.es</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-string"> (ams-agent-description</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-string">:name (agent-identifier</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-string">:name ams.alien3.dsic.upv.es</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-string">:addresses </tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-string">(sequence</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-string">xmpp://ams.alien3.dsic.upv.es</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-string">:ownership SPADE</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-string">:state active)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-string"> (ams-agent-description</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-string">:name (agent-identifier</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-string">:name df.alien3.dsic.upv.es</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-string">:addresses </tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-string">(sequence</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-string">xmpp://df.alien3.dsic.upv.es</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-string">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-string">:ownership SPADE</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-string">:state active)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-string"> )))"""</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-53" class="py-name" targets="Module spade.DF=spade.DF-module.html,Class spade.DF.DF=spade.DF.DF-class.html"><a title="spade.DF
+spade.DF.DF" class="py-name" href="#" onclick="return doclink('link-53', 'DF', 'link-53');">DF</a></tt> <tt class="py-keyword">import</tt> <tt id="link-54" class="py-name" targets="Class spade.DF.DfAgentDescription=spade.DF.DfAgentDescription-class.html"><a title="spade.DF.DfAgentDescription" class="py-name" href="#" onclick="return doclink('link-54', 'DfAgentDescription', 'link-54');">DfAgentDescription</a></tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt id="link-55" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-55', 'msg', 'link-41');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="spade.ACLParser.ACLParser.parse
+spade.ACLParser.ACLxmlParser.parse
+spade.RDF0Parser.RDF0Parser.parse
+spade.SL0Parser.SL0Parser.parse
+spade.SpadeConfigParser.ConfigParser.parse
+spade.XMLCodec.XMLCodec.parse
+spade.pygooglechart.ChartGrammar.parse
+spade.pyparsing.ParserElement.parse
+spade.pyratemp.Parser.parse" class="py-name" href="#" onclick="return doclink('link-56', 'parse', 'link-42');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">slgrande</tt><tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt id="link-57" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-57', 'msg', 'link-41');">msg</a></tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">dfd</tt> <tt class="py-keyword">in</tt> <tt id="link-58" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-58', 'msg', 'link-41');">msg</a></tt><tt class="py-op">.</tt><tt class="py-name">result</tt><tt class="py-op">.</tt><tt class="py-name">search</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-59', 'set', 'link-49');">set</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt id="link-60" class="py-name" targets="Function spade.logic.d()=spade.logic-module.html#d"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-60', 'd', 'link-60');">d</a></tt> <tt class="py-op">=</tt> <tt id="link-61" class="py-name"><a title="spade.DF.DfAgentDescription" class="py-name" href="#" onclick="return doclink('link-61', 'DfAgentDescription', 'link-54');">DfAgentDescription</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-62', 'd', 'link-60');">d</a></tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method spade.AID.aid.loadSL0()=spade.AID.aid-class.html#loadSL0,Method spade.AMS.AmsAgentDescription.loadSL0()=spade.AMS.AmsAgentDescription-class.html#loadSL0,Method spade.DF.DfAgentDescription.loadSL0()=spade.DF.DfAgentDescription-class.html#loadSL0,Method spade.DF.ServiceDescription.loadSL0()=spade.DF.ServiceDescription-class.html#loadSL0"><a title="spade.AID.aid.loadSL0
+spade.AMS.AmsAgentDescription.loadSL0
+spade.DF.DfAgentDescription.loadSL0
+spade.DF.ServiceDescription.loadSL0" class="py-name" href="#" onclick="return doclink('link-63', 'loadSL0', 'link-63');">loadSL0</a></tt><tt class="py-op">(</tt><tt class="py-name">dfd</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-64', 'd', 'link-60');">d</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:05 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

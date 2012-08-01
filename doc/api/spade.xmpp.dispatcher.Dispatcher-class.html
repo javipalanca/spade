@@ -1,0 +1,1141 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.dispatcher.Dispatcher</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.dispatcher-module.html">Module&nbsp;dispatcher</a> ::
+        Class&nbsp;Dispatcher
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.dispatcher.Dispatcher-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Dispatcher</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_14" name="uml_class_diagram_for_spade_xm_14">
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#__init__" title="spade.xmpp.dispatcher.Dispatcher.__init__" alt="" coords="17,153,569,172"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#dumpHandlers" title="Return set of user&#45;registered callbacks in it&#39;s internal format." alt="" coords="17,172,569,191"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#restoreHandlers" title="Restores user&#45;registered callbacks structure from dump previously obtained &#160;via dumpHandlers." alt="" coords="17,191,569,209"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#plugin" title="Plug the Dispatcher instance into Client class instance and send initial &#160;stream header." alt="" coords="17,209,569,228"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#plugout" title="Prepares instance to be destructed." alt="" coords="17,228,569,247"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#StreamInit" title="Send an initial stream header." alt="" coords="17,247,569,265"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#Process" title="Check incoming stream for data waiting." alt="" coords="17,265,569,284"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterNamespace" title="Creates internal structures for newly registered namespace." alt="" coords="17,284,569,303"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterProtocol" title="Used to declare some top&#45;level stanza name to dispatcher." alt="" coords="17,303,569,321"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterNamespaceHandler" title="Register handler for processing all stanzas for specified namespace." alt="" coords="17,321,569,340"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandler" title="Register user callback as stanzas handler of declared type." alt="" coords="17,340,569,359"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandlerOnce" title="Unregister handler after first call (not implemented yet)." alt="" coords="17,359,569,377"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#UnregisterHandler" title="Unregister handler." alt="" coords="17,377,569,396"/>
+<area shape="rect" id="node2510" href="spade.xmpp.dispatcher.Dispatcher-class.html#disconnect" title="Send a stream terminator and and handle all incoming stanzas before stream &#160;closure." alt="" coords="17,415,569,433"/>
+<area shape="rect" id="node1" href="spade.xmpp.dispatcher.Dispatcher-class.html" title="Ancestor of PlugIn class." alt="" coords="5,121,581,439"/>
+<area shape="rect" id="node2511" href="spade.xmpp.client.PlugIn-class.html#DEBUG" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="191,39,395,57"/>
+<area shape="rect" id="node2511" href="spade.xmpp.client.PlugIn-class.html#PlugIn" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="191,57,395,76"/>
+<area shape="rect" id="node2511" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="191,76,395,95"/>
+<area shape="rect" id="node2" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="179,6,405,101"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_14.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_14" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Ancestor of PlugIn class. Handles XMPP stream, i.e. aware of stream 
+  headers. Can be plugged out/in to restart these headers (used for SASL 
+  f.e.).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#dumpHandlers" class="summary-sig-name">dumpHandlers</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return set of user-registered callbacks in it's internal format.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.dumpHandlers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#restoreHandlers" class="summary-sig-name">restoreHandlers</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handlers</span>)</span><br />
+      Restores user-registered callbacks structure from dump previously 
+      obtained via dumpHandlers.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.restoreHandlers">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#_init" class="summary-sig-name" onclick="show_private();">_init</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Registers default namespaces/protocols/handlers.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher._init">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#plugin" class="summary-sig-name">plugin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>)</span><br />
+      Plug the Dispatcher instance into Client class instance and send 
+      initial stream header.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="plugout"></a><span class="summary-sig-name">plugout</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Prepares instance to be destructed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.plugout">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="StreamInit"></a><span class="summary-sig-name">StreamInit</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Send an initial stream header.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.StreamInit">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_check_stream_start"></a><span class="summary-sig-name">_check_stream_start</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ns</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">attrs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher._check_stream_start">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#Process" class="summary-sig-name">Process</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Check incoming stream for data waiting.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.Process">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterNamespace" class="summary-sig-name">RegisterNamespace</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">xmlns</span>,
+        <span class="summary-sig-arg">order</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>)</span><br />
+      Creates internal structures for newly registered namespace.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterNamespace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterProtocol" class="summary-sig-name">RegisterProtocol</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag_name</span>,
+        <span class="summary-sig-arg">Proto</span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">order</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>)</span><br />
+      Used to declare some top-level stanza name to dispatcher.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterProtocol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="RegisterNamespaceHandler"></a><span class="summary-sig-name">RegisterNamespaceHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">xmlns</span>,
+        <span class="summary-sig-arg">handler</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">makefirst</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">system</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Register handler for processing all stanzas for specified namespace.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterNamespaceHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandler" class="summary-sig-name">RegisterHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">handler</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">makefirst</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">system</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Register user callback as stanzas handler of declared type.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="RegisterHandlerOnce"></a><span class="summary-sig-name">RegisterHandlerOnce</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">handler</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">makefirst</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">system</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Unregister handler after first call (not implemented yet).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterHandlerOnce">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#UnregisterHandler" class="summary-sig-name">UnregisterHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">handler</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Unregister handler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.UnregisterHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterDefaultHandler" class="summary-sig-name">RegisterDefaultHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handler</span>)</span><br />
+      Specify the handler that will be used if no NodeProcessed exception 
+      were raised.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterDefaultHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#RegisterEventHandler" class="summary-sig-name">RegisterEventHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handler</span>)</span><br />
+      Register handler that will process events.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterEventHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="returnStanzaHandler"></a><span class="summary-sig-name">returnStanzaHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Return stanza back to the sender with 
+      &lt;feature-not-implemennted/&gt; error set.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.returnStanzaHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="streamErrorHandler"></a><span class="summary-sig-name">streamErrorHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">error</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.streamErrorHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="RegisterCycleHandler"></a><span class="summary-sig-name">RegisterCycleHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handler</span>)</span><br />
+      Register handler that will be called on every Dispatcher.Process() 
+      call.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterCycleHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="UnregisterCycleHandler"></a><span class="summary-sig-name">UnregisterCycleHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">handler</span>)</span><br />
+      Unregister handler that will is called on every Dispatcher.Process() 
+      call.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.UnregisterCycleHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#Event" class="summary-sig-name">Event</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">realm</span>,
+        <span class="summary-sig-arg">event</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      Raise some event.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.Event">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#dispatch" class="summary-sig-name">dispatch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">session</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">direct</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Main procedure that performs XMPP stanza recognition and calling 
+      apppropriate handlers for it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.dispatch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#WaitForResponse" class="summary-sig-name">WaitForResponse</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ID</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">25</span>)</span><br />
+      Block and wait until stanza with specific &quot;id&quot; attribute 
+      will come.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.WaitForResponse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="SendAndWaitForResponse"></a><span class="summary-sig-name">SendAndWaitForResponse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">25</span>)</span><br />
+      Put stanza on the wire and wait for recipient's response to it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.SendAndWaitForResponse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#SendAndCallForResponse" class="summary-sig-name">SendAndCallForResponse</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      Put stanza on the wire and call back when recipient replies.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.SendAndCallForResponse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.dispatcher.Dispatcher-class.html#send" class="summary-sig-name">send</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Serialise stanza and put it on the wire.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.send">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="disconnect"></a><span class="summary-sig-name">disconnect</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Send a stream terminator and and handle all incoming stanzas before 
+      stream closure.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.disconnect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.PlugIn-class.html">client.PlugIn</a></code></b>:
+      <code><a href="spade.xmpp.client.PlugIn-class.html#DEBUG">DEBUG</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugIn">PlugIn</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugOut">PlugOut</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#__init__">client.PlugIn.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dumpHandlers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dumpHandlers</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.dumpHandlers">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return set of user-registered callbacks in it's internal format. Used 
+  within the library to carry user handlers set over Dispatcher 
+  replugins.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="restoreHandlers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">restoreHandlers</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">handlers</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.restoreHandlers">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Restores user-registered callbacks structure from dump previously 
+  obtained via dumpHandlers. Used within the library to carry user handlers
+  set over Dispatcher replugins.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_init"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_init</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher._init">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Registers default namespaces/protocols/handlers. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">owner</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.plugin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Plug the Dispatcher instance into Client class instance and send 
+  initial stream header. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="Process"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">Process</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">timeout</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.Process">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Check incoming stream for data waiting. If &quot;timeout&quot; is 
+  positive - block for as max. this time. Returns: 1) length of processed 
+  data if some data were processed; 2) '0' string if no data were processed
+  but link is alive; 3) 0 (zero) if underlying connection is closed. Take 
+  note that in case of disconnection detect during Process() call 
+  disconnect handlers are called automatically.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="RegisterNamespace"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">RegisterNamespace</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">xmlns</span>,
+        <span class="sig-arg">order</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterNamespace">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Creates internal structures for newly registered namespace. You can 
+  register handlers for this namespace afterwards. By default one namespace
+  already registered (jabber:client or jabber:component:accept depending on
+  context.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="RegisterProtocol"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">RegisterProtocol</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">tag_name</span>,
+        <span class="sig-arg">Proto</span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">order</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterProtocol">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Used to declare some top-level stanza name to dispatcher. Needed to 
+  start registering handlers for such stanzas. Iq, message and presence 
+  protocols are registered by default.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="RegisterHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">RegisterHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">handler</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">ns</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">makefirst</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">system</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Register user callback as stanzas handler of declared type. Callback must take
+(if chained, see later) arguments: dispatcher instance (for replying), incomed
+return of previous handlers.
+The callback must raise xmpp.NodeProcessed just before return if it want preven
+callbacks to be called with the same stanza as argument _and_, more importantly
+library from returning stanza to sender with error set (to be enabled in 0.2 ve
+ Arguments:
+   &quot;name&quot; - name of stanza. F.e. &quot;iq&quot;.
+   &quot;handler&quot; - user callback.
+   &quot;typ&quot; - value of stanza's &quot;type&quot; attribute. If not specified any value match
+   &quot;ns&quot; - namespace of child that stanza must contain.
+   &quot;chained&quot; - chain together output of several handlers.
+   &quot;makefirst&quot; - insert handler in the beginning of handlers list instead of
+     adding it to the end. Note that more common handlers (i.e. w/o &quot;typ&quot; and &quot;
+     will be called first nevertheless.
+   &quot;system&quot; - call handler even if NodeProcessed Exception were raised already.
+ 
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="UnregisterHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">UnregisterHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">handler</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">ns</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.UnregisterHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unregister handler. &quot;typ&quot; and &quot;ns&quot; must be 
+  specified exactly the same as with registering.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="RegisterDefaultHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">RegisterDefaultHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">handler</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterDefaultHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Specify the handler that will be used if no NodeProcessed exception 
+  were raised. This is returnStanzaHandler by default.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="RegisterEventHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">RegisterEventHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">handler</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.RegisterEventHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Register handler that will process events. F.e. 
+  &quot;FILERECEIVED&quot; event.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="Event"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">Event</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">realm</span>,
+        <span class="sig-arg">event</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.Event">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Raise some event. Takes three arguments: 1) &quot;realm&quot; - scope 
+  of event. Usually a namespace. 2) &quot;event&quot; - the event itself. 
+  F.e. &quot;SUCESSFULL SEND&quot;. 3) data that comes along with event. 
+  Depends on event.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="dispatch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dispatch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stanza</span>,
+        <span class="sig-arg">session</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">direct</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.dispatch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Main procedure that performs XMPP stanza recognition and calling 
+  apppropriate handlers for it. Called internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WaitForResponse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WaitForResponse</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">ID</span>,
+        <span class="sig-arg">timeout</span>=<span class="sig-default">25</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.WaitForResponse">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Block and wait until stanza with specific &quot;id&quot; attribute 
+  will come. If no such stanza is arrived within timeout, return None. If 
+  operation failed for some reason then owner's attributes lastErrNode, 
+  lastErr and lastErrCode are set accordingly.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="SendAndCallForResponse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SendAndCallForResponse</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stanza</span>,
+        <span class="sig-arg">func</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.SendAndCallForResponse">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Put stanza on the wire and call back when recipient replies. 
+  Additional callback arguments can be specified in args.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="send"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">send</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.dispatcher-pysrc.html#Dispatcher.send">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Serialise stanza and put it on the wire. Assign an unique ID to it 
+  before send. Returns assigned ID.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

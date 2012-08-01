@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.session.Session</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.session-module.html">Module&nbsp;session</a> ::
+        Class&nbsp;Session
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.session.Session-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Session</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session">source&nbsp;code</a></span></p>
+<p>The Session class instance is used for storing all session-related 
+  info like credentials, socket/xml stream/session state flags, roster 
+  items (in case of client type connection) etc. Session object have no 
+  means of discovering is any info is ready to be read. Instead you should 
+  use poll() (recomended) or select() methods for this purpose. Session can
+  be one of two types: 'server' and 'client'. 'server' session handles 
+  inbound connection and 'client' one used to create an outbound one. 
+  Session instance have multitude of internal attributes. The most imporant
+  is the 'peer' one. It is set once the peer is authenticated (client).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">socket</span>,
+        <span class="summary-sig-arg">owner</span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">peer</span>=<span class="summary-sig-default">None</span>)</span><br />
+      When the session is created it's type (client/server) is determined 
+      from the beginning.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#StartStream" class="summary-sig-name">StartStream</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      This method is used to initialise the internal xml expat parser and 
+      to send initial stream header (in case of client connection).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.StartStream">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#receive" class="summary-sig-name">receive</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Reads all pending incoming data.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.receive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#sendnow" class="summary-sig-name">sendnow</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">chunk</span>)</span><br />
+      Put chunk into &quot;immidiatedly send&quot; queue.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.sendnow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#enqueue" class="summary-sig-name">enqueue</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Takes Protocol instance as argument.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.enqueue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#push_queue" class="summary-sig-name">push_queue</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">failreason</span>=<span class="summary-sig-default">ERR_RECIPIENT_UNAVAILABLE</span>)</span><br />
+      If stream is authenticated than move items from &quot;send&quot; 
+      queue to &quot;immidiatedly send&quot; queue.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.push_queue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#flush_queue" class="summary-sig-name">flush_queue</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Put the &quot;immidiatedly send&quot; queue content on the wire.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.flush_queue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#_dispatch" class="summary-sig-name" onclick="show_private();">_dispatch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">trusted</span>=<span class="summary-sig-default">0</span>)</span><br />
+      This is callback that is used to pass the received stanza forth to 
+      owner's dispatcher _if_ the stream is authorised.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._dispatch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#_catch_stream_id" class="summary-sig-name" onclick="show_private();">_catch_stream_id</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">tag</span>=<span class="summary-sig-default">'stream'</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      This callback is used to detect the stream namespace of incoming 
+      stream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._catch_stream_id">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#_stream_open" class="summary-sig-name" onclick="show_private();">_stream_open</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">tag</span>=<span class="summary-sig-default">'stream'</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      This callback is used to handle opening stream tag of the incoming 
+      stream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._stream_open">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="feature"></a><span class="summary-sig-name">feature</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>)</span><br />
+      Declare some stream feature as activated one.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.feature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#unfeature" class="summary-sig-name">unfeature</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">feature</span>)</span><br />
+      Declare some feature as illegal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.unfeature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#_stream_close" class="summary-sig-name" onclick="show_private();">_stream_close</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">unregister</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Write the closing stream tag and destroy the underlaying socket.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._stream_close">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#terminate_stream" class="summary-sig-name">terminate_stream</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">error</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">unregister</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Notify the peer about stream closure.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.terminate_stream">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_destroy_socket"></a><span class="summary-sig-name">_destroy_socket</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Break cyclic dependancies to let python's GC free memory right now.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._destroy_socket">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="start_feature"></a><span class="summary-sig-name">start_feature</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span><br />
+      Declare some feature as &quot;negotiating now&quot; to prevent other 
+      features from start negotiating.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.start_feature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="stop_feature"></a><span class="summary-sig-name">stop_feature</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">f</span>)</span><br />
+      Declare some feature as &quot;negotiated&quot; to allow other 
+      features start negotiating.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.stop_feature">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#set_socket_state" class="summary-sig-name">set_socket_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">newstate</span>)</span><br />
+      Change the underlaying socket state.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_socket_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#set_session_state" class="summary-sig-name">set_session_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">newstate</span>)</span><br />
+      Change the session state.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_session_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.session.Session-class.html#set_stream_state" class="summary-sig-name">set_stream_state</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">newstate</span>)</span><br />
+      Change the underlaying XML stream state Stream starts with 
+      STREAM__NOT_OPENED and then proceeds with STREAM__OPENED, 
+      STREAM__CLOSING and STREAM__CLOSED states.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_stream_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">socket</span>,
+        <span class="sig-arg">owner</span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">peer</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>When the session is created it's type (client/server) is determined 
+  from the beginning. socket argument is the pre-created socket-like 
+  object. It must have the following methods: send, recv, fileno, close. 
+  owner is the 'master' instance that have Dispatcher plugged into it and 
+  generally will take care about all session events. xmlns is the stream 
+  namespace that will be used. Client must set this argument If server sets
+  this argument than stream will be dropped if opened with some another 
+  namespace. peer is the name of peer instance. This is the flag that 
+  differentiates client session from server session. Client must set it to 
+  the name of the server that will be connected, server must leave this 
+  argument alone.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StartStream"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StartStream</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.StartStream">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method is used to initialise the internal xml expat parser and to
+  send initial stream header (in case of client connection). Should be used
+  after initial connection and after every stream restart.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="receive"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">receive</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.receive">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Reads all pending incoming data. Raises IOError on disconnection. 
+  Blocks until at least one byte is read.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="sendnow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sendnow</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">chunk</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.sendnow">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Put chunk into &quot;immidiatedly send&quot; queue. Should only be 
+  used for auth/TLS stuff and like. If you just want to shedule regular 
+  stanza for delivery use enqueue method.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="enqueue"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">enqueue</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.enqueue">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Takes Protocol instance as argument. Puts stanza into &quot;send&quot;
+  fifo queue. Items into the send queue are hold until stream 
+  authenticated. After that this method is effectively the same as 
+  &quot;sendnow&quot; method.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="push_queue"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">push_queue</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">failreason</span>=<span class="sig-default">ERR_RECIPIENT_UNAVAILABLE</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.push_queue">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If stream is authenticated than move items from &quot;send&quot; queue
+  to &quot;immidiatedly send&quot; queue. Else if the stream is failed then
+  return all queued stanzas with error passed as argument. Otherwise do 
+  nothing.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="flush_queue"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">flush_queue</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.flush_queue">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Put the &quot;immidiatedly send&quot; queue content on the wire. 
+  Blocks until at least one byte sent.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_dispatch"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_dispatch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stanza</span>,
+        <span class="sig-arg">trusted</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._dispatch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This is callback that is used to pass the received stanza forth to 
+  owner's dispatcher _if_ the stream is authorised. Otherwise the stanza is
+  just dropped. The 'trusted' argument is used to emulate stanza receive. 
+  This method is used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_catch_stream_id"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_catch_stream_id</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">ns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">tag</span>=<span class="sig-default">'stream'</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._catch_stream_id">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This callback is used to detect the stream namespace of incoming 
+  stream. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_stream_open"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_stream_open</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">ns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">tag</span>=<span class="sig-default">'stream'</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._stream_open">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This callback is used to handle opening stream tag of the incoming 
+  stream. In the case of client session it just make some validation. 
+  Server session also sends server headers and if the stream valid the 
+  features node. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="unfeature"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">unfeature</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">feature</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.unfeature">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Declare some feature as illegal. Illegal features can not be used. 
+  Example: BIND feature becomes illegal after Non-SASL auth.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_stream_close"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_stream_close</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">unregister</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session._stream_close">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Write the closing stream tag and destroy the underlaying socket. Used 
+  internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="terminate_stream"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">terminate_stream</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">error</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">unregister</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.terminate_stream">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Notify the peer about stream closure. Ensure that xmlstream is not 
+  brokes - i.e. if the stream isn't opened yet - open it before closure. If
+  the error condition is specified than create a stream error and send it 
+  along with closing stream tag. Emulate receiving 'unavailable' type 
+  presence just before stream closure.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_socket_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_socket_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">newstate</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_socket_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Change the underlaying socket state. Socket starts with 
+  SOCKET_UNCONNECTED state and then proceeds (possibly) to SOCKET_ALIVE and
+  then to SOCKET_DEAD</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_session_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_session_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">newstate</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_session_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Change the session state. Session starts with SESSION_NOT_AUTHED state
+  and then comes through SESSION_AUTHED, SESSION_BOUND, SESSION_OPENED and 
+  SESSION_CLOSED states.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_stream_state"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_stream_state</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">newstate</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.session-pysrc.html#Session.set_stream_state">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Change the underlaying XML stream state Stream starts with 
+  STREAM__NOT_OPENED and then proceeds with STREAM__OPENED, STREAM__CLOSING
+  and STREAM__CLOSED states. Note that some features (like TLS and SASL) 
+  requires stream re-start so this state can have non-linear changes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

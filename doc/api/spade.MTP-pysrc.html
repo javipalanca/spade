@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.MTP</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;MTP
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.MTP-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.MTP-module.html">Module spade.MTP</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># encoding: utf-8</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package spade=spade-module.html"><a title="spade" class="py-name" href="#" onclick="return doclink('link-0', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module spade.SpadeConfigParser=spade.SpadeConfigParser-module.html"><a title="spade.SpadeConfigParser" class="py-name" href="#" onclick="return doclink('link-1', 'SpadeConfigParser', 'link-1');">SpadeConfigParser</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-2', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Module spade.XMLCodec=spade.XMLCodec-module.html,Class spade.XMLCodec.XMLCodec=spade.XMLCodec.XMLCodec-class.html"><a title="spade.XMLCodec
+spade.XMLCodec.XMLCodec" class="py-name" href="#" onclick="return doclink('link-3', 'XMLCodec', 'link-3');">XMLCodec</a></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-4', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Module spade.ACLParser=spade.ACLParser-module.html,Class spade.ACLParser.ACLParser=spade.ACLParser.ACLParser-class.html"><a title="spade.ACLParser
+spade.ACLParser.ACLParser" class="py-name" href="#" onclick="return doclink('link-5', 'ACLParser', 'link-5');">ACLParser</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name" targets="Package spade.xmpp=spade.xmpp-module.html"><a title="spade.xmpp" class="py-name" href="#" onclick="return doclink('link-6', 'xmpp', 'link-6');">xmpp</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="MTP"></a><div id="MTP-def"><a name="L7"></a><tt class="py-lineno"> 7</tt> <a class="py-toggle" href="#" id="MTP-toggle" onclick="return toggle('MTP');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html">MTP</a><tt class="py-op">:</tt> </tt>
+</div><div id="MTP-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="MTP-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
+<a name="MTP.__init__"></a><div id="MTP.__init__-def"><a name="L9"></a><tt class="py-lineno"> 9</tt> <a class="py-toggle" href="#" id="MTP.__init__-toggle" onclick="return toggle('MTP.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">config</tt><tt class="py-op">,</tt> <tt class="py-param">acc</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MTP.__init__-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MTP.__init__-expanded"><a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">                <tt class="py-comment">#parser = SpadeConfigParser.ConfifParser()</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">                <tt class="py-comment">#self.config = parser.parse(CONFIGFILE)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-7', 'name', 'link-7');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-8', 'name', 'link-7');">name</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module spade.xmppd.modules.config=spade.xmppd.modules.config-module.html"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-9', 'config', 'link-9');">config</a></tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-10', 'config', 'link-9');">config</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt> <tt class="py-op">=</tt> <tt class="py-name">acc</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Module spade.xmpp.protocol=spade.xmpp.protocol-module.html"><a title="spade.xmpp.protocol" class="py-name" href="#" onclick="return doclink('link-11', 'protocol', 'link-11');">protocol</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-12', 'config', 'link-9');">config</a></tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">.</tt><tt class="py-name">mtp</tt><tt class="py-op">[</tt><tt id="link-13" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-13', 'name', 'link-7');">name</a></tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="spade.xmpp.protocol" class="py-name" href="#" onclick="return doclink('link-14', 'protocol', 'link-11');">protocol</a></tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                <tt class="py-comment">#self.instance = self.config.acc.mtp[name].instance</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method spade.MTP.MTP.setup()=spade.MTP.MTP-class.html#setup,Method spade.Organization.Organization.setup()=spade.Organization.Organization-class.html#setup,Method spade.Organization_new.Organization_new.setup()=spade.Organization_new.Organization_new-class.html#setup,Method spade.Unit.Unit.setup()=spade.Unit.Unit-class.html#setup,Method spade.Unit_new.Unit_new.setup()=spade.Unit_new.Unit_new-class.html#setup"><a title="spade.MTP.MTP.setup
+spade.Organization.Organization.setup
+spade.Organization_new.Organization_new.setup
+spade.Unit.Unit.setup
+spade.Unit_new.Unit_new.setup" class="py-name" href="#" onclick="return doclink('link-15', 'setup', 'link-15');">setup</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"> </tt>
+<a name="MTP.setup"></a><div id="MTP.setup-def"><a name="L23"></a><tt class="py-lineno">23</tt> <a class="py-toggle" href="#" id="MTP.setup-toggle" onclick="return toggle('MTP.setup');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html#setup">setup</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MTP.setup-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MTP.setup-expanded"><a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplemented</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">        <tt class="py-comment"># Envelope = Envelope Class</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-comment"># Payload = raw text</tt> </tt>
+<a name="MTP.send"></a><div id="MTP.send-def"><a name="L28"></a><tt class="py-lineno">28</tt> <a class="py-toggle" href="#" id="MTP.send-toggle" onclick="return toggle('MTP.send');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html#send">send</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">envelope</tt><tt class="py-op">,</tt> <tt class="py-param">payload</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MTP.send-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MTP.send-expanded"><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplemented</tt> </tt>
+</div><a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="MTP.stop"></a><div id="MTP.stop-def"><a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="MTP.stop-toggle" onclick="return toggle('MTP.stop');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html#stop">stop</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MTP.stop-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MTP.stop-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt class="py-comment">#raise NotImplemented</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="MTP.dispatch"></a><div id="MTP.dispatch-def"><a name="L36"></a><tt class="py-lineno">36</tt> <a class="py-toggle" href="#" id="MTP.dispatch-toggle" onclick="return toggle('MTP.dispatch');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.MTP.MTP-class.html#dispatch">dispatch</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">envelope</tt><tt class="py-op">,</tt> <tt class="py-param">payload</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MTP.dispatch-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MTP.dispatch-expanded"><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"><tt class="py-docstring">                xc = XMLCodec.XMLCodec()</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-docstring">                envxml = xc.encodeXML(envelope)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"><tt class="py-docstring">                xenv = protocol.Node('jabber:x:fipa x')</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"><tt class="py-docstring">                xenv['content-type']='fipa.mts.env.rep.xml.std'</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-docstring">                xenv.addData(envxml)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">                <tt class="py-comment">#print "DISPATCH PAYLOAD"</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">                <tt class="py-comment">#print str(payload)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">                <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="spade.ACLParser
+spade.ACLParser.ACLParser" class="py-name" href="#" onclick="return doclink('link-16', 'ACLParser', 'link-5');">ACLParser</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="spade.ACLParser
+spade.ACLParser.ACLParser" class="py-name" href="#" onclick="return doclink('link-17', 'ACLParser', 'link-5');">ACLParser</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">                <tt id="link-18" class="py-name" targets="Variable spade.pyparsing.ParseBaseException.msg=spade.pyparsing.ParseBaseException-class.html#msg"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-18', 'msg', 'link-18');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method spade.ACLParser.ACLParser.parse()=spade.ACLParser.ACLParser-class.html#parse,Method spade.ACLParser.ACLxmlParser.parse()=spade.ACLParser.ACLxmlParser-class.html#parse,Method spade.RDF0Parser.RDF0Parser.parse()=spade.RDF0Parser.RDF0Parser-class.html#parse,Method spade.SL0Parser.SL0Parser.parse()=spade.SL0Parser.SL0Parser-class.html#parse,Method spade.SpadeConfigParser.ConfigParser.parse()=spade.SpadeConfigParser.ConfigParser-class.html#parse,Method spade.XMLCodec.XMLCodec.parse()=spade.XMLCodec.XMLCodec-class.html#parse,Method spade.pygooglechart.ChartGrammar.parse()=spade.pygooglechart.ChartGrammar-class.html#parse,Method spade.pyparsing.ParserElement.parse()=spade.pyparsing.ParserElement-class.html#parse,Method spade.pyratemp.Parser.parse()=spade.pyratemp.Parser-class.html#parse"><a title="spade.ACLParser.ACLParser.parse
+spade.ACLParser.ACLxmlParser.parse
+spade.RDF0Parser.RDF0Parser.parse
+spade.SL0Parser.SL0Parser.parse
+spade.SpadeConfigParser.ConfigParser.parse
+spade.XMLCodec.XMLCodec.parse
+spade.pygooglechart.ChartGrammar.parse
+spade.pyparsing.ParserElement.parse
+spade.pyratemp.Parser.parse" class="py-name" href="#" onclick="return doclink('link-19', 'parse', 'link-19');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">payload</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                <tt class="py-comment">#print "###MTP MESSAGE PARSED"</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                <tt class="py-comment">#print msg</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">                <tt class="py-comment"># Try to send message through XMPP</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">                <tt class="py-comment">#&#160;If no xmpp address is found, try to come uo with one</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">                        <tt class="py-keyword">for</tt> <tt class="py-name">recv</tt> <tt class="py-keyword">in</tt> <tt id="link-20" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-20', 'msg', 'link-18');">msg</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method spade.ACLMessage.ACLMessage.getReceivers()=spade.ACLMessage.ACLMessage-class.html#getReceivers,Method spade.Behaviour.ACLTemplate.getReceivers()=spade.Behaviour.ACLTemplate-class.html#getReceivers"><a title="spade.ACLMessage.ACLMessage.getReceivers
+spade.Behaviour.ACLTemplate.getReceivers" class="py-name" href="#" onclick="return doclink('link-21', 'getReceivers', 'link-21');">getReceivers</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">                                <tt class="py-name">jabber_id</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">                                <tt class="py-keyword">for</tt> <tt class="py-name">addr</tt> <tt class="py-keyword">in</tt> <tt class="py-name">recv</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method spade.AID.aid.getAddresses()=spade.AID.aid-class.html#getAddresses"><a title="spade.AID.aid.getAddresses" class="py-name" href="#" onclick="return doclink('link-22', 'getAddresses', 'link-22');">getAddresses</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">                                        <tt class="py-keyword">if</tt> <tt class="py-string">"xmpp"</tt> <tt class="py-keyword">in</tt> <tt class="py-name">addr</tt><tt class="py-op">:</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">                                                <tt class="py-name">jabber_id</tt> <tt class="py-op">=</tt> <tt class="py-name">addr</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">                                                <tt class="py-keyword">break</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">                                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">jabber_id</tt><tt class="py-op">:</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">                                        <tt class="py-name">jabber_id</tt> <tt class="py-op">=</tt> <tt class="py-string">"xmpp://"</tt><tt class="py-op">+</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">recv</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method spade.AID.aid.getName()=spade.AID.aid-class.html#getName,Method spade.Agent.AbstractAgent.getName()=spade.Agent.AbstractAgent-class.html#getName,Method spade.DF.DfAgentDescription.getName()=spade.DF.DfAgentDescription-class.html#getName,Method spade.DF.Service.getName()=spade.DF.Service-class.html#getName,Method spade.DF.ServiceDescription.getName()=spade.DF.ServiceDescription-class.html#getName,Method spade.pyparsing.ParseResults.getName()=spade.pyparsing.ParseResults-class.html#getName,Method spade.xmpp.roster.Roster.getName()=spade.xmpp.roster.Roster-class.html#getName,Method spade.xmpp.simplexml.Node.getName()=spade.xmpp.simplexml.Node-class.html#getName,Method spade.xmppd.modules.muc.Room.getName()=spade.xmppd.modules.muc.Room-class.html#getName,Method spade.xmppd.modules.wq.Group.getName()=spade.xmppd.modules.wq.Group-class.html#getName,Method spade.xmppd.xmppd.Session.getName()=spade.xmppd.xmppd.Session-class.html#getName"><a title="spade.AID.aid.getName
+spade.Agent.AbstractAgent.getName
+spade.DF.DfAgentDescription.getName
+spade.DF.Service.getName
+spade.DF.ServiceDescription.getName
+spade.pyparsing.ParseResults.getName
+spade.xmpp.roster.Roster.getName
+spade.xmpp.simplexml.Node.getName
+spade.xmppd.modules.muc.Room.getName
+spade.xmppd.modules.wq.Group.getName
+spade.xmppd.xmppd.Session.getName" class="py-name" href="#" onclick="return doclink('link-23', 'getName', 'link-23');">getName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">                                        <tt class="py-comment"># Figuring out the XMPP address</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">                                        <tt class="py-name">recv</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method spade.AID.aid.addAddress()=spade.AID.aid-class.html#addAddress,Method spade.Agent.AbstractAgent.addAddress()=spade.Agent.AbstractAgent-class.html#addAddress"><a title="spade.AID.aid.addAddress
+spade.Agent.AbstractAgent.addAddress" class="py-name" href="#" onclick="return doclink('link-24', 'addAddress', 'link-24');">addAddress</a></tt><tt class="py-op">(</tt><tt class="py-name">jabber_id</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line"> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method spade.Agent.AbstractAgent.send()=spade.Agent.AbstractAgent-class.html#send,Method spade.MTP.MTP.send()=spade.MTP.MTP-class.html#send,Method spade.xmpp.dispatcher.Dispatcher.send()=spade.xmpp.dispatcher.Dispatcher-class.html#send,Method spade.xmpp.transports.TCPsocket.send()=spade.xmpp.transports.TCPsocket-class.html#send,Method spade.xmppd.xmppd.RPC_Client.send()=spade.xmppd.xmppd.RPC_Client-class.html#send,Method spade.xmppd.xmppd.Session.send()=spade.xmppd.xmppd.Session-class.html#send"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-25', 'send', 'link-25');">send</a></tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-26', 'msg', 'link-18');">msg</a></tt><tt class="py-op">,</tt> <tt class="py-string">"jabber"</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-27', 'send', 'link-25');">send</a></tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-28', 'msg', 'link-18');">msg</a></tt><tt class="py-op">,</tt> <tt class="py-string">"jabber"</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">                <tt class="py-string">"""</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"><tt class="py-string">                for to in envelope.getTo():</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line"><tt class="py-string">                        stanza = protocol.Message(to.getName(),payload, xmlns="")</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line"><tt class="py-string">                        stanza.addChild(node=xenv)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line"><tt class="py-string">                        #s=None</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line"><tt class="py-string">                        #s = self.acc._router._owner.getsession(to.getName())</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line"><tt class="py-string">                        self.acc.send(stanza)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"><tt class="py-string">                        print "&gt;&gt;&gt;MTP: sent message to ", str(to)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line"><tt class="py-string">                        #print "&gt;&gt;&gt;MTP: found session " + str(s) + "for " + str(to.getName())</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line"><tt class="py-string">                        #if s:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line"><tt class="py-string">                        #       s.enqueue(stanza)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line"><tt class="py-string">                        #       s.push_queue()</tt> </tt>
+<a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line"><tt class="py-string">                """</tt> </tt>
+</div></div><a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line"> </tt>
+<a name="L88"></a><tt class="py-lineno">88</tt>  <tt class="py-line"> </tt>
+<a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line"><tt id="link-29" class="py-name" targets="Variable spade.MTP.PROTOCOL=spade.MTP-module.html#PROTOCOL"><a title="spade.MTP.PROTOCOL" class="py-name" href="#" onclick="return doclink('link-29', 'PROTOCOL', 'link-29');">PROTOCOL</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt>  <tt class="py-comment">#This must be overriden</tt> </tt>
+<a name="L90"></a><tt class="py-lineno">90</tt>  <tt class="py-line"><tt id="link-30" class="py-name" targets="Variable spade.MTP.INSTANCE=spade.MTP-module.html#INSTANCE"><a title="spade.MTP.INSTANCE" class="py-name" href="#" onclick="return doclink('link-30', 'INSTANCE', 'link-30');">INSTANCE</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt>  <tt class="py-comment">#This must be overriden</tt> </tt>
+<a name="L91"></a><tt class="py-lineno">91</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

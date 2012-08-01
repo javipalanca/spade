@@ -1,0 +1,2218 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.logic</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;logic
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.logic-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module logic</h1><p class="nomargin-top"><span class="codelink"><a href="spade.logic-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+Representations and Inference for Logic (Chapters 7-10)
+
+Covers both Propositional and First-Order Logic. First we have four
+important data types:
+
+    KB            Abstract class holds a knowledge base of logical expressions
+    KB_Agent      Abstract class subclasses agents.Agent
+    Expr          A logical expression
+    substitution  Implemented as a dictionary of var:value pairs, {x:1, y:x}
+
+Be careful: some functions take an Expr as argument, and some take a KB.
+Then we implement various functions for doing logical inference:
+
+    pl_true          Evaluate a propositional logical sentence in a model
+    tt_entails       Say if a statement is entailed by a KB
+    pl_resolution    Do resolution on propositional sentences
+    dpll_satisfiable See if a propositional sentence is satisfiable
+    WalkSAT          (not yet implemented)
+
+And a few other functions:
+
+    to_cnf           Convert to conjunctive normal form
+    unify            Do unification of two FOL sentences
+    diff, simp       Symbolic differentiation and simplification             
+
+</pre>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.KB-class.html" class="summary-name">KB</a><br />
+      A Knowledge base to which you can tell and ask sentences.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.PropKB-class.html" class="summary-name">PropKB</a><br />
+      A KB for Propositional Logic.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.Expr-class.html" class="summary-name">Expr</a><br />
+      A symbolic mathematical expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.PropHornKB-class.html" class="summary-name">PropHornKB</a><br />
+      A KB of Propositional Horn clauses.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.FolKB-class.html" class="summary-name">FolKB</a><br />
+      A knowledge base consisting of first-order definite clauses 
+        &gt;&gt;&gt; kb0 = FolKB([expr('Farmer(Mac)'), 
+        expr('Rabbit(Pete)'), ...
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic.logicTest-class.html" class="summary-name">logicTest</a><br />
+      ### PropKB &gt;&gt;&gt; kb = PropKB() &gt;&gt;&gt; kb.tell(A &amp; 
+        B) &gt;&gt;&gt; kb.tell(B &gt;&gt; C) &gt;&gt;&gt; kb.ask(C) ## The
+        result {} means true, with no substitutions {} &gt;&gt;&gt; 
+        kb.ask(P) False &gt;&gt;&gt; kb.retract(B) &gt;&gt;&gt; kb.ask(C) 
+        False
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#every" class="summary-sig-name">every</a>(<span class="summary-sig-arg">predicate</span>,
+        <span class="summary-sig-arg">seq</span>)</span><br />
+      True if every element of seq satisfies predicate.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#every">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isnumber"></a><span class="summary-sig-name">isnumber</span>(<span class="summary-sig-arg">x</span>)</span><br />
+      Is x a number? We say it is if it has a __int__ method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#isnumber">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="issequence"></a><span class="summary-sig-name">issequence</span>(<span class="summary-sig-arg">x</span>)</span><br />
+      Is x a sequence? We say it is if it has a __getitem__ method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#issequence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#num_or_str" class="summary-sig-name">num_or_str</a>(<span class="summary-sig-arg">x</span>)</span><br />
+      The argument is a string; convert to a number if possible, or strip 
+      it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#num_or_str">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#expr" class="summary-sig-name">expr</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Create an Expr representing a logic expression by parsing the input
+string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#expr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_symbol"></a><span class="summary-sig-name">is_symbol</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      A string s is a symbol if it starts with an alphabetic char.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_symbol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_var_symbol"></a><span class="summary-sig-name">is_var_symbol</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      A logic variable symbol is an initial-lowercase string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_var_symbol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_prop_symbol"></a><span class="summary-sig-name">is_prop_symbol</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      A proposition logic symbol is an initial-uppercase string other than 
+      TRUE or FALSE.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_prop_symbol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_positive"></a><span class="summary-sig-name">is_positive</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      s is an unnegated logical expression &gt;&gt;&gt; 
+      is_positive(expr('F(A, B)')) True &gt;&gt;&gt; 
+      is_positive(expr('~F(A, B)')) False</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_positive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_negative"></a><span class="summary-sig-name">is_negative</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      s is a negated logical expression &gt;&gt;&gt; is_negative(expr('F(A,
+      B)')) False &gt;&gt;&gt; is_negative(expr('~F(A, B)')) True</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_negative">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_literal"></a><span class="summary-sig-name">is_literal</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      s is a FOL literal &gt;&gt;&gt; is_literal(expr('~F(A, B)')) True 
+      &gt;&gt;&gt; is_literal(expr('F(A, B)')) True &gt;&gt;&gt; 
+      is_literal(expr('F(A, B) &amp; G(B, C)')) False</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_literal">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#literals" class="summary-sig-name">literals</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      returns the list of literals of logical expression s.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#literals">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#variables" class="summary-sig-name">variables</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      returns the set of variables in logical expression s.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#variables">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#is_definite_clause" class="summary-sig-name">is_definite_clause</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      returns True for exprs s of the form A &amp; B &amp; ...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_definite_clause">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#tt_entails" class="summary-sig-name">tt_entails</a>(<span class="summary-sig-arg">kb</span>,
+        <span class="summary-sig-arg">alpha</span>)</span><br />
+      Use truth tables to determine if KB entails sentence alpha.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#tt_entails">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tt_check_all"></a><span class="summary-sig-name">tt_check_all</span>(<span class="summary-sig-arg">kb</span>,
+        <span class="summary-sig-arg">alpha</span>,
+        <span class="summary-sig-arg">symbols</span>,
+        <span class="summary-sig-arg">model</span>)</span><br />
+      Auxiliary routine to implement tt_entails.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#tt_check_all">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="prop_symbols"></a><span class="summary-sig-name">prop_symbols</span>(<span class="summary-sig-arg">x</span>)</span><br />
+      Return a list of all propositional symbols in x.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#prop_symbols">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tt_true"></a><span class="summary-sig-name">tt_true</span>(<span class="summary-sig-arg">alpha</span>)</span><br />
+      Is the sentence alpha a tautology? (alpha will be coerced to an 
+      expr.) &gt;&gt;&gt; tt_true(expr(&quot;(P &gt;&gt; Q) &lt;=&gt; (~P |
+      Q)&quot;)) True</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#tt_true">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pl_true" class="summary-sig-name">pl_true</a>(<span class="summary-sig-arg">exp</span>,
+        <span class="summary-sig-arg">model</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      Return True if the propositional logic expression is true in the 
+      model, and False if it is false.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pl_true">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#to_cnf" class="summary-sig-name">to_cnf</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Convert a propositional logical sentence s to conjunctive normal 
+      form.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#to_cnf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#eliminate_implications" class="summary-sig-name">eliminate_implications</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Change &gt;&gt;, &lt;&lt;, and &lt;=&gt; into &amp;, |, and ~.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#eliminate_implications">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#move_not_inwards" class="summary-sig-name">move_not_inwards</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Rewrite sentence s by moving negation sign inward.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#move_not_inwards">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#distribute_and_over_or" class="summary-sig-name">distribute_and_over_or</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Given a sentence s consisting of conjunctions and disjunctions of 
+      literals, return an equivalent sentence in CNF.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#distribute_and_over_or">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#NaryExpr" class="summary-sig-name">NaryExpr</a>(<span class="summary-sig-arg">op</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Create an Expr, but with an nary, associative op, so we can promote 
+      nested instances of the same op up to the top level.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#NaryExpr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#conjuncts" class="summary-sig-name">conjuncts</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Return a list of the conjuncts in the sentence s.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#conjuncts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#disjuncts" class="summary-sig-name">disjuncts</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Return a list of the disjuncts in the sentence s.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#disjuncts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pl_resolution" class="summary-sig-name">pl_resolution</a>(<span class="summary-sig-arg">KB</span>,
+        <span class="summary-sig-arg">alpha</span>)</span><br />
+      Propositional Logic Resolution: say if alpha follows from KB.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pl_resolution">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pl_resolve" class="summary-sig-name">pl_resolve</a>(<span class="summary-sig-arg">ci</span>,
+        <span class="summary-sig-arg">cj</span>)</span><br />
+      Return all clauses that can be obtained by resolving clauses ci and 
+      cj.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pl_resolve">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pl_fc_entails" class="summary-sig-name">pl_fc_entails</a>(<span class="summary-sig-arg">KB</span>,
+        <span class="summary-sig-arg">q</span>)</span><br />
+      Use forward chaining to see if a HornKB entails symbol q.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pl_fc_entails">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#dpll_satisfiable" class="summary-sig-name">dpll_satisfiable</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Check satisfiability of a propositional sentence.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#dpll_satisfiable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="dpll"></a><span class="summary-sig-name">dpll</span>(<span class="summary-sig-arg">clauses</span>,
+        <span class="summary-sig-arg">symbols</span>,
+        <span class="summary-sig-arg">model</span>)</span><br />
+      See if the clauses are true in a partial model.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#dpll">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#find_pure_symbol" class="summary-sig-name">find_pure_symbol</a>(<span class="summary-sig-arg">symbols</span>,
+        <span class="summary-sig-arg">unknown_clauses</span>)</span><br />
+      Find a symbol and its value if it appears only as a positive literal 
+      (or only as a negative) in clauses.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#find_pure_symbol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#find_unit_clause" class="summary-sig-name">find_unit_clause</a>(<span class="summary-sig-arg">clauses</span>,
+        <span class="summary-sig-arg">model</span>)</span><br />
+      A unit clause has only 1 variable that is not bound in the model.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#find_unit_clause">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#literal_symbol" class="summary-sig-name">literal_symbol</a>(<span class="summary-sig-arg">literal</span>)</span><br />
+      The symbol in this literal (without the negation).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#literal_symbol">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="WalkSAT"></a><span class="summary-sig-name">WalkSAT</span>(<span class="summary-sig-arg">clauses</span>,
+        <span class="summary-sig-arg">p</span>=<span class="summary-sig-default">0.5</span>,
+        <span class="summary-sig-arg">max_flips</span>=<span class="summary-sig-default">10000</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#WalkSAT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="update_position"></a><span class="summary-sig-name">update_position</span>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>,
+        <span class="summary-sig-arg">orientation</span>,
+        <span class="summary-sig-arg">action</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#update_position">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#unify" class="summary-sig-name">unify</a>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Unify expressions x,y with substitution s; return a substitution that
+      would make x,y equal, or None if x,y can not unify.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#unify">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_variable"></a><span class="summary-sig-name">is_variable</span>(<span class="summary-sig-arg">x</span>)</span><br />
+      A variable is an Expr with no args and a lowercase symbol as the op.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#is_variable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="unify_var"></a><span class="summary-sig-name">unify_var</span>(<span class="summary-sig-arg">var</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">s</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#unify_var">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="occur_check"></a><span class="summary-sig-name">occur_check</span>(<span class="summary-sig-arg">var</span>,
+        <span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Return true if variable var occurs anywhere in x (or in subst(s, x), 
+      if s has a binding for x).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#occur_check">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#extend" class="summary-sig-name">extend</a>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">var</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Copy the substitution s and extend it by setting var to val; return 
+      copy.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#extend">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#subst" class="summary-sig-name">subst</a>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">x</span>)</span><br />
+      Substitute the substitution s into the expression x.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#subst">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#fol_fc_ask" class="summary-sig-name">fol_fc_ask</a>(<span class="summary-sig-arg">KB</span>,
+        <span class="summary-sig-arg">alpha</span>)</span><br />
+      Inefficient forward chaining for first-order logic.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#fol_fc_ask">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#standardize_apart" class="summary-sig-name">standardize_apart</a>(<span class="summary-sig-arg">sentence</span>,
+        <span class="summary-sig-arg">dic</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      Replace all the variables in sentence with new variables.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#standardize_apart">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="test_ask"></a><span class="summary-sig-name">test_ask</span>(<span class="summary-sig-arg">q</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#test_ask">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#fol_bc_ask" class="summary-sig-name">fol_bc_ask</a>(<span class="summary-sig-arg">KB</span>,
+        <span class="summary-sig-arg">goals</span>,
+        <span class="summary-sig-arg">theta</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      A simple backward-chaining algorithm for first-order logic.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#fol_bc_ask">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#subst_compose" class="summary-sig-name">subst_compose</a>(<span class="summary-sig-arg">s1</span>,
+        <span class="summary-sig-arg">s2</span>)</span><br />
+      Return the substitution which is equivalent to applying s2 to the 
+      result of applying s1 to an expression.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#subst_compose">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#diff" class="summary-sig-name">diff</a>(<span class="summary-sig-arg">y</span>,
+        <span class="summary-sig-arg">x</span>)</span><br />
+      Return the symbolic derivative, dy/dx, as an Expr.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#diff">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="simp"></a><span class="summary-sig-name">simp</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#simp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="d"></a><span class="summary-sig-name">d</span>(<span class="summary-sig-arg">y</span>,
+        <span class="summary-sig-arg">x</span>)</span><br />
+      Differentiate and then simplify.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#d">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pretty"></a><span class="summary-sig-name">pretty</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pretty">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pretty_dict" class="summary-sig-name">pretty_dict</a>(<span class="summary-sig-arg">d</span>)</span><br />
+      Print the dictionary d.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pretty_dict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic-module.html#pretty_set" class="summary-sig-name">pretty_set</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Print the set s.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pretty_set">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pp"></a><span class="summary-sig-name">pp</span>(<span class="summary-sig-arg">x</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#pp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ppsubst"></a><span class="summary-sig-name">ppsubst</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      Pretty-print substitution s</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#ppsubst">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ppdict"></a><span class="summary-sig-name">ppdict</span>(<span class="summary-sig-arg">d</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#ppdict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ppset"></a><span class="summary-sig-name">ppset</span>(<span class="summary-sig-arg">s</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#ppset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_NaryExprTable"></a><span class="summary-name">_NaryExprTable</span> = <code title="{'&amp;': TRUE, '*': 1, '+': 0, '|': FALSE}"><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">&amp;</code><code class="variable-quote">'</code><code class="variable-op">: </code>TRUE<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">*</code><code class="variable-quote">'</code><code class="variable-op">: </code>1<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">+</code><code class="variable-quote">'</code><code class="variable-op">: </code>0<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">|</code><code class="variable-quote">'</code><code class="variable-op">: </code>FALSE<code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.logic-module.html#test_kb" class="summary-name">test_kb</a> = <code title="FolKB(map(expr, ['Farmer(Mac)', 'Rabbit(Pete)', 'Mother(MrsMac, Mac)',\
+ 'Mother(MrsRabbit, Pete)', '(Rabbit(r) &amp; Farmer(f)) ==&gt; Hates(f, r)',\
+ '(Mother(m, c)) ==&gt; Loves(m, c)', '(Mother(m, r) &amp; Rabbit(r)) ==&gt; Rab\
+bit(m)', '(Farmer(f)) ==&gt; Human(f)', '(Mother(m, h) &amp; Human(h)) ==&gt; Hu\
+man(m)']))">FolKB(map(expr, ['Farmer(Mac)', 'Rabbit(Pete)', 'Mot<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="A"></a><span class="summary-name">A</span> = <code title="A">A</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="B"></a><span class="summary-name">B</span> = <code title="B">B</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="C"></a><span class="summary-name">C</span> = <code title="C">C</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="F"></a><span class="summary-name">F</span> = <code title="F">F</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="FALSE"></a><span class="summary-name">FALSE</span> = <code title="FALSE">FALSE</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="G"></a><span class="summary-name">G</span> = <code title="G">G</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ONE"></a><span class="summary-name">ONE</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="P"></a><span class="summary-name">P</span> = <code title="P">P</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="Q"></a><span class="summary-name">Q</span> = <code title="Q">Q</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TRUE"></a><span class="summary-name">TRUE</span> = <code title="TRUE">TRUE</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TWO"></a><span class="summary-name">TWO</span> = <code title="2">2</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="ZERO"></a><span class="summary-name">ZERO</span> = <code title="0">0</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade'"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="x"></a><span class="summary-name">x</span> = <code title="x">x</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="y"></a><span class="summary-name">y</span> = <code title="y">y</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="z"></a><span class="summary-name">z</span> = <code title="z">z</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="every"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">every</span>(<span class="sig-arg">predicate</span>,
+        <span class="sig-arg">seq</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#every">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>True if every element of seq satisfies predicate. &gt;&gt;&gt; 
+  every(callable, [min, max]) 1 &gt;&gt;&gt; every(callable, [min, 3]) 
+  0</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="num_or_str"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">num_or_str</span>(<span class="sig-arg">x</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#num_or_str">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>The argument is a string; convert to a number if possible, or strip 
+  it. &gt;&gt;&gt; num_or_str('42') 42 &gt;&gt;&gt; num_or_str(' 42x ') 
+  '42x'</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="expr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">expr</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#expr">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Create an Expr representing a logic expression by parsing the input
+string. Symbols and numbers are automatically converted to Exprs.
+In addition you can use alternative spellings of these operators:
+  'x ==&gt; y'   parses as   (x &gt;&gt; y)    # Implication
+  'x &lt;== y'   parses as   (x &lt;&lt; y)    # Reverse implication
+  'x &lt;=&gt; y'   parses as   (x % y)     # Logical equivalence
+  'x =/= y'   parses as   (x ^ y)     # Logical disequality (xor)
+But BE CAREFUL; precedence of implication is wrong. expr('P &amp; Q ==&gt; R &amp; S')
+is ((P &amp; (Q &gt;&gt; R)) &amp; S); so you must use expr('(P &amp; Q) ==&gt; (R &amp; S)').
+&gt;&gt;&gt; expr('P &lt;=&gt; Q(1)')
+(P &lt;=&gt; Q(1))
+&gt;&gt;&gt; expr('P &amp; Q | ~R(x, F(x))')
+((P &amp; Q) | ~R(x, F(x)))
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="literals"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">literals</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#literals">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>returns the list of literals of logical expression s. &gt;&gt;&gt; 
+  literals(expr('F(A, B)')) [F(A, B)] &gt;&gt;&gt; literals(expr('~F(A, 
+  B)')) [~F(A, B)] &gt;&gt;&gt; literals(expr('(F(A, B) &amp; G(B, C)) 
+  ==&gt; R(A, C)')) [F(A, B), G(B, C), R(A, C)]</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="variables"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">variables</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#variables">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>returns the set of variables in logical expression s. &gt;&gt;&gt; 
+  ppset(variables(F(x, A, y))) set([x, y]) &gt;&gt;&gt; 
+  ppset(variables(expr('F(x, x) &amp; G(x, y) &amp; H(y, z) &amp; R(A, z, 
+  z)'))) set([x, y, z])</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="is_definite_clause"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">is_definite_clause</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#is_definite_clause">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>returns True for exprs s of the form A &amp; B &amp; ... &amp; C 
+  ==&gt; D, where all literals are positive.  In clause form, this is ~A | 
+  ~B | ... | ~C | D, where exactly one clause is positive. &gt;&gt;&gt; 
+  is_definite_clause(expr('Farmer(Mac)')) True &gt;&gt;&gt; 
+  is_definite_clause(expr('~Farmer(Mac)')) False &gt;&gt;&gt; 
+  is_definite_clause(expr('(Farmer(f) &amp; Rabbit(r)) ==&gt; Hates(f, 
+  r)')) True &gt;&gt;&gt; is_definite_clause(expr('(Farmer(f) &amp; 
+  ~Rabbit(r)) ==&gt; Hates(f, r)')) False</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="tt_entails"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">tt_entails</span>(<span class="sig-arg">kb</span>,
+        <span class="sig-arg">alpha</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#tt_entails">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Use truth tables to determine if KB entails sentence alpha. [Fig. 
+  7.10] &gt;&gt;&gt; tt_entails(expr('P &amp; Q'), expr('Q')) True</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pl_true"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pl_true</span>(<span class="sig-arg">exp</span>,
+        <span class="sig-arg">model</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pl_true">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return True if the propositional logic expression is true in the 
+  model, and False if it is false. If the model does not specify the value 
+  for every proposition, this may return None to indicate 'not obvious'; 
+  this may happen even when the expression is tautological.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="to_cnf"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">to_cnf</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#to_cnf">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Convert a propositional logical sentence s to conjunctive normal form.
+  That is, of the form ((A | ~B | ...) &amp; (B | C | ...) &amp; ...) [p. 
+  215] &gt;&gt;&gt; to_cnf(&quot;~(B|C)&quot;) (~B &amp; ~C) &gt;&gt;&gt; 
+  to_cnf(&quot;B &lt;=&gt; (P1|P2)&quot;) ((~P1 | B) &amp; (~P2 | B) &amp; 
+  (P1 | P2 | ~B)) &gt;&gt;&gt; to_cnf(&quot;a | (b &amp; c) | d&quot;) ((b 
+  | a | d) &amp; (c | a | d)) &gt;&gt;&gt; to_cnf(&quot;A &amp; (B | (D 
+  &amp; E))&quot;) (A &amp; (D | B) &amp; (E | B))</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="eliminate_implications"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">eliminate_implications</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#eliminate_implications">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Change &gt;&gt;, &lt;&lt;, and &lt;=&gt; into &amp;, |, and ~. That 
+  is, return an Expr that is equivalent to s, but has only &amp;, |, and ~ 
+  as logical operators. &gt;&gt;&gt; eliminate_implications(A &gt;&gt; (~B 
+  &lt;&lt; C)) ((~B | ~C) | ~A)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="move_not_inwards"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">move_not_inwards</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#move_not_inwards">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Rewrite sentence s by moving negation sign inward. &gt;&gt;&gt; 
+  move_not_inwards(~(A | B)) (~A &amp; ~B) &gt;&gt;&gt; 
+  move_not_inwards(~(A &amp; B)) (~A | ~B) &gt;&gt;&gt; 
+  move_not_inwards(~(~(A | ~B) | ~~C)) ((A | ~B) &amp; ~C)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="distribute_and_over_or"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">distribute_and_over_or</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#distribute_and_over_or">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Given a sentence s consisting of conjunctions and disjunctions of 
+  literals, return an equivalent sentence in CNF. &gt;&gt;&gt; 
+  distribute_and_over_or((A &amp; B) | C) ((A | C) &amp; (B | C))</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="NaryExpr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">NaryExpr</span>(<span class="sig-arg">op</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#NaryExpr">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create an Expr, but with an nary, associative op, so we can promote 
+  nested instances of the same op up to the top level. &gt;&gt;&gt; 
+  NaryExpr('&amp;', (A&amp;B),(B|C),(B&amp;C)) (A &amp; B &amp; (B | C) 
+  &amp; B &amp; C)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="conjuncts"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">conjuncts</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#conjuncts">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a list of the conjuncts in the sentence s. &gt;&gt;&gt; 
+  conjuncts(A &amp; B) [A, B] &gt;&gt;&gt; conjuncts(A | B) [(A | B)]</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="disjuncts"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">disjuncts</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#disjuncts">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a list of the disjuncts in the sentence s. &gt;&gt;&gt; 
+  disjuncts(A | B) [A, B] &gt;&gt;&gt; disjuncts(A &amp; B) [(A &amp; 
+  B)]</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pl_resolution"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pl_resolution</span>(<span class="sig-arg">KB</span>,
+        <span class="sig-arg">alpha</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pl_resolution">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Propositional Logic Resolution: say if alpha follows from KB. [Fig. 
+  7.12]</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pl_resolve"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pl_resolve</span>(<span class="sig-arg">ci</span>,
+        <span class="sig-arg">cj</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pl_resolve">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return all clauses that can be obtained by resolving clauses ci and 
+  cj. &gt;&gt;&gt; for res in pl_resolve(to_cnf(A|B|C), to_cnf(~B|~C|F)): 
+  ...    ppset(disjuncts(res)) set([A, C, F, ~C]) set([A, B, F, ~B])</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pl_fc_entails"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pl_fc_entails</span>(<span class="sig-arg">KB</span>,
+        <span class="sig-arg">q</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pl_fc_entails">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Use forward chaining to see if a HornKB entails symbol q. [Fig. 7.14] 
+  &gt;&gt;&gt; pl_fc_entails(Fig[7,15], expr('Q')) True</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="dpll_satisfiable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dpll_satisfiable</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#dpll_satisfiable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Check satisfiability of a propositional sentence. This differs from 
+  the book code in two ways: (1) it returns a model rather than True when 
+  it succeeds; this is more useful. (2) The function find_pure_symbol is 
+  passed a list of unknown clauses, rather than a list of all clauses and 
+  the model; this is more efficient. &gt;&gt;&gt; 
+  ppsubst(dpll_satisfiable(A&amp;~B)) {A: True, B: False} &gt;&gt;&gt; 
+  dpll_satisfiable(P&amp;~P) False</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="find_pure_symbol"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">find_pure_symbol</span>(<span class="sig-arg">symbols</span>,
+        <span class="sig-arg">unknown_clauses</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#find_pure_symbol">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Find a symbol and its value if it appears only as a positive literal 
+  (or only as a negative) in clauses. &gt;&gt;&gt; find_pure_symbol([A, B, 
+  C], [A|~B,~B|~C,C|A]) (A, True)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="find_unit_clause"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">find_unit_clause</span>(<span class="sig-arg">clauses</span>,
+        <span class="sig-arg">model</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#find_unit_clause">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>A unit clause has only 1 variable that is not bound in the model. 
+  &gt;&gt;&gt; find_unit_clause([A|B|C, B|~C, A|~B], {A:True}) (B, 
+  False)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="literal_symbol"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">literal_symbol</span>(<span class="sig-arg">literal</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#literal_symbol">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>The symbol in this literal (without the negation). &gt;&gt;&gt; 
+  literal_symbol(P) P &gt;&gt;&gt; literal_symbol(~P) P</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="unify"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">unify</span>(<span class="sig-arg">x</span>,
+        <span class="sig-arg">y</span>,
+        <span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#unify">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unify expressions x,y with substitution s; return a substitution that 
+  would make x,y equal, or None if x,y can not unify. x and y can be 
+  variables (e.g. Expr('x')), constants, lists, or Exprs. [Fig. 9.1] 
+  &gt;&gt;&gt; ppsubst(unify(x + y, y + C, {})) {x: y, y: C}</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="extend"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">extend</span>(<span class="sig-arg">s</span>,
+        <span class="sig-arg">var</span>,
+        <span class="sig-arg">val</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#extend">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Copy the substitution s and extend it by setting var to val; return 
+  copy.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>ppsubst(extend({x: 1}, y, 2))
+<span class="py-output">{x: 1, y: 2}</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="subst"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">subst</span>(<span class="sig-arg">s</span>,
+        <span class="sig-arg">x</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#subst">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Substitute the substitution s into the expression x. &gt;&gt;&gt; 
+  subst({x: 42, y:0}, F(x) + y) (F(42) + 0)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="fol_fc_ask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">fol_fc_ask</span>(<span class="sig-arg">KB</span>,
+        <span class="sig-arg">alpha</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#fol_fc_ask">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Inefficient forward chaining for first-order logic. [Fig. 9.3] KB is 
+  an FOLHornKB and alpha must be an atomic sentence.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="standardize_apart"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">standardize_apart</span>(<span class="sig-arg">sentence</span>,
+        <span class="sig-arg">dic</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#standardize_apart">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Replace all the variables in sentence with new variables. &gt;&gt;&gt;
+  e = expr('F(a, b, c) &amp; G(c, A, 23)') &gt;&gt;&gt; 
+  len(variables(standardize_apart(e))) 3 &gt;&gt;&gt; 
+  variables(e).intersection(variables(standardize_apart(e))) set([]) 
+  &gt;&gt;&gt; is_variable(standardize_apart(expr('x'))) True</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="fol_bc_ask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">fol_bc_ask</span>(<span class="sig-arg">KB</span>,
+        <span class="sig-arg">goals</span>,
+        <span class="sig-arg">theta</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#fol_bc_ask">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>A simple backward-chaining algorithm for first-order logic. [Fig. 9.6]
+  KB should be an instance of FolKB, and goals a list of literals.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>test_ask(<span class="py-string">'Farmer(x)'</span>)
+<span class="py-output">['{x: Mac}']</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>test_ask(<span class="py-string">'Human(x)'</span>)
+<span class="py-output">['{x: Mac}', '{x: MrsMac}']</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>test_ask(<span class="py-string">'Hates(x, y)'</span>)
+<span class="py-output">['{x: Mac, y: Pete}']</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>test_ask(<span class="py-string">'Loves(x, y)'</span>)
+<span class="py-output">['{x: MrsMac, y: Mac}', '{x: MrsRabbit, y: Pete}']</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>test_ask(<span class="py-string">'Rabbit(x)'</span>)
+<span class="py-output">['{x: MrsRabbit}', '{x: Pete}']</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="subst_compose"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">subst_compose</span>(<span class="sig-arg">s1</span>,
+        <span class="sig-arg">s2</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#subst_compose">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the substitution which is equivalent to applying s2 to the 
+  result of applying s1 to an expression.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>s1 = {x: A, y: B}
+<span class="py-prompt">&gt;&gt;&gt; </span>s2 = {z: x, x: C}
+<span class="py-prompt">&gt;&gt;&gt; </span>p = F(x) &amp; G(y) &amp; expr(<span class="py-string">'H(z)'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>subst(s1, p)
+<span class="py-output">((F(A) &amp; G(B)) &amp; H(z))</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>subst(s2, p)
+<span class="py-output">((F(C) &amp; G(y)) &amp; H(x))</span></pre>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>subst(s2, subst(s1, p))
+<span class="py-output">((F(A) &amp; G(B)) &amp; H(x))</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>subst(subst_compose(s1, s2), p)
+<span class="py-output">((F(A) &amp; G(B)) &amp; H(x))</span></pre>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>subst(s1, subst(s2, p))
+<span class="py-output">((F(C) &amp; G(B)) &amp; H(A))</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>subst(subst_compose(s2, s1), p)
+<span class="py-output">((F(C) &amp; G(B)) &amp; H(A))</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ppsubst(subst_compose(s1, s2))
+<span class="py-output">{x: A, y: B, z: x}</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>ppsubst(subst_compose(s2, s1))
+<span class="py-output">{x: C, y: B, z: A}</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>subst(subst_compose(s1, s2), p) == subst(s2, subst(s1, p))
+<span class="py-output">True</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>subst(subst_compose(s2, s1), p) == subst(s1, subst(s2, p))
+<span class="py-output">True</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="diff"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">diff</span>(<span class="sig-arg">y</span>,
+        <span class="sig-arg">x</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#diff">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the symbolic derivative, dy/dx, as an Expr. However, you 
+  probably want to simplify the results with simp. &gt;&gt;&gt; diff(x * x,
+  x) ((x * 1) + (x * 1)) &gt;&gt;&gt; simp(diff(x * x, x)) (2 * x)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pretty_dict"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pretty_dict</span>(<span class="sig-arg">d</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pretty_dict">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Print the dictionary d.</p>
+  <p>Prints a string representation of the dictionary with keys in sorted 
+  order according to their string representation: {a: A, d: D, ...}. 
+  &gt;&gt;&gt; pretty_dict({'m': 'M', 'a': 'A', 'r': 'R', 'k': 'K'}) 
+  &quot;{'a': 'A', 'k': 'K', 'm': 'M', 'r': 'R'}&quot; &gt;&gt;&gt; 
+  pretty_dict({z: C, y: B, x: A}) '{x: A, y: B, z: C}'</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pretty_set"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pretty_set</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#pretty_set">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Print the set s.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>pretty_set(set([<span class="py-string">'A'</span>, <span class="py-string">'Q'</span>, <span class="py-string">'F'</span>, <span class="py-string">'K'</span>, <span class="py-string">'Y'</span>, <span class="py-string">'B'</span>]))
+<span class="py-output">&quot;set(['A', 'B', 'F', 'K', 'Q', 'Y'])&quot;</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>pretty_set(set([z, y, x]))
+<span class="py-output">'set([x, y, z])'</span></pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="test_kb"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">test_kb</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+FolKB(map(expr, ['Farmer(Mac)', 'Rabbit(Pete)', 'Mother(MrsMac, Mac)',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ 'Mother(MrsRabbit, Pete)', '(Rabbit(r) &amp; Farmer(f)) ==&gt; Hates(f, r)',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ '(Mother(m, c)) ==&gt; Loves(m, c)', '(Mother(m, r) &amp; Rabbit(r)) ==&gt; Rab<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+bit(m)', '(Farmer(f)) ==&gt; Human(f)', '(Mother(m, h) &amp; Human(h)) ==&gt; Hu<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+man(m)']))
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.socialnetwork</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;socialnetwork
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.socialnetwork-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.socialnetwork-module.html">Module spade.socialnetwork</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module spade.Behaviour=spade.Behaviour-module.html,Class spade.Behaviour.Behaviour=spade.Behaviour.Behaviour-class.html"><a title="spade.Behaviour
+spade.Behaviour.Behaviour" class="py-name" href="#" onclick="return doclink('link-0', 'Behaviour', 'link-0');">Behaviour</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module spade.AID=spade.AID-module.html"><a title="spade.AID" class="py-name" href="#" onclick="return doclink('link-1', 'AID', 'link-1');">AID</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package spade.xmpp=spade.xmpp-module.html"><a title="spade.xmpp" class="py-name" href="#" onclick="return doclink('link-2', 'xmpp', 'link-2');">xmpp</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="PresenceBehaviour"></a><div id="PresenceBehaviour-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="PresenceBehaviour-toggle" onclick="return toggle('PresenceBehaviour');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.socialnetwork.PresenceBehaviour-class.html">PresenceBehaviour</a><tt class="py-op">(</tt><tt class="py-base-class">Behaviour</tt><tt class="py-op">.</tt><tt class="py-base-class">EventBehaviour</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PresenceBehaviour-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="PresenceBehaviour-expanded"><a name="PresenceBehaviour._process"></a><div id="PresenceBehaviour._process-def"><a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="PresenceBehaviour._process-toggle" onclick="return toggle('PresenceBehaviour._process');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.PresenceBehaviour-class.html#_process">_process</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PresenceBehaviour._process-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="PresenceBehaviour._process-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Variable spade.pyparsing.ParseBaseException.msg=spade.pyparsing.ParseBaseException-class.html#msg"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-3', 'msg', 'link-3');">msg</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method spade.MessageReceiver.MessageReceiver._receive()=spade.MessageReceiver.MessageReceiver-class.html#_receive"><a title="spade.MessageReceiver.MessageReceiver._receive" class="py-name" href="#" onclick="return doclink('link-4', '_receive', 'link-4');">_receive</a></tt><tt class="py-op">(</tt><tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-5', 'msg', 'link-3');">msg</a></tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-6', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method spade.DF.Service.getType()=spade.DF.Service-class.html#getType,Method spade.DF.ServiceDescription.getType()=spade.DF.ServiceDescription-class.html#getType,Method spade.xmpp.protocol.DataField.getType()=spade.xmpp.protocol.DataField-class.html#getType,Method spade.xmpp.protocol.DataForm.getType()=spade.xmpp.protocol.DataForm-class.html#getType,Method spade.xmpp.protocol.Protocol.getType()=spade.xmpp.protocol.Protocol-class.html#getType"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-7', 'getType', 'link-7');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"subscribe"</tt><tt class="py-op">:</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">                <tt class="py-comment"># Subscribe petition</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">                <tt class="py-comment"># Answer YES</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">                <tt class="py-name">rep</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name" targets="Class spade.xmpp.protocol.Presence=spade.xmpp.protocol.Presence-class.html"><a title="spade.xmpp.protocol.Presence" class="py-name" href="#" onclick="return doclink('link-8', 'Presence', 'link-8');">Presence</a></tt><tt class="py-op">(</tt><tt class="py-name">to</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-9', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Method spade.Envelope.Envelope.getFrom()=spade.Envelope.Envelope-class.html#getFrom,Method spade.ReceivedObject.ReceivedObject.getFrom()=spade.ReceivedObject.ReceivedObject-class.html#getFrom,Method spade.xmpp.protocol.Protocol.getFrom()=spade.xmpp.protocol.Protocol-class.html#getFrom"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-10', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">                <tt class="py-name">rep</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method spade.DF.Service.setType()=spade.DF.Service-class.html#setType,Method spade.DF.ServiceDescription.setType()=spade.DF.ServiceDescription-class.html#setType,Method spade.xmpp.protocol.DataField.setType()=spade.xmpp.protocol.DataField-class.html#setType,Method spade.xmpp.protocol.DataForm.setType()=spade.xmpp.protocol.DataForm-class.html#setType,Method spade.xmpp.protocol.Protocol.setType()=spade.xmpp.protocol.Protocol-class.html#setType"><a title="spade.DF.Service.setType
+spade.DF.ServiceDescription.setType
+spade.xmpp.protocol.DataField.setType
+spade.xmpp.protocol.DataForm.setType
+spade.xmpp.protocol.Protocol.setType" class="py-name" href="#" onclick="return doclink('link-11', 'setType', 'link-11');">setType</a></tt><tt class="py-op">(</tt><tt class="py-string">"subscribed"</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method spade.Agent.AbstractAgent.send()=spade.Agent.AbstractAgent-class.html#send,Method spade.MTP.MTP.send()=spade.MTP.MTP-class.html#send,Method spade.xmpp.dispatcher.Dispatcher.send()=spade.xmpp.dispatcher.Dispatcher-class.html#send,Method spade.xmpp.transports.TCPsocket.send()=spade.xmpp.transports.TCPsocket-class.html#send,Method spade.xmppd.xmppd.RPC_Client.send()=spade.xmppd.xmppd.RPC_Client-class.html#send,Method spade.xmppd.xmppd.Session.send()=spade.xmppd.xmppd.Session-class.html#send"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-12', 'send', 'link-12');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">rep</tt><tt class="py-op">)</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method spade.Agent.AbstractAgent.DEBUG()=spade.Agent.AbstractAgent-class.html#DEBUG,Method spade.spade_backend.SpadeBackend.DEBUG()=spade.spade_backend.SpadeBackend-class.html#DEBUG,Method spade.xmpp.client.PlugIn.DEBUG()=spade.xmpp.client.PlugIn-class.html#DEBUG,Method spade.xmpp.simplexml.NodeBuilder.DEBUG()=spade.xmpp.simplexml.NodeBuilder-class.html#DEBUG,Method spade.xmpp.transports.HTTPPROXYsocket.DEBUG()=spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-13', 'DEBUG', 'link-13');">DEBUG</a></tt><tt class="py-op">(</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-14', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-15', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>  <tt class="py-op">+</tt> <tt class="py-string">" subscribes to me"</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">                <tt class="py-name">rep</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="spade.DF.Service.setType
+spade.DF.ServiceDescription.setType
+spade.xmpp.protocol.DataField.setType
+spade.xmpp.protocol.DataForm.setType
+spade.xmpp.protocol.Protocol.setType" class="py-name" href="#" onclick="return doclink('link-16', 'setType', 'link-11');">setType</a></tt><tt class="py-op">(</tt><tt class="py-string">"subscribe"</tt><tt class="py-op">)</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-17', 'send', 'link-12');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">rep</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-18', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-19', 'getType', 'link-7');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"subscribed"</tt><tt class="py-op">:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-20', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-21', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method spade.Agent.AbstractAgent.getAMS()=spade.Agent.AbstractAgent-class.html#getAMS"><a title="spade.Agent.AbstractAgent.getAMS" class="py-name" href="#" onclick="return doclink('link-22', 'getAMS', 'link-22');">getAMS</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method spade.AID.aid.getName()=spade.AID.aid-class.html#getName,Method spade.Agent.AbstractAgent.getName()=spade.Agent.AbstractAgent-class.html#getName,Method spade.DF.DfAgentDescription.getName()=spade.DF.DfAgentDescription-class.html#getName,Method spade.DF.Service.getName()=spade.DF.Service-class.html#getName,Method spade.DF.ServiceDescription.getName()=spade.DF.ServiceDescription-class.html#getName,Method spade.pyparsing.ParseResults.getName()=spade.pyparsing.ParseResults-class.html#getName,Method spade.xmpp.roster.Roster.getName()=spade.xmpp.roster.Roster-class.html#getName,Method spade.xmpp.simplexml.Node.getName()=spade.xmpp.simplexml.Node-class.html#getName,Method spade.xmppd.modules.muc.Room.getName()=spade.xmppd.modules.muc.Room-class.html#getName,Method spade.xmppd.modules.wq.Group.getName()=spade.xmppd.modules.wq.Group-class.html#getName,Method spade.xmppd.xmppd.Session.getName()=spade.xmppd.xmppd.Session-class.html#getName"><a title="spade.AID.aid.getName
+spade.Agent.AbstractAgent.getName
+spade.DF.DfAgentDescription.getName
+spade.DF.Service.getName
+spade.DF.ServiceDescription.getName
+spade.pyparsing.ParseResults.getName
+spade.xmpp.roster.Roster.getName
+spade.xmpp.simplexml.Node.getName
+spade.xmppd.modules.muc.Room.getName
+spade.xmppd.modules.wq.Group.getName
+spade.xmppd.xmppd.Session.getName" class="py-name" href="#" onclick="return doclink('link-23', 'getName', 'link-23');">getName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">                    <tt class="py-comment"># Subscription confirmation from AMS</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-24', 'DEBUG', 'link-13');">DEBUG</a></tt><tt class="py-op">(</tt> <tt class="py-string">"Agent: "</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method spade.AMS.AmsAgentDescription.getAID()=spade.AMS.AmsAgentDescription-class.html#getAID,Method spade.Agent.AbstractAgent.getAID()=spade.Agent.AbstractAgent-class.html#getAID,Method spade.DF.DfAgentDescription.getAID()=spade.DF.DfAgentDescription-class.html#getAID"><a title="spade.AMS.AmsAgentDescription.getAID
+spade.Agent.AbstractAgent.getAID
+spade.DF.DfAgentDescription.getAID" class="py-name" href="#" onclick="return doclink('link-25', 'getAID', 'link-25');">getAID</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="spade.AID.aid.getName
+spade.Agent.AbstractAgent.getName
+spade.DF.DfAgentDescription.getName
+spade.DF.Service.getName
+spade.DF.ServiceDescription.getName
+spade.pyparsing.ParseResults.getName
+spade.xmpp.roster.Roster.getName
+spade.xmpp.simplexml.Node.getName
+spade.xmppd.modules.muc.Room.getName
+spade.xmppd.modules.wq.Group.getName
+spade.xmppd.xmppd.Session.getName" class="py-name" href="#" onclick="return doclink('link-26', 'getName', 'link-23');">getName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">" registered correctly (inform)"</tt><tt class="py-op">,</tt><tt class="py-string">"ok"</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-27', 'DEBUG', 'link-13');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-28', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-29', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">"has subscribed me"</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-30', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-31', 'getType', 'link-7');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"unsubscribed"</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">                <tt class="py-comment"># Unsubscription from AMS</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-32', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-33', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="spade.Agent.AbstractAgent.getAMS" class="py-name" href="#" onclick="return doclink('link-34', 'getAMS', 'link-22');">getAMS</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="spade.AID.aid.getName
+spade.Agent.AbstractAgent.getName
+spade.DF.DfAgentDescription.getName
+spade.DF.Service.getName
+spade.DF.ServiceDescription.getName
+spade.pyparsing.ParseResults.getName
+spade.xmpp.roster.Roster.getName
+spade.xmpp.simplexml.Node.getName
+spade.xmppd.modules.muc.Room.getName
+spade.xmppd.modules.wq.Group.getName
+spade.xmppd.xmppd.Session.getName" class="py-name" href="#" onclick="return doclink('link-35', 'getName', 'link-23');">getName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-36', 'DEBUG', 'link-13');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"There was an error registering in the AMS: "</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="spade.AMS.AmsAgentDescription.getAID
+spade.Agent.AbstractAgent.getAID
+spade.DF.DfAgentDescription.getAID" class="py-name" href="#" onclick="return doclink('link-37', 'getAID', 'link-25');">getAID</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="spade.AID.aid.getName
+spade.Agent.AbstractAgent.getName
+spade.DF.DfAgentDescription.getName
+spade.DF.Service.getName
+spade.DF.ServiceDescription.getName
+spade.pyparsing.ParseResults.getName
+spade.xmpp.roster.Roster.getName
+spade.xmpp.simplexml.Node.getName
+spade.xmppd.modules.muc.Room.getName
+spade.xmppd.modules.wq.Group.getName
+spade.xmppd.xmppd.Session.getName" class="py-name" href="#" onclick="return doclink('link-38', 'getName', 'link-23');">getName</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">"err"</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-39', 'DEBUG', 'link-13');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-40', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-41', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">" has unsubscribed me"</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-42', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-43', 'getType', 'link-7');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-op">[</tt><tt class="py-string">"available"</tt><tt class="py-op">,</tt> <tt class="py-string">""</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method spade.Agent.Agent.setSocialItem()=spade.Agent.Agent-class.html#setSocialItem"><a title="spade.Agent.Agent.setSocialItem" class="py-name" href="#" onclick="return doclink('link-44', 'setSocialItem', 'link-44');">setSocialItem</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-45', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-46', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">"available"</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-47', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-48', 'getType', 'link-7');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">"unavailable"</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="spade.Agent.Agent.setSocialItem" class="py-name" href="#" onclick="return doclink('link-49', 'setSocialItem', 'link-44');">setSocialItem</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-50', 'msg', 'link-3');">msg</a></tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-51', 'getFrom', 'link-10');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">"unavailable"</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">            <tt class="py-comment">#self.myAgent.getSocialNetwork()</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="RosterBehaviour"></a><div id="RosterBehaviour-def"><a name="L38"></a><tt class="py-lineno">38</tt> <a class="py-toggle" href="#" id="RosterBehaviour-toggle" onclick="return toggle('RosterBehaviour');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.socialnetwork.RosterBehaviour-class.html">RosterBehaviour</a><tt class="py-op">(</tt><tt class="py-base-class">Behaviour</tt><tt class="py-op">.</tt><tt class="py-base-class">EventBehaviour</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RosterBehaviour-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="RosterBehaviour-expanded"><a name="RosterBehaviour._process"></a><div id="RosterBehaviour._process-def"><a name="L39"></a><tt class="py-lineno">39</tt> <a class="py-toggle" href="#" id="RosterBehaviour._process-toggle" onclick="return toggle('RosterBehaviour._process');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.RosterBehaviour-class.html#_process">_process</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RosterBehaviour._process-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="RosterBehaviour._process-expanded"><a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-name">stanza</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="spade.MessageReceiver.MessageReceiver._receive" class="py-name" href="#" onclick="return doclink('link-52', '_receive', 'link-4');">_receive</a></tt><tt class="py-op">(</tt><tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">stanza</tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method spade.xmpp.simplexml.Node.getTag()=spade.xmpp.simplexml.Node-class.html#getTag"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-53', 'getTag', 'link-53');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'query'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Method spade.xmpp.simplexml.Node.getTags()=spade.xmpp.simplexml.Node-class.html#getTags"><a title="spade.xmpp.simplexml.Node.getTags" class="py-name" href="#" onclick="return doclink('link-54', 'getTags', 'link-54');">getTags</a></tt><tt class="py-op">(</tt><tt class="py-string">'item'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">                <tt class="py-name">jid</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Method spade.xmpp.simplexml.Node.getAttr()=spade.xmpp.simplexml.Node-class.html#getAttr"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-55', 'getAttr', 'link-55');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'jid'</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-56', 'getAttr', 'link-55');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-string">'remove'</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">del</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Module spade.xmpp.roster=spade.xmpp.roster-module.html,Module spade.xmppd.modules.roster=spade.xmppd.modules.roster-module.html"><a title="spade.xmpp.roster
+spade.xmppd.modules.roster" class="py-name" href="#" onclick="return doclink('link-57', 'roster', 'link-57');">roster</a></tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-58', 'getAttr', 'link-55');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'name'</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'ask'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-59', 'getAttr', 'link-55');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'ask'</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'subscription'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-60', 'getAttr', 'link-55');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">'resources'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">group</tt> <tt class="py-keyword">in</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="spade.xmpp.simplexml.Node.getTags" class="py-name" href="#" onclick="return doclink('link-61', 'getTags', 'link-54');">getTags</a></tt><tt class="py-op">(</tt><tt class="py-string">'group'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method spade.pyparsing.ParseExpression.append()=spade.pyparsing.ParseExpression-class.html#append"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-62', 'append', 'link-62');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">group</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method spade.xmpp.simplexml.Node.getData()=spade.xmpp.simplexml.Node-class.html#getData"><a title="spade.xmpp.simplexml.Node.getData" class="py-name" href="#" onclick="return doclink('link-63', 'getData', 'link-63');">getData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">_waitingForRoster</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"> </tt>
+<a name="SocialItem"></a><div id="SocialItem-def"><a name="L55"></a><tt class="py-lineno">55</tt> <a class="py-toggle" href="#" id="SocialItem-toggle" onclick="return toggle('SocialItem');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.socialnetwork.SocialItem-class.html">SocialItem</a><tt class="py-op">:</tt> </tt>
+</div><div id="SocialItem-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="SocialItem-expanded"><a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-docstring">    A member of an agent's Social Network</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-docstring">    AID, presence &amp; subscription</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="SocialItem.__init__"></a><div id="SocialItem.__init__-def"><a name="L60"></a><tt class="py-lineno">60</tt> <a class="py-toggle" href="#" id="SocialItem.__init__-toggle" onclick="return toggle('SocialItem.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.SocialItem-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">agent</tt><tt class="py-op">,</tt> <tt class="py-param">jid</tt><tt class="py-op">,</tt> <tt class="py-param">presence</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SocialItem.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SocialItem.__init__-expanded"><a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt> <tt class="py-op">=</tt> <tt class="py-name">agent</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_jid</tt> <tt class="py-op">=</tt> <tt class="py-name">jid</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_presence</tt> <tt class="py-op">=</tt> <tt class="py-name">presence</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-comment"># Generate AID</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_aid</tt> <tt class="py-op">=</tt> <tt id="link-64" class="py-name"><a title="spade.AID" class="py-name" href="#" onclick="return doclink('link-64', 'AID', 'link-1');">AID</a></tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Class spade.AID.aid=spade.AID.aid-class.html"><a title="spade.AID.aid" class="py-name" href="#" onclick="return doclink('link-65', 'aid', 'link-65');">aid</a></tt><tt class="py-op">(</tt><tt id="link-66" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-66', 'name', 'link-66');">name</a></tt><tt class="py-op">=</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt> <tt class="py-name">addresses</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-string">"xmpp://"</tt><tt class="py-op">+</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">        <tt class="py-comment"># Get subscription from roster</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">        <tt id="link-67" class="py-name"><a title="spade.xmpp.roster
+spade.xmppd.modules.roster" class="py-name" href="#" onclick="return doclink('link-67', 'roster', 'link-57');">roster</a></tt> <tt class="py-op">=</tt> <tt class="py-name">agent</tt><tt class="py-op">.</tt><tt class="py-name">_roster</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-68" class="py-name"><a title="spade.xmpp.roster
+spade.xmppd.modules.roster" class="py-name" href="#" onclick="return doclink('link-68', 'roster', 'link-57');">roster</a></tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-69" class="py-name"><a title="spade.xmpp.roster
+spade.xmppd.modules.roster" class="py-name" href="#" onclick="return doclink('link-69', 'roster', 'link-57');">roster</a></tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">"subscription"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_subscription</tt> <tt class="py-op">=</tt> <tt id="link-70" class="py-name"><a title="spade.xmpp.roster
+spade.xmppd.modules.roster" class="py-name" href="#" onclick="return doclink('link-70', 'roster', 'link-57');">roster</a></tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">"subscription"</tt><tt class="py-op">]</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_subscription</tt> <tt class="py-op">=</tt> <tt class="py-string">"none"</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_subscription</tt> <tt class="py-op">=</tt> <tt class="py-string">"none"</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line"> </tt>
+<a name="SocialItem.setPresence"></a><div id="SocialItem.setPresence-def"><a name="L78"></a><tt class="py-lineno">78</tt> <a class="py-toggle" href="#" id="SocialItem.setPresence-toggle" onclick="return toggle('SocialItem.setPresence');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.SocialItem-class.html#setPresence">setPresence</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">presence</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SocialItem.setPresence-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SocialItem.setPresence-expanded"><a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_presence</tt> <tt class="py-op">=</tt> <tt class="py-name">presence</tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"> </tt>
+<a name="SocialItem.getPresence"></a><div id="SocialItem.getPresence-def"><a name="L81"></a><tt class="py-lineno">81</tt> <a class="py-toggle" href="#" id="SocialItem.getPresence-toggle" onclick="return toggle('SocialItem.getPresence');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.SocialItem-class.html#getPresence">getPresence</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SocialItem.getPresence-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SocialItem.getPresence-expanded"><a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_presence</tt> </tt>
+</div><a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line"> </tt>
+<a name="SocialItem.subscribe"></a><div id="SocialItem.subscribe-def"><a name="L84"></a><tt class="py-lineno">84</tt> <a class="py-toggle" href="#" id="SocialItem.subscribe-toggle" onclick="return toggle('SocialItem.subscribe');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.socialnetwork.SocialItem-class.html#subscribe">subscribe</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SocialItem.subscribe-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SocialItem.subscribe-expanded"><a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">myAgent</tt><tt class="py-op">.</tt><tt class="py-name">jabber</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Class spade.xmpp.roster.Roster=spade.xmpp.roster.Roster-class.html"><a title="spade.xmpp.roster.Roster" class="py-name" href="#" onclick="return doclink('link-71', 'Roster', 'link-71');">Roster</a></tt><tt class="py-op">.</tt><tt id="link-72" class="py-name" targets="Method spade.xmpp.roster.Roster.Subscribe()=spade.xmpp.roster.Roster-class.html#Subscribe"><a title="spade.xmpp.roster.Roster.Subscribe" class="py-name" href="#" onclick="return doclink('link-72', 'Subscribe', 'link-72');">Subscribe</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_jid</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:01 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

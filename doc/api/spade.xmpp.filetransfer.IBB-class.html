@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.filetransfer.IBB</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.filetransfer-module.html">Module&nbsp;filetransfer</a> ::
+        Class&nbsp;IBB
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.filetransfer.IBB-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class IBB</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_15" name="uml_class_diagram_for_spade_xm_15">
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#__init__" title="Initialise internal variables." alt="" coords="17,153,289,172"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#plugin" title="Register handlers for receiving incoming datastreams." alt="" coords="17,172,289,191"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#IqHandler" title="Handles streams state change." alt="" coords="17,191,289,209"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#StreamOpenHandler" title="Handles opening of new incoming stream." alt="" coords="17,209,289,228"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#OpenStream" title="Start new stream." alt="" coords="17,228,289,247"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#SendHandler" title="Send next portion of data if it is time to do it." alt="" coords="17,247,289,265"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#ReceiveHandler" title="Receive next portion of incoming datastream and store it write it to &#160;temporary file." alt="" coords="17,265,289,284"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#StreamCloseHandler" title="Handle stream closure due to all data transmitted." alt="" coords="17,284,289,303"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#StreamBrokenHandler" title="Handle stream closure due to all some error while receiving data." alt="" coords="17,303,289,321"/>
+<area shape="rect" id="node2512" href="spade.xmpp.filetransfer.IBB-class.html#StreamOpenReplyHandler" title="Handle remote side reply about is it agree or not to receive our &#160;datastream." alt="" coords="17,321,289,340"/>
+<area shape="rect" id="node1" href="spade.xmpp.filetransfer.IBB-class.html" title="IBB used to transfer small&#45;sized data chunk over estabilished xmpp connection." alt="" coords="5,121,301,346"/>
+<area shape="rect" id="node2513" href="spade.xmpp.client.PlugIn-class.html#DEBUG" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="51,39,255,57"/>
+<area shape="rect" id="node2513" href="spade.xmpp.client.PlugIn-class.html#PlugIn" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="51,57,255,76"/>
+<area shape="rect" id="node2513" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="51,76,255,95"/>
+<area shape="rect" id="node2" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="39,6,265,101"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_15.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_15" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>IBB used to transfer small-sized data chunk over estabilished xmpp 
+  connection. Data is split into small blocks (by default 3000 bytes each),
+  encoded as base 64 and sent to another entity that compiles these blocks 
+  back into the data chunk. This is very inefficiend but should work under 
+  any circumstances. Note that using IBB normally should be the last 
+  resort.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initialise internal variables.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#plugin" class="summary-sig-name">plugin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>)</span><br />
+      Register handlers for receiving incoming datastreams.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#IqHandler" class="summary-sig-name">IqHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Handles streams state change.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.IqHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#StreamOpenHandler" class="summary-sig-name">StreamOpenHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Handles opening of new incoming stream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamOpenHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#OpenStream" class="summary-sig-name">OpenStream</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sid</span>,
+        <span class="summary-sig-arg">to</span>,
+        <span class="summary-sig-arg">fp</span>,
+        <span class="summary-sig-arg">blocksize</span>=<span class="summary-sig-default">3000</span>)</span><br />
+      Start new stream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.OpenStream">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#SendHandler" class="summary-sig-name">SendHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>)</span><br />
+      Send next portion of data if it is time to do it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.SendHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#ReceiveHandler" class="summary-sig-name">ReceiveHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Receive next portion of incoming datastream and store it write it to 
+      temporary file.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.ReceiveHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#StreamCloseHandler" class="summary-sig-name">StreamCloseHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Handle stream closure due to all data transmitted.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamCloseHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#StreamBrokenHandler" class="summary-sig-name">StreamBrokenHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Handle stream closure due to all some error while receiving data.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamBrokenHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.filetransfer.IBB-class.html#StreamOpenReplyHandler" class="summary-sig-name">StreamOpenReplyHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Handle remote side reply about is it agree or not to receive our 
+      datastream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamOpenReplyHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.PlugIn-class.html">client.PlugIn</a></code></b>:
+      <code><a href="spade.xmpp.client.PlugIn-class.html#DEBUG">DEBUG</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugIn">PlugIn</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugOut">PlugOut</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Initialise internal variables.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#__init__">client.PlugIn.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">owner</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.plugin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Register handlers for receiving incoming datastreams. Used 
+  internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="IqHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">IqHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.IqHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handles streams state change. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StreamOpenHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StreamOpenHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamOpenHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handles opening of new incoming stream. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="OpenStream"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">OpenStream</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sid</span>,
+        <span class="sig-arg">to</span>,
+        <span class="sig-arg">fp</span>,
+        <span class="sig-arg">blocksize</span>=<span class="sig-default">3000</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.OpenStream">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Start new stream. You should provide stream id 'sid', the endpoind jid
+  'to', the file object containing info for send 'fp'. Also the desired 
+  blocksize can be specified. Take into account that recommended stanza 
+  size is 4k and IBB uses base64 encoding that increases size of data by 
+  1/3.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="SendHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SendHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.SendHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Send next portion of data if it is time to do it. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ReceiveHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ReceiveHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.ReceiveHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Receive next portion of incoming datastream and store it write it to 
+  temporary file. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StreamCloseHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StreamCloseHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamCloseHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handle stream closure due to all data transmitted. Raise xmpppy event 
+  specifying successfull data receive.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StreamBrokenHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StreamBrokenHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamBrokenHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handle stream closure due to all some error while receiving data. 
+  Raise xmpppy event specifying unsuccessfull data receive.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StreamOpenReplyHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StreamOpenReplyHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.filetransfer-pysrc.html#IBB.StreamOpenReplyHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handle remote side reply about is it agree or not to receive our 
+  datastream. Used internally. Raises xmpppy event specfiying if the data 
+  transfer is agreed upon.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

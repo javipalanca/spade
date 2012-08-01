@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmppd.modules.jep0077</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmppd-module.html">Package&nbsp;xmppd</a> ::
+        <a href="spade.xmppd.modules-module.html">Package&nbsp;modules</a> ::
+        Module&nbsp;jep0077
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmppd.modules.jep0077-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.xmppd.modules.jep0077-module.html">Module spade.xmppd.modules.jep0077</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># Distributed under the terms of GPL version 2 or any later</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (C) Alexey Nezhdanov 2004</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># In-band-registration for xmppd.py</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># $Id: jep0077.py,v 1.2 2004/09/19 20:20:05 snakeru Exp $</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package spade.xmpp=spade.xmpp-module.html"><a title="spade.xmpp" class="py-name" href="#" onclick="return doclink('link-0', 'xmpp', 'link-0');">xmpp</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="IBR"></a><div id="IBR-def"><a name="L10"></a><tt class="py-lineno">10</tt> <a class="py-toggle" href="#" id="IBR-toggle" onclick="return toggle('IBR');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.xmppd.modules.jep0077.IBR-class.html">IBR</a><tt class="py-op">(</tt><tt class="py-base-class">PlugIn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IBR-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="IBR-expanded"><a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt id="link-1" class="py-name" targets="Variable spade.xmppd.modules.config.Config.NS=spade.xmppd.modules.config.Config-class.html#NS,Variable spade.xmppd.modules.db_fake.AUTH.NS=spade.xmppd.modules.db_fake.AUTH-class.html#NS,Variable spade.xmppd.modules.db_fake.DB.NS=spade.xmppd.modules.db_fake.DB-class.html#NS,Variable spade.xmppd.modules.dialback.Dialback.NS=spade.xmppd.modules.dialback.Dialback-class.html#NS,Variable spade.xmppd.modules.jep0077.IBR.NS=spade.xmppd.modules.jep0077.IBR-class.html#NS,Variable spade.xmppd.modules.jep0078.NSA.NS=spade.xmppd.modules.jep0078.NSA-class.html#NS,Variable spade.xmppd.modules.message.MessageCatcher.NS=spade.xmppd.modules.message.MessageCatcher-class.html#NS,Variable spade.xmppd.modules.muc.MUC.NS=spade.xmppd.modules.muc.MUC-class.html#NS,Variable spade.xmppd.modules.oob.OOB.NS=spade.xmppd.modules.oob.OOB-class.html#NS,Variable spade.xmppd.modules.pubsub.PubSubServer.NS=spade.xmppd.modules.pubsub.PubSubServer-class.html#NS,Variable spade.xmppd.modules.roster.ROSTER.NS=spade.xmppd.modules.roster.ROSTER-class.html#NS,Variable spade.xmppd.modules.router.Router.NS=spade.xmppd.modules.router.Router-class.html#NS,Variable spade.xmppd.modules.stream.Bind.NS=spade.xmppd.modules.stream.Bind-class.html#NS,Variable spade.xmppd.modules.stream.Handshake.NS=spade.xmppd.modules.stream.Handshake-class.html#NS,Variable spade.xmppd.modules.stream.SASL.NS=spade.xmppd.modules.stream.SASL-class.html#NS,Variable spade.xmppd.modules.stream.Session.NS=spade.xmppd.modules.stream.Session-class.html#NS,Variable spade.xmppd.modules.stream.TLS.NS=spade.xmppd.modules.stream.TLS-class.html#NS,Variable spade.xmppd.modules.webadmin.WebAdmin.NS=spade.xmppd.modules.webadmin.WebAdmin-class.html#NS,Variable spade.xmppd.modules.wq.WQ.NS=spade.xmppd.modules.wq.WQ-class.html#NS"><a title="spade.xmppd.modules.config.Config.NS
+spade.xmppd.modules.db_fake.AUTH.NS
+spade.xmppd.modules.db_fake.DB.NS
+spade.xmppd.modules.dialback.Dialback.NS
+spade.xmppd.modules.jep0077.IBR.NS
+spade.xmppd.modules.jep0078.NSA.NS
+spade.xmppd.modules.message.MessageCatcher.NS
+spade.xmppd.modules.muc.MUC.NS
+spade.xmppd.modules.oob.OOB.NS
+spade.xmppd.modules.pubsub.PubSubServer.NS
+spade.xmppd.modules.roster.ROSTER.NS
+spade.xmppd.modules.router.Router.NS
+spade.xmppd.modules.stream.Bind.NS
+spade.xmppd.modules.stream.Handshake.NS
+spade.xmppd.modules.stream.SASL.NS
+spade.xmppd.modules.stream.Session.NS
+spade.xmppd.modules.stream.TLS.NS
+spade.xmppd.modules.webadmin.WebAdmin.NS
+spade.xmppd.modules.wq.WQ.NS" class="py-name" href="#" onclick="return doclink('link-1', 'NS', 'link-1');">NS</a></tt><tt class="py-op">=</tt><tt id="link-2" class="py-name" targets="Variable spade.Agent.NS_REGISTER=spade.Agent-module.html#NS_REGISTER,Variable spade.MTP.NS_REGISTER=spade.MTP-module.html#NS_REGISTER,Variable spade.Organization.NS_REGISTER=spade.Organization-module.html#NS_REGISTER,Variable spade.Organization_new.NS_REGISTER=spade.Organization_new-module.html#NS_REGISTER,Variable spade.Unit.NS_REGISTER=spade.Unit-module.html#NS_REGISTER,Variable spade.Unit_new.NS_REGISTER=spade.Unit_new-module.html#NS_REGISTER,Variable spade.pubsub.NS_REGISTER=spade.pubsub-module.html#NS_REGISTER,Variable spade.socialnetwork.NS_REGISTER=spade.socialnetwork-module.html#NS_REGISTER,Variable spade.xmpp.NS_REGISTER=spade.xmpp-module.html#NS_REGISTER,Variable spade.xmpp.auth.NS_REGISTER=spade.xmpp.auth-module.html#NS_REGISTER,Variable spade.xmpp.browser.NS_REGISTER=spade.xmpp.browser-module.html#NS_REGISTER,Variable spade.xmpp.commands.NS_REGISTER=spade.xmpp.commands-module.html#NS_REGISTER,Variable spade.xmpp.dispatcher.NS_REGISTER=spade.xmpp.dispatcher-module.html#NS_REGISTER,Variable spade.xmpp.features.NS_REGISTER=spade.xmpp.features-module.html#NS_REGISTER,Variable spade.xmpp.filetransfer.NS_REGISTER=spade.xmpp.filetransfer-module.html#NS_REGISTER,Variable spade.xmpp.protocol.NS_REGISTER=spade.xmpp.protocol-module.html#NS_REGISTER,Variable spade.xmpp.roster.NS_REGISTER=spade.xmpp.roster-module.html#NS_REGISTER,Variable spade.xmpp.transports.NS_REGISTER=spade.xmpp.transports-module.html#NS_REGISTER,Variable spade.xmppd.modules.config.NS_REGISTER=spade.xmppd.modules.config-module.html#NS_REGISTER,Variable spade.xmppd.modules.db_fake.NS_REGISTER=spade.xmppd.modules.db_fake-module.html#NS_REGISTER,Variable spade.xmppd.modules.dialback.NS_REGISTER=spade.xmppd.modules.dialback-module.html#NS_REGISTER,Variable spade.xmppd.modules.jep0077.NS_REGISTER=spade.xmppd.modules.jep0077-module.html#NS_REGISTER,Variable spade.xmppd.modules.jep0078.NS_REGISTER=spade.xmppd.modules.jep0078-module.html#NS_REGISTER,Variable spade.xmppd.modules.message.NS_REGISTER=spade.xmppd.modules.message-module.html#NS_REGISTER,Variable spade.xmppd.modules.muc.NS_REGISTER=spade.xmppd.modules.muc-module.html#NS_REGISTER,Variable spade.xmppd.modules.oob.NS_REGISTER=spade.xmppd.modules.oob-module.html#NS_REGISTER,Variable spade.xmppd.modules.pubsub.NS_REGISTER=spade.xmppd.modules.pubsub-module.html#NS_REGISTER,Variable spade.xmppd.modules.roster.NS_REGISTER=spade.xmppd.modules.roster-module.html#NS_REGISTER,Variable spade.xmppd.modules.router.NS_REGISTER=spade.xmppd.modules.router-module.html#NS_REGISTER,Variable spade.xmppd.modules.stream.NS_REGISTER=spade.xmppd.modules.stream-module.html#NS_REGISTER,Variable spade.xmppd.modules.webadmin.NS_REGISTER=spade.xmppd.modules.webadmin-module.html#NS_REGISTER,Variable spade.xmppd.modules.wq.NS_REGISTER=spade.xmppd.modules.wq-module.html#NS_REGISTER,Variable spade.xmppd.xmppd.NS_REGISTER=spade.xmppd.xmppd-module.html#NS_REGISTER"><a title="spade.Agent.NS_REGISTER
+spade.MTP.NS_REGISTER
+spade.Organization.NS_REGISTER
+spade.Organization_new.NS_REGISTER
+spade.Unit.NS_REGISTER
+spade.Unit_new.NS_REGISTER
+spade.pubsub.NS_REGISTER
+spade.socialnetwork.NS_REGISTER
+spade.xmpp.NS_REGISTER
+spade.xmpp.auth.NS_REGISTER
+spade.xmpp.browser.NS_REGISTER
+spade.xmpp.commands.NS_REGISTER
+spade.xmpp.dispatcher.NS_REGISTER
+spade.xmpp.features.NS_REGISTER
+spade.xmpp.filetransfer.NS_REGISTER
+spade.xmpp.protocol.NS_REGISTER
+spade.xmpp.roster.NS_REGISTER
+spade.xmpp.transports.NS_REGISTER
+spade.xmppd.modules.config.NS_REGISTER
+spade.xmppd.modules.db_fake.NS_REGISTER
+spade.xmppd.modules.dialback.NS_REGISTER
+spade.xmppd.modules.jep0077.NS_REGISTER
+spade.xmppd.modules.jep0078.NS_REGISTER
+spade.xmppd.modules.message.NS_REGISTER
+spade.xmppd.modules.muc.NS_REGISTER
+spade.xmppd.modules.oob.NS_REGISTER
+spade.xmppd.modules.pubsub.NS_REGISTER
+spade.xmppd.modules.roster.NS_REGISTER
+spade.xmppd.modules.router.NS_REGISTER
+spade.xmppd.modules.stream.NS_REGISTER
+spade.xmppd.modules.webadmin.NS_REGISTER
+spade.xmppd.modules.wq.NS_REGISTER
+spade.xmppd.xmppd.NS_REGISTER" class="py-name" href="#" onclick="return doclink('link-2', 'NS_REGISTER', 'link-2');">NS_REGISTER</a></tt> </tt>
+<a name="IBR.plugin"></a><div id="IBR.plugin-def"><a name="L12"></a><tt class="py-lineno">12</tt> <a class="py-toggle" href="#" id="IBR.plugin-toggle" onclick="return toggle('IBR.plugin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.jep0077.IBR-class.html#plugin">plugin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">server</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IBR.plugin-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="IBR.plugin-expanded"><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Class spade.xmpp.dispatcher.Dispatcher=spade.xmpp.dispatcher.Dispatcher-class.html"><a title="spade.xmpp.dispatcher.Dispatcher" class="py-name" href="#" onclick="return doclink('link-3', 'Dispatcher', 'link-3');">Dispatcher</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method spade.xmpp.dispatcher.Dispatcher.RegisterHandler()=spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandler"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-4', 'RegisterHandler', 'link-4');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method spade.xmppd.modules.jep0077.IBR.getRegInfoHandler()=spade.xmppd.modules.jep0077.IBR-class.html#getRegInfoHandler"><a title="spade.xmppd.modules.jep0077.IBR.getRegInfoHandler" class="py-name" href="#" onclick="return doclink('link-5', 'getRegInfoHandler', 'link-5');">getRegInfoHandler</a></tt><tt class="py-op">,</tt><tt class="py-string">'get'</tt><tt class="py-op">,</tt><tt id="link-6" class="py-name"><a title="spade.Agent.NS_REGISTER
+spade.MTP.NS_REGISTER
+spade.Organization.NS_REGISTER
+spade.Organization_new.NS_REGISTER
+spade.Unit.NS_REGISTER
+spade.Unit_new.NS_REGISTER
+spade.pubsub.NS_REGISTER
+spade.socialnetwork.NS_REGISTER
+spade.xmpp.NS_REGISTER
+spade.xmpp.auth.NS_REGISTER
+spade.xmpp.browser.NS_REGISTER
+spade.xmpp.commands.NS_REGISTER
+spade.xmpp.dispatcher.NS_REGISTER
+spade.xmpp.features.NS_REGISTER
+spade.xmpp.filetransfer.NS_REGISTER
+spade.xmpp.protocol.NS_REGISTER
+spade.xmpp.roster.NS_REGISTER
+spade.xmpp.transports.NS_REGISTER
+spade.xmppd.modules.config.NS_REGISTER
+spade.xmppd.modules.db_fake.NS_REGISTER
+spade.xmppd.modules.dialback.NS_REGISTER
+spade.xmppd.modules.jep0077.NS_REGISTER
+spade.xmppd.modules.jep0078.NS_REGISTER
+spade.xmppd.modules.message.NS_REGISTER
+spade.xmppd.modules.muc.NS_REGISTER
+spade.xmppd.modules.oob.NS_REGISTER
+spade.xmppd.modules.pubsub.NS_REGISTER
+spade.xmppd.modules.roster.NS_REGISTER
+spade.xmppd.modules.router.NS_REGISTER
+spade.xmppd.modules.stream.NS_REGISTER
+spade.xmppd.modules.webadmin.NS_REGISTER
+spade.xmppd.modules.wq.NS_REGISTER
+spade.xmppd.xmppd.NS_REGISTER" class="py-name" href="#" onclick="return doclink('link-6', 'NS_REGISTER', 'link-2');">NS_REGISTER</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher" class="py-name" href="#" onclick="return doclink('link-7', 'Dispatcher', 'link-3');">Dispatcher</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-8', 'RegisterHandler', 'link-4');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method spade.xmppd.modules.jep0077.IBR.setRegInfoHandler()=spade.xmppd.modules.jep0077.IBR-class.html#setRegInfoHandler"><a title="spade.xmppd.modules.jep0077.IBR.setRegInfoHandler" class="py-name" href="#" onclick="return doclink('link-9', 'setRegInfoHandler', 'link-9');">setRegInfoHandler</a></tt><tt class="py-op">,</tt><tt class="py-string">'set'</tt><tt class="py-op">,</tt><tt id="link-10" class="py-name"><a title="spade.Agent.NS_REGISTER
+spade.MTP.NS_REGISTER
+spade.Organization.NS_REGISTER
+spade.Organization_new.NS_REGISTER
+spade.Unit.NS_REGISTER
+spade.Unit_new.NS_REGISTER
+spade.pubsub.NS_REGISTER
+spade.socialnetwork.NS_REGISTER
+spade.xmpp.NS_REGISTER
+spade.xmpp.auth.NS_REGISTER
+spade.xmpp.browser.NS_REGISTER
+spade.xmpp.commands.NS_REGISTER
+spade.xmpp.dispatcher.NS_REGISTER
+spade.xmpp.features.NS_REGISTER
+spade.xmpp.filetransfer.NS_REGISTER
+spade.xmpp.protocol.NS_REGISTER
+spade.xmpp.roster.NS_REGISTER
+spade.xmpp.transports.NS_REGISTER
+spade.xmppd.modules.config.NS_REGISTER
+spade.xmppd.modules.db_fake.NS_REGISTER
+spade.xmppd.modules.dialback.NS_REGISTER
+spade.xmppd.modules.jep0077.NS_REGISTER
+spade.xmppd.modules.jep0078.NS_REGISTER
+spade.xmppd.modules.message.NS_REGISTER
+spade.xmppd.modules.muc.NS_REGISTER
+spade.xmppd.modules.oob.NS_REGISTER
+spade.xmppd.modules.pubsub.NS_REGISTER
+spade.xmppd.modules.roster.NS_REGISTER
+spade.xmppd.modules.router.NS_REGISTER
+spade.xmppd.modules.stream.NS_REGISTER
+spade.xmppd.modules.webadmin.NS_REGISTER
+spade.xmppd.modules.wq.NS_REGISTER
+spade.xmppd.xmppd.NS_REGISTER" class="py-name" href="#" onclick="return doclink('link-10', 'NS_REGISTER', 'link-2');">NS_REGISTER</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="IBR.getRegInfoHandler"></a><div id="IBR.getRegInfoHandler-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="IBR.getRegInfoHandler-toggle" onclick="return toggle('IBR.getRegInfoHandler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.jep0077.IBR-class.html#getRegInfoHandler">getRegInfoHandler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">sess</tt><tt class="py-op">,</tt><tt class="py-param">stanza</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IBR.getRegInfoHandler-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="IBR.getRegInfoHandler-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt id="link-11" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-11', 'name', 'link-11');">name</a></tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">[</tt><tt class="py-string">'to'</tt><tt class="py-op">]</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-12" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-12', 'name', 'link-11');">name</a></tt> <tt class="py-keyword">and</tt> <tt id="link-13" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-13', 'name', 'link-11');">name</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Variable spade.xmppd.modules.config.servernames=spade.xmppd.modules.config-module.html#servernames"><a title="spade.xmppd.modules.config.servernames" class="py-name" href="#" onclick="return doclink('link-14', 'servernames', 'link-14');">servernames</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">            <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method spade.Agent.AbstractAgent.send()=spade.Agent.AbstractAgent-class.html#send,Method spade.MTP.MTP.send()=spade.MTP.MTP-class.html#send,Method spade.xmpp.dispatcher.Dispatcher.send()=spade.xmpp.dispatcher.Dispatcher-class.html#send,Method spade.xmpp.transports.TCPsocket.send()=spade.xmpp.transports.TCPsocket-class.html#send,Method spade.xmppd.xmppd.RPC_Client.send()=spade.xmppd.xmppd.RPC_Client-class.html#send,Method spade.xmppd.xmppd.Session.send()=spade.xmppd.xmppd.Session-class.html#send"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-15', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt id="link-16" class="py-name" targets="Class spade.xmpp.protocol.Error=spade.xmpp.protocol.Error-class.html"><a title="spade.xmpp.protocol.Error" class="py-name" href="#" onclick="return doclink('link-16', 'Error', 'link-16');">Error</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">,</tt><tt id="link-17" class="py-name" targets="Variable spade.Agent.ERR_ITEM_NOT_FOUND=spade.Agent-module.html#ERR_ITEM_NOT_FOUND,Variable spade.MTP.ERR_ITEM_NOT_FOUND=spade.MTP-module.html#ERR_ITEM_NOT_FOUND,Variable spade.Organization.ERR_ITEM_NOT_FOUND=spade.Organization-module.html#ERR_ITEM_NOT_FOUND,Variable spade.Organization_new.ERR_ITEM_NOT_FOUND=spade.Organization_new-module.html#ERR_ITEM_NOT_FOUND,Variable spade.Unit.ERR_ITEM_NOT_FOUND=spade.Unit-module.html#ERR_ITEM_NOT_FOUND,Variable spade.Unit_new.ERR_ITEM_NOT_FOUND=spade.Unit_new-module.html#ERR_ITEM_NOT_FOUND,Variable spade.pubsub.ERR_ITEM_NOT_FOUND=spade.pubsub-module.html#ERR_ITEM_NOT_FOUND,Variable spade.socialnetwork.ERR_ITEM_NOT_FOUND=spade.socialnetwork-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.ERR_ITEM_NOT_FOUND=spade.xmpp-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.auth.ERR_ITEM_NOT_FOUND=spade.xmpp.auth-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.browser.ERR_ITEM_NOT_FOUND=spade.xmpp.browser-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.commands.ERR_ITEM_NOT_FOUND=spade.xmpp.commands-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.dispatcher.ERR_ITEM_NOT_FOUND=spade.xmpp.dispatcher-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.features.ERR_ITEM_NOT_FOUND=spade.xmpp.features-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.filetransfer.ERR_ITEM_NOT_FOUND=spade.xmpp.filetransfer-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.protocol.ERR_ITEM_NOT_FOUND=spade.xmpp.protocol-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.roster.ERR_ITEM_NOT_FOUND=spade.xmpp.roster-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmpp.transports.ERR_ITEM_NOT_FOUND=spade.xmpp.transports-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.config.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.config-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.db_fake.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.db_fake-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.dialback.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.dialback-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.jep0077.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.jep0077-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.jep0078.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.jep0078-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.message.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.message-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.muc.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.muc-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.oob.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.oob-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.pubsub.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.pubsub-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.roster.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.roster-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.router.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.router-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.stream.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.stream-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.webadmin.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.webadmin-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.modules.wq.ERR_ITEM_NOT_FOUND=spade.xmppd.modules.wq-module.html#ERR_ITEM_NOT_FOUND,Variable spade.xmppd.xmppd.ERR_ITEM_NOT_FOUND=spade.xmppd.xmppd-module.html#ERR_ITEM_NOT_FOUND"><a title="spade.Agent.ERR_ITEM_NOT_FOUND
+spade.MTP.ERR_ITEM_NOT_FOUND
+spade.Organization.ERR_ITEM_NOT_FOUND
+spade.Organization_new.ERR_ITEM_NOT_FOUND
+spade.Unit.ERR_ITEM_NOT_FOUND
+spade.Unit_new.ERR_ITEM_NOT_FOUND
+spade.pubsub.ERR_ITEM_NOT_FOUND
+spade.socialnetwork.ERR_ITEM_NOT_FOUND
+spade.xmpp.ERR_ITEM_NOT_FOUND
+spade.xmpp.auth.ERR_ITEM_NOT_FOUND
+spade.xmpp.browser.ERR_ITEM_NOT_FOUND
+spade.xmpp.commands.ERR_ITEM_NOT_FOUND
+spade.xmpp.dispatcher.ERR_ITEM_NOT_FOUND
+spade.xmpp.features.ERR_ITEM_NOT_FOUND
+spade.xmpp.filetransfer.ERR_ITEM_NOT_FOUND
+spade.xmpp.protocol.ERR_ITEM_NOT_FOUND
+spade.xmpp.roster.ERR_ITEM_NOT_FOUND
+spade.xmpp.transports.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.config.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.db_fake.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.dialback.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.jep0077.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.jep0078.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.message.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.muc.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.oob.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.pubsub.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.roster.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.router.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.stream.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.webadmin.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.wq.ERR_ITEM_NOT_FOUND
+spade.xmppd.xmppd.ERR_ITEM_NOT_FOUND" class="py-name" href="#" onclick="return doclink('link-17', 'ERR_ITEM_NOT_FOUND', 'link-17');">ERR_ITEM_NOT_FOUND</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">            <tt class="py-name">iq</tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method spade.xmpp.protocol.Iq.buildReply()=spade.xmpp.protocol.Iq-class.html#buildReply,Method spade.xmpp.protocol.Message.buildReply()=spade.xmpp.protocol.Message-class.html#buildReply"><a title="spade.xmpp.protocol.Iq.buildReply
+spade.xmpp.protocol.Message.buildReply" class="py-name" href="#" onclick="return doclink('link-18', 'buildReply', 'link-18');">buildReply</a></tt><tt class="py-op">(</tt><tt class="py-string">'result'</tt><tt class="py-op">)</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">            <tt class="py-name">iq</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Class spade.xmpp.simplexml.T=spade.xmpp.simplexml.T-class.html"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-19', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-20" class="py-name" targets="Method spade.pyxf.eclipse.query()=spade.pyxf.eclipse-class.html#query,Method spade.pyxf.flora2.query()=spade.pyxf.flora2-class.html#query,Method spade.pyxf.swipl.query()=spade.pyxf.swipl-class.html#query,Method spade.pyxf.xsb.query()=spade.pyxf.xsb-class.html#query"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-20', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Class spade.xmpp.simplexml.NT=spade.xmpp.simplexml.NT-class.html"><a title="spade.xmpp.simplexml.NT" class="py-name" href="#" onclick="return doclink('link-21', 'NT', 'link-21');">NT</a></tt><tt class="py-op">.</tt><tt class="py-name">username</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">            <tt class="py-name">iq</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-22', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-23', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="spade.xmpp.simplexml.NT" class="py-name" href="#" onclick="return doclink('link-24', 'NT', 'link-21');">NT</a></tt><tt class="py-op">.</tt><tt class="py-name">password</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">            <tt class="py-name">iq</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-25', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-26', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="spade.xmpp.simplexml.NT" class="py-name" href="#" onclick="return doclink('link-27', 'NT', 'link-21');">NT</a></tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-28', 'name', 'link-11');">name</a></tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">            <tt class="py-name">iq</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-29', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-30', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="spade.xmpp.simplexml.NT" class="py-name" href="#" onclick="return doclink('link-31', 'NT', 'link-21');">NT</a></tt><tt class="py-op">.</tt><tt class="py-name">instructions</tt><tt class="py-op">=</tt><tt class="py-string">'Please specify name and password to register with'</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">            <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-32', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">iq</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-33" class="py-name" targets="Class spade.xmpp.protocol.NodeProcessed=spade.xmpp.protocol.NodeProcessed-class.html"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-33', 'NodeProcessed', 'link-33');">NodeProcessed</a></tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt>
+<a name="IBR.setRegInfoHandler"></a><div id="IBR.setRegInfoHandler-def"><a name="L29"></a><tt class="py-lineno">29</tt> <a class="py-toggle" href="#" id="IBR.setRegInfoHandler-toggle" onclick="return toggle('IBR.setRegInfoHandler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.jep0077.IBR-class.html#setRegInfoHandler">setRegInfoHandler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">sess</tt><tt class="py-op">,</tt><tt class="py-param">stanza</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IBR.setRegInfoHandler-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="IBR.setRegInfoHandler-expanded"><a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-name">domain_name</tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">[</tt><tt class="py-string">'to'</tt><tt class="py-op">]</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">domain_name</tt> <tt class="py-keyword">and</tt> <tt class="py-name">domain_name</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="spade.xmppd.modules.config.servernames" class="py-name" href="#" onclick="return doclink('link-34', 'servernames', 'link-14');">servernames</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-35', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="spade.xmpp.protocol.Error" class="py-name" href="#" onclick="return doclink('link-36', 'Error', 'link-16');">Error</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">,</tt><tt id="link-37" class="py-name"><a title="spade.Agent.ERR_ITEM_NOT_FOUND
+spade.MTP.ERR_ITEM_NOT_FOUND
+spade.Organization.ERR_ITEM_NOT_FOUND
+spade.Organization_new.ERR_ITEM_NOT_FOUND
+spade.Unit.ERR_ITEM_NOT_FOUND
+spade.Unit_new.ERR_ITEM_NOT_FOUND
+spade.pubsub.ERR_ITEM_NOT_FOUND
+spade.socialnetwork.ERR_ITEM_NOT_FOUND
+spade.xmpp.ERR_ITEM_NOT_FOUND
+spade.xmpp.auth.ERR_ITEM_NOT_FOUND
+spade.xmpp.browser.ERR_ITEM_NOT_FOUND
+spade.xmpp.commands.ERR_ITEM_NOT_FOUND
+spade.xmpp.dispatcher.ERR_ITEM_NOT_FOUND
+spade.xmpp.features.ERR_ITEM_NOT_FOUND
+spade.xmpp.filetransfer.ERR_ITEM_NOT_FOUND
+spade.xmpp.protocol.ERR_ITEM_NOT_FOUND
+spade.xmpp.roster.ERR_ITEM_NOT_FOUND
+spade.xmpp.transports.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.config.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.db_fake.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.dialback.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.jep0077.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.jep0078.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.message.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.muc.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.oob.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.pubsub.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.roster.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.router.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.stream.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.webadmin.ERR_ITEM_NOT_FOUND
+spade.xmppd.modules.wq.ERR_ITEM_NOT_FOUND
+spade.xmppd.xmppd.ERR_ITEM_NOT_FOUND" class="py-name" href="#" onclick="return doclink('link-37', 'ERR_ITEM_NOT_FOUND', 'link-17');">ERR_ITEM_NOT_FOUND</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">            <tt class="py-comment">#username=stanza.T.query.T.username</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">            <tt class="py-comment">#password=stanza.T.query.T.password</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">                    <tt id="link-38" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-38', 'name', 'link-11');">name</a></tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-39', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-40', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-41', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-42', 'name', 'link-11');">name</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method spade.xmpp.simplexml.Node.getData()=spade.xmpp.simplexml.Node-class.html#getData"><a title="spade.xmpp.simplexml.Node.getData" class="py-name" href="#" onclick="return doclink('link-43', 'getData', 'link-43');">getData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">                    <tt id="link-44" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-44', 'name', 'link-11');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt>  <tt class="py-comment"># Turbo-Hack!!!</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">                    <tt class="py-name">servername</tt><tt class="py-op">=</tt><tt class="py-name">domain_name</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method spade.Agent.AbstractAgent.getDomain()=spade.Agent.AbstractAgent-class.html#getDomain,Method spade.xmpp.protocol.JID.getDomain()=spade.xmpp.protocol.JID-class.html#getDomain"><a title="spade.Agent.AbstractAgent.getDomain
+spade.xmpp.protocol.JID.getDomain" class="py-name" href="#" onclick="return doclink('link-45', 'getDomain', 'link-45');">getDomain</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">                    <tt class="py-name">servername</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="spade.xmppd.modules.config.servernames" class="py-name" href="#" onclick="return doclink('link-46', 'servernames', 'link-14');">servernames</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">                    <tt class="py-name">username</tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-47', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-48', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-49', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt class="py-name">username</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.xmpp.simplexml.Node.getData" class="py-name" href="#" onclick="return doclink('link-50', 'getData', 'link-43');">getData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">                    <tt class="py-name">password</tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-51', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-52', 'query', 'link-20');">query</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="spade.xmpp.simplexml.T" class="py-name" href="#" onclick="return doclink('link-53', 'T', 'link-19');">T</a></tt><tt class="py-op">.</tt><tt class="py-name">password</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="spade.xmpp.simplexml.Node.getData" class="py-name" href="#" onclick="return doclink('link-54', 'getData', 'link-43');">getData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">                    <tt class="py-comment"># TODO: Implement de-registration from server</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                    <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-55', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="spade.xmpp.protocol.Error" class="py-name" href="#" onclick="return doclink('link-56', 'Error', 'link-16');">Error</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">,</tt><tt id="link-57" class="py-name" targets="Variable spade.Agent.ERR_NOT_ACCEPTABLE=spade.Agent-module.html#ERR_NOT_ACCEPTABLE,Variable spade.MTP.ERR_NOT_ACCEPTABLE=spade.MTP-module.html#ERR_NOT_ACCEPTABLE,Variable spade.Organization.ERR_NOT_ACCEPTABLE=spade.Organization-module.html#ERR_NOT_ACCEPTABLE,Variable spade.Organization_new.ERR_NOT_ACCEPTABLE=spade.Organization_new-module.html#ERR_NOT_ACCEPTABLE,Variable spade.Unit.ERR_NOT_ACCEPTABLE=spade.Unit-module.html#ERR_NOT_ACCEPTABLE,Variable spade.Unit_new.ERR_NOT_ACCEPTABLE=spade.Unit_new-module.html#ERR_NOT_ACCEPTABLE,Variable spade.pubsub.ERR_NOT_ACCEPTABLE=spade.pubsub-module.html#ERR_NOT_ACCEPTABLE,Variable spade.socialnetwork.ERR_NOT_ACCEPTABLE=spade.socialnetwork-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.ERR_NOT_ACCEPTABLE=spade.xmpp-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.auth.ERR_NOT_ACCEPTABLE=spade.xmpp.auth-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.browser.ERR_NOT_ACCEPTABLE=spade.xmpp.browser-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.commands.ERR_NOT_ACCEPTABLE=spade.xmpp.commands-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.dispatcher.ERR_NOT_ACCEPTABLE=spade.xmpp.dispatcher-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.features.ERR_NOT_ACCEPTABLE=spade.xmpp.features-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.filetransfer.ERR_NOT_ACCEPTABLE=spade.xmpp.filetransfer-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.protocol.ERR_NOT_ACCEPTABLE=spade.xmpp.protocol-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.roster.ERR_NOT_ACCEPTABLE=spade.xmpp.roster-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmpp.transports.ERR_NOT_ACCEPTABLE=spade.xmpp.transports-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.config.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.config-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.db_fake.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.db_fake-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.dialback.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.dialback-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.jep0077.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.jep0077-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.jep0078.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.jep0078-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.message.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.message-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.muc.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.muc-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.oob.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.oob-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.pubsub.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.pubsub-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.roster.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.roster-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.router.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.router-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.stream.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.stream-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.webadmin.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.webadmin-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.modules.wq.ERR_NOT_ACCEPTABLE=spade.xmppd.modules.wq-module.html#ERR_NOT_ACCEPTABLE,Variable spade.xmppd.xmppd.ERR_NOT_ACCEPTABLE=spade.xmppd.xmppd-module.html#ERR_NOT_ACCEPTABLE"><a title="spade.Agent.ERR_NOT_ACCEPTABLE
+spade.MTP.ERR_NOT_ACCEPTABLE
+spade.Organization.ERR_NOT_ACCEPTABLE
+spade.Organization_new.ERR_NOT_ACCEPTABLE
+spade.Unit.ERR_NOT_ACCEPTABLE
+spade.Unit_new.ERR_NOT_ACCEPTABLE
+spade.pubsub.ERR_NOT_ACCEPTABLE
+spade.socialnetwork.ERR_NOT_ACCEPTABLE
+spade.xmpp.ERR_NOT_ACCEPTABLE
+spade.xmpp.auth.ERR_NOT_ACCEPTABLE
+spade.xmpp.browser.ERR_NOT_ACCEPTABLE
+spade.xmpp.commands.ERR_NOT_ACCEPTABLE
+spade.xmpp.dispatcher.ERR_NOT_ACCEPTABLE
+spade.xmpp.features.ERR_NOT_ACCEPTABLE
+spade.xmpp.filetransfer.ERR_NOT_ACCEPTABLE
+spade.xmpp.protocol.ERR_NOT_ACCEPTABLE
+spade.xmpp.roster.ERR_NOT_ACCEPTABLE
+spade.xmpp.transports.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.config.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.db_fake.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.dialback.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.jep0077.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.jep0078.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.message.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.muc.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.oob.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.pubsub.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.roster.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.router.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.stream.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.webadmin.ERR_NOT_ACCEPTABLE
+spade.xmppd.modules.wq.ERR_NOT_ACCEPTABLE
+spade.xmppd.xmppd.ERR_NOT_ACCEPTABLE" class="py-name" href="#" onclick="return doclink('link-57', 'ERR_NOT_ACCEPTABLE', 'link-57');">ERR_NOT_ACCEPTABLE</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt id="link-58" class="py-name"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-58', 'NodeProcessed', 'link-33');">NodeProcessed</a></tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Class spade.xmppd.modules.db_fake.AUTH=spade.xmppd.modules.db_fake.AUTH-class.html"><a title="spade.xmppd.modules.db_fake.AUTH" class="py-name" href="#" onclick="return doclink('link-59', 'AUTH', 'link-59');">AUTH</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method spade.xmppd.modules.db_fake.AUTH.isuser()=spade.xmppd.modules.db_fake.AUTH-class.html#isuser"><a title="spade.xmppd.modules.db_fake.AUTH.isuser" class="py-name" href="#" onclick="return doclink('link-60', 'isuser', 'link-60');">isuser</a></tt><tt class="py-op">(</tt><tt class="py-name">username</tt><tt class="py-op">,</tt> <tt class="py-name">servername</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Class spade.xmppd.modules.db_fake.DB=spade.xmppd.modules.db_fake.DB-class.html"><a title="spade.xmppd.modules.db_fake.DB" class="py-name" href="#" onclick="return doclink('link-61', 'DB', 'link-61');">DB</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method spade.xmppd.modules.db_fake.DB.register_user()=spade.xmppd.modules.db_fake.DB-class.html#register_user"><a title="spade.xmppd.modules.db_fake.DB.register_user" class="py-name" href="#" onclick="return doclink('link-62', 'register_user', 'link-62');">register_user</a></tt><tt class="py-op">(</tt><tt class="py-name">servername</tt><tt class="py-op">,</tt> <tt class="py-name">username</tt><tt class="py-op">,</tt> <tt class="py-name">password</tt><tt class="py-op">,</tt> <tt id="link-63" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-63', 'name', 'link-11');">name</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">                        <tt class="py-name">iq</tt><tt class="py-op">=</tt><tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="spade.xmpp.protocol.Iq.buildReply
+spade.xmpp.protocol.Message.buildReply" class="py-name" href="#" onclick="return doclink('link-64', 'buildReply', 'link-18');">buildReply</a></tt><tt class="py-op">(</tt><tt class="py-string">'result'</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">                        <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-65', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">iq</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">                        <tt class="py-comment">#self.DEBUG(str(self._owner.DB.printdb()),'info')</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">                    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">                        <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-66', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="spade.xmpp.protocol.Error" class="py-name" href="#" onclick="return doclink('link-67', 'Error', 'link-16');">Error</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">,</tt><tt id="link-68" class="py-name" targets="Variable spade.Agent.ERR_CONFLICT=spade.Agent-module.html#ERR_CONFLICT,Variable spade.MTP.ERR_CONFLICT=spade.MTP-module.html#ERR_CONFLICT,Variable spade.Organization.ERR_CONFLICT=spade.Organization-module.html#ERR_CONFLICT,Variable spade.Organization_new.ERR_CONFLICT=spade.Organization_new-module.html#ERR_CONFLICT,Variable spade.Unit.ERR_CONFLICT=spade.Unit-module.html#ERR_CONFLICT,Variable spade.Unit_new.ERR_CONFLICT=spade.Unit_new-module.html#ERR_CONFLICT,Variable spade.pubsub.ERR_CONFLICT=spade.pubsub-module.html#ERR_CONFLICT,Variable spade.socialnetwork.ERR_CONFLICT=spade.socialnetwork-module.html#ERR_CONFLICT,Variable spade.xmpp.ERR_CONFLICT=spade.xmpp-module.html#ERR_CONFLICT,Variable spade.xmpp.auth.ERR_CONFLICT=spade.xmpp.auth-module.html#ERR_CONFLICT,Variable spade.xmpp.browser.ERR_CONFLICT=spade.xmpp.browser-module.html#ERR_CONFLICT,Variable spade.xmpp.commands.ERR_CONFLICT=spade.xmpp.commands-module.html#ERR_CONFLICT,Variable spade.xmpp.dispatcher.ERR_CONFLICT=spade.xmpp.dispatcher-module.html#ERR_CONFLICT,Variable spade.xmpp.features.ERR_CONFLICT=spade.xmpp.features-module.html#ERR_CONFLICT,Variable spade.xmpp.filetransfer.ERR_CONFLICT=spade.xmpp.filetransfer-module.html#ERR_CONFLICT,Variable spade.xmpp.protocol.ERR_CONFLICT=spade.xmpp.protocol-module.html#ERR_CONFLICT,Variable spade.xmpp.roster.ERR_CONFLICT=spade.xmpp.roster-module.html#ERR_CONFLICT,Variable spade.xmpp.transports.ERR_CONFLICT=spade.xmpp.transports-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.config.ERR_CONFLICT=spade.xmppd.modules.config-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.db_fake.ERR_CONFLICT=spade.xmppd.modules.db_fake-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.dialback.ERR_CONFLICT=spade.xmppd.modules.dialback-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.jep0077.ERR_CONFLICT=spade.xmppd.modules.jep0077-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.jep0078.ERR_CONFLICT=spade.xmppd.modules.jep0078-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.message.ERR_CONFLICT=spade.xmppd.modules.message-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.muc.ERR_CONFLICT=spade.xmppd.modules.muc-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.oob.ERR_CONFLICT=spade.xmppd.modules.oob-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.pubsub.ERR_CONFLICT=spade.xmppd.modules.pubsub-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.roster.ERR_CONFLICT=spade.xmppd.modules.roster-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.router.ERR_CONFLICT=spade.xmppd.modules.router-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.stream.ERR_CONFLICT=spade.xmppd.modules.stream-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.webadmin.ERR_CONFLICT=spade.xmppd.modules.webadmin-module.html#ERR_CONFLICT,Variable spade.xmppd.modules.wq.ERR_CONFLICT=spade.xmppd.modules.wq-module.html#ERR_CONFLICT,Variable spade.xmppd.xmppd.ERR_CONFLICT=spade.xmppd.xmppd-module.html#ERR_CONFLICT"><a title="spade.Agent.ERR_CONFLICT
+spade.MTP.ERR_CONFLICT
+spade.Organization.ERR_CONFLICT
+spade.Organization_new.ERR_CONFLICT
+spade.Unit.ERR_CONFLICT
+spade.Unit_new.ERR_CONFLICT
+spade.pubsub.ERR_CONFLICT
+spade.socialnetwork.ERR_CONFLICT
+spade.xmpp.ERR_CONFLICT
+spade.xmpp.auth.ERR_CONFLICT
+spade.xmpp.browser.ERR_CONFLICT
+spade.xmpp.commands.ERR_CONFLICT
+spade.xmpp.dispatcher.ERR_CONFLICT
+spade.xmpp.features.ERR_CONFLICT
+spade.xmpp.filetransfer.ERR_CONFLICT
+spade.xmpp.protocol.ERR_CONFLICT
+spade.xmpp.roster.ERR_CONFLICT
+spade.xmpp.transports.ERR_CONFLICT
+spade.xmppd.modules.config.ERR_CONFLICT
+spade.xmppd.modules.db_fake.ERR_CONFLICT
+spade.xmppd.modules.dialback.ERR_CONFLICT
+spade.xmppd.modules.jep0077.ERR_CONFLICT
+spade.xmppd.modules.jep0078.ERR_CONFLICT
+spade.xmppd.modules.message.ERR_CONFLICT
+spade.xmppd.modules.muc.ERR_CONFLICT
+spade.xmppd.modules.oob.ERR_CONFLICT
+spade.xmppd.modules.pubsub.ERR_CONFLICT
+spade.xmppd.modules.roster.ERR_CONFLICT
+spade.xmppd.modules.router.ERR_CONFLICT
+spade.xmppd.modules.stream.ERR_CONFLICT
+spade.xmppd.modules.webadmin.ERR_CONFLICT
+spade.xmppd.modules.wq.ERR_CONFLICT
+spade.xmppd.xmppd.ERR_CONFLICT" class="py-name" href="#" onclick="return doclink('link-68', 'ERR_CONFLICT', 'link-68');">ERR_CONFLICT</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">                    <tt class="py-name">sess</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-69', 'send', 'link-15');">send</a></tt><tt class="py-op">(</tt><tt id="link-70" class="py-name"><a title="spade.xmpp.protocol.Error" class="py-name" href="#" onclick="return doclink('link-70', 'Error', 'link-16');">Error</a></tt><tt class="py-op">(</tt><tt class="py-name">stanza</tt><tt class="py-op">,</tt><tt id="link-71" class="py-name"><a title="spade.Agent.ERR_CONFLICT
+spade.MTP.ERR_CONFLICT
+spade.Organization.ERR_CONFLICT
+spade.Organization_new.ERR_CONFLICT
+spade.Unit.ERR_CONFLICT
+spade.Unit_new.ERR_CONFLICT
+spade.pubsub.ERR_CONFLICT
+spade.socialnetwork.ERR_CONFLICT
+spade.xmpp.ERR_CONFLICT
+spade.xmpp.auth.ERR_CONFLICT
+spade.xmpp.browser.ERR_CONFLICT
+spade.xmpp.commands.ERR_CONFLICT
+spade.xmpp.dispatcher.ERR_CONFLICT
+spade.xmpp.features.ERR_CONFLICT
+spade.xmpp.filetransfer.ERR_CONFLICT
+spade.xmpp.protocol.ERR_CONFLICT
+spade.xmpp.roster.ERR_CONFLICT
+spade.xmpp.transports.ERR_CONFLICT
+spade.xmppd.modules.config.ERR_CONFLICT
+spade.xmppd.modules.db_fake.ERR_CONFLICT
+spade.xmppd.modules.dialback.ERR_CONFLICT
+spade.xmppd.modules.jep0077.ERR_CONFLICT
+spade.xmppd.modules.jep0078.ERR_CONFLICT
+spade.xmppd.modules.message.ERR_CONFLICT
+spade.xmppd.modules.muc.ERR_CONFLICT
+spade.xmppd.modules.oob.ERR_CONFLICT
+spade.xmppd.modules.pubsub.ERR_CONFLICT
+spade.xmppd.modules.roster.ERR_CONFLICT
+spade.xmppd.modules.router.ERR_CONFLICT
+spade.xmppd.modules.stream.ERR_CONFLICT
+spade.xmppd.modules.webadmin.ERR_CONFLICT
+spade.xmppd.modules.wq.ERR_CONFLICT
+spade.xmppd.xmppd.ERR_CONFLICT" class="py-name" href="#" onclick="return doclink('link-71', 'ERR_CONFLICT', 'link-68');">ERR_CONFLICT</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-72" class="py-name"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-72', 'NodeProcessed', 'link-33');">NodeProcessed</a></tt> </tt>
+</div></div><a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:05 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

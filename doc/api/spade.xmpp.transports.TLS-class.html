@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.transports.TLS</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.transports-module.html">Module&nbsp;transports</a> ::
+        Class&nbsp;TLS
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.transports.TLS-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class TLS</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_56" name="uml_class_diagram_for_spade_xm_56">
+<area shape="rect" id="node2685" href="spade.xmpp.transports.TLS-class.html#PlugIn" title="If the &#39;now&#39; argument is true then starts using encryption immidiatedly." alt="" coords="17,153,235,172"/>
+<area shape="rect" id="node2685" href="spade.xmpp.transports.TLS-class.html#plugout" title="Unregisters TLS handler&#39;s from owner&#39;s dispatcher." alt="" coords="17,172,235,191"/>
+<area shape="rect" id="node2685" href="spade.xmpp.transports.TLS-class.html#FeaturesHandler" title="Used to analyse server &lt;features/&gt; tag for TLS support." alt="" coords="17,191,235,209"/>
+<area shape="rect" id="node2685" href="spade.xmpp.transports.TLS-class.html#pending_data" title="Returns true if there possible is a data ready to be read." alt="" coords="17,209,235,228"/>
+<area shape="rect" id="node2685" href="spade.xmpp.transports.TLS-class.html#StartTLSHandler" title="Handle server reply if TLS is allowed to process." alt="" coords="17,228,235,247"/>
+<area shape="rect" id="node1" href="spade.xmpp.transports.TLS-class.html" title="TLS connection used to encrypts already estabilished tcp connection." alt="" coords="5,121,245,253"/>
+<area shape="rect" id="node2686" href="spade.xmpp.client.PlugIn-class.html#DEBUG" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="24,39,228,57"/>
+<area shape="rect" id="node2686" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="24,57,228,76"/>
+<area shape="rect" id="node2686" href="spade.xmpp.client.PlugIn-class.html#__init__" title="spade.xmpp.client.PlugIn.__init__" alt="" coords="24,76,228,95"/>
+<area shape="rect" id="node2" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="12,6,239,101"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_56.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_56" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>TLS connection used to encrypts already estabilished tcp 
+  connection.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.TLS-class.html#PlugIn" class="summary-sig-name">PlugIn</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>,
+        <span class="summary-sig-arg">now</span>=<span class="summary-sig-default">0</span>)</span><br />
+      If the 'now' argument is true then starts using encryption 
+      immidiatedly.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.PlugIn">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.TLS-class.html#plugout" class="summary-sig-name">plugout</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">now</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Unregisters TLS handler's from owner's dispatcher.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.plugout">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.TLS-class.html#FeaturesHandler" class="summary-sig-name">FeaturesHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">feats</span>)</span><br />
+      Used to analyse server &lt;features/&gt; tag for TLS support.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.FeaturesHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pending_data"></a><span class="summary-sig-name">pending_data</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Returns true if there possible is a data ready to be read.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.pending_data">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.TLS-class.html#_startSSL" class="summary-sig-name" onclick="show_private();">_startSSL</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Immidiatedly switch socket to TLS mode.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS._startSSL">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.TLS-class.html#StartTLSHandler" class="summary-sig-name">StartTLSHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">starttls</span>)</span><br />
+      Handle server reply if TLS is allowed to process.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.StartTLSHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.PlugIn-class.html">client.PlugIn</a></code></b>:
+      <code><a href="spade.xmpp.client.PlugIn-class.html#DEBUG">DEBUG</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugOut">PlugOut</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#__init__">__init__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="PlugIn"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">PlugIn</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">owner</span>,
+        <span class="sig-arg">now</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.PlugIn">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If the 'now' argument is true then starts using encryption 
+  immidiatedly. If 'now' in false then starts encryption as soon as TLS 
+  feature is declared by the server (if it were already declared - it is 
+  ok).</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#PlugIn">client.PlugIn.PlugIn</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugout"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugout</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">now</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.plugout">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unregisters TLS handler's from owner's dispatcher. Take note that 
+  encription can not be stopped once started. You can only break the 
+  connection and start over.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="FeaturesHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">FeaturesHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">feats</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.FeaturesHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Used to analyse server &lt;features/&gt; tag for TLS support. If TLS 
+  is supported starts the encryption negotiation. Used internally</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_startSSL"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_startSSL</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS._startSSL">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Immidiatedly switch socket to TLS mode. Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="StartTLSHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">StartTLSHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">conn</span>,
+        <span class="sig-arg">starttls</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#TLS.StartTLSHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Handle server reply if TLS is allowed to process. Behaves accordingly.
+  Used internally.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:59 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

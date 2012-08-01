@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.transports.HTTPPROXYsocket</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.transports-module.html">Module&nbsp;transports</a> ::
+        Class&nbsp;HTTPPROXYsocket
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.transports.HTTPPROXYsocket-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class HTTPPROXYsocket</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_54" name="uml_class_diagram_for_spade_xm_54">
+<area shape="rect" id="node2679" href="spade.xmpp.transports.HTTPPROXYsocket-class.html#__init__" title="Caches proxy and target addresses." alt="" coords="17,343,271,361"/>
+<area shape="rect" id="node2679" href="spade.xmpp.transports.HTTPPROXYsocket-class.html#plugin" title="Starts connection." alt="" coords="17,361,271,380"/>
+<area shape="rect" id="node2679" href="spade.xmpp.transports.HTTPPROXYsocket-class.html#connect" title="Starts connection." alt="" coords="17,380,271,399"/>
+<area shape="rect" id="node2679" href="spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG" title="Overwrites DEBUG tag to allow debug output be presented as &quot;CONNECTproxy&quot;." alt="" coords="17,399,271,417"/>
+<area shape="rect" id="node1" href="spade.xmpp.transports.HTTPPROXYsocket-class.html" title="HTTP (CONNECT) proxy connection class." alt="" coords="5,310,283,423"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#getHost" title="Return the &#39;host&#39; value that is connection is [will be] made to." alt="" coords="53,135,233,153"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#getPort" title="Return the &#39;port&#39; value that is connection is [will be] made to." alt="" coords="53,153,233,172"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#plugout" title="Disconnect from the remote server and unregister self.disconnected method &#160;from the owner&#39;s dispatcher." alt="" coords="53,172,233,191"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#receive" title="Reads all pending incoming data." alt="" coords="53,191,233,209"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#send" title="Writes raw outgoing data." alt="" coords="53,209,233,228"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#pending_data" title="Returns true if there is a data ready to be read." alt="" coords="53,228,233,247"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#disconnect" title="Closes the socket." alt="" coords="53,247,233,265"/>
+<area shape="rect" id="node2680" href="spade.xmpp.transports.TCPsocket-class.html#disconnected" title="Called when a Network Error or disconnection occurs." alt="" coords="53,265,233,284"/>
+<area shape="rect" id="node2" href="spade.xmpp.transports.TCPsocket-class.html" title="This class defines direct TCP connection method." alt="" coords="41,102,244,290"/>
+<area shape="rect" id="node2681" href="spade.xmpp.client.PlugIn-class.html#PlugIn" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="85,39,201,57"/>
+<area shape="rect" id="node2681" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="85,57,201,76"/>
+<area shape="rect" id="node3" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="73,6,212,82"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_54.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_54" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>HTTP (CONNECT) proxy connection class. Uses TCPsocket as the base 
+  class redefines only connect method. Allows to use HTTP proxies like 
+  squid with (optionally) simple authentication (using login and 
+  password).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.HTTPPROXYsocket-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">proxy</span>,
+        <span class="summary-sig-arg">server</span>,
+        <span class="summary-sig-arg">use_srv</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Caches proxy and target addresses.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.HTTPPROXYsocket-class.html#plugin" class="summary-sig-name">plugin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>)</span><br />
+      Starts connection.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.HTTPPROXYsocket-class.html#connect" class="summary-sig-name">connect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dupe</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Starts connection.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.connect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG" class="summary-sig-name">DEBUG</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">severity</span>)</span><br />
+      Overwrites DEBUG tag to allow debug output be presented as 
+      &quot;CONNECTproxy&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.DEBUG">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.transports.TCPsocket-class.html">TCPsocket</a></code></b>:
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#disconnect">disconnect</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#disconnected">disconnected</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#getHost">getHost</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#getPort">getPort</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#pending_data">pending_data</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#plugout">plugout</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#receive">receive</a></code>,
+      <code><a href="spade.xmpp.transports.TCPsocket-class.html#send">send</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.PlugIn-class.html">client.PlugIn</a></code></b>:
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugIn">PlugIn</a></code>,
+      <code><a href="spade.xmpp.client.PlugIn-class.html#PlugOut">PlugOut</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">proxy</span>,
+        <span class="sig-arg">server</span>,
+        <span class="sig-arg">use_srv</span>=<span class="sig-default">True</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Caches proxy and target addresses. 'proxy' argument is a dictionary 
+  with mandatory keys 'host' and 'port' (proxy address) and optional keys 
+  'user' and 'password' to use for authentication. 'server' argument is a 
+  tuple of host and port - just like TCPsocket uses.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#__init__">client.PlugIn.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="plugin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plugin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">owner</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.plugin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Starts connection. Used interally. Returns non-empty string on 
+  success.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.transports.TCPsocket-class.html#plugin">TCPsocket.plugin</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="connect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dupe</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.connect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Starts connection. Connects to proxy, supplies login and password to 
+  it (if were specified while creating instance). Instructs proxy to make 
+  connection to the target server. Returns non-empty sting on success.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.transports.TCPsocket-class.html#connect">TCPsocket.connect</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="DEBUG"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">DEBUG</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">text</span>,
+        <span class="sig-arg">severity</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.transports-pysrc.html#HTTPPROXYsocket.DEBUG">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Overwrites DEBUG tag to allow debug output be presented as 
+  &quot;CONNECTproxy&quot;.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.PlugIn-class.html#DEBUG">client.PlugIn.DEBUG</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:59 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

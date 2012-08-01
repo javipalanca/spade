@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyratemp.Parser</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.pyratemp-module.html">Module&nbsp;pyratemp</a> ::
+        Class&nbsp;Parser
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyratemp.Parser-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Parser</h1><p class="nomargin-top"><span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_py_82" name="uml_class_diagram_for_spade_py_82">
+<area shape="rect" id="node2356" href="spade.pyratemp.Parser-class.html#__init__" title="Init the parser." alt="" coords="17,39,353,57"/>
+<area shape="rect" id="node2356" href="spade.pyratemp.Parser-class.html#parse" title="Parse a template." alt="" coords="17,57,353,76"/>
+<area shape="rect" id="node1" href="spade.pyratemp.Parser-class.html" title="Parse a template into a parse&#45;tree." alt="" coords="5,6,365,82"/>
+</map>
+  <img src="uml_class_diagram_for_spade_py_82.gif" alt='' usemap="#uml_class_diagram_for_spade_py_82" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Parse a template into a parse-tree.</p>
+  <p>:TODO: describe the parse-tree</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp.Parser-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">loadfunc</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">testexpr</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">escape</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Init the parser.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyratemp.Parser-class.html#parse" class="summary-sig-name">parse</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">template</span>)</span><br />
+      Parse a template.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser.parse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_errpos"></a><span class="summary-sig-name">_errpos</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fpos</span>)</span><br />
+      Convert fpos to (filename,row,column) for error-messages.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser._errpos">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_testexpr"></a><span class="summary-sig-name">_testexpr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">fpos</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Test a template-expression to detect errors.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser._testexpr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_parse"></a><span class="summary-sig-name">_parse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">template</span>,
+        <span class="summary-sig-arg">fpos</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Recursive part of parse().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser._parse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_comment_start"></a><span class="summary-name">_comment_start</span> = <code title="'#!'"><code class="variable-quote">'</code><code class="variable-string">#!</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_comment_end"></a><span class="summary-name">_comment_end</span> = <code title="'!#'"><code class="variable-quote">'</code><code class="variable-string">!#</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_sub_start"></a><span class="summary-name">_sub_start</span> = <code title="'$!'"><code class="variable-quote">'</code><code class="variable-string">$!</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_sub_end"></a><span class="summary-name">_sub_end</span> = <code title="'!$'"><code class="variable-quote">'</code><code class="variable-string">!$</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_subesc_start"></a><span class="summary-name">_subesc_start</span> = <code title="'@!'"><code class="variable-quote">'</code><code class="variable-string">@!</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_subesc_end"></a><span class="summary-name">_subesc_end</span> = <code title="'!@'"><code class="variable-quote">'</code><code class="variable-string">!@</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_block_start"></a><span class="summary-name">_block_start</span> = <code title="'&lt;!--('"><code class="variable-quote">'</code><code class="variable-string">&lt;!--(</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_block_end"></a><span class="summary-name">_block_end</span> = <code title="')--&gt;'"><code class="variable-quote">'</code><code class="variable-string">)--&gt;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_strComment"></a><span class="summary-name">_strComment</span> = <code title="'\\#\\!(?P&lt;content&gt;.*?)(?P&lt;end&gt;\\!\\#|\\n|$)'"><code class="variable-quote">'</code><code class="variable-string">\\#\\!(?P&lt;content&gt;.*?)(?P&lt;end&gt;\\!\\#|\\n|$)</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_reComment" class="summary-name" onclick="show_private();">_reComment</a> = <code title="re.compile(r'(?m)#!(?P&lt;content&gt;.*?)(?P&lt;end&gt;!#|\n|$)')">re.compile(r'<code class="re-flags">(?m)</code>#!<code class="re-group">(?P&lt;</code><code class="re-ref">content</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code><code class="re-group">(?P&lt;</code><code class="re-ref">end</code><code class="re-group">&gt;</code>!#<code class="re-op">|</code>\n<code class="re-op">|</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_strSubstitution" class="summary-name" onclick="show_private();">_strSubstitution</a> = <code title="'''
+                    (
+                    \\$\\!\\s*(?P&lt;sub&gt;.*?)\\s*(?P&lt;end&gt;\\!\\$|$)       \
+#substitution
+                    |
+                    \\@\\!\\s*(?P&lt;escsub&gt;.*?)\\s*(?P&lt;escend&gt;\\!\\@|$) \
+#escaped substitution
+                    )
+..."><code class="variable-quote">'</code><code class="variable-string">\n                    (\n                 </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_reSubstitution" class="summary-name" onclick="show_private();">_reSubstitution</a> = <code title="re.compile(r'(?mx)(\$!\s*(?P&lt;sub&gt;.*?)\s*(?P&lt;end&gt;!\$|$)|@!\s*(?P&lt;escsub\
+&gt;.*?)\s*(?P&lt;escend&gt;!@|$))')">re.compile(r'<code class="re-flags">(?mx)</code><code class="re-group">(</code>\$!\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">sub</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code>\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_strBlock" class="summary-name" onclick="show_private();">_strBlock</a> = <code title="'''
+                    ^(?P&lt;mEnd&gt;[ \\t]*)\\&lt;\\!\\-\\-\\(end\\)\\-\\-\\&gt;(?\
+P&lt;meIgnored&gt;.*)\\r?\\n? # multi-line end  (^   &lt;!--(end)--&gt;IGNORED_TEX\
+T\\n)
+                    |
+                    (?P&lt;sEnd&gt;)\\&lt;\\!\\-\\-\\(end\\)\\-\\-\\&gt;          \
+                     # single-line end (&lt;!--(end)--&gt;)
+                    |
+..."><code class="variable-quote">'</code><code class="variable-string">\n                    ^(?P&lt;mEnd&gt;[ \\t]*)\\&lt;\\!\\-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_reBlock" class="summary-name" onclick="show_private();">_reBlock</a> = <code title="re.compile(r'(?mx)^(?P&lt;mEnd&gt;[ \t]*)&lt;!--\(end\)--&gt;(?P&lt;meIgnored&gt;.*)\r?\\
+n?|(?P&lt;sEnd&gt;)&lt;!--\(end\)--&gt;|(?P&lt;sSpace&gt;\s*)&lt;!--\((?P&lt;sKeyw&gt;\w+)[ \t]*(\
+?P&lt;sParam&gt;.*?)\)--&gt;(?P&lt;sContent&gt;.*?)(?=(?:&lt;!--\(.*?\)--&gt;.*?)??&lt;!--\(en\
+d\)--&gt;)|^(?P&lt;indent&gt;[ \t]*)&lt;!--\((?P&lt;mKeyw&gt;\w+)\s*(?P&lt;mParam&gt;.*?)\)--&gt;\
+(?P&lt;mIgnored&gt;.*)\r?\n(?P&lt;mContent&gt;(?:.*\n)*?)(?=\8&lt;!--\((?:.|\s)*?\)--\
+&gt;)')">re.compile(r'<code class="re-flags">(?mx)</code>^<code class="re-group">(?P&lt;</code><code class="re-ref">mEnd</code><code class="re-group">&gt;</code><code class="re-group">[</code> \t<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code>&lt;!--\(end\)--&gt;<code class="re-group">(?</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_strForParam" class="summary-name" onclick="show_private();">_strForParam</a> = <code title="'^(?P&lt;names&gt;\\w+(?:\\s*,\\s*\\w+)*)\\s+in\\s+(?P&lt;iter&gt;.+)$'"><code class="variable-quote">'</code><code class="variable-string">^(?P&lt;names&gt;\\w+(?:\\s*,\\s*\\w+)*)\\s+in\\s+(?</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyratemp.Parser-class.html#_reForParam" class="summary-name" onclick="show_private();">_reForParam</a> = <code title="re.compile(r'^(?P&lt;names&gt;\w+(?:\s*,\s*\w+)*)\s+in\s+(?P&lt;iter&gt;.+)$')">re.compile(r'^<code class="re-group">(?P&lt;</code><code class="re-ref">names</code><code class="re-group">&gt;</code>\w<code class="re-op">+</code><code class="re-group">(?:</code>\s<code class="re-op">*</code>,\s<code class="re-op">*</code>\w<code class="re-op">+</code><code class="re-group">)</code><code class="re-op">*</code><code class="re-group">)</code>\s<code class="re-op">+</code>in<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">loadfunc</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">testexpr</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">escape</span>=<span class="sig-default">0</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Init the parser.</p>
+  <p>:Parameters:</p>
+  <ul>
+    <li>
+      loadfunc: function to load included templates (i.e. 
+      FileLoader(...).load)
+    </li>
+    <li>
+      testexpr: function to test if a template-expressions is valid (i.e. 
+      TempateEval().compile)
+    </li>
+    <li>
+      escape:   default-escaping (may be modified by the template &lt;- 
+      TODO)
+    </li>
+  </ul>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="parse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parse</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">template</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyratemp-pysrc.html#Parser.parse">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse a template.</p>
+  <p>:Parameters:</p>
+  <ul>
+    <li>
+      template: template-unicode-string
+    </li>
+  </ul>
+  <p>:Returns:    the resulting parse-tree :Raises:</p>
+  <ul>
+    <li>
+      TemplateSyntaxError: for template-syntax-errors
+    </li>
+    <li>
+      TemplateIncludeError: if template-inclusion failed
+    </li>
+    <li>
+      TemplateException
+    </li>
+  </ul>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_reComment"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_reComment</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?m)</code>#!<code class="re-group">(?P&lt;</code><code class="re-ref">content</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code><code class="re-group">(?P&lt;</code><code class="re-ref">end</code><code class="re-group">&gt;</code>!#<code class="re-op">|</code>\n<code class="re-op">|</code>$<code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_strSubstitution"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_strSubstitution</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">                    (</code>
+<code class="variable-string">                    \\$\\!\\s*(?P&lt;sub&gt;.*?)\\s*(?P&lt;end&gt;\\!\\$|$)       </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">#substitution</code>
+<code class="variable-string">                    |</code>
+<code class="variable-string">                    \\@\\!\\s*(?P&lt;escsub&gt;.*?)\\s*(?P&lt;escend&gt;\\!\\@|$) </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">#escaped substitution</code>
+<code class="variable-string">                    )</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_reSubstitution"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_reSubstitution</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?mx)</code><code class="re-group">(</code>\$!\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">sub</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code>\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">end</code><code class="re-group">&gt;</code>!\$<code class="re-op">|</code>$<code class="re-group">)</code><code class="re-op">|</code>@!\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">escsub</code><code class="re-group"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code>\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">escend</code><code class="re-group">&gt;</code>!@<code class="re-op">|</code>$<code class="re-group">)</code><code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_strBlock"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_strBlock</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string"></code>
+<code class="variable-string">                    ^(?P&lt;mEnd&gt;[ \\t]*)\\&lt;\\!\\-\\-\\(end\\)\\-\\-\\&gt;(?</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">P&lt;meIgnored&gt;.*)\\r?\\n? # multi-line end  (^   &lt;!--(end)--&gt;IGNORED_TEX</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">T\\n)</code>
+<code class="variable-string">                    |</code>
+<code class="variable-string">                    (?P&lt;sEnd&gt;)\\&lt;\\!\\-\\-\\(end\\)\\-\\-\\&gt;          </code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">                     # single-line end (&lt;!--(end)--&gt;)</code>
+<code class="variable-string">                    |</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_reBlock"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_reBlock</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-flags">(?mx)</code>^<code class="re-group">(?P&lt;</code><code class="re-ref">mEnd</code><code class="re-group">&gt;</code><code class="re-group">[</code> \t<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code>&lt;!--\(end\)--&gt;<code class="re-group">(?P&lt;</code><code class="re-ref">meIgnored</code><code class="re-group">&gt;</code>.<code class="re-op">*</code><code class="re-group">)</code>\r<code class="re-op">?</code>\<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+n<code class="re-op">?</code><code class="re-op">|</code><code class="re-group">(?P&lt;</code><code class="re-ref">sEnd</code><code class="re-group">&gt;</code><code class="re-group">)</code>&lt;!--\(end\)--&gt;<code class="re-op">|</code><code class="re-group">(?P&lt;</code><code class="re-ref">sSpace</code><code class="re-group">&gt;</code>\s<code class="re-op">*</code><code class="re-group">)</code>&lt;!--\(<code class="re-group">(?P&lt;</code><code class="re-ref">sKeyw</code><code class="re-group">&gt;</code>\w<code class="re-op">+</code><code class="re-group">)</code><code class="re-group">[</code> \t<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">(</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-group">?P&lt;</code><code class="re-ref">sParam</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code>\)--&gt;<code class="re-group">(?P&lt;</code><code class="re-ref">sContent</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code><code class="re-group">(?=</code><code class="re-group">(?:</code>&lt;!--\(.<code class="re-op">*?</code>\)--&gt;.<code class="re-op">*?</code><code class="re-group">)</code><code class="re-op">??</code>&lt;!--\(en<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+d\)--&gt;<code class="re-group">)</code><code class="re-op">|</code>^<code class="re-group">(?P&lt;</code><code class="re-ref">indent</code><code class="re-group">&gt;</code><code class="re-group">[</code> \t<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code>&lt;!--\(<code class="re-group">(?P&lt;</code><code class="re-ref">mKeyw</code><code class="re-group">&gt;</code>\w<code class="re-op">+</code><code class="re-group">)</code>\s<code class="re-op">*</code><code class="re-group">(?P&lt;</code><code class="re-ref">mParam</code><code class="re-group">&gt;</code>.<code class="re-op">*?</code><code class="re-group">)</code>\)--&gt;<code class="re-group"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-group">(?P&lt;</code><code class="re-ref">mIgnored</code><code class="re-group">&gt;</code>.<code class="re-op">*</code><code class="re-group">)</code>\r<code class="re-op">?</code>\n<code class="re-group">(?P&lt;</code><code class="re-ref">mContent</code><code class="re-group">&gt;</code><code class="re-group">(?:</code>.<code class="re-op">*</code>\n<code class="re-group">)</code><code class="re-op">*?</code><code class="re-group">)</code><code class="re-group">(?=</code><code class="re-ref">\8</code>&lt;!--\(<code class="re-group">(?:</code>.<code class="re-op">|</code>\s<code class="re-group">)</code><code class="re-op">*?</code>\)--<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+&gt;<code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_strForParam"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_strForParam</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">^(?P&lt;names&gt;\\w+(?:\\s*,\\s*\\w+)*)\\s+in\\s+(?P&lt;iter&gt;.+)$</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_reForParam"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_reForParam</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'^<code class="re-group">(?P&lt;</code><code class="re-ref">names</code><code class="re-group">&gt;</code>\w<code class="re-op">+</code><code class="re-group">(?:</code>\s<code class="re-op">*</code>,\s<code class="re-op">*</code>\w<code class="re-op">+</code><code class="re-group">)</code><code class="re-op">*</code><code class="re-group">)</code>\s<code class="re-op">+</code>in\s<code class="re-op">+</code><code class="re-group">(?P&lt;</code><code class="re-ref">iter</code><code class="re-group">&gt;</code>.<code class="re-op">+</code><code class="re-group">)</code>$')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:55 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.ECLiPSeKB</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;ECLiPSeKB
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.ECLiPSeKB-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.ECLiPSeKB-module.html">Module spade.ECLiPSeKB</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module spade.logic=spade.logic-module.html"><a title="spade.logic" class="py-name" href="#" onclick="return doclink('link-0', 'logic', 'link-0');">logic</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class spade.kb.KB=spade.kb.KB-class.html,Class spade.logic.KB=spade.logic.KB-class.html"><a title="spade.kb.KB
+spade.logic.KB" class="py-name" href="#" onclick="return doclink('link-1', 'KB', 'link-1');">KB</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Module spade.pyxf=spade.pyxf-module.html"><a title="spade.pyxf" class="py-name" href="#" onclick="return doclink('link-2', 'pyxf', 'link-2');">pyxf</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class spade.pyxf.eclipse=spade.pyxf.eclipse-class.html"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-3', 'eclipse', 'link-3');">eclipse</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeKB"></a><div id="ECLiPSeKB-def"><a name="L4"></a><tt class="py-lineno"> 4</tt> <a class="py-toggle" href="#" id="ECLiPSeKB-toggle" onclick="return toggle('ECLiPSeKB');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html">ECLiPSeKB</a><tt class="py-op">(</tt> <tt class="py-base-class">KB</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ECLiPSeKB-expanded"><a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">  <tt class="py-docstring">'''ECLiPSe Prolog knowledge base'''</tt> </tt>
+<a name="ECLiPSeKB.__init__"></a><div id="ECLiPSeKB.__init__-def"><a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="ECLiPSeKB.__init__-toggle" onclick="return toggle('ECLiPSeKB.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-string">'eclipse'</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB.__init__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ECLiPSeKB.__init__-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: ECLiPSeKB( sentence, path )</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-docstring">    sentence - Prolog sentence to be added to the KB (default: None)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to ECLiPSe Prolog executable (default: 'eclipse')'''</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-4', 'eclipse', 'link-3');">eclipse</a></tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-5', 'eclipse', 'link-3');">eclipse</a></tt><tt class="py-op">(</tt> <tt class="py-name">path</tt> <tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">sentence</tt><tt class="py-op">:</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method spade.ECLiPSeKB.ECLiPSeKB.tell()=spade.ECLiPSeKB.ECLiPSeKB-class.html#tell,Method spade.Flora2KB.Flora2KB.tell()=spade.Flora2KB.Flora2KB-class.html#tell,Method spade.SPARQLKB.SPARQLKB.tell()=spade.SPARQLKB.SPARQLKB-class.html#tell,Method spade.SWIKB.SWIKB.tell()=spade.SWIKB.SWIKB-class.html#tell,Method spade.XSBKB.XSBKB.tell()=spade.XSBKB.XSBKB-class.html#tell,Method spade.kb.KB.tell()=spade.kb.KB-class.html#tell,Method spade.kb.SpadeKB.tell()=spade.kb.SpadeKB-class.html#tell,Method spade.logic.FolKB.tell()=spade.logic.FolKB-class.html#tell,Method spade.logic.KB.tell()=spade.logic.KB-class.html#tell,Method spade.logic.PropHornKB.tell()=spade.logic.PropHornKB-class.html#tell,Method spade.logic.PropKB.tell()=spade.logic.PropKB-class.html#tell"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-6', 'tell', 'link-6');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-name">sentence</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeKB.tell"></a><div id="ECLiPSeKB.tell-def"><a name="L15"></a><tt class="py-lineno">15</tt> <a class="py-toggle" href="#" id="ECLiPSeKB.tell-toggle" onclick="return toggle('ECLiPSeKB.tell');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html#tell">tell</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB.tell-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ECLiPSeKB.tell-expanded"><a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-docstring">'''Adds sentence to KB'''</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-name">sentence</tt> <tt class="py-op">=</tt> <tt class="py-name">sentence</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">sentence</tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">      <tt class="py-name">sentence</tt> <tt class="py-op">=</tt> <tt class="py-name">sentence</tt><tt class="py-op">[</tt> <tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-7', 'eclipse', 'link-3');">eclipse</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method spade.pyxf.eclipse.query()=spade.pyxf.eclipse-class.html#query,Method spade.pyxf.flora2.query()=spade.pyxf.flora2-class.html#query,Method spade.pyxf.swipl.query()=spade.pyxf.swipl-class.html#query,Method spade.pyxf.xsb.query()=spade.pyxf.xsb-class.html#query"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-8', 'query', 'link-8');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'assert('</tt> <tt class="py-op">+</tt> <tt class="py-name">sentence</tt> <tt class="py-op">+</tt> <tt class="py-string">')'</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeKB.ask"></a><div id="ECLiPSeKB.ask-def"><a name="L22"></a><tt class="py-lineno">22</tt> <a class="py-toggle" href="#" id="ECLiPSeKB.ask-toggle" onclick="return toggle('ECLiPSeKB.ask');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html#ask">ask</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB.ask-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ECLiPSeKB.ask-expanded"><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries the KB'''</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-9', 'eclipse', 'link-3');">eclipse</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-10', 'query', 'link-8');">query</a></tt><tt class="py-op">(</tt> <tt id="link-11" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-11', 'query', 'link-8');">query</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeKB.retract"></a><div id="ECLiPSeKB.retract-def"><a name="L26"></a><tt class="py-lineno">26</tt> <a class="py-toggle" href="#" id="ECLiPSeKB.retract-toggle" onclick="return toggle('ECLiPSeKB.retract');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html#retract">retract</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB.retract-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ECLiPSeKB.retract-expanded"><a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-docstring">'''Deletes sentence from KB'''</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-name">sentence</tt> <tt class="py-op">=</tt> <tt class="py-name">sentence</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">sentence</tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">      <tt class="py-name">sentence</tt> <tt class="py-op">=</tt> <tt class="py-name">sentence</tt><tt class="py-op">[</tt> <tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-12', 'eclipse', 'link-3');">eclipse</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-13', 'query', 'link-8');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'retract('</tt> <tt class="py-op">+</tt> <tt class="py-name">sentence</tt> <tt class="py-op">+</tt> <tt class="py-string">')'</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeKB.loadModule"></a><div id="ECLiPSeKB.loadModule-def"><a name="L33"></a><tt class="py-lineno">33</tt> <a class="py-toggle" href="#" id="ECLiPSeKB.loadModule-toggle" onclick="return toggle('ECLiPSeKB.loadModule');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.ECLiPSeKB.ECLiPSeKB-class.html#loadModule">loadModule</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeKB.loadModule-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="ECLiPSeKB.loadModule-expanded"><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-docstring">'''Loads module to KB</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.loadModule( path )</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to module'''</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-14', 'eclipse', 'link-3');">eclipse</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method spade.pyratemp.FileLoader.load()=spade.pyratemp.FileLoader-class.html#load,Method spade.pyratemp.StringLoader.load()=spade.pyratemp.StringLoader-class.html#load,Method spade.pyxf.eclipse.load()=spade.pyxf.eclipse-class.html#load,Method spade.pyxf.flora2.load()=spade.pyxf.flora2-class.html#load,Method spade.pyxf.swipl.load()=spade.pyxf.swipl-class.html#load,Method spade.pyxf.xsb.load()=spade.pyxf.xsb-class.html#load"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-15', 'load', 'link-15');">load</a></tt><tt class="py-op">(</tt> <tt class="py-name">module</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">     </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">  <tt id="link-16" class="py-name" targets="Module spade.kb=spade.kb-module.html"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-16', 'kb', 'link-16');">kb</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name" targets="Module spade.ECLiPSeKB=spade.ECLiPSeKB-module.html,Class spade.ECLiPSeKB.ECLiPSeKB=spade.ECLiPSeKB.ECLiPSeKB-class.html"><a title="spade.ECLiPSeKB
+spade.ECLiPSeKB.ECLiPSeKB" class="py-name" href="#" onclick="return doclink('link-17', 'ECLiPSeKB', 'link-17');">ECLiPSeKB</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">  <tt id="link-18" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-18', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-19', 'tell', 'link-6');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-string">'a(b,c)'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">  <tt id="link-20" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-20', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-21', 'tell', 'link-6');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-string">'a(c,d)'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">  <tt id="link-22" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-22', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-23', 'tell', 'link-6');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-string">'( p(_X,_Y) :- a(_X,_Y) )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">  <tt id="link-24" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-24', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-25', 'tell', 'link-6');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-string">'( p(_X,_Y) :- a(_X,_Z), p(_Z,_Y) )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">result</tt> <tt class="py-keyword">in</tt> <tt id="link-26" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-26', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method spade.ECLiPSeKB.ECLiPSeKB.ask()=spade.ECLiPSeKB.ECLiPSeKB-class.html#ask,Method spade.Flora2KB.Flora2KB.ask()=spade.Flora2KB.Flora2KB-class.html#ask,Method spade.SPARQLKB.SPARQLKB.ask()=spade.SPARQLKB.SPARQLKB-class.html#ask,Method spade.SWIKB.SWIKB.ask()=spade.SWIKB.SWIKB-class.html#ask,Method spade.XSBKB.XSBKB.ask()=spade.XSBKB.XSBKB-class.html#ask,Method spade.kb.KB.ask()=spade.kb.KB-class.html#ask,Method spade.kb.SpadeKB.ask()=spade.kb.SpadeKB-class.html#ask,Method spade.logic.KB.ask()=spade.logic.KB-class.html#ask"><a title="spade.ECLiPSeKB.ECLiPSeKB.ask
+spade.Flora2KB.Flora2KB.ask
+spade.SPARQLKB.SPARQLKB.ask
+spade.SWIKB.SWIKB.ask
+spade.XSBKB.XSBKB.ask
+spade.kb.KB.ask
+spade.kb.SpadeKB.ask
+spade.logic.KB.ask" class="py-name" href="#" onclick="return doclink('link-27', 'ask', 'link-27');">ask</a></tt><tt class="py-op">(</tt> <tt class="py-string">'p(X,Y)'</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">result</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">  <tt id="link-28" class="py-name"><a title="spade.kb" class="py-name" href="#" onclick="return doclink('link-28', 'kb', 'link-16');">kb</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method spade.ECLiPSeKB.ECLiPSeKB.retract()=spade.ECLiPSeKB.ECLiPSeKB-class.html#retract,Method spade.Flora2KB.Flora2KB.retract()=spade.Flora2KB.Flora2KB-class.html#retract,Method spade.SPARQLKB.SPARQLKB.retract()=spade.SPARQLKB.SPARQLKB-class.html#retract,Method spade.SWIKB.SWIKB.retract()=spade.SWIKB.SWIKB-class.html#retract,Method spade.XSBKB.XSBKB.retract()=spade.XSBKB.XSBKB-class.html#retract,Method spade.kb.KB.retract()=spade.kb.KB-class.html#retract,Method spade.kb.SpadeKB.retract()=spade.kb.SpadeKB-class.html#retract,Method spade.logic.FolKB.retract()=spade.logic.FolKB-class.html#retract,Method spade.logic.KB.retract()=spade.logic.KB-class.html#retract,Method spade.logic.PropHornKB.retract()=spade.logic.PropHornKB-class.html#retract,Method spade.logic.PropKB.retract()=spade.logic.PropKB-class.html#retract"><a title="spade.ECLiPSeKB.ECLiPSeKB.retract
+spade.Flora2KB.Flora2KB.retract
+spade.SPARQLKB.SPARQLKB.retract
+spade.SWIKB.SWIKB.retract
+spade.XSBKB.XSBKB.retract
+spade.kb.KB.retract
+spade.kb.SpadeKB.retract
+spade.logic.FolKB.retract
+spade.logic.KB.retract
+spade.logic.PropHornKB.retract
+spade.logic.PropKB.retract" class="py-name" href="#" onclick="return doclink('link-29', 'retract', 'link-29');">retract</a></tt><tt class="py-op">(</tt> <tt class="py-string">'a(b,c)'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

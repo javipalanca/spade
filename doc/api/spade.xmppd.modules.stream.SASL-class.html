@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmppd.modules.stream.SASL</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmppd-module.html">Package&nbsp;xmppd</a> ::
+        <a href="spade.xmppd.modules-module.html">Package&nbsp;modules</a> ::
+        <a href="spade.xmppd.modules.stream-module.html">Module&nbsp;stream</a> ::
+        Class&nbsp;SASL
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmppd.modules.stream.SASL-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class SASL</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmppd.modules.stream-pysrc.html#SASL">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_79" name="uml_class_diagram_for_spade_xm_79">
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#NS" title="&lt;features/&gt;" alt="" coords="17,164,287,183"/>
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#mechanisms" title="def startauth(self,session,username,password): &#160;&#160;&#160;&#160;session.username=username &#160;&#160;&#160;&#160;session.password=password &#160;&#160;&#160;&#160;if session.Stream.features: &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;try: self.FeaturesHandler(session,session.Stream.features) &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;except NodeProcessed: pass" alt="" coords="17,183,287,201"/>
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#plugin" title="spade.xmppd.modules.stream.SASL.plugin" alt="" coords="17,204,287,223"/>
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#commit_auth" title="spade.xmppd.modules.stream.SASL.commit_auth" alt="" coords="17,223,287,241"/>
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#reject_auth" title="spade.xmppd.modules.stream.SASL.reject_auth" alt="" coords="17,241,287,260"/>
+<area shape="rect" id="node2736" href="spade.xmppd.modules.stream.SASL-class.html#SASLHandler" title="simple username: servername _or_ node@servername : 6.1 (6)" alt="" coords="17,260,287,279"/>
+<area shape="rect" id="node1" href="spade.xmppd.modules.stream.SASL-class.html" title="spade.xmppd.modules.stream.SASL" alt="" coords="5,139,299,285"/>
+<area shape="rect" id="node2737" href="javascript:void(0);" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="49,39,253,57"/>
+<area shape="rect" id="node2737" href="javascript:void(0);" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="49,57,253,76"/>
+<area shape="rect" id="node2737" href="javascript:void(0);" title="Unregister all our staff from main instance and detach from it." alt="" coords="49,76,253,95"/>
+<area shape="rect" id="node2737" href="javascript:void(0);" title="xmpp.client.PlugIn.__init__" alt="" coords="49,95,253,113"/>
+<area shape="rect" id="node2" href="javascript:void(0);" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="37,6,264,119"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_79.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_79" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="plugin"></a><span class="summary-sig-name">plugin</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">server</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.stream-pysrc.html#SASL.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="commit_auth"></a><span class="summary-sig-name">commit_auth</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">authzid</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.stream-pysrc.html#SASL.commit_auth">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reject_auth"></a><span class="summary-sig-name">reject_auth</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">authzid</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">unknown</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.stream-pysrc.html#SASL.reject_auth">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="SASLHandler"></a><span class="summary-sig-name">SASLHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      simple username: servername _or_ node@servername : 6.1 (6)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.stream-pysrc.html#SASL.SASLHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>xmpp.client.PlugIn</code></b>:
+      <code>DEBUG</code>,
+      <code>PlugIn</code>,
+      <code>PlugOut</code>,
+      <code>__init__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS"></a><span class="summary-name">NS</span> = <code title="'urn:ietf:params:xml:ns:xmpp-sasl'"><code class="variable-quote">'</code><code class="variable-string">urn:ietf:params:xml:ns:xmpp-sasl</code><code class="variable-quote">'</code></code><br />
+      &lt;features/&gt;
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.xmppd.modules.stream.SASL-class.html#mechanisms" class="summary-name">mechanisms</a><br />
+      def startauth(self,session,username,password):
+    session.username=username
+    session.password=password
+    if session.Stream.features:
+        try: self.FeaturesHandler(session,session.Stream.features)
+        except NodeProcessed: pass
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLE DETAILS ==================== -->
+<a name="section-InstanceVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="mechanisms"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">mechanisms</h3>
+  <pre class="literalblock">
+def startauth(self,session,username,password):
+    session.username=username
+    session.password=password
+    if session.Stream.features:
+        try: self.FeaturesHandler(session,session.Stream.features)
+        except NodeProcessed: pass
+
+def FeaturesHandler(self,session,feats):
+    if session.feature_in_process: return     # some other feature is already underway
+    if not session.__dict__.has_key('username'): return
+    if not feats.getTag('mechanisms',namespace=NS_SASL):
+        session.unfeature(NS_SASL)
+        self.DEBUG('SASL not supported by server','error')
+        return
+    mecs=[]
+    for mec in feats.getTag('mechanisms',namespace=NS_SASL).getTags('mechanism'):
+        mecs.append(mec.getData())
+    if &quot;DIGEST-MD5&quot; in mecs:
+        node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'DIGEST-MD5'})
+    elif &quot;PLAIN&quot; in mecs:
+        sasl_data='%s %s %s'%(self.username+'@'+session.peer,self.username,self.password)
+        node=Node('auth',attrs={'xmlns':NS_SASL,'mechanism':'PLAIN'},payload=[base64.encodestring(sasl_data)])
+    else:
+        session.startsasl='failure'
+        self.DEBUG('I can only use DIGEST-MD5 and PLAIN mecanisms.','error')
+        return
+    session.startsasl='in-process'
+    session.send(node)
+    raise NodeProcessed
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

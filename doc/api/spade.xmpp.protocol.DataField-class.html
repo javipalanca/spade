@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol.DataField</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.protocol-module.html">Module&nbsp;protocol</a> ::
+        Class&nbsp;DataField
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.protocol.DataField-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class DataField</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_20" name="uml_class_diagram_for_spade_xm_20">
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#__init__" title="Create new data field of specified name,value and type." alt="" coords="17,391,605,409"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setRequired" title="Change the state of the &#39;required&#39; flag." alt="" coords="17,409,605,428"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#isRequired" title="Returns in this field a required one." alt="" coords="17,428,605,447"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setDesc" title="Set the description of this field." alt="" coords="17,447,605,465"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#getDesc" title="Return the description of this field." alt="" coords="17,465,605,484"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setValue" title="Set the value of this field." alt="" coords="17,484,605,503"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#getValue" title="spade.xmpp.protocol.DataField.getValue" alt="" coords="17,503,605,521"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setValues" title="Set the values of this field as values&#45;list." alt="" coords="17,521,605,540"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#addValue" title="Add one more value to this field." alt="" coords="17,540,605,559"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#getValues" title="Return the list of values associated with this field." alt="" coords="17,559,605,577"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#getOptions" title="Return label&#45;option pairs list associated with this field." alt="" coords="17,577,605,596"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setOptions" title="Set label&#45;option pairs list associated with this field." alt="" coords="17,596,605,615"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#addOption" title="Add one more label&#45;option pair to this field." alt="" coords="17,615,605,633"/>
+<area shape="rect" id="node2530" href="spade.xmpp.protocol.DataField-class.html#setVar" title="Set &#39;var&#39; attribute value of this field." alt="" coords="17,652,605,671"/>
+<area shape="rect" id="node1" href="spade.xmpp.protocol.DataField-class.html" title="This class is used in the DataForm class to describe the single data item." alt="" coords="5,358,616,677"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION" title="spade.xmpp.simplexml.Node.FORCE_NODE_RECREATION" alt="" coords="75,31,549,49"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#__delitem__" title="Deletes node&#39;s attribute &quot;item&quot;." alt="" coords="75,52,549,71"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#__getattr__" title="Reduce memory usage caused by T/NT classes &#45; use memory only when needed." alt="" coords="75,71,549,89"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#__getitem__" title="Returns node&#39;s attribute &quot;item&quot; value." alt="" coords="75,89,549,108"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#__setitem__" title="Sets node&#39;s attribute &quot;item&quot; value." alt="" coords="75,108,549,127"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#__str__" title="Method used to dump node into textual representation." alt="" coords="75,127,549,145"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#addChild" title="If &quot;node&quot; argument is provided, adds it as child node." alt="" coords="75,145,549,164"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#addData" title="Adds some CDATA to node." alt="" coords="75,164,549,183"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#clearData" title="Removes all CDATA from the node." alt="" coords="75,183,549,201"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#delAttr" title="Deletes an attribute &quot;key&quot;" alt="" coords="75,201,549,220"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#delChild" title="Deletes the &quot;node&quot; from the node&#39;s childs list, if &quot;node&quot; is an instance." alt="" coords="75,220,549,239"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#getAttr" title="Returns value of specified attribute." alt="" coords="75,239,549,257"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#getAttrs" title="Returns all node&#39;s attributes as dictionary." alt="" coords="75,257,549,276"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#getChildren" title="Returns all node&#39;s child nodes as list." alt="" coords="75,276,549,295"/>
+<area shape="rect" id="node2531" href="spade.xmpp.simplexml.Node-class.html#setTagData" title="Creates new node (if not already present) with name &quot;tag&quot; and (optionally) &#160;attributes &quot;attrs&quot; and sets it&#39;s CDATA to string &quot;val&quot;." alt="" coords="75,313,549,332"/>
+<area shape="rect" id="node2" href="spade.xmpp.simplexml.Node-class.html" title="Node class describes syntax of separate XML Node." alt="" coords="63,6,561,338"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_20.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_20" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>This class is used in the DataForm class to describe the single data 
+  item. If you are working with jabber:x:data (JEP-0004, JEP-0068, 
+  JEP-0122) then you will need to work with instances of this class.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataField-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">required</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">desc</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">options</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Create new data field of specified name,value and type.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setRequired"></a><span class="summary-sig-name">setRequired</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">req</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Change the state of the 'required' flag.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setRequired">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isRequired"></a><span class="summary-sig-name">isRequired</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns in this field a required one.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.isRequired">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDesc"></a><span class="summary-sig-name">setDesc</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">desc</span>)</span><br />
+      Set the description of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setDesc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getDesc"></a><span class="summary-sig-name">getDesc</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the description of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getDesc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setValue"></a><span class="summary-sig-name">setValue</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the value of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setValue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getValue"></a><span class="summary-sig-name">getValue</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getValue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataField-class.html#setValues" class="summary-sig-name">setValues</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">lst</span>)</span><br />
+      Set the values of this field as values-list.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setValues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataField-class.html#addValue" class="summary-sig-name">addValue</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Add one more value to this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.addValue">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getValues"></a><span class="summary-sig-name">getValues</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the list of values associated with this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getValues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getOptions"></a><span class="summary-sig-name">getOptions</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return label-option pairs list associated with this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getOptions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setOptions"></a><span class="summary-sig-name">setOptions</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">lst</span>)</span><br />
+      Set label-option pairs list associated with this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setOptions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addOption"></a><span class="summary-sig-name">addOption</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">opt</span>)</span><br />
+      Add one more label-option pair to this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.addOption">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getType"></a><span class="summary-sig-name">getType</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get type of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setType"></a><span class="summary-sig-name">setType</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set type of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getVar"></a><span class="summary-sig-name">getVar</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get 'var' attribute value of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.getVar">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setVar"></a><span class="summary-sig-name">setVar</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set 'var' attribute value of this field.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setVar">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__delitem__">__delitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getitem__">__getitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__setitem__">__setitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__str__">__str__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addChild">addChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addData">addData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#clearData">clearData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delAttr">delAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delChild">delChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttr">getAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttrs">getAttrs</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getChildren">getChildren</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getData">getData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getName">getName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getNamespace">getNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getPayload">getPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTag">getTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagAttr">getTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagData">getTagData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTags">getTags</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#has_attr">has_attr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setAttr">setAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setData">setData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setName">setName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setNamespace">setNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setPayload">setPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTag">setTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagAttr">setTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagData">setTagData</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION">FORCE_NODE_RECREATION</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">value</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">required</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">desc</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">options</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create new data field of specified name,value and type. Also 
+  'required','desc' and 'options' fields can be set. Alternatively other 
+  XML object can be passed in as the 'node' parameted to replicate it as a 
+  new datafiled.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__init__">simplexml.Node.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setValues"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setValues</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">lst</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.setValues">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the values of this field as values-list. Replaces all previous 
+  filed values! If you need to just add a value - use addValue method.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="addValue"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addValue</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">val</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataField.addValue">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add one more value to this field. Used in 'get' iq's or such.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol.Protocol</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.protocol-module.html">Module&nbsp;protocol</a> ::
+        Class&nbsp;Protocol
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.protocol.Protocol-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Protocol</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_38" name="uml_class_diagram_for_spade_xm_38">
+<area shape="rect" id="node1" href="spade.xmpp.protocol.Presence-class.html" title="XMPP Presence object." alt="" coords="189,697,280,735"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION" title="spade.xmpp.simplexml.Node.FORCE_NODE_RECREATION" alt="" coords="147,31,621,49"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#__delitem__" title="Deletes node&#39;s attribute &quot;item&quot;." alt="" coords="147,52,621,71"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#__getattr__" title="Reduce memory usage caused by T/NT classes &#45; use memory only when needed." alt="" coords="147,71,621,89"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#__getitem__" title="Returns node&#39;s attribute &quot;item&quot; value." alt="" coords="147,89,621,108"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#__str__" title="Method used to dump node into textual representation." alt="" coords="147,108,621,127"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#addChild" title="If &quot;node&quot; argument is provided, adds it as child node." alt="" coords="147,127,621,145"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#addData" title="Adds some CDATA to node." alt="" coords="147,145,621,164"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#clearData" title="Removes all CDATA from the node." alt="" coords="147,164,621,183"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#delAttr" title="Deletes an attribute &quot;key&quot;" alt="" coords="147,183,621,201"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#delChild" title="Deletes the &quot;node&quot; from the node&#39;s childs list, if &quot;node&quot; is an instance." alt="" coords="147,201,621,220"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#getAttr" title="Returns value of specified attribute." alt="" coords="147,220,621,239"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#getAttrs" title="Returns all node&#39;s attributes as dictionary." alt="" coords="147,239,621,257"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#getChildren" title="Returns all node&#39;s child nodes as list." alt="" coords="147,257,621,276"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#getData" title="Returns all node CDATA as string (concatenated)." alt="" coords="147,276,621,295"/>
+<area shape="rect" id="node2592" href="spade.xmpp.simplexml.Node-class.html#setTagData" title="Creates new node (if not already present) with name &quot;tag&quot; and (optionally) &#160;attributes &quot;attrs&quot; and sets it&#39;s CDATA to string &quot;val&quot;." alt="" coords="147,313,621,332"/>
+<area shape="rect" id="node2" href="spade.xmpp.simplexml.Node-class.html" title="Node class describes syntax of separate XML Node." alt="" coords="135,6,633,338"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#__init__" title="Constructor, name is the name of the stanza i.e." alt="" coords="17,391,751,409"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getTo" title="Return value of the &#39;to&#39; attribute." alt="" coords="17,409,751,428"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getFrom" title="Return value of the &#39;from&#39; attribute." alt="" coords="17,428,751,447"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getTimestamp" title="Return the timestamp in the &#39;yyyymmddThhmmss&#39; format." alt="" coords="17,447,751,465"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getID" title="Return the value of the &#39;id&#39; attribute." alt="" coords="17,465,751,484"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#setTo" title="Set the value of the &#39;to&#39; attribute." alt="" coords="17,484,751,503"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getType" title="Return the value of the &#39;type&#39; attribute." alt="" coords="17,503,751,521"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#setFrom" title="Set the value of the &#39;from&#39; attribute." alt="" coords="17,521,751,540"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#setType" title="Set the value of the &#39;type&#39; attribute." alt="" coords="17,540,751,559"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#setID" title="Set the value of the &#39;id&#39; attribute." alt="" coords="17,559,751,577"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getError" title="Return the error&#45;condition (if present) or the textual description of the &#160;error (otherwise)." alt="" coords="17,577,751,596"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#getErrorCode" title="Return the error code." alt="" coords="17,596,751,615"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#setError" title="Set the error code." alt="" coords="17,615,751,633"/>
+<area shape="rect" id="node2591" href="spade.xmpp.protocol.Protocol-class.html#__setitem__" title="Set the item &#39;item&#39; to the value &#39;val&#39;." alt="" coords="17,652,751,671"/>
+<area shape="rect" id="node3" href="spade.xmpp.protocol.Protocol-class.html" title="A &quot;stanza&quot; object class." alt="" coords="5,358,763,677"/>
+<area shape="rect" id="node4" href="spade.xmpp.protocol.Error-class.html" title="Used to quickly transform received stanza into error reply." alt="" coords="309,697,373,735"/>
+<area shape="rect" id="node5" href="spade.xmpp.protocol.Iq-class.html" title="XMPP Iq object &#45; get/set dialog mechanism." alt="" coords="403,697,451,735"/>
+<area shape="rect" id="node6" href="spade.xmpp.protocol.Message-class.html" title="XMPP Message stanza &#45; &quot;push&quot; mechanism." alt="" coords="480,697,568,735"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_38.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_38" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>A &quot;stanza&quot; object class. Contains methods that are common 
+  for presences, iqs and messages.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Protocol-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">to</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">frm</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">payload</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">timestamp</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Constructor, name is the name of the stanza i.e.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTo"></a><span class="summary-sig-name">getTo</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return value of the 'to' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getFrom"></a><span class="summary-sig-name">getFrom</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return value of the 'from' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTimestamp"></a><span class="summary-sig-name">getTimestamp</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the timestamp in the 'yyyymmddThhmmss' format.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getTimestamp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getID"></a><span class="summary-sig-name">getID</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the value of the 'id' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTo"></a><span class="summary-sig-name">setTo</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the value of the 'to' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getType"></a><span class="summary-sig-name">getType</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the value of the 'type' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setFrom"></a><span class="summary-sig-name">setFrom</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the value of the 'from' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setType"></a><span class="summary-sig-name">setType</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the value of the 'type' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setID"></a><span class="summary-sig-name">setID</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the value of the 'id' attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getError"></a><span class="summary-sig-name">getError</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the error-condition (if present) or the textual description of
+      the error (otherwise).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getError">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Protocol-class.html#getErrorCode" class="summary-sig-name">getErrorCode</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the error code.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getErrorCode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Protocol-class.html#setError" class="summary-sig-name">setError</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">error</span>,
+        <span class="summary-sig-arg">code</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Set the error code.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setError">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Protocol-class.html#setTimestamp" class="summary-sig-name">setTimestamp</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Set the timestamp.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setTimestamp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getProperties"></a><span class="summary-sig-name">getProperties</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the list of namespaces to which belongs the direct childs of 
+      element</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getProperties">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Protocol-class.html#__setitem__" class="summary-sig-name">__setitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">item</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Set the item 'item' to the value 'val'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.__setitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__delitem__">__delitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getitem__">__getitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__str__">__str__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addChild">addChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addData">addData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#clearData">clearData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delAttr">delAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delChild">delChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttr">getAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttrs">getAttrs</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getChildren">getChildren</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getData">getData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getName">getName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getNamespace">getNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getPayload">getPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTag">getTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagAttr">getTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagData">getTagData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTags">getTags</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#has_attr">has_attr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setAttr">setAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setData">setData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setName">setName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setNamespace">setNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setPayload">setPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTag">setTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagAttr">setTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagData">setTagData</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION">FORCE_NODE_RECREATION</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">to</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">frm</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">payload</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">timestamp</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Constructor, name is the name of the stanza i.e. 'message' or 
+  'presence' or 'iq'. to is the value of 'to' attribure, 'typ' - 'type' 
+  attribute frn - from attribure, attrs - other attributes mapping, payload
+  - same meaning as for simplexml payload definition timestamp - the time 
+  value that needs to be stamped over stanza xmlns - namespace of top 
+  stanza node node - parsed or unparsed stanza to be taken as 
+  prototype.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__init__">simplexml.Node.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getErrorCode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getErrorCode</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.getErrorCode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the error code. Obsolette.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setError"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setError</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">error</span>,
+        <span class="sig-arg">code</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setError">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the error code. Obsolette. Use error-conditions instead.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setTimestamp"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setTimestamp</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">val</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.setTimestamp">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the timestamp. timestamp should be the yyyymmddThhmmss string.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setitem__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">item</span>,
+        <span class="sig-arg">val</span>)</span>
+    <br /><em class="fname">(Index assignment operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Protocol.__setitem__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the item 'item' to the value 'val'.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__setitem__">simplexml.Node.__setitem__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

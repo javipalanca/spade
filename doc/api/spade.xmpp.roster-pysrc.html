@@ -1,0 +1,993 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.roster</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        Module&nbsp;roster
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.roster-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.xmpp.roster-module.html">Module spade.xmpp.roster</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">##   roster.py</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment">##</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment">##   Copyright (C) 2003-2005 Alexey "Snake" Nezhdanov</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">##</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">##   This program is free software; you can redistribute it and/or modify</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">##   it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">##   the Free Software Foundation; either version 2, or (at your option)</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">##   any later version.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">##</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">##   This program is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">##   but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment">##   GNU General Public License for more details.</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"># $Id: roster.py,v 1.20 2005/07/13 13:22:52 snakeru Exp $</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">Simple roster implementation. Can be used though for different tasks like</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">mass-renaming of contacts.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module spade.xmpp.protocol=spade.xmpp.protocol-module.html"><a title="spade.xmpp.protocol" class="py-name" href="#" onclick="return doclink('link-0', 'protocol', 'link-0');">protocol</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Module spade.xmpp.client=spade.xmpp.client-module.html"><a title="spade.xmpp.client" class="py-name" href="#" onclick="return doclink('link-1', 'client', 'link-1');">client</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class spade.xmpp.client.PlugIn=spade.xmpp.client.PlugIn-class.html,Method spade.xmpp.client.PlugIn.PlugIn()=spade.xmpp.client.PlugIn-class.html#PlugIn,Method spade.xmpp.transports.TLS.PlugIn()=spade.xmpp.transports.TLS-class.html#PlugIn"><a title="spade.xmpp.client.PlugIn
+spade.xmpp.client.PlugIn.PlugIn
+spade.xmpp.transports.TLS.PlugIn" class="py-name" href="#" onclick="return doclink('link-2', 'PlugIn', 'link-2');">PlugIn</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="Roster"></a><div id="Roster-def"><a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="Roster-toggle" onclick="return toggle('Roster');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html">Roster</a><tt class="py-op">(</tt><tt class="py-base-class">PlugIn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Roster-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">    <tt class="py-docstring">""" Defines a plenty of methods that will allow you to manage roster.</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">        Also automatically track presences from remote JIDs taking into</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        account that every JID can have multiple resources connected. Does not</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">        currently support 'error' presences.</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">        You can also use mapping interface for access to the internal representation of</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">        contacts in roster.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="Roster.__init__"></a><div id="Roster.__init__-def"><a name="L33"></a><tt class="py-lineno"> 33</tt> <a class="py-toggle" href="#" id="Roster.__init__-toggle" onclick="return toggle('Roster.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.__init__-expanded"><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-docstring">""" Init internal variables. """</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt id="link-3" class="py-name"><a title="spade.xmpp.client.PlugIn
+spade.xmpp.client.PlugIn.PlugIn
+spade.xmpp.transports.TLS.PlugIn" class="py-name" href="#" onclick="return doclink('link-3', 'PlugIn', 'link-2');">PlugIn</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method spade.ACLMessage.ACLMessage.__init__()=spade.ACLMessage.ACLMessage-class.html#__init__,Method spade.ACLParser.ACLParser.__init__()=spade.ACLParser.ACLParser-class.html#__init__,Method spade.ACLParser.ACLxmlParser.__init__()=spade.ACLParser.ACLxmlParser-class.html#__init__,Method spade.AID.aid.__init__()=spade.AID.aid-class.html#__init__,Method spade.AMS.AMS.DefaultBehaviour.__init__()=spade.AMS.AMS.DefaultBehaviour-class.html#__init__,Method spade.AMS.AMS.ModifyBehaviour.__init__()=spade.AMS.AMS.ModifyBehaviour-class.html#__init__,Method spade.AMS.AMS.PlatformBehaviour.__init__()=spade.AMS.AMS.PlatformBehaviour-class.html#__init__,Method spade.AMS.AMS.RegisterBehaviour.__init__()=spade.AMS.AMS.RegisterBehaviour-class.html#__init__,Method spade.AMS.AMS.SearchBehaviour.__init__()=spade.AMS.AMS.SearchBehaviour-class.html#__init__,Method spade.AMS.AMS.__init__()=spade.AMS.AMS-class.html#__init__,Method spade.AMS.AmsAgentDescription.__init__()=spade.AMS.AmsAgentDescription-class.html#__init__,Method spade.Agent.AbstractAgent.__init__()=spade.Agent.AbstractAgent-class.html#__init__,Method spade.Agent.Agent.__init__()=spade.Agent.Agent-class.html#__init__,Method spade.Agent.PlatformAgent.__init__()=spade.Agent.PlatformAgent-class.html#__init__,Method spade.Agent.jabberProcess.__init__()=spade.Agent.jabberProcess-class.html#__init__,Method spade.BasicFipaDateTime.BasicFipaDateTime.__init__()=spade.BasicFipaDateTime.BasicFipaDateTime-class.html#__init__,Method spade.Behaviour.ACLTemplate.__init__()=spade.Behaviour.ACLTemplate-class.html#__init__,Method spade.Behaviour.ANDTemplate.__init__()=spade.Behaviour.ANDTemplate-class.html#__init__,Method spade.Behaviour.Behaviour.__init__()=spade.Behaviour.Behaviour-class.html#__init__,Method spade.Behaviour.BehaviourTemplate.__init__()=spade.Behaviour.BehaviourTemplate-class.html#__init__,Method spade.Behaviour.EventBehaviour.__init__()=spade.Behaviour.EventBehaviour-class.html#__init__,Method spade.Behaviour.FSMBehaviour.__init__()=spade.Behaviour.FSMBehaviour-class.html#__init__,Method spade.Behaviour.MessageTemplate.__init__()=spade.Behaviour.MessageTemplate-class.html#__init__,Method spade.Behaviour.NOTTemplate.__init__()=spade.Behaviour.NOTTemplate-class.html#__init__,Method spade.Behaviour.ORTemplate.__init__()=spade.Behaviour.ORTemplate-class.html#__init__,Method spade.Behaviour.OneShotBehaviour.__init__()=spade.Behaviour.OneShotBehaviour-class.html#__init__,Method spade.Behaviour.PeriodicBehaviour.__init__()=spade.Behaviour.PeriodicBehaviour-class.html#__init__,Method spade.Behaviour.TimeOutBehaviour.__init__()=spade.Behaviour.TimeOutBehaviour-class.html#__init__,Method spade.Behaviour.XORTemplate.__init__()=spade.Behaviour.XORTemplate-class.html#__init__,Method spade.DF.DF.DefaultBehaviour.__init__()=spade.DF.DF.DefaultBehaviour-class.html#__init__,Method spade.DF.DF.ModifyBehaviour.__init__()=spade.DF.DF.ModifyBehaviour-class.html#__init__,Method spade.DF.DF.RegisterBehaviour.__init__()=spade.DF.DF.RegisterBehaviour-class.html#__init__,Method spade.DF.DF.SearchBehaviour.__init__()=spade.DF.DF.SearchBehaviour-class.html#__init__,Method spade.DF.DF.__init__()=spade.DF.DF-class.html#__init__,Method spade.DF.DfAgentDescription.__init__()=spade.DF.DfAgentDescription-class.html#__init__,Method spade.DF.Service.__init__()=spade.DF.Service-class.html#__init__,Method spade.DF.ServiceDescription.__init__()=spade.DF.ServiceDescription-class.html#__init__,Method spade.ECLiPSeKB.ECLiPSeKB.__init__()=spade.ECLiPSeKB.ECLiPSeKB-class.html#__init__,Method spade.Envelope.Envelope.__init__()=spade.Envelope.Envelope-class.html#__init__,Method spade.FIPAMessage.FipaMessage.__init__()=spade.FIPAMessage.FipaMessage-class.html#__init__,Method spade.Flora2KB.Flora2KB.__init__()=spade.Flora2KB.Flora2KB-class.html#__init__,Method spade.MTP.MTP.__init__()=spade.MTP.MTP-class.html#__init__,Method spade.MessageReceiver.MessageReceiver.__init__()=spade.MessageReceiver.MessageReceiver-class.html#__init__,Method spade.Organization.BanedUser.__init__()=spade.Organization.BanedUser-class.html#__init__,Method spade.Organization.CreationError.__init__()=spade.Organization.CreationError-class.html#__init__,Method spade.Organization.DestroyError.__init__()=spade.Organization.DestroyError-class.html#__init__,Method spade.Organization.JoinError.__init__()=spade.Organization.JoinError-class.html#__init__,Method spade.Organization.LastOwner.__init__()=spade.Organization.LastOwner-class.html#__init__,Method spade.Organization.LockedOrganization.__init__()=spade.Organization.LockedOrganization-class.html#__init__,Method spade.Organization.MaximumUsers.__init__()=spade.Organization.MaximumUsers-class.html#__init__,Method spade.Organization.MemberOfFederation.__init__()=spade.Organization.MemberOfFederation-class.html#__init__,Method spade.Organization.MembersOnly.__init__()=spade.Organization.MembersOnly-class.html#__init__,Method spade.Organization.NickNameConflict.__init__()=spade.Organization.NickNameConflict-class.html#__init__,Method spade.Organization.NotOwner.__init__()=spade.Organization.NotOwner-class.html#__init__,Method spade.Organization.NotSupervisor.__init__()=spade.Organization.NotSupervisor-class.html#__init__,Method spade.Organization.NotValidGoal.__init__()=spade.Organization.NotValidGoal-class.html#__init__,Method spade.Organization.NotValidName.__init__()=spade.Organization.NotValidName-class.html#__init__,Method spade.Organization.NotValidType.__init__()=spade.Organization.NotValidType-class.html#__init__,Method spade.Organization.NotValidUnit.__init__()=spade.Organization.NotValidUnit-class.html#__init__,Method spade.Organization.Organization.CreateRoomBehaviour.__init__()=spade.Organization.Organization.CreateRoomBehaviour-class.html#__init__,Method spade.Organization.Organization.CreateTeamBehaviour.__init__()=spade.Organization.Organization.CreateTeamBehaviour-class.html#__init__,Method spade.Organization.Organization.DestroyBehaviour.__init__()=spade.Organization.Organization.DestroyBehaviour-class.html#__init__,Method spade.Organization.Organization.GetRegistrationFormBehaviour.__init__()=spade.Organization.Organization.GetRegistrationFormBehaviour-class.html#__init__,Method spade.Organization.Organization.GetUnitInfoBehaviour.__init__()=spade.Organization.Organization.GetUnitInfoBehaviour-class.html#__init__,Method spade.Organization.Organization.GetUnitListBehaviour.__init__()=spade.Organization.Organization.GetUnitListBehaviour-class.html#__init__,Method spade.Organization.Organization.IsMemberBehaviour.__init__()=spade.Organization.Organization.IsMemberBehaviour-class.html#__init__,Method spade.Organization.Organization.MyJoinRoomBehaviour.__init__()=spade.Organization.Organization.MyJoinRoomBehaviour-class.html#__init__,Method spade.Organization.Organization.SendRegistrationFormBehaviour.__init__()=spade.Organization.Organization.SendRegistrationFormBehaviour-class.html#__init__,Method spade.Organization.Organization.TestRoomNameBehaviour.__init__()=spade.Organization.Organization.TestRoomNameBehaviour-class.html#__init__,Method spade.Organization.Organization.__init__()=spade.Organization.Organization-class.html#__init__,Method spade.Organization.PaswordNeeded.__init__()=spade.Organization.PaswordNeeded-class.html#__init__,Method spade.Organization.Unavailable.__init__()=spade.Organization.Unavailable-class.html#__init__,Method spade.Organization.UnavailableFunction.__init__()=spade.Organization.UnavailableFunction-class.html#__init__,Method spade.Organization_new.BanedUser.__init__()=spade.Organization_new.BanedUser-class.html#__init__,Method spade.Organization_new.CreationError.__init__()=spade.Organization_new.CreationError-class.html#__init__,Method spade.Organization_new.DestroyError.__init__()=spade.Organization_new.DestroyError-class.html#__init__,Method spade.Organization_new.JoinError.__init__()=spade.Organization_new.JoinError-class.html#__init__,Method spade.Organization_new.LastOwner.__init__()=spade.Organization_new.LastOwner-class.html#__init__,Method spade.Organization_new.LockedOrganization.__init__()=spade.Organization_new.LockedOrganization-class.html#__init__,Method spade.Organization_new.MaximumUsers.__init__()=spade.Organization_new.MaximumUsers-class.html#__init__,Method spade.Organization_new.MemberOfFederation.__init__()=spade.Organization_new.MemberOfFederation-class.html#__init__,Method spade.Organization_new.MembersOnly.__init__()=spade.Organization_new.MembersOnly-class.html#__init__,Method spade.Organization_new.NickNameConflict.__init__()=spade.Organization_new.NickNameConflict-class.html#__init__,Method spade.Organization_new.NotCreatePermision.__init__()=spade.Organization_new.NotCreatePermision-class.html#__init__,Method spade.Organization_new.NotSupervisor.__init__()=spade.Organization_new.NotSupervisor-class.html#__init__,Method spade.Organization_new.NotValidGoal.__init__()=spade.Organization_new.NotValidGoal-class.html#__init__,Method spade.Organization_new.NotValidName.__init__()=spade.Organization_new.NotValidName-class.html#__init__,Method spade.Organization_new.NotValidType.__init__()=spade.Organization_new.NotValidType-class.html#__init__,Method spade.Organization_new.NotValidUnit.__init__()=spade.Organization_new.NotValidUnit-class.html#__init__,Method spade.Organization_new.Organization_new.CreateRoomBehaviour.__init__()=spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.CreateTeamBehaviour.__init__()=spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.DestroyBehaviour.__init__()=spade.Organization_new.Organization_new.DestroyBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetRegistrationFormBehaviour.__init__()=spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetUnitInfoBehaviour.__init__()=spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetUnitListBehaviour.__init__()=spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.IsMemberBehaviour.__init__()=spade.Organization_new.Organization_new.IsMemberBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.MyJoinRoomBehaviour.__init__()=spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.SendRegistrationFormBehaviour.__init__()=spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.TestRoomNameBehaviour.__init__()=spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.__init__()=spade.Organization_new.Organization_new-class.html#__init__,Method spade.Organization_new.PaswordNeeded.__init__()=spade.Organization_new.PaswordNeeded-class.html#__init__,Method spade.Organization_new.Unavailable.__init__()=spade.Organization_new.Unavailable-class.html#__init__,Method spade.Organization_new.UnavailableFunction.__init__()=spade.Organization_new.UnavailableFunction-class.html#__init__,Method spade.Platform.PlatformRestart.__init__()=spade.Platform.PlatformRestart-class.html#__init__,Method spade.Platform.SpadePlatform.RouteBehaviour.__init__()=spade.Platform.SpadePlatform.RouteBehaviour-class.html#__init__,Method spade.Platform.SpadePlatform.__init__()=spade.Platform.SpadePlatform-class.html#__init__,Method spade.RDF0Parser.RDF0Parser.__init__()=spade.RDF0Parser.RDF0Parser-class.html#__init__,Method spade.RPC.RPCClientBehaviour.__init__()=spade.RPC.RPCClientBehaviour-class.html#__init__,Method spade.ReceivedObject.ReceivedObject.__init__()=spade.ReceivedObject.ReceivedObject-class.html#__init__,Method spade.SIMBA.SIMBA.OutboxBehaviour.__init__()=spade.SIMBA.SIMBA.OutboxBehaviour-class.html#__init__,Method spade.SIMBA.SIMBA.__init__()=spade.SIMBA.SIMBA-class.html#__init__,Method spade.SL0Parser.SL0Parser.__init__()=spade.SL0Parser.SL0Parser-class.html#__init__,Method spade.SPARQLKB.SPARQLKB.__init__()=spade.SPARQLKB.SPARQLKB-class.html#__init__,Method spade.SWIKB.SWIKB.__init__()=spade.SWIKB.SWIKB-class.html#__init__,Method spade.SpadeConfigParser.ConfigParser.__init__()=spade.SpadeConfigParser.ConfigParser-class.html#__init__,Method spade.SpadeConfigParser.spadeXML.__init__()=spade.SpadeConfigParser.spadeXML-class.html#__init__,Method spade.SpadeConfigParser.spadeXMLHandler.__init__()=spade.SpadeConfigParser.spadeXMLHandler-class.html#__init__,Method spade.Unit.BanedUser.__init__()=spade.Unit.BanedUser-class.html#__init__,Method spade.Unit.CreationError.__init__()=spade.Unit.CreationError-class.html#__init__,Method spade.Unit.DestroyError.__init__()=spade.Unit.DestroyError-class.html#__init__,Method spade.Unit.JoinError.__init__()=spade.Unit.JoinError-class.html#__init__,Method spade.Unit.LastOwner.__init__()=spade.Unit.LastOwner-class.html#__init__,Method spade.Unit.LockedUnit.__init__()=spade.Unit.LockedUnit-class.html#__init__,Method spade.Unit.MaximumUsers.__init__()=spade.Unit.MaximumUsers-class.html#__init__,Method spade.Unit.MembersOnly.__init__()=spade.Unit.MembersOnly-class.html#__init__,Method spade.Unit.NickNameConflict.__init__()=spade.Unit.NickNameConflict-class.html#__init__,Method spade.Unit.NotAdmin.__init__()=spade.Unit.NotAdmin-class.html#__init__,Method spade.Unit.NotSupervisor.__init__()=spade.Unit.NotSupervisor-class.html#__init__,Method spade.Unit.NotValidGoal.__init__()=spade.Unit.NotValidGoal-class.html#__init__,Method spade.Unit.NotValidGoalChange.__init__()=spade.Unit.NotValidGoalChange-class.html#__init__,Method spade.Unit.NotValidName.__init__()=spade.Unit.NotValidName-class.html#__init__,Method spade.Unit.NotValidType.__init__()=spade.Unit.NotValidType-class.html#__init__,Method spade.Unit.NotValidUnit.__init__()=spade.Unit.NotValidUnit-class.html#__init__,Method spade.Unit.PaswordNeeded.__init__()=spade.Unit.PaswordNeeded-class.html#__init__,Method spade.Unit.Unavailable.__init__()=spade.Unit.Unavailable-class.html#__init__,Method spade.Unit.Unit.AddAdminBehaviour.__init__()=spade.Unit.Unit.AddAdminBehaviour-class.html#__init__,Method spade.Unit.Unit.AddBanAgentBehaviour.__init__()=spade.Unit.Unit.AddBanAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.AddModeratorBehaviour.__init__()=spade.Unit.Unit.AddModeratorBehaviour-class.html#__init__,Method spade.Unit.Unit.AddOwnerBehaviour.__init__()=spade.Unit.Unit.AddOwnerBehaviour-class.html#__init__,Method spade.Unit.Unit.CreateRoomBehaviour.__init__()=spade.Unit.Unit.CreateRoomBehaviour-class.html#__init__,Method spade.Unit.Unit.DestroyBehaviour.__init__()=spade.Unit.Unit.DestroyBehaviour-class.html#__init__,Method spade.Unit.Unit.GetAdminListBehaviour.__init__()=spade.Unit.Unit.GetAdminListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetBanAgentListBehaviour.__init__()=spade.Unit.Unit.GetBanAgentListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetGoalBehaviour.__init__()=spade.Unit.Unit.GetGoalBehaviour-class.html#__init__,Method spade.Unit.Unit.GetInfoBehaviour.__init__()=spade.Unit.Unit.GetInfoBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMaxAgentsBehaviour.__init__()=spade.Unit.Unit.GetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMemberListBehaviour.__init__()=spade.Unit.Unit.GetMemberListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMinAgentsBehaviour.__init__()=spade.Unit.Unit.GetMinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetModeratorListBehaviour.__init__()=spade.Unit.Unit.GetModeratorListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetNumberOfAgentsBehaviour.__init__()=spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetOwnerListBehaviour.__init__()=spade.Unit.Unit.GetOwnerListBehaviour-class.html#__init__,Method spade.Unit.Unit.GiveVoiceBehaviour.__init__()=spade.Unit.Unit.GiveVoiceBehaviour-class.html#__init__,Method spade.Unit.Unit.KickAgentBehaviour.__init__()=spade.Unit.Unit.KickAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.MyJoinRoomBehaviour.__init__()=spade.Unit.Unit.MyJoinRoomBehaviour-class.html#__init__,Method spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour.__init__()=spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.PresenceBehaviour.__init__()=spade.Unit.Unit.PresenceBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveAdminBehaviour.__init__()=spade.Unit.Unit.RemoveAdminBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveBanAgentBehaviour.__init__()=spade.Unit.Unit.RemoveBanAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveModeratorBehaviour.__init__()=spade.Unit.Unit.RemoveModeratorBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveOwnerBehaviour.__init__()=spade.Unit.Unit.RemoveOwnerBehaviour-class.html#__init__,Method spade.Unit.Unit.RevokeVoiceBehaviour.__init__()=spade.Unit.Unit.RevokeVoiceBehaviour-class.html#__init__,Method spade.Unit.Unit.SendMessageBehaviour.__init__()=spade.Unit.Unit.SendMessageBehaviour-class.html#__init__,Method spade.Unit.Unit.SendPrivateMessageBehaviour.__init__()=spade.Unit.Unit.SendPrivateMessageBehaviour-class.html#__init__,Method spade.Unit.Unit.SetGoalBehaviour.__init__()=spade.Unit.Unit.SetGoalBehaviour-class.html#__init__,Method spade.Unit.Unit.SetMaxAgentsBehaviour.__init__()=spade.Unit.Unit.SetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.SetMinAgentsBehaviour.__init__()=spade.Unit.Unit.SetMinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.TestRoomNameBehaviour.__init__()=spade.Unit.Unit.TestRoomNameBehaviour-class.html#__init__,Method spade.Unit.Unit.__init__()=spade.Unit.Unit-class.html#__init__,Method spade.Unit_new.BanedUser.__init__()=spade.Unit_new.BanedUser-class.html#__init__,Method spade.Unit_new.CreationError.__init__()=spade.Unit_new.CreationError-class.html#__init__,Method spade.Unit_new.DestroyError.__init__()=spade.Unit_new.DestroyError-class.html#__init__,Method spade.Unit_new.JoinError.__init__()=spade.Unit_new.JoinError-class.html#__init__,Method spade.Unit_new.LastOwner.__init__()=spade.Unit_new.LastOwner-class.html#__init__,Method spade.Unit_new.LockedUnit.__init__()=spade.Unit_new.LockedUnit-class.html#__init__,Method spade.Unit_new.MaximumUsers.__init__()=spade.Unit_new.MaximumUsers-class.html#__init__,Method spade.Unit_new.MembersOnly.__init__()=spade.Unit_new.MembersOnly-class.html#__init__,Method spade.Unit_new.NickNameConflict.__init__()=spade.Unit_new.NickNameConflict-class.html#__init__,Method spade.Unit_new.NotCreatePermision.__init__()=spade.Unit_new.NotCreatePermision-class.html#__init__,Method spade.Unit_new.NotSupervisor.__init__()=spade.Unit_new.NotSupervisor-class.html#__init__,Method spade.Unit_new.NotValidGoal.__init__()=spade.Unit_new.NotValidGoal-class.html#__init__,Method spade.Unit_new.NotValidGoalChange.__init__()=spade.Unit_new.NotValidGoalChange-class.html#__init__,Method spade.Unit_new.NotValidName.__init__()=spade.Unit_new.NotValidName-class.html#__init__,Method spade.Unit_new.NotValidType.__init__()=spade.Unit_new.NotValidType-class.html#__init__,Method spade.Unit_new.NotValidUnit.__init__()=spade.Unit_new.NotValidUnit-class.html#__init__,Method spade.Unit_new.PaswordNeeded.__init__()=spade.Unit_new.PaswordNeeded-class.html#__init__,Method spade.Unit_new.Unavailable.__init__()=spade.Unit_new.Unavailable-class.html#__init__,Method spade.Unit_new.Unit_new.AddAdminBehaviour.__init__()=spade.Unit_new.Unit_new.AddAdminBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.AddBanAgentBehaviour.__init__()=spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.AddModeratorBehaviour.__init__()=spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.CreateRoomBehaviour.__init__()=spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.DestroyBehaviour.__init__()=spade.Unit_new.Unit_new.DestroyBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetAdminListBehaviour.__init__()=spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetBanAgentListBehaviour.__init__()=spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetGoalBehaviour.__init__()=spade.Unit_new.Unit_new.GetGoalBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetInfoBehaviour.__init__()=spade.Unit_new.Unit_new.GetInfoBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMaxAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMemberListBehaviour.__init__()=spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetModeratorListBehaviour.__init__()=spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetOwnerListBehaviour.__init__()=spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GiveVoiceBehaviour.__init__()=spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.KickAgentBehaviour.__init__()=spade.Unit_new.Unit_new.KickAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.MyJoinRoomBehaviour.__init__()=spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.PresenceBehaviour.__init__()=spade.Unit_new.Unit_new.PresenceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveAdminBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveBanAgentBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveModeratorBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RevokeVoiceBehaviour.__init__()=spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SendMessageBehaviour.__init__()=spade.Unit_new.Unit_new.SendMessageBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SendPrivateMessageBehaviour.__init__()=spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetGoalBehaviour.__init__()=spade.Unit_new.Unit_new.SetGoalBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetMaxAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetMinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.TestRoomNameBehaviour.__init__()=spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.__init__()=spade.Unit_new.Unit_new-class.html#__init__,Method spade.XMLCodec.XMLCodec.__init__()=spade.XMLCodec.XMLCodec-class.html#__init__,Method spade.XSBKB.XSBKB.__init__()=spade.XSBKB.XSBKB-class.html#__init__,Method spade.bdi.BDIBehaviour.__init__()=spade.bdi.BDIBehaviour-class.html#__init__,Method spade.bdi.Goal.__init__()=spade.bdi.Goal-class.html#__init__,Method spade.content.ContentObject.__init__()=spade.content.ContentObject-class.html#__init__,Method spade.dblite.Base.__init__()=spade.dblite.Base-class.html#__init__,Method spade.dblite.Index.__init__()=spade.dblite.Index-class.html#__init__,Method spade.fipa.ModifyAgentBehaviour.__init__()=spade.fipa.ModifyAgentBehaviour-class.html#__init__,Method spade.fipa.SearchAgentBehaviour.__init__()=spade.fipa.SearchAgentBehaviour-class.html#__init__,Method spade.fipa.deregisterServiceBehaviour.__init__()=spade.fipa.deregisterServiceBehaviour-class.html#__init__,Method spade.fipa.getPlatformInfoBehaviour.__init__()=spade.fipa.getPlatformInfoBehaviour-class.html#__init__,Method spade.fipa.modifyServiceBehaviour.__init__()=spade.fipa.modifyServiceBehaviour-class.html#__init__,Method spade.fipa.registerServiceBehaviour.__init__()=spade.fipa.registerServiceBehaviour-class.html#__init__,Method spade.fipa.searchServiceBehaviour.__init__()=spade.fipa.searchServiceBehaviour-class.html#__init__,Method spade.kb.KB.__init__()=spade.kb.KB-class.html#__init__,Method spade.kb.KBConfigurationFailed.__init__()=spade.kb.KBConfigurationFailed-class.html#__init__,Method spade.logic.Expr.__init__()=spade.logic.Expr-class.html#__init__,Method spade.logic.FolKB.__init__()=spade.logic.FolKB-class.html#__init__,Method spade.logic.KB.__init__()=spade.logic.KB-class.html#__init__,Method spade.logic.PropKB.__init__()=spade.logic.PropKB-class.html#__init__,Method spade.odict.odict.__init__()=spade.odict.odict-class.html#__init__,Method spade.peer2peer.RequestDiscoInfoBehav.__init__()=spade.peer2peer.RequestDiscoInfoBehav-class.html#__init__,Method spade.peer2peer.SendStreamInitiationBehav.__init__()=spade.peer2peer.SendStreamInitiationBehav-class.html#__init__,Method spade.pubsub.PubSub.__init__()=spade.pubsub.PubSub-class.html#__init__,Method spade.pubsub.PubSub._sendAndReceiveBehav.__init__()=spade.pubsub.PubSub._sendAndReceiveBehav-class.html#__init__,Method spade.pygooglechart.Axis.__init__()=spade.pygooglechart.Axis-class.html#__init__,Method spade.pygooglechart.BarChart.__init__()=spade.pygooglechart.BarChart-class.html#__init__,Method spade.pygooglechart.Chart.__init__()=spade.pygooglechart.Chart-class.html#__init__,Method spade.pygooglechart.ChartGrammar.__init__()=spade.pygooglechart.ChartGrammar-class.html#__init__,Method spade.pygooglechart.Data.__init__()=spade.pygooglechart.Data-class.html#__init__,Method spade.pygooglechart.GoogleOMeterChart.__init__()=spade.pygooglechart.GoogleOMeterChart-class.html#__init__,Method spade.pygooglechart.GroupedBarChart.__init__()=spade.pygooglechart.GroupedBarChart-class.html#__init__,Method spade.pygooglechart.LabelAxis.__init__()=spade.pygooglechart.LabelAxis-class.html#__init__,Method spade.pygooglechart.LineChart.__init__()=spade.pygooglechart.LineChart-class.html#__init__,Method spade.pygooglechart.MapChart.__init__()=spade.pygooglechart.MapChart-class.html#__init__,Method spade.pygooglechart.PieChart.__init__()=spade.pygooglechart.PieChart-class.html#__init__,Method spade.pygooglechart.QRChart.__init__()=spade.pygooglechart.QRChart-class.html#__init__,Method spade.pygooglechart.RangeAxis.__init__()=spade.pygooglechart.RangeAxis-class.html#__init__,Method spade.pyparsing.And.__init__()=spade.pyparsing.And-class.html#__init__,Method spade.pyparsing.CaselessLiteral.__init__()=spade.pyparsing.CaselessLiteral-class.html#__init__,Method spade.pyparsing.CharsNotIn.__init__()=spade.pyparsing.CharsNotIn-class.html#__init__,Method spade.pyparsing.Combine.__init__()=spade.pyparsing.Combine-class.html#__init__,Method spade.pyparsing.Dict.__init__()=spade.pyparsing.Dict-class.html#__init__,Method spade.pyparsing.Each.__init__()=spade.pyparsing.Each-class.html#__init__,Method spade.pyparsing.Empty.__init__()=spade.pyparsing.Empty-class.html#__init__,Method spade.pyparsing.FollowedBy.__init__()=spade.pyparsing.FollowedBy-class.html#__init__,Method spade.pyparsing.Forward.__init__()=spade.pyparsing.Forward-class.html#__init__,Method spade.pyparsing.GoToColumn.__init__()=spade.pyparsing.GoToColumn-class.html#__init__,Method spade.pyparsing.Group.__init__()=spade.pyparsing.Group-class.html#__init__,Method spade.pyparsing.Keyword.__init__()=spade.pyparsing.Keyword-class.html#__init__,Method spade.pyparsing.LineEnd.__init__()=spade.pyparsing.LineEnd-class.html#__init__,Method spade.pyparsing.LineStart.__init__()=spade.pyparsing.LineStart-class.html#__init__,Method spade.pyparsing.Literal.__init__()=spade.pyparsing.Literal-class.html#__init__,Method spade.pyparsing.MatchFirst.__init__()=spade.pyparsing.MatchFirst-class.html#__init__,Method spade.pyparsing.NoMatch.__init__()=spade.pyparsing.NoMatch-class.html#__init__,Method spade.pyparsing.NotAny.__init__()=spade.pyparsing.NotAny-class.html#__init__,Method spade.pyparsing.Optional.__init__()=spade.pyparsing.Optional-class.html#__init__,Method spade.pyparsing.Or.__init__()=spade.pyparsing.Or-class.html#__init__,Method spade.pyparsing.ParseBaseException.__init__()=spade.pyparsing.ParseBaseException-class.html#__init__,Method spade.pyparsing.ParseElementEnhance.__init__()=spade.pyparsing.ParseElementEnhance-class.html#__init__,Method spade.pyparsing.ParseExpression.__init__()=spade.pyparsing.ParseExpression-class.html#__init__,Method spade.pyparsing.ParseResults.__init__()=spade.pyparsing.ParseResults-class.html#__init__,Method spade.pyparsing.ParserElement.__init__()=spade.pyparsing.ParserElement-class.html#__init__,Method spade.pyparsing.PositionToken.__init__()=spade.pyparsing.PositionToken-class.html#__init__,Method spade.pyparsing.RecursiveGrammarException.__init__()=spade.pyparsing.RecursiveGrammarException-class.html#__init__,Method spade.pyparsing.SkipTo.__init__()=spade.pyparsing.SkipTo-class.html#__init__,Method spade.pyparsing.StringEnd.__init__()=spade.pyparsing.StringEnd-class.html#__init__,Method spade.pyparsing.StringStart.__init__()=spade.pyparsing.StringStart-class.html#__init__,Method spade.pyparsing.Token.__init__()=spade.pyparsing.Token-class.html#__init__,Method spade.pyparsing.TokenConverter.__init__()=spade.pyparsing.TokenConverter-class.html#__init__,Method spade.pyparsing.Upcase.__init__()=spade.pyparsing.Upcase-class.html#__init__,Method spade.pyparsing.White.__init__()=spade.pyparsing.White-class.html#__init__,Method spade.pyparsing.Word.__init__()=spade.pyparsing.Word-class.html#__init__,Method spade.pyparsing.ZeroOrMore.__init__()=spade.pyparsing.ZeroOrMore-class.html#__init__,Method spade.pyratemp.FileLoader.__init__()=spade.pyratemp.FileLoader-class.html#__init__,Method spade.pyratemp.Parser.__init__()=spade.pyratemp.Parser-class.html#__init__,Method spade.pyratemp.PseudoSandbox.__init__()=spade.pyratemp.PseudoSandbox-class.html#__init__,Method spade.pyratemp.Renderer.__init__()=spade.pyratemp.Renderer-class.html#__init__,Method spade.pyratemp.StringLoader.__init__()=spade.pyratemp.StringLoader-class.html#__init__,Method spade.pyratemp.Template.__init__()=spade.pyratemp.Template-class.html#__init__,Method spade.pyratemp.TemplateBase.__init__()=spade.pyratemp.TemplateBase-class.html#__init__,Method spade.pyratemp.TemplateEval.__init__()=spade.pyratemp.TemplateEval-class.html#__init__,Method spade.pyratemp.TemplateParseError.__init__()=spade.pyratemp.TemplateParseError-class.html#__init__,Method spade.pyxf.eclipse.__init__()=spade.pyxf.eclipse-class.html#__init__,Method spade.pyxf.flora2.__init__()=spade.pyxf.flora2-class.html#__init__,Method spade.pyxf.swipl.__init__()=spade.pyxf.swipl-class.html#__init__,Method spade.pyxf.xsb.__init__()=spade.pyxf.xsb-class.html#__init__,Method spade.socialnetwork.SocialItem.__init__()=spade.socialnetwork.SocialItem-class.html#__init__,Method spade.spade_backend.SpadeBackend.__init__()=spade.spade_backend.SpadeBackend-class.html#__init__,Method spade.tbcbp.Case.__init__()=spade.tbcbp.Case-class.html#__init__,Method spade.tbcbp.CaseDB.__init__()=spade.tbcbp.CaseDB-class.html#__init__,Method spade.tbcbp.Plan.__init__()=spade.tbcbp.Plan-class.html#__init__,Method spade.tbcbp.TBCBP.__init__()=spade.tbcbp.TBCBP-class.html#__init__,Method spade.wui.WUI.__init__()=spade.wui.WUI-class.html#__init__,Method spade.xmpp.auth.Bind.__init__()=spade.xmpp.auth.Bind-class.html#__init__,Method spade.xmpp.auth.ComponentBind.__init__()=spade.xmpp.auth.ComponentBind-class.html#__init__,Method spade.xmpp.auth.NonSASL.__init__()=spade.xmpp.auth.NonSASL-class.html#__init__,Method spade.xmpp.auth.SASL.__init__()=spade.xmpp.auth.SASL-class.html#__init__,Method spade.xmpp.browser.Browser.__init__()=spade.xmpp.browser.Browser-class.html#__init__,Method spade.xmpp.client.CommonClient.__init__()=spade.xmpp.client.CommonClient-class.html#__init__,Method spade.xmpp.client.Component.__init__()=spade.xmpp.client.Component-class.html#__init__,Method spade.xmpp.client.PlugIn.__init__()=spade.xmpp.client.PlugIn-class.html#__init__,Method spade.xmpp.commands.Command_Handler_Prototype.__init__()=spade.xmpp.commands.Command_Handler_Prototype-class.html#__init__,Method spade.xmpp.commands.Commands.__init__()=spade.xmpp.commands.Commands-class.html#__init__,Method spade.xmpp.commands.TestCommand.__init__()=spade.xmpp.commands.TestCommand-class.html#__init__,Method spade.xmpp.debug.Debug.__init__()=spade.xmpp.debug.Debug-class.html#__init__,Method spade.xmpp.debug.NoDebug.__init__()=spade.xmpp.debug.NoDebug-class.html#__init__,Method spade.xmpp.dispatcher.Dispatcher.__init__()=spade.xmpp.dispatcher.Dispatcher-class.html#__init__,Method spade.xmpp.filetransfer.IBB.__init__()=spade.xmpp.filetransfer.IBB-class.html#__init__,Method spade.xmpp.protocol.DataField.__init__()=spade.xmpp.protocol.DataField-class.html#__init__,Method spade.xmpp.protocol.DataForm.__init__()=spade.xmpp.protocol.DataForm-class.html#__init__,Method spade.xmpp.protocol.Error.__init__()=spade.xmpp.protocol.Error-class.html#__init__,Method spade.xmpp.protocol.ErrorNode.__init__()=spade.xmpp.protocol.ErrorNode-class.html#__init__,Method spade.xmpp.protocol.Iq.__init__()=spade.xmpp.protocol.Iq-class.html#__init__,Method spade.xmpp.protocol.JID.__init__()=spade.xmpp.protocol.JID-class.html#__init__,Method spade.xmpp.protocol.Message.__init__()=spade.xmpp.protocol.Message-class.html#__init__,Method spade.xmpp.protocol.Presence.__init__()=spade.xmpp.protocol.Presence-class.html#__init__,Method spade.xmpp.protocol.Protocol.__init__()=spade.xmpp.protocol.Protocol-class.html#__init__,Method spade.xmpp.roster.Roster.__init__()=spade.xmpp.roster.Roster-class.html#__init__,Method spade.xmpp.session.Session.__init__()=spade.xmpp.session.Session-class.html#__init__,Method spade.xmpp.simplexml.Node.__init__()=spade.xmpp.simplexml.Node-class.html#__init__,Method spade.xmpp.simplexml.NodeBuilder.__init__()=spade.xmpp.simplexml.NodeBuilder-class.html#__init__,Method spade.xmpp.simplexml.T.__init__()=spade.xmpp.simplexml.T-class.html#__init__,Method spade.xmpp.transports.HTTPPROXYsocket.__init__()=spade.xmpp.transports.HTTPPROXYsocket-class.html#__init__,Method spade.xmpp.transports.TCPsocket.__init__()=spade.xmpp.transports.TCPsocket-class.html#__init__,Method spade.xmpp.transports.error.__init__()=spade.xmpp.transports.error-class.html#__init__,Method spade.xmppd.modules.config.Config.__init__()=spade.xmppd.modules.config.Config-class.html#__init__,Method spade.xmppd.modules.config.xmppdXML.__init__()=spade.xmppd.modules.config.xmppdXML-class.html#__init__,Method spade.xmppd.modules.config.xmppdXMLHandler.__init__()=spade.xmppd.modules.config.xmppdXMLHandler-class.html#__init__,Method spade.xmppd.modules.muc.BadPassword.__init__()=spade.xmppd.modules.muc.BadPassword-class.html#__init__,Method spade.xmppd.modules.muc.Blacklisted.__init__()=spade.xmppd.modules.muc.Blacklisted-class.html#__init__,Method spade.xmppd.modules.muc.MaxUsers.__init__()=spade.xmppd.modules.muc.MaxUsers-class.html#__init__,Method spade.xmppd.modules.muc.NickLockedDown.__init__()=spade.xmppd.modules.muc.NickLockedDown-class.html#__init__,Method spade.xmppd.modules.muc.NoVoice.__init__()=spade.xmppd.modules.muc.NoVoice-class.html#__init__,Method spade.xmppd.modules.muc.NotAMember.__init__()=spade.xmppd.modules.muc.NotAMember-class.html#__init__,Method spade.xmppd.modules.muc.Participant.__init__()=spade.xmppd.modules.muc.Participant-class.html#__init__,Method spade.xmppd.modules.muc.Room.__init__()=spade.xmppd.modules.muc.Room-class.html#__init__,Method spade.xmppd.modules.muc.SerializableRoom.__init__()=spade.xmppd.modules.muc.SerializableRoom-class.html#__init__,Method spade.xmppd.modules.pubsub.PSNode.__init__()=spade.xmppd.modules.pubsub.PSNode-class.html#__init__,Method spade.xmppd.modules.wq.Conflict.__init__()=spade.xmppd.modules.wq.Conflict-class.html#__init__,Method spade.xmppd.modules.wq.Group.__init__()=spade.xmppd.modules.wq.Group-class.html#__init__,Method spade.xmppd.modules.wq.ItemNotFound.__init__()=spade.xmppd.modules.wq.ItemNotFound-class.html#__init__,Method spade.xmppd.xmppd.RPC_Client.__init__()=spade.xmppd.xmppd.RPC_Client-class.html#__init__,Method spade.xmppd.xmppd.Server.__init__()=spade.xmppd.xmppd.Server-class.html#__init__,Method spade.xmppd.xmppd.Session.__init__()=spade.xmppd.xmppd.Session-class.html#__init__,Method spade.xmppd.xmppd.Session_Dummy.Stream.__init__()=spade.xmppd.xmppd.Session_Dummy.Stream-class.html#__init__,Method spade.xmppd.xmppd.Session_Dummy.__init__()=spade.xmppd.xmppd.Session_Dummy-class.html#__init__,Method spade.xmppd.xmppd.Socker_client.__init__()=spade.xmppd.xmppd.Socker_client-class.html#__init__,Method spade.xmppd.xmppd.fake_select.__init__()=spade.xmppd.xmppd.fake_select-class.html#__init__,Method spade.xmppd.xmppd.fake_select.poll.__init__()=spade.xmppd.xmppd.fake_select.poll-class.html#__init__,Method spade.xmppd.xmppd.get_input.__init__()=spade.xmppd.xmppd.get_input-class.html#__init__,Method spade.xmppd.xmppd.localizer.__init__()=spade.xmppd.xmppd.localizer-class.html#__init__,Method spade.xmppd.xmppd.multisession_manager.__init__()=spade.xmppd.xmppd.multisession_manager-class.html#__init__,Method spade.xmppd.xmppd.multisession_manager.multisession_thread.__init__()=spade.xmppd.xmppd.multisession_manager.multisession_thread-class.html#__init__"><a title="spade.ACLMessage.ACLMessage.__init__
+spade.ACLParser.ACLParser.__init__
+spade.ACLParser.ACLxmlParser.__init__
+spade.AID.aid.__init__
+spade.AMS.AMS.DefaultBehaviour.__init__
+spade.AMS.AMS.ModifyBehaviour.__init__
+spade.AMS.AMS.PlatformBehaviour.__init__
+spade.AMS.AMS.RegisterBehaviour.__init__
+spade.AMS.AMS.SearchBehaviour.__init__
+spade.AMS.AMS.__init__
+spade.AMS.AmsAgentDescription.__init__
+spade.Agent.AbstractAgent.__init__
+spade.Agent.Agent.__init__
+spade.Agent.PlatformAgent.__init__
+spade.Agent.jabberProcess.__init__
+spade.BasicFipaDateTime.BasicFipaDateTime.__init__
+spade.Behaviour.ACLTemplate.__init__
+spade.Behaviour.ANDTemplate.__init__
+spade.Behaviour.Behaviour.__init__
+spade.Behaviour.BehaviourTemplate.__init__
+spade.Behaviour.EventBehaviour.__init__
+spade.Behaviour.FSMBehaviour.__init__
+spade.Behaviour.MessageTemplate.__init__
+spade.Behaviour.NOTTemplate.__init__
+spade.Behaviour.ORTemplate.__init__
+spade.Behaviour.OneShotBehaviour.__init__
+spade.Behaviour.PeriodicBehaviour.__init__
+spade.Behaviour.TimeOutBehaviour.__init__
+spade.Behaviour.XORTemplate.__init__
+spade.DF.DF.DefaultBehaviour.__init__
+spade.DF.DF.ModifyBehaviour.__init__
+spade.DF.DF.RegisterBehaviour.__init__
+spade.DF.DF.SearchBehaviour.__init__
+spade.DF.DF.__init__
+spade.DF.DfAgentDescription.__init__
+spade.DF.Service.__init__
+spade.DF.ServiceDescription.__init__
+spade.ECLiPSeKB.ECLiPSeKB.__init__
+spade.Envelope.Envelope.__init__
+spade.FIPAMessage.FipaMessage.__init__
+spade.Flora2KB.Flora2KB.__init__
+spade.MTP.MTP.__init__
+spade.MessageReceiver.MessageReceiver.__init__
+spade.Organization.BanedUser.__init__
+spade.Organization.CreationError.__init__
+spade.Organization.DestroyError.__init__
+spade.Organization.JoinError.__init__
+spade.Organization.LastOwner.__init__
+spade.Organization.LockedOrganization.__init__
+spade.Organization.MaximumUsers.__init__
+spade.Organization.MemberOfFederation.__init__
+spade.Organization.MembersOnly.__init__
+spade.Organization.NickNameConflict.__init__
+spade.Organization.NotOwner.__init__
+spade.Organization.NotSupervisor.__init__
+spade.Organization.NotValidGoal.__init__
+spade.Organization.NotValidName.__init__
+spade.Organization.NotValidType.__init__
+spade.Organization.NotValidUnit.__init__
+spade.Organization.Organization.CreateRoomBehaviour.__init__
+spade.Organization.Organization.CreateTeamBehaviour.__init__
+spade.Organization.Organization.DestroyBehaviour.__init__
+spade.Organization.Organization.GetRegistrationFormBehaviour.__init__
+spade.Organization.Organization.GetUnitInfoBehaviour.__init__
+spade.Organization.Organization.GetUnitListBehaviour.__init__
+spade.Organization.Organization.IsMemberBehaviour.__init__
+spade.Organization.Organization.MyJoinRoomBehaviour.__init__
+spade.Organization.Organization.SendRegistrationFormBehaviour.__init__
+spade.Organization.Organization.TestRoomNameBehaviour.__init__
+spade.Organization.Organization.__init__
+spade.Organization.PaswordNeeded.__init__
+spade.Organization.Unavailable.__init__
+spade.Organization.UnavailableFunction.__init__
+spade.Organization_new.BanedUser.__init__
+spade.Organization_new.CreationError.__init__
+spade.Organization_new.DestroyError.__init__
+spade.Organization_new.JoinError.__init__
+spade.Organization_new.LastOwner.__init__
+spade.Organization_new.LockedOrganization.__init__
+spade.Organization_new.MaximumUsers.__init__
+spade.Organization_new.MemberOfFederation.__init__
+spade.Organization_new.MembersOnly.__init__
+spade.Organization_new.NickNameConflict.__init__
+spade.Organization_new.NotCreatePermision.__init__
+spade.Organization_new.NotSupervisor.__init__
+spade.Organization_new.NotValidGoal.__init__
+spade.Organization_new.NotValidName.__init__
+spade.Organization_new.NotValidType.__init__
+spade.Organization_new.NotValidUnit.__init__
+spade.Organization_new.Organization_new.CreateRoomBehaviour.__init__
+spade.Organization_new.Organization_new.CreateTeamBehaviour.__init__
+spade.Organization_new.Organization_new.DestroyBehaviour.__init__
+spade.Organization_new.Organization_new.GetRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitInfoBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitListBehaviour.__init__
+spade.Organization_new.Organization_new.IsMemberBehaviour.__init__
+spade.Organization_new.Organization_new.MyJoinRoomBehaviour.__init__
+spade.Organization_new.Organization_new.SendRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.TestRoomNameBehaviour.__init__
+spade.Organization_new.Organization_new.__init__
+spade.Organization_new.PaswordNeeded.__init__
+spade.Organization_new.Unavailable.__init__
+spade.Organization_new.UnavailableFunction.__init__
+spade.Platform.PlatformRestart.__init__
+spade.Platform.SpadePlatform.RouteBehaviour.__init__
+spade.Platform.SpadePlatform.__init__
+spade.RDF0Parser.RDF0Parser.__init__
+spade.RPC.RPCClientBehaviour.__init__
+spade.ReceivedObject.ReceivedObject.__init__
+spade.SIMBA.SIMBA.OutboxBehaviour.__init__
+spade.SIMBA.SIMBA.__init__
+spade.SL0Parser.SL0Parser.__init__
+spade.SPARQLKB.SPARQLKB.__init__
+spade.SWIKB.SWIKB.__init__
+spade.SpadeConfigParser.ConfigParser.__init__
+spade.SpadeConfigParser.spadeXML.__init__
+spade.SpadeConfigParser.spadeXMLHandler.__init__
+spade.Unit.BanedUser.__init__
+spade.Unit.CreationError.__init__
+spade.Unit.DestroyError.__init__
+spade.Unit.JoinError.__init__
+spade.Unit.LastOwner.__init__
+spade.Unit.LockedUnit.__init__
+spade.Unit.MaximumUsers.__init__
+spade.Unit.MembersOnly.__init__
+spade.Unit.NickNameConflict.__init__
+spade.Unit.NotAdmin.__init__
+spade.Unit.NotSupervisor.__init__
+spade.Unit.NotValidGoal.__init__
+spade.Unit.NotValidGoalChange.__init__
+spade.Unit.NotValidName.__init__
+spade.Unit.NotValidType.__init__
+spade.Unit.NotValidUnit.__init__
+spade.Unit.PaswordNeeded.__init__
+spade.Unit.Unavailable.__init__
+spade.Unit.Unit.AddAdminBehaviour.__init__
+spade.Unit.Unit.AddBanAgentBehaviour.__init__
+spade.Unit.Unit.AddModeratorBehaviour.__init__
+spade.Unit.Unit.AddOwnerBehaviour.__init__
+spade.Unit.Unit.CreateRoomBehaviour.__init__
+spade.Unit.Unit.DestroyBehaviour.__init__
+spade.Unit.Unit.GetAdminListBehaviour.__init__
+spade.Unit.Unit.GetBanAgentListBehaviour.__init__
+spade.Unit.Unit.GetGoalBehaviour.__init__
+spade.Unit.Unit.GetInfoBehaviour.__init__
+spade.Unit.Unit.GetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.GetMemberListBehaviour.__init__
+spade.Unit.Unit.GetMinAgentsBehaviour.__init__
+spade.Unit.Unit.GetModeratorListBehaviour.__init__
+spade.Unit.Unit.GetNumberOfAgentsBehaviour.__init__
+spade.Unit.Unit.GetOwnerListBehaviour.__init__
+spade.Unit.Unit.GiveVoiceBehaviour.__init__
+spade.Unit.Unit.KickAgentBehaviour.__init__
+spade.Unit.Unit.MyJoinRoomBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.__init__
+spade.Unit.Unit.RemoveAdminBehaviour.__init__
+spade.Unit.Unit.RemoveBanAgentBehaviour.__init__
+spade.Unit.Unit.RemoveModeratorBehaviour.__init__
+spade.Unit.Unit.RemoveOwnerBehaviour.__init__
+spade.Unit.Unit.RevokeVoiceBehaviour.__init__
+spade.Unit.Unit.SendMessageBehaviour.__init__
+spade.Unit.Unit.SendPrivateMessageBehaviour.__init__
+spade.Unit.Unit.SetGoalBehaviour.__init__
+spade.Unit.Unit.SetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.SetMinAgentsBehaviour.__init__
+spade.Unit.Unit.TestRoomNameBehaviour.__init__
+spade.Unit.Unit.__init__
+spade.Unit_new.BanedUser.__init__
+spade.Unit_new.CreationError.__init__
+spade.Unit_new.DestroyError.__init__
+spade.Unit_new.JoinError.__init__
+spade.Unit_new.LastOwner.__init__
+spade.Unit_new.LockedUnit.__init__
+spade.Unit_new.MaximumUsers.__init__
+spade.Unit_new.MembersOnly.__init__
+spade.Unit_new.NickNameConflict.__init__
+spade.Unit_new.NotCreatePermision.__init__
+spade.Unit_new.NotSupervisor.__init__
+spade.Unit_new.NotValidGoal.__init__
+spade.Unit_new.NotValidGoalChange.__init__
+spade.Unit_new.NotValidName.__init__
+spade.Unit_new.NotValidType.__init__
+spade.Unit_new.NotValidUnit.__init__
+spade.Unit_new.PaswordNeeded.__init__
+spade.Unit_new.Unavailable.__init__
+spade.Unit_new.Unit_new.AddAdminBehaviour.__init__
+spade.Unit_new.Unit_new.AddBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.AddModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.CreateRoomBehaviour.__init__
+spade.Unit_new.Unit_new.DestroyBehaviour.__init__
+spade.Unit_new.Unit_new.GetAdminListBehaviour.__init__
+spade.Unit_new.Unit_new.GetBanAgentListBehaviour.__init__
+spade.Unit_new.Unit_new.GetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.GetInfoBehaviour.__init__
+spade.Unit_new.Unit_new.GetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetMemberListBehaviour.__init__
+spade.Unit_new.Unit_new.GetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetModeratorListBehaviour.__init__
+spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetOwnerListBehaviour.__init__
+spade.Unit_new.Unit_new.GiveVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.KickAgentBehaviour.__init__
+spade.Unit_new.Unit_new.MyJoinRoomBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveAdminBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.RevokeVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.SendMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SendPrivateMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.SetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.SetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.TestRoomNameBehaviour.__init__
+spade.Unit_new.Unit_new.__init__
+spade.XMLCodec.XMLCodec.__init__
+spade.XSBKB.XSBKB.__init__
+spade.bdi.BDIBehaviour.__init__
+spade.bdi.Goal.__init__
+spade.content.ContentObject.__init__
+spade.dblite.Base.__init__
+spade.dblite.Index.__init__
+spade.fipa.ModifyAgentBehaviour.__init__
+spade.fipa.SearchAgentBehaviour.__init__
+spade.fipa.deregisterServiceBehaviour.__init__
+spade.fipa.getPlatformInfoBehaviour.__init__
+spade.fipa.modifyServiceBehaviour.__init__
+spade.fipa.registerServiceBehaviour.__init__
+spade.fipa.searchServiceBehaviour.__init__
+spade.kb.KB.__init__
+spade.kb.KBConfigurationFailed.__init__
+spade.logic.Expr.__init__
+spade.logic.FolKB.__init__
+spade.logic.KB.__init__
+spade.logic.PropKB.__init__
+spade.odict.odict.__init__
+spade.peer2peer.RequestDiscoInfoBehav.__init__
+spade.peer2peer.SendStreamInitiationBehav.__init__
+spade.pubsub.PubSub.__init__
+spade.pubsub.PubSub._sendAndReceiveBehav.__init__
+spade.pygooglechart.Axis.__init__
+spade.pygooglechart.BarChart.__init__
+spade.pygooglechart.Chart.__init__
+spade.pygooglechart.ChartGrammar.__init__
+spade.pygooglechart.Data.__init__
+spade.pygooglechart.GoogleOMeterChart.__init__
+spade.pygooglechart.GroupedBarChart.__init__
+spade.pygooglechart.LabelAxis.__init__
+spade.pygooglechart.LineChart.__init__
+spade.pygooglechart.MapChart.__init__
+spade.pygooglechart.PieChart.__init__
+spade.pygooglechart.QRChart.__init__
+spade.pygooglechart.RangeAxis.__init__
+spade.pyparsing.And.__init__
+spade.pyparsing.CaselessLiteral.__init__
+spade.pyparsing.CharsNotIn.__init__
+spade.pyparsing.Combine.__init__
+spade.pyparsing.Dict.__init__
+spade.pyparsing.Each.__init__
+spade.pyparsing.Empty.__init__
+spade.pyparsing.FollowedBy.__init__
+spade.pyparsing.Forward.__init__
+spade.pyparsing.GoToColumn.__init__
+spade.pyparsing.Group.__init__
+spade.pyparsing.Keyword.__init__
+spade.pyparsing.LineEnd.__init__
+spade.pyparsing.LineStart.__init__
+spade.pyparsing.Literal.__init__
+spade.pyparsing.MatchFirst.__init__
+spade.pyparsing.NoMatch.__init__
+spade.pyparsing.NotAny.__init__
+spade.pyparsing.Optional.__init__
+spade.pyparsing.Or.__init__
+spade.pyparsing.ParseBaseException.__init__
+spade.pyparsing.ParseElementEnhance.__init__
+spade.pyparsing.ParseExpression.__init__
+spade.pyparsing.ParseResults.__init__
+spade.pyparsing.ParserElement.__init__
+spade.pyparsing.PositionToken.__init__
+spade.pyparsing.RecursiveGrammarException.__init__
+spade.pyparsing.SkipTo.__init__
+spade.pyparsing.StringEnd.__init__
+spade.pyparsing.StringStart.__init__
+spade.pyparsing.Token.__init__
+spade.pyparsing.TokenConverter.__init__
+spade.pyparsing.Upcase.__init__
+spade.pyparsing.White.__init__
+spade.pyparsing.Word.__init__
+spade.pyparsing.ZeroOrMore.__init__
+spade.pyratemp.FileLoader.__init__
+spade.pyratemp.Parser.__init__
+spade.pyratemp.PseudoSandbox.__init__
+spade.pyratemp.Renderer.__init__
+spade.pyratemp.StringLoader.__init__
+spade.pyratemp.Template.__init__
+spade.pyratemp.TemplateBase.__init__
+spade.pyratemp.TemplateEval.__init__
+spade.pyratemp.TemplateParseError.__init__
+spade.pyxf.eclipse.__init__
+spade.pyxf.flora2.__init__
+spade.pyxf.swipl.__init__
+spade.pyxf.xsb.__init__
+spade.socialnetwork.SocialItem.__init__
+spade.spade_backend.SpadeBackend.__init__
+spade.tbcbp.Case.__init__
+spade.tbcbp.CaseDB.__init__
+spade.tbcbp.Plan.__init__
+spade.tbcbp.TBCBP.__init__
+spade.wui.WUI.__init__
+spade.xmpp.auth.Bind.__init__
+spade.xmpp.auth.ComponentBind.__init__
+spade.xmpp.auth.NonSASL.__init__
+spade.xmpp.auth.SASL.__init__
+spade.xmpp.browser.Browser.__init__
+spade.xmpp.client.CommonClient.__init__
+spade.xmpp.client.Component.__init__
+spade.xmpp.client.PlugIn.__init__
+spade.xmpp.commands.Command_Handler_Prototype.__init__
+spade.xmpp.commands.Commands.__init__
+spade.xmpp.commands.TestCommand.__init__
+spade.xmpp.debug.Debug.__init__
+spade.xmpp.debug.NoDebug.__init__
+spade.xmpp.dispatcher.Dispatcher.__init__
+spade.xmpp.filetransfer.IBB.__init__
+spade.xmpp.protocol.DataField.__init__
+spade.xmpp.protocol.DataForm.__init__
+spade.xmpp.protocol.Error.__init__
+spade.xmpp.protocol.ErrorNode.__init__
+spade.xmpp.protocol.Iq.__init__
+spade.xmpp.protocol.JID.__init__
+spade.xmpp.protocol.Message.__init__
+spade.xmpp.protocol.Presence.__init__
+spade.xmpp.protocol.Protocol.__init__
+spade.xmpp.roster.Roster.__init__
+spade.xmpp.session.Session.__init__
+spade.xmpp.simplexml.Node.__init__
+spade.xmpp.simplexml.NodeBuilder.__init__
+spade.xmpp.simplexml.T.__init__
+spade.xmpp.transports.HTTPPROXYsocket.__init__
+spade.xmpp.transports.TCPsocket.__init__
+spade.xmpp.transports.error.__init__
+spade.xmppd.modules.config.Config.__init__
+spade.xmppd.modules.config.xmppdXML.__init__
+spade.xmppd.modules.config.xmppdXMLHandler.__init__
+spade.xmppd.modules.muc.BadPassword.__init__
+spade.xmppd.modules.muc.Blacklisted.__init__
+spade.xmppd.modules.muc.MaxUsers.__init__
+spade.xmppd.modules.muc.NickLockedDown.__init__
+spade.xmppd.modules.muc.NoVoice.__init__
+spade.xmppd.modules.muc.NotAMember.__init__
+spade.xmppd.modules.muc.Participant.__init__
+spade.xmppd.modules.muc.Room.__init__
+spade.xmppd.modules.muc.SerializableRoom.__init__
+spade.xmppd.modules.pubsub.PSNode.__init__
+spade.xmppd.modules.wq.Conflict.__init__
+spade.xmppd.modules.wq.Group.__init__
+spade.xmppd.modules.wq.ItemNotFound.__init__
+spade.xmppd.xmppd.RPC_Client.__init__
+spade.xmppd.xmppd.Server.__init__
+spade.xmppd.xmppd.Session.__init__
+spade.xmppd.xmppd.Session_Dummy.Stream.__init__
+spade.xmppd.xmppd.Session_Dummy.__init__
+spade.xmppd.xmppd.Socker_client.__init__
+spade.xmppd.xmppd.fake_select.__init__
+spade.xmppd.xmppd.fake_select.poll.__init__
+spade.xmppd.xmppd.get_input.__init__
+spade.xmppd.xmppd.localizer.__init__
+spade.xmppd.xmppd.multisession_manager.__init__
+spade.xmppd.xmppd.multisession_manager.multisession_thread.__init__" class="py-name" href="#" onclick="return doclink('link-4', '__init__', 'link-4');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">DBG_LINE</tt><tt class="py-op">=</tt><tt class="py-string">'roster'</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method spade.kb.KB.set()=spade.kb.KB-class.html#set"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-5', 'set', 'link-5');">set</a></tt><tt class="py-op">=</tt><tt class="py-name">None</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_exported_methods</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method spade.xmpp.client.Client.getRoster()=spade.xmpp.client.Client-class.html#getRoster,Method spade.xmpp.roster.Roster.getRoster()=spade.xmpp.roster.Roster-class.html#getRoster,Method spade.xmppd.xmppd.Session.getRoster()=spade.xmppd.xmppd.Session-class.html#getRoster"><a title="spade.xmpp.client.Client.getRoster
+spade.xmpp.roster.Roster.getRoster
+spade.xmppd.xmppd.Session.getRoster" class="py-name" href="#" onclick="return doclink('link-6', 'getRoster', 'link-6');">getRoster</a></tt><tt class="py-op">]</tt> </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="Roster.plugin"></a><div id="Roster.plugin-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="Roster.plugin-toggle" onclick="return toggle('Roster.plugin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#plugin">plugin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">owner</tt><tt class="py-op">,</tt><tt class="py-param">request</tt><tt class="py-op">=</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.plugin-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.plugin-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-docstring">""" Register presence and subscription trackers in the owner's dispatcher.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">            Also request roster from server if the 'request' argument is set.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">            Used internally."""</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method spade.xmpp.dispatcher.Dispatcher.RegisterHandler()=spade.xmpp.dispatcher.Dispatcher-class.html#RegisterHandler"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-7', 'RegisterHandler', 'link-7');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method spade.xmpp.roster.Roster.RosterIqHandler()=spade.xmpp.roster.Roster-class.html#RosterIqHandler,Method spade.xmppd.modules.roster.ROSTER.RosterIqHandler()=spade.xmppd.modules.roster.ROSTER-class.html#RosterIqHandler"><a title="spade.xmpp.roster.Roster.RosterIqHandler
+spade.xmppd.modules.roster.ROSTER.RosterIqHandler" class="py-name" href="#" onclick="return doclink('link-8', 'RosterIqHandler', 'link-8');">RosterIqHandler</a></tt><tt class="py-op">,</tt><tt class="py-string">'result'</tt><tt class="py-op">,</tt><tt id="link-9" class="py-name" targets="Variable spade.Agent.NS_ROSTER=spade.Agent-module.html#NS_ROSTER,Variable spade.MTP.NS_ROSTER=spade.MTP-module.html#NS_ROSTER,Variable spade.Organization.NS_ROSTER=spade.Organization-module.html#NS_ROSTER,Variable spade.Organization_new.NS_ROSTER=spade.Organization_new-module.html#NS_ROSTER,Variable spade.Unit.NS_ROSTER=spade.Unit-module.html#NS_ROSTER,Variable spade.Unit_new.NS_ROSTER=spade.Unit_new-module.html#NS_ROSTER,Variable spade.pubsub.NS_ROSTER=spade.pubsub-module.html#NS_ROSTER,Variable spade.socialnetwork.NS_ROSTER=spade.socialnetwork-module.html#NS_ROSTER,Variable spade.xmpp.NS_ROSTER=spade.xmpp-module.html#NS_ROSTER,Variable spade.xmpp.auth.NS_ROSTER=spade.xmpp.auth-module.html#NS_ROSTER,Variable spade.xmpp.browser.NS_ROSTER=spade.xmpp.browser-module.html#NS_ROSTER,Variable spade.xmpp.commands.NS_ROSTER=spade.xmpp.commands-module.html#NS_ROSTER,Variable spade.xmpp.dispatcher.NS_ROSTER=spade.xmpp.dispatcher-module.html#NS_ROSTER,Variable spade.xmpp.features.NS_ROSTER=spade.xmpp.features-module.html#NS_ROSTER,Variable spade.xmpp.filetransfer.NS_ROSTER=spade.xmpp.filetransfer-module.html#NS_ROSTER,Variable spade.xmpp.protocol.NS_ROSTER=spade.xmpp.protocol-module.html#NS_ROSTER,Variable spade.xmpp.roster.NS_ROSTER=spade.xmpp.roster-module.html#NS_ROSTER,Variable spade.xmpp.transports.NS_ROSTER=spade.xmpp.transports-module.html#NS_ROSTER,Variable spade.xmppd.modules.config.NS_ROSTER=spade.xmppd.modules.config-module.html#NS_ROSTER,Variable spade.xmppd.modules.db_fake.NS_ROSTER=spade.xmppd.modules.db_fake-module.html#NS_ROSTER,Variable spade.xmppd.modules.dialback.NS_ROSTER=spade.xmppd.modules.dialback-module.html#NS_ROSTER,Variable spade.xmppd.modules.jep0077.NS_ROSTER=spade.xmppd.modules.jep0077-module.html#NS_ROSTER,Variable spade.xmppd.modules.jep0078.NS_ROSTER=spade.xmppd.modules.jep0078-module.html#NS_ROSTER,Variable spade.xmppd.modules.message.NS_ROSTER=spade.xmppd.modules.message-module.html#NS_ROSTER,Variable spade.xmppd.modules.muc.NS_ROSTER=spade.xmppd.modules.muc-module.html#NS_ROSTER,Variable spade.xmppd.modules.oob.NS_ROSTER=spade.xmppd.modules.oob-module.html#NS_ROSTER,Variable spade.xmppd.modules.pubsub.NS_ROSTER=spade.xmppd.modules.pubsub-module.html#NS_ROSTER,Variable spade.xmppd.modules.roster.NS_ROSTER=spade.xmppd.modules.roster-module.html#NS_ROSTER,Variable spade.xmppd.modules.router.NS_ROSTER=spade.xmppd.modules.router-module.html#NS_ROSTER,Variable spade.xmppd.modules.stream.NS_ROSTER=spade.xmppd.modules.stream-module.html#NS_ROSTER,Variable spade.xmppd.modules.webadmin.NS_ROSTER=spade.xmppd.modules.webadmin-module.html#NS_ROSTER,Variable spade.xmppd.modules.wq.NS_ROSTER=spade.xmppd.modules.wq-module.html#NS_ROSTER,Variable spade.xmppd.xmppd.NS_ROSTER=spade.xmppd.xmppd-module.html#NS_ROSTER"><a title="spade.Agent.NS_ROSTER
+spade.MTP.NS_ROSTER
+spade.Organization.NS_ROSTER
+spade.Organization_new.NS_ROSTER
+spade.Unit.NS_ROSTER
+spade.Unit_new.NS_ROSTER
+spade.pubsub.NS_ROSTER
+spade.socialnetwork.NS_ROSTER
+spade.xmpp.NS_ROSTER
+spade.xmpp.auth.NS_ROSTER
+spade.xmpp.browser.NS_ROSTER
+spade.xmpp.commands.NS_ROSTER
+spade.xmpp.dispatcher.NS_ROSTER
+spade.xmpp.features.NS_ROSTER
+spade.xmpp.filetransfer.NS_ROSTER
+spade.xmpp.protocol.NS_ROSTER
+spade.xmpp.roster.NS_ROSTER
+spade.xmpp.transports.NS_ROSTER
+spade.xmppd.modules.config.NS_ROSTER
+spade.xmppd.modules.db_fake.NS_ROSTER
+spade.xmppd.modules.dialback.NS_ROSTER
+spade.xmppd.modules.jep0077.NS_ROSTER
+spade.xmppd.modules.jep0078.NS_ROSTER
+spade.xmppd.modules.message.NS_ROSTER
+spade.xmppd.modules.muc.NS_ROSTER
+spade.xmppd.modules.oob.NS_ROSTER
+spade.xmppd.modules.pubsub.NS_ROSTER
+spade.xmppd.modules.roster.NS_ROSTER
+spade.xmppd.modules.router.NS_ROSTER
+spade.xmppd.modules.stream.NS_ROSTER
+spade.xmppd.modules.webadmin.NS_ROSTER
+spade.xmppd.modules.wq.NS_ROSTER
+spade.xmppd.xmppd.NS_ROSTER" class="py-name" href="#" onclick="return doclink('link-9', 'NS_ROSTER', 'link-9');">NS_ROSTER</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-10', 'RegisterHandler', 'link-7');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'iq'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="spade.xmpp.roster.Roster.RosterIqHandler
+spade.xmppd.modules.roster.ROSTER.RosterIqHandler" class="py-name" href="#" onclick="return doclink('link-11', 'RosterIqHandler', 'link-8');">RosterIqHandler</a></tt><tt class="py-op">,</tt><tt class="py-string">'set'</tt><tt class="py-op">,</tt><tt id="link-12" class="py-name"><a title="spade.Agent.NS_ROSTER
+spade.MTP.NS_ROSTER
+spade.Organization.NS_ROSTER
+spade.Organization_new.NS_ROSTER
+spade.Unit.NS_ROSTER
+spade.Unit_new.NS_ROSTER
+spade.pubsub.NS_ROSTER
+spade.socialnetwork.NS_ROSTER
+spade.xmpp.NS_ROSTER
+spade.xmpp.auth.NS_ROSTER
+spade.xmpp.browser.NS_ROSTER
+spade.xmpp.commands.NS_ROSTER
+spade.xmpp.dispatcher.NS_ROSTER
+spade.xmpp.features.NS_ROSTER
+spade.xmpp.filetransfer.NS_ROSTER
+spade.xmpp.protocol.NS_ROSTER
+spade.xmpp.roster.NS_ROSTER
+spade.xmpp.transports.NS_ROSTER
+spade.xmppd.modules.config.NS_ROSTER
+spade.xmppd.modules.db_fake.NS_ROSTER
+spade.xmppd.modules.dialback.NS_ROSTER
+spade.xmppd.modules.jep0077.NS_ROSTER
+spade.xmppd.modules.jep0078.NS_ROSTER
+spade.xmppd.modules.message.NS_ROSTER
+spade.xmppd.modules.muc.NS_ROSTER
+spade.xmppd.modules.oob.NS_ROSTER
+spade.xmppd.modules.pubsub.NS_ROSTER
+spade.xmppd.modules.roster.NS_ROSTER
+spade.xmppd.modules.router.NS_ROSTER
+spade.xmppd.modules.stream.NS_ROSTER
+spade.xmppd.modules.webadmin.NS_ROSTER
+spade.xmppd.modules.wq.NS_ROSTER
+spade.xmppd.xmppd.NS_ROSTER" class="py-name" href="#" onclick="return doclink('link-12', 'NS_ROSTER', 'link-9');">NS_ROSTER</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="spade.xmpp.dispatcher.Dispatcher.RegisterHandler" class="py-name" href="#" onclick="return doclink('link-13', 'RegisterHandler', 'link-7');">RegisterHandler</a></tt><tt class="py-op">(</tt><tt class="py-string">'presence'</tt><tt class="py-op">,</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Method spade.xmpp.roster.Roster.PresenceHandler()=spade.xmpp.roster.Roster-class.html#PresenceHandler"><a title="spade.xmpp.roster.Roster.PresenceHandler" class="py-name" href="#" onclick="return doclink('link-14', 'PresenceHandler', 'link-14');">PresenceHandler</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">request</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Method spade.xmpp.roster.Roster.Request()=spade.xmpp.roster.Roster-class.html#Request"><a title="spade.xmpp.roster.Roster.Request" class="py-name" href="#" onclick="return doclink('link-15', 'Request', 'link-15');">Request</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="Roster.Request"></a><div id="Roster.Request-def"><a name="L50"></a><tt class="py-lineno"> 50</tt> <a class="py-toggle" href="#" id="Roster.Request-toggle" onclick="return toggle('Roster.Request');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#Request">Request</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">force</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.Request-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.Request-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-docstring">""" Request roster from server if it were not yet requested</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">            (or if the 'force' argument is set). """</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-16', 'set', 'link-5');">set</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-17', 'set', 'link-5');">set</a></tt><tt class="py-op">=</tt><tt class="py-number">0</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-keyword">not</tt> <tt class="py-name">force</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method spade.Agent.AbstractAgent.send()=spade.Agent.AbstractAgent-class.html#send,Method spade.MTP.MTP.send()=spade.MTP.MTP-class.html#send,Method spade.xmpp.dispatcher.Dispatcher.send()=spade.xmpp.dispatcher.Dispatcher-class.html#send,Method spade.xmpp.transports.TCPsocket.send()=spade.xmpp.transports.TCPsocket-class.html#send,Method spade.xmppd.xmppd.RPC_Client.send()=spade.xmppd.xmppd.RPC_Client-class.html#send,Method spade.xmppd.xmppd.Session.send()=spade.xmppd.xmppd.Session-class.html#send"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-18', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-19" class="py-name" targets="Class spade.xmpp.protocol.Iq=spade.xmpp.protocol.Iq-class.html"><a title="spade.xmpp.protocol.Iq" class="py-name" href="#" onclick="return doclink('link-19', 'Iq', 'link-19');">Iq</a></tt><tt class="py-op">(</tt><tt class="py-string">'get'</tt><tt class="py-op">,</tt><tt id="link-20" class="py-name"><a title="spade.Agent.NS_ROSTER
+spade.MTP.NS_ROSTER
+spade.Organization.NS_ROSTER
+spade.Organization_new.NS_ROSTER
+spade.Unit.NS_ROSTER
+spade.Unit_new.NS_ROSTER
+spade.pubsub.NS_ROSTER
+spade.socialnetwork.NS_ROSTER
+spade.xmpp.NS_ROSTER
+spade.xmpp.auth.NS_ROSTER
+spade.xmpp.browser.NS_ROSTER
+spade.xmpp.commands.NS_ROSTER
+spade.xmpp.dispatcher.NS_ROSTER
+spade.xmpp.features.NS_ROSTER
+spade.xmpp.filetransfer.NS_ROSTER
+spade.xmpp.protocol.NS_ROSTER
+spade.xmpp.roster.NS_ROSTER
+spade.xmpp.transports.NS_ROSTER
+spade.xmppd.modules.config.NS_ROSTER
+spade.xmppd.modules.db_fake.NS_ROSTER
+spade.xmppd.modules.dialback.NS_ROSTER
+spade.xmppd.modules.jep0077.NS_ROSTER
+spade.xmppd.modules.jep0078.NS_ROSTER
+spade.xmppd.modules.message.NS_ROSTER
+spade.xmppd.modules.muc.NS_ROSTER
+spade.xmppd.modules.oob.NS_ROSTER
+spade.xmppd.modules.pubsub.NS_ROSTER
+spade.xmppd.modules.roster.NS_ROSTER
+spade.xmppd.modules.router.NS_ROSTER
+spade.xmppd.modules.stream.NS_ROSTER
+spade.xmppd.modules.webadmin.NS_ROSTER
+spade.xmppd.modules.wq.NS_ROSTER
+spade.xmppd.xmppd.NS_ROSTER" class="py-name" href="#" onclick="return doclink('link-20', 'NS_ROSTER', 'link-9');">NS_ROSTER</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method spade.Agent.AbstractAgent.DEBUG()=spade.Agent.AbstractAgent-class.html#DEBUG,Method spade.spade_backend.SpadeBackend.DEBUG()=spade.spade_backend.SpadeBackend-class.html#DEBUG,Method spade.xmpp.client.PlugIn.DEBUG()=spade.xmpp.client.PlugIn-class.html#DEBUG,Method spade.xmpp.simplexml.NodeBuilder.DEBUG()=spade.xmpp.simplexml.NodeBuilder-class.html#DEBUG,Method spade.xmpp.transports.HTTPPROXYsocket.DEBUG()=spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-21', 'DEBUG', 'link-21');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'Roster requested from server'</tt><tt class="py-op">,</tt><tt class="py-string">'start'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="Roster.getRoster"></a><div id="Roster.getRoster-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="Roster.getRoster-toggle" onclick="return toggle('Roster.getRoster');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getRoster">getRoster</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getRoster-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getRoster-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-docstring">""" Requests roster from server if neccessary and returns self."""</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-22', 'set', 'link-5');">set</a></tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="spade.xmpp.roster.Roster.Request" class="py-name" href="#" onclick="return doclink('link-23', 'Request', 'link-15');">Request</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-keyword">while</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-24', 'set', 'link-5');">set</a></tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method spade.xmpp.dispatcher.Dispatcher.Process()=spade.xmpp.dispatcher.Dispatcher-class.html#Process"><a title="spade.xmpp.dispatcher.Dispatcher.Process" class="py-name" href="#" onclick="return doclink('link-25', 'Process', 'link-25');">Process</a></tt><tt class="py-op">(</tt><tt class="py-number">10</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="Roster.RosterIqHandler"></a><div id="Roster.RosterIqHandler-def"><a name="L64"></a><tt class="py-lineno"> 64</tt> <a class="py-toggle" href="#" id="Roster.RosterIqHandler-toggle" onclick="return toggle('Roster.RosterIqHandler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#RosterIqHandler">RosterIqHandler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">dis</tt><tt class="py-op">,</tt><tt class="py-param">stanza</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.RosterIqHandler-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.RosterIqHandler-expanded"><a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-docstring">""" Subscription tracker. Used internally for setting items state in</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">            internal roster representation. """</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">stanza</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Method spade.xmpp.simplexml.Node.getTag()=spade.xmpp.simplexml.Node-class.html#getTag"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-26', 'getTag', 'link-26');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'query'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method spade.xmpp.simplexml.Node.getTags()=spade.xmpp.simplexml.Node-class.html#getTags"><a title="spade.xmpp.simplexml.Node.getTags" class="py-name" href="#" onclick="return doclink('link-27', 'getTags', 'link-27');">getTags</a></tt><tt class="py-op">(</tt><tt class="py-string">'item'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-name">jid</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Method spade.xmpp.simplexml.Node.getAttr()=spade.xmpp.simplexml.Node-class.html#getAttr"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-28', 'getAttr', 'link-28');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'jid'</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-29', 'getAttr', 'link-28');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-string">'remove'</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">del</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-30" class="py-name" targets="Class spade.xmpp.protocol.NodeProcessed=spade.xmpp.protocol.NodeProcessed-class.html"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-30', 'NodeProcessed', 'link-30');">NodeProcessed</a></tt>             <tt class="py-comment"># a MUST</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-31', 'DEBUG', 'link-21');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'Setting roster item %s...'</tt><tt class="py-op">%</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'ok'</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-32', 'getAttr', 'link-28');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'name'</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'ask'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-33', 'getAttr', 'link-28');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'ask'</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'subscription'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="spade.xmpp.simplexml.Node.getAttr" class="py-name" href="#" onclick="return doclink('link-34', 'getAttr', 'link-28');">getAttr</a></tt><tt class="py-op">(</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">'resources'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">group</tt> <tt class="py-keyword">in</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="spade.xmpp.simplexml.Node.getTags" class="py-name" href="#" onclick="return doclink('link-35', 'getTags', 'link-27');">getTags</a></tt><tt class="py-op">(</tt><tt class="py-string">'group'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method spade.pyparsing.ParseExpression.append()=spade.pyparsing.ParseExpression-class.html#append"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-36', 'append', 'link-36');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">group</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method spade.xmpp.simplexml.Node.getData()=spade.xmpp.simplexml.Node-class.html#getData"><a title="spade.xmpp.simplexml.Node.getData" class="py-name" href="#" onclick="return doclink('link-37', 'getData', 'link-37');">getData</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt class="py-name">User</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Class spade.xmppd.xmppd.Server=spade.xmppd.xmppd.Server-class.html"><a title="spade.xmppd.xmppd.Server" class="py-name" href="#" onclick="return doclink('link-38', 'Server', 'link-38');">Server</a></tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'resources'</tt><tt class="py-op">:</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">,</tt><tt class="py-string">'name'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'ask'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'subscription'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'groups'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-op">}</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-39', 'set', 'link-5');">set</a></tt><tt class="py-op">=</tt><tt class="py-number">1</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-40" class="py-name"><a title="spade.xmpp.protocol.NodeProcessed" class="py-name" href="#" onclick="return doclink('link-40', 'NodeProcessed', 'link-30');">NodeProcessed</a></tt>   <tt class="py-comment"># a MUST. Otherwise you'll get back an &lt;iq type='error'/&gt;</tt> </tt>
+</div><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="Roster.PresenceHandler"></a><div id="Roster.PresenceHandler-def"><a name="L84"></a><tt class="py-lineno"> 84</tt> <a class="py-toggle" href="#" id="Roster.PresenceHandler-toggle" onclick="return toggle('Roster.PresenceHandler');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#PresenceHandler">PresenceHandler</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">dis</tt><tt class="py-op">,</tt><tt class="py-param">pres</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.PresenceHandler-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.PresenceHandler-expanded"><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-docstring">""" Presence tracker. Used internally for setting items' resources state in</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">            internal roster representation. """</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">jid</tt><tt class="py-op">=</tt><tt id="link-41" class="py-name" targets="Class spade.xmpp.protocol.JID=spade.xmpp.protocol.JID-class.html"><a title="spade.xmpp.protocol.JID" class="py-name" href="#" onclick="return doclink('link-41', 'JID', 'link-41');">JID</a></tt><tt class="py-op">(</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method spade.Envelope.Envelope.getFrom()=spade.Envelope.Envelope-class.html#getFrom,Method spade.ReceivedObject.ReceivedObject.getFrom()=spade.ReceivedObject.ReceivedObject-class.html#getFrom,Method spade.xmpp.protocol.Protocol.getFrom()=spade.xmpp.protocol.Protocol-class.html#getFrom"><a title="spade.Envelope.Envelope.getFrom
+spade.ReceivedObject.ReceivedObject.getFrom
+spade.xmpp.protocol.Protocol.getFrom" class="py-name" href="#" onclick="return doclink('link-42', 'getFrom', 'link-42');">getFrom</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method spade.xmpp.protocol.JID.getStripped()=spade.xmpp.protocol.JID-class.html#getStripped"><a title="spade.xmpp.protocol.JID.getStripped" class="py-name" href="#" onclick="return doclink('link-43', 'getStripped', 'link-43');">getStripped</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="spade.xmpp.protocol.JID.getStripped" class="py-name" href="#" onclick="return doclink('link-44', 'getStripped', 'link-43');">getStripped</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'name'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'ask'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'subscription'</tt><tt class="py-op">:</tt><tt class="py-string">'none'</tt><tt class="py-op">,</tt><tt class="py-string">'groups'</tt><tt class="py-op">:</tt><tt class="py-op">[</tt><tt class="py-string">'Not in roster'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt><tt class="py-string">'resources'</tt><tt class="py-op">:</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">}</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-name">item</tt><tt class="py-op">=</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="spade.xmpp.protocol.JID.getStripped" class="py-name" href="#" onclick="return doclink('link-45', 'getStripped', 'link-43');">getStripped</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">typ</tt><tt class="py-op">=</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method spade.DF.Service.getType()=spade.DF.Service-class.html#getType,Method spade.DF.ServiceDescription.getType()=spade.DF.ServiceDescription-class.html#getType,Method spade.xmpp.protocol.DataField.getType()=spade.xmpp.protocol.DataField-class.html#getType,Method spade.xmpp.protocol.DataForm.getType()=spade.xmpp.protocol.DataForm-class.html#getType,Method spade.xmpp.protocol.Protocol.getType()=spade.xmpp.protocol.Protocol-class.html#getType"><a title="spade.DF.Service.getType
+spade.DF.ServiceDescription.getType
+spade.xmpp.protocol.DataField.getType
+spade.xmpp.protocol.DataForm.getType
+spade.xmpp.protocol.Protocol.getType" class="py-name" href="#" onclick="return doclink('link-46', 'getType', 'link-46');">getType</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">typ</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-47', 'DEBUG', 'link-21');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'Setting roster item %s for resource %s...'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="spade.xmpp.protocol.JID.getStripped" class="py-name" href="#" onclick="return doclink('link-48', 'getStripped', 'link-43');">getStripped</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method spade.xmpp.protocol.JID.getResource()=spade.xmpp.protocol.JID-class.html#getResource,Method spade.xmppd.xmppd.Session.getResource()=spade.xmppd.xmppd.Session-class.html#getResource"><a title="spade.xmpp.protocol.JID.getResource
+spade.xmppd.xmppd.Session.getResource" class="py-name" href="#" onclick="return doclink('link-49', 'getResource', 'link-49');">getResource</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'ok'</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt class="py-name">item</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.xmpp.protocol.JID.getResource
+spade.xmppd.xmppd.Session.getResource" class="py-name" href="#" onclick="return doclink('link-50', 'getResource', 'link-49');">getResource</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">res</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'show'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'status'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-string">'priority'</tt><tt class="py-op">:</tt><tt class="py-string">'0'</tt><tt class="py-op">,</tt><tt class="py-string">'timestamp'</tt><tt class="py-op">:</tt><tt class="py-name">None</tt><tt class="py-op">}</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-51', 'getTag', 'link-26');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'show'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">res</tt><tt class="py-op">[</tt><tt class="py-string">'show'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method spade.xmpp.protocol.Presence.getShow()=spade.xmpp.protocol.Presence-class.html#getShow,Method spade.xmpp.roster.Roster.getShow()=spade.xmpp.roster.Roster-class.html#getShow"><a title="spade.xmpp.protocol.Presence.getShow
+spade.xmpp.roster.Roster.getShow" class="py-name" href="#" onclick="return doclink('link-52', 'getShow', 'link-52');">getShow</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-53', 'getTag', 'link-26');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'status'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">res</tt><tt class="py-op">[</tt><tt class="py-string">'status'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Method spade.xmpp.protocol.Presence.getStatus()=spade.xmpp.protocol.Presence-class.html#getStatus,Method spade.xmpp.roster.Roster.getStatus()=spade.xmpp.roster.Roster-class.html#getStatus"><a title="spade.xmpp.protocol.Presence.getStatus
+spade.xmpp.roster.Roster.getStatus" class="py-name" href="#" onclick="return doclink('link-54', 'getStatus', 'link-54');">getStatus</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-55', 'getTag', 'link-26');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'priority'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">res</tt><tt class="py-op">[</tt><tt class="py-string">'priority'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method spade.xmpp.protocol.Presence.getPriority()=spade.xmpp.protocol.Presence-class.html#getPriority,Method spade.xmpp.roster.Roster.getPriority()=spade.xmpp.roster.Roster-class.html#getPriority"><a title="spade.xmpp.protocol.Presence.getPriority
+spade.xmpp.roster.Roster.getPriority" class="py-name" href="#" onclick="return doclink('link-56', 'getPriority', 'link-56');">getPriority</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method spade.xmpp.protocol.Protocol.getTimestamp()=spade.xmpp.protocol.Protocol-class.html#getTimestamp"><a title="spade.xmpp.protocol.Protocol.getTimestamp" class="py-name" href="#" onclick="return doclink('link-57', 'getTimestamp', 'link-57');">getTimestamp</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Method spade.xmpp.protocol.Protocol.setTimestamp()=spade.xmpp.protocol.Protocol-class.html#setTimestamp"><a title="spade.xmpp.protocol.Protocol.setTimestamp" class="py-name" href="#" onclick="return doclink('link-58', 'setTimestamp', 'link-58');">setTimestamp</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-name">res</tt><tt class="py-op">[</tt><tt class="py-string">'timestamp'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">pres</tt><tt class="py-op">.</tt><tt id="link-59" class="py-name"><a title="spade.xmpp.protocol.Protocol.getTimestamp" class="py-name" href="#" onclick="return doclink('link-59', 'getTimestamp', 'link-57');">getTimestamp</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">typ</tt><tt class="py-op">==</tt><tt class="py-string">'unavailable'</tt> <tt class="py-keyword">and</tt> <tt class="py-name">item</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="spade.xmpp.protocol.JID.getResource
+spade.xmppd.xmppd.Session.getResource" class="py-name" href="#" onclick="return doclink('link-60', 'getResource', 'link-49');">getResource</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">del</tt> <tt class="py-name">item</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="spade.xmpp.protocol.JID.getResource
+spade.xmppd.xmppd.Session.getResource" class="py-name" href="#" onclick="return doclink('link-61', 'getResource', 'link-49');">getResource</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-comment"># Need to handle type='error' also</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="Roster._getItemData"></a><div id="Roster._getItemData-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="Roster._getItemData-toggle" onclick="return toggle('Roster._getItemData');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#_getItemData">_getItemData</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">dataname</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster._getItemData-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster._getItemData-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-docstring">""" Return specific jid's representation in internal format. Used internally. """</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-name">jid</tt><tt class="py-op">=</tt><tt class="py-name">jid</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">+</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">dataname</tt><tt class="py-op">]</tt> </tt>
+</div><a name="Roster._getResourceData"></a><div id="Roster._getResourceData-def"><a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="Roster._getResourceData-toggle" onclick="return toggle('Roster._getResourceData');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#_getResourceData">_getResourceData</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">dataname</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster._getResourceData-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster._getResourceData-expanded"><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-docstring">""" Return specific jid's resource representation in internal format. Used internally. """</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">jid</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">resource</tt><tt class="py-op">=</tt><tt class="py-name">jid</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">resource</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">resource</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">dataname</tt><tt class="py-op">]</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Method spade.dblite.Index.keys()=spade.dblite.Index-class.html#keys,Method spade.odict.odict.keys()=spade.odict.odict-class.html#keys,Method spade.pyparsing.ParseResults.keys()=spade.pyparsing.ParseResults-class.html#keys,Method spade.xmpp.roster.Roster.keys()=spade.xmpp.roster.Roster-class.html#keys"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-62', 'keys', 'link-62');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">lastpri</tt><tt class="py-op">=</tt><tt class="py-op">-</tt><tt class="py-number">129</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">r</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-63', 'keys', 'link-62');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">r</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'priority'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">&gt;</tt><tt class="py-name">lastpri</tt><tt class="py-op">:</tt> <tt class="py-name">resource</tt><tt class="py-op">,</tt><tt class="py-name">lastpri</tt><tt class="py-op">=</tt><tt class="py-name">r</tt><tt class="py-op">,</tt><tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">r</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'priority'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">resource</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">dataname</tt><tt class="py-op">]</tt> </tt>
+</div><a name="Roster.delItem"></a><div id="Roster.delItem-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="Roster.delItem-toggle" onclick="return toggle('Roster.delItem');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#delItem">delItem</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.delItem-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.delItem-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-docstring">""" Delete contact 'jid' from roster."""</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-64', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-65" class="py-name"><a title="spade.xmpp.protocol.Iq" class="py-name" href="#" onclick="return doclink('link-65', 'Iq', 'link-19');">Iq</a></tt><tt class="py-op">(</tt><tt class="py-string">'set'</tt><tt class="py-op">,</tt><tt id="link-66" class="py-name"><a title="spade.Agent.NS_ROSTER
+spade.MTP.NS_ROSTER
+spade.Organization.NS_ROSTER
+spade.Organization_new.NS_ROSTER
+spade.Unit.NS_ROSTER
+spade.Unit_new.NS_ROSTER
+spade.pubsub.NS_ROSTER
+spade.socialnetwork.NS_ROSTER
+spade.xmpp.NS_ROSTER
+spade.xmpp.auth.NS_ROSTER
+spade.xmpp.browser.NS_ROSTER
+spade.xmpp.commands.NS_ROSTER
+spade.xmpp.dispatcher.NS_ROSTER
+spade.xmpp.features.NS_ROSTER
+spade.xmpp.filetransfer.NS_ROSTER
+spade.xmpp.protocol.NS_ROSTER
+spade.xmpp.roster.NS_ROSTER
+spade.xmpp.transports.NS_ROSTER
+spade.xmppd.modules.config.NS_ROSTER
+spade.xmppd.modules.db_fake.NS_ROSTER
+spade.xmppd.modules.dialback.NS_ROSTER
+spade.xmppd.modules.jep0077.NS_ROSTER
+spade.xmppd.modules.jep0078.NS_ROSTER
+spade.xmppd.modules.message.NS_ROSTER
+spade.xmppd.modules.muc.NS_ROSTER
+spade.xmppd.modules.oob.NS_ROSTER
+spade.xmppd.modules.pubsub.NS_ROSTER
+spade.xmppd.modules.roster.NS_ROSTER
+spade.xmppd.modules.router.NS_ROSTER
+spade.xmppd.modules.stream.NS_ROSTER
+spade.xmppd.modules.webadmin.NS_ROSTER
+spade.xmppd.modules.wq.NS_ROSTER
+spade.xmppd.xmppd.NS_ROSTER" class="py-name" href="#" onclick="return doclink('link-66', 'NS_ROSTER', 'link-9');">NS_ROSTER</a></tt><tt class="py-op">,</tt><tt class="py-name">payload</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt id="link-67" class="py-name" targets="Class spade.xmpp.simplexml.Node=spade.xmpp.simplexml.Node-class.html"><a title="spade.xmpp.simplexml.Node" class="py-name" href="#" onclick="return doclink('link-67', 'Node', 'link-67');">Node</a></tt><tt class="py-op">(</tt><tt class="py-string">'item'</tt><tt class="py-op">,</tt><tt class="py-op">{</tt><tt class="py-string">'jid'</tt><tt class="py-op">:</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'subscription'</tt><tt class="py-op">:</tt><tt class="py-string">'remove'</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getAsk"></a><div id="Roster.getAsk-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="Roster.getAsk-toggle" onclick="return toggle('Roster.getAsk');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getAsk">getAsk</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getAsk-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getAsk-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns 'ask' value of contact 'jid'."""</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name" targets="Method spade.xmpp.roster.Roster._getItemData()=spade.xmpp.roster.Roster-class.html#_getItemData"><a title="spade.xmpp.roster.Roster._getItemData" class="py-name" href="#" onclick="return doclink('link-68', '_getItemData', 'link-68');">_getItemData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'ask'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getGroups"></a><div id="Roster.getGroups-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="Roster.getGroups-toggle" onclick="return toggle('Roster.getGroups');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getGroups">getGroups</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getGroups-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getGroups-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns groups list that contact 'jid' belongs to."""</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="spade.xmpp.roster.Roster._getItemData" class="py-name" href="#" onclick="return doclink('link-69', '_getItemData', 'link-68');">_getItemData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'groups'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getName"></a><div id="Roster.getName-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="Roster.getName-toggle" onclick="return toggle('Roster.getName');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getName">getName</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getName-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getName-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns name of contact 'jid'."""</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name"><a title="spade.xmpp.roster.Roster._getItemData" class="py-name" href="#" onclick="return doclink('link-70', '_getItemData', 'link-68');">_getItemData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'name'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getPriority"></a><div id="Roster.getPriority-def"><a name="L130"></a><tt class="py-lineno">130</tt> <a class="py-toggle" href="#" id="Roster.getPriority-toggle" onclick="return toggle('Roster.getPriority');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getPriority">getPriority</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getPriority-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getPriority-expanded"><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns priority of contact 'jid'. 'jid' should be a full (not bare) JID."""</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name" targets="Method spade.xmpp.roster.Roster._getResourceData()=spade.xmpp.roster.Roster-class.html#_getResourceData"><a title="spade.xmpp.roster.Roster._getResourceData" class="py-name" href="#" onclick="return doclink('link-71', '_getResourceData', 'link-71');">_getResourceData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'priority'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getRawRoster"></a><div id="Roster.getRawRoster-def"><a name="L133"></a><tt class="py-lineno">133</tt> <a class="py-toggle" href="#" id="Roster.getRawRoster-toggle" onclick="return toggle('Roster.getRawRoster');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getRawRoster">getRawRoster</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getRawRoster-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getRawRoster-expanded"><a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns roster representation in internal format. """</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt> </tt>
+</div><a name="Roster.getRawItem"></a><div id="Roster.getRawItem-def"><a name="L136"></a><tt class="py-lineno">136</tt> <a class="py-toggle" href="#" id="Roster.getRawItem-toggle" onclick="return toggle('Roster.getRawItem');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getRawItem">getRawItem</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getRawItem-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getRawItem-expanded"><a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns roster item 'jid' representation in internal format. """</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">+</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+</div><a name="Roster.getShow"></a><div id="Roster.getShow-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="Roster.getShow-toggle" onclick="return toggle('Roster.getShow');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getShow">getShow</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getShow-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getShow-expanded"><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns 'show' value of contact 'jid'. 'jid' should be a full (not bare) JID."""</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="spade.xmpp.roster.Roster._getResourceData" class="py-name" href="#" onclick="return doclink('link-72', '_getResourceData', 'link-71');">_getResourceData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'show'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getStatus"></a><div id="Roster.getStatus-def"><a name="L142"></a><tt class="py-lineno">142</tt> <a class="py-toggle" href="#" id="Roster.getStatus-toggle" onclick="return toggle('Roster.getStatus');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getStatus">getStatus</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getStatus-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getStatus-expanded"><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns 'status' value of contact 'jid'. 'jid' should be a full (not bare) JID."""</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-73" class="py-name"><a title="spade.xmpp.roster.Roster._getResourceData" class="py-name" href="#" onclick="return doclink('link-73', '_getResourceData', 'link-71');">_getResourceData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'status'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getSubscription"></a><div id="Roster.getSubscription-def"><a name="L145"></a><tt class="py-lineno">145</tt> <a class="py-toggle" href="#" id="Roster.getSubscription-toggle" onclick="return toggle('Roster.getSubscription');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getSubscription">getSubscription</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getSubscription-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getSubscription-expanded"><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns 'subscription' value of contact 'jid'."""</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="spade.xmpp.roster.Roster._getItemData" class="py-name" href="#" onclick="return doclink('link-74', '_getItemData', 'link-68');">_getItemData</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getResources"></a><div id="Roster.getResources-def"><a name="L148"></a><tt class="py-lineno">148</tt> <a class="py-toggle" href="#" id="Roster.getResources-toggle" onclick="return toggle('Roster.getResources');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getResources">getResources</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getResources-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getResources-expanded"><a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-docstring">""" Returns list of connected resources of contact 'jid'."""</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">+</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'resources'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-75', 'keys', 'link-62');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.setItem"></a><div id="Roster.setItem-def"><a name="L151"></a><tt class="py-lineno">151</tt> <a class="py-toggle" href="#" id="Roster.setItem-toggle" onclick="return toggle('Roster.setItem');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#setItem">setItem</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt><tt class="py-param">groups</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.setItem-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.setItem-expanded"><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">        <tt class="py-docstring">""" Creates/renames contact 'jid' and sets the groups list that it now belongs to."""</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-name">iq</tt><tt class="py-op">=</tt><tt id="link-76" class="py-name"><a title="spade.xmpp.protocol.Iq" class="py-name" href="#" onclick="return doclink('link-76', 'Iq', 'link-19');">Iq</a></tt><tt class="py-op">(</tt><tt class="py-string">'set'</tt><tt class="py-op">,</tt><tt id="link-77" class="py-name"><a title="spade.Agent.NS_ROSTER
+spade.MTP.NS_ROSTER
+spade.Organization.NS_ROSTER
+spade.Organization_new.NS_ROSTER
+spade.Unit.NS_ROSTER
+spade.Unit_new.NS_ROSTER
+spade.pubsub.NS_ROSTER
+spade.socialnetwork.NS_ROSTER
+spade.xmpp.NS_ROSTER
+spade.xmpp.auth.NS_ROSTER
+spade.xmpp.browser.NS_ROSTER
+spade.xmpp.commands.NS_ROSTER
+spade.xmpp.dispatcher.NS_ROSTER
+spade.xmpp.features.NS_ROSTER
+spade.xmpp.filetransfer.NS_ROSTER
+spade.xmpp.protocol.NS_ROSTER
+spade.xmpp.roster.NS_ROSTER
+spade.xmpp.transports.NS_ROSTER
+spade.xmppd.modules.config.NS_ROSTER
+spade.xmppd.modules.db_fake.NS_ROSTER
+spade.xmppd.modules.dialback.NS_ROSTER
+spade.xmppd.modules.jep0077.NS_ROSTER
+spade.xmppd.modules.jep0078.NS_ROSTER
+spade.xmppd.modules.message.NS_ROSTER
+spade.xmppd.modules.muc.NS_ROSTER
+spade.xmppd.modules.oob.NS_ROSTER
+spade.xmppd.modules.pubsub.NS_ROSTER
+spade.xmppd.modules.roster.NS_ROSTER
+spade.xmppd.modules.router.NS_ROSTER
+spade.xmppd.modules.stream.NS_ROSTER
+spade.xmppd.modules.webadmin.NS_ROSTER
+spade.xmppd.modules.wq.NS_ROSTER
+spade.xmppd.xmppd.NS_ROSTER" class="py-name" href="#" onclick="return doclink('link-77', 'NS_ROSTER', 'link-9');">NS_ROSTER</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt id="link-78" class="py-name" targets="Method spade.pyxf.eclipse.query()=spade.pyxf.eclipse-class.html#query,Method spade.pyxf.flora2.query()=spade.pyxf.flora2-class.html#query,Method spade.pyxf.swipl.query()=spade.pyxf.swipl-class.html#query,Method spade.pyxf.xsb.query()=spade.pyxf.xsb-class.html#query"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-78', 'query', 'link-78');">query</a></tt><tt class="py-op">=</tt><tt class="py-name">iq</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name"><a title="spade.xmpp.simplexml.Node.getTag" class="py-name" href="#" onclick="return doclink('link-79', 'getTag', 'link-26');">getTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'query'</tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-name">attrs</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'jid'</tt><tt class="py-op">:</tt><tt class="py-name">jid</tt><tt class="py-op">}</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-80" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-80', 'name', 'link-80');">name</a></tt><tt class="py-op">:</tt> <tt class="py-name">attrs</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt id="link-81" class="py-name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-81', 'name', 'link-80');">name</a></tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-name">item</tt><tt class="py-op">=</tt><tt id="link-82" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-82', 'query', 'link-78');">query</a></tt><tt class="py-op">.</tt><tt id="link-83" class="py-name" targets="Method spade.xmpp.simplexml.Node.setTag()=spade.xmpp.simplexml.Node-class.html#setTag"><a title="spade.xmpp.simplexml.Node.setTag" class="py-name" href="#" onclick="return doclink('link-83', 'setTag', 'link-83');">setTag</a></tt><tt class="py-op">(</tt><tt class="py-string">'item'</tt><tt class="py-op">,</tt><tt class="py-name">attrs</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">group</tt> <tt class="py-keyword">in</tt> <tt class="py-name">groups</tt><tt class="py-op">:</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name" targets="Method spade.xmpp.simplexml.Node.addChild()=spade.xmpp.simplexml.Node-class.html#addChild"><a title="spade.xmpp.simplexml.Node.addChild" class="py-name" href="#" onclick="return doclink('link-84', 'addChild', 'link-84');">addChild</a></tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">=</tt><tt id="link-85" class="py-name"><a title="spade.xmpp.simplexml.Node" class="py-name" href="#" onclick="return doclink('link-85', 'Node', 'link-67');">Node</a></tt><tt class="py-op">(</tt><tt class="py-string">'group'</tt><tt class="py-op">,</tt><tt class="py-name">payload</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-name">group</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-86" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-86', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt class="py-name">iq</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.getItems"></a><div id="Roster.getItems-def"><a name="L160"></a><tt class="py-lineno">160</tt> <a class="py-toggle" href="#" id="Roster.getItems-toggle" onclick="return toggle('Roster.getItems');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getItems">getItems</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getItems-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getItems-expanded"><a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-docstring">""" Return list of all [bare] JIDs that the roster is currently tracks."""</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-87', 'keys', 'link-62');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.keys"></a><div id="Roster.keys-def"><a name="L163"></a><tt class="py-lineno">163</tt> <a class="py-toggle" href="#" id="Roster.keys-toggle" onclick="return toggle('Roster.keys');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#keys">keys</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.keys-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.keys-expanded"><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">        <tt class="py-docstring">""" Same as getItems. Provided for the sake of dictionary interface."""</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-88', 'keys', 'link-62');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.__getitem__"></a><div id="Roster.__getitem__-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="Roster.__getitem__-toggle" onclick="return toggle('Roster.__getitem__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#__getitem__">__getitem__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.__getitem__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.__getitem__-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-docstring">""" Get the contact in the internal format. Raises KeyError if JID 'item' is not in roster."""</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">item</tt><tt class="py-op">]</tt> </tt>
+</div><a name="Roster.getItem"></a><div id="Roster.getItem-def"><a name="L169"></a><tt class="py-lineno">169</tt> <a class="py-toggle" href="#" id="Roster.getItem-toggle" onclick="return toggle('Roster.getItem');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#getItem">getItem</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.getItem-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.getItem-expanded"><a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">        <tt class="py-docstring">""" Get the contact in the internal format (or None if JID 'item' is not in roster)."""</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_data</tt><tt class="py-op">[</tt><tt class="py-name">item</tt><tt class="py-op">]</tt> </tt>
+</div><a name="Roster.Subscribe"></a><div id="Roster.Subscribe-def"><a name="L172"></a><tt class="py-lineno">172</tt> <a class="py-toggle" href="#" id="Roster.Subscribe-toggle" onclick="return toggle('Roster.Subscribe');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#Subscribe">Subscribe</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.Subscribe-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.Subscribe-expanded"><a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-docstring">""" Send subscription request to JID 'jid'."""</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-89" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-89', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-90" class="py-name" targets="Class spade.xmpp.protocol.Presence=spade.xmpp.protocol.Presence-class.html"><a title="spade.xmpp.protocol.Presence" class="py-name" href="#" onclick="return doclink('link-90', 'Presence', 'link-90');">Presence</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'subscribe'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.Unsubscribe"></a><div id="Roster.Unsubscribe-def"><a name="L175"></a><tt class="py-lineno">175</tt> <a class="py-toggle" href="#" id="Roster.Unsubscribe-toggle" onclick="return toggle('Roster.Unsubscribe');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#Unsubscribe">Unsubscribe</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.Unsubscribe-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.Unsubscribe-expanded"><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt class="py-docstring">""" Ask for removing our subscription for JID 'jid'."""</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-91', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-92" class="py-name"><a title="spade.xmpp.protocol.Presence" class="py-name" href="#" onclick="return doclink('link-92', 'Presence', 'link-90');">Presence</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'unsubscribe'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.Authorize"></a><div id="Roster.Authorize-def"><a name="L178"></a><tt class="py-lineno">178</tt> <a class="py-toggle" href="#" id="Roster.Authorize-toggle" onclick="return toggle('Roster.Authorize');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#Authorize">Authorize</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.Authorize-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.Authorize-expanded"><a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt class="py-docstring">""" Authorise JID 'jid'. Works only if these JID requested auth previously. """</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-93" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-93', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-94" class="py-name"><a title="spade.xmpp.protocol.Presence" class="py-name" href="#" onclick="return doclink('link-94', 'Presence', 'link-90');">Presence</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'subscribed'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="Roster.Unauthorize"></a><div id="Roster.Unauthorize-def"><a name="L181"></a><tt class="py-lineno">181</tt> <a class="py-toggle" href="#" id="Roster.Unauthorize-toggle" onclick="return toggle('Roster.Unauthorize');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmpp.roster.Roster-class.html#Unauthorize">Unauthorize</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Roster.Unauthorize-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Roster.Unauthorize-expanded"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-docstring">""" Unauthorise JID 'jid'. Use for declining authorisation request</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">            or for removing existing authorization. """</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-95" class="py-name"><a title="spade.Agent.AbstractAgent.send
+spade.MTP.MTP.send
+spade.xmpp.dispatcher.Dispatcher.send
+spade.xmpp.transports.TCPsocket.send
+spade.xmppd.xmppd.RPC_Client.send
+spade.xmppd.xmppd.Session.send" class="py-name" href="#" onclick="return doclink('link-95', 'send', 'link-18');">send</a></tt><tt class="py-op">(</tt><tt id="link-96" class="py-name"><a title="spade.xmpp.protocol.Presence" class="py-name" href="#" onclick="return doclink('link-96', 'Presence', 'link-90');">Presence</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-string">'unsubscribed'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

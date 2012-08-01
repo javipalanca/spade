@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.logic.KB</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.logic-module.html">Module&nbsp;logic</a> ::
+        Class&nbsp;KB
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.logic.KB-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class KB</h1><p class="nomargin-top"><span class="codelink"><a href="spade.logic-pysrc.html#KB">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_lo_2" name="uml_class_diagram_for_spade_lo_2">
+<area shape="rect" id="node1887" href="spade.logic.KB-class.html#__init__" title="spade.logic.KB.__init__" alt="" coords="435,39,616,57"/>
+<area shape="rect" id="node1887" href="spade.logic.KB-class.html#ask" title="Ask returns a substitution that makes the query true, or it returns False." alt="" coords="435,57,616,76"/>
+<area shape="rect" id="node1887" href="spade.logic.KB-class.html#ask_generator" title="Yield all the substitutions that make query true." alt="" coords="435,76,616,95"/>
+<area shape="rect" id="node1887" href="spade.logic.KB-class.html#retract" title="Remove the sentence from the KB" alt="" coords="435,95,616,113"/>
+<area shape="rect" id="node1887" href="spade.logic.KB-class.html#tell" title="Add the sentence to the KB" alt="" coords="435,113,616,132"/>
+<area shape="rect" id="node1" href="spade.logic.KB-class.html" title="A Knowledge base to which you can tell and ask sentences." alt="" coords="423,6,628,138"/>
+<area shape="rect" id="node2" href="spade.ECLiPSeKB.ECLiPSeKB-class.html" title="ECLiPSe Prolog knowledge base" alt="" coords="5,158,189,197"/>
+<area shape="rect" id="node3" href="spade.Flora2KB.Flora2KB-class.html" title="Flora2 knowledge base" alt="" coords="219,158,368,197"/>
+<area shape="rect" id="node5" href="spade.SWIKB.SWIKB-class.html" title="SWI Prolog knowledge base" alt="" coords="397,158,525,197"/>
+<area shape="rect" id="node6" href="spade.logic.FolKB-class.html" title="A knowledge base consisting of first&#45;order definite clauses &gt;&gt;&gt; kb0 = FolKB([expr(&#39;Farmer(Mac)&#39;), expr(&#39;Rabbit(Pete)&#39;), ..." alt="" coords="555,158,627,197"/>
+<area shape="rect" id="node7" href="spade.logic.PropKB-class.html" title="A KB for Propositional Logic." alt="" coords="656,158,736,197"/>
+<area shape="rect" id="node9" href="spade.XSBKB.XSBKB-class.html" title="XSB Prolog knowledge base" alt="" coords="765,158,896,197"/>
+<area shape="rect" id="node4" href="spade.kb.SpadeKB-class.html" title="spade.kb.SpadeKB" alt="" coords="519,217,628,255"/>
+<area shape="rect" id="node8" href="spade.logic.PropHornKB-class.html" title="A KB of Propositional Horn clauses." alt="" coords="657,217,767,255"/>
+</map>
+  <img src="uml_class_diagram_for_spade_lo_2.gif" alt='' usemap="#uml_class_diagram_for_spade_lo_2" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>A Knowledge base to which you can tell and ask sentences. To create a 
+  KB, first subclass this class and implement tell, ask_generator, and 
+  retract.  Why ask_generator instead of ask? The book is a bit vague on 
+  what ask means -- For a Propositional Logic KB, ask(P &amp; Q) returns 
+  True or False, but for an FOL KB, something like ask(Brother(x, y)) might
+  return many substitutions such as {x: Cain, y: Abel}, {x: Abel, y: Cain},
+  {x: George, y: Jeb}, etc. So ask_generator generates these one at a time,
+  and ask either returns the first one or returns False.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#KB.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.logic.KB-class.html#ask" class="summary-sig-name">ask</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">query</span>)</span><br />
+      Ask returns a substitution that makes the query true, or it returns 
+      False.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#KB.ask">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ask_generator"></a><span class="summary-sig-name">ask_generator</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">query</span>)</span><br />
+      Yield all the substitutions that make query true.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#KB.ask_generator">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="retract"></a><span class="summary-sig-name">retract</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>)</span><br />
+      Remove the sentence from the KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#KB.retract">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tell"></a><span class="summary-sig-name">tell</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>)</span><br />
+      Add the sentence to the KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.logic-pysrc.html#KB.tell">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="ask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ask</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">query</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.logic-pysrc.html#KB.ask">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Ask returns a substitution that makes the query true, or it returns 
+  False. It is implemented in terms of ask_generator.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:50 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

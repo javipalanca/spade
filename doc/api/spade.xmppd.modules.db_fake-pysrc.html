@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmppd.modules.db_fake</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmppd-module.html">Package&nbsp;xmppd</a> ::
+        <a href="spade.xmppd.modules-module.html">Package&nbsp;modules</a> ::
+        Module&nbsp;db_fake
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmppd.modules.db_fake-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.xmppd.modules.db_fake-module.html">Module spade.xmppd.modules.db_fake</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package spade.xmpp=spade.xmpp-module.html"><a title="spade.xmpp" class="py-name" href="#" onclick="return doclink('link-0', 'xmpp', 'link-0');">xmpp</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-string">"""try:</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-string">        from xml.marshal.generic import *</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-string">        marshal = Marshaller()</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-string">        unmarshal = Unmarshaller()</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-string">except:</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-string">        import marshal</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-string">        import marshal as unmarshal</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">marshal</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">marshal</tt> <tt class="py-keyword">as</tt> <tt class="py-name">unmarshal</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Method spade.odict.odict.copy()=spade.odict.odict-class.html#copy,Method spade.pyparsing.Keyword.copy()=spade.pyparsing.Keyword-class.html#copy,Method spade.pyparsing.ParseResults.copy()=spade.pyparsing.ParseResults-class.html#copy,Method spade.pyparsing.ParserElement.copy()=spade.pyparsing.ParserElement-class.html#copy"><a title="spade.odict.odict.copy
+spade.pyparsing.Keyword.copy
+spade.pyparsing.ParseResults.copy
+spade.pyparsing.ParserElement.copy" class="py-name" href="#" onclick="return doclink('link-1', 'copy', 'link-1');">copy</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable spade.xmppd.modules.db_fake.DB.db=spade.xmppd.modules.db_fake.DB-class.html#db,Variable spade.xmppd.modules.db_fake.db=spade.xmppd.modules.db_fake-module.html#db"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-2', 'db', 'link-2');">db</a></tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="build_database"></a><div id="build_database-def"><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt> <a class="py-toggle" href="#" id="build_database-toggle" onclick="return toggle('build_database');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake-module.html#build_database">build_database</a><tt class="py-op">(</tt><tt class="py-param">server_instance</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="build_database-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="build_database-expanded"><a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-3" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-3', 'db', 'link-2');">db</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">a_registered_server</tt> <tt class="py-keyword">in</tt> <tt class="py-name">server_instance</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Variable spade.xmppd.modules.config.servernames=spade.xmppd.modules.config-module.html#servernames"><a title="spade.xmppd.modules.config.servernames" class="py-name" href="#" onclick="return doclink('link-4', 'servernames', 'link-4');">servernames</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-name">server_instance</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method spade.Agent.AbstractAgent.DEBUG()=spade.Agent.AbstractAgent-class.html#DEBUG,Method spade.spade_backend.SpadeBackend.DEBUG()=spade.spade_backend.SpadeBackend-class.html#DEBUG,Method spade.xmpp.client.PlugIn.DEBUG()=spade.xmpp.client.PlugIn-class.html#DEBUG,Method spade.xmpp.simplexml.NodeBuilder.DEBUG()=spade.xmpp.simplexml.NodeBuilder-class.html#DEBUG,Method spade.xmpp.transports.HTTPPROXYsocket.DEBUG()=spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-5', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'server'</tt><tt class="py-op">,</tt><tt class="py-string">'DB: Building database tree for %s'</tt><tt class="py-op">%</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-6" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-6', 'db', 'link-2');">db</a></tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                <tt id="link-7" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-7', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">         </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt id="link-8" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-8', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt id="link-9" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-9', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'karma'</tt><tt class="py-op">:</tt><tt class="py-op">{</tt><tt class="py-string">'down'</tt><tt class="py-op">:</tt><tt class="py-number">307200</tt><tt class="py-op">,</tt><tt class="py-string">'up'</tt><tt class="py-op">:</tt><tt class="py-number">307200307200307200</tt><tt class="py-op">,</tt><tt class="py-string">'last_time'</tt><tt class="py-op">:</tt><tt class="py-number">0.0</tt><tt class="py-op">,</tt><tt class="py-string">'tot_down'</tt><tt class="py-op">:</tt><tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-string">'tot_up'</tt><tt class="py-op">:</tt><tt class="py-number">0</tt><tt class="py-op">}</tt><tt class="py-op">}</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt id="link-10" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-10', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'test'</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt id="link-11" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-11', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'anon_allow'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'yes'</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt id="link-12" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-12', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-13', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">a_registered_server</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'__ir__'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-string">"""</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t'] = {}</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t']['password'] = 'thx1138.dsic.upv.es'</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t']['roster'] = {}</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-string">        #db[a_registered_server]['t']['roster']['t2@thx1138.dsic.upv.es'] = {'subscription':'both'}</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t']['groups'] = {}</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t2'] = {}</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t2']['password'] = 'thx1138.dsic.upv.es'</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t2']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t2']['roster'] = {}</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-string">        #db[a_registered_server]['t2']['roster']['t@thx1138.dsic.upv.es'] = {'subscription':'both'}</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t2']['groups'] = {}</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3'] = {}</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3']['password'] = 't3'</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3']['roster'] = {}</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3']['groups'] = {}</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t3']['name'] = "T3"</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4'] = {}</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4']['password'] = 't4'</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4']['roster'] = {}</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4']['groups'] = {}</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['t4']['name'] = "T4"</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test'] = {}</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['storage'] = {'karma':{'down':307200,'up':307200307200307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['password'] = 'test'</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-string">        #Anon_allow tells the privacy subsystem if it's okay for someone to contact you</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-string">        #without any subscription at all.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['anon_allow'] = 'no'</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['roster'] = {}</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string">        #    {'jid':'test2@172.16.1.34','name':'Test Account 2','subscription':'both'},</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-string">        #    {'jid':'test3@172.16.1.34','subscription':'both'}]</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['groups'] = {}</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test']['groups']['Friends'] = ['test2@172.16.1.34','test3@172.16.1.34']</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-string">            </tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2'] = {}</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['storage'] = {'karma':{'down':307200,'up':307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['password'] = 'test'</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-string">        </tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['roster'] = {}</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['roster']['test3@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['groups'] = {}</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test2']['groups']['Friends'] = ['test3@172.16.1.34','test3@172.16.0.2','test3@'+a_registered_server]</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-string">        </tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3'] = {}</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['storage'] = {'karma':{'down':307200,'up':307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['password'] = 'test'</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['name'] = '&#12486;&#12473;&#12488;&#12539;&#12450;&#12459;&#12454;&#12531;&#12488;#3'</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-string">        #Roster Info</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-string">        ##Roster Items</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['roster'] = {}</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['roster']['test2@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['roster']['pixelcort@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['roster']['kris_tate@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string">        ##Item Groups</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['groups'] = {}</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['test3']['groups']['&#12363;&#12387;&#12371;&#12358;&#12356;&#12356;&#12394;&#20154;'] = ['test2@172.16.1.34','test2@172.16.0.2','test2@'+a_registered_server,'pixelcort@'+a_registered_server,'kris_tate@'+a_registered_server]</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort'] = {}</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['storage'] = {'karma':{'down':307200,'up':307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['password'] = 'test'</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['name'] = 'Cortland Klein'</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-string">        #Roster Info</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-string">        ##Roster Items</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['roster'] = {}</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['roster']['tekcor@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['roster']['kris_tate@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['roster']['mvanveen@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-string">        ##Item Groups</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['groups'] = {}</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['groups']['Friends'] = ['tekcor@'+a_registered_server,'mvanveen@'+a_registered_server]</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['pixelcort']['groups']['Kris'] = ['kris_tate@'+a_registered_server]</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-string">        </tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate'] = {}</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['storage'] = {'karma':{'down':307200,'up':1000,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['password'] = 'test'</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['name'] = 'Kristopher Tate'</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-string">        #Roster Info</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-string">        ##Roster Items</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['roster'] = {}</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['roster']['tekcor@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['roster']['pixelcort@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['roster']['mvanveen@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-string">        ##Item Groups</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['groups'] = {}</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['kris_tate']['groups']['&#12363;&#12387;&#12371;&#12358;&#12356;&#12356;&#12394;&#20154;'] = ['tekcor@'+a_registered_server,'pixelcort@'+a_registered_server,'mvanveen@'+a_registered_server]</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor'] = {}</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['storage'] = {'karma':{'down':307200,'up':307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['password'] = 'test'</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['name'] = 'Thom McGrath'</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-string">        #Roster Info</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-string">        ##Roster Items</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['roster'] = {}</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['roster']['pixelcort@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['roster']['kris_tate@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-string">        ##Item Groups</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['groups'] = {}</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['tekcor']['groups']['Friends'] = ['kris_tate@'+a_registered_server,'pixelcort@'+a_registered_server]</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen'] = {}</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['storage'] = {'karma':{'down':307200,'up':307200,'last_time':0.0,'tot_down':0,'tot_up':0}}</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['password'] = 'test'</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['anon_allow'] = 'yes'</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['name'] = 'Mike Van Veen'</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-string">        #Roster Info</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-string">        ##Roster Items</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['roster'] = {}</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['roster']['pixelcort@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['roster']['kris_tate@'+a_registered_server] = {'subscription':'both'}</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-string">        ##Item Groups</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['groups'] = {}</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-string">        db[a_registered_server]['mvanveen']['groups']['Friends'] = ['kris_tate@'+a_registered_server,'pixelcort@'+a_registered_server]</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-string">        """</tt> </tt>
+</div><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">        <tt class="py-comment">#for guy in db[a_registered_server].keys():</tt> </tt>
+<a name="AUTH"></a><div id="AUTH-def"><a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-comment">#    db[a_registered_server][guy]['roster'][a_registered_server] = {'subscription':'to','name':"Help Desk"}</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">             </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt> <a class="py-toggle" href="#" id="AUTH-toggle" onclick="return toggle('AUTH');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.AUTH-class.html">AUTH</a><tt class="py-op">(</tt><tt class="py-base-class">PlugIn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="AUTH-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="AUTH-expanded"><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">    <tt id="link-14" class="py-name" targets="Variable spade.xmppd.modules.config.Config.NS=spade.xmppd.modules.config.Config-class.html#NS,Variable spade.xmppd.modules.db_fake.AUTH.NS=spade.xmppd.modules.db_fake.AUTH-class.html#NS,Variable spade.xmppd.modules.db_fake.DB.NS=spade.xmppd.modules.db_fake.DB-class.html#NS,Variable spade.xmppd.modules.dialback.Dialback.NS=spade.xmppd.modules.dialback.Dialback-class.html#NS,Variable spade.xmppd.modules.jep0077.IBR.NS=spade.xmppd.modules.jep0077.IBR-class.html#NS,Variable spade.xmppd.modules.jep0078.NSA.NS=spade.xmppd.modules.jep0078.NSA-class.html#NS,Variable spade.xmppd.modules.message.MessageCatcher.NS=spade.xmppd.modules.message.MessageCatcher-class.html#NS,Variable spade.xmppd.modules.muc.MUC.NS=spade.xmppd.modules.muc.MUC-class.html#NS,Variable spade.xmppd.modules.oob.OOB.NS=spade.xmppd.modules.oob.OOB-class.html#NS,Variable spade.xmppd.modules.pubsub.PubSubServer.NS=spade.xmppd.modules.pubsub.PubSubServer-class.html#NS,Variable spade.xmppd.modules.roster.ROSTER.NS=spade.xmppd.modules.roster.ROSTER-class.html#NS,Variable spade.xmppd.modules.router.Router.NS=spade.xmppd.modules.router.Router-class.html#NS,Variable spade.xmppd.modules.stream.Bind.NS=spade.xmppd.modules.stream.Bind-class.html#NS,Variable spade.xmppd.modules.stream.Handshake.NS=spade.xmppd.modules.stream.Handshake-class.html#NS,Variable spade.xmppd.modules.stream.SASL.NS=spade.xmppd.modules.stream.SASL-class.html#NS,Variable spade.xmppd.modules.stream.Session.NS=spade.xmppd.modules.stream.Session-class.html#NS,Variable spade.xmppd.modules.stream.TLS.NS=spade.xmppd.modules.stream.TLS-class.html#NS,Variable spade.xmppd.modules.webadmin.WebAdmin.NS=spade.xmppd.modules.webadmin.WebAdmin-class.html#NS,Variable spade.xmppd.modules.wq.WQ.NS=spade.xmppd.modules.wq.WQ-class.html#NS"><a title="spade.xmppd.modules.config.Config.NS
+spade.xmppd.modules.db_fake.AUTH.NS
+spade.xmppd.modules.db_fake.DB.NS
+spade.xmppd.modules.dialback.Dialback.NS
+spade.xmppd.modules.jep0077.IBR.NS
+spade.xmppd.modules.jep0078.NSA.NS
+spade.xmppd.modules.message.MessageCatcher.NS
+spade.xmppd.modules.muc.MUC.NS
+spade.xmppd.modules.oob.OOB.NS
+spade.xmppd.modules.pubsub.PubSubServer.NS
+spade.xmppd.modules.roster.ROSTER.NS
+spade.xmppd.modules.router.Router.NS
+spade.xmppd.modules.stream.Bind.NS
+spade.xmppd.modules.stream.Handshake.NS
+spade.xmppd.modules.stream.SASL.NS
+spade.xmppd.modules.stream.Session.NS
+spade.xmppd.modules.stream.TLS.NS
+spade.xmppd.modules.webadmin.WebAdmin.NS
+spade.xmppd.modules.wq.WQ.NS" class="py-name" href="#" onclick="return doclink('link-14', 'NS', 'link-14');">NS</a></tt><tt class="py-op">=</tt><tt class="py-string">''</tt> </tt>
+<a name="AUTH.getpassword"></a><div id="AUTH.getpassword-def"><a name="L173"></a><tt class="py-lineno">173</tt> <a class="py-toggle" href="#" id="AUTH.getpassword-toggle" onclick="return toggle('AUTH.getpassword');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.AUTH-class.html#getpassword">getpassword</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">domain</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="AUTH.getpassword-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="AUTH.getpassword-expanded"><a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt id="link-15" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-15', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="AUTH.isuser"></a><div id="AUTH.isuser-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="AUTH.isuser-toggle" onclick="return toggle('AUTH.isuser');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.AUTH-class.html#isuser">isuser</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">node</tt><tt class="py-op">,</tt> <tt class="py-param">domain</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="AUTH.isuser-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="AUTH.isuser-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt>  </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-16" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-16', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_owner</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Variable spade.xmppd.modules.config.components=spade.xmppd.modules.config-module.html#components"><a title="spade.xmppd.modules.config.components" class="py-name" href="#" onclick="return doclink('link-17', 'components', 'link-17');">components</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method spade.dblite.Index.keys()=spade.dblite.Index-class.html#keys,Method spade.odict.odict.keys()=spade.odict.odict-class.html#keys,Method spade.pyparsing.ParseResults.keys()=spade.pyparsing.ParseResults-class.html#keys,Method spade.xmpp.roster.Roster.keys()=spade.xmpp.roster.Roster-class.html#keys"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-18', 'keys', 'link-18');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="DB"></a><div id="DB-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="DB-toggle" onclick="return toggle('DB');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html">DB</a><tt class="py-op">(</tt><tt class="py-base-class">PlugIn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DB-expanded"><a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">    <tt id="link-19" class="py-name"><a title="spade.xmppd.modules.config.Config.NS
+spade.xmppd.modules.db_fake.AUTH.NS
+spade.xmppd.modules.db_fake.DB.NS
+spade.xmppd.modules.dialback.Dialback.NS
+spade.xmppd.modules.jep0077.IBR.NS
+spade.xmppd.modules.jep0078.NSA.NS
+spade.xmppd.modules.message.MessageCatcher.NS
+spade.xmppd.modules.muc.MUC.NS
+spade.xmppd.modules.oob.OOB.NS
+spade.xmppd.modules.pubsub.PubSubServer.NS
+spade.xmppd.modules.roster.ROSTER.NS
+spade.xmppd.modules.router.Router.NS
+spade.xmppd.modules.stream.Bind.NS
+spade.xmppd.modules.stream.Handshake.NS
+spade.xmppd.modules.stream.SASL.NS
+spade.xmppd.modules.stream.Session.NS
+spade.xmppd.modules.stream.TLS.NS
+spade.xmppd.modules.webadmin.WebAdmin.NS
+spade.xmppd.modules.wq.WQ.NS" class="py-name" href="#" onclick="return doclink('link-19', 'NS', 'link-14');">NS</a></tt><tt class="py-op">=</tt><tt class="py-string">''</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">     </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">     </tt>
+<a name="DB.plugin"></a><div id="DB.plugin-def"><a name="L189"></a><tt class="py-lineno">189</tt> <a class="py-toggle" href="#" id="DB.plugin-toggle" onclick="return toggle('DB.plugin');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#plugin">plugin</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">server</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.plugin-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.plugin-expanded"><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-20', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'Building Database tree!'</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method spade.xmppd.modules.db_fake.DB.load_database()=spade.xmppd.modules.db_fake.DB-class.html#load_database"><a title="spade.xmppd.modules.db_fake.DB.load_database" class="py-name" href="#" onclick="return doclink('link-21', 'load_database', 'link-21');">load_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt id="link-22" class="py-name" targets="Function spade.xmppd.modules.db_fake.build_database()=spade.xmppd.modules.db_fake-module.html#build_database"><a title="spade.xmppd.modules.db_fake.build_database" class="py-name" href="#" onclick="return doclink('link-22', 'build_database', 'link-22');">build_database</a></tt><tt class="py-op">(</tt><tt class="py-name">server</tt><tt class="py-op">)</tt> <tt class="py-comment">#Building database!</tt> </tt>
+</div><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"> </tt>
+<a name="DB.store"></a><div id="DB.store-def"><a name="L194"></a><tt class="py-lineno">194</tt> <a class="py-toggle" href="#" id="DB.store-toggle" onclick="return toggle('DB.store');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#store">store</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">stanza</tt><tt class="py-op">,</tt><tt class="py-param">id</tt><tt class="py-op">=</tt><tt class="py-string">'next_unique_id'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.store-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.store-expanded"><a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-23', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Storing to database:\n%s:%s::%s:%s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">id</tt><tt class="py-op">,</tt><tt class="py-name">stanza</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt id="link-24" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-24', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">id</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">stanza</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method spade.xmppd.modules.db_fake.DB.save_database()=spade.xmppd.modules.db_fake.DB-class.html#save_database"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-25', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-26', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Could not store in database:\n%s:%s::%s:%s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">id</tt><tt class="py-op">,</tt><tt class="py-name">stanza</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'error'</tt><tt class="py-op">)</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"> </tt>
+<a name="DB.get_store"></a><div id="DB.get_store-def"><a name="L205"></a><tt class="py-lineno">205</tt> <a class="py-toggle" href="#" id="DB.get_store-toggle" onclick="return toggle('DB.get_store');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#get_store">get_store</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">id</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.get_store-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.get_store-expanded"><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-27" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-27', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">id</tt><tt class="py-op">]</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="DB.get_storage"></a><div id="DB.get_storage-def"><a name="L212"></a><tt class="py-lineno">212</tt> <a class="py-toggle" href="#" id="DB.get_storage-toggle" onclick="return toggle('DB.get_storage');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#get_storage">get_storage</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.get_storage-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.get_storage-expanded"><a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">            <tt class="py-name">l</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="spade.odict.odict.copy
+spade.pyparsing.Keyword.copy
+spade.pyparsing.ParseResults.copy
+spade.pyparsing.ParserElement.copy" class="py-name" href="#" onclick="return doclink('link-28', 'copy', 'link-1');">copy</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="spade.odict.odict.copy
+spade.pyparsing.Keyword.copy
+spade.pyparsing.ParseResults.copy
+spade.pyparsing.ParserElement.copy" class="py-name" href="#" onclick="return doclink('link-29', 'copy', 'link-1');">copy</a></tt><tt class="py-op">(</tt><tt id="link-30" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-30', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method spade.odict.odict.values()=spade.odict.odict-class.html#values,Method spade.pyparsing.ParseResults.values()=spade.pyparsing.ParseResults-class.html#values"><a title="spade.odict.odict.values
+spade.pyparsing.ParseResults.values" class="py-name" href="#" onclick="return doclink('link-31', 'values', 'link-31');">values</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">            <tt id="link-32" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-32', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method spade.odict.odict.clear()=spade.odict.odict-class.html#clear"><a title="spade.odict.odict.clear" class="py-name" href="#" onclick="return doclink('link-33', 'clear', 'link-33');">clear</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>      </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">l</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">         </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line"> </tt>
+<a name="DB.save"></a><div id="DB.save-def"><a name="L224"></a><tt class="py-lineno">224</tt> <a class="py-toggle" href="#" id="DB.save-toggle" onclick="return toggle('DB.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">stanza</tt><tt class="py-op">,</tt><tt class="py-param">id</tt><tt class="py-op">=</tt><tt class="py-string">'next_unique_id'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.save-expanded"><a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-34', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Saving to database:\n%s:%s::%s:%s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">id</tt><tt class="py-op">,</tt><tt class="py-name">stanza</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">            <tt id="link-35" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-35', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">id</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">stanza</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-36', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-37', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"DB ERR: Could not save to database:\n%s:%s::%s:%s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">id</tt><tt class="py-op">,</tt><tt class="py-name">stanza</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">     </tt>
+<a name="DB.save_to_roster"></a><div id="DB.save_to_roster-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="DB.save_to_roster-toggle" onclick="return toggle('DB.save_to_roster');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#save_to_roster">save_to_roster</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">info</tt><tt class="py-op">,</tt><tt class="py-param">add_only_if_already</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.save_to_roster-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.save_to_roster-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-38', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Saving roster info to database %s--&gt;(%s) [%s]:\n"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">info</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-39" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-39', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">add_only_if_already</tt><tt class="py-op">==</tt><tt class="py-name">False</tt><tt class="py-op">:</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">            <tt id="link-40" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-40', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name" targets="Method spade.dblite.Base.update()=spade.dblite.Base-class.html#update,Method spade.odict.odict.update()=spade.odict.odict-class.html#update,Method spade.xmppd.modules.router.Router.update()=spade.xmppd.modules.router.Router-class.html#update"><a title="spade.dblite.Base.update
+spade.odict.odict.update
+spade.xmppd.modules.router.Router.update" class="py-name" href="#" onclick="return doclink('link-41', 'update', 'link-41');">update</a></tt><tt class="py-op">(</tt><tt class="py-name">info</tt><tt class="py-op">)</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">            <tt id="link-42" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-42', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">info</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-43', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"> </tt>
+<a name="DB.pull_roster"></a><div id="DB.pull_roster-def"><a name="L245"></a><tt class="py-lineno">245</tt> <a class="py-toggle" href="#" id="DB.pull_roster-toggle" onclick="return toggle('DB.pull_roster');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#pull_roster">pull_roster</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.pull_roster-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.pull_roster-expanded"><a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">            <tt class="py-name">data</tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-44', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">'subscription'</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">False</tt><tt class="py-op">:</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                <tt class="py-name">data</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="spade.dblite.Base.update
+spade.odict.odict.update
+spade.xmppd.modules.router.Router.update" class="py-name" href="#" onclick="return doclink('link-45', 'update', 'link-41');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'subscription'</tt><tt class="py-op">:</tt><tt class="py-string">'none'</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">data</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-46', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: Could not retrieve %s@%s roster for %s'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"> </tt>
+<a name="DB.del_from_roster"></a><div id="DB.del_from_roster-def"><a name="L256"></a><tt class="py-lineno">256</tt> <a class="py-toggle" href="#" id="DB.del_from_roster-toggle" onclick="return toggle('DB.del_from_roster');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#del_from_roster">del_from_roster</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.del_from_roster-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.del_from_roster-expanded"><a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-47', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Deleting roster info from database %s--X(%s):\n"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">            <tt class="py-keyword">del</tt><tt class="py-op">(</tt><tt id="link-48" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-48', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-49', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-50', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: A Client tried to remove a contact that wasn\'t even added! (%s::%s::%s)'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"> </tt>
+<a name="DB.del_from_roster_jid"></a><div id="DB.del_from_roster_jid-def"><a name="L267"></a><tt class="py-lineno">267</tt> <a class="py-toggle" href="#" id="DB.del_from_roster_jid-toggle" onclick="return toggle('DB.del_from_roster_jid');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#del_from_roster_jid">del_from_roster_jid</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">what</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.del_from_roster_jid-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.del_from_roster_jid-expanded"><a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-51', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Deleting roster info from database %s--X(%s):\n"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">            <tt class="py-keyword">del</tt><tt class="py-op">(</tt><tt id="link-52" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-52', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">what</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-53', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-54', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: A Client tried to remove a contact attr that wasn\'t even added! (%s::%s::%s)'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="DB.save_groupie"></a><div id="DB.save_groupie-def"><a name="L278"></a><tt class="py-lineno">278</tt> <a class="py-toggle" href="#" id="DB.save_groupie-toggle" onclick="return toggle('DB.save_groupie');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#save_groupie">save_groupie</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">,</tt><tt class="py-param">groups</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.save_groupie-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.save_groupie-expanded"><a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">        <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-55" class="py-name" targets="Variable spade.Agent.x=spade.Agent-module.html#x,Variable spade.bdi.x=spade.bdi-module.html#x,Variable spade.logic.x=spade.logic-module.html#x"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-55', 'x', 'link-55');">x</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">groups</tt><tt class="py-op">:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">type</tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-56', 'x', 'link-55');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-name">type</tt><tt class="py-op">(</tt><tt class="py-string">u''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt id="link-57" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-57', 'x', 'link-55');">x</a></tt> <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-58', 'x', 'link-55');">x</a></tt><tt class="py-op">.</tt><tt id="link-59" class="py-name" targets="Method spade.RDF0Parser.RDF0Parser.encode()=spade.RDF0Parser.RDF0Parser-class.html#encode"><a title="spade.RDF0Parser.RDF0Parser.encode" class="py-name" href="#" onclick="return doclink('link-59', 'encode', 'link-59');">encode</a></tt><tt class="py-op">(</tt><tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">type</tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-60', 'x', 'link-55');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">==</tt><tt class="py-name">type</tt><tt class="py-op">(</tt><tt class="py-string">u''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt id="link-61" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-61', 'x', 'link-55');">x</a></tt> <tt class="py-op">=</tt> <tt class="py-name">unicode</tt><tt class="py-op">(</tt><tt id="link-62" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-62', 'x', 'link-55');">x</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="spade.RDF0Parser.RDF0Parser.encode" class="py-name" href="#" onclick="return doclink('link-63', 'encode', 'link-59');">encode</a></tt><tt class="py-op">(</tt><tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">+=</tt> <tt class="py-op">[</tt><tt id="link-64" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-64', 'x', 'link-55');">x</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">        <tt class="py-name">group_list</tt> <tt class="py-op">=</tt> <tt id="link-65" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-65', 'x', 'link-55');">x</a></tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-66', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Saving groupie jid to database %s--&gt;(%s) [%s]:\n"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">unicode</tt><tt class="py-op">(</tt><tt class="py-name">groups</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="spade.RDF0Parser.RDF0Parser.encode" class="py-name" href="#" onclick="return doclink('link-67', 'encode', 'link-59');">encode</a></tt><tt class="py-op">(</tt><tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">gn</tt><tt class="py-op">,</tt><tt class="py-name">gm</tt> <tt class="py-keyword">in</tt> <tt id="link-68" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-68', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name" targets="Method spade.odict.odict.iteritems()=spade.odict.odict-class.html#iteritems"><a title="spade.odict.odict.iteritems" class="py-name" href="#" onclick="return doclink('link-69', 'iteritems', 'link-69');">iteritems</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">gn</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">group_list</tt> <tt class="py-keyword">and</tt> <tt class="py-name">jid</tt> <tt class="py-keyword">in</tt> <tt id="link-70" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-70', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                <tt id="link-71" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-71', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name" targets="Method spade.FlexQueue.FlexQueue.remove()=spade.FlexQueue.FlexQueue-class.html#remove"><a title="spade.FlexQueue.FlexQueue.remove" class="py-name" href="#" onclick="return doclink('link-72', 'remove', 'link-72');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">gn</tt> <tt class="py-keyword">in</tt> <tt class="py-name">group_list</tt> <tt class="py-keyword">and</tt> <tt class="py-name">jid</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt id="link-73" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-73', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                <tt id="link-74" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-74', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt> <tt class="py-op">+=</tt> <tt class="py-op">[</tt><tt class="py-name">jid</tt><tt class="py-op">]</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-75', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"> </tt>
+<a name="DB.del_groupie"></a><div id="DB.del_groupie-def"><a name="L294"></a><tt class="py-lineno">294</tt> <a class="py-toggle" href="#" id="DB.del_groupie-toggle" onclick="return toggle('DB.del_groupie');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#del_groupie">del_groupie</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">jid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.del_groupie-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.del_groupie-expanded"><a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-76', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Deleting groupie from database %s--X(%s):\n"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">+</tt><tt class="py-string">'@'</tt><tt class="py-op">+</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">gn</tt><tt class="py-op">,</tt><tt class="py-name">gm</tt> <tt class="py-keyword">in</tt> <tt id="link-77" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-77', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="spade.odict.odict.iteritems" class="py-name" href="#" onclick="return doclink('link-78', 'iteritems', 'link-69');">iteritems</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">jid</tt> <tt class="py-keyword">in</tt> <tt id="link-79" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-79', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                    <tt id="link-80" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-80', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">gn</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="spade.FlexQueue.FlexQueue.remove" class="py-name" href="#" onclick="return doclink('link-81', 'remove', 'link-72');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">err</tt><tt class="py-op">:</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-82', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: A groupie went mad! %s::%s::%s'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">jid</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-83', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">     </tt>
+<a name="DB.get"></a><div id="DB.get-def"><a name="L305"></a><tt class="py-lineno">305</tt> <a class="py-toggle" href="#" id="DB.get-toggle" onclick="return toggle('DB.get');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">what</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.get-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.get-expanded"><a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-84" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-84', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">what</tt><tt class="py-op">]</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-85', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: Could not retrieve %s::%s::%s'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">what</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"> </tt>
+<a name="DB.delete"></a><div id="DB.delete-def"><a name="L313"></a><tt class="py-lineno">313</tt> <a class="py-toggle" href="#" id="DB.delete-toggle" onclick="return toggle('DB.delete');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#delete">delete</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">what</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.delete-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.delete-expanded"><a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">node</tt><tt class="py-op">:</tt> <tt class="py-name">node</tt><tt class="py-op">,</tt> <tt class="py-name">domain</tt> <tt class="py-op">=</tt> <tt class="py-name">domain</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">"."</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">            <tt class="py-keyword">del</tt><tt class="py-op">(</tt><tt id="link-86" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-86', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">what</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-87', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">KeyError</tt><tt class="py-op">:</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-88', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'DB ERR: Could not delete %s::%s::%s'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">domain</tt><tt class="py-op">,</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">what</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'warn'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"> </tt>
+<a name="DB.getNumRegistered"></a><div id="DB.getNumRegistered-def"><a name="L323"></a><tt class="py-lineno">323</tt> <a class="py-toggle" href="#" id="DB.getNumRegistered-toggle" onclick="return toggle('DB.getNumRegistered');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#getNumRegistered">getNumRegistered</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">server</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.getNumRegistered-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.getNumRegistered-expanded"><a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-89" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-89', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">server</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-90', 'keys', 'link-18');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line"> </tt>
+<a name="DB.register_user"></a><div id="DB.register_user-def"><a name="L326"></a><tt class="py-lineno">326</tt> <a class="py-toggle" href="#" id="DB.register_user-toggle" onclick="return toggle('DB.register_user');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#register_user">register_user</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">domain</tt><tt class="py-op">,</tt><tt class="py-param">node</tt><tt class="py-op">,</tt><tt class="py-param">password</tt><tt class="py-op">,</tt><tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.register_user-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.register_user-expanded"><a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">                <tt id="link-91" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-91', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">                <tt id="link-92" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-92', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">password</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">                <tt id="link-93" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-93', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">                <tt id="link-94" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-94', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'storage'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                <tt id="link-95" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-95', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'groups'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt>  </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">                <tt id="link-96" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-96', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-97" class="py-name" targets="Variable spade.Agent.name=spade.Agent-module.html#name,Variable spade.MTP.name=spade.MTP-module.html#name,Variable spade.Organization.name=spade.Organization-module.html#name,Variable spade.Organization_new.name=spade.Organization_new-module.html#name,Variable spade.Unit.name=spade.Unit-module.html#name,Variable spade.Unit_new.name=spade.Unit_new-module.html#name,Variable spade.pubsub.name=spade.pubsub-module.html#name,Variable spade.socialnetwork.name=spade.socialnetwork-module.html#name,Variable spade.xmpp.auth.name=spade.xmpp.auth-module.html#name,Variable spade.xmpp.browser.name=spade.xmpp.browser-module.html#name,Variable spade.xmpp.commands.Command_Handler_Prototype.name=spade.xmpp.commands.Command_Handler_Prototype-class.html#name,Variable spade.xmpp.commands.TestCommand.name=spade.xmpp.commands.TestCommand-class.html#name,Variable spade.xmpp.commands.name=spade.xmpp.commands-module.html#name,Variable spade.xmpp.dispatcher.name=spade.xmpp.dispatcher-module.html#name,Variable spade.xmpp.features.name=spade.xmpp.features-module.html#name,Variable spade.xmpp.filetransfer.name=spade.xmpp.filetransfer-module.html#name,Variable spade.xmpp.name=spade.xmpp-module.html#name,Variable spade.xmpp.protocol.name=spade.xmpp.protocol-module.html#name,Variable spade.xmpp.roster.name=spade.xmpp.roster-module.html#name,Variable spade.xmpp.transports.name=spade.xmpp.transports-module.html#name,Variable spade.xmppd.modules.config.name=spade.xmppd.modules.config-module.html#name,Variable spade.xmppd.modules.db_fake.name=spade.xmppd.modules.db_fake-module.html#name,Variable spade.xmppd.modules.dialback.name=spade.xmppd.modules.dialback-module.html#name,Variable spade.xmppd.modules.jep0077.name=spade.xmppd.modules.jep0077-module.html#name,Variable spade.xmppd.modules.jep0078.name=spade.xmppd.modules.jep0078-module.html#name,Variable spade.xmppd.modules.message.name=spade.xmppd.modules.message-module.html#name,Variable spade.xmppd.modules.muc.name=spade.xmppd.modules.muc-module.html#name,Variable spade.xmppd.modules.oob.name=spade.xmppd.modules.oob-module.html#name,Variable spade.xmppd.modules.pubsub.name=spade.xmppd.modules.pubsub-module.html#name,Variable spade.xmppd.modules.roster.name=spade.xmppd.modules.roster-module.html#name,Variable spade.xmppd.modules.router.name=spade.xmppd.modules.router-module.html#name,Variable spade.xmppd.modules.stream.name=spade.xmppd.modules.stream-module.html#name,Variable spade.xmppd.modules.webadmin.name=spade.xmppd.modules.webadmin-module.html#name,Variable spade.xmppd.modules.wq.name=spade.xmppd.modules.wq-module.html#name,Variable spade.xmppd.xmppd.name=spade.xmppd.xmppd-module.html#name"><a title="spade.Agent.name
+spade.MTP.name
+spade.Organization.name
+spade.Organization_new.name
+spade.Unit.name
+spade.Unit_new.name
+spade.pubsub.name
+spade.socialnetwork.name
+spade.xmpp.auth.name
+spade.xmpp.browser.name
+spade.xmpp.commands.Command_Handler_Prototype.name
+spade.xmpp.commands.TestCommand.name
+spade.xmpp.commands.name
+spade.xmpp.dispatcher.name
+spade.xmpp.features.name
+spade.xmpp.filetransfer.name
+spade.xmpp.name
+spade.xmpp.protocol.name
+spade.xmpp.roster.name
+spade.xmpp.transports.name
+spade.xmppd.modules.config.name
+spade.xmppd.modules.db_fake.name
+spade.xmppd.modules.dialback.name
+spade.xmppd.modules.jep0077.name
+spade.xmppd.modules.jep0078.name
+spade.xmppd.modules.message.name
+spade.xmppd.modules.muc.name
+spade.xmppd.modules.oob.name
+spade.xmppd.modules.pubsub.name
+spade.xmppd.modules.roster.name
+spade.xmppd.modules.router.name
+spade.xmppd.modules.stream.name
+spade.xmppd.modules.webadmin.name
+spade.xmppd.modules.wq.name
+spade.xmppd.xmppd.name" class="py-name" href="#" onclick="return doclink('link-97', 'name', 'link-97');">name</a></tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">                <tt id="link-98" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-98', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'anon_allow'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'yes'</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">                <tt id="link-99" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-99', 'db', 'link-2');">db</a></tt><tt class="py-op">[</tt><tt class="py-name">domain</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">node</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'roster'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">                <tt class="py-comment">#db[domain][node]['roster'][domain] = {'subscription':'to','name':"Help Desk"}</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-100" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-100', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">"Registered user %s in domain %s"</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-101" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.save_database" class="py-name" href="#" onclick="return doclink('link-101', 'save_database', 'link-25');">save_database</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-102" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-102', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'Error registering username %s in domain %s'</tt><tt class="py-op">%</tt><tt class="py-op">(</tt><tt class="py-name">node</tt><tt class="py-op">,</tt><tt class="py-name">domain</tt><tt class="py-op">)</tt><tt class="py-op">,</tt><tt class="py-string">'error'</tt><tt class="py-op">)</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"> </tt>
+<a name="DB.save_database"></a><div id="DB.save_database-def"><a name="L344"></a><tt class="py-lineno">344</tt> <a class="py-toggle" href="#" id="DB.save_database-toggle" onclick="return toggle('DB.save_database');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#save_database">save_database</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">=</tt><tt class="py-string">"user_db.xml"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.save_database-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.save_database-expanded"><a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">                <tt class="py-keyword">global</tt> <tt id="link-103" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-103', 'db', 'link-2');">db</a></tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">                <tt class="py-comment">#print "#### userdbfile = " + str(self.userdbfile)</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">                <tt class="py-comment">#print "#### spoolpath = " + str(self.spoolpath)</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">                <tt class="py-string">"""</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"><tt class="py-string">                if not os.path.exists(self.spoolpath):</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line"><tt class="py-string">                        self.DEBUG("spoolpath does no exist.", 'warn')</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line"><tt class="py-string">                        p = self.spoolpath.split(os.sep)</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line"><tt class="py-string">                        tmpitem=''</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line"><tt class="py-string">                        for item in p:</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line"><tt class="py-string">                                tmpitem+=os.sep+str(item)</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"><tt class="py-string">                                if not os.path.exists(tmpitem):</tt> </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line"><tt class="py-string">                                        self.DEBUG("mkdir " + str(tmpitem), 'info')</tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"><tt class="py-string">                                        os.mkdir(tmpitem)</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line"><tt class="py-string">                """</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">                <tt class="py-name">fh</tt> <tt class="py-op">=</tt> <tt id="link-104" class="py-name" targets="Method spade.dblite.Base.open()=spade.dblite.Base-class.html#open"><a title="spade.dblite.Base.open" class="py-name" href="#" onclick="return doclink('link-104', 'open', 'link-104');">open</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'w'</tt><tt class="py-op">)</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">                <tt class="py-name">marshal</tt><tt class="py-op">.</tt><tt class="py-name">dump</tt><tt class="py-op">(</tt><tt id="link-105" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-105', 'db', 'link-2');">db</a></tt><tt class="py-op">,</tt> <tt class="py-name">fh</tt><tt class="py-op">)</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">                <tt class="py-name">fh</tt><tt class="py-op">.</tt><tt class="py-name">close</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-106', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'save_database: User database saved!'</tt><tt class="py-op">,</tt> <tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-107', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'save_database: Could not save user database'</tt><tt class="py-op">,</tt> <tt class="py-string">'error'</tt><tt class="py-op">)</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line"> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line"> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line"> </tt>
+<a name="DB.load_database"></a><div id="DB.load_database-def"><a name="L371"></a><tt class="py-lineno">371</tt> <a class="py-toggle" href="#" id="DB.load_database-toggle" onclick="return toggle('DB.load_database');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#load_database">load_database</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">=</tt><tt class="py-string">"user_db.xml"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.load_database-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.load_database-expanded"><a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line"><tt class="py-docstring">        Loads an entire database from disk</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line">                <tt class="py-keyword">global</tt> <tt id="link-108" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-108', 'db', 'link-2');">db</a></tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line">                <tt class="py-name">fh</tt> <tt class="py-op">=</tt> <tt id="link-109" class="py-name"><a title="spade.dblite.Base.open" class="py-name" href="#" onclick="return doclink('link-109', 'open', 'link-104');">open</a></tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">)</tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line">                <tt id="link-110" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-110', 'db', 'link-2');">db</a></tt> <tt class="py-op">=</tt> <tt class="py-name">unmarshal</tt><tt class="py-op">.</tt><tt id="link-111" class="py-name" targets="Method spade.pyratemp.FileLoader.load()=spade.pyratemp.FileLoader-class.html#load,Method spade.pyratemp.StringLoader.load()=spade.pyratemp.StringLoader-class.html#load,Method spade.pyxf.eclipse.load()=spade.pyxf.eclipse-class.html#load,Method spade.pyxf.flora2.load()=spade.pyxf.flora2-class.html#load,Method spade.pyxf.swipl.load()=spade.pyxf.swipl-class.html#load,Method spade.pyxf.xsb.load()=spade.pyxf.xsb-class.html#load"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-111', 'load', 'link-111');">load</a></tt><tt class="py-op">(</tt><tt class="py-name">fh</tt><tt class="py-op">)</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">                <tt class="py-name">fh</tt><tt class="py-op">.</tt><tt class="py-name">close</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-112" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-112', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'load_database: User database loaded'</tt><tt class="py-op">,</tt> <tt class="py-string">'info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt><tt class="py-op">:</tt> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-113" class="py-name"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-113', 'DEBUG', 'link-5');">DEBUG</a></tt><tt class="py-op">(</tt><tt class="py-string">'load_database: Could not load user database'</tt><tt class="py-op">,</tt> <tt class="py-string">'error'</tt><tt class="py-op">)</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line"> </tt>
+<a name="DB.__str__"></a><div id="DB.__str__-def"><a name="L386"></a><tt class="py-lineno">386</tt> <a class="py-toggle" href="#" id="DB.__str__-toggle" onclick="return toggle('DB.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.__str__-expanded"><a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-114" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-114', 'db', 'link-2');">db</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line"> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">property</tt> </tt>
+<a name="DB.db"></a><div id="DB.db-def"><a name="L390"></a><tt class="py-lineno">390</tt> <a class="py-toggle" href="#" id="DB.db-toggle" onclick="return toggle('DB.db');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#db">db</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.db-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.db-expanded"><a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-115" class="py-name"><a title="spade.xmppd.modules.db_fake.DB.db
+spade.xmppd.modules.db_fake.db" class="py-name" href="#" onclick="return doclink('link-115', 'db', 'link-2');">db</a></tt> </tt>
+</div><a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line"> </tt>
+<a name="DB.print_database"></a><div id="DB.print_database-def"><a name="L393"></a><tt class="py-lineno">393</tt> <a class="py-toggle" href="#" id="DB.print_database-toggle" onclick="return toggle('DB.print_database');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.xmppd.modules.db_fake.DB-class.html#print_database">print_database</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DB.print_database-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DB.print_database-expanded"><a name="L394"></a><tt class="py-lineno">394</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

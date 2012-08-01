@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.XSBKB.XSBKB</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.XSBKB-module.html">Module&nbsp;XSBKB</a> ::
+        Class&nbsp;XSBKB
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.XSBKB.XSBKB-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class XSBKB</h1><p class="nomargin-top"><span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xs" name="uml_class_diagram_for_spade_xs">
+<area shape="rect" id="node1809" href="spade.XSBKB.XSBKB-class.html#__init__" title="Constructor method Usage: XSBKB( sentence, path ) sentence &#45; Prolog &#160;sentence to be added to the KB (default: None) path &#45; path to XSB &#160;executable (default: &#39;xsb&#39;)" alt="" coords="17,116,267,135"/>
+<area shape="rect" id="node1809" href="spade.XSBKB.XSBKB-class.html#tell" title="Adds sentence to KB" alt="" coords="17,135,267,153"/>
+<area shape="rect" id="node1809" href="spade.XSBKB.XSBKB-class.html#ask" title="Queries the KB" alt="" coords="17,153,267,172"/>
+<area shape="rect" id="node1809" href="spade.XSBKB.XSBKB-class.html#retract" title="Deletes sentence from KB" alt="" coords="17,172,267,191"/>
+<area shape="rect" id="node1809" href="spade.XSBKB.XSBKB-class.html#loadModule" title="Loads module to KB Usage: instance.loadModule( path ) path &#45; path to module" alt="" coords="17,191,267,209"/>
+<area shape="rect" id="node1" href="spade.XSBKB.XSBKB-class.html" title="XSB Prolog knowledge base" alt="" coords="5,83,277,215"/>
+<area shape="rect" id="node1810" href="spade.logic.KB-class.html#ask_generator" title="Yield all the substitutions that make query true." alt="" coords="63,39,221,57"/>
+<area shape="rect" id="node2" href="spade.logic.KB-class.html" title="A Knowledge base to which you can tell and ask sentences." alt="" coords="51,6,232,63"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xs.gif" alt='' usemap="#uml_class_diagram_for_spade_xs" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>XSB Prolog knowledge base</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.XSBKB.XSBKB-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">path</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">xsb</code><code class="variable-quote">'</code></span>)</span><br />
+      Constructor method Usage: XSBKB( sentence, path ) sentence - Prolog 
+      sentence to be added to the KB (default: None) path - path to XSB 
+      executable (default: 'xsb')</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.XSBKB.XSBKB-class.html#tell" class="summary-sig-name">tell</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>)</span><br />
+      Adds sentence to KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.tell">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.XSBKB.XSBKB-class.html#ask" class="summary-sig-name">ask</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">query</span>)</span><br />
+      Queries the KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.ask">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.XSBKB.XSBKB-class.html#retract" class="summary-sig-name">retract</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>)</span><br />
+      Deletes sentence from KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.retract">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="loadModule"></a><span class="summary-sig-name">loadModule</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">module</span>)</span><br />
+      Loads module to KB Usage: instance.loadModule( path ) path - path to 
+      module</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.loadModule">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.logic.KB-class.html">logic.KB</a></code></b>:
+      <code><a href="spade.logic.KB-class.html#ask_generator">ask_generator</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sentence</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">path</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">xsb</code><code class="variable-quote">'</code></span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Constructor method Usage: XSBKB( sentence, path ) sentence - Prolog 
+  sentence to be added to the KB (default: None) path - path to XSB 
+  executable (default: 'xsb')</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.logic.KB-class.html#__init__">logic.KB.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="tell"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">tell</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.tell">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Adds sentence to KB</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.logic.KB-class.html#tell">logic.KB.tell</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ask</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">query</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.ask">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Queries the KB</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.logic.KB-class.html#ask">logic.KB.ask</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="retract"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">retract</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sentence</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.XSBKB-pysrc.html#XSBKB.retract">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Deletes sentence from KB</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.logic.KB-class.html#retract">logic.KB.retract</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:49 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

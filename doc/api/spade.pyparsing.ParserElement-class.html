@@ -1,0 +1,1312 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyparsing.ParserElement</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.pyparsing-module.html">Module&nbsp;pyparsing</a> ::
+        Class&nbsp;ParserElement
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyparsing.ParserElement-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class ParserElement</h1><p class="nomargin-top"><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement">source&nbsp;code</a></span></p>
+<center>
+  <div class="private"><center>  <map id="uml_class_diagram_for_spade_py_67" name="uml_class_diagram_for_spade_py_67">
+<area shape="rect" id="node1" href="spade.pyparsing.Group-class.html" title="Converter to return the matched tokens as a list &#45; useful for returning tokens of ZeroOrMore and OneOrMore expressions." alt="" coords="517,475,589,514"/>
+<area shape="rect" id="node2" href="spade.pyparsing.NoMatch-class.html" title="A token that will never match." alt="" coords="1397,417,1485,455"/>
+<area shape="rect" id="node3" href="spade.pyparsing.Suppress-class.html" title="Converter for ignoring the results of a parsed expression." alt="" coords="619,475,709,514"/>
+<area shape="rect" id="node4" href="spade.pyparsing.Optional-class.html" title="Optional matching of the given expression." alt="" coords="5,417,91,455"/>
+<area shape="rect" id="node5" href="spade.pyparsing.ParseElementEnhance-class.html" title="Abstract subclass of ParserElement, for combining and post&#45;processing parsed tokens." alt="" coords="453,358,621,397"/>
+<area shape="rect" id="node7" href="spade.pyparsing.ZeroOrMore-class.html" title="Optional repetition of zero or more of the given expression." alt="" coords="120,417,224,455"/>
+<area shape="rect" id="node12" href="spade.pyparsing.Forward-class.html" title="Forward declaration of an expression to be defined later &#45; used for recursive grammars, such as algebraic infix notation." alt="" coords="253,417,336,455"/>
+<area shape="rect" id="node13" href="spade.pyparsing.FollowedBy-class.html" title="Lookahead matching of the given parse expression." alt="" coords="365,417,469,455"/>
+<area shape="rect" id="node14" href="spade.pyparsing.SkipTo-class.html" title="Token for skipping over all undefined text until the matched expression is found." alt="" coords="499,417,576,455"/>
+<area shape="rect" id="node22" href="spade.pyparsing.NotAny-class.html" title="Lookahead to disallow matching with the given parse expression." alt="" coords="605,417,685,455"/>
+<area shape="rect" id="node28" href="spade.pyparsing.TokenConverter-class.html" title="Abstract subclass of ParseExpression, for converting parsed results." alt="" coords="715,417,843,455"/>
+<area shape="rect" id="node29" href="spade.pyparsing.OneOrMore-class.html" title="Repetition of one or more of the given expression." alt="" coords="872,417,976,455"/>
+<area shape="rect" id="node6" href="spade.pyparsing.And-class.html" title="Requires all given ParseExpressions to be found in the given order." alt="" coords="1005,417,1064,455"/>
+<area shape="rect" id="node8" href="spade.pyparsing.GoToColumn-class.html" title="Token to advance to a specific column of input text; useful for tabular report scraping." alt="" coords="1537,475,1649,514"/>
+<area shape="rect" id="node9" href="spade.pyparsing.Upcase-class.html" title="Converter to upper case all matching tokens." alt="" coords="739,475,819,514"/>
+<area shape="rect" id="node10" href="spade.pyparsing.Empty-class.html" title="An empty token, will always match." alt="" coords="1515,417,1589,455"/>
+<area shape="rect" id="node11" href="spade.pyparsing.Combine-class.html" title="Converter to concatenate all matching tokens to a single string." alt="" coords="848,475,936,514"/>
+<area shape="rect" id="node25" href="spade.pyparsing._ForwardNoRecurse-class.html" title="spade.pyparsing._ForwardNoRecurse" alt="" coords="216,475,373,514"/>
+<area shape="rect" id="node15" href="spade.pyparsing.CaselessLiteral-class.html" title="Token to match a specified string, ignoring case of letters." alt="" coords="1383,475,1508,514"/>
+<area shape="rect" id="node16" href="spade.pyparsing.MatchFirst-class.html" title="Requires that at least one ParseExpression is found." alt="" coords="1093,417,1192,455"/>
+<area shape="rect" id="node17" href="spade.pyparsing.Literal-class.html" title="Token to exactly match a specified string." alt="" coords="1619,417,1691,455"/>
+<area shape="rect" id="node18" href="spade.pyparsing.PositionToken-class.html" title="spade.pyparsing.PositionToken" alt="" coords="1720,417,1840,455"/>
+<area shape="rect" id="node23" href="spade.pyparsing.LineEnd-class.html" title="Matches if current position is at the end of a line within the parse string" alt="" coords="1679,475,1761,514"/>
+<area shape="rect" id="node24" href="spade.pyparsing.StringStart-class.html" title="Matches if current position is at the beginning of the parse string" alt="" coords="1791,475,1889,514"/>
+<area shape="rect" id="node30" href="spade.pyparsing.LineStart-class.html" title="Matches if current position is at the beginning of a line within the parse string" alt="" coords="1919,475,2007,514"/>
+<area shape="rect" id="node35" href="spade.pyparsing.StringEnd-class.html" title="Matches if current position is at the end of the parse string" alt="" coords="2036,475,2129,514"/>
+<area shape="rect" id="node19" href="spade.pyparsing.Keyword-class.html" title="Token to exactly match a specified string as a keyword, that is, it must be immediately followed by a non&#45;keyword character." alt="" coords="1869,417,1957,455"/>
+<area shape="rect" id="node20" href="spade.pyparsing.Word-class.html" title="Token for matching words composed of allowed character sets." alt="" coords="1987,417,2053,455"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#DEFAULT_WHITE_CHARS" title="spade.pyparsing.ParserElement.DEFAULT_WHITE_CHARS" alt="" coords="1019,31,1379,49"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#setDefaultWhitespaceChars" title="Overrides the default whitespace chars" alt="" coords="1019,52,1379,71"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="1019,71,1379,89"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#copy" title="Make a copy of this ParseElement." alt="" coords="1019,89,1379,108"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#setName" title="Define name for this expression, for use in debugging." alt="" coords="1019,108,1379,127"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#setResultsName" title="Define name for referencing matching tokens as a nested attribute of the &#160;returned parse results." alt="" coords="1019,127,1379,145"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#setParseAction" title="Define action to perform when successfully matching parse element &#160;definition." alt="" coords="1019,145,1379,164"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#skipIgnorables" title="spade.pyparsing.ParserElement.skipIgnorables" alt="" coords="1019,164,1379,183"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#preParse" title="spade.pyparsing.ParserElement.preParse" alt="" coords="1019,183,1379,201"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#parseImpl" title="spade.pyparsing.ParserElement.parseImpl" alt="" coords="1019,201,1379,220"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#postParse" title="spade.pyparsing.ParserElement.postParse" alt="" coords="1019,220,1379,239"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#parse" title="spade.pyparsing.ParserElement.parse" alt="" coords="1019,239,1379,257"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#tryParse" title="spade.pyparsing.ParserElement.tryParse" alt="" coords="1019,257,1379,276"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#parseString" title="Execute the parse expression with the given string." alt="" coords="1019,276,1379,295"/>
+<area shape="rect" id="node2218" href="spade.pyparsing.ParserElement-class.html#parseFile" title="Execute the parse expression on the given file or filename." alt="" coords="1019,313,1379,332"/>
+<area shape="rect" id="node21" href="spade.pyparsing.ParserElement-class.html" title="Abstract base level parser element class." alt="" coords="1007,6,1391,338"/>
+<area shape="rect" id="node32" href="spade.pyparsing.ParseExpression-class.html" title="Abstract subclass of ParserElement, for combining and post&#45;processing parsed tokens." alt="" coords="1131,358,1267,397"/>
+<area shape="rect" id="node33" href="spade.pyparsing.Token-class.html" title="Abstract ParserElement subclass, for defining atomic matching patterns." alt="" coords="1744,358,1816,397"/>
+<area shape="rect" id="node26" href="spade.pyparsing.Each-class.html" title="Requires all given ParseExpressions to be found, but in any order." alt="" coords="1221,417,1288,455"/>
+<area shape="rect" id="node27" href="spade.pyparsing.Or-class.html" title="Requires that at least one ParseExpression is found." alt="" coords="1317,417,1368,455"/>
+<area shape="rect" id="node34" href="spade.pyparsing.Dict-class.html" title="Converter to return a repetitive expression as a list, but also as a dictionary." alt="" coords="965,475,1027,514"/>
+<area shape="rect" id="node31" href="spade.pyparsing.White-class.html" title="Special matching class for matching whitespace." alt="" coords="2083,417,2152,455"/>
+<area shape="rect" id="node36" href="spade.pyparsing.CharsNotIn-class.html" title="Token for matching words composed of characters *not* in a given set." alt="" coords="2181,417,2285,455"/>
+</map>
+  <img src="uml_class_diagram_for_spade_py_67.gif" alt='' usemap="#uml_class_diagram_for_spade_py_67" ismap="ismap" class="graph-without-title" />
+</center></div>
+  <div class="public" style="display:none"><center>  <map id="uml_class_diagram_for_spade_py_68" name="uml_class_diagram_for_spade_py_68">
+<area shape="rect" id="node1" href="spade.pyparsing.Group-class.html" title="Converter to return the matched tokens as a list &#45; useful for returning tokens of ZeroOrMore and OneOrMore expressions." alt="" coords="517,475,589,514"/>
+<area shape="rect" id="node2" href="spade.pyparsing.NoMatch-class.html" title="A token that will never match." alt="" coords="1397,417,1485,455"/>
+<area shape="rect" id="node3" href="spade.pyparsing.Suppress-class.html" title="Converter for ignoring the results of a parsed expression." alt="" coords="619,475,709,514"/>
+<area shape="rect" id="node4" href="spade.pyparsing.Optional-class.html" title="Optional matching of the given expression." alt="" coords="5,417,91,455"/>
+<area shape="rect" id="node5" href="spade.pyparsing.ParseElementEnhance-class.html" title="Abstract subclass of ParserElement, for combining and post&#45;processing parsed tokens." alt="" coords="453,358,621,397"/>
+<area shape="rect" id="node7" href="spade.pyparsing.ZeroOrMore-class.html" title="Optional repetition of zero or more of the given expression." alt="" coords="120,417,224,455"/>
+<area shape="rect" id="node12" href="spade.pyparsing.Forward-class.html" title="Forward declaration of an expression to be defined later &#45; used for recursive grammars, such as algebraic infix notation." alt="" coords="253,417,336,455"/>
+<area shape="rect" id="node13" href="spade.pyparsing.FollowedBy-class.html" title="Lookahead matching of the given parse expression." alt="" coords="365,417,469,455"/>
+<area shape="rect" id="node14" href="spade.pyparsing.SkipTo-class.html" title="Token for skipping over all undefined text until the matched expression is found." alt="" coords="499,417,576,455"/>
+<area shape="rect" id="node22" href="spade.pyparsing.NotAny-class.html" title="Lookahead to disallow matching with the given parse expression." alt="" coords="605,417,685,455"/>
+<area shape="rect" id="node27" href="spade.pyparsing.TokenConverter-class.html" title="Abstract subclass of ParseExpression, for converting parsed results." alt="" coords="715,417,843,455"/>
+<area shape="rect" id="node28" href="spade.pyparsing.OneOrMore-class.html" title="Repetition of one or more of the given expression." alt="" coords="872,417,976,455"/>
+<area shape="rect" id="node6" href="spade.pyparsing.And-class.html" title="Requires all given ParseExpressions to be found in the given order." alt="" coords="1005,417,1064,455"/>
+<area shape="rect" id="node8" href="spade.pyparsing.GoToColumn-class.html" title="Token to advance to a specific column of input text; useful for tabular report scraping." alt="" coords="1537,475,1649,514"/>
+<area shape="rect" id="node9" href="spade.pyparsing.Upcase-class.html" title="Converter to upper case all matching tokens." alt="" coords="739,475,819,514"/>
+<area shape="rect" id="node10" href="spade.pyparsing.Empty-class.html" title="An empty token, will always match." alt="" coords="1515,417,1589,455"/>
+<area shape="rect" id="node11" href="spade.pyparsing.Combine-class.html" title="Converter to concatenate all matching tokens to a single string." alt="" coords="848,475,936,514"/>
+<area shape="rect" id="node15" href="spade.pyparsing.CaselessLiteral-class.html" title="Token to match a specified string, ignoring case of letters." alt="" coords="1383,475,1508,514"/>
+<area shape="rect" id="node16" href="spade.pyparsing.MatchFirst-class.html" title="Requires that at least one ParseExpression is found." alt="" coords="1093,417,1192,455"/>
+<area shape="rect" id="node17" href="spade.pyparsing.Literal-class.html" title="Token to exactly match a specified string." alt="" coords="1619,417,1691,455"/>
+<area shape="rect" id="node18" href="spade.pyparsing.PositionToken-class.html" title="spade.pyparsing.PositionToken" alt="" coords="1720,417,1840,455"/>
+<area shape="rect" id="node23" href="spade.pyparsing.LineEnd-class.html" title="Matches if current position is at the end of a line within the parse string" alt="" coords="1679,475,1761,514"/>
+<area shape="rect" id="node24" href="spade.pyparsing.StringStart-class.html" title="Matches if current position is at the beginning of the parse string" alt="" coords="1791,475,1889,514"/>
+<area shape="rect" id="node29" href="spade.pyparsing.LineStart-class.html" title="Matches if current position is at the beginning of a line within the parse string" alt="" coords="1919,475,2007,514"/>
+<area shape="rect" id="node34" href="spade.pyparsing.StringEnd-class.html" title="Matches if current position is at the end of the parse string" alt="" coords="2036,475,2129,514"/>
+<area shape="rect" id="node19" href="spade.pyparsing.Keyword-class.html" title="Token to exactly match a specified string as a keyword, that is, it must be immediately followed by a non&#45;keyword character." alt="" coords="1869,417,1957,455"/>
+<area shape="rect" id="node20" href="spade.pyparsing.Word-class.html" title="Token for matching words composed of allowed character sets." alt="" coords="1987,417,2053,455"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#DEFAULT_WHITE_CHARS" title="spade.pyparsing.ParserElement.DEFAULT_WHITE_CHARS" alt="" coords="1019,31,1379,49"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#setDefaultWhitespaceChars" title="Overrides the default whitespace chars" alt="" coords="1019,52,1379,71"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="1019,71,1379,89"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#copy" title="Make a copy of this ParseElement." alt="" coords="1019,89,1379,108"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#setName" title="Define name for this expression, for use in debugging." alt="" coords="1019,108,1379,127"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#setResultsName" title="Define name for referencing matching tokens as a nested attribute of the &#160;returned parse results." alt="" coords="1019,127,1379,145"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#setParseAction" title="Define action to perform when successfully matching parse element &#160;definition." alt="" coords="1019,145,1379,164"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#skipIgnorables" title="spade.pyparsing.ParserElement.skipIgnorables" alt="" coords="1019,164,1379,183"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#preParse" title="spade.pyparsing.ParserElement.preParse" alt="" coords="1019,183,1379,201"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#parseImpl" title="spade.pyparsing.ParserElement.parseImpl" alt="" coords="1019,201,1379,220"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#postParse" title="spade.pyparsing.ParserElement.postParse" alt="" coords="1019,220,1379,239"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#parse" title="spade.pyparsing.ParserElement.parse" alt="" coords="1019,239,1379,257"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#tryParse" title="spade.pyparsing.ParserElement.tryParse" alt="" coords="1019,257,1379,276"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#parseString" title="Execute the parse expression with the given string." alt="" coords="1019,276,1379,295"/>
+<area shape="rect" id="node2254" href="spade.pyparsing.ParserElement-class.html#parseFile" title="Execute the parse expression on the given file or filename." alt="" coords="1019,313,1379,332"/>
+<area shape="rect" id="node21" href="spade.pyparsing.ParserElement-class.html" title="Abstract base level parser element class." alt="" coords="1007,6,1391,338"/>
+<area shape="rect" id="node31" href="spade.pyparsing.ParseExpression-class.html" title="Abstract subclass of ParserElement, for combining and post&#45;processing parsed tokens." alt="" coords="1131,358,1267,397"/>
+<area shape="rect" id="node32" href="spade.pyparsing.Token-class.html" title="Abstract ParserElement subclass, for defining atomic matching patterns." alt="" coords="1744,358,1816,397"/>
+<area shape="rect" id="node25" href="spade.pyparsing.Each-class.html" title="Requires all given ParseExpressions to be found, but in any order." alt="" coords="1221,417,1288,455"/>
+<area shape="rect" id="node26" href="spade.pyparsing.Or-class.html" title="Requires that at least one ParseExpression is found." alt="" coords="1317,417,1368,455"/>
+<area shape="rect" id="node33" href="spade.pyparsing.Dict-class.html" title="Converter to return a repetitive expression as a list, but also as a dictionary." alt="" coords="965,475,1027,514"/>
+<area shape="rect" id="node30" href="spade.pyparsing.White-class.html" title="Special matching class for matching whitespace." alt="" coords="2083,417,2152,455"/>
+<area shape="rect" id="node35" href="spade.pyparsing.CharsNotIn-class.html" title="Token for matching words composed of characters *not* in a given set." alt="" coords="2181,417,2285,455"/>
+</map>
+  <img src="uml_class_diagram_for_spade_py_68.gif" alt='' usemap="#uml_class_diagram_for_spade_py_68" ismap="ismap" class="graph-without-title" />
+</center></div>
+</center>
+<hr />
+<p>Abstract base level parser element class.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">savelist</span>=<span class="summary-sig-default">False</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#copy" class="summary-sig-name">copy</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Make a copy of this ParseElement.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.copy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setName"></a><span class="summary-sig-name">setName</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Define name for this expression, for use in debugging.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#setResultsName" class="summary-sig-name">setResultsName</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">listAllMatches</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Define name for referencing matching tokens as a nested attribute of 
+      the returned parse results.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setResultsName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#setParseAction" class="summary-sig-name">setParseAction</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fn</span>)</span><br />
+      Define action to perform when successfully matching parse element 
+      definition.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setParseAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="skipIgnorables"></a><span class="summary-sig-name">skipIgnorables</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.skipIgnorables">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="preParse"></a><span class="summary-sig-name">preParse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.preParse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="parseImpl"></a><span class="summary-sig-name">parseImpl</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">doActions</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseImpl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="postParse"></a><span class="summary-sig-name">postParse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">tokenlist</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.postParse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="parse"></a><span class="summary-sig-name">parse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">doActions</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">callPreParse</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tryParse"></a><span class="summary-sig-name">tryParse</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.tryParse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#parseString" class="summary-sig-name">parseString</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>)</span><br />
+      Execute the parse expression with the given string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseString">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#scanString" class="summary-sig-name">scanString</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>)</span><br />
+      Scan the input string for expression matches.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.scanString">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#transformString" class="summary-sig-name">transformString</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">instring</span>)</span><br />
+      Extension to scanString, to modify matching text with modified tokens
+      that may be returned from a parse action.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.transformString">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__add__"></a><span class="summary-sig-name">__add__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of + operator - returns And</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__add__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__radd__"></a><span class="summary-sig-name">__radd__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of += operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__radd__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__or__"></a><span class="summary-sig-name">__or__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of | operator - returns MatchFirst</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__or__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__ror__"></a><span class="summary-sig-name">__ror__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of |= operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__ror__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__xor__"></a><span class="summary-sig-name">__xor__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of ^ operator - returns Or</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__xor__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__rxor__"></a><span class="summary-sig-name">__rxor__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of ^= operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__rxor__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__and__"></a><span class="summary-sig-name">__and__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of &amp; operator - returns Each</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__and__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__rand__"></a><span class="summary-sig-name">__rand__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Implementation of right-&amp; operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__rand__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__invert__"></a><span class="summary-sig-name">__invert__</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Implementation of ~ operator - returns NotAny</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__invert__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="suppress"></a><span class="summary-sig-name">suppress</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Suppresses the output of this ParseElement; useful to keep 
+      punctuation from cluttering up returned output.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.suppress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#leaveWhitespace" class="summary-sig-name">leaveWhitespace</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Disables the skipping of whitespace before matching the characters in
+      the ParserElement's defined pattern.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.leaveWhitespace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setWhitespaceChars"></a><span class="summary-sig-name">setWhitespaceChars</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">chars</span>)</span><br />
+      Overrides the default whitespace chars</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setWhitespaceChars">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#parseWithTabs" class="summary-sig-name">parseWithTabs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Overrides default behavior to expand &lt;TAB&gt;s to spaces before 
+      parsing the input string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseWithTabs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ignore"></a><span class="summary-sig-name">ignore</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Define expression to be ignored (e.g., comments) while doing pattern 
+      matching; may be called repeatedly, to define multiple comment or 
+      other ignorable patterns.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.ignore">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDebugActions"></a><span class="summary-sig-name">setDebugActions</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">startAction</span>,
+        <span class="summary-sig-arg">successAction</span>,
+        <span class="summary-sig-arg">exceptionAction</span>)</span><br />
+      Enable display of debugging messages while doing pattern matching.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setDebugActions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDebug"></a><span class="summary-sig-name">setDebug</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">flag</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Enable display of debugging messages while doing pattern matching.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setDebug">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="streamline"></a><span class="summary-sig-name">streamline</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.streamline">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="checkRecursion"></a><span class="summary-sig-name">checkRecursion</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parseElementList</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.checkRecursion">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="validate"></a><span class="summary-sig-name">validate</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">validateTrace</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>)</span><br />
+      Check defined expressions for valid structure, check for infinite 
+      recursive definitions.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.validate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing.ParserElement-class.html#parseFile" class="summary-sig-name">parseFile</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">file_or_filename</span>)</span><br />
+      Execute the parse expression on the given file or filename.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseFile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDefaultWhitespaceChars"></a><span class="summary-sig-name">setDefaultWhitespaceChars</span>(<span class="summary-sig-arg">chars</span>)</span><br />
+      Overrides the default whitespace chars</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setDefaultWhitespaceChars">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEFAULT_WHITE_CHARS"></a><span class="summary-name">DEFAULT_WHITE_CHARS</span> = <code title="''' 
+\t\r'''"><code class="variable-quote">'</code><code class="variable-string"> \n\t\r</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">savelist</span>=<span class="sig-default">False</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="copy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.copy">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Make a copy of this ParseElement.  Useful for defining different parse
+  actions for the same parsing pattern, using copies of the original parse 
+  element.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setResultsName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setResultsName</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">listAllMatches</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setResultsName">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Define name for referencing matching tokens as a nested attribute of 
+  the returned parse results. NOTE: this returns a *copy* of the original 
+  ParseElement object; this is so that the client can define a basic 
+  element, such as an integer, and reference it in multiple places with 
+  different names.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setParseAction"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setParseAction</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">fn</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.setParseAction">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Define action to perform when successfully matching parse element 
+  definition. Parse action fn is a callable method with the arguments (s, 
+  loc, toks) where:</p>
+  <ul>
+    <li>
+      s   = the original string being parsed
+    </li>
+    <li>
+      loc = the location of the matching substring
+    </li>
+    <li>
+      toks = a list of the matched tokens, packaged as a ParseResults 
+      object
+    </li>
+  </ul>
+  <p>If the function fn modifies the tokens, it can return them as the 
+  return value from fn, and the modified list of tokens will replace the 
+  original. Otherwise, fn does not need to return any value.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="parseString"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parseString</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">instring</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseString">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Execute the parse expression with the given string. This is the main 
+  interface to the client code, once the complete expression has been 
+  built.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="scanString"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">scanString</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">instring</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.scanString">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Scan the input string for expression matches.  Each match will return 
+  the matching tokens, start location, and end location.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="transformString"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">transformString</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">instring</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.transformString">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Extension to scanString, to modify matching text with modified tokens 
+  that may be returned from a parse action.  To use transformString, define
+  a grammar and attach a parse action to it that modifies the returned 
+  token list. Invoking transformString() on a target string will then scan 
+  for matches, and replace the matched text patterns according to the logic
+  in the parse action.  transformString() returns the resulting transformed
+  string.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="leaveWhitespace"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">leaveWhitespace</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.leaveWhitespace">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Disables the skipping of whitespace before matching the characters in 
+  the ParserElement's defined pattern.  This is normally only used 
+  internally by the pyparsing module, but may be needed in some 
+  whitespace-sensitive grammars.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="parseWithTabs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parseWithTabs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseWithTabs">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Overrides default behavior to expand &lt;TAB&gt;s to spaces before 
+  parsing the input string. Must be called before parseString when the 
+  input grammar contains elements that match &lt;TAB&gt; characters.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>repr(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="parseFile"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parseFile</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">file_or_filename</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#ParserElement.parseFile">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Execute the parse expression on the given file or filename. If a 
+  filename is specified (instead of a file object), the entire file is 
+  opened, read, and closed before parsing.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:54 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.simplexml.Node</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.simplexml-module.html">Module&nbsp;simplexml</a> ::
+        Class&nbsp;Node
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.simplexml.Node-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Node</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_52" name="uml_class_diagram_for_spade_xm_52">
+<area shape="rect" id="node1" href="spade.xmpp.protocol.DataField-class.html" title="This class is used in the DataForm class to describe the single data item." alt="" coords="63,358,204,397"/>
+<area shape="rect" id="node2" href="spade.xmpp.protocol.Protocol-class.html" title="A &quot;stanza&quot; object class." alt="" coords="233,358,367,397"/>
+<area shape="rect" id="node4" href="spade.xmpp.protocol.Presence-class.html" title="XMPP Presence object." alt="" coords="5,417,147,455"/>
+<area shape="rect" id="node6" href="spade.xmpp.protocol.Error-class.html" title="Used to quickly transform received stanza into error reply." alt="" coords="176,417,291,455"/>
+<area shape="rect" id="node7" href="spade.xmpp.protocol.Iq-class.html" title="XMPP Iq object &#45; get/set dialog mechanism." alt="" coords="320,417,416,455"/>
+<area shape="rect" id="node8" href="spade.xmpp.protocol.Message-class.html" title="XMPP Message stanza &#45; &quot;push&quot; mechanism." alt="" coords="445,417,584,455"/>
+<area shape="rect" id="node3" href="spade.xmpp.protocol.ErrorNode-class.html" title="XMPP&#45;style error element." alt="" coords="396,358,540,397"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION" title="spade.xmpp.simplexml.Node.FORCE_NODE_RECREATION" alt="" coords="147,31,621,49"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__delitem__" title="Deletes node&#39;s attribute &quot;item&quot;." alt="" coords="147,52,621,71"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__getattr__" title="Reduce memory usage caused by T/NT classes &#45; use memory only when needed." alt="" coords="147,71,621,89"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__getitem__" title="Returns node&#39;s attribute &quot;item&quot; value." alt="" coords="147,89,621,108"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__init__" title="Takes &quot;tag&quot; argument as the name of node (prepended by namespace, if needed and separated from it by a space), attrs dictionary as the set of &#160;arguments, payload list as the set of textual strings and child nodes that &#160;this node carries within itself and &quot;parent&quot; argument that is another node &#160;that this one will be the child of." alt="" coords="147,108,621,127"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__setitem__" title="Sets node&#39;s attribute &quot;item&quot; value." alt="" coords="147,127,621,145"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#__str__" title="Method used to dump node into textual representation." alt="" coords="147,145,621,164"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#addChild" title="If &quot;node&quot; argument is provided, adds it as child node." alt="" coords="147,164,621,183"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#addData" title="Adds some CDATA to node." alt="" coords="147,183,621,201"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#clearData" title="Removes all CDATA from the node." alt="" coords="147,201,621,220"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#delAttr" title="Deletes an attribute &quot;key&quot;" alt="" coords="147,220,621,239"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#delChild" title="Deletes the &quot;node&quot; from the node&#39;s childs list, if &quot;node&quot; is an instance." alt="" coords="147,239,621,257"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#getAttr" title="Returns value of specified attribute." alt="" coords="147,257,621,276"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#getAttrs" title="Returns all node&#39;s attributes as dictionary." alt="" coords="147,276,621,295"/>
+<area shape="rect" id="node2668" href="spade.xmpp.simplexml.Node-class.html#setTagData" title="Creates new node (if not already present) with name &quot;tag&quot; and (optionally) &#160;attributes &quot;attrs&quot; and sets it&#39;s CDATA to string &quot;val&quot;." alt="" coords="147,313,621,332"/>
+<area shape="rect" id="node5" href="spade.xmpp.simplexml.Node-class.html" title="Node class describes syntax of separate XML Node." alt="" coords="135,6,633,338"/>
+<area shape="rect" id="node9" href="spade.xmpp.protocol.DataForm-class.html" title="DataForm class." alt="" coords="569,358,713,397"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_52.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_52" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Node class describes syntax of separate XML Node. It have a 
+  constructor that permits node creation from set of &quot;namespace 
+  name&quot;, attributes and payload of text strings and other nodes. It 
+  does not natively support building node from text string and uses 
+  NodeBuilder class for that purpose. After creation node can be mangled in
+  many ways so it can be completely changed. Also node can be serialised 
+  into string in one of two modes: default (where the textual 
+  representation of node describes it exactly) and &quot;fancy&quot; - with
+  whitespace added to make indentation and thus make result more readable 
+  by human.</p>
+  <p>Node class have attribute FORCE_NODE_RECREATION that is defaults to 
+  False thus enabling fast node replication from the some other node. The 
+  drawback of the fast way is that new node shares some info with the 
+  &quot;original&quot; node that is changing the one node may influence the
+  other. Though it is rarely needed (in xmpppy it is never needed at all 
+  since I'm usually never using original node after replication (and using 
+  replication only to move upwards on the classes tree).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__delitem__"></a><span class="summary-sig-name">__delitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">item</span>)</span><br />
+      Deletes node's attribute &quot;item&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__delitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Reduce memory usage caused by T/NT classes - use memory only when 
+      needed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__getattr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getitem__"></a><span class="summary-sig-name">__getitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">item</span>)</span><br />
+      Returns node's attribute &quot;item&quot; value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">payload</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">parent</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Takes &quot;tag&quot; argument as the name of node (prepended by 
+      namespace, if needed and separated from it by a space), attrs 
+      dictionary as the set of arguments, payload list as the set of 
+      textual strings and child nodes that this node carries within itself 
+      and &quot;parent&quot; argument that is another node that this one 
+      will be the child of.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setitem__"></a><span class="summary-sig-name">__setitem__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">item</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Sets node's attribute &quot;item&quot; value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__setitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fancy</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Method used to dump node into textual representation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#addChild" class="summary-sig-name">addChild</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">payload</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">namespace</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      If &quot;node&quot; argument is provided, adds it as child node.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.addChild">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addData"></a><span class="summary-sig-name">addData</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      Adds some CDATA to node.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.addData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clearData"></a><span class="summary-sig-name">clearData</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Removes all CDATA from the node.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.clearData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="delAttr"></a><span class="summary-sig-name">delAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>)</span><br />
+      Deletes an attribute &quot;key&quot;</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.delAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#delChild" class="summary-sig-name">delChild</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      Deletes the &quot;node&quot; from the node's childs list, if 
+      &quot;node&quot; is an instance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.delChild">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAttr"></a><span class="summary-sig-name">getAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>)</span><br />
+      Returns value of specified attribute.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAttrs"></a><span class="summary-sig-name">getAttrs</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns all node's attributes as dictionary.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getAttrs">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getChildren"></a><span class="summary-sig-name">getChildren</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns all node's child nodes as list.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getChildren">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getData"></a><span class="summary-sig-name">getData</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns all node CDATA as string (concatenated).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getName"></a><span class="summary-sig-name">getName</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the name of node</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getNamespace"></a><span class="summary-sig-name">getNamespace</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the namespace of node</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getNamespace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getParent"></a><span class="summary-sig-name">getParent</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the parent of node (if present).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getParent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#getPayload" class="summary-sig-name">getPayload</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the payload of node i.e.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getPayload">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#getTag" class="summary-sig-name">getTag</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">namespace</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Filters all child nodes using specified arguments as filter.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTagAttr"></a><span class="summary-sig-name">getTagAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">attr</span>)</span><br />
+      Returns attribute value of the child with specified name (or None if 
+      no such attribute).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTagAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTagData"></a><span class="summary-sig-name">getTagData</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>)</span><br />
+      Returns cocatenated CDATA of the child with specified name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTagData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#getTags" class="summary-sig-name">getTags</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">namespace</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">one</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Filters all child nodes using specified arguments as filter.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTags">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="has_attr"></a><span class="summary-sig-name">has_attr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>)</span><br />
+      Checks if node have attribute &quot;key&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.has_attr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAttr"></a><span class="summary-sig-name">setAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Sets attribute &quot;key&quot; with the value &quot;val&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#setData" class="summary-sig-name">setData</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      Sets node's CDATA to provided string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setName"></a><span class="summary-sig-name">setName</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Changes the node name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setNamespace"></a><span class="summary-sig-name">setNamespace</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">namespace</span>)</span><br />
+      Changes the node namespace.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setNamespace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#setParent" class="summary-sig-name">setParent</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>)</span><br />
+      Sets node's parent to &quot;node&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setParent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.simplexml.Node-class.html#setPayload" class="summary-sig-name">setPayload</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">payload</span>,
+        <span class="summary-sig-arg">add</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Sets node payload according to the list specified.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setPayload">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTag"></a><span class="summary-sig-name">setTag</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">namespace</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Same as getTag but if the node with specified namespace/attributes 
+      not found, creates such node and returns it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setTag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTagAttr"></a><span class="summary-sig-name">setTagAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">attr</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Creates new node (if not already present) with name &quot;tag&quot; 
+      and sets it's attribute &quot;attr&quot; to value &quot;val&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setTagAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTagData"></a><span class="summary-sig-name">setTagData</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">val</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
+      Creates new node (if not already present) with name &quot;tag&quot; 
+      and (optionally) attributes &quot;attrs&quot; and sets it's CDATA to 
+      string &quot;val&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setTagData">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="FORCE_NODE_RECREATION"></a><span class="summary-name">FORCE_NODE_RECREATION</span> = <code title="0">0</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">tag</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">payload</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">parent</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Takes &quot;tag&quot; argument as the name of node (prepended by 
+  namespace, if needed and separated from it by a space), attrs dictionary 
+  as the set of arguments, payload list as the set of textual strings and 
+  child nodes that this node carries within itself and &quot;parent&quot; 
+  argument that is another node that this one will be the child of. Also 
+  the __init__ can be provided with &quot;node&quot; argument that is 
+  either a text string containing exactly one node or another Node instance
+  to begin with. If both &quot;node&quot; and other arguments is provided 
+  then the node initially created as replica of &quot;node&quot; provided 
+  and then modified to be compliant with other arguments.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">fancy</span>=<span class="sig-default">0</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Method used to dump node into textual representation. if 
+  &quot;fancy&quot; argument is set to True produces indented output for 
+  readability.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="addChild"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addChild</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">payload</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">namespace</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.addChild">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If &quot;node&quot; argument is provided, adds it as child node. Else 
+  creates new node from the other arguments' values and adds it as 
+  well.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="delChild"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delChild</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.delChild">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Deletes the &quot;node&quot; from the node's childs list, if 
+  &quot;node&quot; is an instance. Else deletes the first node that have 
+  specified name and (optionally) attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getPayload"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getPayload</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getPayload">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the payload of node i.e. list of child nodes and CDATA entries.
+  F.e. for &quot;&lt;node&gt;text1&lt;nodea/&gt;&lt;nodeb/&gt; 
+  text2&lt;/node&gt;&quot; will be returned list: ['text1', &lt;nodea 
+  instance&gt;, &lt;nodeb instance&gt;, ' text2'].</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getTag"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getTag</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">namespace</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTag">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Filters all child nodes using specified arguments as filter. Returns 
+  the first found or None if not found.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getTags"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getTags</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">namespace</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">one</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.getTags">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Filters all child nodes using specified arguments as filter. Returns 
+  the list of nodes found.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setData</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setData">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Sets node's CDATA to provided string. Resets all previous CDATA!</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setParent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setParent</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setParent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Sets node's parent to &quot;node&quot;. WARNING: do not checks if the 
+  parent already present and not removes the node from the list of childs 
+  of previous parent.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setPayload"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setPayload</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">payload</span>,
+        <span class="sig-arg">add</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.simplexml-pysrc.html#Node.setPayload">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Sets node payload according to the list specified. WARNING: completely
+  replaces all node's previous content. If you wish just to add child or 
+  CDATA - use addData or addChild methods.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

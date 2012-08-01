@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.client.Client</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.client-module.html">Module&nbsp;client</a> ::
+        Class&nbsp;Client
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.client.Client-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Client</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_7" name="uml_class_diagram_for_spade_xm_7">
+<area shape="rect" id="node2480" href="spade.xmpp.client.Client-class.html#connect" title="Connect to jabber server." alt="" coords="17,247,441,265"/>
+<area shape="rect" id="node2480" href="spade.xmpp.client.Client-class.html#auth" title="Authenticate connnection and bind resource." alt="" coords="17,265,441,284"/>
+<area shape="rect" id="node2480" href="spade.xmpp.client.Client-class.html#getRoster" title="Return the Roster instance, previously plugging it in and requesting roster from server if needed." alt="" coords="17,284,441,303"/>
+<area shape="rect" id="node2480" href="spade.xmpp.client.Client-class.html#sendInitPresence" title="Send roster request and initial &lt;presence/&gt;." alt="" coords="17,303,441,321"/>
+<area shape="rect" id="node2480" href="spade.xmpp.client.Client-class.html#sendPresence" title="Send some specific presence state." alt="" coords="17,321,441,340"/>
+<area shape="rect" id="node1" href="spade.xmpp.client.Client-class.html" title="Example client class, based on CommonClient." alt="" coords="5,214,453,346"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#__init__" title="Caches server name and (optionally) port to connect to." alt="" coords="40,39,417,57"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#RegisterDisconnectHandler" title="Register handler that will be called on disconnect." alt="" coords="40,57,417,76"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#UnregisterDisconnectHandler" title="Unregister handler that is called on disconnect." alt="" coords="40,76,417,95"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#disconnected" title="Called on disconnection." alt="" coords="40,95,417,113"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#DisconnectHandler" title="Default disconnect handler." alt="" coords="40,113,417,132"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#event" title="Default event handler." alt="" coords="40,132,417,151"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#isConnected" title="Returns connection state." alt="" coords="40,151,417,169"/>
+<area shape="rect" id="node2481" href="spade.xmpp.client.CommonClient-class.html#reconnectAndReauth" title="Example of reconnection method." alt="" coords="40,169,417,188"/>
+<area shape="rect" id="node2" href="spade.xmpp.client.CommonClient-class.html" title="Base for Client and Component classes." alt="" coords="28,6,428,194"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_7.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_7" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Example client class, based on CommonClient.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#connect" class="summary-sig-name">connect</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">server</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">proxy</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">secure</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">use_srv</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Connect to jabber server.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.connect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#auth" class="summary-sig-name">auth</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">user</span>,
+        <span class="summary-sig-arg">password</span>,
+        <span class="summary-sig-arg">resource</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">sasl</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Authenticate connnection and bind resource.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.auth">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getRoster"></a><span class="summary-sig-name">getRoster</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the Roster instance, previously plugging it in and requesting 
+      roster from server if needed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.getRoster">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#sendInitPresence" class="summary-sig-name">sendInitPresence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">requestRoster</span>=<span class="summary-sig-default">1</span>)</span><br />
+      Send roster request and initial &lt;presence/&gt;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.sendInitPresence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.client.Client-class.html#sendPresence" class="summary-sig-name">sendPresence</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">requestRoster</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Send some specific presence state.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.sendPresence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.client.CommonClient-class.html">CommonClient</a></code></b>:
+      <code><a href="spade.xmpp.client.CommonClient-class.html#DisconnectHandler">DisconnectHandler</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#RegisterDisconnectHandler">RegisterDisconnectHandler</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#UnregisterDisconnectHandler">UnregisterDisconnectHandler</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#__init__">__init__</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#disconnected">disconnected</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#event">event</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#isConnected">isConnected</a></code>,
+      <code><a href="spade.xmpp.client.CommonClient-class.html#reconnectAndReauth">reconnectAndReauth</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="connect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">connect</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">server</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">proxy</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">secure</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">use_srv</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.connect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Connect to jabber server. If you want to specify different ip/port to 
+  connect to you can pass it as tuple as first parameter. If there is HTTP 
+  proxy between you and server specify it's address and credentials (if 
+  needed) in the second argument. If you want ssl/tls support to be 
+  discovered and enable automatically - leave third argument as None. (ssl 
+  will be autodetected only if port is 5223 or 443) If you want to force 
+  SSL start (i.e. if port 5223 or 443 is remapped to some non-standard 
+  port) then set it to 1. If you want to disable tls/ssl support 
+  completely, set it to 0. Example: 
+  connect(('192.168.5.5',5222),{'host':'proxy.my.net','port':8080,'user':'me','password':'secret'})
+  Returns '' or 'tcp' or 'tls', depending on the result.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.client.CommonClient-class.html#connect">CommonClient.connect</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="auth"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">auth</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">user</span>,
+        <span class="sig-arg">password</span>,
+        <span class="sig-arg">resource</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">sasl</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.auth">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Authenticate connnection and bind resource. If resource is not 
+  provided random one or library name used.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="sendInitPresence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sendInitPresence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">requestRoster</span>=<span class="sig-default">1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.sendInitPresence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Send roster request and initial &lt;presence/&gt;. You can disable the
+  first by setting requestRoster argument to 0.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="sendPresence"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sendPresence</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">jid</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">requestRoster</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.client-pysrc.html#Client.sendPresence">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Send some specific presence state. Can also request roster from server
+  if according agrument is set.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

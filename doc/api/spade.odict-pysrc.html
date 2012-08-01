@@ -1,0 +1,1255 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.odict</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;odict
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.odict-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.odict-module.html">Module spade.odict</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">    odict</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">    ~~~~~</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">    This module is an example implementation of an ordered dict for the</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">    collections module.  It's not written for performance (it actually</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">    performs pretty bad) but to show how the API works.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">    Questions and Answers</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">    =====================</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">    Why would anyone need ordered dicts?</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">        Dicts in python are unordered which means that the order of items when</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        iterating over dicts is undefined.  As a matter of fact it is most of</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">        the time useless and differs from implementation to implementation.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        Many developers stumble upon that problem sooner or later when</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">        comparing the output of doctests which often does not match the order</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">        the developer thought it would.</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">        Also XML systems such as Genshi have their problems with unordered</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">        dicts as the input and output ordering of tag attributes is often</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">        mixed up because the ordering is lost when converting the data into</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">        a dict.  Switching to lists is often not possible because the</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        complexity of a lookup is too high.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">        Another very common case is metaprogramming.  The default namespace</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">        of a class in python is a dict.  With Python 3 it becomes possible</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">        to replace it with a different object which could be an ordered dict.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">        Django is already doing something similar with a hack that assigns</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">        numbers to some descriptors initialized in the class body of a</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">        specific subclass to restore the ordering after class creation.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">        When porting code from programming languages such as PHP and Ruby</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">        where the item-order in a dict is guaranteed it's also a great help</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">        to have an equivalent data structure in Python to ease the transition.</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    Where are new keys added?</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">        At the end.  This behavior is consistent with Ruby 1.9 Hashmaps</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">        and PHP Arrays.  It also matches what common ordered dict</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">        implementations do currently.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    What happens if an existing key is reassigned?</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">        The key is *not* moved.  This is consitent with existing</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">        implementations and can be changed by a subclass very easily::</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">            class movingodict(odict):</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">                def __setitem__(self, key, value):</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">                    self.pop(key, None)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">                    odict.__setitem__(self, key, value)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        Moving keys to the end of a ordered dict on reassignment is not</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        very useful for most applications.</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">    Does it mean the dict keys are sorted by a sort expression?</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">        That's not the case.  The odict only guarantees that there is an order</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">        and that newly inserted keys are inserted at the end of the dict.  If</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">        you want to sort it you can do so, but newly added keys are again added</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">        at the end of the dict.</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">    I initializes the odict with a dict literal but the keys are not</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">    ordered like they should!</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">        Dict literals in Python generate dict objects and as such the order of</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">        their items is not guaranteed.  Before they are passed to the odict</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">        constructor they are already unordered.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">    What happens if keys appear multiple times in the list passed to the</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">    constructor?</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        The same as for the dict.  The latter item overrides the former.  This</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring">        has the side-effect that the position of the first key is used because</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">        the key is actually overwritten:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; odict([('a', 1), ('b', 2), ('a', 3)])</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        odict.odict([('a', 3), ('b', 2)])</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">        This behavor is consistent with existing implementation in Python</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">        and the PHP array and the hashmap in Ruby 1.9.</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring">    This odict doesn't scale!</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">        Yes it doesn't.  The delitem operation is O(n).  This is file is a</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">        mockup of a real odict that could be implemented for collections</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">        based on an linked list.</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">    Why is there no .insert()?</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">        There are few situations where you really want to insert a key at</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">        an specified index.  To now make the API too complex the proposed</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">        solution for this situation is creating a list of items, manipulating</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">        that and converting it back into an odict:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; d = odict([('a', 42), ('b', 23), ('c', 19)])</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; l = d.items()</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; l.insert(1, ('x', 0))</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">        &gt;&gt;&gt; odict(l)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">        odict.odict([('a', 42), ('x', 0), ('b', 23), ('c', 19)])</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">    :copyright: (c) 2008 by Armin Ronacher and PEP 273 authors.</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">    :license: modified BSD license.</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">itertools</tt> <tt class="py-keyword">import</tt> <tt class="py-name">izip</tt><tt class="py-op">,</tt> <tt class="py-name">imap</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Method spade.odict.odict.copy()=spade.odict.odict-class.html#copy,Method spade.pyparsing.Keyword.copy()=spade.pyparsing.Keyword-class.html#copy,Method spade.pyparsing.ParseResults.copy()=spade.pyparsing.ParseResults-class.html#copy,Method spade.pyparsing.ParserElement.copy()=spade.pyparsing.ParserElement-class.html#copy"><a title="spade.odict.odict.copy
+spade.pyparsing.Keyword.copy
+spade.pyparsing.ParseResults.copy
+spade.pyparsing.ParserElement.copy" class="py-name" href="#" onclick="return doclink('link-0', 'copy', 'link-0');">copy</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">deepcopy</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable spade.odict.missing=spade.odict-module.html#missing"><a title="spade.odict.missing" class="py-name" href="#" onclick="return doclink('link-1', 'missing', 'link-1');">missing</a></tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="odict"></a><div id="odict-def"><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt> <a class="py-toggle" href="#" id="odict-toggle" onclick="return toggle('odict');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.odict.odict-class.html">odict</a><tt class="py-op">(</tt><tt class="py-base-class">dict</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="odict-expanded"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-docstring">    Ordered dict example implementation.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring">    This is the proposed interface for a an ordered dict as proposed on the</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">    Python mailinglist (proposal_).</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">    It's a dict subclass and provides some list functions.  The implementation</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">    of this class is inspired by the implementation of Babel but incorporates</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">    some ideas from the `ordereddict`_ and Django's ordered dict.</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring">    The constructor and `update()` both accept iterables of tuples as well as</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring">    mappings:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d = odict([('a', 'b'), ('c', 'd')])</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.update({'foo': 'bar'})</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar')])</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">    Keep in mind that when updating from dict-literals the order is not</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">    preserved as these dicts are unsorted!</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-docstring">    You can copy an odict like a dict by using the constructor, `copy.copy`</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">    or the `copy` method and make deep copies with `copy.deepcopy`:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; from copy import copy, deepcopy</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; copy(d)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar')])</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.copy()</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar')])</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; odict(d)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar')])</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d['spam'] = []</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d2 = deepcopy(d)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d2['spam'].append('eggs')</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar'), ('spam', [])])</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d2</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar'), ('spam', ['eggs'])])</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">    All iteration methods as well as `keys`, `values` and `items` return</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring">    the values ordered by the the time the key-value pair is inserted:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.keys()</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">    ['a', 'c', 'foo', 'spam']</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.values()</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"><tt class="py-docstring">    ['b', 'd', 'bar', []]</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.items()</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring">    [('a', 'b'), ('c', 'd'), ('foo', 'bar'), ('spam', [])]</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; list(d.iterkeys())</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">    ['a', 'c', 'foo', 'spam']</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; list(d.itervalues())</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">    ['b', 'd', 'bar', []]</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; list(d.iteritems())</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">    [('a', 'b'), ('c', 'd'), ('foo', 'bar'), ('spam', [])]</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">    Index based lookup is supported too by `byindex` which returns the</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">    key/value pair for an index:</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.byindex(2)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">    ('foo', 'bar')</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">    You can reverse the odict as well:</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.reverse()</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('spam', []), ('foo', 'bar'), ('c', 'd'), ('a', 'b')])</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">    And sort it like a list:</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d.sort(key=lambda x: x[0].lower())</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">    &gt;&gt;&gt; d</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">    odict.odict([('a', 'b'), ('c', 'd'), ('foo', 'bar'), ('spam', [])])</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">    .. _proposal: http://thread.gmane.org/gmane.comp.python.devel/95316</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">    .. _ordereddict: http://www.xs4all.nl/~anthon/Python/ordereddict/</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"> </tt>
+<a name="odict.__init__"></a><div id="odict.__init__-def"><a name="L193"></a><tt class="py-lineno">193</tt> <a class="py-toggle" href="#" id="odict.__init__-toggle" onclick="return toggle('odict.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__init__-expanded"><a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method spade.ACLMessage.ACLMessage.__init__()=spade.ACLMessage.ACLMessage-class.html#__init__,Method spade.ACLParser.ACLParser.__init__()=spade.ACLParser.ACLParser-class.html#__init__,Method spade.ACLParser.ACLxmlParser.__init__()=spade.ACLParser.ACLxmlParser-class.html#__init__,Method spade.AID.aid.__init__()=spade.AID.aid-class.html#__init__,Method spade.AMS.AMS.DefaultBehaviour.__init__()=spade.AMS.AMS.DefaultBehaviour-class.html#__init__,Method spade.AMS.AMS.ModifyBehaviour.__init__()=spade.AMS.AMS.ModifyBehaviour-class.html#__init__,Method spade.AMS.AMS.PlatformBehaviour.__init__()=spade.AMS.AMS.PlatformBehaviour-class.html#__init__,Method spade.AMS.AMS.RegisterBehaviour.__init__()=spade.AMS.AMS.RegisterBehaviour-class.html#__init__,Method spade.AMS.AMS.SearchBehaviour.__init__()=spade.AMS.AMS.SearchBehaviour-class.html#__init__,Method spade.AMS.AMS.__init__()=spade.AMS.AMS-class.html#__init__,Method spade.AMS.AmsAgentDescription.__init__()=spade.AMS.AmsAgentDescription-class.html#__init__,Method spade.Agent.AbstractAgent.__init__()=spade.Agent.AbstractAgent-class.html#__init__,Method spade.Agent.Agent.__init__()=spade.Agent.Agent-class.html#__init__,Method spade.Agent.PlatformAgent.__init__()=spade.Agent.PlatformAgent-class.html#__init__,Method spade.Agent.jabberProcess.__init__()=spade.Agent.jabberProcess-class.html#__init__,Method spade.BasicFipaDateTime.BasicFipaDateTime.__init__()=spade.BasicFipaDateTime.BasicFipaDateTime-class.html#__init__,Method spade.Behaviour.ACLTemplate.__init__()=spade.Behaviour.ACLTemplate-class.html#__init__,Method spade.Behaviour.ANDTemplate.__init__()=spade.Behaviour.ANDTemplate-class.html#__init__,Method spade.Behaviour.Behaviour.__init__()=spade.Behaviour.Behaviour-class.html#__init__,Method spade.Behaviour.BehaviourTemplate.__init__()=spade.Behaviour.BehaviourTemplate-class.html#__init__,Method spade.Behaviour.EventBehaviour.__init__()=spade.Behaviour.EventBehaviour-class.html#__init__,Method spade.Behaviour.FSMBehaviour.__init__()=spade.Behaviour.FSMBehaviour-class.html#__init__,Method spade.Behaviour.MessageTemplate.__init__()=spade.Behaviour.MessageTemplate-class.html#__init__,Method spade.Behaviour.NOTTemplate.__init__()=spade.Behaviour.NOTTemplate-class.html#__init__,Method spade.Behaviour.ORTemplate.__init__()=spade.Behaviour.ORTemplate-class.html#__init__,Method spade.Behaviour.OneShotBehaviour.__init__()=spade.Behaviour.OneShotBehaviour-class.html#__init__,Method spade.Behaviour.PeriodicBehaviour.__init__()=spade.Behaviour.PeriodicBehaviour-class.html#__init__,Method spade.Behaviour.TimeOutBehaviour.__init__()=spade.Behaviour.TimeOutBehaviour-class.html#__init__,Method spade.Behaviour.XORTemplate.__init__()=spade.Behaviour.XORTemplate-class.html#__init__,Method spade.DF.DF.DefaultBehaviour.__init__()=spade.DF.DF.DefaultBehaviour-class.html#__init__,Method spade.DF.DF.ModifyBehaviour.__init__()=spade.DF.DF.ModifyBehaviour-class.html#__init__,Method spade.DF.DF.RegisterBehaviour.__init__()=spade.DF.DF.RegisterBehaviour-class.html#__init__,Method spade.DF.DF.SearchBehaviour.__init__()=spade.DF.DF.SearchBehaviour-class.html#__init__,Method spade.DF.DF.__init__()=spade.DF.DF-class.html#__init__,Method spade.DF.DfAgentDescription.__init__()=spade.DF.DfAgentDescription-class.html#__init__,Method spade.DF.Service.__init__()=spade.DF.Service-class.html#__init__,Method spade.DF.ServiceDescription.__init__()=spade.DF.ServiceDescription-class.html#__init__,Method spade.ECLiPSeKB.ECLiPSeKB.__init__()=spade.ECLiPSeKB.ECLiPSeKB-class.html#__init__,Method spade.Envelope.Envelope.__init__()=spade.Envelope.Envelope-class.html#__init__,Method spade.FIPAMessage.FipaMessage.__init__()=spade.FIPAMessage.FipaMessage-class.html#__init__,Method spade.Flora2KB.Flora2KB.__init__()=spade.Flora2KB.Flora2KB-class.html#__init__,Method spade.MTP.MTP.__init__()=spade.MTP.MTP-class.html#__init__,Method spade.MessageReceiver.MessageReceiver.__init__()=spade.MessageReceiver.MessageReceiver-class.html#__init__,Method spade.Organization.BanedUser.__init__()=spade.Organization.BanedUser-class.html#__init__,Method spade.Organization.CreationError.__init__()=spade.Organization.CreationError-class.html#__init__,Method spade.Organization.DestroyError.__init__()=spade.Organization.DestroyError-class.html#__init__,Method spade.Organization.JoinError.__init__()=spade.Organization.JoinError-class.html#__init__,Method spade.Organization.LastOwner.__init__()=spade.Organization.LastOwner-class.html#__init__,Method spade.Organization.LockedOrganization.__init__()=spade.Organization.LockedOrganization-class.html#__init__,Method spade.Organization.MaximumUsers.__init__()=spade.Organization.MaximumUsers-class.html#__init__,Method spade.Organization.MemberOfFederation.__init__()=spade.Organization.MemberOfFederation-class.html#__init__,Method spade.Organization.MembersOnly.__init__()=spade.Organization.MembersOnly-class.html#__init__,Method spade.Organization.NickNameConflict.__init__()=spade.Organization.NickNameConflict-class.html#__init__,Method spade.Organization.NotOwner.__init__()=spade.Organization.NotOwner-class.html#__init__,Method spade.Organization.NotSupervisor.__init__()=spade.Organization.NotSupervisor-class.html#__init__,Method spade.Organization.NotValidGoal.__init__()=spade.Organization.NotValidGoal-class.html#__init__,Method spade.Organization.NotValidName.__init__()=spade.Organization.NotValidName-class.html#__init__,Method spade.Organization.NotValidType.__init__()=spade.Organization.NotValidType-class.html#__init__,Method spade.Organization.NotValidUnit.__init__()=spade.Organization.NotValidUnit-class.html#__init__,Method spade.Organization.Organization.CreateRoomBehaviour.__init__()=spade.Organization.Organization.CreateRoomBehaviour-class.html#__init__,Method spade.Organization.Organization.CreateTeamBehaviour.__init__()=spade.Organization.Organization.CreateTeamBehaviour-class.html#__init__,Method spade.Organization.Organization.DestroyBehaviour.__init__()=spade.Organization.Organization.DestroyBehaviour-class.html#__init__,Method spade.Organization.Organization.GetRegistrationFormBehaviour.__init__()=spade.Organization.Organization.GetRegistrationFormBehaviour-class.html#__init__,Method spade.Organization.Organization.GetUnitInfoBehaviour.__init__()=spade.Organization.Organization.GetUnitInfoBehaviour-class.html#__init__,Method spade.Organization.Organization.GetUnitListBehaviour.__init__()=spade.Organization.Organization.GetUnitListBehaviour-class.html#__init__,Method spade.Organization.Organization.IsMemberBehaviour.__init__()=spade.Organization.Organization.IsMemberBehaviour-class.html#__init__,Method spade.Organization.Organization.MyJoinRoomBehaviour.__init__()=spade.Organization.Organization.MyJoinRoomBehaviour-class.html#__init__,Method spade.Organization.Organization.SendRegistrationFormBehaviour.__init__()=spade.Organization.Organization.SendRegistrationFormBehaviour-class.html#__init__,Method spade.Organization.Organization.TestRoomNameBehaviour.__init__()=spade.Organization.Organization.TestRoomNameBehaviour-class.html#__init__,Method spade.Organization.Organization.__init__()=spade.Organization.Organization-class.html#__init__,Method spade.Organization.PaswordNeeded.__init__()=spade.Organization.PaswordNeeded-class.html#__init__,Method spade.Organization.Unavailable.__init__()=spade.Organization.Unavailable-class.html#__init__,Method spade.Organization.UnavailableFunction.__init__()=spade.Organization.UnavailableFunction-class.html#__init__,Method spade.Organization_new.BanedUser.__init__()=spade.Organization_new.BanedUser-class.html#__init__,Method spade.Organization_new.CreationError.__init__()=spade.Organization_new.CreationError-class.html#__init__,Method spade.Organization_new.DestroyError.__init__()=spade.Organization_new.DestroyError-class.html#__init__,Method spade.Organization_new.JoinError.__init__()=spade.Organization_new.JoinError-class.html#__init__,Method spade.Organization_new.LastOwner.__init__()=spade.Organization_new.LastOwner-class.html#__init__,Method spade.Organization_new.LockedOrganization.__init__()=spade.Organization_new.LockedOrganization-class.html#__init__,Method spade.Organization_new.MaximumUsers.__init__()=spade.Organization_new.MaximumUsers-class.html#__init__,Method spade.Organization_new.MemberOfFederation.__init__()=spade.Organization_new.MemberOfFederation-class.html#__init__,Method spade.Organization_new.MembersOnly.__init__()=spade.Organization_new.MembersOnly-class.html#__init__,Method spade.Organization_new.NickNameConflict.__init__()=spade.Organization_new.NickNameConflict-class.html#__init__,Method spade.Organization_new.NotCreatePermision.__init__()=spade.Organization_new.NotCreatePermision-class.html#__init__,Method spade.Organization_new.NotSupervisor.__init__()=spade.Organization_new.NotSupervisor-class.html#__init__,Method spade.Organization_new.NotValidGoal.__init__()=spade.Organization_new.NotValidGoal-class.html#__init__,Method spade.Organization_new.NotValidName.__init__()=spade.Organization_new.NotValidName-class.html#__init__,Method spade.Organization_new.NotValidType.__init__()=spade.Organization_new.NotValidType-class.html#__init__,Method spade.Organization_new.NotValidUnit.__init__()=spade.Organization_new.NotValidUnit-class.html#__init__,Method spade.Organization_new.Organization_new.CreateRoomBehaviour.__init__()=spade.Organization_new.Organization_new.CreateRoomBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.CreateTeamBehaviour.__init__()=spade.Organization_new.Organization_new.CreateTeamBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.DestroyBehaviour.__init__()=spade.Organization_new.Organization_new.DestroyBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetRegistrationFormBehaviour.__init__()=spade.Organization_new.Organization_new.GetRegistrationFormBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetUnitInfoBehaviour.__init__()=spade.Organization_new.Organization_new.GetUnitInfoBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.GetUnitListBehaviour.__init__()=spade.Organization_new.Organization_new.GetUnitListBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.IsMemberBehaviour.__init__()=spade.Organization_new.Organization_new.IsMemberBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.MyJoinRoomBehaviour.__init__()=spade.Organization_new.Organization_new.MyJoinRoomBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.SendRegistrationFormBehaviour.__init__()=spade.Organization_new.Organization_new.SendRegistrationFormBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.TestRoomNameBehaviour.__init__()=spade.Organization_new.Organization_new.TestRoomNameBehaviour-class.html#__init__,Method spade.Organization_new.Organization_new.__init__()=spade.Organization_new.Organization_new-class.html#__init__,Method spade.Organization_new.PaswordNeeded.__init__()=spade.Organization_new.PaswordNeeded-class.html#__init__,Method spade.Organization_new.Unavailable.__init__()=spade.Organization_new.Unavailable-class.html#__init__,Method spade.Organization_new.UnavailableFunction.__init__()=spade.Organization_new.UnavailableFunction-class.html#__init__,Method spade.Platform.PlatformRestart.__init__()=spade.Platform.PlatformRestart-class.html#__init__,Method spade.Platform.SpadePlatform.RouteBehaviour.__init__()=spade.Platform.SpadePlatform.RouteBehaviour-class.html#__init__,Method spade.Platform.SpadePlatform.__init__()=spade.Platform.SpadePlatform-class.html#__init__,Method spade.RDF0Parser.RDF0Parser.__init__()=spade.RDF0Parser.RDF0Parser-class.html#__init__,Method spade.RPC.RPCClientBehaviour.__init__()=spade.RPC.RPCClientBehaviour-class.html#__init__,Method spade.ReceivedObject.ReceivedObject.__init__()=spade.ReceivedObject.ReceivedObject-class.html#__init__,Method spade.SIMBA.SIMBA.OutboxBehaviour.__init__()=spade.SIMBA.SIMBA.OutboxBehaviour-class.html#__init__,Method spade.SIMBA.SIMBA.__init__()=spade.SIMBA.SIMBA-class.html#__init__,Method spade.SL0Parser.SL0Parser.__init__()=spade.SL0Parser.SL0Parser-class.html#__init__,Method spade.SPARQLKB.SPARQLKB.__init__()=spade.SPARQLKB.SPARQLKB-class.html#__init__,Method spade.SWIKB.SWIKB.__init__()=spade.SWIKB.SWIKB-class.html#__init__,Method spade.SpadeConfigParser.ConfigParser.__init__()=spade.SpadeConfigParser.ConfigParser-class.html#__init__,Method spade.SpadeConfigParser.spadeXML.__init__()=spade.SpadeConfigParser.spadeXML-class.html#__init__,Method spade.SpadeConfigParser.spadeXMLHandler.__init__()=spade.SpadeConfigParser.spadeXMLHandler-class.html#__init__,Method spade.Unit.BanedUser.__init__()=spade.Unit.BanedUser-class.html#__init__,Method spade.Unit.CreationError.__init__()=spade.Unit.CreationError-class.html#__init__,Method spade.Unit.DestroyError.__init__()=spade.Unit.DestroyError-class.html#__init__,Method spade.Unit.JoinError.__init__()=spade.Unit.JoinError-class.html#__init__,Method spade.Unit.LastOwner.__init__()=spade.Unit.LastOwner-class.html#__init__,Method spade.Unit.LockedUnit.__init__()=spade.Unit.LockedUnit-class.html#__init__,Method spade.Unit.MaximumUsers.__init__()=spade.Unit.MaximumUsers-class.html#__init__,Method spade.Unit.MembersOnly.__init__()=spade.Unit.MembersOnly-class.html#__init__,Method spade.Unit.NickNameConflict.__init__()=spade.Unit.NickNameConflict-class.html#__init__,Method spade.Unit.NotAdmin.__init__()=spade.Unit.NotAdmin-class.html#__init__,Method spade.Unit.NotSupervisor.__init__()=spade.Unit.NotSupervisor-class.html#__init__,Method spade.Unit.NotValidGoal.__init__()=spade.Unit.NotValidGoal-class.html#__init__,Method spade.Unit.NotValidGoalChange.__init__()=spade.Unit.NotValidGoalChange-class.html#__init__,Method spade.Unit.NotValidName.__init__()=spade.Unit.NotValidName-class.html#__init__,Method spade.Unit.NotValidType.__init__()=spade.Unit.NotValidType-class.html#__init__,Method spade.Unit.NotValidUnit.__init__()=spade.Unit.NotValidUnit-class.html#__init__,Method spade.Unit.PaswordNeeded.__init__()=spade.Unit.PaswordNeeded-class.html#__init__,Method spade.Unit.Unavailable.__init__()=spade.Unit.Unavailable-class.html#__init__,Method spade.Unit.Unit.AddAdminBehaviour.__init__()=spade.Unit.Unit.AddAdminBehaviour-class.html#__init__,Method spade.Unit.Unit.AddBanAgentBehaviour.__init__()=spade.Unit.Unit.AddBanAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.AddModeratorBehaviour.__init__()=spade.Unit.Unit.AddModeratorBehaviour-class.html#__init__,Method spade.Unit.Unit.AddOwnerBehaviour.__init__()=spade.Unit.Unit.AddOwnerBehaviour-class.html#__init__,Method spade.Unit.Unit.CreateRoomBehaviour.__init__()=spade.Unit.Unit.CreateRoomBehaviour-class.html#__init__,Method spade.Unit.Unit.DestroyBehaviour.__init__()=spade.Unit.Unit.DestroyBehaviour-class.html#__init__,Method spade.Unit.Unit.GetAdminListBehaviour.__init__()=spade.Unit.Unit.GetAdminListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetBanAgentListBehaviour.__init__()=spade.Unit.Unit.GetBanAgentListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetGoalBehaviour.__init__()=spade.Unit.Unit.GetGoalBehaviour-class.html#__init__,Method spade.Unit.Unit.GetInfoBehaviour.__init__()=spade.Unit.Unit.GetInfoBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMaxAgentsBehaviour.__init__()=spade.Unit.Unit.GetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMemberListBehaviour.__init__()=spade.Unit.Unit.GetMemberListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetMinAgentsBehaviour.__init__()=spade.Unit.Unit.GetMinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetModeratorListBehaviour.__init__()=spade.Unit.Unit.GetModeratorListBehaviour-class.html#__init__,Method spade.Unit.Unit.GetNumberOfAgentsBehaviour.__init__()=spade.Unit.Unit.GetNumberOfAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.GetOwnerListBehaviour.__init__()=spade.Unit.Unit.GetOwnerListBehaviour-class.html#__init__,Method spade.Unit.Unit.GiveVoiceBehaviour.__init__()=spade.Unit.Unit.GiveVoiceBehaviour-class.html#__init__,Method spade.Unit.Unit.KickAgentBehaviour.__init__()=spade.Unit.Unit.KickAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.MyJoinRoomBehaviour.__init__()=spade.Unit.Unit.MyJoinRoomBehaviour-class.html#__init__,Method spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour.__init__()=spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.PresenceBehaviour.__init__()=spade.Unit.Unit.PresenceBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveAdminBehaviour.__init__()=spade.Unit.Unit.RemoveAdminBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveBanAgentBehaviour.__init__()=spade.Unit.Unit.RemoveBanAgentBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveModeratorBehaviour.__init__()=spade.Unit.Unit.RemoveModeratorBehaviour-class.html#__init__,Method spade.Unit.Unit.RemoveOwnerBehaviour.__init__()=spade.Unit.Unit.RemoveOwnerBehaviour-class.html#__init__,Method spade.Unit.Unit.RevokeVoiceBehaviour.__init__()=spade.Unit.Unit.RevokeVoiceBehaviour-class.html#__init__,Method spade.Unit.Unit.SendMessageBehaviour.__init__()=spade.Unit.Unit.SendMessageBehaviour-class.html#__init__,Method spade.Unit.Unit.SendPrivateMessageBehaviour.__init__()=spade.Unit.Unit.SendPrivateMessageBehaviour-class.html#__init__,Method spade.Unit.Unit.SetGoalBehaviour.__init__()=spade.Unit.Unit.SetGoalBehaviour-class.html#__init__,Method spade.Unit.Unit.SetMaxAgentsBehaviour.__init__()=spade.Unit.Unit.SetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.SetMinAgentsBehaviour.__init__()=spade.Unit.Unit.SetMinAgentsBehaviour-class.html#__init__,Method spade.Unit.Unit.TestRoomNameBehaviour.__init__()=spade.Unit.Unit.TestRoomNameBehaviour-class.html#__init__,Method spade.Unit.Unit.__init__()=spade.Unit.Unit-class.html#__init__,Method spade.Unit_new.BanedUser.__init__()=spade.Unit_new.BanedUser-class.html#__init__,Method spade.Unit_new.CreationError.__init__()=spade.Unit_new.CreationError-class.html#__init__,Method spade.Unit_new.DestroyError.__init__()=spade.Unit_new.DestroyError-class.html#__init__,Method spade.Unit_new.JoinError.__init__()=spade.Unit_new.JoinError-class.html#__init__,Method spade.Unit_new.LastOwner.__init__()=spade.Unit_new.LastOwner-class.html#__init__,Method spade.Unit_new.LockedUnit.__init__()=spade.Unit_new.LockedUnit-class.html#__init__,Method spade.Unit_new.MaximumUsers.__init__()=spade.Unit_new.MaximumUsers-class.html#__init__,Method spade.Unit_new.MembersOnly.__init__()=spade.Unit_new.MembersOnly-class.html#__init__,Method spade.Unit_new.NickNameConflict.__init__()=spade.Unit_new.NickNameConflict-class.html#__init__,Method spade.Unit_new.NotCreatePermision.__init__()=spade.Unit_new.NotCreatePermision-class.html#__init__,Method spade.Unit_new.NotSupervisor.__init__()=spade.Unit_new.NotSupervisor-class.html#__init__,Method spade.Unit_new.NotValidGoal.__init__()=spade.Unit_new.NotValidGoal-class.html#__init__,Method spade.Unit_new.NotValidGoalChange.__init__()=spade.Unit_new.NotValidGoalChange-class.html#__init__,Method spade.Unit_new.NotValidName.__init__()=spade.Unit_new.NotValidName-class.html#__init__,Method spade.Unit_new.NotValidType.__init__()=spade.Unit_new.NotValidType-class.html#__init__,Method spade.Unit_new.NotValidUnit.__init__()=spade.Unit_new.NotValidUnit-class.html#__init__,Method spade.Unit_new.PaswordNeeded.__init__()=spade.Unit_new.PaswordNeeded-class.html#__init__,Method spade.Unit_new.Unavailable.__init__()=spade.Unit_new.Unavailable-class.html#__init__,Method spade.Unit_new.Unit_new.AddAdminBehaviour.__init__()=spade.Unit_new.Unit_new.AddAdminBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.AddBanAgentBehaviour.__init__()=spade.Unit_new.Unit_new.AddBanAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.AddModeratorBehaviour.__init__()=spade.Unit_new.Unit_new.AddModeratorBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.CreateRoomBehaviour.__init__()=spade.Unit_new.Unit_new.CreateRoomBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.DestroyBehaviour.__init__()=spade.Unit_new.Unit_new.DestroyBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetAdminListBehaviour.__init__()=spade.Unit_new.Unit_new.GetAdminListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetBanAgentListBehaviour.__init__()=spade.Unit_new.Unit_new.GetBanAgentListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetGoalBehaviour.__init__()=spade.Unit_new.Unit_new.GetGoalBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetInfoBehaviour.__init__()=spade.Unit_new.Unit_new.GetInfoBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMaxAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMemberListBehaviour.__init__()=spade.Unit_new.Unit_new.GetMemberListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetMinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetMinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetModeratorListBehaviour.__init__()=spade.Unit_new.Unit_new.GetModeratorListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GetOwnerListBehaviour.__init__()=spade.Unit_new.Unit_new.GetOwnerListBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.GiveVoiceBehaviour.__init__()=spade.Unit_new.Unit_new.GiveVoiceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.KickAgentBehaviour.__init__()=spade.Unit_new.Unit_new.KickAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.MyJoinRoomBehaviour.__init__()=spade.Unit_new.Unit_new.MyJoinRoomBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.PresenceBehaviour.__init__()=spade.Unit_new.Unit_new.PresenceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveAdminBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveAdminBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveBanAgentBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveBanAgentBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RemoveModeratorBehaviour.__init__()=spade.Unit_new.Unit_new.RemoveModeratorBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.RevokeVoiceBehaviour.__init__()=spade.Unit_new.Unit_new.RevokeVoiceBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SendMessageBehaviour.__init__()=spade.Unit_new.Unit_new.SendMessageBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SendPrivateMessageBehaviour.__init__()=spade.Unit_new.Unit_new.SendPrivateMessageBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetGoalBehaviour.__init__()=spade.Unit_new.Unit_new.SetGoalBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetMaxAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.SetMaxAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.SetMinAgentsBehaviour.__init__()=spade.Unit_new.Unit_new.SetMinAgentsBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.TestRoomNameBehaviour.__init__()=spade.Unit_new.Unit_new.TestRoomNameBehaviour-class.html#__init__,Method spade.Unit_new.Unit_new.__init__()=spade.Unit_new.Unit_new-class.html#__init__,Method spade.XMLCodec.XMLCodec.__init__()=spade.XMLCodec.XMLCodec-class.html#__init__,Method spade.XSBKB.XSBKB.__init__()=spade.XSBKB.XSBKB-class.html#__init__,Method spade.bdi.BDIBehaviour.__init__()=spade.bdi.BDIBehaviour-class.html#__init__,Method spade.bdi.Goal.__init__()=spade.bdi.Goal-class.html#__init__,Method spade.content.ContentObject.__init__()=spade.content.ContentObject-class.html#__init__,Method spade.dblite.Base.__init__()=spade.dblite.Base-class.html#__init__,Method spade.dblite.Index.__init__()=spade.dblite.Index-class.html#__init__,Method spade.fipa.ModifyAgentBehaviour.__init__()=spade.fipa.ModifyAgentBehaviour-class.html#__init__,Method spade.fipa.SearchAgentBehaviour.__init__()=spade.fipa.SearchAgentBehaviour-class.html#__init__,Method spade.fipa.deregisterServiceBehaviour.__init__()=spade.fipa.deregisterServiceBehaviour-class.html#__init__,Method spade.fipa.getPlatformInfoBehaviour.__init__()=spade.fipa.getPlatformInfoBehaviour-class.html#__init__,Method spade.fipa.modifyServiceBehaviour.__init__()=spade.fipa.modifyServiceBehaviour-class.html#__init__,Method spade.fipa.registerServiceBehaviour.__init__()=spade.fipa.registerServiceBehaviour-class.html#__init__,Method spade.fipa.searchServiceBehaviour.__init__()=spade.fipa.searchServiceBehaviour-class.html#__init__,Method spade.kb.KB.__init__()=spade.kb.KB-class.html#__init__,Method spade.kb.KBConfigurationFailed.__init__()=spade.kb.KBConfigurationFailed-class.html#__init__,Method spade.logic.Expr.__init__()=spade.logic.Expr-class.html#__init__,Method spade.logic.FolKB.__init__()=spade.logic.FolKB-class.html#__init__,Method spade.logic.KB.__init__()=spade.logic.KB-class.html#__init__,Method spade.logic.PropKB.__init__()=spade.logic.PropKB-class.html#__init__,Method spade.odict.odict.__init__()=spade.odict.odict-class.html#__init__,Method spade.peer2peer.RequestDiscoInfoBehav.__init__()=spade.peer2peer.RequestDiscoInfoBehav-class.html#__init__,Method spade.peer2peer.SendStreamInitiationBehav.__init__()=spade.peer2peer.SendStreamInitiationBehav-class.html#__init__,Method spade.pubsub.PubSub.__init__()=spade.pubsub.PubSub-class.html#__init__,Method spade.pubsub.PubSub._sendAndReceiveBehav.__init__()=spade.pubsub.PubSub._sendAndReceiveBehav-class.html#__init__,Method spade.pygooglechart.Axis.__init__()=spade.pygooglechart.Axis-class.html#__init__,Method spade.pygooglechart.BarChart.__init__()=spade.pygooglechart.BarChart-class.html#__init__,Method spade.pygooglechart.Chart.__init__()=spade.pygooglechart.Chart-class.html#__init__,Method spade.pygooglechart.ChartGrammar.__init__()=spade.pygooglechart.ChartGrammar-class.html#__init__,Method spade.pygooglechart.Data.__init__()=spade.pygooglechart.Data-class.html#__init__,Method spade.pygooglechart.GoogleOMeterChart.__init__()=spade.pygooglechart.GoogleOMeterChart-class.html#__init__,Method spade.pygooglechart.GroupedBarChart.__init__()=spade.pygooglechart.GroupedBarChart-class.html#__init__,Method spade.pygooglechart.LabelAxis.__init__()=spade.pygooglechart.LabelAxis-class.html#__init__,Method spade.pygooglechart.LineChart.__init__()=spade.pygooglechart.LineChart-class.html#__init__,Method spade.pygooglechart.MapChart.__init__()=spade.pygooglechart.MapChart-class.html#__init__,Method spade.pygooglechart.PieChart.__init__()=spade.pygooglechart.PieChart-class.html#__init__,Method spade.pygooglechart.QRChart.__init__()=spade.pygooglechart.QRChart-class.html#__init__,Method spade.pygooglechart.RangeAxis.__init__()=spade.pygooglechart.RangeAxis-class.html#__init__,Method spade.pyparsing.And.__init__()=spade.pyparsing.And-class.html#__init__,Method spade.pyparsing.CaselessLiteral.__init__()=spade.pyparsing.CaselessLiteral-class.html#__init__,Method spade.pyparsing.CharsNotIn.__init__()=spade.pyparsing.CharsNotIn-class.html#__init__,Method spade.pyparsing.Combine.__init__()=spade.pyparsing.Combine-class.html#__init__,Method spade.pyparsing.Dict.__init__()=spade.pyparsing.Dict-class.html#__init__,Method spade.pyparsing.Each.__init__()=spade.pyparsing.Each-class.html#__init__,Method spade.pyparsing.Empty.__init__()=spade.pyparsing.Empty-class.html#__init__,Method spade.pyparsing.FollowedBy.__init__()=spade.pyparsing.FollowedBy-class.html#__init__,Method spade.pyparsing.Forward.__init__()=spade.pyparsing.Forward-class.html#__init__,Method spade.pyparsing.GoToColumn.__init__()=spade.pyparsing.GoToColumn-class.html#__init__,Method spade.pyparsing.Group.__init__()=spade.pyparsing.Group-class.html#__init__,Method spade.pyparsing.Keyword.__init__()=spade.pyparsing.Keyword-class.html#__init__,Method spade.pyparsing.LineEnd.__init__()=spade.pyparsing.LineEnd-class.html#__init__,Method spade.pyparsing.LineStart.__init__()=spade.pyparsing.LineStart-class.html#__init__,Method spade.pyparsing.Literal.__init__()=spade.pyparsing.Literal-class.html#__init__,Method spade.pyparsing.MatchFirst.__init__()=spade.pyparsing.MatchFirst-class.html#__init__,Method spade.pyparsing.NoMatch.__init__()=spade.pyparsing.NoMatch-class.html#__init__,Method spade.pyparsing.NotAny.__init__()=spade.pyparsing.NotAny-class.html#__init__,Method spade.pyparsing.Optional.__init__()=spade.pyparsing.Optional-class.html#__init__,Method spade.pyparsing.Or.__init__()=spade.pyparsing.Or-class.html#__init__,Method spade.pyparsing.ParseBaseException.__init__()=spade.pyparsing.ParseBaseException-class.html#__init__,Method spade.pyparsing.ParseElementEnhance.__init__()=spade.pyparsing.ParseElementEnhance-class.html#__init__,Method spade.pyparsing.ParseExpression.__init__()=spade.pyparsing.ParseExpression-class.html#__init__,Method spade.pyparsing.ParseResults.__init__()=spade.pyparsing.ParseResults-class.html#__init__,Method spade.pyparsing.ParserElement.__init__()=spade.pyparsing.ParserElement-class.html#__init__,Method spade.pyparsing.PositionToken.__init__()=spade.pyparsing.PositionToken-class.html#__init__,Method spade.pyparsing.RecursiveGrammarException.__init__()=spade.pyparsing.RecursiveGrammarException-class.html#__init__,Method spade.pyparsing.SkipTo.__init__()=spade.pyparsing.SkipTo-class.html#__init__,Method spade.pyparsing.StringEnd.__init__()=spade.pyparsing.StringEnd-class.html#__init__,Method spade.pyparsing.StringStart.__init__()=spade.pyparsing.StringStart-class.html#__init__,Method spade.pyparsing.Token.__init__()=spade.pyparsing.Token-class.html#__init__,Method spade.pyparsing.TokenConverter.__init__()=spade.pyparsing.TokenConverter-class.html#__init__,Method spade.pyparsing.Upcase.__init__()=spade.pyparsing.Upcase-class.html#__init__,Method spade.pyparsing.White.__init__()=spade.pyparsing.White-class.html#__init__,Method spade.pyparsing.Word.__init__()=spade.pyparsing.Word-class.html#__init__,Method spade.pyparsing.ZeroOrMore.__init__()=spade.pyparsing.ZeroOrMore-class.html#__init__,Method spade.pyratemp.FileLoader.__init__()=spade.pyratemp.FileLoader-class.html#__init__,Method spade.pyratemp.Parser.__init__()=spade.pyratemp.Parser-class.html#__init__,Method spade.pyratemp.PseudoSandbox.__init__()=spade.pyratemp.PseudoSandbox-class.html#__init__,Method spade.pyratemp.Renderer.__init__()=spade.pyratemp.Renderer-class.html#__init__,Method spade.pyratemp.StringLoader.__init__()=spade.pyratemp.StringLoader-class.html#__init__,Method spade.pyratemp.Template.__init__()=spade.pyratemp.Template-class.html#__init__,Method spade.pyratemp.TemplateBase.__init__()=spade.pyratemp.TemplateBase-class.html#__init__,Method spade.pyratemp.TemplateEval.__init__()=spade.pyratemp.TemplateEval-class.html#__init__,Method spade.pyratemp.TemplateParseError.__init__()=spade.pyratemp.TemplateParseError-class.html#__init__,Method spade.pyxf.eclipse.__init__()=spade.pyxf.eclipse-class.html#__init__,Method spade.pyxf.flora2.__init__()=spade.pyxf.flora2-class.html#__init__,Method spade.pyxf.swipl.__init__()=spade.pyxf.swipl-class.html#__init__,Method spade.pyxf.xsb.__init__()=spade.pyxf.xsb-class.html#__init__,Method spade.socialnetwork.SocialItem.__init__()=spade.socialnetwork.SocialItem-class.html#__init__,Method spade.spade_backend.SpadeBackend.__init__()=spade.spade_backend.SpadeBackend-class.html#__init__,Method spade.tbcbp.Case.__init__()=spade.tbcbp.Case-class.html#__init__,Method spade.tbcbp.CaseDB.__init__()=spade.tbcbp.CaseDB-class.html#__init__,Method spade.tbcbp.Plan.__init__()=spade.tbcbp.Plan-class.html#__init__,Method spade.tbcbp.TBCBP.__init__()=spade.tbcbp.TBCBP-class.html#__init__,Method spade.wui.WUI.__init__()=spade.wui.WUI-class.html#__init__,Method spade.xmpp.auth.Bind.__init__()=spade.xmpp.auth.Bind-class.html#__init__,Method spade.xmpp.auth.ComponentBind.__init__()=spade.xmpp.auth.ComponentBind-class.html#__init__,Method spade.xmpp.auth.NonSASL.__init__()=spade.xmpp.auth.NonSASL-class.html#__init__,Method spade.xmpp.auth.SASL.__init__()=spade.xmpp.auth.SASL-class.html#__init__,Method spade.xmpp.browser.Browser.__init__()=spade.xmpp.browser.Browser-class.html#__init__,Method spade.xmpp.client.CommonClient.__init__()=spade.xmpp.client.CommonClient-class.html#__init__,Method spade.xmpp.client.Component.__init__()=spade.xmpp.client.Component-class.html#__init__,Method spade.xmpp.client.PlugIn.__init__()=spade.xmpp.client.PlugIn-class.html#__init__,Method spade.xmpp.commands.Command_Handler_Prototype.__init__()=spade.xmpp.commands.Command_Handler_Prototype-class.html#__init__,Method spade.xmpp.commands.Commands.__init__()=spade.xmpp.commands.Commands-class.html#__init__,Method spade.xmpp.commands.TestCommand.__init__()=spade.xmpp.commands.TestCommand-class.html#__init__,Method spade.xmpp.debug.Debug.__init__()=spade.xmpp.debug.Debug-class.html#__init__,Method spade.xmpp.debug.NoDebug.__init__()=spade.xmpp.debug.NoDebug-class.html#__init__,Method spade.xmpp.dispatcher.Dispatcher.__init__()=spade.xmpp.dispatcher.Dispatcher-class.html#__init__,Method spade.xmpp.filetransfer.IBB.__init__()=spade.xmpp.filetransfer.IBB-class.html#__init__,Method spade.xmpp.protocol.DataField.__init__()=spade.xmpp.protocol.DataField-class.html#__init__,Method spade.xmpp.protocol.DataForm.__init__()=spade.xmpp.protocol.DataForm-class.html#__init__,Method spade.xmpp.protocol.Error.__init__()=spade.xmpp.protocol.Error-class.html#__init__,Method spade.xmpp.protocol.ErrorNode.__init__()=spade.xmpp.protocol.ErrorNode-class.html#__init__,Method spade.xmpp.protocol.Iq.__init__()=spade.xmpp.protocol.Iq-class.html#__init__,Method spade.xmpp.protocol.JID.__init__()=spade.xmpp.protocol.JID-class.html#__init__,Method spade.xmpp.protocol.Message.__init__()=spade.xmpp.protocol.Message-class.html#__init__,Method spade.xmpp.protocol.Presence.__init__()=spade.xmpp.protocol.Presence-class.html#__init__,Method spade.xmpp.protocol.Protocol.__init__()=spade.xmpp.protocol.Protocol-class.html#__init__,Method spade.xmpp.roster.Roster.__init__()=spade.xmpp.roster.Roster-class.html#__init__,Method spade.xmpp.session.Session.__init__()=spade.xmpp.session.Session-class.html#__init__,Method spade.xmpp.simplexml.Node.__init__()=spade.xmpp.simplexml.Node-class.html#__init__,Method spade.xmpp.simplexml.NodeBuilder.__init__()=spade.xmpp.simplexml.NodeBuilder-class.html#__init__,Method spade.xmpp.simplexml.T.__init__()=spade.xmpp.simplexml.T-class.html#__init__,Method spade.xmpp.transports.HTTPPROXYsocket.__init__()=spade.xmpp.transports.HTTPPROXYsocket-class.html#__init__,Method spade.xmpp.transports.TCPsocket.__init__()=spade.xmpp.transports.TCPsocket-class.html#__init__,Method spade.xmpp.transports.error.__init__()=spade.xmpp.transports.error-class.html#__init__,Method spade.xmppd.modules.config.Config.__init__()=spade.xmppd.modules.config.Config-class.html#__init__,Method spade.xmppd.modules.config.xmppdXML.__init__()=spade.xmppd.modules.config.xmppdXML-class.html#__init__,Method spade.xmppd.modules.config.xmppdXMLHandler.__init__()=spade.xmppd.modules.config.xmppdXMLHandler-class.html#__init__,Method spade.xmppd.modules.muc.BadPassword.__init__()=spade.xmppd.modules.muc.BadPassword-class.html#__init__,Method spade.xmppd.modules.muc.Blacklisted.__init__()=spade.xmppd.modules.muc.Blacklisted-class.html#__init__,Method spade.xmppd.modules.muc.MaxUsers.__init__()=spade.xmppd.modules.muc.MaxUsers-class.html#__init__,Method spade.xmppd.modules.muc.NickLockedDown.__init__()=spade.xmppd.modules.muc.NickLockedDown-class.html#__init__,Method spade.xmppd.modules.muc.NoVoice.__init__()=spade.xmppd.modules.muc.NoVoice-class.html#__init__,Method spade.xmppd.modules.muc.NotAMember.__init__()=spade.xmppd.modules.muc.NotAMember-class.html#__init__,Method spade.xmppd.modules.muc.Participant.__init__()=spade.xmppd.modules.muc.Participant-class.html#__init__,Method spade.xmppd.modules.muc.Room.__init__()=spade.xmppd.modules.muc.Room-class.html#__init__,Method spade.xmppd.modules.muc.SerializableRoom.__init__()=spade.xmppd.modules.muc.SerializableRoom-class.html#__init__,Method spade.xmppd.modules.pubsub.PSNode.__init__()=spade.xmppd.modules.pubsub.PSNode-class.html#__init__,Method spade.xmppd.modules.wq.Conflict.__init__()=spade.xmppd.modules.wq.Conflict-class.html#__init__,Method spade.xmppd.modules.wq.Group.__init__()=spade.xmppd.modules.wq.Group-class.html#__init__,Method spade.xmppd.modules.wq.ItemNotFound.__init__()=spade.xmppd.modules.wq.ItemNotFound-class.html#__init__,Method spade.xmppd.xmppd.RPC_Client.__init__()=spade.xmppd.xmppd.RPC_Client-class.html#__init__,Method spade.xmppd.xmppd.Server.__init__()=spade.xmppd.xmppd.Server-class.html#__init__,Method spade.xmppd.xmppd.Session.__init__()=spade.xmppd.xmppd.Session-class.html#__init__,Method spade.xmppd.xmppd.Session_Dummy.Stream.__init__()=spade.xmppd.xmppd.Session_Dummy.Stream-class.html#__init__,Method spade.xmppd.xmppd.Session_Dummy.__init__()=spade.xmppd.xmppd.Session_Dummy-class.html#__init__,Method spade.xmppd.xmppd.Socker_client.__init__()=spade.xmppd.xmppd.Socker_client-class.html#__init__,Method spade.xmppd.xmppd.fake_select.__init__()=spade.xmppd.xmppd.fake_select-class.html#__init__,Method spade.xmppd.xmppd.fake_select.poll.__init__()=spade.xmppd.xmppd.fake_select.poll-class.html#__init__,Method spade.xmppd.xmppd.get_input.__init__()=spade.xmppd.xmppd.get_input-class.html#__init__,Method spade.xmppd.xmppd.localizer.__init__()=spade.xmppd.xmppd.localizer-class.html#__init__,Method spade.xmppd.xmppd.multisession_manager.__init__()=spade.xmppd.xmppd.multisession_manager-class.html#__init__,Method spade.xmppd.xmppd.multisession_manager.multisession_thread.__init__()=spade.xmppd.xmppd.multisession_manager.multisession_thread-class.html#__init__"><a title="spade.ACLMessage.ACLMessage.__init__
+spade.ACLParser.ACLParser.__init__
+spade.ACLParser.ACLxmlParser.__init__
+spade.AID.aid.__init__
+spade.AMS.AMS.DefaultBehaviour.__init__
+spade.AMS.AMS.ModifyBehaviour.__init__
+spade.AMS.AMS.PlatformBehaviour.__init__
+spade.AMS.AMS.RegisterBehaviour.__init__
+spade.AMS.AMS.SearchBehaviour.__init__
+spade.AMS.AMS.__init__
+spade.AMS.AmsAgentDescription.__init__
+spade.Agent.AbstractAgent.__init__
+spade.Agent.Agent.__init__
+spade.Agent.PlatformAgent.__init__
+spade.Agent.jabberProcess.__init__
+spade.BasicFipaDateTime.BasicFipaDateTime.__init__
+spade.Behaviour.ACLTemplate.__init__
+spade.Behaviour.ANDTemplate.__init__
+spade.Behaviour.Behaviour.__init__
+spade.Behaviour.BehaviourTemplate.__init__
+spade.Behaviour.EventBehaviour.__init__
+spade.Behaviour.FSMBehaviour.__init__
+spade.Behaviour.MessageTemplate.__init__
+spade.Behaviour.NOTTemplate.__init__
+spade.Behaviour.ORTemplate.__init__
+spade.Behaviour.OneShotBehaviour.__init__
+spade.Behaviour.PeriodicBehaviour.__init__
+spade.Behaviour.TimeOutBehaviour.__init__
+spade.Behaviour.XORTemplate.__init__
+spade.DF.DF.DefaultBehaviour.__init__
+spade.DF.DF.ModifyBehaviour.__init__
+spade.DF.DF.RegisterBehaviour.__init__
+spade.DF.DF.SearchBehaviour.__init__
+spade.DF.DF.__init__
+spade.DF.DfAgentDescription.__init__
+spade.DF.Service.__init__
+spade.DF.ServiceDescription.__init__
+spade.ECLiPSeKB.ECLiPSeKB.__init__
+spade.Envelope.Envelope.__init__
+spade.FIPAMessage.FipaMessage.__init__
+spade.Flora2KB.Flora2KB.__init__
+spade.MTP.MTP.__init__
+spade.MessageReceiver.MessageReceiver.__init__
+spade.Organization.BanedUser.__init__
+spade.Organization.CreationError.__init__
+spade.Organization.DestroyError.__init__
+spade.Organization.JoinError.__init__
+spade.Organization.LastOwner.__init__
+spade.Organization.LockedOrganization.__init__
+spade.Organization.MaximumUsers.__init__
+spade.Organization.MemberOfFederation.__init__
+spade.Organization.MembersOnly.__init__
+spade.Organization.NickNameConflict.__init__
+spade.Organization.NotOwner.__init__
+spade.Organization.NotSupervisor.__init__
+spade.Organization.NotValidGoal.__init__
+spade.Organization.NotValidName.__init__
+spade.Organization.NotValidType.__init__
+spade.Organization.NotValidUnit.__init__
+spade.Organization.Organization.CreateRoomBehaviour.__init__
+spade.Organization.Organization.CreateTeamBehaviour.__init__
+spade.Organization.Organization.DestroyBehaviour.__init__
+spade.Organization.Organization.GetRegistrationFormBehaviour.__init__
+spade.Organization.Organization.GetUnitInfoBehaviour.__init__
+spade.Organization.Organization.GetUnitListBehaviour.__init__
+spade.Organization.Organization.IsMemberBehaviour.__init__
+spade.Organization.Organization.MyJoinRoomBehaviour.__init__
+spade.Organization.Organization.SendRegistrationFormBehaviour.__init__
+spade.Organization.Organization.TestRoomNameBehaviour.__init__
+spade.Organization.Organization.__init__
+spade.Organization.PaswordNeeded.__init__
+spade.Organization.Unavailable.__init__
+spade.Organization.UnavailableFunction.__init__
+spade.Organization_new.BanedUser.__init__
+spade.Organization_new.CreationError.__init__
+spade.Organization_new.DestroyError.__init__
+spade.Organization_new.JoinError.__init__
+spade.Organization_new.LastOwner.__init__
+spade.Organization_new.LockedOrganization.__init__
+spade.Organization_new.MaximumUsers.__init__
+spade.Organization_new.MemberOfFederation.__init__
+spade.Organization_new.MembersOnly.__init__
+spade.Organization_new.NickNameConflict.__init__
+spade.Organization_new.NotCreatePermision.__init__
+spade.Organization_new.NotSupervisor.__init__
+spade.Organization_new.NotValidGoal.__init__
+spade.Organization_new.NotValidName.__init__
+spade.Organization_new.NotValidType.__init__
+spade.Organization_new.NotValidUnit.__init__
+spade.Organization_new.Organization_new.CreateRoomBehaviour.__init__
+spade.Organization_new.Organization_new.CreateTeamBehaviour.__init__
+spade.Organization_new.Organization_new.DestroyBehaviour.__init__
+spade.Organization_new.Organization_new.GetRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitInfoBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitListBehaviour.__init__
+spade.Organization_new.Organization_new.IsMemberBehaviour.__init__
+spade.Organization_new.Organization_new.MyJoinRoomBehaviour.__init__
+spade.Organization_new.Organization_new.SendRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.TestRoomNameBehaviour.__init__
+spade.Organization_new.Organization_new.__init__
+spade.Organization_new.PaswordNeeded.__init__
+spade.Organization_new.Unavailable.__init__
+spade.Organization_new.UnavailableFunction.__init__
+spade.Platform.PlatformRestart.__init__
+spade.Platform.SpadePlatform.RouteBehaviour.__init__
+spade.Platform.SpadePlatform.__init__
+spade.RDF0Parser.RDF0Parser.__init__
+spade.RPC.RPCClientBehaviour.__init__
+spade.ReceivedObject.ReceivedObject.__init__
+spade.SIMBA.SIMBA.OutboxBehaviour.__init__
+spade.SIMBA.SIMBA.__init__
+spade.SL0Parser.SL0Parser.__init__
+spade.SPARQLKB.SPARQLKB.__init__
+spade.SWIKB.SWIKB.__init__
+spade.SpadeConfigParser.ConfigParser.__init__
+spade.SpadeConfigParser.spadeXML.__init__
+spade.SpadeConfigParser.spadeXMLHandler.__init__
+spade.Unit.BanedUser.__init__
+spade.Unit.CreationError.__init__
+spade.Unit.DestroyError.__init__
+spade.Unit.JoinError.__init__
+spade.Unit.LastOwner.__init__
+spade.Unit.LockedUnit.__init__
+spade.Unit.MaximumUsers.__init__
+spade.Unit.MembersOnly.__init__
+spade.Unit.NickNameConflict.__init__
+spade.Unit.NotAdmin.__init__
+spade.Unit.NotSupervisor.__init__
+spade.Unit.NotValidGoal.__init__
+spade.Unit.NotValidGoalChange.__init__
+spade.Unit.NotValidName.__init__
+spade.Unit.NotValidType.__init__
+spade.Unit.NotValidUnit.__init__
+spade.Unit.PaswordNeeded.__init__
+spade.Unit.Unavailable.__init__
+spade.Unit.Unit.AddAdminBehaviour.__init__
+spade.Unit.Unit.AddBanAgentBehaviour.__init__
+spade.Unit.Unit.AddModeratorBehaviour.__init__
+spade.Unit.Unit.AddOwnerBehaviour.__init__
+spade.Unit.Unit.CreateRoomBehaviour.__init__
+spade.Unit.Unit.DestroyBehaviour.__init__
+spade.Unit.Unit.GetAdminListBehaviour.__init__
+spade.Unit.Unit.GetBanAgentListBehaviour.__init__
+spade.Unit.Unit.GetGoalBehaviour.__init__
+spade.Unit.Unit.GetInfoBehaviour.__init__
+spade.Unit.Unit.GetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.GetMemberListBehaviour.__init__
+spade.Unit.Unit.GetMinAgentsBehaviour.__init__
+spade.Unit.Unit.GetModeratorListBehaviour.__init__
+spade.Unit.Unit.GetNumberOfAgentsBehaviour.__init__
+spade.Unit.Unit.GetOwnerListBehaviour.__init__
+spade.Unit.Unit.GiveVoiceBehaviour.__init__
+spade.Unit.Unit.KickAgentBehaviour.__init__
+spade.Unit.Unit.MyJoinRoomBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.__init__
+spade.Unit.Unit.RemoveAdminBehaviour.__init__
+spade.Unit.Unit.RemoveBanAgentBehaviour.__init__
+spade.Unit.Unit.RemoveModeratorBehaviour.__init__
+spade.Unit.Unit.RemoveOwnerBehaviour.__init__
+spade.Unit.Unit.RevokeVoiceBehaviour.__init__
+spade.Unit.Unit.SendMessageBehaviour.__init__
+spade.Unit.Unit.SendPrivateMessageBehaviour.__init__
+spade.Unit.Unit.SetGoalBehaviour.__init__
+spade.Unit.Unit.SetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.SetMinAgentsBehaviour.__init__
+spade.Unit.Unit.TestRoomNameBehaviour.__init__
+spade.Unit.Unit.__init__
+spade.Unit_new.BanedUser.__init__
+spade.Unit_new.CreationError.__init__
+spade.Unit_new.DestroyError.__init__
+spade.Unit_new.JoinError.__init__
+spade.Unit_new.LastOwner.__init__
+spade.Unit_new.LockedUnit.__init__
+spade.Unit_new.MaximumUsers.__init__
+spade.Unit_new.MembersOnly.__init__
+spade.Unit_new.NickNameConflict.__init__
+spade.Unit_new.NotCreatePermision.__init__
+spade.Unit_new.NotSupervisor.__init__
+spade.Unit_new.NotValidGoal.__init__
+spade.Unit_new.NotValidGoalChange.__init__
+spade.Unit_new.NotValidName.__init__
+spade.Unit_new.NotValidType.__init__
+spade.Unit_new.NotValidUnit.__init__
+spade.Unit_new.PaswordNeeded.__init__
+spade.Unit_new.Unavailable.__init__
+spade.Unit_new.Unit_new.AddAdminBehaviour.__init__
+spade.Unit_new.Unit_new.AddBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.AddModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.CreateRoomBehaviour.__init__
+spade.Unit_new.Unit_new.DestroyBehaviour.__init__
+spade.Unit_new.Unit_new.GetAdminListBehaviour.__init__
+spade.Unit_new.Unit_new.GetBanAgentListBehaviour.__init__
+spade.Unit_new.Unit_new.GetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.GetInfoBehaviour.__init__
+spade.Unit_new.Unit_new.GetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetMemberListBehaviour.__init__
+spade.Unit_new.Unit_new.GetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetModeratorListBehaviour.__init__
+spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetOwnerListBehaviour.__init__
+spade.Unit_new.Unit_new.GiveVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.KickAgentBehaviour.__init__
+spade.Unit_new.Unit_new.MyJoinRoomBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveAdminBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.RevokeVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.SendMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SendPrivateMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.SetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.SetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.TestRoomNameBehaviour.__init__
+spade.Unit_new.Unit_new.__init__
+spade.XMLCodec.XMLCodec.__init__
+spade.XSBKB.XSBKB.__init__
+spade.bdi.BDIBehaviour.__init__
+spade.bdi.Goal.__init__
+spade.content.ContentObject.__init__
+spade.dblite.Base.__init__
+spade.dblite.Index.__init__
+spade.fipa.ModifyAgentBehaviour.__init__
+spade.fipa.SearchAgentBehaviour.__init__
+spade.fipa.deregisterServiceBehaviour.__init__
+spade.fipa.getPlatformInfoBehaviour.__init__
+spade.fipa.modifyServiceBehaviour.__init__
+spade.fipa.registerServiceBehaviour.__init__
+spade.fipa.searchServiceBehaviour.__init__
+spade.kb.KB.__init__
+spade.kb.KBConfigurationFailed.__init__
+spade.logic.Expr.__init__
+spade.logic.FolKB.__init__
+spade.logic.KB.__init__
+spade.logic.PropKB.__init__
+spade.odict.odict.__init__
+spade.peer2peer.RequestDiscoInfoBehav.__init__
+spade.peer2peer.SendStreamInitiationBehav.__init__
+spade.pubsub.PubSub.__init__
+spade.pubsub.PubSub._sendAndReceiveBehav.__init__
+spade.pygooglechart.Axis.__init__
+spade.pygooglechart.BarChart.__init__
+spade.pygooglechart.Chart.__init__
+spade.pygooglechart.ChartGrammar.__init__
+spade.pygooglechart.Data.__init__
+spade.pygooglechart.GoogleOMeterChart.__init__
+spade.pygooglechart.GroupedBarChart.__init__
+spade.pygooglechart.LabelAxis.__init__
+spade.pygooglechart.LineChart.__init__
+spade.pygooglechart.MapChart.__init__
+spade.pygooglechart.PieChart.__init__
+spade.pygooglechart.QRChart.__init__
+spade.pygooglechart.RangeAxis.__init__
+spade.pyparsing.And.__init__
+spade.pyparsing.CaselessLiteral.__init__
+spade.pyparsing.CharsNotIn.__init__
+spade.pyparsing.Combine.__init__
+spade.pyparsing.Dict.__init__
+spade.pyparsing.Each.__init__
+spade.pyparsing.Empty.__init__
+spade.pyparsing.FollowedBy.__init__
+spade.pyparsing.Forward.__init__
+spade.pyparsing.GoToColumn.__init__
+spade.pyparsing.Group.__init__
+spade.pyparsing.Keyword.__init__
+spade.pyparsing.LineEnd.__init__
+spade.pyparsing.LineStart.__init__
+spade.pyparsing.Literal.__init__
+spade.pyparsing.MatchFirst.__init__
+spade.pyparsing.NoMatch.__init__
+spade.pyparsing.NotAny.__init__
+spade.pyparsing.Optional.__init__
+spade.pyparsing.Or.__init__
+spade.pyparsing.ParseBaseException.__init__
+spade.pyparsing.ParseElementEnhance.__init__
+spade.pyparsing.ParseExpression.__init__
+spade.pyparsing.ParseResults.__init__
+spade.pyparsing.ParserElement.__init__
+spade.pyparsing.PositionToken.__init__
+spade.pyparsing.RecursiveGrammarException.__init__
+spade.pyparsing.SkipTo.__init__
+spade.pyparsing.StringEnd.__init__
+spade.pyparsing.StringStart.__init__
+spade.pyparsing.Token.__init__
+spade.pyparsing.TokenConverter.__init__
+spade.pyparsing.Upcase.__init__
+spade.pyparsing.White.__init__
+spade.pyparsing.Word.__init__
+spade.pyparsing.ZeroOrMore.__init__
+spade.pyratemp.FileLoader.__init__
+spade.pyratemp.Parser.__init__
+spade.pyratemp.PseudoSandbox.__init__
+spade.pyratemp.Renderer.__init__
+spade.pyratemp.StringLoader.__init__
+spade.pyratemp.Template.__init__
+spade.pyratemp.TemplateBase.__init__
+spade.pyratemp.TemplateEval.__init__
+spade.pyratemp.TemplateParseError.__init__
+spade.pyxf.eclipse.__init__
+spade.pyxf.flora2.__init__
+spade.pyxf.swipl.__init__
+spade.pyxf.xsb.__init__
+spade.socialnetwork.SocialItem.__init__
+spade.spade_backend.SpadeBackend.__init__
+spade.tbcbp.Case.__init__
+spade.tbcbp.CaseDB.__init__
+spade.tbcbp.Plan.__init__
+spade.tbcbp.TBCBP.__init__
+spade.wui.WUI.__init__
+spade.xmpp.auth.Bind.__init__
+spade.xmpp.auth.ComponentBind.__init__
+spade.xmpp.auth.NonSASL.__init__
+spade.xmpp.auth.SASL.__init__
+spade.xmpp.browser.Browser.__init__
+spade.xmpp.client.CommonClient.__init__
+spade.xmpp.client.Component.__init__
+spade.xmpp.client.PlugIn.__init__
+spade.xmpp.commands.Command_Handler_Prototype.__init__
+spade.xmpp.commands.Commands.__init__
+spade.xmpp.commands.TestCommand.__init__
+spade.xmpp.debug.Debug.__init__
+spade.xmpp.debug.NoDebug.__init__
+spade.xmpp.dispatcher.Dispatcher.__init__
+spade.xmpp.filetransfer.IBB.__init__
+spade.xmpp.protocol.DataField.__init__
+spade.xmpp.protocol.DataForm.__init__
+spade.xmpp.protocol.Error.__init__
+spade.xmpp.protocol.ErrorNode.__init__
+spade.xmpp.protocol.Iq.__init__
+spade.xmpp.protocol.JID.__init__
+spade.xmpp.protocol.Message.__init__
+spade.xmpp.protocol.Presence.__init__
+spade.xmpp.protocol.Protocol.__init__
+spade.xmpp.roster.Roster.__init__
+spade.xmpp.session.Session.__init__
+spade.xmpp.simplexml.Node.__init__
+spade.xmpp.simplexml.NodeBuilder.__init__
+spade.xmpp.simplexml.T.__init__
+spade.xmpp.transports.HTTPPROXYsocket.__init__
+spade.xmpp.transports.TCPsocket.__init__
+spade.xmpp.transports.error.__init__
+spade.xmppd.modules.config.Config.__init__
+spade.xmppd.modules.config.xmppdXML.__init__
+spade.xmppd.modules.config.xmppdXMLHandler.__init__
+spade.xmppd.modules.muc.BadPassword.__init__
+spade.xmppd.modules.muc.Blacklisted.__init__
+spade.xmppd.modules.muc.MaxUsers.__init__
+spade.xmppd.modules.muc.NickLockedDown.__init__
+spade.xmppd.modules.muc.NoVoice.__init__
+spade.xmppd.modules.muc.NotAMember.__init__
+spade.xmppd.modules.muc.Participant.__init__
+spade.xmppd.modules.muc.Room.__init__
+spade.xmppd.modules.muc.SerializableRoom.__init__
+spade.xmppd.modules.pubsub.PSNode.__init__
+spade.xmppd.modules.wq.Conflict.__init__
+spade.xmppd.modules.wq.Group.__init__
+spade.xmppd.modules.wq.ItemNotFound.__init__
+spade.xmppd.xmppd.RPC_Client.__init__
+spade.xmppd.xmppd.Server.__init__
+spade.xmppd.xmppd.Session.__init__
+spade.xmppd.xmppd.Session_Dummy.Stream.__init__
+spade.xmppd.xmppd.Session_Dummy.__init__
+spade.xmppd.xmppd.Socker_client.__init__
+spade.xmppd.xmppd.fake_select.__init__
+spade.xmppd.xmppd.fake_select.poll.__init__
+spade.xmppd.xmppd.get_input.__init__
+spade.xmppd.xmppd.localizer.__init__
+spade.xmppd.xmppd.multisession_manager.__init__
+spade.xmppd.xmppd.multisession_manager.multisession_thread.__init__" class="py-name" href="#" onclick="return doclink('link-2', '__init__', 'link-2');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Method spade.dblite.Base.update()=spade.dblite.Base-class.html#update,Method spade.odict.odict.update()=spade.odict.odict-class.html#update,Method spade.xmppd.modules.router.Router.update()=spade.xmppd.modules.router.Router-class.html#update"><a title="spade.dblite.Base.update
+spade.odict.odict.update
+spade.xmppd.modules.router.Router.update" class="py-name" href="#" onclick="return doclink('link-3', 'update', 'link-3');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"> </tt>
+<a name="odict.__delitem__"></a><div id="odict.__delitem__-def"><a name="L198"></a><tt class="py-lineno">198</tt> <a class="py-toggle" href="#" id="odict.__delitem__-toggle" onclick="return toggle('odict.__delitem__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__delitem__">__delitem__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__delitem__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__delitem__-expanded"><a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method spade.dblite.Base.__delitem__()=spade.dblite.Base-class.html#__delitem__,Method spade.odict.odict.__delitem__()=spade.odict.odict-class.html#__delitem__,Method spade.pyparsing.ParseResults.__delitem__()=spade.pyparsing.ParseResults-class.html#__delitem__,Method spade.xmpp.simplexml.Node.__delitem__()=spade.xmpp.simplexml.Node-class.html#__delitem__"><a title="spade.dblite.Base.__delitem__
+spade.odict.odict.__delitem__
+spade.pyparsing.ParseResults.__delitem__
+spade.xmpp.simplexml.Node.__delitem__" class="py-name" href="#" onclick="return doclink('link-4', '__delitem__', 'link-4');">__delitem__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method spade.FlexQueue.FlexQueue.remove()=spade.FlexQueue.FlexQueue-class.html#remove"><a title="spade.FlexQueue.FlexQueue.remove" class="py-name" href="#" onclick="return doclink('link-5', 'remove', 'link-5');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"> </tt>
+<a name="odict.__setitem__"></a><div id="odict.__setitem__-def"><a name="L202"></a><tt class="py-lineno">202</tt> <a class="py-toggle" href="#" id="odict.__setitem__-toggle" onclick="return toggle('odict.__setitem__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__setitem__">__setitem__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__setitem__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__setitem__-expanded"><a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method spade.pyparsing.ParseExpression.append()=spade.pyparsing.ParseExpression-class.html#append"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-6', 'append', 'link-6');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method spade.content.ContentObject.__setitem__()=spade.content.ContentObject-class.html#__setitem__,Method spade.odict.odict.__setitem__()=spade.odict.odict-class.html#__setitem__,Method spade.pyparsing.ParseResults.__setitem__()=spade.pyparsing.ParseResults-class.html#__setitem__,Method spade.xmpp.protocol.DataForm.__setitem__()=spade.xmpp.protocol.DataForm-class.html#__setitem__,Method spade.xmpp.protocol.Protocol.__setitem__()=spade.xmpp.protocol.Protocol-class.html#__setitem__,Method spade.xmpp.simplexml.Node.__setitem__()=spade.xmpp.simplexml.Node-class.html#__setitem__"><a title="spade.content.ContentObject.__setitem__
+spade.odict.odict.__setitem__
+spade.pyparsing.ParseResults.__setitem__
+spade.xmpp.protocol.DataForm.__setitem__
+spade.xmpp.protocol.Protocol.__setitem__
+spade.xmpp.simplexml.Node.__setitem__" class="py-name" href="#" onclick="return doclink('link-7', '__setitem__', 'link-7');">__setitem__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">item</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"> </tt>
+<a name="odict.__deepcopy__"></a><div id="odict.__deepcopy__-def"><a name="L207"></a><tt class="py-lineno">207</tt> <a class="py-toggle" href="#" id="odict.__deepcopy__-toggle" onclick="return toggle('odict.__deepcopy__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__deepcopy__">__deepcopy__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">memo</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__deepcopy__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__deepcopy__-expanded"><a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">memo</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">            <tt class="py-name">memo</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">        <tt id="link-8" class="py-name" targets="Function spade.logic.d()=spade.logic-module.html#d"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-8', 'd', 'link-8');">d</a></tt> <tt class="py-op">=</tt> <tt class="py-name">memo</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method spade.FlexQueue.FlexQueue.get()=spade.FlexQueue.FlexQueue-class.html#get,Method spade.kb.KB.get()=spade.kb.KB-class.html#get,Method spade.tbcbp.CaseDB.get()=spade.tbcbp.CaseDB-class.html#get,Method spade.xmppd.modules.db_fake.DB.get()=spade.xmppd.modules.db_fake.DB-class.html#get"><a title="spade.FlexQueue.FlexQueue.get
+spade.kb.KB.get
+spade.tbcbp.CaseDB.get
+spade.xmppd.modules.db_fake.DB.get" class="py-name" href="#" onclick="return doclink('link-9', 'get', 'link-9');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">id</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name"><a title="spade.odict.missing" class="py-name" href="#" onclick="return doclink('link-10', 'missing', 'link-1');">missing</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-11" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-11', 'd', 'link-8');">d</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt id="link-12" class="py-name"><a title="spade.odict.missing" class="py-name" href="#" onclick="return doclink('link-12', 'missing', 'link-1');">missing</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-13" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-13', 'd', 'link-8');">d</a></tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt class="py-name">memo</tt><tt class="py-op">[</tt><tt class="py-name">id</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-14', 'd', 'link-8');">d</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="spade.ACLMessage.ACLMessage.__init__
+spade.ACLParser.ACLParser.__init__
+spade.ACLParser.ACLxmlParser.__init__
+spade.AID.aid.__init__
+spade.AMS.AMS.DefaultBehaviour.__init__
+spade.AMS.AMS.ModifyBehaviour.__init__
+spade.AMS.AMS.PlatformBehaviour.__init__
+spade.AMS.AMS.RegisterBehaviour.__init__
+spade.AMS.AMS.SearchBehaviour.__init__
+spade.AMS.AMS.__init__
+spade.AMS.AmsAgentDescription.__init__
+spade.Agent.AbstractAgent.__init__
+spade.Agent.Agent.__init__
+spade.Agent.PlatformAgent.__init__
+spade.Agent.jabberProcess.__init__
+spade.BasicFipaDateTime.BasicFipaDateTime.__init__
+spade.Behaviour.ACLTemplate.__init__
+spade.Behaviour.ANDTemplate.__init__
+spade.Behaviour.Behaviour.__init__
+spade.Behaviour.BehaviourTemplate.__init__
+spade.Behaviour.EventBehaviour.__init__
+spade.Behaviour.FSMBehaviour.__init__
+spade.Behaviour.MessageTemplate.__init__
+spade.Behaviour.NOTTemplate.__init__
+spade.Behaviour.ORTemplate.__init__
+spade.Behaviour.OneShotBehaviour.__init__
+spade.Behaviour.PeriodicBehaviour.__init__
+spade.Behaviour.TimeOutBehaviour.__init__
+spade.Behaviour.XORTemplate.__init__
+spade.DF.DF.DefaultBehaviour.__init__
+spade.DF.DF.ModifyBehaviour.__init__
+spade.DF.DF.RegisterBehaviour.__init__
+spade.DF.DF.SearchBehaviour.__init__
+spade.DF.DF.__init__
+spade.DF.DfAgentDescription.__init__
+spade.DF.Service.__init__
+spade.DF.ServiceDescription.__init__
+spade.ECLiPSeKB.ECLiPSeKB.__init__
+spade.Envelope.Envelope.__init__
+spade.FIPAMessage.FipaMessage.__init__
+spade.Flora2KB.Flora2KB.__init__
+spade.MTP.MTP.__init__
+spade.MessageReceiver.MessageReceiver.__init__
+spade.Organization.BanedUser.__init__
+spade.Organization.CreationError.__init__
+spade.Organization.DestroyError.__init__
+spade.Organization.JoinError.__init__
+spade.Organization.LastOwner.__init__
+spade.Organization.LockedOrganization.__init__
+spade.Organization.MaximumUsers.__init__
+spade.Organization.MemberOfFederation.__init__
+spade.Organization.MembersOnly.__init__
+spade.Organization.NickNameConflict.__init__
+spade.Organization.NotOwner.__init__
+spade.Organization.NotSupervisor.__init__
+spade.Organization.NotValidGoal.__init__
+spade.Organization.NotValidName.__init__
+spade.Organization.NotValidType.__init__
+spade.Organization.NotValidUnit.__init__
+spade.Organization.Organization.CreateRoomBehaviour.__init__
+spade.Organization.Organization.CreateTeamBehaviour.__init__
+spade.Organization.Organization.DestroyBehaviour.__init__
+spade.Organization.Organization.GetRegistrationFormBehaviour.__init__
+spade.Organization.Organization.GetUnitInfoBehaviour.__init__
+spade.Organization.Organization.GetUnitListBehaviour.__init__
+spade.Organization.Organization.IsMemberBehaviour.__init__
+spade.Organization.Organization.MyJoinRoomBehaviour.__init__
+spade.Organization.Organization.SendRegistrationFormBehaviour.__init__
+spade.Organization.Organization.TestRoomNameBehaviour.__init__
+spade.Organization.Organization.__init__
+spade.Organization.PaswordNeeded.__init__
+spade.Organization.Unavailable.__init__
+spade.Organization.UnavailableFunction.__init__
+spade.Organization_new.BanedUser.__init__
+spade.Organization_new.CreationError.__init__
+spade.Organization_new.DestroyError.__init__
+spade.Organization_new.JoinError.__init__
+spade.Organization_new.LastOwner.__init__
+spade.Organization_new.LockedOrganization.__init__
+spade.Organization_new.MaximumUsers.__init__
+spade.Organization_new.MemberOfFederation.__init__
+spade.Organization_new.MembersOnly.__init__
+spade.Organization_new.NickNameConflict.__init__
+spade.Organization_new.NotCreatePermision.__init__
+spade.Organization_new.NotSupervisor.__init__
+spade.Organization_new.NotValidGoal.__init__
+spade.Organization_new.NotValidName.__init__
+spade.Organization_new.NotValidType.__init__
+spade.Organization_new.NotValidUnit.__init__
+spade.Organization_new.Organization_new.CreateRoomBehaviour.__init__
+spade.Organization_new.Organization_new.CreateTeamBehaviour.__init__
+spade.Organization_new.Organization_new.DestroyBehaviour.__init__
+spade.Organization_new.Organization_new.GetRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitInfoBehaviour.__init__
+spade.Organization_new.Organization_new.GetUnitListBehaviour.__init__
+spade.Organization_new.Organization_new.IsMemberBehaviour.__init__
+spade.Organization_new.Organization_new.MyJoinRoomBehaviour.__init__
+spade.Organization_new.Organization_new.SendRegistrationFormBehaviour.__init__
+spade.Organization_new.Organization_new.TestRoomNameBehaviour.__init__
+spade.Organization_new.Organization_new.__init__
+spade.Organization_new.PaswordNeeded.__init__
+spade.Organization_new.Unavailable.__init__
+spade.Organization_new.UnavailableFunction.__init__
+spade.Platform.PlatformRestart.__init__
+spade.Platform.SpadePlatform.RouteBehaviour.__init__
+spade.Platform.SpadePlatform.__init__
+spade.RDF0Parser.RDF0Parser.__init__
+spade.RPC.RPCClientBehaviour.__init__
+spade.ReceivedObject.ReceivedObject.__init__
+spade.SIMBA.SIMBA.OutboxBehaviour.__init__
+spade.SIMBA.SIMBA.__init__
+spade.SL0Parser.SL0Parser.__init__
+spade.SPARQLKB.SPARQLKB.__init__
+spade.SWIKB.SWIKB.__init__
+spade.SpadeConfigParser.ConfigParser.__init__
+spade.SpadeConfigParser.spadeXML.__init__
+spade.SpadeConfigParser.spadeXMLHandler.__init__
+spade.Unit.BanedUser.__init__
+spade.Unit.CreationError.__init__
+spade.Unit.DestroyError.__init__
+spade.Unit.JoinError.__init__
+spade.Unit.LastOwner.__init__
+spade.Unit.LockedUnit.__init__
+spade.Unit.MaximumUsers.__init__
+spade.Unit.MembersOnly.__init__
+spade.Unit.NickNameConflict.__init__
+spade.Unit.NotAdmin.__init__
+spade.Unit.NotSupervisor.__init__
+spade.Unit.NotValidGoal.__init__
+spade.Unit.NotValidGoalChange.__init__
+spade.Unit.NotValidName.__init__
+spade.Unit.NotValidType.__init__
+spade.Unit.NotValidUnit.__init__
+spade.Unit.PaswordNeeded.__init__
+spade.Unit.Unavailable.__init__
+spade.Unit.Unit.AddAdminBehaviour.__init__
+spade.Unit.Unit.AddBanAgentBehaviour.__init__
+spade.Unit.Unit.AddModeratorBehaviour.__init__
+spade.Unit.Unit.AddOwnerBehaviour.__init__
+spade.Unit.Unit.CreateRoomBehaviour.__init__
+spade.Unit.Unit.DestroyBehaviour.__init__
+spade.Unit.Unit.GetAdminListBehaviour.__init__
+spade.Unit.Unit.GetBanAgentListBehaviour.__init__
+spade.Unit.Unit.GetGoalBehaviour.__init__
+spade.Unit.Unit.GetInfoBehaviour.__init__
+spade.Unit.Unit.GetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.GetMemberListBehaviour.__init__
+spade.Unit.Unit.GetMinAgentsBehaviour.__init__
+spade.Unit.Unit.GetModeratorListBehaviour.__init__
+spade.Unit.Unit.GetNumberOfAgentsBehaviour.__init__
+spade.Unit.Unit.GetOwnerListBehaviour.__init__
+spade.Unit.Unit.GiveVoiceBehaviour.__init__
+spade.Unit.Unit.KickAgentBehaviour.__init__
+spade.Unit.Unit.MyJoinRoomBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit.Unit.PresenceBehaviour.__init__
+spade.Unit.Unit.RemoveAdminBehaviour.__init__
+spade.Unit.Unit.RemoveBanAgentBehaviour.__init__
+spade.Unit.Unit.RemoveModeratorBehaviour.__init__
+spade.Unit.Unit.RemoveOwnerBehaviour.__init__
+spade.Unit.Unit.RevokeVoiceBehaviour.__init__
+spade.Unit.Unit.SendMessageBehaviour.__init__
+spade.Unit.Unit.SendPrivateMessageBehaviour.__init__
+spade.Unit.Unit.SetGoalBehaviour.__init__
+spade.Unit.Unit.SetMaxAgentsBehaviour.__init__
+spade.Unit.Unit.SetMinAgentsBehaviour.__init__
+spade.Unit.Unit.TestRoomNameBehaviour.__init__
+spade.Unit.Unit.__init__
+spade.Unit_new.BanedUser.__init__
+spade.Unit_new.CreationError.__init__
+spade.Unit_new.DestroyError.__init__
+spade.Unit_new.JoinError.__init__
+spade.Unit_new.LastOwner.__init__
+spade.Unit_new.LockedUnit.__init__
+spade.Unit_new.MaximumUsers.__init__
+spade.Unit_new.MembersOnly.__init__
+spade.Unit_new.NickNameConflict.__init__
+spade.Unit_new.NotCreatePermision.__init__
+spade.Unit_new.NotSupervisor.__init__
+spade.Unit_new.NotValidGoal.__init__
+spade.Unit_new.NotValidGoalChange.__init__
+spade.Unit_new.NotValidName.__init__
+spade.Unit_new.NotValidType.__init__
+spade.Unit_new.NotValidUnit.__init__
+spade.Unit_new.PaswordNeeded.__init__
+spade.Unit_new.Unavailable.__init__
+spade.Unit_new.Unit_new.AddAdminBehaviour.__init__
+spade.Unit_new.Unit_new.AddBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.AddModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.CreateRoomBehaviour.__init__
+spade.Unit_new.Unit_new.DestroyBehaviour.__init__
+spade.Unit_new.Unit_new.GetAdminListBehaviour.__init__
+spade.Unit_new.Unit_new.GetBanAgentListBehaviour.__init__
+spade.Unit_new.Unit_new.GetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.GetInfoBehaviour.__init__
+spade.Unit_new.Unit_new.GetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetMemberListBehaviour.__init__
+spade.Unit_new.Unit_new.GetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetModeratorListBehaviour.__init__
+spade.Unit_new.Unit_new.GetNumberOfAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.GetOwnerListBehaviour.__init__
+spade.Unit_new.Unit_new.GiveVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.KickAgentBehaviour.__init__
+spade.Unit_new.Unit_new.MyJoinRoomBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.MinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.PresenceBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveAdminBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveBanAgentBehaviour.__init__
+spade.Unit_new.Unit_new.RemoveModeratorBehaviour.__init__
+spade.Unit_new.Unit_new.RevokeVoiceBehaviour.__init__
+spade.Unit_new.Unit_new.SendMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SendPrivateMessageBehaviour.__init__
+spade.Unit_new.Unit_new.SetGoalBehaviour.__init__
+spade.Unit_new.Unit_new.SetMaxAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.SetMinAgentsBehaviour.__init__
+spade.Unit_new.Unit_new.TestRoomNameBehaviour.__init__
+spade.Unit_new.Unit_new.__init__
+spade.XMLCodec.XMLCodec.__init__
+spade.XSBKB.XSBKB.__init__
+spade.bdi.BDIBehaviour.__init__
+spade.bdi.Goal.__init__
+spade.content.ContentObject.__init__
+spade.dblite.Base.__init__
+spade.dblite.Index.__init__
+spade.fipa.ModifyAgentBehaviour.__init__
+spade.fipa.SearchAgentBehaviour.__init__
+spade.fipa.deregisterServiceBehaviour.__init__
+spade.fipa.getPlatformInfoBehaviour.__init__
+spade.fipa.modifyServiceBehaviour.__init__
+spade.fipa.registerServiceBehaviour.__init__
+spade.fipa.searchServiceBehaviour.__init__
+spade.kb.KB.__init__
+spade.kb.KBConfigurationFailed.__init__
+spade.logic.Expr.__init__
+spade.logic.FolKB.__init__
+spade.logic.KB.__init__
+spade.logic.PropKB.__init__
+spade.odict.odict.__init__
+spade.peer2peer.RequestDiscoInfoBehav.__init__
+spade.peer2peer.SendStreamInitiationBehav.__init__
+spade.pubsub.PubSub.__init__
+spade.pubsub.PubSub._sendAndReceiveBehav.__init__
+spade.pygooglechart.Axis.__init__
+spade.pygooglechart.BarChart.__init__
+spade.pygooglechart.Chart.__init__
+spade.pygooglechart.ChartGrammar.__init__
+spade.pygooglechart.Data.__init__
+spade.pygooglechart.GoogleOMeterChart.__init__
+spade.pygooglechart.GroupedBarChart.__init__
+spade.pygooglechart.LabelAxis.__init__
+spade.pygooglechart.LineChart.__init__
+spade.pygooglechart.MapChart.__init__
+spade.pygooglechart.PieChart.__init__
+spade.pygooglechart.QRChart.__init__
+spade.pygooglechart.RangeAxis.__init__
+spade.pyparsing.And.__init__
+spade.pyparsing.CaselessLiteral.__init__
+spade.pyparsing.CharsNotIn.__init__
+spade.pyparsing.Combine.__init__
+spade.pyparsing.Dict.__init__
+spade.pyparsing.Each.__init__
+spade.pyparsing.Empty.__init__
+spade.pyparsing.FollowedBy.__init__
+spade.pyparsing.Forward.__init__
+spade.pyparsing.GoToColumn.__init__
+spade.pyparsing.Group.__init__
+spade.pyparsing.Keyword.__init__
+spade.pyparsing.LineEnd.__init__
+spade.pyparsing.LineStart.__init__
+spade.pyparsing.Literal.__init__
+spade.pyparsing.MatchFirst.__init__
+spade.pyparsing.NoMatch.__init__
+spade.pyparsing.NotAny.__init__
+spade.pyparsing.Optional.__init__
+spade.pyparsing.Or.__init__
+spade.pyparsing.ParseBaseException.__init__
+spade.pyparsing.ParseElementEnhance.__init__
+spade.pyparsing.ParseExpression.__init__
+spade.pyparsing.ParseResults.__init__
+spade.pyparsing.ParserElement.__init__
+spade.pyparsing.PositionToken.__init__
+spade.pyparsing.RecursiveGrammarException.__init__
+spade.pyparsing.SkipTo.__init__
+spade.pyparsing.StringEnd.__init__
+spade.pyparsing.StringStart.__init__
+spade.pyparsing.Token.__init__
+spade.pyparsing.TokenConverter.__init__
+spade.pyparsing.Upcase.__init__
+spade.pyparsing.White.__init__
+spade.pyparsing.Word.__init__
+spade.pyparsing.ZeroOrMore.__init__
+spade.pyratemp.FileLoader.__init__
+spade.pyratemp.Parser.__init__
+spade.pyratemp.PseudoSandbox.__init__
+spade.pyratemp.Renderer.__init__
+spade.pyratemp.StringLoader.__init__
+spade.pyratemp.Template.__init__
+spade.pyratemp.TemplateBase.__init__
+spade.pyratemp.TemplateEval.__init__
+spade.pyratemp.TemplateParseError.__init__
+spade.pyxf.eclipse.__init__
+spade.pyxf.flora2.__init__
+spade.pyxf.swipl.__init__
+spade.pyxf.xsb.__init__
+spade.socialnetwork.SocialItem.__init__
+spade.spade_backend.SpadeBackend.__init__
+spade.tbcbp.Case.__init__
+spade.tbcbp.CaseDB.__init__
+spade.tbcbp.Plan.__init__
+spade.tbcbp.TBCBP.__init__
+spade.wui.WUI.__init__
+spade.xmpp.auth.Bind.__init__
+spade.xmpp.auth.ComponentBind.__init__
+spade.xmpp.auth.NonSASL.__init__
+spade.xmpp.auth.SASL.__init__
+spade.xmpp.browser.Browser.__init__
+spade.xmpp.client.CommonClient.__init__
+spade.xmpp.client.Component.__init__
+spade.xmpp.client.PlugIn.__init__
+spade.xmpp.commands.Command_Handler_Prototype.__init__
+spade.xmpp.commands.Commands.__init__
+spade.xmpp.commands.TestCommand.__init__
+spade.xmpp.debug.Debug.__init__
+spade.xmpp.debug.NoDebug.__init__
+spade.xmpp.dispatcher.Dispatcher.__init__
+spade.xmpp.filetransfer.IBB.__init__
+spade.xmpp.protocol.DataField.__init__
+spade.xmpp.protocol.DataForm.__init__
+spade.xmpp.protocol.Error.__init__
+spade.xmpp.protocol.ErrorNode.__init__
+spade.xmpp.protocol.Iq.__init__
+spade.xmpp.protocol.JID.__init__
+spade.xmpp.protocol.Message.__init__
+spade.xmpp.protocol.Presence.__init__
+spade.xmpp.protocol.Protocol.__init__
+spade.xmpp.roster.Roster.__init__
+spade.xmpp.session.Session.__init__
+spade.xmpp.simplexml.Node.__init__
+spade.xmpp.simplexml.NodeBuilder.__init__
+spade.xmpp.simplexml.T.__init__
+spade.xmpp.transports.HTTPPROXYsocket.__init__
+spade.xmpp.transports.TCPsocket.__init__
+spade.xmpp.transports.error.__init__
+spade.xmppd.modules.config.Config.__init__
+spade.xmppd.modules.config.xmppdXML.__init__
+spade.xmppd.modules.config.xmppdXMLHandler.__init__
+spade.xmppd.modules.muc.BadPassword.__init__
+spade.xmppd.modules.muc.Blacklisted.__init__
+spade.xmppd.modules.muc.MaxUsers.__init__
+spade.xmppd.modules.muc.NickLockedDown.__init__
+spade.xmppd.modules.muc.NoVoice.__init__
+spade.xmppd.modules.muc.NotAMember.__init__
+spade.xmppd.modules.muc.Participant.__init__
+spade.xmppd.modules.muc.Room.__init__
+spade.xmppd.modules.muc.SerializableRoom.__init__
+spade.xmppd.modules.pubsub.PSNode.__init__
+spade.xmppd.modules.wq.Conflict.__init__
+spade.xmppd.modules.wq.Group.__init__
+spade.xmppd.modules.wq.ItemNotFound.__init__
+spade.xmppd.xmppd.RPC_Client.__init__
+spade.xmppd.xmppd.Server.__init__
+spade.xmppd.xmppd.Session.__init__
+spade.xmppd.xmppd.Session_Dummy.Stream.__init__
+spade.xmppd.xmppd.Session_Dummy.__init__
+spade.xmppd.xmppd.Socker_client.__init__
+spade.xmppd.xmppd.fake_select.__init__
+spade.xmppd.xmppd.fake_select.poll.__init__
+spade.xmppd.xmppd.get_input.__init__
+spade.xmppd.xmppd.localizer.__init__
+spade.xmppd.xmppd.multisession_manager.__init__
+spade.xmppd.xmppd.multisession_manager.multisession_thread.__init__" class="py-name" href="#" onclick="return doclink('link-15', '__init__', 'link-2');">__init__</a></tt><tt class="py-op">(</tt><tt id="link-16" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-16', 'd', 'link-8');">d</a></tt><tt class="py-op">,</tt> <tt class="py-name">deepcopy</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method spade.odict.odict.items()=spade.odict.odict-class.html#items,Method spade.pyparsing.ParseResults.items()=spade.pyparsing.ParseResults-class.html#items"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-17', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">memo</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-18', 'd', 'link-8');">d</a></tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-19" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-19', 'd', 'link-8');">d</a></tt> </tt>
+</div><a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"> </tt>
+<a name="odict.__getstate__"></a><div id="odict.__getstate__-def"><a name="L218"></a><tt class="py-lineno">218</tt> <a class="py-toggle" href="#" id="odict.__getstate__-toggle" onclick="return toggle('odict.__getstate__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__getstate__">__getstate__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__getstate__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__getstate__-expanded"><a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">{</tt><tt class="py-string">'items'</tt><tt class="py-op">:</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'keys'</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">}</tt> </tt>
+</div><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"> </tt>
+<a name="odict.__setstate__"></a><div id="odict.__setstate__-def"><a name="L221"></a><tt class="py-lineno">221</tt> <a class="py-toggle" href="#" id="odict.__setstate__-toggle" onclick="return toggle('odict.__setstate__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__setstate__">__setstate__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__setstate__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__setstate__-expanded"><a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-20', 'd', 'link-8');">d</a></tt><tt class="py-op">[</tt><tt class="py-string">'keys'</tt><tt class="py-op">]</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="spade.dblite.Base.update
+spade.odict.odict.update
+spade.xmppd.modules.router.Router.update" class="py-name" href="#" onclick="return doclink('link-21', 'update', 'link-3');">update</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="spade.logic.d" class="py-name" href="#" onclick="return doclink('link-22', 'd', 'link-8');">d</a></tt><tt class="py-op">[</tt><tt class="py-string">'items'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"> </tt>
+<a name="odict.__reversed__"></a><div id="odict.__reversed__-def"><a name="L225"></a><tt class="py-lineno">225</tt> <a class="py-toggle" href="#" id="odict.__reversed__-toggle" onclick="return toggle('odict.__reversed__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__reversed__">__reversed__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__reversed__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__reversed__-expanded"><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">reversed</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="odict.__eq__"></a><div id="odict.__eq__-def"><a name="L228"></a><tt class="py-lineno">228</tt> <a class="py-toggle" href="#" id="odict.__eq__-toggle" onclick="return toggle('odict.__eq__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__eq__">__eq__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__eq__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__eq__-expanded"><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name" targets="Module spade.odict=spade.odict-module.html,Class spade.odict.odict=spade.odict.odict-class.html"><a title="spade.odict
+spade.odict.odict" class="py-name" href="#" onclick="return doclink('link-23', 'odict', 'link-23');">odict</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name" targets="Method spade.AID.aid.__eq__()=spade.AID.aid-class.html#__eq__,Method spade.AMS.AmsAgentDescription.__eq__()=spade.AMS.AmsAgentDescription-class.html#__eq__,Method spade.DF.Service.__eq__()=spade.DF.Service-class.html#__eq__,Method spade.DF.ServiceDescription.__eq__()=spade.DF.ServiceDescription-class.html#__eq__,Method spade.logic.Expr.__eq__()=spade.logic.Expr-class.html#__eq__,Method spade.odict.odict.__eq__()=spade.odict.odict-class.html#__eq__,Method spade.tbcbp.Case.__eq__()=spade.tbcbp.Case-class.html#__eq__,Method spade.xmpp.protocol.JID.__eq__()=spade.xmpp.protocol.JID-class.html#__eq__"><a title="spade.AID.aid.__eq__
+spade.AMS.AmsAgentDescription.__eq__
+spade.DF.Service.__eq__
+spade.DF.ServiceDescription.__eq__
+spade.logic.Expr.__eq__
+spade.odict.odict.__eq__
+spade.tbcbp.Case.__eq__
+spade.xmpp.protocol.JID.__eq__" class="py-name" href="#" onclick="return doclink('link-24', '__eq__', 'link-24');">__eq__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-25', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">other</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-26', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="spade.AID.aid.__eq__
+spade.AMS.AmsAgentDescription.__eq__
+spade.DF.Service.__eq__
+spade.DF.ServiceDescription.__eq__
+spade.logic.Expr.__eq__
+spade.odict.odict.__eq__
+spade.tbcbp.Case.__eq__
+spade.xmpp.protocol.JID.__eq__" class="py-name" href="#" onclick="return doclink('link-27', '__eq__', 'link-24');">__eq__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"> </tt>
+<a name="odict.__ne__"></a><div id="odict.__ne__-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="odict.__ne__-toggle" onclick="return toggle('odict.__ne__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__ne__">__ne__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__ne__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__ne__-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-keyword">not</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="spade.AID.aid.__eq__
+spade.AMS.AmsAgentDescription.__eq__
+spade.DF.Service.__eq__
+spade.DF.ServiceDescription.__eq__
+spade.logic.Expr.__eq__
+spade.odict.odict.__eq__
+spade.tbcbp.Case.__eq__
+spade.xmpp.protocol.JID.__eq__" class="py-name" href="#" onclick="return doclink('link-28', '__eq__', 'link-24');">__eq__</a></tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"> </tt>
+<a name="odict.__cmp__"></a><div id="odict.__cmp__-def"><a name="L238"></a><tt class="py-lineno">238</tt> <a class="py-toggle" href="#" id="odict.__cmp__-toggle" onclick="return toggle('odict.__cmp__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__cmp__">__cmp__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">other</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__cmp__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__cmp__-expanded"><a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="spade.odict
+spade.odict.odict" class="py-name" href="#" onclick="return doclink('link-29', 'odict', 'link-23');">odict</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">cmp</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-30', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-31', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">other</tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Method spade.odict.odict.__cmp__()=spade.odict.odict-class.html#__cmp__"><a title="spade.odict.odict.__cmp__" class="py-name" href="#" onclick="return doclink('link-32', '__cmp__', 'link-32');">__cmp__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">other</tt><tt class="py-op">)</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">NotImplemented</tt> </tt>
+</div><a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line"> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">classmethod</tt> </tt>
+<a name="odict.fromkeys"></a><div id="odict.fromkeys-def"><a name="L246"></a><tt class="py-lineno">246</tt> <a class="py-toggle" href="#" id="odict.fromkeys-toggle" onclick="return toggle('odict.fromkeys');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#fromkeys">fromkeys</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.fromkeys-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.fromkeys-expanded"><a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">cls</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"> </tt>
+<a name="odict.clear"></a><div id="odict.clear-def"><a name="L249"></a><tt class="py-lineno">249</tt> <a class="py-toggle" href="#" id="odict.clear-toggle" onclick="return toggle('odict.clear');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#clear">clear</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.clear-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.clear-expanded"><a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">        <tt class="py-keyword">del</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method spade.odict.odict.clear()=spade.odict.odict-class.html#clear"><a title="spade.odict.odict.clear" class="py-name" href="#" onclick="return doclink('link-33', 'clear', 'link-33');">clear</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"> </tt>
+<a name="odict.copy"></a><div id="odict.copy-def"><a name="L253"></a><tt class="py-lineno">253</tt> <a class="py-toggle" href="#" id="odict.copy-toggle" onclick="return toggle('odict.copy');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#copy">copy</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.copy-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.copy-expanded"><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"> </tt>
+<a name="odict.items"></a><div id="odict.items-def"><a name="L256"></a><tt class="py-lineno">256</tt> <a class="py-toggle" href="#" id="odict.items-toggle" onclick="return toggle('odict.items');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#items">items</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.items-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.items-expanded"><a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">zip</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name" targets="Method spade.odict.odict.values()=spade.odict.odict-class.html#values,Method spade.pyparsing.ParseResults.values()=spade.pyparsing.ParseResults-class.html#values"><a title="spade.odict.odict.values
+spade.pyparsing.ParseResults.values" class="py-name" href="#" onclick="return doclink('link-34', 'values', 'link-34');">values</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"> </tt>
+<a name="odict.iteritems"></a><div id="odict.iteritems-def"><a name="L259"></a><tt class="py-lineno">259</tt> <a class="py-toggle" href="#" id="odict.iteritems-toggle" onclick="return toggle('odict.iteritems');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#iteritems">iteritems</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.iteritems-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.iteritems-expanded"><a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">izip</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method spade.odict.odict.itervalues()=spade.odict.odict-class.html#itervalues"><a title="spade.odict.odict.itervalues" class="py-name" href="#" onclick="return doclink('link-35', 'itervalues', 'link-35');">itervalues</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"> </tt>
+<a name="odict.keys"></a><div id="odict.keys-def"><a name="L262"></a><tt class="py-lineno">262</tt> <a class="py-toggle" href="#" id="odict.keys-toggle" onclick="return toggle('odict.keys');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#keys">keys</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.keys-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.keys-expanded"><a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"> </tt>
+<a name="odict.iterkeys"></a><div id="odict.iterkeys-def"><a name="L265"></a><tt class="py-lineno">265</tt> <a class="py-toggle" href="#" id="odict.iterkeys-toggle" onclick="return toggle('odict.iterkeys');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#iterkeys">iterkeys</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.iterkeys-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.iterkeys-expanded"><a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"> </tt>
+<a name="odict.pop"></a><div id="odict.pop-def"><a name="L268"></a><tt class="py-lineno">268</tt> <a class="py-toggle" href="#" id="odict.pop-toggle" onclick="return toggle('odict.pop');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#pop">pop</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt id="link-36" class="py-name"><a title="spade.odict.missing" class="py-name" href="#" onclick="return doclink('link-36', 'missing', 'link-1');">missing</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.pop-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.pop-expanded"><a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">default</tt> <tt class="py-keyword">is</tt> <tt id="link-37" class="py-name"><a title="spade.odict.missing" class="py-name" href="#" onclick="return doclink('link-37', 'missing', 'link-1');">missing</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method spade.odict.odict.pop()=spade.odict.odict-class.html#pop"><a title="spade.odict.odict.pop" class="py-name" href="#" onclick="return doclink('link-38', 'pop', 'link-38');">pop</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">default</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.FlexQueue.FlexQueue.remove" class="py-name" href="#" onclick="return doclink('link-39', 'remove', 'link-5');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="spade.odict.odict.pop" class="py-name" href="#" onclick="return doclink('link-40', 'pop', 'link-38');">pop</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"> </tt>
+<a name="odict.popitem"></a><div id="odict.popitem-def"><a name="L276"></a><tt class="py-lineno">276</tt> <a class="py-toggle" href="#" id="odict.popitem-toggle" onclick="return toggle('odict.popitem');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#popitem">popitem</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.popitem-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.popitem-expanded"><a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-41" class="py-name"><a title="spade.FlexQueue.FlexQueue.remove" class="py-name" href="#" onclick="return doclink('link-41', 'remove', 'link-5');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method spade.odict.odict.popitem()=spade.odict.odict-class.html#popitem"><a title="spade.odict.odict.popitem" class="py-name" href="#" onclick="return doclink('link-42', 'popitem', 'link-42');">popitem</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="odict.setdefault"></a><div id="odict.setdefault-def"><a name="L280"></a><tt class="py-lineno">280</tt> <a class="py-toggle" href="#" id="odict.setdefault-toggle" onclick="return toggle('odict.setdefault');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#setdefault">setdefault</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.setdefault-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.setdefault-expanded"><a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-43', 'append', 'link-6');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">        <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method spade.odict.odict.setdefault()=spade.odict.odict-class.html#setdefault"><a title="spade.odict.odict.setdefault" class="py-name" href="#" onclick="return doclink('link-44', 'setdefault', 'link-44');">setdefault</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"> </tt>
+<a name="odict.update"></a><div id="odict.update-def"><a name="L285"></a><tt class="py-lineno">285</tt> <a class="py-toggle" href="#" id="odict.update-toggle" onclick="return toggle('odict.update');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#update">update</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.update-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.update-expanded"><a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">        <tt class="py-name">sources</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-string">'iteritems'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">                <tt class="py-name">sources</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-45', 'append', 'link-6');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method spade.odict.odict.iteritems()=spade.odict.odict-class.html#iteritems"><a title="spade.odict.odict.iteritems" class="py-name" href="#" onclick="return doclink('link-46', 'iteritems', 'link-46');">iteritems</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">                <tt class="py-name">sources</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-47', 'append', 'link-6');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">args</tt><tt class="py-op">:</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">'expected at most one positional argument'</tt><tt class="py-op">)</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">kwargs</tt><tt class="py-op">:</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">            <tt class="py-name">sources</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-48', 'append', 'link-6');">append</a></tt><tt class="py-op">(</tt><tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="spade.odict.odict.iteritems" class="py-name" href="#" onclick="return doclink('link-49', 'iteritems', 'link-46');">iteritems</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">iterable</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sources</tt><tt class="py-op">:</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">val</tt> <tt class="py-keyword">in</tt> <tt class="py-name">iterable</tt><tt class="py-op">:</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">val</tt> </tt>
+</div><a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"> </tt>
+<a name="odict.values"></a><div id="odict.values-def"><a name="L300"></a><tt class="py-lineno">300</tt> <a class="py-toggle" href="#" id="odict.values-toggle" onclick="return toggle('odict.values');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#values">values</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.values-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.values-expanded"><a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.FlexQueue.FlexQueue.get
+spade.kb.KB.get
+spade.tbcbp.CaseDB.get
+spade.xmppd.modules.db_fake.DB.get" class="py-name" href="#" onclick="return doclink('link-50', 'get', 'link-9');">get</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"> </tt>
+<a name="odict.itervalues"></a><div id="odict.itervalues-def"><a name="L303"></a><tt class="py-lineno">303</tt> <a class="py-toggle" href="#" id="odict.itervalues-toggle" onclick="return toggle('odict.itervalues');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#itervalues">itervalues</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.itervalues-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.itervalues-expanded"><a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">imap</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="spade.FlexQueue.FlexQueue.get
+spade.kb.KB.get
+spade.tbcbp.CaseDB.get
+spade.xmppd.modules.db_fake.DB.get" class="py-name" href="#" onclick="return doclink('link-51', 'get', 'link-9');">get</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"> </tt>
+<a name="odict.index"></a><div id="odict.index-def"><a name="L306"></a><tt class="py-lineno">306</tt> <a class="py-toggle" href="#" id="odict.index-toggle" onclick="return toggle('odict.index');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#index">index</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.index-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.index-expanded"><a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Method spade.Platform.SpadePlatform.index()=spade.Platform.SpadePlatform-class.html#index,Method spade.odict.odict.index()=spade.odict.odict-class.html#index"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-52', 'index', 'link-52');">index</a></tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"> </tt>
+<a name="odict.byindex"></a><div id="odict.byindex-def"><a name="L309"></a><tt class="py-lineno">309</tt> <a class="py-toggle" href="#" id="odict.byindex-toggle" onclick="return toggle('odict.byindex');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#byindex">byindex</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">item</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.byindex-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.byindex-expanded"><a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">        <tt class="py-name">key</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">[</tt><tt class="py-name">item</tt><tt class="py-op">]</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method spade.dblite.Base.__getitem__()=spade.dblite.Base-class.html#__getitem__,Method spade.dblite.Index.__getitem__()=spade.dblite.Index-class.html#__getitem__,Method spade.pyparsing.ParseExpression.__getitem__()=spade.pyparsing.ParseExpression-class.html#__getitem__,Method spade.pyparsing.ParseResults.__getitem__()=spade.pyparsing.ParseResults-class.html#__getitem__,Method spade.xmpp.protocol.DataForm.__getitem__()=spade.xmpp.protocol.DataForm-class.html#__getitem__,Method spade.xmpp.roster.Roster.__getitem__()=spade.xmpp.roster.Roster-class.html#__getitem__,Method spade.xmpp.simplexml.Node.__getitem__()=spade.xmpp.simplexml.Node-class.html#__getitem__"><a title="spade.dblite.Base.__getitem__
+spade.dblite.Index.__getitem__
+spade.pyparsing.ParseExpression.__getitem__
+spade.pyparsing.ParseResults.__getitem__
+spade.xmpp.protocol.DataForm.__getitem__
+spade.xmpp.roster.Roster.__getitem__
+spade.xmpp.simplexml.Node.__getitem__" class="py-name" href="#" onclick="return doclink('link-53', '__getitem__', 'link-53');">__getitem__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"> </tt>
+<a name="odict.reverse"></a><div id="odict.reverse-def"><a name="L313"></a><tt class="py-lineno">313</tt> <a class="py-toggle" href="#" id="odict.reverse-toggle" onclick="return toggle('odict.reverse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#reverse">reverse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.reverse-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.reverse-expanded"><a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Method spade.odict.odict.reverse()=spade.odict.odict-class.html#reverse"><a title="spade.odict.odict.reverse" class="py-name" href="#" onclick="return doclink('link-54', 'reverse', 'link-54');">reverse</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"> </tt>
+<a name="odict.sort"></a><div id="odict.sort-def"><a name="L316"></a><tt class="py-lineno">316</tt> <a class="py-toggle" href="#" id="odict.sort-toggle" onclick="return toggle('odict.sort');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#sort">sort</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.sort-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.sort-expanded"><a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_keys</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Method spade.odict.odict.sort()=spade.odict.odict-class.html#sort"><a title="spade.odict.odict.sort" class="py-name" href="#" onclick="return doclink('link-55', 'sort', 'link-55');">sort</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"> </tt>
+<a name="odict.__repr__"></a><div id="odict.__repr__-def"><a name="L319"></a><tt class="py-lineno">319</tt> <a class="py-toggle" href="#" id="odict.__repr__-toggle" onclick="return toggle('odict.__repr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.odict.odict-class.html#__repr__">__repr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="odict.__repr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="odict.__repr__-expanded"><a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'odict.odict(%r)'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="spade.odict.odict.items
+spade.pyparsing.ParseResults.items" class="py-name" href="#" onclick="return doclink('link-56', 'items', 'link-17');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line"> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">    <tt class="py-name">__copy__</tt> <tt class="py-op">=</tt> <tt id="link-57" class="py-name"><a title="spade.odict.odict.copy
+spade.pyparsing.Keyword.copy
+spade.pyparsing.ParseResults.copy
+spade.pyparsing.ParserElement.copy" class="py-name" href="#" onclick="return doclink('link-57', 'copy', 'link-0');">copy</a></tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">    <tt id="link-58" class="py-name" targets="Method spade.dblite.Base.__iter__()=spade.dblite.Base-class.html#__iter__,Method spade.dblite.Index.__iter__()=spade.dblite.Index-class.html#__iter__,Method spade.pyparsing.ParseResults.__iter__()=spade.pyparsing.ParseResults-class.html#__iter__"><a title="spade.dblite.Base.__iter__
+spade.dblite.Index.__iter__
+spade.pyparsing.ParseResults.__iter__" class="py-name" href="#" onclick="return doclink('link-58', '__iter__', 'link-58');">__iter__</a></tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name" targets="Method spade.odict.odict.iterkeys()=spade.odict.odict-class.html#iterkeys"><a title="spade.odict.odict.iterkeys" class="py-name" href="#" onclick="return doclink('link-59', 'iterkeys', 'link-59');">iterkeys</a></tt> </tt>
+</div><a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line"> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line"> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt class="py-name">doctest</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">    <tt class="py-name">doctest</tt><tt class="py-op">.</tt><tt class="py-name">testmod</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:04 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

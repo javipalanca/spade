@@ -1,0 +1,1814 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.Agent.AbstractAgent</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.Agent-module.html">Module&nbsp;Agent</a> ::
+        Class&nbsp;AbstractAgent
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.Agent.AbstractAgent-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class AbstractAgent</h1><p class="nomargin-top"><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_ag" name="uml_class_diagram_for_spade_ag">
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#__init__" title="inits an agent with a JID (user@server) and a platform JID &#160;(acc.platformserver)" alt="" coords="84,439,457,457"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#setAdminPasswd" title="spade.Agent.AbstractAgent.setAdminPasswd" alt="" coords="84,457,457,476"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_login" title="spade.Agent.AbstractAgent.WUIController_login" alt="" coords="84,476,457,495"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_logout" title="spade.Agent.AbstractAgent.WUIController_logout" alt="" coords="84,495,457,513"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_admin" title="spade.Agent.AbstractAgent.WUIController_admin" alt="" coords="84,513,457,532"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_log" title="spade.Agent.AbstractAgent.WUIController_log" alt="" coords="84,532,457,551"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_messages" title="spade.Agent.AbstractAgent.WUIController_messages" alt="" coords="84,551,457,569"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_search" title="spade.Agent.AbstractAgent.WUIController_search" alt="" coords="84,569,457,588"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_sendmsg" title="spade.Agent.AbstractAgent.WUIController_sendmsg" alt="" coords="84,588,457,607"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#WUIController_sent" title="spade.Agent.AbstractAgent.WUIController_sent" alt="" coords="84,607,457,625"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#registerLogComponent" title="spade.Agent.AbstractAgent.registerLogComponent" alt="" coords="84,625,457,644"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#DEBUG" title="spade.Agent.AbstractAgent.DEBUG" alt="" coords="84,644,457,663"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#setDebug" title="spade.Agent.AbstractAgent.setDebug" alt="" coords="84,663,457,681"/>
+<area shape="rect" id="node44" href="spade.Agent.AbstractAgent-class.html#getFact" title="spade.Agent.AbstractAgent.getFact" alt="" coords="84,700,457,719"/>
+<area shape="rect" id="node1" href="spade.Agent.AbstractAgent-class.html" title="Abstract Agent only for heritance Child classes: PlatformAgent, Agent" alt="" coords="72,406,469,725"/>
+<area shape="rect" id="node2" href="spade.Agent.Agent-class.html" title="This is the main class which may be inherited to build a SPADE agent" alt="" coords="91,745,160,783"/>
+<area shape="rect" id="node8" href="spade.Agent.PlatformAgent-class.html" title="A PlatformAgent is a SPADE component." alt="" coords="284,745,404,783"/>
+<area shape="rect" id="node10" href="spade.Agent.BDIAgent-class.html" title="spade.Agent.BDIAgent" alt="" coords="5,803,99,842"/>
+<area shape="rect" id="node3" href="spade.AMS.AMS-class.html" title="Agent Management System" alt="" coords="128,803,227,842"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.name" alt="" coords="187,95,355,113"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.ident" alt="" coords="187,113,355,132"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.daemon" alt="" coords="187,132,355,151"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="repr(x)" alt="" coords="187,153,355,172"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="187,172,355,191"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="187,191,355,209"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="187,209,355,228"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.is_alive" alt="" coords="187,228,355,247"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="187,247,355,265"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="187,265,355,284"/>
+<area shape="rect" id="node46" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="187,284,355,303"/>
+<area shape="rect" id="node4" href="javascript:void(0);" title="threading.Thread" alt="" coords="175,70,367,309"/>
+<area shape="rect" id="node45" href="spade.MessageReceiver.MessageReceiver-class.html#postMessage" title="spade.MessageReceiver.MessageReceiver.postMessage" alt="" coords="163,361,379,380"/>
+<area shape="rect" id="node7" href="spade.MessageReceiver.MessageReceiver-class.html" title="spade.MessageReceiver.MessageReceiver" alt="" coords="151,329,391,386"/>
+<area shape="rect" id="node5" href="spade.Platform.SpadePlatform-class.html" title="spade.Platform.SpadePlatform" alt="" coords="256,803,432,842"/>
+<area shape="rect" id="node6" href="javascript:void(0);" title="threading._Verbose" alt="" coords="201,6,340,50"/>
+<area shape="rect" id="node9" href="spade.DF.DF-class.html" title="Directory Facilitator Agent" alt="" coords="461,803,539,842"/>
+<area shape="rect" id="node11" href="spade.SIMBA.SIMBA-class.html" title="spade.SIMBA.SIMBA" alt="" coords="568,803,693,842"/>
+</map>
+  <img src="uml_class_diagram_for_spade_ag.gif" alt='' usemap="#uml_class_diagram_for_spade_ag" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Abstract Agent only for heritance Child classes: PlatformAgent, 
+  Agent</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">agentjid</span>,
+        <span class="summary-sig-arg">serverplatform</span>,
+        <span class="summary-sig-arg">p2p</span>=<span class="summary-sig-default">False</span>)</span><br />
+      inits an agent with a JID (user@server) and a platform JID 
+      (acc.platformserver)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAdminPasswd"></a><span class="summary-sig-name">setAdminPasswd</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">passwd</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setAdminPasswd">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="WUIController_login"></a><span class="summary-sig-name">WUIController_login</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">password</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">forward_url</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">index</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_login">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="WUIController_logout"></a><span class="summary-sig-name">WUIController_logout</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_logout">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_admin" class="summary-sig-name">WUIController_admin</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_admin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_log" class="summary-sig-name">WUIController_log</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_log">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_messages" class="summary-sig-name">WUIController_messages</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_messages">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_search" class="summary-sig-name">WUIController_search</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_search">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_sendmsg" class="summary-sig-name">WUIController_sendmsg</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_sendmsg">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#WUIController_sent" class="summary-sig-name">WUIController_sent</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_sent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="registerLogComponent"></a><span class="summary-sig-name">registerLogComponent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">component</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.registerLogComponent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="DEBUG"></a><span class="summary-sig-name">DEBUG</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dmsg</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">component</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.DEBUG">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDebug"></a><span class="summary-sig-name">setDebug</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">activate</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setDebug">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDebugToScreen"></a><span class="summary-sig-name">setDebugToScreen</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">activate</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setDebugToScreen">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDebugToFile"></a><span class="summary-sig-name">setDebugToFile</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">activate</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">fname</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setDebugToFile">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getLog"></a><span class="summary-sig-name">getLog</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getLog">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="newMessage"></a><span class="summary-sig-name">newMessage</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Creates and returns an empty ACL message</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.newMessage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="newContentObject"></a><span class="summary-sig-name">newContentObject</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Creates and returns an empty Content Object</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.newContentObject">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_jabber_presenceCB"></a><span class="summary-sig-name">_jabber_presenceCB</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">mess</span>)</span><br />
+      presence callback manages jabber stanzas of the 'presence' protocol</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._jabber_presenceCB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_jabber_messageCB"></a><span class="summary-sig-name">_jabber_messageCB</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">mess</span>,
+        <span class="summary-sig-arg">raiseFlag</span>=<span class="summary-sig-default">True</span>)</span><br />
+      message callback read the message envelope and post the message to 
+      the agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._jabber_messageCB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_other_messageCB"></a><span class="summary-sig-name">_other_messageCB</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">mess</span>)</span><br />
+      non jabber:x:fipa chat messages callback</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._other_messageCB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_jabber_iqCB"></a><span class="summary-sig-name">_jabber_iqCB</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conn</span>,
+        <span class="summary-sig-arg">mess</span>)</span><br />
+      IQ callback manages jabber stanzas of the 'iq' protocol</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._jabber_iqCB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAID"></a><span class="summary-sig-name">getAID</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns AID</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getAID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setAID"></a><span class="summary-sig-name">setAID</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">aid</span>)</span><br />
+      sets a new AID</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setAID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addAddress"></a><span class="summary-sig-name">addAddress</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">addr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.addAddress">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#getName" class="summary-sig-name">getName</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getName">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAMS"></a><span class="summary-sig-name">getAMS</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the AMS aid</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getAMS">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getDF"></a><span class="summary-sig-name">getDF</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the DF aid</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getDF">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getMUC"></a><span class="summary-sig-name">getMUC</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the MUC JID</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getMUC">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getSpadePlatformJID"></a><span class="summary-sig-name">getSpadePlatformJID</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the SPADE JID (string)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getSpadePlatformJID">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getDomain"></a><span class="summary-sig-name">getDomain</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the SPADE server domain</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getDomain">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getP2PUrl"></a><span class="summary-sig-name">getP2PUrl</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getP2PUrl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="requestDiscoInfo"></a><span class="summary-sig-name">requestDiscoInfo</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">to</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.requestDiscoInfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="initiateStream"></a><span class="summary-sig-name">initiateStream</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">to</span>)</span><br />
+      Perform a Stream Initiation with another agent in order to stablish a
+      P2P communication channel</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.initiateStream">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="send"></a><span class="summary-sig-name">send</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ACLmsg</span>,
+        <span class="summary-sig-arg">method</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">jabber</code><code class="variable-quote">'</code></span>)</span><br />
+      sends an ACLMessage</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.send">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_sendTo"></a><span class="summary-sig-name">_sendTo</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">ACLmsg</span>,
+        <span class="summary-sig-arg">tojid</span>,
+        <span class="summary-sig-arg">method</span>)</span><br />
+      sends an ACLMessage to a specific JabberID</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._sendTo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="send_p2p"></a><span class="summary-sig-name">send_p2p</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">jabber_msg</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">to</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">method</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">p2ppy</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ACLmsg</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.send_p2p">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_kill"></a><span class="summary-sig-name">_kill</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      kills the agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._kill">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isRunning"></a><span class="summary-sig-name">isRunning</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns wether an agent is running or not</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.isRunning">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="stop"></a><span class="summary-sig-name">stop</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Stops the agent execution and blocks until the agent dies</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.stop">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="forceKill"></a><span class="summary-sig-name">forceKill</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.forceKill">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#_setup" class="summary-sig-name" onclick="show_private();">_setup</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      setup agent method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._setup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_initBdiBehav"></a><span class="summary-sig-name">_initBdiBehav</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      starts the BDI behaviour ONLY if self is a subclass of bdi.BDIAgent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._initBdiBehav">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="takeDown"></a><span class="summary-sig-name">takeDown</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      stops the agent must be overridden (kind of a &quot;onEnd&quot; for 
+      the agent)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.takeDown">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Agent.AbstractAgent-class.html#run" class="summary-sig-name">run</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      periodic agent execution</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.run">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setDefaultBehaviour"></a><span class="summary-sig-name">setDefaultBehaviour</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">behaviour</span>)</span><br />
+      sets a Behavior as Default</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.setDefaultBehaviour">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getDefaultBehaviour"></a><span class="summary-sig-name">getDefaultBehaviour</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the default behavior</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getDefaultBehaviour">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addBehaviour"></a><span class="summary-sig-name">addBehaviour</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">behaviour</span>,
+        <span class="summary-sig-arg">template</span>=<span class="summary-sig-default">None</span>)</span><br />
+      adds a new behavior to the agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.addBehaviour">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="runBehaviourOnce"></a><span class="summary-sig-name">runBehaviourOnce</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">behaviour</span>,
+        <span class="summary-sig-arg">template</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Runs the behaviour offline Executes its process once @warning Only 
+      for OneShotBehaviour</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.runBehaviourOnce">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="removeBehaviour"></a><span class="summary-sig-name">removeBehaviour</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">behaviour</span>)</span><br />
+      removes a behavior from the agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.removeBehaviour">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="subscribeToFriend"></a><span class="summary-sig-name">subscribeToFriend</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">aid</span>)</span><br />
+      presence subscription to another agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.subscribeToFriend">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="unsubscribeToFriend"></a><span class="summary-sig-name">unsubscribeToFriend</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">aid</span>)</span><br />
+      presence unsubscription to another agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.unsubscribeToFriend">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getSocialNetwork"></a><span class="summary-sig-name">getSocialNetwork</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">nowait</span>=<span class="summary-sig-default">False</span>)</span><br />
+      get list of social agents which have some relation with the agent</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getSocialNetwork">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="searchAgent"></a><span class="summary-sig-name">searchAgent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">AAD</span>)</span><br />
+      searches an agent in the AMS the search template is an 
+      AmsAgentDescription class</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.searchAgent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="modifyAgent"></a><span class="summary-sig-name">modifyAgent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">AAD</span>)</span><br />
+      modifies the AmsAgentDescription of an agent in the AMS</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.modifyAgent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPlatformInfo"></a><span class="summary-sig-name">getPlatformInfo</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      returns the Plarform Info</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getPlatformInfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="registerService"></a><span class="summary-sig-name">registerService</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">service</span>,
+        <span class="summary-sig-arg">methodCall</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">otherdf</span>=<span class="summary-sig-default">None</span>)</span><br />
+      registers a service in the DF the service template is a 
+      DfAgentDescriptor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.registerService">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="deregisterService"></a><span class="summary-sig-name">deregisterService</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">DAD</span>,
+        <span class="summary-sig-arg">otherdf</span>=<span class="summary-sig-default">None</span>)</span><br />
+      deregisters a service in the DF the service template is a 
+      DfAgentDescriptor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.deregisterService">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="searchService"></a><span class="summary-sig-name">searchService</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">DAD</span>)</span><br />
+      search a service in the DF the service template is a 
+      DfAgentDescriptor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.searchService">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="modifyService"></a><span class="summary-sig-name">modifyService</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">DAD</span>,
+        <span class="summary-sig-arg">methodCall</span>=<span class="summary-sig-default">None</span>)</span><br />
+      modifies a service in the DF the service template is a 
+      DfAgentDescriptor</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.modifyService">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="invokeService"></a><span class="summary-sig-name">invokeService</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">service</span>,
+        <span class="summary-sig-arg">inputs</span>=<span class="summary-sig-default">None</span>)</span><br />
+      invokes a service using jabber-rpc (XML-RPC) the service template is 
+      a DF.Service if inputs is None, they are extracted from the agent's 
+      KB</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.invokeService">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="publishEvent"></a><span class="summary-sig-name">publishEvent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">event</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.publishEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="subscribeToEvent"></a><span class="summary-sig-name">subscribeToEvent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">behaviour</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">server</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.subscribeToEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="unsubscribeFromEvent"></a><span class="summary-sig-name">unsubscribeFromEvent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">server</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">jid</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.unsubscribeFromEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="createEvent"></a><span class="summary-sig-name">createEvent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">server</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">type</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">leaf</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">parent</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">access</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.createEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="deleteEvent"></a><span class="summary-sig-name">deleteEvent</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">server</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.deleteEvent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addBelieve"></a><span class="summary-sig-name">addBelieve</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>,
+        <span class="summary-sig-arg">type</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">insert</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.addBelieve">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="removeBelieve"></a><span class="summary-sig-name">removeBelieve</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>,
+        <span class="summary-sig-arg">type</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">delete</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.removeBelieve">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="askBelieve"></a><span class="summary-sig-name">askBelieve</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sentence</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.askBelieve">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="configureKB"></a><span class="summary-sig-name">configureKB</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">typ</span>,
+        <span class="summary-sig-arg">sentence</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">path</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.configureKB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="saveFact"></a><span class="summary-sig-name">saveFact</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">sentence</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.saveFact">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getFact"></a><span class="summary-sig-name">getFact</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getFact">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b>:
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#postMessage">postMessage</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b> (private):
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#_receive" onclick="show_private();">_receive</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>__repr__</code>,
+      <code>isAlive</code>,
+      <code>isDaemon</code>,
+      <code>is_alive</code>,
+      <code>join</code>,
+      <code>setDaemon</code>,
+      <code>setName</code>,
+      <code>start</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_reset_internal_locks</code>,
+      <code>_set_daemon</code>,
+      <code>_set_ident</code>
+      </p></div>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading._Verbose</code></b> (private):
+      <code>_note</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>daemon</code>,
+      <code>ident</code>,
+      <code>name</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_block</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">agentjid</span>,
+        <span class="sig-arg">serverplatform</span>,
+        <span class="sig-arg">p2p</span>=<span class="sig-default">False</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>inits an agent with a JID (user@server) and a platform JID 
+  (acc.platformserver)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_admin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_admin</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_admin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_log"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_log</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_log">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_messages"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_messages</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_messages">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_search"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_search</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_search">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_sendmsg"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_sendmsg</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_sendmsg">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="WUIController_sent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WUIController_sent</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.WUIController_sent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@require_login</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getName"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getName</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.getName">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+        threading.Thread.getName
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_setup"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_setup</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent._setup">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>setup agent method. configures the agent must be overridden</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="run"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">run</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Agent-pysrc.html#AbstractAgent.run">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>periodic agent execution</p>
+  <dl class="fields">
+    <dt>Overrides:
+        threading.Thread.run
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:33 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

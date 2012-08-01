@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.Organization.Organization.MyJoinRoomBehaviour</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.Organization-module.html">Module&nbsp;Organization</a> ::
+        <a href="spade.Organization.Organization-class.html">Class&nbsp;Organization</a> ::
+        Class&nbsp;MyJoinRoomBehaviour
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class MyJoinRoomBehaviour</h1><p class="nomargin-top"><span class="codelink"><a href="spade.Organization-pysrc.html#Organization.MyJoinRoomBehaviour">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_or_25" name="uml_class_diagram_for_spade_or_25">
+<area shape="rect" id="node1032" href="spade.Behaviour.OneShotBehaviour-class.html#done" title="returns True if the behavior has finished else returns False" alt="" coords="233,759,407,777"/>
+<area shape="rect" id="node1" href="spade.Behaviour.OneShotBehaviour-class.html" title="this behavior is only executed once" alt="" coords="221,726,419,783"/>
+<area shape="rect" id="node1031" href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="192,836,447,855"/>
+<area shape="rect" id="node5" href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html" title="spade.Organization.Organization.MyJoinRoomBehaviour" alt="" coords="180,803,457,861"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#exitCode" title="returns the default exit code for the behavior" alt="" coords="17,457,621,476"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#getAgent" title="returns the agent which controls the behavior" alt="" coords="17,476,621,495"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#getParent" title="spade.Behaviour.Behaviour.getParent" alt="" coords="17,495,621,513"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#kill" title="stops the behavior" alt="" coords="17,513,621,532"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#managePresence" title="DEPRECATED manage a FIPA&#45;formed presence message" alt="" coords="17,532,621,551"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#onEnd" title="this method runs when the behavior stops" alt="" coords="17,551,621,569"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#onStart" title="this method runs when the behavior starts" alt="" coords="17,569,621,588"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#registerPresenceHandler" title="DEPRECATED register a handler that will manage all incoming presence &#160;notifications matching the given presence template" alt="" coords="17,588,621,607"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#root" title="spade.Behaviour.Behaviour.root" alt="" coords="17,607,621,625"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#run" title="spade.Behaviour.Behaviour.run" alt="" coords="17,625,621,644"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#setAgent" title="sets the agent which controls the behavior" alt="" coords="17,644,621,663"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#setParent" title="spade.Behaviour.Behaviour.setParent" alt="" coords="17,663,621,681"/>
+<area shape="rect" id="node1033" href="spade.Behaviour.Behaviour-class.html#setTemplate" title="Set the message template for this behaviour" alt="" coords="17,681,621,700"/>
+<area shape="rect" id="node2" href="spade.Behaviour.Behaviour-class.html" title="spade.Behaviour.Behaviour" alt="" coords="5,425,632,706"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.name" alt="" coords="236,95,404,113"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.ident" alt="" coords="236,113,404,132"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.daemon" alt="" coords="236,132,404,151"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="repr(x)" alt="" coords="236,153,404,172"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="236,172,404,191"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="236,191,404,209"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="236,209,404,228"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.is_alive" alt="" coords="236,228,404,247"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="236,247,404,265"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="236,265,404,284"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.getName" alt="" coords="236,284,404,303"/>
+<area shape="rect" id="node1035" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="236,303,404,321"/>
+<area shape="rect" id="node3" href="javascript:void(0);" title="threading.Thread" alt="" coords="224,70,416,327"/>
+<area shape="rect" id="node1034" href="spade.MessageReceiver.MessageReceiver-class.html#postMessage" title="spade.MessageReceiver.MessageReceiver.postMessage" alt="" coords="212,380,428,399"/>
+<area shape="rect" id="node6" href="spade.MessageReceiver.MessageReceiver-class.html" title="spade.MessageReceiver.MessageReceiver" alt="" coords="200,347,440,405"/>
+<area shape="rect" id="node4" href="javascript:void(0);" title="threading._Verbose" alt="" coords="251,6,389,50"/>
+</map>
+  <img src="uml_class_diagram_for_spade_or_25.gif" alt='' usemap="#uml_class_diagram_for_spade_or_25" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">muc_name</span>,
+        <span class="summary-sig-arg">roomname</span>,
+        <span class="summary-sig-arg">nick</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Organization-pysrc.html#Organization.MyJoinRoomBehaviour.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.Organization.Organization.MyJoinRoomBehaviour-class.html#_process" class="summary-sig-name" onclick="show_private();">_process</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      main loop must be overridden</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.Organization-pysrc.html#Organization.MyJoinRoomBehaviour._process">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.OneShotBehaviour-class.html">Behaviour.OneShotBehaviour</a></code></b>:
+      <code><a href="spade.Behaviour.OneShotBehaviour-class.html#done">done</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.Behaviour-class.html">Behaviour.Behaviour</a></code></b>:
+      <code><a href="spade.Behaviour.Behaviour-class.html#exitCode">exitCode</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#getAgent">getAgent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#kill">kill</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#managePresence">managePresence</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#onEnd">onEnd</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#onStart">onStart</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#registerPresenceHandler">registerPresenceHandler</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#root">root</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#run">run</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setAgent">setAgent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.Behaviour.Behaviour-class.html#setTemplate">setTemplate</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b>:
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#postMessage">postMessage</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.MessageReceiver.MessageReceiver-class.html">MessageReceiver.MessageReceiver</a></code></b> (private):
+      <code><a href="spade.MessageReceiver.MessageReceiver-class.html#_receive" onclick="show_private();">_receive</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>__repr__</code>,
+      <code>getName</code>,
+      <code>isAlive</code>,
+      <code>isDaemon</code>,
+      <code>is_alive</code>,
+      <code>join</code>,
+      <code>setDaemon</code>,
+      <code>setName</code>,
+      <code>start</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_reset_internal_locks</code>,
+      <code>_set_daemon</code>,
+      <code>_set_ident</code>
+      </p></div>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading._Verbose</code></b> (private):
+      <code>_note</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.Behaviour.Behaviour-class.html">Behaviour.Behaviour</a></code></b> (private):
+      <code><a href="spade.Behaviour.Behaviour-class.html#_exitcode" onclick="show_private();">_exitcode</a></code>
+      </p></div>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
+      <code>daemon</code>,
+      <code>ident</code>,
+      <code>name</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
+      <code>_block</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">muc_name</span>,
+        <span class="sig-arg">roomname</span>,
+        <span class="sig-arg">nick</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Organization-pysrc.html#Organization.MyJoinRoomBehaviour.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_process"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_process</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.Organization-pysrc.html#Organization.MyJoinRoomBehaviour._process">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>main loop must be overridden</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.Behaviour.Behaviour-class.html#_process" onclick="show_private();">Behaviour.Behaviour._process</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:40 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

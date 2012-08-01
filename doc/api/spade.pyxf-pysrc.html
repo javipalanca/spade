@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyxf</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;pyxf
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyxf-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.pyxf-module.html">Module spade.pyxf</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable spade.pyparsing.__doc__=spade.pyparsing-module.html#__doc__,Variable spade.pyxf.__doc__=spade.pyxf-module.html#__doc__"><a title="spade.pyparsing.__doc__
+spade.pyxf.__doc__" class="py-name" href="#" onclick="return doclink('link-0', '__doc__', 'link-0');">__doc__</a></tt> <tt class="py-op">=</tt> <tt class="py-docstring">''' Python interface to XSB Prolog, SWI Prolog, ECLiPSe Prolog and Flora2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"> by Markus Schatten &lt;markus_dot_schatten_at_foi_dot_hr&gt;</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"> Faculty of Organization and Informatics,</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"> Varazdin, Croatia, 2011</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring"> This library is free software; you can redistribute it and/or</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring"> modify it under the terms of the GNU Lesser General Public</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"> License as published by the Free Software Foundation; either</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"> version 2.1 of the License, or (at your option) any later version.</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring"> This library is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"> but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring"> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring"> Lesser General Public License for more details.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"> You should have received a copy of the GNU Lesser General Public</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring"> License along with this library; if not, write to the Free Software</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring"> Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA'''</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable spade.xmpp.session.__version__=spade.xmpp.session-module.html#__version__"><a title="spade.xmpp.session.__version__" class="py-name" href="#" onclick="return doclink('link-1', '__version__', 'link-1');">__version__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'1.0.1'</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pexpect</tt> <tt class="py-keyword">as</tt> <tt class="py-name">px</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable spade.pyxf.xsbprompt=spade.pyxf-module.html#xsbprompt"><a title="spade.pyxf.xsbprompt" class="py-name" href="#" onclick="return doclink('link-2', 'xsbprompt', 'link-2');">xsbprompt</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'[|][ ][?][-][ ]'</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable spade.pyxf.xsberror=spade.pyxf-module.html#xsberror"><a title="spade.pyxf.xsberror" class="py-name" href="#" onclick="return doclink('link-3', 'xsberror', 'link-3');">xsberror</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'[+][+]Error.*'</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable spade.pyxf.var_re=spade.pyxf-module.html#var_re"><a title="spade.pyxf.var_re" class="py-name" href="#" onclick="return doclink('link-4', 'var_re', 'link-4');">var_re</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method spade.pyratemp.PseudoSandbox.compile()=spade.pyratemp.PseudoSandbox-class.html#compile"><a title="spade.pyratemp.PseudoSandbox.compile" class="py-name" href="#" onclick="return doclink('link-5', 'compile', 'link-5');">compile</a></tt><tt class="py-op">(</tt> <tt class="py-string">'[^a-zA-Z0-9_]([A-Z][a-zA-Z0-9_]*)'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt id="link-6" class="py-name" targets="Variable spade.pyxf.res_re=spade.pyxf-module.html#res_re"><a title="spade.pyxf.res_re" class="py-name" href="#" onclick="return doclink('link-6', 'res_re', 'link-6');">res_re</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="spade.pyratemp.PseudoSandbox.compile" class="py-name" href="#" onclick="return doclink('link-7', 'compile', 'link-5');">compile</a></tt><tt class="py-op">(</tt> <tt class="py-string">"res[\(]'([A-Z][a-zA-Z0-9_]*)',[ ]?(.*)[\)]"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="XSBExecutableNotFound"></a><div id="XSBExecutableNotFound-def"><a name="L31"></a><tt class="py-lineno"> 31</tt> <a class="py-toggle" href="#" id="XSBExecutableNotFound-toggle" onclick="return toggle('XSBExecutableNotFound');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.XSBExecutableNotFound-class.html">XSBExecutableNotFound</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="XSBExecutableNotFound-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="XSBExecutableNotFound-expanded"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if XSB executable is not found on the specified path.'''</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="XSBCompileError"></a><div id="XSBCompileError-def"><a name="L35"></a><tt class="py-lineno"> 35</tt> <a class="py-toggle" href="#" id="XSBCompileError-toggle" onclick="return toggle('XSBCompileError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.XSBCompileError-class.html">XSBCompileError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if loaded module has compile errors.'''</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="XSBQueryError"></a><div id="XSBQueryError-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="XSBQueryError-toggle" onclick="return toggle('XSBQueryError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.XSBQueryError-class.html">XSBQueryError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if query raises an error.'''</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="xsb"></a><div id="xsb-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="xsb-toggle" onclick="return toggle('xsb');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.xsb-class.html">xsb</a><tt class="py-op">:</tt> </tt>
+</div><div id="xsb-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="xsb-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">  <tt class="py-docstring">'''Python interface to XSB Prolog (http://xsb.sf.net)'''</tt> </tt>
+<a name="xsb.__init__"></a><div id="xsb.__init__-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="xsb.__init__-toggle" onclick="return toggle('xsb.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.xsb-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-string">'xsb'</tt><tt class="py-op">,</tt> <tt class="py-param">args</tt><tt class="py-op">=</tt><tt class="py-string">'--nobanner --quietload'</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="xsb.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="xsb.__init__-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: xsb( path, args )</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to XSB executable (default: 'xsb')</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">    args - command line arguments (default: '--nobanner --quietload')</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">    self.engine becomes pexpect spawn instance of XSB Prolog shell</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: XSBExecutableNotFound'''</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt> <tt class="py-op">=</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">spawn</tt><tt class="py-op">(</tt> <tt class="py-name">path</tt> <tt class="py-op">+</tt> <tt class="py-string">' '</tt> <tt class="py-op">+</tt> <tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-name">timeout</tt><tt class="py-op">=</tt><tt class="py-number">5</tt> <tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt id="link-8" class="py-name"><a title="spade.pyxf.xsbprompt" class="py-name" href="#" onclick="return doclink('link-8', 'xsbprompt', 'link-2');">xsbprompt</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">ExceptionPexpect</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-9" class="py-name" targets="Class spade.pyxf.XSBExecutableNotFound=spade.pyxf.XSBExecutableNotFound-class.html"><a title="spade.pyxf.XSBExecutableNotFound" class="py-name" href="#" onclick="return doclink('link-9', 'XSBExecutableNotFound', 'link-9');">XSBExecutableNotFound</a></tt><tt class="py-op">,</tt> <tt class="py-string">'XSB executable not found on the specified path. Try using xsb( "/path/to/XSB/bin/xsb" )'</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">     </tt>
+<a name="xsb.load"></a><div id="xsb.load-def"><a name="L60"></a><tt class="py-lineno"> 60</tt> <a class="py-toggle" href="#" id="xsb.load-toggle" onclick="return toggle('xsb.load');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.xsb-class.html#load">load</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="xsb.load-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="xsb.load-expanded"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-docstring">'''Loads module into self.engine</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.load( path )</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to module file</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: XSBCompileError'''</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-string">"['"</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">"']."</tt> <tt class="py-op">)</tt>  </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt id="link-10" class="py-name" targets="Method spade.Platform.SpadePlatform.index()=spade.Platform.SpadePlatform-class.html#index,Method spade.odict.odict.index()=spade.odict.odict-class.html#index"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-10', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-11" class="py-name"><a title="spade.pyxf.xsbprompt" class="py-name" href="#" onclick="return doclink('link-11', 'xsbprompt', 'link-2');">xsbprompt</a></tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name"><a title="spade.pyxf.xsberror" class="py-name" href="#" onclick="return doclink('link-12', 'xsberror', 'link-3');">xsberror</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-13" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-13', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-14" class="py-name" targets="Class spade.pyxf.XSBCompileError=spade.pyxf.XSBCompileError-class.html"><a title="spade.pyxf.XSBCompileError" class="py-name" href="#" onclick="return doclink('link-14', 'XSBCompileError', 'link-14');">XSBCompileError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while compiling module "'</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from XSB:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt>  </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">     </tt>
+<a name="xsb.query"></a><div id="xsb.query-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="xsb.query-toggle" onclick="return toggle('xsb.query');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.xsb-class.html#query">query</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="xsb.query-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="xsb.query-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries current engine state</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.query( query )</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">    query - usual XSB Prolog query (example: 'likes( X, Y )')</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">    Returns:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">      True - if yes/no query and answer is yes</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring">      False - if yes/no query and answer is no</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">      List of dictionaries - if normal query. Dictionary keys are returned</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">      variable names. Example:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">      &gt;&gt;&gt; instance.query( 'likes( Person, Food )' )</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">      [{'Person': 'john', 'Food': 'curry'}, {'Person': 'sandy', 'Food': 'mushrooms'}]</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: XSBQueryError'''</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Method spade.pyxf.eclipse.query()=spade.pyxf.eclipse-class.html#query,Method spade.pyxf.flora2.query()=spade.pyxf.flora2-class.html#query,Method spade.pyxf.swipl.query()=spade.pyxf.swipl-class.html#query,Method spade.pyxf.xsb.query()=spade.pyxf.xsb-class.html#query"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-15', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-16', 'query', 'link-15');">query</a></tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-17" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-17', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">      <tt id="link-18" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-18', 'query', 'link-15');">query</a></tt> <tt class="py-op">+=</tt> <tt class="py-string">'.'</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="spade.pyxf.var_re" class="py-name" href="#" onclick="return doclink('link-19', 'var_re', 'link-4');">var_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt id="link-20" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-20', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt> <tt id="link-21" class="py-name" targets="Method spade.kb.KB.set()=spade.kb.KB-class.html#set"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-21', 'set', 'link-21');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">lvars</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> <tt class="py-comment"># yes/no query (no variables)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt id="link-22" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-22', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">      <tt id="link-23" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-23', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-24" class="py-name"><a title="spade.pyxf.xsbprompt" class="py-name" href="#" onclick="return doclink('link-24', 'xsbprompt', 'link-2');">xsbprompt</a></tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="spade.pyxf.xsberror" class="py-name" href="#" onclick="return doclink('link-25', 'xsberror', 'link-3');">xsberror</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-26" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-26', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-27" class="py-name" targets="Class spade.pyxf.XSBQueryError=spade.pyxf.XSBQueryError-class.html"><a title="spade.pyxf.XSBQueryError" class="py-name" href="#" onclick="return doclink('link-27', 'XSBQueryError', 'link-27');">XSBQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-28" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-28', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from XSB:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'yes'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># normal query</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">      <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method spade.pyxf.eclipse._printer()=spade.pyxf.eclipse-class.html#_printer,Method spade.pyxf.swipl._printer()=spade.pyxf.swipl-class.html#_printer,Method spade.pyxf.xsb._printer()=spade.pyxf.xsb-class.html#_printer"><a title="spade.pyxf.eclipse._printer
+spade.pyxf.swipl._printer
+spade.pyxf.xsb._printer" class="py-name" href="#" onclick="return doclink('link-29', '_printer', 'link-29');">_printer</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-30', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-name">printer</tt> <tt class="py-op">)</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">      <tt id="link-31" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-31', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-32" class="py-name"><a title="spade.pyxf.xsberror" class="py-name" href="#" onclick="return doclink('link-32', 'xsberror', 'link-3');">xsberror</a></tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name"><a title="spade.pyxf.xsbprompt" class="py-name" href="#" onclick="return doclink('link-33', 'xsbprompt', 'link-2');">xsbprompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-34" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-34', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-35" class="py-name"><a title="spade.pyxf.XSBQueryError" class="py-name" href="#" onclick="return doclink('link-35', 'XSBQueryError', 'link-27');">XSBQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-36" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-36', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from XSB:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="spade.pyxf.res_re" class="py-name" href="#" onclick="return doclink('link-37', 'res_re', 'link-6');">res_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt> <tt class="py-string">',nl,fail.\n'</tt> <tt class="py-op">)</tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-name">counter</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">          <tt class="py-name">counter</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">          <tt class="py-name">temp</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method spade.pyparsing.ParseExpression.append()=spade.pyparsing.ParseExpression-class.html#append"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-38', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">counter</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">            <tt class="py-name">results</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-39', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt> <tt class="py-name">temp</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">results</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">          <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">results</tt> </tt>
+</div><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">     </tt>
+<a name="xsb._printer"></a><div id="xsb._printer-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="xsb._printer-toggle" onclick="return toggle('xsb._printer');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.xsb-class.html#_printer">_printer</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lvars</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="xsb._printer-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="xsb._printer-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-docstring">'''Private method for constructing a result printing query.</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance._printer( lvars, query )</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-docstring">    lvars - list of logical variables to print</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-docstring">    query - query containing the variables to be printed</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring">    Returns: string of the form 'query, writeln( res( 'VarName1', VarName1 ) ) ... writeln( res( 'VarNameN', VarNameN ) ),nl,fail.'</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt id="link-40" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-40', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-41', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt class="py-name">elems</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-string">"writeln( res('''"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">"''',"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">") )"</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">lvars</tt> <tt class="py-op">]</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">    <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-42', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt> <tt class="py-name">elems</tt> <tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">',nl,fail.'</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">printer</tt> </tt>
+</div></div><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt id="link-43" class="py-name" targets="Variable spade.pyxf.swiprompt=spade.pyxf-module.html#swiprompt"><a title="spade.pyxf.swiprompt" class="py-name" href="#" onclick="return doclink('link-43', 'swiprompt', 'link-43');">swiprompt</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'[?][-][ ]'</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt id="link-44" class="py-name" targets="Variable spade.pyxf.swierror=spade.pyxf-module.html#swierror"><a title="spade.pyxf.swierror" class="py-name" href="#" onclick="return doclink('link-44', 'swierror', 'link-44');">swierror</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'ERROR.*'</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"> </tt>
+<a name="SWIExecutableNotFound"></a><div id="SWIExecutableNotFound-def"><a name="L137"></a><tt class="py-lineno">137</tt> <a class="py-toggle" href="#" id="SWIExecutableNotFound-toggle" onclick="return toggle('SWIExecutableNotFound');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.SWIExecutableNotFound-class.html">SWIExecutableNotFound</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SWIExecutableNotFound-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SWIExecutableNotFound-expanded"><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if SWI-Prolog executable is not found on the specified path.'''</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="SWICompileError"></a><div id="SWICompileError-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="SWICompileError-toggle" onclick="return toggle('SWICompileError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.SWICompileError-class.html">SWICompileError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if loaded module has compile errors.'''</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"> </tt>
+<a name="SWIQueryError"></a><div id="SWIQueryError-def"><a name="L145"></a><tt class="py-lineno">145</tt> <a class="py-toggle" href="#" id="SWIQueryError-toggle" onclick="return toggle('SWIQueryError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.SWIQueryError-class.html">SWIQueryError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if query raises an error.'''</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="swipl"></a><div id="swipl-def"><a name="L149"></a><tt class="py-lineno">149</tt> <a class="py-toggle" href="#" id="swipl-toggle" onclick="return toggle('swipl');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.swipl-class.html">swipl</a><tt class="py-op">:</tt> </tt>
+</div><div id="swipl-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="swipl-expanded"><a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">  <tt class="py-docstring">'''Python interface to SWI Prolog (http://www.swi-prolog.org)'''</tt> </tt>
+<a name="swipl.__init__"></a><div id="swipl.__init__-def"><a name="L151"></a><tt class="py-lineno">151</tt> <a class="py-toggle" href="#" id="swipl.__init__-toggle" onclick="return toggle('swipl.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.swipl-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-string">'swipl'</tt><tt class="py-op">,</tt> <tt class="py-param">args</tt><tt class="py-op">=</tt><tt class="py-string">'-q +tty'</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="swipl.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="swipl.__init__-expanded"><a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: swipl( path, args )</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to SWI executable (default: 'swipl')</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-docstring">    args - command line arguments (default: '-q +tty')</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring">    self.engine becomes pexpect spawn instance of SWI Prolog shell</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: SWIExecutableNotFound'''</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt> <tt class="py-op">=</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">spawn</tt><tt class="py-op">(</tt> <tt class="py-name">path</tt> <tt class="py-op">+</tt> <tt class="py-string">' '</tt> <tt class="py-op">+</tt> <tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-name">timeout</tt><tt class="py-op">=</tt><tt class="py-number">5</tt> <tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt id="link-45" class="py-name"><a title="spade.pyxf.swiprompt" class="py-name" href="#" onclick="return doclink('link-45', 'swiprompt', 'link-43');">swiprompt</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">ExceptionPexpect</tt><tt class="py-op">:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-46" class="py-name" targets="Class spade.pyxf.SWIExecutableNotFound=spade.pyxf.SWIExecutableNotFound-class.html"><a title="spade.pyxf.SWIExecutableNotFound" class="py-name" href="#" onclick="return doclink('link-46', 'SWIExecutableNotFound', 'link-46');">SWIExecutableNotFound</a></tt><tt class="py-op">,</tt> <tt class="py-string">'SWI-Prolog executable not found on the specified path. Try installing swi-prolog or using swipl( "/path/to/swipl" )'</tt> </tt>
+</div><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">     </tt>
+<a name="swipl.load"></a><div id="swipl.load-def"><a name="L166"></a><tt class="py-lineno">166</tt> <a class="py-toggle" href="#" id="swipl.load-toggle" onclick="return toggle('swipl.load');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.swipl-class.html#load">load</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="swipl.load-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="swipl.load-expanded"><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-docstring">'''Loads module into self.engine</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.load( path )</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to module file</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: SWICompileError'''</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-string">"['"</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">"']."</tt> <tt class="py-op">)</tt>  </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">    <tt id="link-47" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-47', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-48" class="py-name"><a title="spade.pyxf.swierror" class="py-name" href="#" onclick="return doclink('link-48', 'swierror', 'link-44');">swierror</a></tt><tt class="py-op">,</tt> <tt id="link-49" class="py-name"><a title="spade.pyxf.swiprompt" class="py-name" href="#" onclick="return doclink('link-49', 'swiprompt', 'link-43');">swiprompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-50" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-50', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-51" class="py-name" targets="Class spade.pyxf.SWICompileError=spade.pyxf.SWICompileError-class.html"><a title="spade.pyxf.SWICompileError" class="py-name" href="#" onclick="return doclink('link-51', 'SWICompileError', 'link-51');">SWICompileError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while compiling module "'</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from SWI:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt>  </tt>
+</div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">     </tt>
+<a name="swipl.query"></a><div id="swipl.query-def"><a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="swipl.query-toggle" onclick="return toggle('swipl.query');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.swipl-class.html#query">query</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="swipl.query-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="swipl.query-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries current engine state</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.query( query )</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring">    query - usual SWI Prolog query (example: 'likes( X, Y )')</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-docstring">    Returns:</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring">      True - if yes/no query and answer is yes</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring">      False - if yes/no query and answer is no</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">      List of dictionaries - if normal query. Dictionary keys are returned</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">      variable names. Example:</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">      &gt;&gt;&gt; instance.query( 'likes( Person, Food )' )</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">      [{'Person': 'john', 'Food': 'curry'}, {'Person': 'sandy', 'Food': 'mushrooms'}]</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: SWIQueryError'''</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">    <tt id="link-52" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-52', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-53', 'query', 'link-15');">query</a></tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-54" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-54', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">      <tt id="link-55" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-55', 'query', 'link-15');">query</a></tt> <tt class="py-op">+=</tt> <tt class="py-string">'.'</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt id="link-56" class="py-name"><a title="spade.pyxf.var_re" class="py-name" href="#" onclick="return doclink('link-56', 'var_re', 'link-4');">var_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt id="link-57" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-57', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt> <tt id="link-58" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-58', 'set', 'link-21');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">lvars</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> <tt class="py-comment"># yes/no query (no variables)</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt id="link-59" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-59', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">      <tt id="link-60" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-60', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-61" class="py-name"><a title="spade.pyxf.swiprompt" class="py-name" href="#" onclick="return doclink('link-61', 'swiprompt', 'link-43');">swiprompt</a></tt><tt class="py-op">,</tt> <tt id="link-62" class="py-name"><a title="spade.pyxf.swierror" class="py-name" href="#" onclick="return doclink('link-62', 'swierror', 'link-44');">swierror</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-63" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-63', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-64" class="py-name" targets="Class spade.pyxf.SWIQueryError=spade.pyxf.SWIQueryError-class.html"><a title="spade.pyxf.SWIQueryError" class="py-name" href="#" onclick="return doclink('link-64', 'SWIQueryError', 'link-64');">SWIQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-65" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-65', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from SWI:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'true'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">:</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># normal query</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">      <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="spade.pyxf.eclipse._printer
+spade.pyxf.swipl._printer
+spade.pyxf.xsb._printer" class="py-name" href="#" onclick="return doclink('link-66', '_printer', 'link-29');">_printer</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt><tt class="py-op">,</tt> <tt id="link-67" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-67', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-name">printer</tt> <tt class="py-op">)</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">      <tt id="link-68" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-68', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-69" class="py-name"><a title="spade.pyxf.swierror" class="py-name" href="#" onclick="return doclink('link-69', 'swierror', 'link-44');">swierror</a></tt><tt class="py-op">,</tt> <tt id="link-70" class="py-name"><a title="spade.pyxf.swiprompt" class="py-name" href="#" onclick="return doclink('link-70', 'swiprompt', 'link-43');">swiprompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-71" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-71', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-72" class="py-name"><a title="spade.pyxf.SWIQueryError" class="py-name" href="#" onclick="return doclink('link-72', 'SWIQueryError', 'link-64');">SWIQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-73" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-73', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from SWI:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-74" class="py-name"><a title="spade.pyxf.res_re" class="py-name" href="#" onclick="return doclink('link-74', 'res_re', 'link-6');">res_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt> <tt class="py-string">',nl,fail.\n'</tt> <tt class="py-op">)</tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-name">counter</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">        <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt><tt class="py-op">:</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">          <tt class="py-name">counter</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">          <tt class="py-name">temp</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-75', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">counter</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">            <tt class="py-name">results</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-76', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt> <tt class="py-name">temp</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">results</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">          <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">results</tt> </tt>
+</div><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">     </tt>
+<a name="swipl._printer"></a><div id="swipl._printer-def"><a name="L227"></a><tt class="py-lineno">227</tt> <a class="py-toggle" href="#" id="swipl._printer-toggle" onclick="return toggle('swipl._printer');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.swipl-class.html#_printer">_printer</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lvars</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="swipl._printer-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="swipl._printer-expanded"><a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">    <tt class="py-docstring">'''Private method for constructing a result printing query.</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance._printer( lvars, query )</tt> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"><tt class="py-docstring">    lvars - list of logical variables to print</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-docstring">    query - query containing the variables to be printed</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">    Returns: string of the form 'query, writeln( res( 'VarName1', VarName1 ) ) ... writeln( res( 'VarNameN', VarNameN ) ),nl,fail.'</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">    <tt id="link-77" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-77', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-78" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-78', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-name">elems</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-string">"writeln( res('''"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">"''',"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">") )"</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">lvars</tt> <tt class="py-op">]</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">    <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt id="link-79" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-79', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt> <tt class="py-name">elems</tt> <tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">',nl,fail.'</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">printer</tt> </tt>
+</div></div><a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt id="link-80" class="py-name" targets="Variable spade.pyxf.eclipseprompt=spade.pyxf-module.html#eclipseprompt"><a title="spade.pyxf.eclipseprompt" class="py-name" href="#" onclick="return doclink('link-80', 'eclipseprompt', 'link-80');">eclipseprompt</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'[\[]eclipse [0-9]+[\]][:] '</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt id="link-81" class="py-name" targets="Variable spade.pyxf.eclipseerror=spade.pyxf-module.html#eclipseerror"><a title="spade.pyxf.eclipseerror" class="py-name" href="#" onclick="return doclink('link-81', 'eclipseerror', 'link-81');">eclipseerror</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'Abort.*'</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeExecutableNotFound"></a><div id="ECLiPSeExecutableNotFound-def"><a name="L243"></a><tt class="py-lineno">243</tt> <a class="py-toggle" href="#" id="ECLiPSeExecutableNotFound-toggle" onclick="return toggle('ECLiPSeExecutableNotFound');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.ECLiPSeExecutableNotFound-class.html">ECLiPSeExecutableNotFound</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ECLiPSeExecutableNotFound-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ECLiPSeExecutableNotFound-expanded"><a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if ECLiPSe-Prolog executable is not found on the specified path.'''</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeCompileError"></a><div id="ECLiPSeCompileError-def"><a name="L247"></a><tt class="py-lineno">247</tt> <a class="py-toggle" href="#" id="ECLiPSeCompileError-toggle" onclick="return toggle('ECLiPSeCompileError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.ECLiPSeCompileError-class.html">ECLiPSeCompileError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if loaded module has compile errors.'''</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"> </tt>
+<a name="ECLiPSeQueryError"></a><div id="ECLiPSeQueryError-def"><a name="L251"></a><tt class="py-lineno">251</tt> <a class="py-toggle" href="#" id="ECLiPSeQueryError-toggle" onclick="return toggle('ECLiPSeQueryError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.ECLiPSeQueryError-class.html">ECLiPSeQueryError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if query raises an error.'''</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"> </tt>
+<a name="eclipse"></a><div id="eclipse-def"><a name="L255"></a><tt class="py-lineno">255</tt> <a class="py-toggle" href="#" id="eclipse-toggle" onclick="return toggle('eclipse');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.eclipse-class.html">eclipse</a><tt class="py-op">:</tt> </tt>
+</div><div id="eclipse-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="eclipse-expanded"><a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">  <tt class="py-docstring">'''Python interface to ECLiPSe Prolog (http://eclipseclp.org)'''</tt> </tt>
+<a name="eclipse.__init__"></a><div id="eclipse.__init__-def"><a name="L257"></a><tt class="py-lineno">257</tt> <a class="py-toggle" href="#" id="eclipse.__init__-toggle" onclick="return toggle('eclipse.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.eclipse-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-string">'eclipse'</tt><tt class="py-op">,</tt> <tt class="py-param">args</tt><tt class="py-op">=</tt><tt class="py-string">''</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="eclipse.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="eclipse.__init__-expanded"><a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: eclipse( path, args )</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to ECLiPSe executable (default: 'eclipse')</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"><tt class="py-docstring">    args - command line arguments (default: '')</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-docstring">    self.engine becomes pexpect spawn instance of ECLiPSe Prolog shell</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: ECLiPSeExecutableNotFound'''</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt> <tt class="py-op">=</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">spawn</tt><tt class="py-op">(</tt> <tt class="py-name">path</tt> <tt class="py-op">+</tt> <tt class="py-string">' '</tt> <tt class="py-op">+</tt> <tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-name">timeout</tt><tt class="py-op">=</tt><tt class="py-number">5</tt> <tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">ExceptionPexpect</tt><tt class="py-op">:</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-82" class="py-name" targets="Class spade.pyxf.ECLiPSeExecutableNotFound=spade.pyxf.ECLiPSeExecutableNotFound-class.html"><a title="spade.pyxf.ECLiPSeExecutableNotFound" class="py-name" href="#" onclick="return doclink('link-82', 'ECLiPSeExecutableNotFound', 'link-82');">ECLiPSeExecutableNotFound</a></tt><tt class="py-op">,</tt> <tt class="py-string">'ECLiPSe Prolog executable not found on the specified path.'</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt id="link-83" class="py-name"><a title="spade.pyxf.eclipseprompt" class="py-name" href="#" onclick="return doclink('link-83', 'eclipseprompt', 'link-80');">eclipseprompt</a></tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">     </tt>
+<a name="eclipse.load"></a><div id="eclipse.load-def"><a name="L272"></a><tt class="py-lineno">272</tt> <a class="py-toggle" href="#" id="eclipse.load-toggle" onclick="return toggle('eclipse.load');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.eclipse-class.html#load">load</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="eclipse.load-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="eclipse.load-expanded"><a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">    <tt class="py-docstring">'''Loads module into self.engine</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.load( path )</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to module file</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: ECLiPSeCompileError'''</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-string">"['"</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">"']."</tt> <tt class="py-op">)</tt>  </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">    <tt id="link-84" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-84', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-85" class="py-name"><a title="spade.pyxf.eclipseerror" class="py-name" href="#" onclick="return doclink('link-85', 'eclipseerror', 'link-81');">eclipseerror</a></tt><tt class="py-op">,</tt> <tt id="link-86" class="py-name"><a title="spade.pyxf.eclipseprompt" class="py-name" href="#" onclick="return doclink('link-86', 'eclipseprompt', 'link-80');">eclipseprompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-87" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-87', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-88" class="py-name" targets="Class spade.pyxf.ECLiPSeCompileError=spade.pyxf.ECLiPSeCompileError-class.html"><a title="spade.pyxf.ECLiPSeCompileError" class="py-name" href="#" onclick="return doclink('link-88', 'ECLiPSeCompileError', 'link-88');">ECLiPSeCompileError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while compiling module "'</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from ECLiPSe:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt>  </tt>
+</div><a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">     </tt>
+<a name="eclipse.query"></a><div id="eclipse.query-def"><a name="L283"></a><tt class="py-lineno">283</tt> <a class="py-toggle" href="#" id="eclipse.query-toggle" onclick="return toggle('eclipse.query');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.eclipse-class.html#query">query</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="eclipse.query-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="eclipse.query-expanded"><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries current engine state</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.query( query )</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"><tt class="py-docstring">    query - usual ECLiPSe Prolog query (example: 'likes( X, Y )')</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">    Returns:</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring">      True - if yes/no query and answer is yes</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line"><tt class="py-docstring">      False - if yes/no query and answer is no</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line"><tt class="py-docstring">      List of dictionaries - if normal query. Dictionary keys are returned</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">      variable names. Example:</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-docstring">      &gt;&gt;&gt; instance.query( 'likes( Person, Food )' )</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"><tt class="py-docstring">      [{'Person': 'john', 'Food': 'curry'}, {'Person': 'sandy', 'Food': 'mushrooms'}]</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: ECLiPSeQueryError'''</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">    <tt id="link-89" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-89', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-90" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-90', 'query', 'link-15');">query</a></tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-91" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-91', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">      <tt id="link-92" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-92', 'query', 'link-15');">query</a></tt> <tt class="py-op">+=</tt> <tt class="py-string">'.'</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt id="link-93" class="py-name"><a title="spade.pyxf.var_re" class="py-name" href="#" onclick="return doclink('link-93', 'var_re', 'link-4');">var_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt id="link-94" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-94', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt> <tt id="link-95" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-95', 'set', 'link-21');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">lvars</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> <tt class="py-comment"># yes/no query (no variables)</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt id="link-96" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-96', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">      <tt id="link-97" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-97', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-98" class="py-name"><a title="spade.pyxf.eclipseprompt" class="py-name" href="#" onclick="return doclink('link-98', 'eclipseprompt', 'link-80');">eclipseprompt</a></tt><tt class="py-op">,</tt> <tt id="link-99" class="py-name"><a title="spade.pyxf.eclipseerror" class="py-name" href="#" onclick="return doclink('link-99', 'eclipseerror', 'link-81');">eclipseerror</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-100" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-100', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-101" class="py-name" targets="Class spade.pyxf.ECLiPSeQueryError=spade.pyxf.ECLiPSeQueryError-class.html"><a title="spade.pyxf.ECLiPSeQueryError" class="py-name" href="#" onclick="return doclink('link-101', 'ECLiPSeQueryError', 'link-101');">ECLiPSeQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-102" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-102', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from ECLiPSe:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'Yes'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">:</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># normal query</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">      <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-103" class="py-name"><a title="spade.pyxf.eclipse._printer
+spade.pyxf.swipl._printer
+spade.pyxf.xsb._printer" class="py-name" href="#" onclick="return doclink('link-103', '_printer', 'link-29');">_printer</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt><tt class="py-op">,</tt> <tt id="link-104" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-104', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-name">printer</tt> <tt class="py-op">)</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">      <tt id="link-105" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-105', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-106" class="py-name"><a title="spade.pyxf.eclipseerror" class="py-name" href="#" onclick="return doclink('link-106', 'eclipseerror', 'link-81');">eclipseerror</a></tt><tt class="py-op">,</tt> <tt id="link-107" class="py-name"><a title="spade.pyxf.eclipseprompt" class="py-name" href="#" onclick="return doclink('link-107', 'eclipseprompt', 'link-80');">eclipseprompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-108" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-108', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-109" class="py-name"><a title="spade.pyxf.ECLiPSeQueryError" class="py-name" href="#" onclick="return doclink('link-109', 'ECLiPSeQueryError', 'link-101');">ECLiPSeQueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-110" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-110', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from ECLiPSe:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">        <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-111" class="py-name"><a title="spade.pyxf.res_re" class="py-name" href="#" onclick="return doclink('link-111', 'res_re', 'link-6');">res_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt> <tt class="py-string">',nl,fail.\n'</tt> <tt class="py-op">)</tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">        <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">        <tt class="py-name">counter</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">        <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt><tt class="py-op">:</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">          <tt class="py-name">counter</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">          <tt class="py-name">temp</tt><tt class="py-op">.</tt><tt id="link-112" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-112', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">counter</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">            <tt class="py-name">results</tt><tt class="py-op">.</tt><tt id="link-113" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-113', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt> <tt class="py-name">temp</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">results</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">          <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">results</tt> </tt>
+</div><a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">     </tt>
+<a name="eclipse._printer"></a><div id="eclipse._printer-def"><a name="L333"></a><tt class="py-lineno">333</tt> <a class="py-toggle" href="#" id="eclipse._printer-toggle" onclick="return toggle('eclipse._printer');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.eclipse-class.html#_printer">_printer</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">lvars</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="eclipse._printer-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="eclipse._printer-expanded"><a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">    <tt class="py-docstring">'''Private method for constructing a result printing query.</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance._printer( lvars, query )</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"><tt class="py-docstring">    lvars - list of logical variables to print</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line"><tt class="py-docstring">    query - query containing the variables to be printed</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line"><tt class="py-docstring">    Returns: string of the form 'query, writeln( res( 'VarName1', VarName1 ) ) ... writeln( res( 'VarNameN', VarNameN ) ),nl,fail.'</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">    <tt id="link-114" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-114', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-115" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-115', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">    <tt class="py-name">elems</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-string">"writeln( res('\\'"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">"\\'',"</tt> <tt class="py-op">+</tt> <tt class="py-name">i</tt> <tt class="py-op">+</tt> <tt class="py-string">") )"</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">lvars</tt> <tt class="py-op">]</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">    <tt class="py-name">printer</tt> <tt class="py-op">=</tt> <tt id="link-116" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-116', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt> <tt class="py-op">+</tt> <tt class="py-string">','</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt> <tt class="py-name">elems</tt> <tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-string">',nl,fail.'</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">printer</tt> </tt>
+</div></div><a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line"> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line"><tt id="link-117" class="py-name" targets="Variable spade.pyxf.flora2prompt=spade.pyxf-module.html#flora2prompt"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-117', 'flora2prompt', 'link-117');">flora2prompt</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'flora2 [?][-][ ]'</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line"><tt id="link-118" class="py-name" targets="Variable spade.pyxf.flora2error=spade.pyxf-module.html#flora2error"><a title="spade.pyxf.flora2error" class="py-name" href="#" onclick="return doclink('link-118', 'flora2error', 'link-118');">flora2error</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'[+][+]Error.*'</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line"> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line"><tt id="link-119" class="py-name" targets="Variable spade.pyxf.fvar_re=spade.pyxf-module.html#fvar_re"><a title="spade.pyxf.fvar_re" class="py-name" href="#" onclick="return doclink('link-119', 'fvar_re', 'link-119');">fvar_re</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt id="link-120" class="py-name"><a title="spade.pyratemp.PseudoSandbox.compile" class="py-name" href="#" onclick="return doclink('link-120', 'compile', 'link-5');">compile</a></tt><tt class="py-op">(</tt> <tt class="py-string">'[?][a-zA-Z0-9][a-zA-Z0-9_]*'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"><tt id="link-121" class="py-name" targets="Variable spade.pyxf.fres_re=spade.pyxf-module.html#fres_re"><a title="spade.pyxf.fres_re" class="py-name" href="#" onclick="return doclink('link-121', 'fres_re', 'link-121');">fres_re</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt id="link-122" class="py-name"><a title="spade.pyratemp.PseudoSandbox.compile" class="py-name" href="#" onclick="return doclink('link-122', 'compile', 'link-5');">compile</a></tt><tt class="py-op">(</tt> <tt class="py-string">"[?]([a-zA-Z0-9_]*) [=] ([^\r]+)"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line"> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line"> </tt>
+<a name="Flora2ExecutableNotFound"></a><div id="Flora2ExecutableNotFound-def"><a name="L353"></a><tt class="py-lineno">353</tt> <a class="py-toggle" href="#" id="Flora2ExecutableNotFound-toggle" onclick="return toggle('Flora2ExecutableNotFound');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.Flora2ExecutableNotFound-class.html">Flora2ExecutableNotFound</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Flora2ExecutableNotFound-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Flora2ExecutableNotFound-expanded"><a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if Flora2 executable is not found on the specified path.'''</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line"> </tt>
+<a name="Flora2CompileError"></a><div id="Flora2CompileError-def"><a name="L357"></a><tt class="py-lineno">357</tt> <a class="py-toggle" href="#" id="Flora2CompileError-toggle" onclick="return toggle('Flora2CompileError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.Flora2CompileError-class.html">Flora2CompileError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if loaded module has compile errors.'''</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line"> </tt>
+<a name="Flora2QueryError"></a><div id="Flora2QueryError-def"><a name="L361"></a><tt class="py-lineno">361</tt> <a class="py-toggle" href="#" id="Flora2QueryError-toggle" onclick="return toggle('Flora2QueryError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.Flora2QueryError-class.html">Flora2QueryError</a><tt class="py-op">(</tt> <tt class="py-base-class">Exception</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt>  </tt>
+</div><a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">  <tt class="py-docstring">'''Exception raised if query raises an error.'''</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">  <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line"> </tt>
+<a name="flora2"></a><div id="flora2-def"><a name="L365"></a><tt class="py-lineno">365</tt> <a class="py-toggle" href="#" id="flora2-toggle" onclick="return toggle('flora2');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.pyxf.flora2-class.html">flora2</a><tt class="py-op">:</tt> </tt>
+</div><div id="flora2-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="flora2-expanded"><a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">  <tt class="py-docstring">'''Python interface to Flora2 (http://flora.sf.net)'''</tt> </tt>
+<a name="flora2.__init__"></a><div id="flora2.__init__-def"><a name="L367"></a><tt class="py-lineno">367</tt> <a class="py-toggle" href="#" id="flora2.__init__-toggle" onclick="return toggle('flora2.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.flora2-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">path</tt><tt class="py-op">=</tt><tt class="py-string">'runflora'</tt><tt class="py-op">,</tt> <tt class="py-param">args</tt><tt class="py-op">=</tt><tt class="py-string">'--nobanner --quietload'</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="flora2.__init__-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="flora2.__init__-expanded"><a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: flora2( path, args )</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to Flora2 executable (default: 'runflora')</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line"><tt class="py-docstring">    args - command line arguments (default: '--nobanner --quietload')</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line"><tt class="py-docstring">    self.engine becomes pexpect spawn instance of Flora2 shell</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: SWIExecutableNotFound'''</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt> <tt class="py-op">=</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">spawn</tt><tt class="py-op">(</tt> <tt class="py-name">path</tt> <tt class="py-op">+</tt> <tt class="py-string">' '</tt> <tt class="py-op">+</tt> <tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-name">timeout</tt><tt class="py-op">=</tt><tt class="py-number">5</tt> <tt class="py-op">)</tt> </tt>
+<a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt id="link-123" class="py-name"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-123', 'flora2prompt', 'link-117');">flora2prompt</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt id="link-124" class="py-name"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-124', 'flora2prompt', 'link-117');">flora2prompt</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">px</tt><tt class="py-op">.</tt><tt class="py-name">ExceptionPexpect</tt><tt class="py-op">:</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-125" class="py-name" targets="Class spade.pyxf.Flora2ExecutableNotFound=spade.pyxf.Flora2ExecutableNotFound-class.html"><a title="spade.pyxf.Flora2ExecutableNotFound" class="py-name" href="#" onclick="return doclink('link-125', 'Flora2ExecutableNotFound', 'link-125');">Flora2ExecutableNotFound</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Flora-2 executable not found on the specified path. Try using flora2( "/path/to/flora2/runflora" )'</tt> </tt>
+</div><a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line">    </tt>
+<a name="flora2.load"></a><div id="flora2.load-def"><a name="L383"></a><tt class="py-lineno">383</tt> <a class="py-toggle" href="#" id="flora2.load-toggle" onclick="return toggle('flora2.load');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.flora2-class.html#load">load</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">module</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="flora2.load-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="flora2.load-expanded"><a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line">    <tt class="py-docstring">'''Loads module into self.engine</tt> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.load( path )</tt> </tt>
+<a name="L386"></a><tt class="py-lineno">386</tt>  <tt class="py-line"><tt class="py-docstring">    path - path to module file</tt> </tt>
+<a name="L387"></a><tt class="py-lineno">387</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L388"></a><tt class="py-lineno">388</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: Flora2CompileError'''</tt> </tt>
+<a name="L389"></a><tt class="py-lineno">389</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt class="py-string">"['"</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">"']."</tt> <tt class="py-op">)</tt>  </tt>
+<a name="L390"></a><tt class="py-lineno">390</tt>  <tt class="py-line">    <tt id="link-126" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-126', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-127" class="py-name"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-127', 'flora2prompt', 'link-117');">flora2prompt</a></tt><tt class="py-op">,</tt> <tt id="link-128" class="py-name"><a title="spade.pyxf.flora2error" class="py-name" href="#" onclick="return doclink('link-128', 'flora2error', 'link-118');">flora2error</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L391"></a><tt class="py-lineno">391</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-129" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-129', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L392"></a><tt class="py-lineno">392</tt>  <tt class="py-line">      <tt class="py-keyword">raise</tt> <tt id="link-130" class="py-name" targets="Class spade.pyxf.Flora2CompileError=spade.pyxf.Flora2CompileError-class.html"><a title="spade.pyxf.Flora2CompileError" class="py-name" href="#" onclick="return doclink('link-130', 'Flora2CompileError', 'link-130');">Flora2CompileError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while compiling module "'</tt> <tt class="py-op">+</tt> <tt class="py-name">module</tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from Flora2:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt>  </tt>
+</div><a name="L393"></a><tt class="py-lineno">393</tt>  <tt class="py-line">     </tt>
+<a name="flora2.query"></a><div id="flora2.query-def"><a name="L394"></a><tt class="py-lineno">394</tt> <a class="py-toggle" href="#" id="flora2.query-toggle" onclick="return toggle('flora2.query');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.pyxf.flora2-class.html#query">query</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="flora2.query-collapsed" style="display:none;" pad="+++" indent="++++++"></div><div id="flora2.query-expanded"><a name="L395"></a><tt class="py-lineno">395</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries current engine state</tt> </tt>
+<a name="L396"></a><tt class="py-lineno">396</tt>  <tt class="py-line"><tt class="py-docstring">    Usage: instance.query( query )</tt> </tt>
+<a name="L397"></a><tt class="py-lineno">397</tt>  <tt class="py-line"><tt class="py-docstring">    query - usual Flora2 query (example: '?x[ likes-&gt;?y ]')</tt> </tt>
+<a name="L398"></a><tt class="py-lineno">398</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L399"></a><tt class="py-lineno">399</tt>  <tt class="py-line"><tt class="py-docstring">    Returns:</tt> </tt>
+<a name="L400"></a><tt class="py-lineno">400</tt>  <tt class="py-line"><tt class="py-docstring">      True - if yes/no query and answer is yes</tt> </tt>
+<a name="L401"></a><tt class="py-lineno">401</tt>  <tt class="py-line"><tt class="py-docstring">      False - if yes/no query and answer is no</tt> </tt>
+<a name="L402"></a><tt class="py-lineno">402</tt>  <tt class="py-line"><tt class="py-docstring">      List of dictionaries - if normal query. Dictionary keys are returned</tt> </tt>
+<a name="L403"></a><tt class="py-lineno">403</tt>  <tt class="py-line"><tt class="py-docstring">      variable names. Example:</tt> </tt>
+<a name="L404"></a><tt class="py-lineno">404</tt>  <tt class="py-line"><tt class="py-docstring">      &gt;&gt;&gt; instance.query( '?person[ likes-&gt;?food ]' )</tt> </tt>
+<a name="L405"></a><tt class="py-lineno">405</tt>  <tt class="py-line"><tt class="py-docstring">      [{'person': 'john', 'food': 'curry'}, {'person': 'sandy', 'food': 'mushrooms'}]</tt> </tt>
+<a name="L406"></a><tt class="py-lineno">406</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L407"></a><tt class="py-lineno">407</tt>  <tt class="py-line"><tt class="py-docstring">    Raises: Flora2QueryError'''</tt> </tt>
+<a name="L408"></a><tt class="py-lineno">408</tt>  <tt class="py-line">    <tt id="link-131" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-131', 'query', 'link-15');">query</a></tt> <tt class="py-op">=</tt> <tt id="link-132" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-132', 'query', 'link-15');">query</a></tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L409"></a><tt class="py-lineno">409</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-133" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-133', 'query', 'link-15');">query</a></tt><tt class="py-op">[</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt> <tt class="py-op">]</tt> <tt class="py-op">!=</tt> <tt class="py-string">'.'</tt><tt class="py-op">:</tt> </tt>
+<a name="L410"></a><tt class="py-lineno">410</tt>  <tt class="py-line">      <tt id="link-134" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-134', 'query', 'link-15');">query</a></tt> <tt class="py-op">+=</tt> <tt class="py-string">'.'</tt> </tt>
+<a name="L411"></a><tt class="py-lineno">411</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt id="link-135" class="py-name"><a title="spade.pyxf.fvar_re" class="py-name" href="#" onclick="return doclink('link-135', 'fvar_re', 'link-119');">fvar_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt id="link-136" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-136', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L412"></a><tt class="py-lineno">412</tt>  <tt class="py-line">    <tt class="py-name">lvars</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt> <tt id="link-137" class="py-name"><a title="spade.kb.KB.set" class="py-name" href="#" onclick="return doclink('link-137', 'set', 'link-21');">set</a></tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L413"></a><tt class="py-lineno">413</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">lvars</tt> <tt class="py-op">==</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> <tt class="py-comment"># yes/no query (no variables)</tt> </tt>
+<a name="L414"></a><tt class="py-lineno">414</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt id="link-138" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-138', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L415"></a><tt class="py-lineno">415</tt>  <tt class="py-line">      <tt id="link-139" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-139', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-140" class="py-name"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-140', 'flora2prompt', 'link-117');">flora2prompt</a></tt><tt class="py-op">,</tt> <tt id="link-141" class="py-name"><a title="spade.pyxf.flora2error" class="py-name" href="#" onclick="return doclink('link-141', 'flora2error', 'link-118');">flora2error</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L416"></a><tt class="py-lineno">416</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-142" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-142', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L417"></a><tt class="py-lineno">417</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-143" class="py-name" targets="Class spade.pyxf.Flora2QueryError=spade.pyxf.Flora2QueryError-class.html"><a title="spade.pyxf.Flora2QueryError" class="py-name" href="#" onclick="return doclink('link-143', 'Flora2QueryError', 'link-143');">Flora2QueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-144" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-144', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from Flora2:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L418"></a><tt class="py-lineno">418</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L419"></a><tt class="py-lineno">419</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-string">'Yes'</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt><tt class="py-op">:</tt> </tt>
+<a name="L420"></a><tt class="py-lineno">420</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L421"></a><tt class="py-lineno">421</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L422"></a><tt class="py-lineno">422</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L423"></a><tt class="py-lineno">423</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># normal query</tt> </tt>
+<a name="L424"></a><tt class="py-lineno">424</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">sendline</tt><tt class="py-op">(</tt> <tt id="link-145" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-145', 'query', 'link-15');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L425"></a><tt class="py-lineno">425</tt>  <tt class="py-line">      <tt id="link-146" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-146', 'index', 'link-10');">index</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">expect</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt id="link-147" class="py-name"><a title="spade.pyxf.flora2error" class="py-name" href="#" onclick="return doclink('link-147', 'flora2error', 'link-118');">flora2error</a></tt><tt class="py-op">,</tt> <tt id="link-148" class="py-name"><a title="spade.pyxf.flora2prompt" class="py-name" href="#" onclick="return doclink('link-148', 'flora2prompt', 'link-117');">flora2prompt</a></tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L426"></a><tt class="py-lineno">426</tt>  <tt class="py-line">      <tt class="py-keyword">if</tt> <tt id="link-149" class="py-name"><a title="spade.Platform.SpadePlatform.index
+spade.odict.odict.index" class="py-name" href="#" onclick="return doclink('link-149', 'index', 'link-10');">index</a></tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L427"></a><tt class="py-lineno">427</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-150" class="py-name"><a title="spade.pyxf.Flora2QueryError" class="py-name" href="#" onclick="return doclink('link-150', 'Flora2QueryError', 'link-143');">Flora2QueryError</a></tt><tt class="py-op">,</tt> <tt class="py-string">'Error while executing query "'</tt> <tt class="py-op">+</tt> <tt id="link-151" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-151', 'query', 'link-15');">query</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'". Error from Flora2:\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">after</tt> </tt>
+<a name="L428"></a><tt class="py-lineno">428</tt>  <tt class="py-line">      <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L429"></a><tt class="py-lineno">429</tt>  <tt class="py-line">        <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-152" class="py-name"><a title="spade.pyxf.fres_re" class="py-name" href="#" onclick="return doclink('link-152', 'fres_re', 'link-121');">fres_re</a></tt><tt class="py-op">.</tt><tt class="py-name">findall</tt><tt class="py-op">(</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">engine</tt><tt class="py-op">.</tt><tt class="py-name">before</tt> <tt class="py-op">)</tt> </tt>
+<a name="L430"></a><tt class="py-lineno">430</tt>  <tt class="py-line">        <tt class="py-name">results</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L431"></a><tt class="py-lineno">431</tt>  <tt class="py-line">        <tt class="py-name">counter</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L432"></a><tt class="py-lineno">432</tt>  <tt class="py-line">        <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L433"></a><tt class="py-lineno">433</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt><tt class="py-op">:</tt> </tt>
+<a name="L434"></a><tt class="py-lineno">434</tt>  <tt class="py-line">          <tt class="py-name">counter</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L435"></a><tt class="py-lineno">435</tt>  <tt class="py-line">          <tt class="py-name">temp</tt><tt class="py-op">.</tt><tt id="link-153" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-153', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">i</tt> <tt class="py-op">)</tt> </tt>
+<a name="L436"></a><tt class="py-lineno">436</tt>  <tt class="py-line">          <tt class="py-keyword">if</tt> <tt class="py-name">counter</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt> <tt class="py-name">lvars</tt> <tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L437"></a><tt class="py-lineno">437</tt>  <tt class="py-line">            <tt class="py-name">results</tt><tt class="py-op">.</tt><tt id="link-154" class="py-name"><a title="spade.pyparsing.ParseExpression.append" class="py-name" href="#" onclick="return doclink('link-154', 'append', 'link-38');">append</a></tt><tt class="py-op">(</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt> <tt class="py-name">temp</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L438"></a><tt class="py-lineno">438</tt>  <tt class="py-line">            <tt class="py-name">temp</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L439"></a><tt class="py-lineno">439</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">results</tt> </tt>
+</div></div><a name="L440"></a><tt class="py-lineno">440</tt>  <tt class="py-line"> </tt>
+<a name="L441"></a><tt class="py-lineno">441</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L442"></a><tt class="py-lineno">442</tt>  <tt class="py-line">  <tt id="link-155" class="py-name" targets="Variable spade.Agent.x=spade.Agent-module.html#x,Variable spade.bdi.x=spade.bdi-module.html#x,Variable spade.logic.x=spade.logic-module.html#x"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-155', 'x', 'link-155');">x</a></tt> <tt class="py-op">=</tt> <tt id="link-156" class="py-name" targets="Class spade.pyxf.xsb=spade.pyxf.xsb-class.html"><a title="spade.pyxf.xsb" class="py-name" href="#" onclick="return doclink('link-156', 'xsb', 'link-156');">xsb</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L443"></a><tt class="py-lineno">443</tt>  <tt class="py-line">  <tt id="link-157" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-157', 'x', 'link-155');">x</a></tt><tt class="py-op">.</tt><tt id="link-158" class="py-name" targets="Method spade.pyratemp.FileLoader.load()=spade.pyratemp.FileLoader-class.html#load,Method spade.pyratemp.StringLoader.load()=spade.pyratemp.StringLoader-class.html#load,Method spade.pyxf.eclipse.load()=spade.pyxf.eclipse-class.html#load,Method spade.pyxf.flora2.load()=spade.pyxf.flora2-class.html#load,Method spade.pyxf.swipl.load()=spade.pyxf.swipl-class.html#load,Method spade.pyxf.xsb.load()=spade.pyxf.xsb-class.html#load"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-158', 'load', 'link-158');">load</a></tt><tt class="py-op">(</tt> <tt class="py-string">'../test/logic/test_xsb'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L444"></a><tt class="py-lineno">444</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt id="link-159" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-159', 'x', 'link-155');">x</a></tt><tt class="py-op">.</tt><tt id="link-160" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-160', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'dislikes( john, mushrooms )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L445"></a><tt class="py-lineno">445</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt id="link-161" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-161', 'x', 'link-155');">x</a></tt><tt class="py-op">.</tt><tt id="link-162" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-162', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'likes( Person, Food )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L446"></a><tt class="py-lineno">446</tt>  <tt class="py-line">  <tt class="py-keyword">del</tt> <tt id="link-163" class="py-name"><a title="spade.Agent.x
+spade.bdi.x
+spade.logic.x" class="py-name" href="#" onclick="return doclink('link-163', 'x', 'link-155');">x</a></tt> </tt>
+<a name="L447"></a><tt class="py-lineno">447</tt>  <tt class="py-line">   </tt>
+<a name="L448"></a><tt class="py-lineno">448</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-string">"======="</tt> </tt>
+<a name="L449"></a><tt class="py-lineno">449</tt>  <tt class="py-line"> </tt>
+<a name="L450"></a><tt class="py-lineno">450</tt>  <tt class="py-line">  <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt id="link-164" class="py-name" targets="Class spade.pyxf.swipl=spade.pyxf.swipl-class.html"><a title="spade.pyxf.swipl" class="py-name" href="#" onclick="return doclink('link-164', 'swipl', 'link-164');">swipl</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L451"></a><tt class="py-lineno">451</tt>  <tt class="py-line">  <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-165" class="py-name"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-165', 'load', 'link-158');">load</a></tt><tt class="py-op">(</tt> <tt class="py-string">'../test/logic/test_swi'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L452"></a><tt class="py-lineno">452</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-166" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-166', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'dislikes( john, mushrooms )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L453"></a><tt class="py-lineno">453</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-167" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-167', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'likes( Person, Food )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L454"></a><tt class="py-lineno">454</tt>  <tt class="py-line">  <tt class="py-keyword">del</tt> <tt class="py-name">s</tt> </tt>
+<a name="L455"></a><tt class="py-lineno">455</tt>  <tt class="py-line"> </tt>
+<a name="L456"></a><tt class="py-lineno">456</tt>  <tt class="py-line">  <tt id="link-168" class="py-name" targets="Variable spade.xmppd.modules.stream.e=spade.xmppd.modules.stream-module.html#e,Variable spade.xmppd.xmppd.e=spade.xmppd.xmppd-module.html#e"><a title="spade.xmppd.modules.stream.e
+spade.xmppd.xmppd.e" class="py-name" href="#" onclick="return doclink('link-168', 'e', 'link-168');">e</a></tt> <tt class="py-op">=</tt> <tt id="link-169" class="py-name" targets="Class spade.pyxf.eclipse=spade.pyxf.eclipse-class.html"><a title="spade.pyxf.eclipse" class="py-name" href="#" onclick="return doclink('link-169', 'eclipse', 'link-169');">eclipse</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt>  </tt>
+<a name="L457"></a><tt class="py-lineno">457</tt>  <tt class="py-line">  <tt id="link-170" class="py-name"><a title="spade.xmppd.modules.stream.e
+spade.xmppd.xmppd.e" class="py-name" href="#" onclick="return doclink('link-170', 'e', 'link-168');">e</a></tt><tt class="py-op">.</tt><tt id="link-171" class="py-name"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-171', 'load', 'link-158');">load</a></tt><tt class="py-op">(</tt> <tt class="py-string">'../test/logic/test_eclipse'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L458"></a><tt class="py-lineno">458</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt id="link-172" class="py-name"><a title="spade.xmppd.modules.stream.e
+spade.xmppd.xmppd.e" class="py-name" href="#" onclick="return doclink('link-172', 'e', 'link-168');">e</a></tt><tt class="py-op">.</tt><tt id="link-173" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-173', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'dislikes( john, mushrooms )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L459"></a><tt class="py-lineno">459</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt id="link-174" class="py-name"><a title="spade.xmppd.modules.stream.e
+spade.xmppd.xmppd.e" class="py-name" href="#" onclick="return doclink('link-174', 'e', 'link-168');">e</a></tt><tt class="py-op">.</tt><tt id="link-175" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-175', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'likes( Person, Food )'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L460"></a><tt class="py-lineno">460</tt>  <tt class="py-line">  <tt class="py-keyword">del</tt> <tt id="link-176" class="py-name"><a title="spade.xmppd.modules.stream.e
+spade.xmppd.xmppd.e" class="py-name" href="#" onclick="return doclink('link-176', 'e', 'link-168');">e</a></tt> </tt>
+<a name="L461"></a><tt class="py-lineno">461</tt>  <tt class="py-line">   </tt>
+<a name="L462"></a><tt class="py-lineno">462</tt>  <tt class="py-line">  <tt class="py-name">f</tt> <tt class="py-op">=</tt> <tt id="link-177" class="py-name" targets="Class spade.pyxf.flora2=spade.pyxf.flora2-class.html"><a title="spade.pyxf.flora2" class="py-name" href="#" onclick="return doclink('link-177', 'flora2', 'link-177');">flora2</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L463"></a><tt class="py-lineno">463</tt>  <tt class="py-line">  <tt class="py-name">f</tt><tt class="py-op">.</tt><tt id="link-178" class="py-name"><a title="spade.pyratemp.FileLoader.load
+spade.pyratemp.StringLoader.load
+spade.pyxf.eclipse.load
+spade.pyxf.flora2.load
+spade.pyxf.swipl.load
+spade.pyxf.xsb.load" class="py-name" href="#" onclick="return doclink('link-178', 'load', 'link-158');">load</a></tt><tt class="py-op">(</tt> <tt class="py-string">'../test/logic/test_flora'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L464"></a><tt class="py-lineno">464</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-name">f</tt><tt class="py-op">.</tt><tt id="link-179" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-179', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'john[ dislikes-&gt;mushrooms ]'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L465"></a><tt class="py-lineno">465</tt>  <tt class="py-line">  <tt class="py-keyword">print</tt> <tt class="py-name">f</tt><tt class="py-op">.</tt><tt id="link-180" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-180', 'query', 'link-15');">query</a></tt><tt class="py-op">(</tt> <tt class="py-string">'?person[ likes-&gt;?food ]'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L466"></a><tt class="py-lineno">466</tt>  <tt class="py-line">  <tt class="py-keyword">del</tt> <tt class="py-name">f</tt> </tt>
+<a name="L467"></a><tt class="py-lineno">467</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:02 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

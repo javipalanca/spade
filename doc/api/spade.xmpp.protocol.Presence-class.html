@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol.Presence</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.protocol-module.html">Module&nbsp;protocol</a> ::
+        Class&nbsp;Presence
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.protocol.Presence-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Presence</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_37" name="uml_class_diagram_for_spade_xm_37">
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#__init__" title="Create presence object." alt="" coords="17,729,964,748"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getPriority" title="Returns the priority of the message." alt="" coords="17,748,964,767"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getShow" title="Returns the show value of the message." alt="" coords="17,767,964,785"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getStatus" title="Returns the status string of the message." alt="" coords="17,785,964,804"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#setPriority" title="Sets the priority of the message." alt="" coords="17,804,964,823"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#setShow" title="Sets the show value of the message." alt="" coords="17,823,964,841"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#setStatus" title="Sets the status string of the message." alt="" coords="17,841,964,860"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getRole" title="Returns the presence role (for groupchat)" alt="" coords="17,860,964,879"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getAffiliation" title="Returns the presence affiliation (for groupchat)" alt="" coords="17,879,964,897"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getNick" title="Returns the nick value (for nick change in groupchat)" alt="" coords="17,897,964,916"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getJid" title="Returns the presence jid (for groupchat)" alt="" coords="17,916,964,935"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getReason" title="Returns the reason of the presence (for groupchat)" alt="" coords="17,935,964,953"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getActor" title="Returns the reason of the presence (for groupchat)" alt="" coords="17,953,964,972"/>
+<area shape="rect" id="node2588" href="spade.xmpp.protocol.Presence-class.html#getStatusCode" title="Returns the status code of the presence (for groupchat)" alt="" coords="17,972,964,991"/>
+<area shape="rect" id="node1" href="spade.xmpp.protocol.Presence-class.html" title="XMPP Presence object." alt="" coords="5,697,976,997"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getTo" title="Return value of the &#39;to&#39; attribute." alt="" coords="395,391,587,409"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getFrom" title="Return value of the &#39;from&#39; attribute." alt="" coords="395,409,587,428"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getTimestamp" title="Return the timestamp in the &#39;yyyymmddThhmmss&#39; format." alt="" coords="395,428,587,447"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getID" title="Return the value of the &#39;id&#39; attribute." alt="" coords="395,447,587,465"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setTo" title="Set the value of the &#39;to&#39; attribute." alt="" coords="395,465,587,484"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getType" title="Return the value of the &#39;type&#39; attribute." alt="" coords="395,484,587,503"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setFrom" title="Set the value of the &#39;from&#39; attribute." alt="" coords="395,503,587,521"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setType" title="Set the value of the &#39;type&#39; attribute." alt="" coords="395,521,587,540"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setID" title="Set the value of the &#39;id&#39; attribute." alt="" coords="395,540,587,559"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getError" title="Return the error&#45;condition (if present) or the textual description of the &#160;error (otherwise)." alt="" coords="395,559,587,577"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getErrorCode" title="Return the error code." alt="" coords="395,577,587,596"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setError" title="Set the error code." alt="" coords="395,596,587,615"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#setTimestamp" title="Set the timestamp." alt="" coords="395,615,587,633"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#getProperties" title="Return the list of namespaces to which belongs the direct childs of element" alt="" coords="395,633,587,652"/>
+<area shape="rect" id="node2589" href="spade.xmpp.protocol.Protocol-class.html#__setitem__" title="Set the item &#39;item&#39; to the value &#39;val&#39;." alt="" coords="395,652,587,671"/>
+<area shape="rect" id="node2" href="spade.xmpp.protocol.Protocol-class.html" title="A &quot;stanza&quot; object class." alt="" coords="383,358,599,677"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION" title="spade.xmpp.simplexml.Node.FORCE_NODE_RECREATION" alt="" coords="253,31,728,49"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#__delitem__" title="Deletes node&#39;s attribute &quot;item&quot;." alt="" coords="253,52,728,71"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#__getattr__" title="Reduce memory usage caused by T/NT classes &#45; use memory only when needed." alt="" coords="253,71,728,89"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#__getitem__" title="Returns node&#39;s attribute &quot;item&quot; value." alt="" coords="253,89,728,108"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#__str__" title="Method used to dump node into textual representation." alt="" coords="253,108,728,127"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#addChild" title="If &quot;node&quot; argument is provided, adds it as child node." alt="" coords="253,127,728,145"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#addData" title="Adds some CDATA to node." alt="" coords="253,145,728,164"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#clearData" title="Removes all CDATA from the node." alt="" coords="253,164,728,183"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#delAttr" title="Deletes an attribute &quot;key&quot;" alt="" coords="253,183,728,201"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#delChild" title="Deletes the &quot;node&quot; from the node&#39;s childs list, if &quot;node&quot; is an instance." alt="" coords="253,201,728,220"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#getAttr" title="Returns value of specified attribute." alt="" coords="253,220,728,239"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#getAttrs" title="Returns all node&#39;s attributes as dictionary." alt="" coords="253,239,728,257"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#getChildren" title="Returns all node&#39;s child nodes as list." alt="" coords="253,257,728,276"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#getData" title="Returns all node CDATA as string (concatenated)." alt="" coords="253,276,728,295"/>
+<area shape="rect" id="node2590" href="spade.xmpp.simplexml.Node-class.html#setTagData" title="Creates new node (if not already present) with name &quot;tag&quot; and (optionally) &#160;attributes &quot;attrs&quot; and sets it&#39;s CDATA to string &quot;val&quot;." alt="" coords="253,313,728,332"/>
+<area shape="rect" id="node3" href="spade.xmpp.simplexml.Node-class.html" title="Node class describes syntax of separate XML Node." alt="" coords="241,6,740,338"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_37.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_37" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>XMPP Presence object.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.Presence-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">to</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">priority</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">show</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">status</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">attrs</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">frm</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">timestamp</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">payload</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">xmlns</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">jabber:client</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Create presence object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPriority"></a><span class="summary-sig-name">getPriority</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the priority of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getPriority">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getShow"></a><span class="summary-sig-name">getShow</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the show value of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getShow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getStatus"></a><span class="summary-sig-name">getStatus</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the status string of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getStatus">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setPriority"></a><span class="summary-sig-name">setPriority</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Sets the priority of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.setPriority">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setShow"></a><span class="summary-sig-name">setShow</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Sets the show value of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.setShow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setStatus"></a><span class="summary-sig-name">setStatus</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Sets the status string of the message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.setStatus">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_muc_getItemAttr"></a><span class="summary-sig-name">_muc_getItemAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">attr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence._muc_getItemAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_muc_getSubTagDataAttr"></a><span class="summary-sig-name">_muc_getSubTagDataAttr</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>,
+        <span class="summary-sig-arg">attr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence._muc_getSubTagDataAttr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getRole"></a><span class="summary-sig-name">getRole</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the presence role (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getRole">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getAffiliation"></a><span class="summary-sig-name">getAffiliation</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the presence affiliation (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getAffiliation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getNick"></a><span class="summary-sig-name">getNick</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the nick value (for nick change in groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getNick">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getJid"></a><span class="summary-sig-name">getJid</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the presence jid (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getJid">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getReason"></a><span class="summary-sig-name">getReason</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the reason of the presence (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getReason">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getActor"></a><span class="summary-sig-name">getActor</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the reason of the presence (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getActor">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getStatusCode"></a><span class="summary-sig-name">getStatusCode</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the status code of the presence (for groupchat)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.getStatusCode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.protocol.Protocol-class.html">Protocol</a></code></b>:
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#__setitem__">__setitem__</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getError">getError</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getErrorCode">getErrorCode</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getFrom">getFrom</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getID">getID</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getProperties">getProperties</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getTimestamp">getTimestamp</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getTo">getTo</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#getType">getType</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setError">setError</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setFrom">setFrom</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setID">setID</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setTimestamp">setTimestamp</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setTo">setTo</a></code>,
+      <code><a href="spade.xmpp.protocol.Protocol-class.html#setType">setType</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__delitem__">__delitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getitem__">__getitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__str__">__str__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addChild">addChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addData">addData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#clearData">clearData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delAttr">delAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delChild">delChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttr">getAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttrs">getAttrs</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getChildren">getChildren</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getData">getData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getName">getName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getNamespace">getNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getPayload">getPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTag">getTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagAttr">getTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagData">getTagData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTags">getTags</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#has_attr">has_attr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setAttr">setAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setData">setData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setName">setName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setNamespace">setNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setPayload">setPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTag">setTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagAttr">setTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagData">setTagData</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION">FORCE_NODE_RECREATION</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">to</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">priority</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">show</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">status</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">attrs</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">frm</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">timestamp</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">payload</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">xmlns</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">jabber:client</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#Presence.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create presence object. You can specify recipient, type of message, 
+  priority, show and status values any additional attributes, sender of the
+  presence, timestamp, any additional payload (f.e. jabber:x:delay element)
+  and namespace in one go. Alternatively you can pass in the other XML 
+  object as the 'node' parameted to replicate it as presence.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__init__">simplexml.Node.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:58 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

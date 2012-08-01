@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmppd.modules.router.Router</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmppd-module.html">Package&nbsp;xmppd</a> ::
+        <a href="spade.xmppd.modules-module.html">Package&nbsp;modules</a> ::
+        <a href="spade.xmppd.modules.router-module.html">Module&nbsp;router</a> ::
+        Class&nbsp;Router
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmppd.modules.router.Router-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Router</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_76" name="uml_class_diagram_for_spade_xm_76">
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#NS" title="spade.xmppd.modules.router.Router.NS" alt="" coords="17,164,452,183"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#plugin" title="spade.xmppd.modules.router.Router.plugin" alt="" coords="17,185,452,204"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#isFromOutside" title="spade.xmppd.modules.router.Router.isFromOutside" alt="" coords="17,204,452,223"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#pluginRelay" title="Relays a stanza to a plugin dispatcher if such plugin is the correct &#160;receiver of the stanza" alt="" coords="17,223,452,241"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#presenceHandler" title="spade.xmppd.modules.router.Router.presenceHandler" alt="" coords="17,241,452,260"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#broadcastAvailable" title="spade.xmppd.modules.router.Router.broadcastAvailable" alt="" coords="17,260,452,279"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#update" title="spade.xmppd.modules.router.Router.update" alt="" coords="17,279,452,297"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#safeguard" title="spade.xmppd.modules.router.Router.safeguard" alt="" coords="17,297,452,316"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#subscriber" title="Subscription manager that actually works (cough, cough, BoP, cough, cough ;&#45;)" alt="" coords="17,316,452,335"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#karmatize_me_captain" title="spade.xmppd.modules.router.Router.karmatize_me_captain" alt="" coords="17,335,452,353"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#intra_route" title="spade.xmppd.modules.router.Router.intra_route" alt="" coords="17,353,452,372"/>
+<area shape="rect" id="node2730" href="spade.xmppd.modules.router.Router-class.html#routerHandler" title="XMPP&#45;Core 9.1.1 rules" alt="" coords="17,372,452,391"/>
+<area shape="rect" id="node1" href="spade.xmppd.modules.router.Router-class.html" title="The first entity that gets access to arrived stanza." alt="" coords="5,139,464,397"/>
+<area shape="rect" id="node2731" href="javascript:void(0);" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="132,39,336,57"/>
+<area shape="rect" id="node2731" href="javascript:void(0);" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="132,57,336,76"/>
+<area shape="rect" id="node2731" href="javascript:void(0);" title="Unregister all our staff from main instance and detach from it." alt="" coords="132,76,336,95"/>
+<area shape="rect" id="node2731" href="javascript:void(0);" title="xmpp.client.PlugIn.__init__" alt="" coords="132,95,336,113"/>
+<area shape="rect" id="node2" href="javascript:void(0);" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="120,6,347,119"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_76.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_76" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>The first entity that gets access to arrived stanza.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="plugin"></a><span class="summary-sig-name">plugin</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">server</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.plugin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="isFromOutside"></a><span class="summary-sig-name">isFromOutside</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">domain</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.isFromOutside">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pluginRelay"></a><span class="summary-sig-name">pluginRelay</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Relays a stanza to a plugin dispatcher if such plugin is the correct 
+      receiver of the stanza</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.pluginRelay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="presenceHandler"></a><span class="summary-sig-name">presenceHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">raiseFlag</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">fromLocal</span>=<span class="summary-sig-default">False</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.presenceHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="broadcastAvailable"></a><span class="summary-sig-name">broadcastAvailable</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">to</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.broadcastAvailable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="update"></a><span class="summary-sig-name">update</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">barejid</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="safeguard"></a><span class="summary-sig-name">safeguard</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.safeguard">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmppd.modules.router.Router-class.html#subscriber" class="summary-sig-name">subscriber</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>)</span><br />
+      Subscription manager that actually works (cough, cough, BoP, cough, cough ;-)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.subscriber">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="karmatize_me_captain"></a><span class="summary-sig-name">karmatize_me_captain</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">stanza</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.karmatize_me_captain">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="intra_route"></a><span class="summary-sig-name">intra_route</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stanza</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.intra_route">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="routerHandler"></a><span class="summary-sig-name">routerHandler</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">session</span>,
+        <span class="summary-sig-arg">stanza</span>,
+        <span class="summary-sig-arg">raiseFlag</span>=<span class="summary-sig-default">True</span>)</span><br />
+      XMPP-Core 9.1.1 rules</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.routerHandler">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>xmpp.client.PlugIn</code></b>:
+      <code>DEBUG</code>,
+      <code>PlugIn</code>,
+      <code>PlugOut</code>,
+      <code>__init__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="NS"></a><span class="summary-name">NS</span> = <code title="'presence'"><code class="variable-quote">'</code><code class="variable-string">presence</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="subscriber"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">subscriber</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">session</span>,
+        <span class="sig-arg">stanza</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmppd.modules.router-pysrc.html#Router.subscriber">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Subscription manager that actually works (cough, cough, BoP, cough, cough ;-)
+
+0. COMMON TASKS
+    0.1 Get 'from' and 'to'
+    0.2 Get the session of the receiver
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:59 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

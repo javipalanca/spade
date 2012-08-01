@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.client.PlugIn</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.client-module.html">Module&nbsp;client</a> ::
+        Class&nbsp;PlugIn
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.client.PlugIn-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class PlugIn</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.client-pysrc.html#PlugIn">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_10" name="uml_class_diagram_for_spade_xm_10">
+<area shape="rect" id="node1" href="spade.xmpp.filetransfer.IBB-class.html" title="IBB used to transfer small&#45;sized data chunk over estabilished xmpp connection." alt="" coords="5,139,128,178"/>
+<area shape="rect" id="node2" href="spade.xmpp.roster.Roster-class.html" title="Defines a plenty of methods that will allow you to manage roster." alt="" coords="157,139,269,178"/>
+<area shape="rect" id="node3" href="spade.xmpp.commands.TestCommand-class.html" title="Example class." alt="" coords="1832,198,2021,237"/>
+<area shape="rect" id="node4" href="spade.xmpp.transports.TLS-class.html" title="TLS connection used to encrypts already estabilished tcp connection." alt="" coords="299,139,421,178"/>
+<area shape="rect" id="node5" href="spade.xmpp.auth.Bind-class.html" title="Bind some JID to the current connection to allow router know of our location." alt="" coords="451,139,541,178"/>
+<area shape="rect" id="node6" href="spade.xmpp.auth.SASL-class.html" title="Implements SASL authentication." alt="" coords="571,139,669,178"/>
+<area shape="rect" id="node7" href="spade.xmpp.browser.Browser-class.html" title="WARNING! This class is for components only." alt="" coords="699,139,832,178"/>
+<area shape="rect" id="node2487" href="spade.xmpp.client.PlugIn-class.html#DEBUG" title="Feed a provided debug line to main instance&#39;s debug facility along with our ID string." alt="" coords="749,39,953,57"/>
+<area shape="rect" id="node2487" href="spade.xmpp.client.PlugIn-class.html#PlugIn" title="Attach to main instance and register ourself and all our staff in it." alt="" coords="749,57,953,76"/>
+<area shape="rect" id="node2487" href="spade.xmpp.client.PlugIn-class.html#PlugOut" title="Unregister all our staff from main instance and detach from it." alt="" coords="749,76,953,95"/>
+<area shape="rect" id="node2487" href="spade.xmpp.client.PlugIn-class.html#__init__" title="spade.xmpp.client.PlugIn.__init__" alt="" coords="749,95,953,113"/>
+<area shape="rect" id="node8" href="spade.xmpp.client.PlugIn-class.html" title="Common xmpppy plugins infrastructure: plugging in/out, debugging." alt="" coords="737,6,964,119"/>
+<area shape="rect" id="node10" href="spade.xmpp.auth.ComponentBind-class.html" title="ComponentBind some JID to the current connection to allow router know of our location." alt="" coords="861,139,1019,178"/>
+<area shape="rect" id="node11" href="spade.xmpp.transports.TCPsocket-class.html" title="This class defines direct TCP connection method." alt="" coords="1048,139,1213,178"/>
+<area shape="rect" id="node12" href="spade.xmpp.dispatcher.Dispatcher-class.html" title="Ancestor of PlugIn class." alt="" coords="1243,139,1405,178"/>
+<area shape="rect" id="node13" href="spade.xmpp.auth.NonSASL-class.html" title="Implements old Non&#45;SASL (JEP&#45;0078) authentication used in jabberd1.4 and transport authentication." alt="" coords="1435,139,1557,178"/>
+<area shape="rect" id="node14" href="spade.xmpp.commands.Commands-class.html" title="Commands is an ancestor of PlugIn and can be attached to any session." alt="" coords="1587,139,1757,178"/>
+<area shape="rect" id="node15" href="spade.xmpp.commands.Command_Handler_Prototype-class.html" title="This is a prototype command handler, as each command uses a disco method and execute method you can implement it any way you like, however this is my first attempt at making a generic handler that you can hang process stages on too." alt="" coords="1787,139,2067,178"/>
+<area shape="rect" id="node9" href="spade.xmpp.transports.HTTPPROXYsocket-class.html" title="HTTP (CONNECT) proxy connection class." alt="" coords="1021,198,1240,237"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_10.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_10" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Common xmpppy plugins infrastructure: plugging in/out, debugging.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="DEBUG"></a><span class="summary-sig-name">DEBUG</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">severity</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">info</code><code class="variable-quote">'</code></span>)</span><br />
+      Feed a provided debug line to main instance's debug facility along 
+      with our ID string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#PlugIn.DEBUG">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="PlugIn"></a><span class="summary-sig-name">PlugIn</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">owner</span>)</span><br />
+      Attach to main instance and register ourself and all our staff in it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#PlugIn.PlugIn">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="PlugOut"></a><span class="summary-sig-name">PlugOut</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Unregister all our staff from main instance and detach from it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#PlugIn.PlugOut">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.client-pysrc.html#PlugIn.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

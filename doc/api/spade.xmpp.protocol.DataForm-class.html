@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.xmpp.protocol.DataForm</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.xmpp-module.html">Package&nbsp;xmpp</a> ::
+        <a href="spade.xmpp.protocol-module.html">Module&nbsp;protocol</a> ::
+        Class&nbsp;DataForm
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.xmpp.protocol.DataForm-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class DataForm</h1><p class="nomargin-top"><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_xm_21" name="uml_class_diagram_for_spade_xm_21">
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#__init__" title="Create new dataform of type &#39;typ&#39;." alt="" coords="85,391,424,409"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#getType" title="Return the type of dataform." alt="" coords="85,409,424,428"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#setType" title="Set the type of dataform." alt="" coords="85,428,424,447"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#getTitle" title="Return the title of dataform." alt="" coords="85,447,424,465"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#setTitle" title="Set the title of dataform." alt="" coords="85,465,424,484"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#getInstructions" title="Return the instructions of dataform." alt="" coords="85,484,424,503"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#setInstructions" title="Set the instructions of dataform." alt="" coords="85,503,424,521"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#addInstructions" title="Add one more instruction to the dataform." alt="" coords="85,521,424,540"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#getField" title="Return the datafield object with name &#39;name&#39; (if exists)." alt="" coords="85,540,424,559"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#setField" title="Create if nessessary or get the existing datafield object with name &#39;name&#39; &#160;and return it." alt="" coords="85,559,424,577"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#asDict" title="Represent dataform as simple dictionary mapping of datafield names to their values." alt="" coords="85,577,424,596"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#__getitem__" title="Simple dictionary interface for getting datafields values by their names." alt="" coords="85,596,424,615"/>
+<area shape="rect" id="node2532" href="spade.xmpp.protocol.DataForm-class.html#__setitem__" title="Simple dictionary interface for setting datafields values by their names." alt="" coords="85,615,424,633"/>
+<area shape="rect" id="node1" href="spade.xmpp.protocol.DataForm-class.html" title="DataForm class." alt="" coords="73,358,436,639"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION" title="spade.xmpp.simplexml.Node.FORCE_NODE_RECREATION" alt="" coords="17,31,492,49"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#__delitem__" title="Deletes node&#39;s attribute &quot;item&quot;." alt="" coords="17,52,492,71"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#__getattr__" title="Reduce memory usage caused by T/NT classes &#45; use memory only when needed." alt="" coords="17,71,492,89"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#__str__" title="Method used to dump node into textual representation." alt="" coords="17,89,492,108"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#addChild" title="If &quot;node&quot; argument is provided, adds it as child node." alt="" coords="17,108,492,127"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#addData" title="Adds some CDATA to node." alt="" coords="17,127,492,145"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#clearData" title="Removes all CDATA from the node." alt="" coords="17,145,492,164"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#delAttr" title="Deletes an attribute &quot;key&quot;" alt="" coords="17,164,492,183"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#delChild" title="Deletes the &quot;node&quot; from the node&#39;s childs list, if &quot;node&quot; is an instance." alt="" coords="17,183,492,201"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#getAttr" title="Returns value of specified attribute." alt="" coords="17,201,492,220"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#getAttrs" title="Returns all node&#39;s attributes as dictionary." alt="" coords="17,220,492,239"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#getChildren" title="Returns all node&#39;s child nodes as list." alt="" coords="17,239,492,257"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#getData" title="Returns all node CDATA as string (concatenated)." alt="" coords="17,257,492,276"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#getName" title="Returns the name of node" alt="" coords="17,276,492,295"/>
+<area shape="rect" id="node2533" href="spade.xmpp.simplexml.Node-class.html#setTagData" title="Creates new node (if not already present) with name &quot;tag&quot; and (optionally) &#160;attributes &quot;attrs&quot; and sets it&#39;s CDATA to string &quot;val&quot;." alt="" coords="17,313,492,332"/>
+<area shape="rect" id="node2" href="spade.xmpp.simplexml.Node-class.html" title="Node class describes syntax of separate XML Node." alt="" coords="5,6,504,338"/>
+</map>
+  <img src="uml_class_diagram_for_spade_xm_21.gif" alt='' usemap="#uml_class_diagram_for_spade_xm_21" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>DataForm class. Used for manipulating dataforms in XMPP. Relevant 
+  JEPs: 0004, 0068, 0122. Can be used in disco, pub-sub and many other 
+  applications.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataForm-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">typ</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">title</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">node</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Create new dataform of type 'typ'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getType"></a><span class="summary-sig-name">getType</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the type of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.getType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setType"></a><span class="summary-sig-name">setType</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">typ</span>)</span><br />
+      Set the type of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.setType">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getTitle"></a><span class="summary-sig-name">getTitle</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the title of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.getTitle">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setTitle"></a><span class="summary-sig-name">setTitle</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Set the title of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.setTitle">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getInstructions"></a><span class="summary-sig-name">getInstructions</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the instructions of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.getInstructions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setInstructions"></a><span class="summary-sig-name">setInstructions</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Set the instructions of dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.setInstructions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="addInstructions"></a><span class="summary-sig-name">addInstructions</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">text</span>)</span><br />
+      Add one more instruction to the dataform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.addInstructions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getField"></a><span class="summary-sig-name">getField</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Return the datafield object with name 'name' (if exists).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.getField">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setField"></a><span class="summary-sig-name">setField</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Create if nessessary or get the existing datafield object with name 
+      'name' and return it.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.setField">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="asDict"></a><span class="summary-sig-name">asDict</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Represent dataform as simple dictionary mapping of datafield names to
+      their values.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.asDict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataForm-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      Simple dictionary interface for getting datafields values by their 
+      names.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__getitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.xmpp.protocol.DataForm-class.html#__setitem__" class="summary-sig-name">__setitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
+      Simple dictionary interface for setting datafields values by their 
+      names.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__setitem__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__delitem__">__delitem__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#__str__">__str__</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addChild">addChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#addData">addData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#clearData">clearData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delAttr">delAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#delChild">delChild</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttr">getAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getAttrs">getAttrs</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getChildren">getChildren</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getData">getData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getName">getName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getNamespace">getNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getParent">getParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getPayload">getPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTag">getTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagAttr">getTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTagData">getTagData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#getTags">getTags</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#has_attr">has_attr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setAttr">setAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setData">setData</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setName">setName</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setNamespace">setNamespace</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setParent">setParent</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setPayload">setPayload</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTag">setTag</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagAttr">setTagAttr</a></code>,
+      <code><a href="spade.xmpp.simplexml.Node-class.html#setTagData">setTagData</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="spade.xmpp.simplexml.Node-class.html">simplexml.Node</a></code></b>:
+      <code><a href="spade.xmpp.simplexml.Node-class.html#FORCE_NODE_RECREATION">FORCE_NODE_RECREATION</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">typ</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">data</span>=<span class="sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="sig-arg">title</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">node</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create new dataform of type 'typ'. 'data' is the list of DataField 
+  instances that this dataform contains, 'title' - the title string. You 
+  can specify the 'node' argument as the other node to be used as base for 
+  constructing this dataform.</p>
+  <p>title and instructions is optional and SHOULD NOT contain newlines. 
+  Several instructions MAY be present. 'typ' can be one of ('form' | 
+  'submit' | 'cancel' | 'result' ) 'typ' of reply iq can be ( 'result' | 
+  'set' | 'set' | 'result' ) respectively. 'cancel' form can not contain 
+  any fields. All other forms contains AT LEAST one field. 'title' MAY be 
+  included in forms of type &quot;form&quot; and &quot;result&quot;</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__init__">simplexml.Node.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getitem__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+    <br /><em class="fname">(Indexing operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__getitem__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Simple dictionary interface for getting datafields values by their 
+  names.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__getitem__">simplexml.Node.__getitem__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setitem__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">val</span>)</span>
+    <br /><em class="fname">(Index assignment operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.xmpp.protocol-pysrc.html#DataForm.__setitem__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Simple dictionary interface for setting datafields values by their 
+  names.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="spade.xmpp.simplexml.Node-class.html#__setitem__">simplexml.Node.__setitem__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

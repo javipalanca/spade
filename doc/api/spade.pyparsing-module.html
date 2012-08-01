@@ -1,0 +1,1643 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyparsing</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;pyparsing
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyparsing-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pyparsing</h1><p class="nomargin-top"><span class="codelink"><a href="spade.pyparsing-pysrc.html">source&nbsp;code</a></span></p>
+<p>pyparsing module - Classes and methods to define and execute parsing 
+  grammars</p>
+  <p>The pyparsing module is an alternative approach to creating and 
+  executing simple grammars, vs. the traditional lex/yacc approach, or the 
+  use of regular expressions.  With pyparsing, you don't need to learn a 
+  new syntax for defining grammars or matching expressions - the parsing 
+  module provides a library of classes that you use to construct the 
+  grammar directly in Python.</p>
+  <p>Here is a program to parse &quot;Hello, World!&quot; (or any greeting 
+  of the form &quot;&lt;salutation&gt;, &lt;addressee&gt;!&quot;):</p>
+<pre class="literalblock">
+   from pyparsing import Word, alphas
+   
+   # define grammar of a greeting
+   greet = Word( alphas ) + &quot;,&quot; + Word( alphas ) + &quot;!&quot; 
+   
+   hello = &quot;Hello, World!&quot;
+   print hello, &quot;-&gt;&quot;, greet.parseString( hello )
+</pre>
+  <p>The program outputs the following:</p>
+<pre class="literalblock">
+   Hello, World! -&gt; ['Hello', ',', 'World', '!']
+</pre>
+  <p>The Python representation of the grammar is quite readable, owing to 
+  the self-explanatory class names, and the use of '+', '|' and '^' 
+  operators.</p>
+  <p>The parsed results returned from parseString() can be accessed as a 
+  nested list, a dictionary, or an object with named attributes.</p>
+  <p>The pyparsing module handles some of the problems that are typically 
+  vexing when writing text parsers:</p>
+  <ul>
+    <li>
+      extra or missing whitespace (the above program will also handle 
+      &quot;Hello,World!&quot;, &quot;Hello  ,  World  !&quot;, etc.)
+    </li>
+    <li>
+      quoted strings
+    </li>
+    <li>
+      embedded comments
+    </li>
+  </ul>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        1.3.3
+      </p>
+      <p><strong>Author:</strong>
+        Paul McGuire &lt;ptmcg@users.sourceforge.net&gt;
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseBaseException-class.html" class="summary-name">ParseBaseException</a><br />
+      base exception class for all parsing runtime exceptions
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseException-class.html" class="summary-name">ParseException</a><br />
+      exception thrown when parse expressions don't match class
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseFatalException-class.html" class="summary-name">ParseFatalException</a><br />
+      user-throwable exception thrown when inconsistent parse content is 
+        found; stops all parsing immediately
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.RecursiveGrammarException-class.html" class="summary-name">RecursiveGrammarException</a><br />
+      exception thrown by validate() if the grammar could be improperly 
+        recursive
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseResults-class.html" class="summary-name">ParseResults</a><br />
+      Structured parse results, to provide multiple means of access to 
+        the parsed data:
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParserElement-class.html" class="summary-name">ParserElement</a><br />
+      Abstract base level parser element class.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Token-class.html" class="summary-name">Token</a><br />
+      Abstract ParserElement subclass, for defining atomic matching 
+        patterns.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Empty-class.html" class="summary-name">Empty</a><br />
+      An empty token, will always match.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.NoMatch-class.html" class="summary-name">NoMatch</a><br />
+      A token that will never match.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Literal-class.html" class="summary-name">Literal</a><br />
+      Token to exactly match a specified string.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Keyword-class.html" class="summary-name">Keyword</a><br />
+      Token to exactly match a specified string as a keyword, that is, it
+        must be immediately followed by a non-keyword character.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.CaselessLiteral-class.html" class="summary-name">CaselessLiteral</a><br />
+      Token to match a specified string, ignoring case of letters.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Word-class.html" class="summary-name">Word</a><br />
+      Token for matching words composed of allowed character sets.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.CharsNotIn-class.html" class="summary-name">CharsNotIn</a><br />
+      Token for matching words composed of characters *not* in a given 
+        set.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.White-class.html" class="summary-name">White</a><br />
+      Special matching class for matching whitespace.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.PositionToken-class.html" class="summary-name">PositionToken</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.GoToColumn-class.html" class="summary-name">GoToColumn</a><br />
+      Token to advance to a specific column of input text; useful for 
+        tabular report scraping.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.LineStart-class.html" class="summary-name">LineStart</a><br />
+      Matches if current position is at the beginning of a line within 
+        the parse string
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.LineEnd-class.html" class="summary-name">LineEnd</a><br />
+      Matches if current position is at the end of a line within the 
+        parse string
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.StringStart-class.html" class="summary-name">StringStart</a><br />
+      Matches if current position is at the beginning of the parse string
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.StringEnd-class.html" class="summary-name">StringEnd</a><br />
+      Matches if current position is at the end of the parse string
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseExpression-class.html" class="summary-name">ParseExpression</a><br />
+      Abstract subclass of ParserElement, for combining and 
+        post-processing parsed tokens.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.And-class.html" class="summary-name">And</a><br />
+      Requires all given ParseExpressions to be found in the given order.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Or-class.html" class="summary-name">Or</a><br />
+      Requires that at least one ParseExpression is found.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.MatchFirst-class.html" class="summary-name">MatchFirst</a><br />
+      Requires that at least one ParseExpression is found.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Each-class.html" class="summary-name">Each</a><br />
+      Requires all given ParseExpressions to be found, but in any order.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ParseElementEnhance-class.html" class="summary-name">ParseElementEnhance</a><br />
+      Abstract subclass of ParserElement, for combining and 
+        post-processing parsed tokens.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.FollowedBy-class.html" class="summary-name">FollowedBy</a><br />
+      Lookahead matching of the given parse expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.NotAny-class.html" class="summary-name">NotAny</a><br />
+      Lookahead to disallow matching with the given parse expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.ZeroOrMore-class.html" class="summary-name">ZeroOrMore</a><br />
+      Optional repetition of zero or more of the given expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.OneOrMore-class.html" class="summary-name">OneOrMore</a><br />
+      Repetition of one or more of the given expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Optional-class.html" class="summary-name">Optional</a><br />
+      Optional matching of the given expression.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.SkipTo-class.html" class="summary-name">SkipTo</a><br />
+      Token for skipping over all undefined text until the matched 
+        expression is found.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Forward-class.html" class="summary-name">Forward</a><br />
+      Forward declaration of an expression to be defined later - used for
+        recursive grammars, such as algebraic infix notation.
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing._ForwardNoRecurse-class.html" class="summary-name" onclick="show_private();">_ForwardNoRecurse</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.TokenConverter-class.html" class="summary-name">TokenConverter</a><br />
+      Abstract subclass of ParseExpression, for converting parsed 
+        results.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Upcase-class.html" class="summary-name">Upcase</a><br />
+      Converter to upper case all matching tokens.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Combine-class.html" class="summary-name">Combine</a><br />
+      Converter to concatenate all matching tokens to a single string.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Group-class.html" class="summary-name">Group</a><br />
+      Converter to return the matched tokens as a list - useful for 
+        returning tokens of ZeroOrMore and OneOrMore expressions.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Dict-class.html" class="summary-name">Dict</a><br />
+      Converter to return a repetitive expression as a list, but also as 
+        a dictionary.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing.Suppress-class.html" class="summary-name">Suppress</a><br />
+      Converter for ignoring the results of a parsed expression.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Functions</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Functions"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#_ustr" class="summary-sig-name" onclick="show_private();">_ustr</a>(<span class="summary-sig-arg">obj</span>)</span><br />
+      Drop-in replacement for str(obj) that tries to be Unicode friendly.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_ustr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_str2dict"></a><span class="summary-sig-name">_str2dict</span>(<span class="summary-sig-arg">strg</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_str2dict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="col"></a><span class="summary-sig-name">col</span>(<span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">strg</span>)</span><br />
+      Returns current column within a string, counting newlines as line 
+      separators The first column is number 1.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#col">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="lineno"></a><span class="summary-sig-name">lineno</span>(<span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">strg</span>)</span><br />
+      Returns current line number within a string, counting newlines as 
+      line separators The first line is number 1.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#lineno">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="line"></a><span class="summary-sig-name">line</span>(<span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">strg</span>)</span><br />
+      Returns the line of text containing loc within a string, counting 
+      newlines as line separators The first line is number 1.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#line">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_defaultStartDebugAction"></a><span class="summary-sig-name">_defaultStartDebugAction</span>(<span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">expr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_defaultStartDebugAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_defaultSuccessDebugAction"></a><span class="summary-sig-name">_defaultSuccessDebugAction</span>(<span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">startloc</span>,
+        <span class="summary-sig-arg">endloc</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">toks</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_defaultSuccessDebugAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_defaultExceptionDebugAction"></a><span class="summary-sig-name">_defaultExceptionDebugAction</span>(<span class="summary-sig-arg">instring</span>,
+        <span class="summary-sig-arg">loc</span>,
+        <span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">exc</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_defaultExceptionDebugAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="nullDebugAction"></a><span class="summary-sig-name">nullDebugAction</span>(<span class="summary-sig-arg">*args</span>)</span><br />
+      'Do-nothing' debug action, to suppress debugging output during 
+      parsing.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#nullDebugAction">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#delimitedList" class="summary-sig-name">delimitedList</a>(<span class="summary-sig-arg">expr</span>,
+        <span class="summary-sig-arg">delim</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">,</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">combine</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Helper to define a delimited list of expressions - the delimiter 
+      defaults to ','.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#delimitedList">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="oneOf"></a><span class="summary-sig-name">oneOf</span>(<span class="summary-sig-arg">strs</span>,
+        <span class="summary-sig-arg">caseless</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Helper to quickly define a set of alternative Literals, and makes 
+      sure to do longest-first testing when there is a conflict, regardless
+      of the input order, but returns a MatchFirst for best performance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#oneOf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#dictOf" class="summary-sig-name">dictOf</a>(<span class="summary-sig-arg">key</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Helper to easily and clearly define a dictionary by specifying the 
+      respective patterns for the key and value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#dictOf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_expanded"></a><span class="summary-sig-name">_expanded</span>(<span class="summary-sig-arg">p</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_expanded">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#srange" class="summary-sig-name">srange</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Helper to easily define string ranges for use in Word construction.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#srange">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#replaceWith" class="summary-sig-name">replaceWith</a>(<span class="summary-sig-arg">replStr</span>)</span><br />
+      Helper method for common parse actions that simply return a literal 
+      value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#replaceWith">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.pyparsing-module.html#removeQuotes" class="summary-sig-name">removeQuotes</a>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">l</span>,
+        <span class="summary-sig-arg">t</span>)</span><br />
+      Helper parse action for removing quotation marks from parsed quoted 
+      strings.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#removeQuotes">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="upcaseTokens"></a><span class="summary-sig-name">upcaseTokens</span>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">l</span>,
+        <span class="summary-sig-arg">t</span>)</span><br />
+      Helper parse action to convert tokens to upper case.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#upcaseTokens">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="downcaseTokens"></a><span class="summary-sig-name">downcaseTokens</span>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">l</span>,
+        <span class="summary-sig-arg">t</span>)</span><br />
+      Helper parse action to convert tokens to lower case.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#downcaseTokens">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_makeTags"></a><span class="summary-sig-name">_makeTags</span>(<span class="summary-sig-arg">tagStr</span>,
+        <span class="summary-sig-arg">xml</span>)</span><br />
+      Internal helper to construct opening and closing tag expressions, 
+      given a tag name</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#_makeTags">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="makeHTMLTags"></a><span class="summary-sig-name">makeHTMLTags</span>(<span class="summary-sig-arg">tagStr</span>)</span><br />
+      Helper to construct opening and closing tag expressions for HTML, 
+      given a tag name</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#makeHTMLTags">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="makeXMLTags"></a><span class="summary-sig-name">makeXMLTags</span>(<span class="summary-sig-arg">tagStr</span>)</span><br />
+      Helper to construct opening and closing tag expressions for XML, 
+      given a tag name</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.pyparsing-pysrc.html#makeXMLTags">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#__doc__" class="summary-name">__doc__</a> = <code title="&quot;&quot;&quot;
+pyparsing module - Classes and methods to define and execute parsing g\
+rammars
+
+The pyparsing module is an alternative approach to creating and execut\
+ing simple grammars, 
+vs. the traditional lex/yacc approach, or the use of regular expressio\
+ns.  With pyparsing, you
+...">&quot;<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__versionTime__"></a><span class="summary-name">__versionTime__</span> = <code title="'12 September 2005 22:50'"><code class="variable-quote">'</code><code class="variable-string">12 September 2005 22:50</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="alphas"></a><span class="summary-name">alphas</span> = <code title="'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'"><code class="variable-quote">'</code><code class="variable-string">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="nums"></a><span class="summary-name">nums</span> = <code title="'0123456789'"><code class="variable-quote">'</code><code class="variable-string">0123456789</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="hexnums"></a><span class="summary-name">hexnums</span> = <code title="'0123456789ABCDEFabcdef'"><code class="variable-quote">'</code><code class="variable-string">0123456789ABCDEFabcdef</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#alphanums" class="summary-name">alphanums</a> = <code title="'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'"><code class="variable-quote">'</code><code class="variable-string">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_bslash"></a><span class="summary-name">_bslash</span> = <code title="'\\'"><code class="variable-quote">'</code><code class="variable-string">\\</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#printables" class="summary-name">printables</a> = <code title="'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\\
+'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~'"><code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="empty"></a><span class="summary-name">empty</span> = <code title="empty">empty</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_escapedPunc"></a><span class="summary-name">_escapedPunc</span> = <code title="W:(\,\[]-...)">W:(\,\[]-...)</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#_printables_less_backslash" class="summary-name" onclick="show_private();">_printables_less_backslash</a> = <code title="'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\\
+'()*+,-./:;&lt;=&gt;?@[^_`{|}~'"><code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuv</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_escapedHexChar"></a><span class="summary-name">_escapedHexChar</span> = <code title="Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)})">Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)})</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_escapedOctChar"></a><span class="summary-name">_escapedOctChar</span> = <code title="Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)})">Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)})</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#_singleChar" class="summary-name" onclick="show_private();">_singleChar</a> = <code title="{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({\
+Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}">{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#_charRange" class="summary-name" onclick="show_private();">_charRange</a> = <code title="Group:({{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Co\
+mbine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)} Suppress:(&quot;-&quot;) {\
+W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({S\
+uppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}})">Group:({{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#_reBracketExpr" class="summary-name" onclick="show_private();">_reBracketExpr</a> = <code title="{&quot;[&quot; [&quot;^&quot;] Group:({{Group:({{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;\
+) W:(0123...)}) | Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123..\
+.)} Suppress:(&quot;-&quot;) {W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123\
+...)}) | Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}}) | W\
+:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({Su\
+ppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}}...) &quot;]&quot;}">{&quot;[&quot; [&quot;^&quot;] Group:({{Group:({{W:(\,\[]-...) | <code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#alphas8bit" class="summary-name">alphas8bit</a> = <code title="u'&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#222;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#240;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#254;'"><code class="variable-quote">u'</code><code class="variable-string">&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#222;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_escapables"></a><span class="summary-name">_escapables</span> = <code title="'tnrfbacdeghijklmopqsuvwxyz \\\'&quot;'"><code class="variable-quote">'</code><code class="variable-string">tnrfbacdeghijklmopqsuvwxyz \\\'&quot;</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_octDigits"></a><span class="summary-name">_octDigits</span> = <code title="'01234567'"><code class="variable-quote">'</code><code class="variable-string">01234567</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_escapedChar"></a><span class="summary-name">_escapedChar</span> = <code title="{W:(\,tnrf...) | W:(\,0123...)}">{W:(\,tnrf...) | W:(\,0123...)}</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_sglQuote"></a><span class="summary-name">_sglQuote</span> = <code title="&quot;'&quot;">&quot;'&quot;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_dblQuote"></a><span class="summary-name">_dblQuote</span> = <code title="&quot;&quot;&quot;">&quot;&quot;&quot;</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="dblQuotedString"></a><span class="summary-name">dblQuotedString</span> = <code title="string enclosed in double quotes">string enclosed in double quotes</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="sglQuotedString"></a><span class="summary-name">sglQuotedString</span> = <code title="string enclosed in single quotes">string enclosed in single quotes</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="quotedString"></a><span class="summary-name">quotedString</span> = <code title="quotedString using single or double quotes">quotedString using single or double quotes</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="cStyleComment"></a><span class="summary-name">cStyleComment</span> = <code title="cStyleComment enclosed in /* ... */">cStyleComment enclosed in /* ... */</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="htmlComment"></a><span class="summary-name">htmlComment</span> = <code title="htmlComment enclosed in &lt;!-- ... --&gt;">htmlComment enclosed in &lt;!-- ... --&gt;</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="restOfLine"></a><span class="summary-name">restOfLine</span> = <code title="rest of line up to \n">rest of line up to \n</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="dblSlashComment"></a><span class="summary-name">dblSlashComment</span> = <code title="{&quot;//&quot; rest of line up to \n}">{&quot;//&quot; rest of line up to \n}</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#cppStyleComment" class="summary-name">cppStyleComment</a> = <code title="{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to \n} | cStyleComment enclos\
+ed in /* ... */}}">{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to <code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#javaStyleComment" class="summary-name">javaStyleComment</a> = <code title="{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to \n} | cStyleComment enclos\
+ed in /* ... */}}">{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="pythonStyleComment"></a><span class="summary-name">pythonStyleComment</span> = <code title="{&quot;#&quot; rest of line up to \n}">{&quot;#&quot; rest of line up to \n}</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyparsing-module.html#_noncomma" class="summary-name" onclick="show_private();">_noncomma</a> = <code title="'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\\
+'()*+-./:;&lt;=&gt;?@[\\]^_`{|}~'"><code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_commasepitem"></a><span class="summary-name">_commasepitem</span> = <code title="commaItem">commaItem</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="commaSeparatedList"></a><span class="summary-name">commaSeparatedList</span> = <code title="commaSeparatedList">commaSeparatedList</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade'"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="c"></a><span class="summary-name">c</span> = <code title="'~'"><code class="variable-quote">'</code><code class="variable-string">~</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Function Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-FunctionDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_ustr"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_ustr</span>(<span class="sig-arg">obj</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#_ustr">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Drop-in replacement for str(obj) that tries to be Unicode friendly. It
+  first tries str(obj). If that fails with a UnicodeEncodeError, then it 
+  tries unicode(obj). It then &lt; returns the unicode object | encodes it 
+  with the default encoding | ... &gt;.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="delimitedList"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delimitedList</span>(<span class="sig-arg">expr</span>,
+        <span class="sig-arg">delim</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">,</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">combine</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#delimitedList">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Helper to define a delimited list of expressions - the delimiter 
+  defaults to ','. By default, the list elements and delimiters can have 
+  intervening whitespace, and comments, but this can be overridden by 
+  passing 'combine=True' in the constructor. If combine is set to True, the
+  matching tokens are returned as a single token string, with the 
+  delimiters included; otherwise, the matching tokens are returned as a 
+  list of tokens, with the delimiters suppressed.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="dictOf"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dictOf</span>(<span class="sig-arg">key</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#dictOf">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Helper to easily and clearly define a dictionary by specifying the 
+  respective patterns for the key and value.  Takes care of defining the 
+  Dict, ZeroOrMore, and Group tokens in the proper order.  The key pattern 
+  can include delimiting markers or punctuation, as long as they are 
+  suppressed, thereby leaving the significant key text.  The value pattern 
+  can include named results, so that the Dict results can include named 
+  token fields.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="srange"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">srange</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#srange">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Helper to easily define string ranges for use in Word construction.  
+  Borrows syntax from regexp '[]' string range definitions:</p>
+<pre class="literalblock">
+  srange(&quot;[0-9]&quot;)   -&gt; &quot;0123456789&quot;
+  srange(&quot;[a-z]&quot;)   -&gt; &quot;abcdefghijklmnopqrstuvwxyz&quot;
+  srange(&quot;[a-z$_]&quot;) -&gt; &quot;abcdefghijklmnopqrstuvwxyz$_&quot;
+</pre>
+  <p>The input string must be enclosed in []'s, and the returned string is 
+  the expanded character set joined into a single string. The values 
+  enclosed in the []'s may be:</p>
+<pre class="literalblock">
+  a single character
+  an escaped character with a leading backslash (such as \- or \])
+  an escaped hex character with a leading '\0x' (\0x21, which is a '!' character)
+  an escaped octal character with a leading '\0' (\041, which is a '!' character)
+  a range of any of the above, separated by a dash ('a-z', etc.)
+  any combination of the above ('aeiouy', 'a-zA-Z0-9_$', etc.)
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="replaceWith"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">replaceWith</span>(<span class="sig-arg">replStr</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#replaceWith">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Helper method for common parse actions that simply return a literal 
+  value.  Especially useful when used with transformString().</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="removeQuotes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">removeQuotes</span>(<span class="sig-arg">s</span>,
+        <span class="sig-arg">l</span>,
+        <span class="sig-arg">t</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.pyparsing-pysrc.html#removeQuotes">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Helper parse action for removing quotation marks from parsed quoted 
+  strings. To use, add this parse action to quoted string using:</p>
+<pre class="literalblock">
+ quotedString.setParseAction( removeQuotes )
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__doc__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__doc__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+&quot;&quot;&quot;
+pyparsing module - Classes and methods to define and execute parsing g<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+rammars
+
+The pyparsing module is an alternative approach to creating and execut<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ing simple grammars, 
+vs. the traditional lex/yacc approach, or the use of regular expressio<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ns.  With pyparsing, you
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="alphanums"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">alphanums</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="printables"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">printables</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_printables_less_backslash"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_printables_less_backslash</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">'()*+,-./:;&lt;=&gt;?@[^_`{|}~</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_singleChar"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_singleChar</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_charRange"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_charRange</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+Group:({{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Co<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+mbine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)} Suppress:(&quot;-&quot;) {<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({S<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+uppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}})
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_reBracketExpr"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_reBracketExpr</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+{&quot;[&quot; [&quot;^&quot;] Group:({{Group:({{W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+) W:(0123...)}) | Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123..<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+.)} Suppress:(&quot;-&quot;) {W:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+...)}) | Combine:({Suppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}}) | W<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+:(\,\[]-...) | Combine:({Suppress:(&quot;\0x&quot;) W:(0123...)}) | Combine:({Su<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ppress:(&quot;\&quot;) W:(0,0123...)}) | W:(0123...)}}...) &quot;]&quot;}
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="alphas8bit"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">alphas8bit</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">u'</code><code class="variable-string">&#192;&#193;&#194;&#195;&#196;&#197;&#198;&#199;&#200;&#201;&#202;&#203;&#204;&#205;&#206;&#207;&#208;&#209;&#210;&#211;&#212;&#213;&#214;&#216;&#217;&#218;&#219;&#220;&#221;&#222;&#223;&#224;&#225;&#226;&#227;&#228;&#229;&#230;&#231;&#232;&#233;&#234;&#235;&#236;&#237;&#238;&#239;&#240;&#241;&#242;&#243;&#244;&#245;&#246;&#248;&#249;&#250;&#251;&#252;&#253;&#254;</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cppStyleComment"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">cppStyleComment</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to \n} | cStyleComment enclos<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ed in /* ... */}}
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="javaStyleComment"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">javaStyleComment</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+{FollowedBy:(&quot;/&quot;) {{&quot;//&quot; rest of line up to \n} | cStyleComment enclos<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ed in /* ... */}}
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_noncomma"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">_noncomma</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;#$%&amp;\</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">'()*+-./:;&lt;=&gt;?@[\\]^_`{|}~</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

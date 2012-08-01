@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.pyxf</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;pyxf
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.pyxf-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module pyxf</h1><p class="nomargin-top"><span class="codelink"><a href="spade.pyxf-pysrc.html">source&nbsp;code</a></span></p>
+<p>Python interface to XSB Prolog, SWI Prolog, ECLiPSe Prolog and Flora2 
+  by Markus Schatten &lt;markus_dot_schatten_at_foi_dot_hr&gt; Faculty of 
+  Organization and Informatics, Varazdin, Croatia, 2011</p>
+  <p>This library is free software; you can redistribute it and/or modify 
+  it under the terms of the GNU Lesser General Public License as published 
+  by the Free Software Foundation; either version 2.1 of the License, or 
+  (at your option) any later version.</p>
+  <p>This library is distributed in the hope that it will be useful, but 
+  WITHOUT ANY WARRANTY; without even the implied warranty of 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser 
+  General Public License for more details.</p>
+  <p>You should have received a copy of the GNU Lesser General Public 
+  License along with this library; if not, write to the Free Software 
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+  USA</p>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        1.0.1
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.XSBExecutableNotFound-class.html" class="summary-name">XSBExecutableNotFound</a><br />
+      Exception raised if XSB executable is not found on the specified 
+        path.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.XSBCompileError-class.html" class="summary-name">XSBCompileError</a><br />
+      Exception raised if loaded module has compile errors.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.XSBQueryError-class.html" class="summary-name">XSBQueryError</a><br />
+      Exception raised if query raises an error.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.xsb-class.html" class="summary-name">xsb</a><br />
+      Python interface to XSB Prolog (http://xsb.sf.net)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.SWIExecutableNotFound-class.html" class="summary-name">SWIExecutableNotFound</a><br />
+      Exception raised if SWI-Prolog executable is not found on the 
+        specified path.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.SWICompileError-class.html" class="summary-name">SWICompileError</a><br />
+      Exception raised if loaded module has compile errors.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.SWIQueryError-class.html" class="summary-name">SWIQueryError</a><br />
+      Exception raised if query raises an error.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.swipl-class.html" class="summary-name">swipl</a><br />
+      Python interface to SWI Prolog (http://www.swi-prolog.org)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.ECLiPSeExecutableNotFound-class.html" class="summary-name">ECLiPSeExecutableNotFound</a><br />
+      Exception raised if ECLiPSe-Prolog executable is not found on the 
+        specified path.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.ECLiPSeCompileError-class.html" class="summary-name">ECLiPSeCompileError</a><br />
+      Exception raised if loaded module has compile errors.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.ECLiPSeQueryError-class.html" class="summary-name">ECLiPSeQueryError</a><br />
+      Exception raised if query raises an error.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.eclipse-class.html" class="summary-name">eclipse</a><br />
+      Python interface to ECLiPSe Prolog (http://eclipseclp.org)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.Flora2ExecutableNotFound-class.html" class="summary-name">Flora2ExecutableNotFound</a><br />
+      Exception raised if Flora2 executable is not found on the specified
+        path.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.Flora2CompileError-class.html" class="summary-name">Flora2CompileError</a><br />
+      Exception raised if loaded module has compile errors.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.Flora2QueryError-class.html" class="summary-name">Flora2QueryError</a><br />
+      Exception raised if query raises an error.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf.flora2-class.html" class="summary-name">flora2</a><br />
+      Python interface to Flora2 (http://flora.sf.net)
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="spade.pyxf-module.html#__doc__" class="summary-name">__doc__</a> = <code title="''' Python interface to XSB Prolog, SWI Prolog, ECLiPSe Prolog and Flo\
+ra2
+ by Markus Schatten &lt;markus_dot_schatten_at_foi_dot_hr&gt;
+ Faculty of Organization and Informatics,
+ Varazdin, Croatia, 2011
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+...">''' Python interface to XSB Prolog, SWI Prolog, ECLi<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="xsbprompt"></a><span class="summary-name">xsbprompt</span> = <code title="'[|][ ][?][-][ ]'"><code class="variable-quote">'</code><code class="variable-string">[|][ ][?][-][ ]</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="xsberror"></a><span class="summary-name">xsberror</span> = <code title="'[+][+]Error.*'"><code class="variable-quote">'</code><code class="variable-string">[+][+]Error.*</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="var_re"></a><span class="summary-name">var_re</span> = <code title="re.compile(r'[^a-zA-Z0-9_]([A-Z][a-zA-Z0-9_]*)')">re.compile(r'<code class="re-group">[</code><code class="re-op">^</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9_<code class="re-group">]</code><code class="re-group">(</code><code class="re-group">[</code>A<code class="re-op">-</code>Z<code class="re-group">]</code><code class="re-group">[</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9_<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="res_re"></a><span class="summary-name">res_re</span> = <code title="re.compile(r'res\(\'([A-Z][a-zA-Z0-9_]*)\', ?(.*)\)')">re.compile(r'res\(\'<code class="re-group">(</code><code class="re-group">[</code>A<code class="re-op">-</code>Z<code class="re-group">]</code><code class="re-group">[</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9_<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code>\', <code class="re-op">?</code><code class="re-group">(</code>.<code class="re-op">*</code><code class="re-group">)</code>\)')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="swiprompt"></a><span class="summary-name">swiprompt</span> = <code title="'[?][-][ ]'"><code class="variable-quote">'</code><code class="variable-string">[?][-][ ]</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="swierror"></a><span class="summary-name">swierror</span> = <code title="'ERROR.*'"><code class="variable-quote">'</code><code class="variable-string">ERROR.*</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="eclipseprompt"></a><span class="summary-name">eclipseprompt</span> = <code title="'[\\[]eclipse [0-9]+[\\]][:] '"><code class="variable-quote">'</code><code class="variable-string">[\\[]eclipse [0-9]+[\\]][:] </code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="eclipseerror"></a><span class="summary-name">eclipseerror</span> = <code title="'Abort.*'"><code class="variable-quote">'</code><code class="variable-string">Abort.*</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="flora2prompt"></a><span class="summary-name">flora2prompt</span> = <code title="'flora2 [?][-][ ]'"><code class="variable-quote">'</code><code class="variable-string">flora2 [?][-][ ]</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="flora2error"></a><span class="summary-name">flora2error</span> = <code title="'[+][+]Error.*'"><code class="variable-quote">'</code><code class="variable-string">[+][+]Error.*</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="fvar_re"></a><span class="summary-name">fvar_re</span> = <code title="re.compile(r'\?[a-zA-Z0-9][a-zA-Z0-9_]*')">re.compile(r'\?<code class="re-group">[</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-group">[</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9_<code class="re-group">]</code><code class="re-op">*</code>')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="fres_re"></a><span class="summary-name">fres_re</span> = <code title="re.compile(r'\?([a-zA-Z0-9_]*) = ([^\r]+)')">re.compile(r'\?<code class="re-group">(</code><code class="re-group">[</code>a<code class="re-op">-</code>zA<code class="re-op">-</code>Z0<code class="re-op">-</code>9_<code class="re-group">]</code><code class="re-op">*</code><code class="re-group">)</code> = <code class="re-group">(</code><code class="re-group">[^</code>\r<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'spade'"><code class="variable-quote">'</code><code class="variable-string">spade</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__doc__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__doc__</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+''' Python interface to XSB Prolog, SWI Prolog, ECLiPSe Prolog and Flo<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ra2
+ by Markus Schatten &lt;markus_dot_schatten_at_foi_dot_hr&gt;
+ Faculty of Organization and Informatics,
+ Varazdin, Croatia, 2011
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:31 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

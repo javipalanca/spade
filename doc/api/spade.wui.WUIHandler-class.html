@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.wui.WUIHandler</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        <a href="spade.wui-module.html">Module&nbsp;wui</a> ::
+        Class&nbsp;WUIHandler
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.wui.WUIHandler-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class WUIHandler</h1><p class="nomargin-top"><span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_spade_wu_4" name="uml_class_diagram_for_spade_wu_4">
+<area shape="rect" id="node2465" href="spade.wui.WUIHandler-class.html#Session" title="Session management If the client has sent a cookie named sessionId, take &#160;its value and return the corresponding SessionElement objet, stored in &#160;sessionDict Otherwise create a new SessionElement objet and generate a &#160;random 8&#45;letters value sent back to the client as the value for a cookie &#160;called sessionId" alt="" coords="105,967,216,985"/>
+<area shape="rect" id="node2465" href="spade.wui.WUIHandler-class.html#getPage" title="Return the page name from a raw GET line" alt="" coords="105,985,216,1004"/>
+<area shape="rect" id="node2465" href="spade.wui.WUIHandler-class.html#getVars" title="Return the variables and values from a raw GET or POST request line" alt="" coords="105,1004,216,1023"/>
+<area shape="rect" id="node2465" href="spade.wui.WUIHandler-class.html#do_POST" title="spade.wui.WUIHandler.do_POST" alt="" coords="105,1023,216,1041"/>
+<area shape="rect" id="node2465" href="spade.wui.WUIHandler-class.html#do_GET" title="GET petitions handler" alt="" coords="105,1041,216,1060"/>
+<area shape="rect" id="node1" href="spade.wui.WUIHandler-class.html" title="spade.wui.WUIHandler" alt="" coords="93,934,227,1066"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="SimpleHTTPServer.SimpleHTTPRequestHandler.server_version" alt="" coords="17,756,305,775"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map" alt="" coords="17,775,305,793"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Serve a HEAD request." alt="" coords="17,796,305,815"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Common code for GET and HEAD commands." alt="" coords="17,815,305,833"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Helper to produce a directory listing (absent index.html)." alt="" coords="17,833,305,852"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Translate a /&#45;separated PATH to the local filename syntax." alt="" coords="17,852,305,871"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Copy all data between two file objects." alt="" coords="17,871,305,889"/>
+<area shape="rect" id="node2466" href="javascript:void(0);" title="Guess the type of a file." alt="" coords="17,889,305,908"/>
+<area shape="rect" id="node2" href="javascript:void(0);" title="Simple HTTP request handler with GET and HEAD commands." alt="" coords="5,731,317,914"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="SocketServer.StreamRequestHandler.rbufsize" alt="" coords="51,108,272,127"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="SocketServer.StreamRequestHandler.wbufsize" alt="" coords="51,127,272,145"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="hash(x)" alt="" coords="51,145,272,164"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="SocketServer.StreamRequestHandler.disable_nagle_algorithm" alt="" coords="51,164,272,183"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="SocketServer.StreamRequestHandler.setup" alt="" coords="51,185,272,204"/>
+<area shape="rect" id="node2468" href="javascript:void(0);" title="SocketServer.StreamRequestHandler.finish" alt="" coords="51,204,272,223"/>
+<area shape="rect" id="node3" href="javascript:void(0);" title="Define self.rfile and self.wfile for stream sockets." alt="" coords="39,83,284,229"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.sys_version" alt="" coords="27,273,295,292"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.default_request_version" alt="" coords="27,292,295,311"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.error_message_format" alt="" coords="27,311,295,329"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.error_content_type" alt="" coords="27,329,295,348"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.weekdayname" alt="" coords="27,348,295,367"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.monthname" alt="" coords="27,367,295,385"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.protocol_version" alt="" coords="27,385,295,404"/>
+<area shape="rect" id="node2467" href="mimetools.Message-class.html" title="A derived class of rfc822.Message that knows about MIME headers and &#160;contains some hooks for decoding encoded and multipart messages." alt="" coords="27,404,295,423"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="BaseHTTPServer.BaseHTTPRequestHandler.responses" alt="" coords="27,423,295,441"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Parse a request (internal)." alt="" coords="27,444,295,463"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Handle a single HTTP request." alt="" coords="27,463,295,481"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Handle multiple requests if necessary." alt="" coords="27,481,295,500"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Send and log an error reply." alt="" coords="27,500,295,519"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Send the response header and log the response code." alt="" coords="27,519,295,537"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Send a MIME header." alt="" coords="27,537,295,556"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Send the blank line ending the MIME headers." alt="" coords="27,556,295,575"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Log an accepted request." alt="" coords="27,575,295,593"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Log an error." alt="" coords="27,593,295,612"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Log an arbitrary message." alt="" coords="27,612,295,631"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Return the server software version string." alt="" coords="27,631,295,649"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Return the current date and time formatted for a message header." alt="" coords="27,649,295,668"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Return the current time formatted for logging." alt="" coords="27,668,295,687"/>
+<area shape="rect" id="node2467" href="javascript:void(0);" title="Return the client address formatted for logging." alt="" coords="27,687,295,705"/>
+<area shape="rect" id="node5" href="javascript:void(0);" title="HTTP request handler base class." alt="" coords="15,249,305,711"/>
+<area shape="rect" id="node2469" href="javascript:void(0);" title="SocketServer.BaseRequestHandler.__init__" alt="" coords="27,39,295,57"/>
+<area shape="rect" id="node4" href="javascript:void(0);" title="Base class for request handler classes." alt="" coords="15,6,305,63"/>
+</map>
+  <img src="uml_class_diagram_for_spade_wu_4.gif" alt='' usemap="#uml_class_diagram_for_spade_wu_4" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>BaseHTTPServer.BaseHTTPRequestHandler</code></b>:
+      <code><a href="mimetools.Message-class.html">MessageClass</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="Session"></a><span class="summary-sig-name">Session</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Session management If the client has sent a cookie named sessionId, 
+      take its value and return the corresponding SessionElement objet, 
+      stored in sessionDict Otherwise create a new SessionElement objet and
+      generate a random 8-letters value sent back to the client as the 
+      value for a cookie called sessionId</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.Session">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPage"></a><span class="summary-sig-name">getPage</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">req</span>)</span><br />
+      Return the page name from a raw GET line</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.getPage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getVars"></a><span class="summary-sig-name">getVars</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">req</span>)</span><br />
+      Return the variables and values from a raw GET or POST request line</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.getVars">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="do_POST"></a><span class="summary-sig-name">do_POST</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.do_POST">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="spade.wui.WUIHandler-class.html#do_GET" class="summary-sig-name">do_GET</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      GET petitions handler</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.do_GET">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>SimpleHTTPServer.SimpleHTTPRequestHandler</code></b>:
+      <code>copyfile</code>,
+      <code>do_HEAD</code>,
+      <code>guess_type</code>,
+      <code>list_directory</code>,
+      <code>send_head</code>,
+      <code>translate_path</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>BaseHTTPServer.BaseHTTPRequestHandler</code></b>:
+      <code>address_string</code>,
+      <code>date_time_string</code>,
+      <code>end_headers</code>,
+      <code>handle</code>,
+      <code>handle_one_request</code>,
+      <code>log_date_time_string</code>,
+      <code>log_error</code>,
+      <code>log_message</code>,
+      <code>log_request</code>,
+      <code>parse_request</code>,
+      <code>send_error</code>,
+      <code>send_header</code>,
+      <code>send_response</code>,
+      <code>version_string</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>SocketServer.StreamRequestHandler</code></b>:
+      <code>finish</code>,
+      <code>setup</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>SocketServer.BaseRequestHandler</code></b>:
+      <code>__init__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>SimpleHTTPServer.SimpleHTTPRequestHandler</code></b>:
+      <code>extensions_map</code>,
+      <code>server_version</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>BaseHTTPServer.BaseHTTPRequestHandler</code></b>:
+      <code>default_request_version</code>,
+      <code>error_content_type</code>,
+      <code>error_message_format</code>,
+      <code>monthname</code>,
+      <code>protocol_version</code>,
+      <code>responses</code>,
+      <code>sys_version</code>,
+      <code>weekdayname</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>SocketServer.StreamRequestHandler</code></b>:
+      <code>disable_nagle_algorithm</code>,
+      <code>rbufsize</code>,
+      <code>timeout</code>,
+      <code>wbufsize</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="do_GET"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">do_GET</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="spade.wui-pysrc.html#WUIHandler.do_GET">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>GET petitions handler</p>
+  <dl class="fields">
+    <dt>Overrides:
+        SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:44:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

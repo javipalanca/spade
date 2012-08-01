@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.SPARQLKB</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;SPARQLKB
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.SPARQLKB-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.SPARQLKB-module.html">Module spade.SPARQLKB</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module spade.logic=spade.logic-module.html"><a title="spade.logic" class="py-name" href="#" onclick="return doclink('link-0', 'logic', 'link-0');">logic</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class spade.kb.KB=spade.kb.KB-class.html,Class spade.logic.KB=spade.logic.KB-class.html"><a title="spade.kb.KB
+spade.logic.KB" class="py-name" href="#" onclick="return doclink('link-1', 'KB', 'link-1');">KB</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">SPARQLWrapper</tt> <tt class="py-keyword">import</tt> <tt class="py-name">SPARQLWrapper</tt><tt class="py-op">,</tt> <tt class="py-name">JSON</tt><tt class="py-op">,</tt> <tt class="py-name">XML</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">exceptions</tt> <tt class="py-keyword">import</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="SPARQLKB"></a><div id="SPARQLKB-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="SPARQLKB-toggle" onclick="return toggle('SPARQLKB');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.SPARQLKB.SPARQLKB-class.html">SPARQLKB</a><tt class="py-op">(</tt> <tt class="py-base-class">KB</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SPARQLKB-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="SPARQLKB-expanded"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">  <tt class="py-docstring">'''SPARQL endpoint knowledge base'''</tt> </tt>
+<a name="SPARQLKB.__init__"></a><div id="SPARQLKB.__init__-def"><a name="L7"></a><tt class="py-lineno"> 7</tt> <a class="py-toggle" href="#" id="SPARQLKB.__init__-toggle" onclick="return toggle('SPARQLKB.__init__');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SPARQLKB.SPARQLKB-class.html#__init__">__init__</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">endpoint</tt><tt class="py-op">=</tt><tt class="py-name">None</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SPARQLKB.__init__-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="SPARQLKB.__init__-expanded"><a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-docstring">'''Constructor method</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-docstring">    Usage:</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-docstring">    sentence - RDF triple to be added to KB (not implemented; default:None)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-docstring">    endpoint - URL of endpoint to query'''</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">sparql</tt> <tt class="py-op">=</tt> <tt class="py-name">SPARQLWrapper</tt><tt class="py-op">(</tt> <tt class="py-name">endpoint</tt> <tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">sentence</tt><tt class="py-op">:</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">      <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method spade.ECLiPSeKB.ECLiPSeKB.tell()=spade.ECLiPSeKB.ECLiPSeKB-class.html#tell,Method spade.Flora2KB.Flora2KB.tell()=spade.Flora2KB.Flora2KB-class.html#tell,Method spade.SPARQLKB.SPARQLKB.tell()=spade.SPARQLKB.SPARQLKB-class.html#tell,Method spade.SWIKB.SWIKB.tell()=spade.SWIKB.SWIKB-class.html#tell,Method spade.XSBKB.XSBKB.tell()=spade.XSBKB.XSBKB-class.html#tell,Method spade.kb.KB.tell()=spade.kb.KB-class.html#tell,Method spade.kb.SpadeKB.tell()=spade.kb.SpadeKB-class.html#tell,Method spade.logic.FolKB.tell()=spade.logic.FolKB-class.html#tell,Method spade.logic.KB.tell()=spade.logic.KB-class.html#tell,Method spade.logic.PropHornKB.tell()=spade.logic.PropHornKB-class.html#tell,Method spade.logic.PropKB.tell()=spade.logic.PropKB-class.html#tell"><a title="spade.ECLiPSeKB.ECLiPSeKB.tell
+spade.Flora2KB.Flora2KB.tell
+spade.SPARQLKB.SPARQLKB.tell
+spade.SWIKB.SWIKB.tell
+spade.XSBKB.XSBKB.tell
+spade.kb.KB.tell
+spade.kb.SpadeKB.tell
+spade.logic.FolKB.tell
+spade.logic.KB.tell
+spade.logic.PropHornKB.tell
+spade.logic.PropKB.tell" class="py-name" href="#" onclick="return doclink('link-2', 'tell', 'link-2');">tell</a></tt><tt class="py-op">(</tt> <tt class="py-name">sentence</tt> <tt class="py-op">)</tt> </tt>
+</div><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"> </tt>
+<a name="SPARQLKB.tell"></a><div id="SPARQLKB.tell-def"><a name="L16"></a><tt class="py-lineno">16</tt> <a class="py-toggle" href="#" id="SPARQLKB.tell-toggle" onclick="return toggle('SPARQLKB.tell');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SPARQLKB.SPARQLKB-class.html#tell">tell</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SPARQLKB.tell-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="SPARQLKB.tell-expanded"><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">    <tt class="py-docstring">'''Adding triples to RDF store - not implemented'''</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">,</tt> <tt class="py-string">'Adding sentences to RDF knowledge bases is not implemented'</tt> </tt>
+</div><a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
+<a name="SPARQLKB.ask"></a><div id="SPARQLKB.ask-def"><a name="L20"></a><tt class="py-lineno">20</tt> <a class="py-toggle" href="#" id="SPARQLKB.ask-toggle" onclick="return toggle('SPARQLKB.ask');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SPARQLKB.SPARQLKB-class.html#ask">ask</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">query</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SPARQLKB.ask-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="SPARQLKB.ask-expanded"><a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-docstring">'''Queries the endpoint'''</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">sparql</tt><tt class="py-op">.</tt><tt class="py-name">setQuery</tt><tt class="py-op">(</tt> <tt id="link-3" class="py-name" targets="Method spade.pyxf.eclipse.query()=spade.pyxf.eclipse-class.html#query,Method spade.pyxf.flora2.query()=spade.pyxf.flora2-class.html#query,Method spade.pyxf.swipl.query()=spade.pyxf.swipl-class.html#query,Method spade.pyxf.xsb.query()=spade.pyxf.xsb-class.html#query"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-3', 'query', 'link-3');">query</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">sparql</tt><tt class="py-op">.</tt><tt class="py-name">setReturnFormat</tt><tt class="py-op">(</tt> <tt class="py-name">XML</tt> <tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">sparql</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="spade.pyxf.eclipse.query
+spade.pyxf.flora2.query
+spade.pyxf.swipl.query
+spade.pyxf.xsb.query" class="py-name" href="#" onclick="return doclink('link-4', 'query', 'link-3');">query</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">convert</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt> <tt class="py-string">'result'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt> <tt class="py-op">[</tt> <tt class="py-op">(</tt> <tt class="py-name">bin</tt><tt class="py-op">.</tt><tt class="py-name">attributes</tt><tt class="py-op">[</tt> <tt class="py-string">'name'</tt> <tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">nodeValue</tt><tt class="py-op">,</tt> <tt class="py-name">bin</tt><tt class="py-op">.</tt><tt class="py-name">firstChild</tt><tt class="py-op">.</tt><tt class="py-name">firstChild</tt><tt class="py-op">.</tt><tt class="py-name">nodeValue</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">bin</tt> <tt class="py-keyword">in</tt> <tt class="py-name">node</tt><tt class="py-op">.</tt><tt class="py-name">getElementsByTagName</tt><tt class="py-op">(</tt> <tt class="py-string">'binding'</tt> <tt class="py-op">)</tt> <tt class="py-op">]</tt> <tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">node</tt> <tt class="py-keyword">in</tt> <tt class="py-name">res</tt> <tt class="py-op">]</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">res</tt> </tt>
+</div><a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">     </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"> </tt>
+<a name="SPARQLKB.retract"></a><div id="SPARQLKB.retract-def"><a name="L29"></a><tt class="py-lineno">29</tt> <a class="py-toggle" href="#" id="SPARQLKB.retract-toggle" onclick="return toggle('SPARQLKB.retract');">-</a><tt class="py-line">  <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.SPARQLKB.SPARQLKB-class.html#retract">retract</a><tt class="py-op">(</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sentence</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SPARQLKB.retract-collapsed" style="display:none;" pad="++" indent="++++++"></div><div id="SPARQLKB.retract-expanded"><a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-docstring">'''Removing triples from RDF store - not implemented'''</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt><tt class="py-op">,</tt> <tt class="py-string">'Removing sentences to RDF knowledge bases is not implemented'</tt> </tt>
+</div></div><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">  <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name" targets="Module spade.SPARQLKB=spade.SPARQLKB-module.html,Class spade.SPARQLKB.SPARQLKB=spade.SPARQLKB.SPARQLKB-class.html"><a title="spade.SPARQLKB
+spade.SPARQLKB.SPARQLKB" class="py-name" href="#" onclick="return doclink('link-5', 'SPARQLKB', 'link-5');">SPARQLKB</a></tt><tt class="py-op">(</tt> <tt class="py-name">endpoint</tt><tt class="py-op">=</tt><tt class="py-string">'http://lod.openlinksw.com/sparql'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">result</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method spade.ECLiPSeKB.ECLiPSeKB.ask()=spade.ECLiPSeKB.ECLiPSeKB-class.html#ask,Method spade.Flora2KB.Flora2KB.ask()=spade.Flora2KB.Flora2KB-class.html#ask,Method spade.SPARQLKB.SPARQLKB.ask()=spade.SPARQLKB.SPARQLKB-class.html#ask,Method spade.SWIKB.SWIKB.ask()=spade.SWIKB.SWIKB-class.html#ask,Method spade.XSBKB.XSBKB.ask()=spade.XSBKB.XSBKB-class.html#ask,Method spade.kb.KB.ask()=spade.kb.KB-class.html#ask,Method spade.kb.SpadeKB.ask()=spade.kb.SpadeKB-class.html#ask,Method spade.logic.KB.ask()=spade.logic.KB-class.html#ask"><a title="spade.ECLiPSeKB.ECLiPSeKB.ask
+spade.Flora2KB.Flora2KB.ask
+spade.SPARQLKB.SPARQLKB.ask
+spade.SWIKB.SWIKB.ask
+spade.XSBKB.XSBKB.ask
+spade.kb.KB.ask
+spade.kb.SpadeKB.ask
+spade.logic.KB.ask" class="py-name" href="#" onclick="return doclink('link-6', 'ask', 'link-6');">ask</a></tt><tt class="py-op">(</tt> <tt class="py-string">'''</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"><tt class="py-string">PREFIX gr:&lt;http://purl.org/goodrelations/v1#&gt;</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line"><tt class="py-string">PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line"><tt class="py-string">SELECT ?l ?p ?c ?s</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"><tt class="py-string">WHERE {</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"><tt class="py-string">?s a gr:Offering.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line"><tt class="py-string">?s rdfs:label ?l.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line"><tt class="py-string">?s gr:hasPriceSpecification ?ps.</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"><tt class="py-string">?ps gr:hasCurrencyValue ?p.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"><tt class="py-string">?ps gr:hasCurrency ?c</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"><tt class="py-string">FILTER( regex( ?l, "yoghurt", "i" ) )</tt> </tt>
+<a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"><tt class="py-string">} ORDER BY ?p LIMIT 500 '''</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">result</tt><tt class="py-op">[</tt> <tt class="py-string">'l'</tt> <tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">result</tt><tt class="py-op">[</tt> <tt class="py-string">'p'</tt> <tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">result</tt><tt class="py-op">[</tt> <tt class="py-string">'c'</tt> <tt class="py-op">]</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">  <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="spade.SPARQLKB
+spade.SPARQLKB.SPARQLKB" class="py-name" href="#" onclick="return doclink('link-7', 'SPARQLKB', 'link-5');">SPARQLKB</a></tt><tt class="py-op">(</tt> <tt class="py-name">endpoint</tt><tt class="py-op">=</tt><tt class="py-string">'http://dbpedia.org/sparql'</tt> <tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">  <tt class="py-keyword">for</tt> <tt class="py-name">result</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="spade.ECLiPSeKB.ECLiPSeKB.ask
+spade.Flora2KB.Flora2KB.ask
+spade.SPARQLKB.SPARQLKB.ask
+spade.SWIKB.SWIKB.ask
+spade.XSBKB.XSBKB.ask
+spade.kb.KB.ask
+spade.kb.SpadeKB.ask
+spade.logic.KB.ask" class="py-name" href="#" onclick="return doclink('link-8', 'ask', 'link-6');">ask</a></tt><tt class="py-op">(</tt> <tt class="py-string">'''</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-string">    PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-string">    SELECT ?label</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-string">    WHERE { </tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"><tt class="py-string">     &lt;http://dbpedia.org/resource/Croatia&gt; </tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-string">     rdfs:label </tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-string">     ?label </tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-string">    }'''</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">    <tt class="py-keyword">print</tt> <tt class="py-name">result</tt><tt class="py-op">[</tt> <tt class="py-string">'label'</tt> <tt class="py-op">]</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

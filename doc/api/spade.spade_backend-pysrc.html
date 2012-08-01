@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>spade.spade_backend</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="spade-module.html">Package&nbsp;spade</a> ::
+        Module&nbsp;spade_backend
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="spade.spade_backend-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="spade.spade_backend-module.html">Module spade.spade_backend</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment">#! python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: cp1252 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package spade=spade-module.html"><a title="spade" class="py-name" href="#" onclick="return doclink('link-0', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Module spade.ACLMessage=spade.ACLMessage-module.html,Class spade.ACLMessage.ACLMessage=spade.ACLMessage.ACLMessage-class.html"><a title="spade.ACLMessage
+spade.ACLMessage.ACLMessage" class="py-name" href="#" onclick="return doclink('link-1', 'ACLMessage', 'link-1');">ACLMessage</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-2', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Module spade.Agent=spade.Agent-module.html,Class spade.Agent.Agent=spade.Agent.Agent-class.html"><a title="spade.Agent
+spade.Agent.Agent" class="py-name" href="#" onclick="return doclink('link-3', 'Agent', 'link-3');">Agent</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-4', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Module spade.AMS=spade.AMS-module.html,Class spade.AMS.AMS=spade.AMS.AMS-class.html"><a title="spade.AMS
+spade.AMS.AMS" class="py-name" href="#" onclick="return doclink('link-5', 'AMS', 'link-5');">AMS</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-6', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Module spade.Behaviour=spade.Behaviour-module.html,Class spade.Behaviour.Behaviour=spade.Behaviour.Behaviour-class.html"><a title="spade.Behaviour
+spade.Behaviour.Behaviour" class="py-name" href="#" onclick="return doclink('link-7', 'Behaviour', 'link-7');">Behaviour</a></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-8', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Module spade.Envelope=spade.Envelope-module.html,Class spade.Envelope.Envelope=spade.Envelope.Envelope-class.html"><a title="spade.Envelope
+spade.Envelope.Envelope" class="py-name" href="#" onclick="return doclink('link-9', 'Envelope', 'link-9');">Envelope</a></tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-10', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Module spade.Platform=spade.Platform-module.html"><a title="spade.Platform" class="py-name" href="#" onclick="return doclink('link-11', 'Platform', 'link-11');">Platform</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-12" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-12', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-13" class="py-name" targets="Module spade.ReceivedObject=spade.ReceivedObject-module.html,Class spade.ReceivedObject.ReceivedObject=spade.ReceivedObject.ReceivedObject-class.html"><a title="spade.ReceivedObject
+spade.ReceivedObject.ReceivedObject" class="py-name" href="#" onclick="return doclink('link-13', 'ReceivedObject', 'link-13');">ReceivedObject</a></tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-14" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-14', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Module spade.ACLParser=spade.ACLParser-module.html,Class spade.ACLParser.ACLParser=spade.ACLParser.ACLParser-class.html"><a title="spade.ACLParser
+spade.ACLParser.ACLParser" class="py-name" href="#" onclick="return doclink('link-15', 'ACLParser', 'link-15');">ACLParser</a></tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-16" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-16', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-17" class="py-name" targets="Module spade.AID=spade.AID-module.html"><a title="spade.AID" class="py-name" href="#" onclick="return doclink('link-17', 'AID', 'link-17');">AID</a></tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-18" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-18', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-19" class="py-name" targets="Module spade.BasicFipaDateTime=spade.BasicFipaDateTime-module.html,Class spade.BasicFipaDateTime.BasicFipaDateTime=spade.BasicFipaDateTime.BasicFipaDateTime-class.html"><a title="spade.BasicFipaDateTime
+spade.BasicFipaDateTime.BasicFipaDateTime" class="py-name" href="#" onclick="return doclink('link-19', 'BasicFipaDateTime', 'link-19');">BasicFipaDateTime</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-20" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-20', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-21" class="py-name" targets="Module spade.DF=spade.DF-module.html,Class spade.DF.DF=spade.DF.DF-class.html"><a title="spade.DF
+spade.DF.DF" class="py-name" href="#" onclick="return doclink('link-21', 'DF', 'link-21');">DF</a></tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-22" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-22', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-23" class="py-name" targets="Module spade.FIPAMessage=spade.FIPAMessage-module.html"><a title="spade.FIPAMessage" class="py-name" href="#" onclick="return doclink('link-23', 'FIPAMessage', 'link-23');">FIPAMessage</a></tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-24" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-24', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-25" class="py-name" targets="Module spade.MessageReceiver=spade.MessageReceiver-module.html,Class spade.MessageReceiver.MessageReceiver=spade.MessageReceiver.MessageReceiver-class.html"><a title="spade.MessageReceiver
+spade.MessageReceiver.MessageReceiver" class="py-name" href="#" onclick="return doclink('link-25', 'MessageReceiver', 'link-25');">MessageReceiver</a></tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-26" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-26', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-27" class="py-name" targets="Module spade.pyparsing=spade.pyparsing-module.html"><a title="spade.pyparsing" class="py-name" href="#" onclick="return doclink('link-27', 'pyparsing', 'link-27');">pyparsing</a></tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-28" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-28', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-29" class="py-name" targets="Module spade.SL0Parser=spade.SL0Parser-module.html,Class spade.SL0Parser.SL0Parser=spade.SL0Parser.SL0Parser-class.html"><a title="spade.SL0Parser
+spade.SL0Parser.SL0Parser" class="py-name" href="#" onclick="return doclink('link-29', 'SL0Parser', 'link-29');">SL0Parser</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-30" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-30', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-31" class="py-name" targets="Module spade.XMLCodec=spade.XMLCodec-module.html,Class spade.XMLCodec.XMLCodec=spade.XMLCodec.XMLCodec-class.html"><a title="spade.XMLCodec
+spade.XMLCodec.XMLCodec" class="py-name" href="#" onclick="return doclink('link-31', 'XMLCodec', 'link-31');">XMLCodec</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-32" class="py-name"><a title="spade" class="py-name" href="#" onclick="return doclink('link-32', 'spade', 'link-0');">spade</a></tt> <tt class="py-keyword">import</tt> <tt id="link-33" class="py-name" targets="Module spade.SpadeConfigParser=spade.SpadeConfigParser-module.html"><a title="spade.SpadeConfigParser" class="py-name" href="#" onclick="return doclink('link-33', 'SpadeConfigParser', 'link-33');">SpadeConfigParser</a></tt>  </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">     </tt>
+<a name="SpadeBackend"></a><div id="SpadeBackend-def"><a name="L25"></a><tt class="py-lineno">25</tt> <a class="py-toggle" href="#" id="SpadeBackend-toggle" onclick="return toggle('SpadeBackend');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html">SpadeBackend</a><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="SpadeBackend-expanded"><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"><tt class="py-docstring">    Runs the platform.</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line"><tt class="py-docstring">    Inits the platform components (AMS, DF, ...)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="SpadeBackend.runAgent"></a><div id="SpadeBackend.runAgent-def"><a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="SpadeBackend.runAgent-toggle" onclick="return toggle('SpadeBackend.runAgent');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html#runAgent">runAgent</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">config</tt><tt class="py-op">,</tt> <tt class="py-param">section</tt><tt class="py-op">,</tt> <tt class="py-param">agentClass</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend.runAgent-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SpadeBackend.runAgent-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line"><tt class="py-docstring">        starts an agent</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-comment">#jid = configfile.get(section,'JID')</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">        <tt class="py-name">passwd</tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name" targets="Module spade.xmppd.modules.config=spade.xmppd.modules.config-module.html"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-34', 'config', 'link-34');">config</a></tt><tt class="py-op">[</tt><tt class="py-name">section</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt class="py-name">server</tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-35', 'config', 'link-34');">config</a></tt><tt class="py-op">[</tt><tt class="py-string">"platform"</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'hostname'</tt><tt class="py-op">]</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">        <tt class="py-name">port</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt> <tt id="link-36" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-36', 'config', 'link-34');">config</a></tt><tt class="py-op">[</tt><tt class="py-name">section</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'port'</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">        <tt class="py-name">jid</tt> <tt class="py-op">=</tt> <tt class="py-name">section</tt> <tt class="py-op">+</tt> <tt class="py-string">"."</tt> <tt class="py-op">+</tt> <tt class="py-name">server</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-string">"adminpasswd"</tt> <tt class="py-keyword">in</tt> <tt id="link-37" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-37', 'config', 'link-34');">config</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method spade.dblite.Index.keys()=spade.dblite.Index-class.html#keys,Method spade.odict.odict.keys()=spade.odict.odict-class.html#keys,Method spade.pyparsing.ParseResults.keys()=spade.pyparsing.ParseResults-class.html#keys,Method spade.xmpp.roster.Roster.keys()=spade.xmpp.roster.Roster-class.html#keys"><a title="spade.dblite.Index.keys
+spade.odict.odict.keys
+spade.pyparsing.ParseResults.keys
+spade.xmpp.roster.Roster.keys" class="py-name" href="#" onclick="return doclink('link-38', 'keys', 'link-38');">keys</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt id="link-39" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-39', 'config', 'link-34');">config</a></tt><tt class="py-op">[</tt><tt class="py-string">"adminpasswd"</tt><tt class="py-op">]</tt><tt class="py-op">=</tt><tt class="py-name">None</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">section</tt> <tt class="py-op">==</tt> <tt class="py-string">"acc"</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">            <tt class="py-name">agent</tt> <tt class="py-op">=</tt> <tt class="py-name">agentClass</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt> <tt class="py-name">passwd</tt><tt class="py-op">,</tt> <tt class="py-name">server</tt><tt class="py-op">,</tt> <tt class="py-name">port</tt><tt class="py-op">,</tt> <tt id="link-40" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-40', 'config', 'link-34');">config</a></tt><tt class="py-op">=</tt><tt id="link-41" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-41', 'config', 'link-34');">config</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">            <tt class="py-name">agent</tt> <tt class="py-op">=</tt> <tt class="py-name">agentClass</tt><tt class="py-op">(</tt><tt class="py-name">jid</tt><tt class="py-op">,</tt> <tt class="py-name">passwd</tt><tt class="py-op">,</tt> <tt class="py-name">server</tt><tt class="py-op">,</tt> <tt class="py-name">port</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">            <tt class="py-name">agent</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Method spade.Agent.AbstractAgent.setAdminPasswd()=spade.Agent.AbstractAgent-class.html#setAdminPasswd"><a title="spade.Agent.AbstractAgent.setAdminPasswd" class="py-name" href="#" onclick="return doclink('link-42', 'setAdminPasswd', 'link-42');">setAdminPasswd</a></tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-43', 'config', 'link-34');">config</a></tt><tt class="py-op">[</tt><tt class="py-string">"adminpasswd"</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">agent</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name" targets="Method spade.spade_backend.SpadeBackend.start()=spade.spade_backend.SpadeBackend-class.html#start"><a title="spade.spade_backend.SpadeBackend.start" class="py-name" href="#" onclick="return doclink('link-44', 'start', 'link-44');">start</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">agent</tt> </tt>
+</div><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">     </tt>
+<a name="SpadeBackend.__init__"></a><div id="SpadeBackend.__init__-def"><a name="L49"></a><tt class="py-lineno">49</tt> <a class="py-toggle" href="#" id="SpadeBackend.__init__-toggle" onclick="return toggle('SpadeBackend.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">configfilename</tt><tt class="py-op">=</tt><tt class="py-string">"/etc/spade/spade.xml"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SpadeBackend.__init__-expanded"><a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">        <tt class="py-name">parser</tt> <tt class="py-op">=</tt> <tt id="link-45" class="py-name"><a title="spade.SpadeConfigParser" class="py-name" href="#" onclick="return doclink('link-45', 'SpadeConfigParser', 'link-33');">SpadeConfigParser</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Class spade.SpadeConfigParser.ConfigParser=spade.SpadeConfigParser.ConfigParser-class.html"><a title="spade.SpadeConfigParser.ConfigParser" class="py-name" href="#" onclick="return doclink('link-46', 'ConfigParser', 'link-46');">ConfigParser</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-47', 'config', 'link-34');">config</a></tt> <tt class="py-op">=</tt> <tt class="py-name">parser</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method spade.ACLParser.ACLParser.parse()=spade.ACLParser.ACLParser-class.html#parse,Method spade.ACLParser.ACLxmlParser.parse()=spade.ACLParser.ACLxmlParser-class.html#parse,Method spade.RDF0Parser.RDF0Parser.parse()=spade.RDF0Parser.RDF0Parser-class.html#parse,Method spade.SL0Parser.SL0Parser.parse()=spade.SL0Parser.SL0Parser-class.html#parse,Method spade.SpadeConfigParser.ConfigParser.parse()=spade.SpadeConfigParser.ConfigParser-class.html#parse,Method spade.XMLCodec.XMLCodec.parse()=spade.XMLCodec.XMLCodec-class.html#parse,Method spade.pygooglechart.ChartGrammar.parse()=spade.pygooglechart.ChartGrammar-class.html#parse,Method spade.pyparsing.ParserElement.parse()=spade.pyparsing.ParserElement-class.html#parse,Method spade.pyratemp.Parser.parse()=spade.pyratemp.Parser-class.html#parse"><a title="spade.ACLParser.ACLParser.parse
+spade.ACLParser.ACLxmlParser.parse
+spade.RDF0Parser.RDF0Parser.parse
+spade.SL0Parser.SL0Parser.parse
+spade.SpadeConfigParser.ConfigParser.parse
+spade.XMLCodec.XMLCodec.parse
+spade.pygooglechart.ChartGrammar.parse
+spade.pyparsing.ParserElement.parse
+spade.pyratemp.Parser.parse" class="py-name" href="#" onclick="return doclink('link-48', 'parse', 'link-48');">parse</a></tt><tt class="py-op">(</tt><tt class="py-name">configfilename</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ams</tt><tt class="py-op">=</tt><tt class="py-name">None</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">df</tt> <tt class="py-op">=</tt><tt class="py-name">None</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">=</tt><tt class="py-name">None</tt>      </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">alive</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt>  <tt class="py-comment"># Alive flag</tt> </tt>
+</div><a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"> </tt>
+<a name="SpadeBackend.start"></a><div id="SpadeBackend.start-def"><a name="L57"></a><tt class="py-lineno">57</tt> <a class="py-toggle" href="#" id="SpadeBackend.start-toggle" onclick="return toggle('SpadeBackend.start');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html#start">start</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend.start-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SpadeBackend.start-expanded"><a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-comment">#TODO: this should be configurable</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method spade.spade_backend.SpadeBackend.runAgent()=spade.spade_backend.SpadeBackend-class.html#runAgent"><a title="spade.spade_backend.SpadeBackend.runAgent" class="py-name" href="#" onclick="return doclink('link-49', 'runAgent', 'link-49');">runAgent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-50', 'config', 'link-34');">config</a></tt><tt class="py-op">,</tt> <tt class="py-string">"acc"</tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="spade.Platform" class="py-name" href="#" onclick="return doclink('link-51', 'Platform', 'link-11');">Platform</a></tt><tt class="py-op">.</tt><tt id="link-52" class="py-name" targets="Class spade.Platform.SpadePlatform=spade.Platform.SpadePlatform-class.html"><a title="spade.Platform.SpadePlatform" class="py-name" href="#" onclick="return doclink('link-52', 'SpadePlatform', 'link-52');">SpadePlatform</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">        <tt class="py-comment">#self.acc._debug=True</tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ams</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="spade.spade_backend.SpadeBackend.runAgent" class="py-name" href="#" onclick="return doclink('link-53', 'runAgent', 'link-49');">runAgent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-54', 'config', 'link-34');">config</a></tt><tt class="py-op">,</tt> <tt class="py-string">"ams"</tt><tt class="py-op">,</tt> <tt id="link-55" class="py-name"><a title="spade.AMS
+spade.AMS.AMS" class="py-name" href="#" onclick="return doclink('link-55', 'AMS', 'link-5');">AMS</a></tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="spade.AMS
+spade.AMS.AMS" class="py-name" href="#" onclick="return doclink('link-56', 'AMS', 'link-5');">AMS</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt class="py-comment">#self.ams.DEBUG = self.acc.DEBUG</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">df</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="spade.spade_backend.SpadeBackend.runAgent" class="py-name" href="#" onclick="return doclink('link-57', 'runAgent', 'link-49');">runAgent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name"><a title="spade.xmppd.modules.config" class="py-name" href="#" onclick="return doclink('link-58', 'config', 'link-34');">config</a></tt><tt class="py-op">,</tt> <tt class="py-string">"df"</tt><tt class="py-op">,</tt> <tt id="link-59" class="py-name"><a title="spade.DF
+spade.DF.DF" class="py-name" href="#" onclick="return doclink('link-59', 'DF', 'link-21');">DF</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="spade.DF
+spade.DF.DF" class="py-name" href="#" onclick="return doclink('link-60', 'DF', 'link-21');">DF</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">        <tt class="py-comment">#self.df.DEBUG = self.acc.DEBUG</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">        <tt class="py-comment">#self.simba = self.runAgent(self.configfile, "simba", SIMBA.SIMBA)        </tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line"> </tt>
+<a name="SpadeBackend.shutdown"></a><div id="SpadeBackend.shutdown-def"><a name="L67"></a><tt class="py-lineno">67</tt> <a class="py-toggle" href="#" id="SpadeBackend.shutdown-toggle" onclick="return toggle('SpadeBackend.shutdown');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html#shutdown">shutdown</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend.shutdown-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SpadeBackend.shutdown-expanded"><a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">df</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">df</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name" targets="Method spade.Agent.AbstractAgent.stop()=spade.Agent.AbstractAgent-class.html#stop,Method spade.Behaviour.TimeOutBehaviour.stop()=spade.Behaviour.TimeOutBehaviour-class.html#stop,Method spade.MTP.MTP.stop()=spade.MTP.MTP-class.html#stop,Method spade.wui.WUI.stop()=spade.wui.WUI-class.html#stop,Method spade.xmppd.xmppd.multisession_manager.multisession_thread.stop()=spade.xmppd.xmppd.multisession_manager.multisession_thread-class.html#stop"><a title="spade.Agent.AbstractAgent.stop
+spade.Behaviour.TimeOutBehaviour.stop
+spade.MTP.MTP.stop
+spade.wui.WUI.stop
+spade.xmppd.xmppd.multisession_manager.multisession_thread.stop" class="py-name" href="#" onclick="return doclink('link-61', 'stop', 'link-61');">stop</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">                    <tt class="py-comment">#del self.df</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ams</tt><tt class="py-op">:</tt>  </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ams</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="spade.Agent.AbstractAgent.stop
+spade.Behaviour.TimeOutBehaviour.stop
+spade.MTP.MTP.stop
+spade.wui.WUI.stop
+spade.xmppd.xmppd.multisession_manager.multisession_thread.stop" class="py-name" href="#" onclick="return doclink('link-62', 'stop', 'link-61');">stop</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">                    <tt class="py-comment">#del self.ams</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="spade.Agent.AbstractAgent.stop
+spade.Behaviour.TimeOutBehaviour.stop
+spade.MTP.MTP.stop
+spade.wui.WUI.stop
+spade.xmppd.xmppd.multisession_manager.multisession_thread.stop" class="py-name" href="#" onclick="return doclink('link-63', 'stop', 'link-61');">stop</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">                    <tt class="py-comment">#del self.acc</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">                     </tt>
+<a name="SpadeBackend.DEBUG"></a><div id="SpadeBackend.DEBUG-def"><a name="L78"></a><tt class="py-lineno">78</tt> <a class="py-toggle" href="#" id="SpadeBackend.DEBUG-toggle" onclick="return toggle('SpadeBackend.DEBUG');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="spade.spade_backend.SpadeBackend-class.html#DEBUG">DEBUG</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-param">component</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">,</tt><tt class="py-param">msg</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">,</tt><tt class="py-param">typ</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SpadeBackend.DEBUG-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="SpadeBackend.DEBUG-expanded"><a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">acc</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name" targets="Method spade.Agent.AbstractAgent.DEBUG()=spade.Agent.AbstractAgent-class.html#DEBUG,Method spade.spade_backend.SpadeBackend.DEBUG()=spade.spade_backend.SpadeBackend-class.html#DEBUG,Method spade.xmpp.client.PlugIn.DEBUG()=spade.xmpp.client.PlugIn-class.html#DEBUG,Method spade.xmpp.simplexml.NodeBuilder.DEBUG()=spade.xmpp.simplexml.NodeBuilder-class.html#DEBUG,Method spade.xmpp.transports.HTTPPROXYsocket.DEBUG()=spade.xmpp.transports.HTTPPROXYsocket-class.html#DEBUG"><a title="spade.Agent.AbstractAgent.DEBUG
+spade.spade_backend.SpadeBackend.DEBUG
+spade.xmpp.client.PlugIn.DEBUG
+spade.xmpp.simplexml.NodeBuilder.DEBUG
+spade.xmpp.transports.HTTPPROXYsocket.DEBUG" class="py-name" href="#" onclick="return doclink('link-64', 'DEBUG', 'link-64');">DEBUG</a></tt><tt class="py-op">(</tt><tt id="link-65" class="py-name" targets="Variable spade.pyparsing.ParseBaseException.msg=spade.pyparsing.ParseBaseException-class.html#msg"><a title="spade.pyparsing.ParseBaseException.msg" class="py-name" href="#" onclick="return doclink('link-65', 'msg', 'link-65');">msg</a></tt><tt class="py-op">,</tt><tt class="py-name">typ</tt><tt class="py-op">,</tt><tt class="py-name">component</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"> </tt>
+<a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt>  <tt class="py-string">"__main__"</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line">        <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt id="link-66" class="py-name" targets="Class spade.spade_backend.SpadeBackend=spade.spade_backend.SpadeBackend-class.html"><a title="spade.spade_backend.SpadeBackend" class="py-name" href="#" onclick="return doclink('link-66', 'SpadeBackend', 'link-66');">SpadeBackend</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line">        <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name"><a title="spade.spade_backend.SpadeBackend.start" class="py-name" href="#" onclick="return doclink('link-67', 'start', 'link-44');">start</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="spade-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://spade2.googlecode.com">SPADE</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Aug  1 18:45:00 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
