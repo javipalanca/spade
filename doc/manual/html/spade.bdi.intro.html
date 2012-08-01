@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The SPADE BDI Agent Model</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+<link rel="prev" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+<link rel="next" href="spade.bdi.kb.html" title="The Knowledge Base">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The SPADE BDI Agent Model</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.bdi.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. BDI Architecture for SPADE Agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.bdi.kb.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The SPADE BDI Agent Model">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.bdi.intro"></a>The SPADE BDI Agent Model</h2></div></div></div>
+<p><span class="emphasis"><em>Michael Bratman's</em></span>BDI agent model is based on 3 basic elements: <span class="bold"><strong>Belief</strong></span>, <span class="bold"><strong>Desire</strong></span> and <span class="bold"><strong>Intention</strong></span> (you know, B-D-I).
+		</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>A Belief is an entry in the agent's knowledge base. It represents what the agent "knows" about its environment.</p></li>
+<li class="listitem"><p>Desires represent that which the agents wishes to achieve. The instantiation of a Desire is a Goal.</p></li>
+<li class="listitem"><p>Intentions represent the deliberative state of the agent, that is, what the agent has decided to do in order to achieve its goals. The Intentions in execution are Plans, that is, a sequence of actions that the agent can execute in order to fulfill an Intention.</p></li>
+</ul></div>
+<p>
+           </p>
+<p>The BDI implemented by SPADE is slightly different. We have tried to develop a distributed BDI system using <span class="emphasis"><em>Service Oriented Computation (SOC)</em></span> together with dynamic compilation of services in SPADE, which we have called <span class="bold"><strong>Goal Oriented Computation</strong></span>.</p>
+<p>Este modelo BDI utiliza los principios básicos del modelo BDI tradicional de Michael Bratman pero introduciendo un modelo más complejo de intenciones. 
+		En el modelo BDI de SPADE aparecen los siguientes elementos:</p>
+<p>This BDI model uses the same basic principles of the classic BDI model from Bratman, but it introduces a more complex model for the Intentions.
+		In SPADE's BDI model, the following elements appear:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p> <span class="bold"><strong>Belief:</strong></span> An entry of knowledge in the agent's KB. You can insert new knowledge, delete it and make queries to the KB about it.</p></li>
+<li class="listitem"><p> <span class="bold"><strong>Goals:</strong></span> SPADE's BDI model does not differentiate Desires and Goals, there are only Goals. When an agent expresses a Goal, it means that the agents wishes to accomplish the expression contained in such Goal. When a goal is selected for accomplishment, it becomes active.</p></li>
+<li class="listitem"><p> <span class="bold"><strong>Services:</strong></span> Given that SPADE's BDI model is grounded on SOC, it is necessary to include a Service element into the model. A Service is a method offered by the agent to the rest of the system agents. Services can be composed into a sequence forming the Plans. Services have in their description both a pre-condition (P) and a post-condition (Q). The pre-condition P represents a state of knowledge that must be present in order to execute the Service. The post-condition Q represents the state of knowledge that the agent will achieve once the Service has been invoked.</p></li>
+<li class="listitem"><p> <span class="bold"><strong>Plans:</strong></span> Plans are a sequence of Services that work their way to achieve the agent's Goals. Agents reach their Goals by executing Plans. Such Plans are composed of a sequence of Services (with their pre-conditions and post-conditions connected) and both a pre-condition P and a post-condition Q that define the whole Plan. Whenever a Goal G must be achieved, the agent will look for a Plan whose post-condition <code class="literal">Q</code> equals <code class="literal">G</code> and also whose pre-condition <code class="literal">P</code> is present as a pre-requisite for the Plan to start. But, wait for this, the Services composing a Plan's actions <span class="bold"><strong>do not necessarily belong to the same agent</strong></span>. There is where the distributed nature of SPADE's BDI model comes into play.</p></li>
+</ul></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.bdi.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.bdi.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.bdi.kb.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 7. BDI Architecture for SPADE Agents </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> The Knowledge Base</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

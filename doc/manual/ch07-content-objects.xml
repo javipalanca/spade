@@ -1,0 +1,17 @@
+<chapter id="spade.contentobjects">
+	<title>Content Objects</title>
+	
+	<para>This chapter introduces the reader to the Content Objects, the portable containers of semantic knowledge used by the SPADE agents to communicate semantic information among them.</para>
+	
+	<section id="spade.contentobjects.intro">
+		<title>The Content Language of Messages</title>
+
+		<para>
+		Most agent-based applications will do fine without any kind of content language. Yeah.
+		</para>		
+
+		
+	
+	</section>
+	
+</chapter>

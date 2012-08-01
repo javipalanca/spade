@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>My first SPADE agent</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
+<link rel="prev" href="spade.basicagents.agentmodel.html" title="The SPADE agent model">
+<link rel="next" href="spade.basicagents.behav.html" title="An agent with a behavior">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">My first SPADE agent</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basicagents.agentmodel.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 4. Basic agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basicagents.behav.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="My first SPADE agent">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basicagents.first"></a>My first SPADE agent</h2></div></div></div>
+<p>It's time for us to build our first SPADE agent. We'll assume that we have a working SPADE platform at <code class="literal">myhost.myprovider.com</code> with the standard configuration. A basic SPADE agent is really a Python script that imports the <code class="literal">spade</code> module and that uses the constructs defined therein. For starters, fire up you favorite Python editor, create a file called <code class="literal">myagent.py</code> and write this:</p>
+<pre class="screen">
+import spade	
+		</pre>
+<p>With this sentence, the SPADE Agent Library is imported and all its features become available. Let's start defining the base class for the agent:</p>
+<pre class="screen">
+class MyAgent(spade.Agent.Agent):
+        def _setup(self):
+                print "MyAgent starting . . ."
+		</pre>
+<p>As you can see, we have derived a class from <code class="literal">spade.Agent.Agent</code>, which is the base class for all SPADE normal agents. Also, note that we have defined a method called <code class="literal">_setup()</code> . Every SPADE agent should override this method. It is where the initialization (or setup) code of the agent must be placed.</p>
+<p>As this is a toy example, we don't need anything else. We complete the script to execute the agent:</p>
+<pre class="screen">
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<p>The first thing the script does is to make an instance of our agent class. Mind the two parameters we provide: First is the <span class="bold"><strong>JID</strong></span> of the agent, it contains its name (before the @) and the name of the agent platform (after the @). Second is the <span class="bold"><strong>Jabber password</strong></span> for this particular agent. Note that an agent has to coherently use the same JID and password combination in order to succesfully connect to a platform over time, just like a human user has to use the same username and password combination over time to access a Jabber server.</p>
+<p>The next thing the script does is to actually start the agent with the <code class="literal">start()</code> method. It is very important to understand that when an agent is created, it does <span class="bold"><strong>not</strong></span> start working automatically. The <code class="literal">start()</code> method must be called first in order to trigger the agent execution. Actually, it is in that moment when the <code class="literal">_setup()</code> method will be called.</p>
+<p>To finish the example, just execute the script and see the results:</p>
+<pre class="screen">
+$ python myagent.py
+MyAgent starting . . .
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+		</pre>
+<p>As you can see, the line we put in <code class="literal">_setup()</code> is printed first, before the agent actually connects to the platform. Then, the agent informs that it has registered correctly in the platform.</p>
+<p>And that's it! We have built our first SPADE Agent in 7 lines of code. Easy, isn't it? Of course, this is a very very dumb agent that does nothing, but it serves well as a starting point to understand the logics behind the SPADE platform.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basicagents.agentmodel.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basicagents.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basicagents.behav.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The SPADE agent model </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> An agent with a behavior</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

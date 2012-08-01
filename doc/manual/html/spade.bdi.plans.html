@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Plans and Services</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+<link rel="prev" href="spade.bdi.kb.html" title="The Knowledge Base">
+<link rel="next" href="spade.bdi.goals.html" title="Goals">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Plans and Services</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.bdi.kb.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. BDI Architecture for SPADE Agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.bdi.goals.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Plans and Services">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.bdi.plans"></a>Plans and Services</h2></div></div></div>
+<p>In order to offer a Service, an agent must use the <span class="command"><strong>Service</strong></span> class from the bdi module in SPADE.
+		The body of the Service is the <span class="command"><strong>run</strong></span> method. Everything that the Service must do has to be included in the <span class="command"><strong>run</strong></span> method. The Service constructor receives the pre-condition P and the post-condition Q as parameters.</p>
+<pre class="screen">
+		class Serv1(Service):
+		    def run(self):
+		        self.addBelieve(expr("Value(1)"))
+
+		agent.registerService(name="name", service=Serv1())
+	</pre>
+<p>A Plan only needs a pre-condition P, a post-condition Q and a list of Services. Dictionaries are used in order to define them:</p>
+<pre class="screen">
+
+		plan = {'P': expr("value(1)"),'Q':expr("value(4)"), services:[s1,s2,s3,s4]}
+		agent.addPlan(plan)
+	</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.bdi.kb.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.bdi.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.bdi.goals.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The Knowledge Base </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Goals</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The SPADE Agent Management System (AMS)</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.platform.html" title="Chapter 5. Platform services">
+<link rel="prev" href="spade.platform.html" title="Chapter 5. Platform services">
+<link rel="next" href="spade.platform.df.html" title="The SPADE Directory Facilitator (DF)">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The SPADE Agent Management System (AMS)</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.platform.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. Platform services</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.platform.df.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The SPADE Agent Management System (AMS)">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.platform.ams"></a>The SPADE Agent Management System (AMS)</h2></div></div></div>
+<p>The SPADE AMS is our implementation of the standard FIPA AMS component to manage, identify and search for agents in the platform. It is a special platform agent that is always present in all SPADE platforms and that is started automatically whenever the platform is initiated. It manages the registration of the agents in the platform. So, when you start one of your agents and the registration process is autmatically taken care of by the SPADE Agent Library, it is the AMS who is on "the other side of the counter", managing the registry of agents. It also gets to de-register an agent once its life cycle has ended.</p>
+<p>Additionally, the AMS offers some services that any agent inside the platform can use. First is the Platform Information service, a basic query that gives the agent some information regarding the platform. It can be invoked with the <code class="literal">getPlatformInfo</code> method of the agents. Let's see an example:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.OneShotBehaviour):
+
+		def _process(self):			
+			pi = self.myAgent.getPlatformInfo()
+			print "Platform Information: ", pi
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<pre class="screen">
+$ python agent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+Platform Information: (ap-description :name xmpp://acc.myhost.myprovider.com :ap-services 
+(set (ap-service :name xmpp://ams.myhost.myprovider.com :type fipa.agent-management.ams 
+:addresses (sequence acc.myhost.myprovider.com))
+		</pre>
+<p>As you can see, the method returns the information collected from the AMS in the FIPA-SL semantic language (more on that later).</p>
+<p>Agents can also use the Search Agent service. This service allows them to look for a fellow agent registered in the platform using some search criteria. In order to introduce those criteria, the class <code class="literal">spade.AMS.AmsAgentDescription</code> must be used. It represents some data fields that can be filled in with agent information: the <span class="emphasis"><em>name</em></span> of the agent, its <span class="emphasis"><em>ownership</em></span> and its <span class="emphasis"><em>state</em></span>. Once an object of the <code class="literal">spade.AMS.AmsAgentDescription</code> class has been filled with the search criteria, you can use it with the <code class="literal">searchAgent</code> method of an agent:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.OneShotBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def _process(self):
+                        print "I'm going to search for an agent"
+                        aad = spade.AMS.AmsAgentDescription()
+                        search = self.myAgent.searchAgent(aad)
+                        print search
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav()
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@myhost.myprovider.com", "secret")
+        a.start()
+		</pre>
+<pre class="screen">
+((result  (set (ams-agent-description
+:name (agent-identifier
+:name ams.myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://ams.myhost.myprovider.com
+)
+)
+
+:ownership SPADE
+:state active)
+ (ams-agent-description
+:name (agent-identifier
+:name df.myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://df.myhost.myprovider.com
+)
+)
+
+:ownership SPADE
+:state active)
+ (ams-agent-description
+:name (agent-identifier
+:name agent@myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://agent@myhost.myprovider.com
+)
+)
+
+:ownership agent@myhost.myprovider.com
+)
+ )))
+		</pre>
+<p>Another service offered by the AMS is the Modify service. It allows for an agent to modify its own information, published in the AMS, in order to update it to reflect its current status or make it easier for other agents to find it. It can be invoked using the <code class="literal">modifyAgent</code> method of the agents and a <code class="literal">spade.AMS.AmsAgentDescription</code> object that includes the updated  information of the agent:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.OneShotBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def _process(self):
+                        print "I'm going to modify my data"
+                        aad = spade.AMS.AmsAgentDescription()
+                        aad.ownership = "FREE"
+                        result = self.myAgent.modifyAgent(aad)
+                        if result:
+                                print "Modification OK"
+                        print "I'm going to check the modification"
+                        search = self.myAgent.searchAgent(aad)
+                        print search
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav()
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@myhost.myprovider.com", "secret")
+        a.start()
+		</pre>
+<pre class="screen">
+$ python agent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+MyAgent starting . . .
+Starting behaviour . . .
+I'm going to modify my data
+Modification OK
+I'm going to check the modification
+((result  (set (ams-agent-description
+:name (agent-identifier
+:name agent@myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://agent@myhost.myprovider.com
+)
+)
+
+:ownership FREE
+)
+ )))
+		</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.platform.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.platform.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.platform.df.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 5. Platform services </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> The SPADE Directory Facilitator (DF)</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- There doesn't seem to be a 'foreword' element similar to the
+'preface' element.  Not sure what to use instead; I guess 'preface' is
+the best solution for now, even though there's also a real preface in
+ch00.xml. -->
+
+<preface id="spade.foreword">
+
+  <prefaceinfo>
+    <author>
+      <firstname>Gustavo</firstname>
+      <surname>Aranda</surname>
+    </author>
+    <pubdate>Valencia, October 31, 2007</pubdate>
+  </prefaceinfo>
+
+  <title>Foreword</title>
+
+   <para>The idea of a Jabber-based agent platform appeared one night
+	at 4 A.M. when, studying the features of the Jabber architecture,
+	we found out great similarities with the ones of a FIPA-compliant
+	agent platform. The Jabber protocol offered a great architecture
+	for agents to communicate in a structured way and solved many issues
+	present when designing a platform, such as authenticating the users (the agents),
+	provide a directory or create communication channels.</para>
+	
+	<para>We started to work on our first prototype of this Jabber-powered
+		platform and within a week we had a small working proof of concept by the name
+		of <emphasis>Fipper</emphasis> which eventually allowed for dumb agents to connect and communicate
+		through a common jabber server.</para>
+		
+	<para>Since that day, things have changed a bit. The small proof of concept
+		evolved into a full-featured FIPA platform, and the new <acronym>SPADE</acronym> name was coined.
+		As usual, we later had to find the meaning of the beautiful acronym.
+		We came up with <emphasis role="bold">S</emphasis>mart <emphasis role="bold">P</emphasis>ython multi-<emphasis role="bold">A</emphasis>gent <emphasis role="bold">D</emphasis>evelopment <emphasis role="bold">E</emphasis>nvironment,
+		which sounded both good and geek enough.</para>
+		
+	<para>We hope you like this book and have as much fun using it as we had writing it.
+	Of course we also hope that it may become useful, but that is a secondary matter.</para>
+
+
+</preface>
+
+<!--
+local variables: 
+sgml-parent-document: ("book.xml" "foreword")
+end:
+-->

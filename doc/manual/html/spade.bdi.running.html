@@ -1,0 +1,89 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>BDI in action</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+<link rel="prev" href="spade.bdi.goals.html" title="Goals">
+<link rel="next" href="spade.bdi.future.html" title="Future Work">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">BDI in action</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.bdi.goals.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. BDI Architecture for SPADE Agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.bdi.future.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="BDI in action">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.bdi.running"></a>BDI in action</h2></div></div></div>
+<p>During the agent execution, classic SPADE behaviours can coexist with the BDI model. Every time that a new Goal is introduced into the agent, it will try to achieve it looking for a Plan that fits the task. All this work happens in a completely transparent way for the user.</p>
+<pre class="screen">
+		import spade
+		from spade.bdi import *
+
+		agent = BDIAgent("bdi@127.0.0.1","secret")
+		agent.setDebugToScreen()
+		agent.addBelieve(expr("Value(0)"))
+
+		g = Goal(expr("Value(2)"))
+
+		class Serv1(Service):
+		    def run(self):
+		        print "Service 1 running"
+		        self.addBelieve(expr("Value(1)"))
+		class Serv2(Service):
+		    def run(self):
+		        print "Service 2 running"
+		        self.addBelieve(expr("Value(2)"))
+
+		s1 = Serv1(P=expr("Value(0)"),Q=expr("Value(1)"))
+		s2 = Serv2(P=expr("Value(1)"),Q=expr("Value(2)"))
+
+		p = Plan(P=expr("Value(0)"),Q=expr("Value(2)"))
+		p.appendService(s1)
+		p.appendService(s2)
+
+		agent.addPlan(p)
+		agent.addGoal(g)
+
+		agent.start()
+
+		import time
+		try:
+		    while True:
+		        time.sleep(1)
+		except:
+		    agent.stop()
+
+		sys.exit(0)
+			</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.bdi.goals.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.bdi.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.bdi.future.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Goals </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Future Work</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

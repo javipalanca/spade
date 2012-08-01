@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The SPADE Directory Facilitator (DF)</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.platform.html" title="Chapter 5. Platform services">
+<link rel="prev" href="spade.platform.ams.html" title="The SPADE Agent Management System (AMS)">
+<link rel="next" href="ch05s03.html" title="What's next">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The SPADE Directory Facilitator (DF)</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.platform.ams.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. Platform services</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The SPADE Directory Facilitator (DF)">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.platform.df"></a>The SPADE Directory Facilitator (DF)</h2></div></div></div>
+<p>SPADE's DF serves as <span class="emphasis"><em>yellow pages</em></span> index where the services offered by the agents are published for others to find. The way of publishing services is by uploading to the DF agent a set of <span class="emphasis"><em>service descriptions</em></span> that contain information about services and how to access them. Each agent can publish its own set of <span class="emphasis"><em>service descriptions</em></span>.</p>
+<p>The interface for an agent to publish its own services is a bit unconventional and stilted in order to comply with the FIPA specification. First, the agent has to describe its services by using the <code class="literal">spade.DF.ServiceDescription</code> class. The objects of this class store the information of a particular service: its name, type, the protocols it requires, the ontologies associated with the service, the content languages that are used, its ownership and some additional properties it may have. This information can be set up using the dedicated methods of these objects.</p>
+<p>Next, the agent has to instantiate a <code class="literal">spade.DF.DfAgentDescription</code> object (which is quite similar to a <code class="literal">spade.AMS.AmsAgentDescription</code> object) which will host the collection of <code class="literal">spade.DF.ServiceDescription</code> objects. This is the object that will be passed to the <code class="literal">registerService</code> method of the agent in order to register all the services. Each agent can upload only one set of services at a time. In order to remove a service, an agent would use the <code class="literal">registerService</code> method with a <code class="literal">spade.DF.DfAgentDescription</code> containing the active services minus the one that is to be removed (that is why we encourage agent developers to keep a local copy of a <code class="literal">spade.DF.DfAgentDescription</code> object with a set of the active services). Again, this interface is not straightforward but FIPA-compliant, and so an example is helpful:</p>
+<pre class="screen">
+		sd = spade.DF.ServiceDescription()
+		sd.setName("test")
+		sd.setType("testservice")
+		dad = spade.DF.DfAgentDescription()
+		dad.addService(sd)
+		sd = spade.DF.ServiceDescription()
+		sd.setName("MYSERVICE")
+		sd.setType("MYTYPE")
+		dad.addService(sd)
+		dad.setAID(self.myAgent.getAID())
+		res = self.myAgent.registerService(dad)
+		print "Service Registered:",str(res)</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.platform.ams.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.platform.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch05s03.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The SPADE Agent Management System (AMS) </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> What's next</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

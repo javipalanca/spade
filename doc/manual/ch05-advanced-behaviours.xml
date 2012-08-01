@@ -1,0 +1,182 @@
+<chapter id="spade.advanced">
+	<title>Advanced Behaviour Types</title>
+	
+	<para>This chapter introduces the reader to the advanced behaviour types present in SPADE agents and how to use them to get impressive agents.</para>
+	
+	<section id="spade.advanced.fsm">
+		<title>The Finite-State-Machine</title>
+
+		<para>
+		A Finite-State-Machine (or automaton) is a structure used to make state-based programming (see <ulink url="http://en.wikipedia.org/wiki/Finite-state_machine">http://en.wikipedia.org/wiki/Finite-state_machine</ulink>). SPADE supports this structure by means of the FSM behaviour.
+		</para>		
+
+		<figure>
+		<title>A Finite-State Machine</title>		
+		<mediaobject>
+		<imageobject>
+		<imagedata fileref="images/fsm.png" align="center" />
+		</imageobject>
+		</mediaobject>
+		</figure>
+
+		<para>
+		The FSM behaviour is one of the most advanced possibilities for developing your agents. This type of behaviour allows you to create a FSM where each of its <emphasis>States</emphasis> is an embedded behaviour of any of the basic types (OneShot, Periodic, TimeOut...) or a custom behaviour type defined by the user (by inheriting from any of the provided behaviour types). One of these <emphasis>States</emphasis> will be the <emphasis>First State</emphasis>, the starting point of the FSM. Another will be the <emphasis>Last State</emphasis>, the ending point.
+		</para>
+
+		<para>
+		To change from one <emphasis>State</emphasis> to another, you should define a <emphasis>Transition</emphasis>. Each transition connects two States <emphasis role='bold'>in one direction only</emphasis>, from an <emphasis>origin</emphasis> behaviour to a <emphasis>target</emphasis> behaviour, and it is triggered by the exit code of the origin behaviour. The exit code of each origin behaviour must be stored in its <command>self._exitcode</command> variable at the end of its execution. Once a behaviour has finished, the FSM behaviour will check this variable and make the right transition for its value. This flow will continue until the <emphasis>Final State</emphasis> is reached.
+	<!--According to the exit code defined by each behaviour in its variable <command>self._exitcode</command>, the FSM will move from one state to the other until it reaches the final state.-->
+		</para>
+
+		<para>
+		After declaring all the behaviours, in order to define an FSM (in the <command>_setup()</command> method of an agent) you must first associate a code to represent each behaviour that will become a state in the FSM. Then, you must use the <ulink url="../api/spade.Behaviour.FSMBehaviour-class.html#registerFirstState"><command>registerFirstState()</command></ulink> method to associate an instance of the initial behaviour with its code. Following, you can use the <command>registerState()</command> method to associate every instance of the behaviours that form the <emphasis>States</emphasis> of the FSM with their codes. After that, you must use the <command>registerLastState()</command> to associate an instance of the last behaviour to its code. Finally, you may use the <command>registerTransition()</command> method to create the transitions that link the behaviours with their exit codes.
+		</para>
+
+		<para>
+		And that's it! You have created a complex FSM behaviour. A complete agent class using one of these beauties is shown next:
+		</para>
+
+	<screen>
+class MyAgent(spade.Agent.Agent):
+        class StateOne(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State One..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter > 2:
+                                self._exitcode = self.myAgent.TRANSITION_TO_TWO
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateTwo(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Two..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter > 5:
+                                self._exitcode = self.myAgent.TRANSITION_TO_THREE
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateThree(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Three..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter > 8:
+                                self._exitcode = self.myAgent.TRANSITION_TO_FOUR
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateFour(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Four..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter > 11:
+                                print "Counter ", self.myAgent.counter
+                                print "Bye Bye"
+                                self.myAgent._kill()
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+        def _setup(self):
+                time.sleep(2)
+                print "FSMAgent starting . . ."
+                self.counter = 0
+
+                self.STATE_ONE_CODE     = 1
+                self.STATE_TWO_CODE     = 2
+                self.STATE_THREE_CODE   = 3
+                self.STATE_FOUR_CODE    = 4
+
+                self.TRANSITION_DEFAULT         = 0
+                self.TRANSITION_TO_ONE          = 10
+                self.TRANSITION_TO_TWO          = 20
+                self.TRANSITION_TO_THREE        = 30
+                self.TRANSITION_TO_FOUR         = 40
+
+                b = spade.Behaviour.FSMBehaviour()
+                b.registerFirstState(self.StateOne(), self.STATE_ONE_CODE)
+                b.registerState(self.StateTwo(), self.STATE_TWO_CODE)
+                b.registerState(self.StateThree(), self.STATE_THREE_CODE)
+                b.registerLastState(self.StateFour(), self.STATE_FOUR_CODE)
+
+                b.registerTransition(self.STATE_ONE_CODE, self.STATE_ONE_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_ONE_CODE, self.STATE_TWO_CODE, self.TRANSITION_TO_TWO)
+                b.registerTransition(self.STATE_TWO_CODE, self.STATE_TWO_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_TWO_CODE, self.STATE_THREE_CODE, self.TRANSITION_TO_THREE)
+                b.registerTransition(self.STATE_THREE_CODE, self.STATE_THREE_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_THREE_CODE, self.STATE_FOUR_CODE, self.TRANSITION_TO_FOUR)
+
+                self.addBehaviour(b, None)
+
+	</screen>
+
+	</section>
+	
+	<section id="spade.advanced.eventbehaviour">
+		<title>Event Behaviours</title>
+
+		<para>
+		An Event Behaviour is a special kind of behaviour designed to be spawned as a response to an event occurring on an agent. As of version 2.0, SPADE agents support events in the form of incoming messages, and thus, Event Behaviours are associated with a message template as any other behaviour type. The main difference between an Event Behaviour and, say, a One-Shot Behaviour is that the Event Behaviour is <emphasis role='bold'>not instanced</emphasis> nor is it running <emphasis role='bold'>until the trigger event happens</emphasis>.
+		</para>
+		
+		<para>
+		In order to register an Event Behaviour as the response to some event, SPADE offers the same uniform API as for the rest of behaviours. Once the behaviour is implemented, you have to define a message template and then call the <command>addBehaviour()</command> method of the agent, as you would do with any other type of behaviour. What's the difference? The difference is that the Event Behaviour doesn't get started right away when you call the <command>start()</command> method of the agent. When the trigger for an Event Behaviour happens, the agent automatically spawns the behaviour.
+		</para>
+		
+		<para>
+		Following, there's an example of an agent that registers an Event Behaviour whenever a message that comes from itself arrives. You know, it is a lonely agent, nobody writes messages for it, so it forwards letters to itself. Poor agent:
+		</para>
+		
+		<screen>
+class Sender(spade.Agent.Agent):
+
+    def _setup(self):
+		self.addBehaviour(self.SendMsgBehav())
+		print "Agent started!"
+		
+    class SendMsgBehav(spade.Behaviour.OneShotBehaviour):
+        """
+        This behaviour sends a message to this same agent to trigger an EventBehaviour
+        """
+
+        def _process(self):
+            msg = spade.ACLMessage.ACLMessage()
+            msg.setPerformative("inform")
+            msg.addReceiver(spade.AID.aid("a@"+host,["xmpp://a@"+host]))
+            msg.setContent("testSendMsg")
+            print "Sending message in 3 . . ."
+            time.sleep(1)
+            print "Sending message in 2 . . ."
+            time.sleep(1)
+            print "Sending message in 1 . . ."
+            time.sleep(1)
+
+            self.myAgent.send(msg)
+            
+            print "I sent a message"
+            #print str(msg)
+    
+    class RecvMsgBehav(spade.Behaviour.EventBehaviour):
+        """
+        This EventBehaviour gets launched when a message that matches its template arrives at the agent
+        """
+
+        def _process(self):            
+            print "This behaviour has been triggered by a message!"
+            
+    
+    def _setup(self):
+        # Create the template for the EventBehaviour: a message from myself
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(spade.AID.aid("a@"+host,["xmpp://a@"+host]))
+        t = spade.Behaviour.MessageTemplate(template)
+        
+        # Add the EventBehaviour with its template
+        self.addBehaviour(self.RecvMsgBehav(),t)
+        
+        # Add the sender behaviour
+        self.addBehaviour(self.SendMsgBehav())	
+	
+		</screen>
+	
+	</section>
+	
+</chapter>

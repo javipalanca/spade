@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Multi-Agent Systems</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basic.html" title="Chapter 1. Basic Concepts">
+<link rel="prev" href="spade.basic.html" title="Chapter 1. Basic Concepts">
+<link rel="next" href="spade.basic.im.html" title="Instant Messaging">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Multi-Agent Systems</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basic.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 1. Basic Concepts</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basic.im.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Multi-Agent Systems">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basic.mas"></a>Multi-Agent Systems</h2></div></div></div>
+<p>A multi-agent system (MAS) is a system composed of several 
+		software agents, collectively capable of reaching goals that are 
+		difficult to achieve by an individual agent or monolithic system.</p>
+<p>The exact nature of the agents is a matter of some controversy. 
+		They are sometimes claimed to be autonomous. For example a household 
+		floor cleaning robot can be autonomous in that it is dependent on a 
+		human operator only to start it up. On the other hand, in practice, 
+		some agents are under active human supervision, becoming interdependent 
+		systems.</p>
+<p>MAS systems are also referred to as "self-organized systems" as they tend 
+		to find the best solution for their problems "without intervention". There is 
+		high similarity here to physical phenomena, such as energy minimizing, where 
+		physical objects tend to reach the lowest energy possible, within the physical 
+		constrained world.</p>
+<p>The main feature which is achieved when developing MAS systems
+		is flexibility, since a MAS system can be added to, modified and reconstructed, 
+		without the need for detailed rewriting of the application. These systems also 
+		tend to be rapidly self-recovering and failure proof, usually due to the heavy 
+		redundancy of components and the self managed features, referred to, above.</p>
+<div class="section" title="Kickin'it FIPA style">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="spade.basic.mas.fipa"></a>Kickin'it FIPA style</h3></div></div></div>
+<p>In order to prevent the proliferation of incompatible agent systems and to promote
+			the agent-based technology and the interoperability of its standards with other technologies,
+			the Foundation for Intelligent Physical Agents (FIPA) was formed. It is an IEEE Computer 
+			Society standards organization.</p>
+<p>The FIPA has produced a set of documents (called "FIPA Specifications") that together
+			conform the modern standard (or HOW-TO) in terms of agent technology. It starts with the definition
+			of the agent platform, the "home" of the agents. It is the environment where the agents are placed
+			and where their activities are performed. The software foundation for a MAS-based solution and
+			the <span class="emphasis"><em>network server</em></span> they connect to.</p>
+<p>The FIPA defines a model for an agent platform and a communication language for the agents.
+			All the platforms that want to be FIPA-compliant should follow this model and understand the
+			language, and SPADE is no exception. The compliance requires basically four features:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>An Agent Communication Channel (ACC). A mechanism which allows the agents (and the platform itself)
+				to communicate with one another.</p></li>
+<li class="listitem"><p>An Agent Management System (AMS). A way for the agents to be registered in the platform and to
+				be reachable for contact (kind of a <span class="emphasis"><em>White Pages</em></span> service).</p></li>
+<li class="listitem"><p>A Directory Facilitator (DF), which is a kind of public service in which agents publish the
+				services they offer, something akin of a <span class="emphasis"><em>Yellow Pages</em></span> service.</p></li>
+<li class="listitem"><p>Support for the FIPA Agent Communication Language (ACL), which is a common language for all
+				agents to communicate with. Essentially, it is presented in a couple of flavors: one based on a
+				Lisp-like syntax environment (using an obscene amount of parenthesis), and a clear, pure, practical and
+				beautiful syntax based on XML.</p></li>
+</ul></div>
+<p>SPADE implements all these features (and a few others) and thus is a FIPA-compliant platform.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basic.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basic.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basic.im.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 1. Basic Concepts </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Instant Messaging</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

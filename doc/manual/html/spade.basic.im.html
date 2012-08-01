@@ -1,0 +1,140 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Instant Messaging</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basic.html" title="Chapter 1. Basic Concepts">
+<link rel="prev" href="spade.basic.mas.html" title="Multi-Agent Systems">
+<link rel="next" href="spade.basic.spadeplatform.html" title="The SPADE Agent Platform">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Instant Messaging</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basic.mas.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 1. Basic Concepts</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basic.spadeplatform.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Instant Messaging">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basic.im"></a>Instant Messaging</h2></div></div></div>
+<p>Instant messaging (IM) is a form of real-time communication between two or more 
+	people based on typed text. The text is conveyed via computers connected over a network 
+	such as the Internet.</p>
+<p>Instant messaging offers real-time communication and allows easy collaboration, 
+		which might be considered more akin to genuine conversation than email's "letter" format. 
+		In contrast to e-mail, the parties know whether the peer is available. Most systems allow 
+		the user to set an online status or away message so peers are notified when the user is available, 
+		busy, or away from the computer. This is called the <span class="emphasis"><em>presence</em></span> of the user. 
+		On the other hand, people are not forced to reply immediately 
+		to incoming messages. For this reason, some people consider communication via instant messaging 
+		to be less intrusive than communication via phone. However, some systems allow the sending of 
+		messages to people not currently logged on (offline messages), thus removing much of the difference 
+		between IM and email.</p>
+<p>Instant messaging allows instantaneous communication between a number of parties simultaneously, 
+		by transmitting information quickly and efficiently, featuring immediate receipt of acknowledgment 
+		or reply. In certain cases IM involves additional features, which make it even more popular, 
+		i.e. to see the other party, e.g. by using web-cams, or to talk directly for free over the internet.</p>
+<div class="section" title="XMPP and Jabber">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="spade.basic.im.jabber"></a>XMPP and Jabber</h3></div></div></div>
+<p>Extensible Messaging and Presence Protocol (XMPP) is an open, XML-inspired protocol for near-real-time, 
+			extensible instant messaging (IM) and presence information (a.k.a. buddy lists). It is the core protocol 
+			of the Jabber Instant Messaging and Presence technology. The protocol is built to be extensible and other 
+			features such as Voice over IP and file transfer signaling have been added.</p>
+<p>Unlike most instant messaging protocols, XMPP is based on open standards. Like e-mail, it is an open 
+			system where anyone who has a domain name and a suitable Internet connection can run their own Jabber 
+			server and talk to users on other servers. The standard server implementations and many clients are also 
+			free and open source software.</p>
+<p>The Internet Engineering Task Force (IETF) formed an XMPP Working Group in 2002 to formalize the core 
+			protocols as an IETF Instant Messaging and presence technology. The four specifications produced by the 
+			XMPP WG were approved by the IESG as Proposed Standards in 2004. RFC 3920 and RFC 3921 are currently 
+			undergoing revisions in preparation for advancing them to Draft Standard within the Internet Standards Process. 
+			The XMPP Standards Foundation (formerly the Jabber Software Foundation) is active in developing open XMPP extensions.</p>
+<p>XMPP-based software is deployed on thousands of servers across the Internet and by 2003 was used
+			 by over ten million people worldwide, according to the XMPP Standards Foundation.[1] Popular commercial 
+			servers include the <a class="ulink" href="http://www.gizmoproject.com/" target="_top">Gizmo Project</a>. 
+			Popular client applications include the freeware clients offered by 
+			Google and the Gizmo Project, multi-protocol instant messengers such as 
+			<a class="ulink" href="http://www.apple.com/ichat/" target="_top">iChat</a> and 
+			<a class="ulink" href="http://www.pidgin.im/" target="_top">Pidgin</a> (formerly Gaim), 
+			and free dedicated clients such as <a class="ulink" href="http://psi-im.org" target="_top">Psi</a>. 
+			<a class="ulink" href="http://www.google.com/talk/" target="_top">Google Talk</a> provides XMPP gateways to its service.</p>
+<div class="section" title="XMPP and Jabber Features">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="spade.basic.im.jabber.features"></a>XMPP and Jabber Features</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><span class="bold"><strong>Open, public, and free.</strong></span>
+	
+				The Jabber protocol is open, public, free and well-documented, as opposed to other popular IM systems.
+				The XMPP technology is well-documented and public by means of several RFC standard documents developed 
+				by the Jabber Software Foundation. Any individual or organization can make use of XMPP technologies 
+				without having to pay royalties, licenses, etc ...</p></li>
+<li class="listitem"><p><span class="bold"><strong>Asynchronous.</strong></span>
+				
+				A Jabber server guaranties delivery of messages while the destination client is online. When a client goes 
+				offline, the Jabber server stores and forwards the message to a client when the client reconnects. 
+				This feature, apart from being useful in the case of messages between humans, helps with the fact that 
+				Jabber can be used as an architecture that enables systems to talk with other systems.
+
+				Consider a scenario with a client that interacts via Jabber with a command control, sends commands, and 
+				receives responses. In this scenario, even thought the client goes offline, the system guarantees that 
+				the response from the command control is stored and sent to the client when the client goes online again.</p></li>
+<li class="listitem"><p><span class="bold"><strong>Decentralized.</strong></span>
+				
+				By definition, Jabber is decentralized. Therefore, a Jabber central server that provides the service to 
+				everybody does not exist. Jabber is a servers network that is independent but simultaneously interconnected. 
+				As a result, anyone can run their own Jabber server, creating networks and sub-networks that do not depend 
+				on a central backbone and add it as a component of the agent architecture.
+				
+				A user can choose a server that is trusted by her. She is not forced to use a server that generates suspicion. 
+				She may use a server provided by a commercial company of her trust (like her bank or univertity), the one of 
+				her employer, etc ... A user can even choose to set up her own Jabber server at home.</p></li>
+<li class="listitem"><p><span class="bold"><strong>Secure.</strong></span>
+				
+				As with all other network services (e.g., HTTP, SMTP, and FTP), security is an important concern with regard 
+				to the deployment of IM services based on Jabber technology. One aspect of these services is the ability to 
+				enable connections between Jabber servers, thus taking advantage of the "network effect" of existing Jabber 
+				servers on the Internet or on a company network.As specified in RFC 3920, the core transport 
+				layer for XMPP is an XML streaming protocol that makes it possible to exchange fragments of XML between any
+				 two network endpoints. Authentication and channel encryption happen at the XML streaming layer using the 
+				IETF-standard protocols for Simple Authentication and Security Layer (SASL) and Transport Layer Security (TLS).
+				The XMPP architecture is a pure client-server model, wherein clients connect to servers and (optionally) 
+				servers connect to each other for inter-domain communications.</p></li>
+<li class="listitem"><p><span class="bold"><strong>Extensible.</strong></span>
+			
+				Using the power of XML namespaces, anyone can build custom functionality on top of the core protocol, as exemplified by the Jabber Enhancement Proposals (JEPs) coordinated by the Jabber Software Foundation. Jabber was designed from the beginning to be extended. A good example of this are the changes and improvements that have gradually appeared in the Jabber technology without breaking backward compatibilities. To mention some: Support of SSL and GPG encryption; precise information on the state of a message ('is being written', 'the contact has received it' or 'it has been kept in the server'); multi-conference chat rooms (MUC) that allow multiple users to interact simultaneously using virtual channels; a cooperative online 'blackboard' to draw graphics and share multimedia contents among the participants of a conversation (<a class="ulink" href="http://hem.fyristorg.com/matben/" target="_top">The Coccinella</a>). These extended functionalities do not require the Jabber servers to be modified at all. They rely on the Jabber clients to implement the necessary features to support them. Thus, in Jabber the power of extending functionalities is in the client.</p></li>
+<li class="listitem"><p><span class="bold"><strong>Flexible.</strong></span>
+			
+				The most common misconception about Jabber is that it is solely for IM. Jabber is more than a bridge to other IM systems or a set of protocols. IM is just one of the countless ways that an XML-based messaging technology such as Jabber's can be applied. Jabber is a flexible and extensible client/server architecture that routes XML data between clients and services, which plug into Jabber servers as components. The original and core set of components provide the IM features (and support services) that have been discussed.				The XML structures that make up the Jabber protocol are split into top-level tags (also referred to as elements). These tags do not necessarily carry human-generated IM message content; as long as the resulting XML is well-formed, anything goes. Furthermore, the Jabber protocol design makes use of an XML feature that allows total flexibility for extensions, called namespaces. Bearing this in mind, it is clear that Jabber can be deployed to provide solutions far beyond the IM space as well as within it. Jabber applications beyond IM include network management, content syndication, collaboration tools, file sharing, gaming, remote systems monitoring and, now, agent communication.</p></li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basic.mas.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basic.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basic.spadeplatform.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Multi-Agent Systems </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> The SPADE Agent Platform</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

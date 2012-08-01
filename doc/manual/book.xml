@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE book SYSTEM "docbookx.dtd"
+[
+<!--<!ENTITY % vers   SYSTEM "version.xml">
+%vers;-->
+<!ENTITY foreword SYSTEM "foreword.xml">
+<!ENTITY ch00     SYSTEM "ch00-introduction-to-spade.xml">
+<!ENTITY ch01     SYSTEM "ch01-quickstart-guide.xml">
+<!ENTITY ch02     SYSTEM "ch02-fundamental-concepts.xml">
+<!ENTITY ch03     SYSTEM "ch03-basic-agents.xml">
+<!ENTITY ch04     SYSTEM "ch04-platform-services.xml">
+<!ENTITY ch05     SYSTEM "ch05-advanced-behaviours.xml">
+<!ENTITY ch06     SYSTEM "ch06-bdi.xml">
+<!ENTITY ch07     SYSTEM "ch07-content-objects.xml">
+<!ENTITY ch08     SYSTEM "ch08-gui.xml">
+<!ENTITY ch09     SYSTEM "ch09-agent-organizations.xml">
+<!ENTITY ch10     SYSTEM "ch10-extending-spade.xml">
+<!ENTITY ch11     SYSTEM "ch11-creating-a-complex-example.xml">
+<!ENTITY ch12     SYSTEM "ch12-faq-and-troubleshooting.xml">
+<!ENTITY license  SYSTEM "copyright.xml">
+]>
+
+<book id="spade">
+  <title>SPADE User's Manual</title>
+
+  <bookinfo>
+
+    <subtitle>For SPADE 2.0</subtitle>
+
+    <!-- Using revnumber would be more appropriate, but our stylesheets -->
+    <!-- don't seem to render it. -->
+    <!--<subtitle>(Compiled from &svn.l10n_revision;&svn.version;)</subtitle>-->
+
+    <edition>First</edition>
+    <isbn>?-?????-???-?</isbn>
+    <authorgroup>
+
+      <author>
+        <firstname>Gustavo</firstname>
+        <surname>Aranda</surname>
+      </author>
+
+      <author>
+        <firstname>Javier</firstname>
+        <surname>Palanca</surname>
+      </author>
+
+    </authorgroup>
+
+    <!--<editor>
+      <firstname>Vicente</firstname>
+      <surname>Botti</surname>
+    </editor>-->
+
+    <pagenums>XXX pages (est.)</pagenums>
+    <pubdate>(TBA)</pubdate>
+
+    <copyright>
+      <year>2005</year>
+      <year>2010</year>
+      <holder>Gustavo Aranda</holder>
+      <holder>Javier Palanca</holder>
+      <holder>Miguel Escriva</holder>
+      <holder>Natalia Criado</holder>
+      <holder>Juan Angel Garcia-Pardo</holder>
+    </copyright>
+
+    <legalnotice><para>This work is licensed under the Creative
+      Commons Attribution License.  To view a copy of this license,
+      visit <ulink url="http://creativecommons.org/licenses/by/2.0/"/>
+      or send a letter to Creative Commons, 559 Nathan Abbott Way,
+      Stanford, California 94305, USA.</para></legalnotice>
+
+  </bookinfo>
+
+  <!-- External entity refs -->
+
+  &foreword;
+  &ch00;
+  &ch01;
+  &ch02;
+  &ch03;
+  &ch04;
+  &ch05;
+  &ch06;
+  <!--&ch07;
+  &ch08;
+  &ch09;
+  &appa;
+  &appb;
+  &appc;
+  &appd;
+  &license;
+  &index;-->
+
+</book>

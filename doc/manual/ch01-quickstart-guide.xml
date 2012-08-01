@@ -1,0 +1,40 @@
+<chapter id="spade.quickstart">
+  <title>Quickstart Guide</title>
+
+  <para>This chapter is a short, quickstart guide for those brave enough to try SPADE
+	with a blind faith in Multi-Agent Systems.</para>
+
+  <section id="spade.quickstart.requirements">
+	<title>Requirements</title>
+	
+  	<para>Ok, first things first. Check that your computer has everything you need in order to be able to run SPADE:</para>
+	
+	<itemizedlist>
+    	<listitem>
+		<para>Python 2.6.2 or above</para>
+	</listitem>		
+	<listitem>
+		<para>Psyco python optimizer (optional), to speed up the execution of the platform and the agents</para>
+	</listitem>
+	</itemizedlist>
+	
+  </section>
+
+  <section id="spade.quickstart.installation">
+  	<title>Installation</title>
+
+	<para>Grab the SPADE deliverable package at <ulink url="http://spade2.googleprojects.com">http://spade2.googleprojects.com</ulink>. Uncompress it and launch the <command>configure.py</command> script in order to configure the platform. You can provide a parameter to this script, which is the machine's hostname and that will be used as the platform's name. Finally, launch the <command>runspade.py</command> script and see your platform rise before your eyes. After a few seconds you should see the green word <command>Done</command> on the screen confirming that the platform was succesfully launched. In a nutshell:</para>
+
+    <screen>
+$ tar xvzf spade-2.0.0.tar.gz
+$ cd spade
+$ python configure.py myhost.myprovider.com
+$ python runspade.py
+</screen>
+
+  <!--><warning><para>PONER UN EJEMPLO</para></warning>-->
+
+  <para>And that's it. If everything went well, congratulations! You have succesfully installed SPADE! If something went wrong, don't panic!, head to chapter XXX "FAQ and Troubleshooting" for answers or follow the rest of this manual to know a lot more about SPADE.</para>
+  </section>
+	
+</chapter>

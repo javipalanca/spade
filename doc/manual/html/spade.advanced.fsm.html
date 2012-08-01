@@ -1,0 +1,139 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The Finite-State-Machine</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.advanced.html" title="Chapter 6. Advanced Behaviour Types">
+<link rel="prev" href="spade.advanced.html" title="Chapter 6. Advanced Behaviour Types">
+<link rel="next" href="spade.advanced.eventbehaviour.html" title="Event Behaviours">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The Finite-State-Machine</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.advanced.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Behaviour Types</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.advanced.eventbehaviour.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The Finite-State-Machine">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.advanced.fsm"></a>The Finite-State-Machine</h2></div></div></div>
+<p>
+		A Finite-State-Machine (or automaton) is a structure used to make state-based programming (see <a class="ulink" href="http://en.wikipedia.org/wiki/Finite-state_machine" target="_top">http://en.wikipedia.org/wiki/Finite-state_machine</a>). SPADE supports this structure by means of the FSM behaviour.
+		</p>
+<div class="figure">
+<a name="id36145872"></a><p class="title"><b>Figure 6.1. A Finite-State Machine</b></p>
+<div class="figure-contents"><div class="mediaobject" align="center"><img src="images/fsm.png" align="middle" alt="A Finite-State Machine"></div></div>
+</div>
+<br class="figure-break"><p>
+		The FSM behaviour is one of the most advanced possibilities for developing your agents. This type of behaviour allows you to create a FSM where each of its <span class="emphasis"><em>States</em></span> is an embedded behaviour of any of the basic types (OneShot, Periodic, TimeOut...) or a custom behaviour type defined by the user (by inheriting from any of the provided behaviour types). One of these <span class="emphasis"><em>States</em></span> will be the <span class="emphasis"><em>First State</em></span>, the starting point of the FSM. Another will be the <span class="emphasis"><em>Last State</em></span>, the ending point.
+		</p>
+<p>
+		To change from one <span class="emphasis"><em>State</em></span> to another, you should define a <span class="emphasis"><em>Transition</em></span>. Each transition connects two States <span class="bold"><strong>in one direction only</strong></span>, from an <span class="emphasis"><em>origin</em></span> behaviour to a <span class="emphasis"><em>target</em></span> behaviour, and it is triggered by the exit code of the origin behaviour. The exit code of each origin behaviour must be stored in its <span class="command"><strong>self._exitcode</strong></span> variable at the end of its execution. Once a behaviour has finished, the FSM behaviour will check this variable and make the right transition for its value. This flow will continue until the <span class="emphasis"><em>Final State</em></span> is reached.
+	
+		</p>
+<p>
+		After declaring all the behaviours, in order to define an FSM (in the <span class="command"><strong>_setup()</strong></span> method of an agent) you must first associate a code to represent each behaviour that will become a state in the FSM. Then, you must use the <a class="ulink" href="../api/spade.Behaviour.FSMBehaviour-class.html#registerFirstState" target="_top"><span class="command"><strong>registerFirstState()</strong></span></a> method to associate an instance of the initial behaviour with its code. Following, you can use the <span class="command"><strong>registerState()</strong></span> method to associate every instance of the behaviours that form the <span class="emphasis"><em>States</em></span> of the FSM with their codes. After that, you must use the <span class="command"><strong>registerLastState()</strong></span> to associate an instance of the last behaviour to its code. Finally, you may use the <span class="command"><strong>registerTransition()</strong></span> method to create the transitions that link the behaviours with their exit codes.
+		</p>
+<p>
+		And that's it! You have created a complex FSM behaviour. A complete agent class using one of these beauties is shown next:
+		</p>
+<pre class="screen">
+class MyAgent(spade.Agent.Agent):
+        class StateOne(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State One..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter &gt; 2:
+                                self._exitcode = self.myAgent.TRANSITION_TO_TWO
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateTwo(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Two..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter &gt; 5:
+                                self._exitcode = self.myAgent.TRANSITION_TO_THREE
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateThree(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Three..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter &gt; 8:
+                                self._exitcode = self.myAgent.TRANSITION_TO_FOUR
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+
+        class StateFour(spade.Behaviour.OneShotBehaviour):
+                def _process(self):
+                        print "This is State Four..."
+                        self.myAgent.counter = self.myAgent.counter + 1
+                        if self.myAgent.counter &gt; 11:
+                                print "Counter ", self.myAgent.counter
+                                print "Bye Bye"
+                                self.myAgent._kill()
+                        else:
+                                self._exitcode = self.myAgent.TRANSITION_DEFAULT
+        def _setup(self):
+                time.sleep(2)
+                print "FSMAgent starting . . ."
+                self.counter = 0
+
+                self.STATE_ONE_CODE     = 1
+                self.STATE_TWO_CODE     = 2
+                self.STATE_THREE_CODE   = 3
+                self.STATE_FOUR_CODE    = 4
+
+                self.TRANSITION_DEFAULT         = 0
+                self.TRANSITION_TO_ONE          = 10
+                self.TRANSITION_TO_TWO          = 20
+                self.TRANSITION_TO_THREE        = 30
+                self.TRANSITION_TO_FOUR         = 40
+
+                b = spade.Behaviour.FSMBehaviour()
+                b.registerFirstState(self.StateOne(), self.STATE_ONE_CODE)
+                b.registerState(self.StateTwo(), self.STATE_TWO_CODE)
+                b.registerState(self.StateThree(), self.STATE_THREE_CODE)
+                b.registerLastState(self.StateFour(), self.STATE_FOUR_CODE)
+
+                b.registerTransition(self.STATE_ONE_CODE, self.STATE_ONE_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_ONE_CODE, self.STATE_TWO_CODE, self.TRANSITION_TO_TWO)
+                b.registerTransition(self.STATE_TWO_CODE, self.STATE_TWO_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_TWO_CODE, self.STATE_THREE_CODE, self.TRANSITION_TO_THREE)
+                b.registerTransition(self.STATE_THREE_CODE, self.STATE_THREE_CODE, self.TRANSITION_DEFAULT)
+                b.registerTransition(self.STATE_THREE_CODE, self.STATE_FOUR_CODE, self.TRANSITION_TO_FOUR)
+
+                self.addBehaviour(b, None)
+
+	</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.advanced.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.advanced.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.advanced.eventbehaviour.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 6. Advanced Behaviour Types </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Event Behaviours</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

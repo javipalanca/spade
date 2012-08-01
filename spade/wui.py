@@ -32,7 +32,7 @@ class WUI(Thread):
         # Try to get SPADE's default template path
         tpath = os.path.realpath(pyratemp.__file__)  # /Users/foo/devel/trunk/spade
         tpath = tpath.rsplit(os.sep,1)  # ["/Users/foo/devel/trunk", "spade"]
-        self.spade_path = tpath[0]+os.sep+os.pardir
+        self.spade_path = tpath[0]    ###+os.sep+os.pardir
         #self.owner.DEBUG("SPADE path: " + self.spade_path,"warn")
         
         self.controllers = {}
@@ -235,7 +235,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     self.copyfile(f, self.wfile)
                     f.close()
             except:
-                    self.server.owner.owner.DEBUG(sys.exc_info(), "err")
+                    self.server.owner.owner.DEBUG(str(sys.exc_info()), "err")
         
         else:
             sess = self.Session()
@@ -266,7 +266,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 self.send_header('Location', url)
                 self.end_headers()
                 self.wfile.write("")
-		return
+                return
 
             except Exception, e:
                 #No controller
@@ -283,10 +283,10 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 else:
                     #olddir = os.path.curdir
                     #os.chdir(self.server.spade_path)
-		    authenticated = False
-		    if hasattr(sess,"user_authenticated"):
-			if sess.user_authenticated==True: authenticated=True
-		    ret['authenticated'] = authenticated
+                    authenticated = False
+                    if hasattr(sess,"user_authenticated"):
+                        if sess.user_authenticated==True: authenticated=True
+                    ret['authenticated'] = authenticated
                     t = pyratemp.Template(filename=self.server.owner.spade_path+os.sep+"templates"+os.sep+template, data=ret)
                     #print template, ret
                     #os.chdir(olddir)

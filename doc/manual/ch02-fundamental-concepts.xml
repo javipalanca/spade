@@ -1,0 +1,38 @@
+<chapter id="spade.fundamental">
+	<title>Fundamental Concepts</title>
+	
+	<para>This chapter presents the basic concepts of the SPADE platform and its agents.</para>
+	
+	<section id="spade.fundamental.platform">
+		<title>The Agent Platform</title>
+		
+		<para>As said in previous chapters, the agent platform is the environment where the agents are deployed. Think of it both as the <emphasis>"home"</emphasis> of the agents and the main server of a network from a distributed application. In our case, that platform is SPADE, an agent platform based on the Jabber/XMPP protocols and technology.</para>
+		
+		<para>The SPADE platform is installed and executed on a host. That host becomes the centre of the multi-agent system that we are going to build. In order to properly deploy the SPADE platform, it needs to be configured first to suit the host where it is going to be. Along with the SPADE distribution comes a tool called <command>configure.py</command> which is a script to automatically configure SPADE for you. In most scenarios, the only configuration you need to do for SPADE to work is to invoke this tool with the desired hostname to use as the platform hostname. E.g:</para>
+		
+<screen>
+$ python configure.py myhost.myprovider.com
+</screen>
+
+		<para>Then, SPADE will be configured to work as a platform serving at the <command>myhost.myprovider.com</command> domain.</para>
+		
+		<para>Internally, the <command>configure.py</command> script creates the configuration files that SPADE needs to work. This configuration is stored in the <command>etc/</command> subdirectory inside the SPADE installation path.</para>
+
+<!--You can see how to perform advanced configuration procedures in chapter XXX.</para>-->
+		
+		<para>After a successful configuration, you can try to run SPADE for the first time. To do so, use the <command>runspade.py</command> script that is provided with the SPADE distribution. This script will launch the SPADE platform and set it ready to start working with agents. You should see something along the lines of:</para>
+		
+<screen>
+$ python runspade.py
+SPADE 2.0 &lt;gusarba@gmail.com&gt; - http://spade2.googleprojects.com
+Starting SPADE...... [done]
+</screen>
+
+		<para>You may also see some warnings and additional messages while the platform is starting. That's fine, we will discuss them later. You are now ready to start loading agents into the platform.</para>
+		
+		<!--<para>If you wish to know more about SPADE's configuration, please head to chapter XXX. If you wish to learn how to make your first SPADE agents, head on to the next chapter.</para>-->
+		<para>To learn how to make your first SPADE agents, head on to the next chapter.</para>
+		
+	</section>
+	
+</chapter>

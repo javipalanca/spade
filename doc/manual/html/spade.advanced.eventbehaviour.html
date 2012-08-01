@@ -1,0 +1,108 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Event Behaviours</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.advanced.html" title="Chapter 6. Advanced Behaviour Types">
+<link rel="prev" href="spade.advanced.fsm.html" title="The Finite-State-Machine">
+<link rel="next" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Event Behaviours</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.advanced.fsm.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. Advanced Behaviour Types</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.bdi.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Event Behaviours">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.advanced.eventbehaviour"></a>Event Behaviours</h2></div></div></div>
+<p>
+		An Event Behaviour is a special kind of behaviour designed to be spawned as a response to an event occurring on an agent. As of version 2.0, SPADE agents support events in the form of incoming messages, and thus, Event Behaviours are associated with a message template as any other behaviour type. The main difference between an Event Behaviour and, say, a One-Shot Behaviour is that the Event Behaviour is <span class="bold"><strong>not instanced</strong></span> nor is it running <span class="bold"><strong>until the trigger event happens</strong></span>.
+		</p>
+<p>
+		In order to register an Event Behaviour as the response to some event, SPADE offers the same uniform API as for the rest of behaviours. Once the behaviour is implemented, you have to define a message template and then call the <span class="command"><strong>addBehaviour()</strong></span> method of the agent, as you would do with any other type of behaviour. What's the difference? The difference is that the Event Behaviour doesn't get started right away when you call the <span class="command"><strong>start()</strong></span> method of the agent. When the trigger for an Event Behaviour happens, the agent automatically spawns the behaviour.
+		</p>
+<p>
+		Following, there's an example of an agent that registers an Event Behaviour whenever a message that comes from itself arrives. You know, it is a lonely agent, nobody writes messages for it, so it forwards letters to itself. Poor agent:
+		</p>
+<pre class="screen">
+class Sender(spade.Agent.Agent):
+
+    def _setup(self):
+		self.addBehaviour(self.SendMsgBehav())
+		print "Agent started!"
+		
+    class SendMsgBehav(spade.Behaviour.OneShotBehaviour):
+        """
+        This behaviour sends a message to this same agent to trigger an EventBehaviour
+        """
+
+        def _process(self):
+            msg = spade.ACLMessage.ACLMessage()
+            msg.setPerformative("inform")
+            msg.addReceiver(spade.AID.aid("a@"+host,["xmpp://a@"+host]))
+            msg.setContent("testSendMsg")
+            print "Sending message in 3 . . ."
+            time.sleep(1)
+            print "Sending message in 2 . . ."
+            time.sleep(1)
+            print "Sending message in 1 . . ."
+            time.sleep(1)
+
+            self.myAgent.send(msg)
+            
+            print "I sent a message"
+            #print str(msg)
+    
+    class RecvMsgBehav(spade.Behaviour.EventBehaviour):
+        """
+        This EventBehaviour gets launched when a message that matches its template arrives at the agent
+        """
+
+        def _process(self):            
+            print "This behaviour has been triggered by a message!"
+            
+    
+    def _setup(self):
+        # Create the template for the EventBehaviour: a message from myself
+        template = spade.Behaviour.ACLTemplate()
+        template.setSender(spade.AID.aid("a@"+host,["xmpp://a@"+host]))
+        t = spade.Behaviour.MessageTemplate(template)
+        
+        # Add the EventBehaviour with its template
+        self.addBehaviour(self.RecvMsgBehav(),t)
+        
+        # Add the sender behaviour
+        self.addBehaviour(self.SendMsgBehav())	
+	
+		</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.advanced.fsm.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.advanced.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.bdi.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The Finite-State-Machine </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 7. BDI Architecture for SPADE Agents</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

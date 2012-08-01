@@ -1,0 +1,178 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>An agent with a behavior</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
+<link rel="prev" href="spade.basicagents.first.html" title="My first SPADE agent">
+<link rel="next" href="spade.basicagents.agentmodel.communication.html" title="Agent Communication: Sending and Receiving Messages">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">An agent with a behavior</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basicagents.first.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 4. Basic agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basicagents.agentmodel.communication.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="An agent with a behavior">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basicagents.behav"></a>An agent with a behavior</h2></div></div></div>
+<p>Let's build a more functional agent, one that uses an actual behavior to perform a task. As we stated earlier, the real programming of the SPADE agents is done mostly in the behaviors. Let's see how.</p>
+<p>Let's create a cyclic behaviour that performs a task. In this case, a simple counter. We can modify our existing <code class="literal">myagent.py</code> script:</p>
+<pre class="screen">
+import spade
+import time
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.Behaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+			self.counter = 0
+
+		def _process(self):
+			print "Counter:", self.counter
+			self.counter = self.counter + 1
+			time.sleep(1)
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<p>As you can see, we have defined a custom behaviour called <code class="literal">MyBehav</code> that inherits from the <code class="literal">spade.Behaviour.Behaviour</code> class, the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is, a loop-like behaviour.</p>
+<p>You can see that there is a method called <code class="literal">onStart()</code> in the behaviour. This method is similar to the <code class="literal">_setup()</code> method of the agent class. It is executed just before the main iteration of the behaviour begins and it is used for initialization code. In this case, we print a line and initialize the variable for the counter.</p>
+<p>Also, there is the <code class="literal">_process()</code> method, which is very important. In most behaviours, this is the method in which the core of the programming is done, because this method is called on each iteration of the behaviour loop. It acts as the <span class="emphasis"><em>body</em></span> of the loop, sort of. In our example, the <code class="literal">_process()</code> method prints the current value of the counter, increases it and then waits for a second (to iterate again).</p>
+<p>Now look at the <code class="literal">_setup()</code> method of the agent. There, we make an instance of <code class="literal">MyBehav</code> and add it to the current agent by means of the <code class="literal">addBehaviour()</code> method. The first parameter of this method is the behaviour we want to add, and the second one is the template associated to that behaviour, but we will talk later about templates.</p>
+<p>Let's test our new agent:</p>
+<pre class="screen">
+$ python myagent.py
+MyAgent starting . . .
+Starting behaviour . . .
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+Counter: 5
+Counter: 6
+Counter: 7
+		</pre>
+<p>. . . and so on. As we have not set any end condition, this agent would go on counting forever.</p>
+<p>The default <code class="literal">spade.Behaviour.Behaviour</code> class is great for cycling tasks that need to be done in a loop fashion. However, in this case we are expecting the behaviour to execute the body of the loop more or less every second. There is a much better way of doing this, and it is by using the <code class="literal">spade.Behaviour.PeriodicBehaviour</code> class:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.PeriodicBehaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+			self.counter = 0
+
+		def _onTick(self):
+			print "Counter:", self.counter
+			self.counter = self.counter + 1
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav(1)
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<p>Note the new parameter we pass on to the <code class="literal">MyBehav</code> object upon instantiation. It's the period of the execution of the task, measured in seconds. Also, note that in this case we do not use the <code class="literal">_process()</code> method (as it is internally used by the behaviour), but instead we use the <code class="literal">_onTick()</code> method that is executed exactly every period.</p>
+<p>So what happens if you want a behaviour that doesn't execute neither a cyclic nor a periodic task? What if you want a behaviour that performs a given task once and then finishes? Is it possible? Well, SPADE is here to help you out. Please welcome the <code class="literal">spade.Behaviour.OneShotBehaviour</code> class.</p>
+<p>As the name says, OneShot behaviours execute an spontaneous task once and then finish. Let's see this example:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.OneShotBehaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+
+		def _process(self):
+			print "Hello World from a OneShot"
+
+		def onEnd(self):
+			print "Ending behaviour . . ."
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()		
+		</pre>
+<p>The <code class="literal">_process()</code> method returns, as it is where the main code of this kind of behaviours go. Note that a new method of the behaviours has appeared: <code class="literal">onEnd()</code> . It is very similar to <code class="literal">onStart()</code> and it's there to work as a finalizer method. It is executed once the code on <code class="literal">_process()</code> has ended and just before the behaviour terminates its execution. Let's see the result of this script:</p>
+<pre class="screen">
+$ python myagent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+MyAgent starting . . .
+Starting behaviour . . .
+Hello World from a OneShot
+Ending behaviour . . .
+		</pre>
+<p>Pretty straightforward, eh? Let's move on to something else.</p>
+<p><code class="literal">spade.Behaviour.TimeOutBehaviour</code> is the class to build behaviours that execute a task once, but only after a specific amount of seconds have passed since the behaviour becomes active (i.e. a timeout is triggered). The code of the task must be placed in a <code class="literal">timeOut()</code> method of the behaviour:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.TimeOutBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def timeOut(self):
+                        print "The timeout has ended"
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav(5)
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@thx1138.dsic.upv.es", "secret")
+        a.start()
+		</pre>
+<p>Other behaviour types are <code class="literal">spade.Behaviour.FSMBehaviour</code>, which represents a Finite State Machine, and <code class="literal">spade.Behaviour.EventBehaviour</code>, which is a special type of behaviour set to be triggered after an event happens in the agent. These are advanced types of behaviours and are covered in chapter 6.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basicagents.first.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basicagents.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basicagents.agentmodel.communication.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">My first SPADE agent </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Agent Communication: Sending and Receiving Messages</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

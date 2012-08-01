@@ -1,0 +1,200 @@
+<chapter id="spade.platform">
+	<title>Platform services</title>
+	
+	<para>This chapter presents the services and facilities the SPADE platform offers to its agents in the form of the standard AMS and DF FIPA components.</para>
+	
+	<section id="spade.platform.ams">
+		<title>The SPADE Agent Management System (AMS)</title>
+		
+		<para>The SPADE AMS is our implementation of the standard FIPA AMS component to manage, identify and search for agents in the platform. It is a special platform agent that is always present in all SPADE platforms and that is started automatically whenever the platform is initiated. It manages the registration of the agents in the platform. So, when you start one of your agents and the registration process is autmatically taken care of by the SPADE Agent Library, it is the AMS who is on "the other side of the counter", managing the registry of agents. It also gets to de-register an agent once its life cycle has ended.</para>
+		
+		<para>Additionally, the AMS offers some services that any agent inside the platform can use. First is the Platform Information service, a basic query that gives the agent some information regarding the platform. It can be invoked with the <literal>getPlatformInfo</literal> method of the agents. Let's see an example:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.OneShotBehaviour):
+
+		def _process(self):			
+			pi = self.myAgent.getPlatformInfo()
+			print "Platform Information: ", pi
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<screen>
+$ python agent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+Platform Information: (ap-description :name xmpp://acc.myhost.myprovider.com :ap-services 
+(set (ap-service :name xmpp://ams.myhost.myprovider.com :type fipa.agent-management.ams 
+:addresses (sequence acc.myhost.myprovider.com))
+		</screen>
+		
+		<para>As you can see, the method returns the information collected from the AMS in the FIPA-SL semantic language (more on that later).</para>
+		
+		<!--<para>PRIMERO EL SEARCH AGENT</para>-->
+		
+		<para>Agents can also use the Search Agent service. This service allows them to look for a fellow agent registered in the platform using some search criteria. In order to introduce those criteria, the class <literal>spade.AMS.AmsAgentDescription</literal> must be used. It represents some data fields that can be filled in with agent information: the <emphasis>name</emphasis> of the agent, its <emphasis>ownership</emphasis> and its <emphasis>state</emphasis>. Once an object of the <literal>spade.AMS.AmsAgentDescription</literal> class has been filled with the search criteria, you can use it with the <literal>searchAgent</literal> method of an agent:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.OneShotBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def _process(self):
+                        print "I'm going to search for an agent"
+                        aad = spade.AMS.AmsAgentDescription()
+                        search = self.myAgent.searchAgent(aad)
+                        print search
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav()
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@myhost.myprovider.com", "secret")
+        a.start()
+		</screen>
+		
+		<screen>
+((result  (set (ams-agent-description
+:name (agent-identifier
+:name ams.myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://ams.myhost.myprovider.com
+)
+)
+
+:ownership SPADE
+:state active)
+ (ams-agent-description
+:name (agent-identifier
+:name df.myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://df.myhost.myprovider.com
+)
+)
+
+:ownership SPADE
+:state active)
+ (ams-agent-description
+:name (agent-identifier
+:name agent@myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://agent@myhost.myprovider.com
+)
+)
+
+:ownership agent@myhost.myprovider.com
+)
+ )))
+		</screen>
+		
+		<para>Another service offered by the AMS is the Modify service. It allows for an agent to modify its own information, published in the AMS, in order to update it to reflect its current status or make it easier for other agents to find it. It can be invoked using the <literal>modifyAgent</literal> method of the agents and a <literal>spade.AMS.AmsAgentDescription</literal> object that includes the updated  information of the agent:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.OneShotBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def _process(self):
+                        print "I'm going to modify my data"
+                        aad = spade.AMS.AmsAgentDescription()
+                        aad.ownership = "FREE"
+                        result = self.myAgent.modifyAgent(aad)
+                        if result:
+                                print "Modification OK"
+                        print "I'm going to check the modification"
+                        search = self.myAgent.searchAgent(aad)
+                        print search
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav()
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@myhost.myprovider.com", "secret")
+        a.start()
+		</screen>
+		
+		<screen>
+$ python agent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+MyAgent starting . . .
+Starting behaviour . . .
+I'm going to modify my data
+Modification OK
+I'm going to check the modification
+((result  (set (ams-agent-description
+:name (agent-identifier
+:name agent@myhost.myprovider.com
+:addresses 
+(sequence
+xmpp://agent@myhost.myprovider.com
+)
+)
+
+:ownership FREE
+)
+ )))
+		</screen>
+				
+	</section>
+	
+	<section id="spade.platform.df">
+		<title>The SPADE Directory Facilitator (DF)</title>
+		
+		<para>SPADE's DF serves as <emphasis>yellow pages</emphasis> index where the services offered by the agents are published for others to find. The way of publishing services is by uploading to the DF agent a set of <emphasis>service descriptions</emphasis> that contain information about services and how to access them. Each agent can publish its own set of <emphasis>service descriptions</emphasis>.</para>
+		
+		<para>The interface for an agent to publish its own services is a bit unconventional and stilted in order to comply with the FIPA specification. First, the agent has to describe its services by using the <literal>spade.DF.ServiceDescription</literal> class. The objects of this class store the information of a particular service: its name, type, the protocols it requires, the ontologies associated with the service, the content languages that are used, its ownership and some additional properties it may have. This information can be set up using the dedicated methods of these objects.</para>
+		
+		<para>Next, the agent has to instantiate a <literal>spade.DF.DfAgentDescription</literal> object (which is quite similar to a <literal>spade.AMS.AmsAgentDescription</literal> object) which will host the collection of <literal>spade.DF.ServiceDescription</literal> objects. This is the object that will be passed to the <literal>registerService</literal> method of the agent in order to register all the services. Each agent can upload only one set of services at a time. In order to remove a service, an agent would use the <literal>registerService</literal> method with a <literal>spade.DF.DfAgentDescription</literal> containing the active services minus the one that is to be removed (that is why we encourage agent developers to keep a local copy of a <literal>spade.DF.DfAgentDescription</literal> object with a set of the active services). Again, this interface is not straightforward but FIPA-compliant, and so an example is helpful:</para>
+		
+		<screen>
+		sd = spade.DF.ServiceDescription()
+		sd.setName("test")
+		sd.setType("testservice")
+		dad = spade.DF.DfAgentDescription()
+		dad.addService(sd)
+		sd = spade.DF.ServiceDescription()
+		sd.setName("MYSERVICE")
+		sd.setType("MYTYPE")
+		dad.addService(sd)
+		dad.setAID(self.myAgent.getAID())
+		res = self.myAgent.registerService(dad)
+		print "Service Registered:",str(res)</screen>
+		
+	</section>
+	
+	<section>
+		<title>What's next</title>
+		
+		<para>In this chapter we have learned what facilities do the AMS and DF offer to the agents. Next chapter, we will get our hands even dirtier as we venture through the black marshes of SPADE's advanced behaviour types.</para>
+		
+	</section>
+</chapter>

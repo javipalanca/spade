@@ -1,0 +1,396 @@
+<chapter id="spade.basicagents">
+	<title>Basic agents</title>
+	
+	<para>This chapter explains the logics behind SPADE agents and how to make simple agents for your MAS.</para>
+	
+	<section id="spade.basicagents.library">
+		<title>The SPADE Agent Library</title>
+		
+		<para>As stated earlier, the SPADE Agent Library is a software component to ease and help the development of software agents that work with the SPADE platform. It provides some classes, functions and data structures to help the programmer easily deploy SPADE-based solutions in a rapid-application-development fashion.</para>
+		
+		<para>Currently, the SPADE Agent Library is only available for the Python programming language, and it is available as a module (that you can download at <ulink url="http://spade2.googleprojects.com">http://spade2.googleprojects.com</ulink>). There is also a full reference documentation of the library that you can use to see the details of every element.</para>
+	</section>
+	
+	<section id="spade.basicagents.agentmodel">
+		<title>The SPADE agent model</title>
+		
+		<para>The Agent Model is basically composed of a connection mechanism to the platform, a message dispatcher, and a set of different behaviors that the dispatcher gives the messages to. Every agent needs an identifier called Jabber ID <emphasis>a.k.a.</emphasis> <emphasis role="bold">JID</emphasis> and a valid password to establish a connection with the platform.</para>
+		
+		<para>The <emphasis>JID</emphasis> (composed by a <emphasis role="bold">username</emphasis>, an <emphasis role="bold">@</emphasis>, and a <emphasis role="bold">server domain</emphasis>) will be the name that identifies an agent in the platform, e.g. <literal>myagent@myprovider.com</literal>. The agent address (which is another important field on the Agent Identifier) would be the JID of the platform's ACC (e.g. <literal>xmpp://acc.myprovider.com</literal>). We have defined the prefix <literal>xmpp://</literal> for the XMPP addresses.</para>		
+		
+		<section id="spade.basicagents.agentmodel.connection">
+			<title>Connection to the platform</title>
+			
+			<para>Communications in SPADE are handled internally by means of the Jabber protocol. This protocol has a mechanism to register and authenticate users against a Jabber server. Since the SPADE platform includes a Jabber server component, SPADE agents use the aforementioned mechanism to register in the server as Jabber clients. After a succesful register, each agent holds an open and persistent Jabber stream of communications with the platform. This process is automatically triggered as part of the agent registration process.</para>
+		</section>
+		
+		<section id="spade.basicagents.agentmodel.dispatcher">
+			<title>The message dispatcher</title>
+			
+			<para>Each SPADE agent has an internal message dispatcher component. This message dispatcher acts as a mailman: when a message for the agent arrives, it places it in the correct <emphasis>"mailbox"</emphasis> (more about that later); and when the agent needs to send a message, the message dispatcher does the job, putting it in the communication stream. The message dispatching is done automatically by the SPADE Agent Library whenever a new message arrives or is to be sent.</para>
+		</section>
+		
+		<section id="spade.basicagents.agentmodel.behaviours">
+			<title>The behaviors</title>
+
+			<para>An agent can run serveral behaviors simultaneously. A <emphasis role="bold">behavior</emphasis> is a task that an agent can execute using repeating patterns. SPADE provides some predefined behavior types: Cyclic, One-Shot, Periodic, Time-Out, Finite State Machine and Event Behavior. Those behavior types help to implement the different tasks that an agent can perform. The kind of behaviors supported by a SPADE agent are the following:</para>
+
+			<itemizedlist>
+		    	<listitem>
+		          <para>Cyclic and Periodic behaviours are useful for performing repetitive tasks.</para>
+				</listitem>
+				<listitem>
+		          <para>One-Shot and Time-Out behaviors can be used to perform casual tasks.</para>
+				</listitem>
+				<listitem>
+		          <para>The Finite State Machine allows more complex behaviors to be built.</para>
+				</listitem>
+				<listitem>
+		          <para>Event behaviors respond to some event that the agent perceives.</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>Every agent can have as many behaviors as desired. When a message arrives to the agent, the message dispatcher redirects it to the correct behavior queue. A behavior has a <emphasis role="bold">message template</emphasis> attached to it. Therefore, the message dispatcher uses this template to determine which behavior the message is for, by matching it with the correct template. A behavior can thus select what kind of messages it wants to receive by using templates.</para>
+		</section>
+		
+	</section>
+	
+	<section id="spade.basicagents.first">
+		<title>My first SPADE agent</title>
+		
+		<para>It's time for us to build our first SPADE agent. We'll assume that we have a working SPADE platform at <literal>myhost.myprovider.com</literal> with the standard configuration. A basic SPADE agent is really a Python script that imports the <literal>spade</literal> module and that uses the constructs defined therein. For starters, fire up you favorite Python editor, create a file called <literal>myagent.py</literal> and write this:</para>
+		
+		<screen>
+import spade	
+		</screen>
+		
+		<para>With this sentence, the SPADE Agent Library is imported and all its features become available. Let's start defining the base class for the agent:</para>
+		
+		<screen>
+class MyAgent(spade.Agent.Agent):
+        def _setup(self):
+                print "MyAgent starting . . ."
+		</screen>
+		
+		<para>As you can see, we have derived a class from <literal>spade.Agent.Agent</literal>, which is the base class for all SPADE normal agents. Also, note that we have defined a method called <literal>_setup()</literal> . Every SPADE agent should override this method. It is where the initialization (or setup) code of the agent must be placed.</para>
+		
+		<para>As this is a toy example, we don't need anything else. We complete the script to execute the agent:</para>
+		
+		<screen>
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<para>The first thing the script does is to make an instance of our agent class. Mind the two parameters we provide: First is the <emphasis role="bold">JID</emphasis> of the agent, it contains its name (before the @) and the name of the agent platform (after the @). Second is the <emphasis role="bold">Jabber password</emphasis> for this particular agent. Note that an agent has to coherently use the same JID and password combination in order to succesfully connect to a platform over time, just like a human user has to use the same username and password combination over time to access a Jabber server.</para>
+		
+		<para>The next thing the script does is to actually start the agent with the <literal>start()</literal> method. It is very important to understand that when an agent is created, it does <emphasis role="bold">not</emphasis> start working automatically. The <literal>start()</literal> method must be called first in order to trigger the agent execution. Actually, it is in that moment when the <literal>_setup()</literal> method will be called.</para>
+		
+		<para>To finish the example, just execute the script and see the results:</para>
+		
+		<screen>
+$ python myagent.py
+MyAgent starting . . .
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+		</screen>
+		
+		<para>As you can see, the line we put in <literal>_setup()</literal> is printed first, before the agent actually connects to the platform. Then, the agent informs that it has registered correctly in the platform.</para>
+		
+		<para>And that's it! We have built our first SPADE Agent in 7 lines of code. Easy, isn't it? Of course, this is a very very dumb agent that does nothing, but it serves well as a starting point to understand the logics behind the SPADE platform.</para>
+		
+	</section>
+	
+	<section id="spade.basicagents.behav">
+		<title>An agent with a behavior</title>
+		
+		<para>Let's build a more functional agent, one that uses an actual behavior to perform a task. As we stated earlier, the real programming of the SPADE agents is done mostly in the behaviors. Let's see how.</para>
+		
+		<para>Let's create a cyclic behaviour that performs a task. In this case, a simple counter. We can modify our existing <literal>myagent.py</literal> script:</para>
+		
+		<screen>
+import spade
+import time
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.Behaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+			self.counter = 0
+
+		def _process(self):
+			print "Counter:", self.counter
+			self.counter = self.counter + 1
+			time.sleep(1)
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<para>As you can see, we have defined a custom behaviour called <literal>MyBehav</literal> that inherits from the <literal>spade.Behaviour.Behaviour</literal> class, the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is, a loop-like behaviour.</para>
+		
+		<para>You can see that there is a method called <literal>onStart()</literal> in the behaviour. This method is similar to the <literal>_setup()</literal> method of the agent class. It is executed just before the main iteration of the behaviour begins and it is used for initialization code. In this case, we print a line and initialize the variable for the counter.</para>
+		
+		<para>Also, there is the <literal>_process()</literal> method, which is very important. In most behaviours, this is the method in which the core of the programming is done, because this method is called on each iteration of the behaviour loop. It acts as the <emphasis>body</emphasis> of the loop, sort of. In our example, the <literal>_process()</literal> method prints the current value of the counter, increases it and then waits for a second (to iterate again).</para>
+		
+		<para>Now look at the <literal>_setup()</literal> method of the agent. There, we make an instance of <literal>MyBehav</literal> and add it to the current agent by means of the <literal>addBehaviour()</literal> method. The first parameter of this method is the behaviour we want to add, and the second one is the template associated to that behaviour, but we will talk later about templates.</para>
+		
+		<para>Let's test our new agent:</para>
+		
+		<screen>
+$ python myagent.py
+MyAgent starting . . .
+Starting behaviour . . .
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+Counter: 5
+Counter: 6
+Counter: 7
+		</screen>
+		
+		<para>. . . and so on. As we have not set any end condition, this agent would go on counting forever.</para>
+		
+		<para>The default <literal>spade.Behaviour.Behaviour</literal> class is great for cycling tasks that need to be done in a loop fashion. However, in this case we are expecting the behaviour to execute the body of the loop more or less every second. There is a much better way of doing this, and it is by using the <literal>spade.Behaviour.PeriodicBehaviour</literal> class:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.PeriodicBehaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+			self.counter = 0
+
+		def _onTick(self):
+			print "Counter:", self.counter
+			self.counter = self.counter + 1
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav(1)
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<para>Note the new parameter we pass on to the <literal>MyBehav</literal> object upon instantiation. It's the period of the execution of the task, measured in seconds. Also, note that in this case we do not use the <literal>_process()</literal> method (as it is internally used by the behaviour), but instead we use the <literal>_onTick()</literal> method that is executed exactly every period.</para>
+		
+		<para>So what happens if you want a behaviour that doesn't execute neither a cyclic nor a periodic task? What if you want a behaviour that performs a given task once and then finishes? Is it possible? Well, SPADE is here to help you out. Please welcome the <literal>spade.Behaviour.OneShotBehaviour</literal> class.</para>
+		
+		<para>As the name says, OneShot behaviours execute an spontaneous task once and then finish. Let's see this example:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class MyBehav(spade.Behaviour.OneShotBehaviour):
+		def onStart(self):
+			print "Starting behaviour . . ."
+
+		def _process(self):
+			print "Hello World from a OneShot"
+
+		def onEnd(self):
+			print "Ending behaviour . . ."
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.MyBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()		
+		</screen>
+		
+		<para>The <literal>_process()</literal> method returns, as it is where the main code of this kind of behaviours go. Note that a new method of the behaviours has appeared: <literal>onEnd()</literal> . It is very similar to <literal>onStart()</literal> and it's there to work as a finalizer method. It is executed once the code on <literal>_process()</literal> has ended and just before the behaviour terminates its execution. Let's see the result of this script:</para>
+		
+		<screen>
+$ python myagent.py
+Agent: agent@myhost.myprovider.com registered correctly (inform)
+MyAgent starting . . .
+Starting behaviour . . .
+Hello World from a OneShot
+Ending behaviour . . .
+		</screen>
+		
+		<para>Pretty straightforward, eh? Let's move on to something else.</para>
+		
+		<para><literal>spade.Behaviour.TimeOutBehaviour</literal> is the class to build behaviours that execute a task once, but only after a specific amount of seconds have passed since the behaviour becomes active (i.e. a timeout is triggered). The code of the task must be placed in a <literal>timeOut()</literal> method of the behaviour:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+        class MyBehav(spade.Behaviour.TimeOutBehaviour):
+                def onStart(self):
+                        print "Starting behaviour . . ."
+
+                def timeOut(self):
+                        print "The timeout has ended"
+
+                def onEnd(self):
+                        print "Ending behaviour . . ."
+
+        def _setup(self):
+                print "MyAgent starting . . ."
+                b = self.MyBehav(5)
+                self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+        a = MyAgent("agent@localhost", "secret")
+        a.start()
+		</screen>
+		
+		<para>Other behaviour types are <literal>spade.Behaviour.FSMBehaviour</literal>, which represents a Finite State Machine, and <literal>spade.Behaviour.EventBehaviour</literal>, which is a special type of behaviour set to be triggered after an event happens in the agent. These are advanced types of behaviours and are covered in chapter 6.</para>
+		
+	</section>
+	
+	<section id="spade.basicagents.agentmodel.communication">
+		<title>Agent Communication: Sending and Receiving Messages</title>
+		
+		<para>As you know, messages are the basis of every MAS. They are the centre of the whole <emphasis>"computing as interaction"</emphasis> paradigm in which MAS are based. So it is very important to understand which facilities are present in the SPADE Agent Library to work with agent messages.</para>
+		
+		<para>First and foremost, there is the Agent Identifier or AID. It is the information that identifies an agent and provides some information on how to communicate with it, i.e., its addresses. Every agent has a unique AID. In SPADE, that AID is composed of a unique name and a set of addresses which can be used to communicate with the agent. In most cases, an agent will use its JID as its name, and will have only one single (Jabber) address. For example:</para>
+		
+		<para><literal>Name = "agent@myhost.myprovider.com" . Addresses = ["xmpp://agent@myhost.myprovider.com"] .</literal></para>
+		
+		<para>The SPADE Agent Library uses the class <literal>spade.AID.aid</literal> to represent AID information. Translating the previous example into actual code would produce something like this:</para>
+		
+		<screen>
+import spade
+
+identification = spade.AID.aid(name="agent@myhost.myprovider.com", addresses=["xmpp://agent@myhost.myprovider.com"])
+		</screen>
+		
+		<para>Second, there is the class that represents a FIPA-ACL message. This class is <literal>spade.ACLMessage.ACLMessage</literal> , and you can instantiate it to create new messages to work with. The class provides several methods to construct and de-construct messages, based on the fields present in standard FIPA-ACL Messages. When a message is ready to be sent, it can be passed on to the <literal>send()</literal> method of the agent, which will trigger the internal communication process to actually send it to its destination. Here is a self-explaining example:</para>
+		
+		<screen>
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class InformBehav(spade.Behaviour.OneShotBehaviour):
+
+		def _process(self):
+			# First, form the receiver AID
+			receiver = spade.AID.aid(name="receiver@myhost.myprovider.com", 
+                                     addresses=["xmpp://receiver@myhost.myprovider.com"])
+			
+			# Second, build the message
+			self.msg = spade.ACLMessage.ACLMessage()  # Instantiate the message
+			self.msg.setPerformative("inform")        # Set the "inform" FIPA performative
+			self.msg.setOntology("myOntology")        # Set the ontology of the message content
+			self.msg.setLanguage("English")           # Set the language of the message content
+			self.msg.addReceiver(receiver)            # Add the message receiver
+			self.msg.setContent("Hello World")        # Set the message content
+			
+			# Third, send the message with the "send" method of the agent
+			self.myAgent.send(self.msg)
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.InformBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<para>The previous example is also an opportunity to introduce the <literal>myAgent</literal> attribute that can be used in any behaviour. It is a reference to the agent that holds the behaviour and thus it can be used as a shortcut to access any method or attribute the agent object has. In this particular case, the command <literal>self.myAgent.send(self.msg)</literal> is accessing the <literal>send</literal> method of the agent through the <literal>myAgent</literal> shortcut.</para>
+		
+		<para>There are two basic methods in message communication: <literal>send</literal> , which you already know, and <literal>_receive</literal> , which, as its name says, serves the purpose of receiving a message. At any given moment, a behaviour can make use of the <literal>_receive</literal> method in order to receive a message.</para>
+		
+		<note>
+			<title>Regarding <literal>send</literal> and <literal>_receive</literal></title>
+			
+			<para><emphasis role="bold">WARNING:</emphasis> Please take note that whereas <literal>send</literal> is a method of the agent, <literal>_receive</literal> is a method of the <emphasis role="bold">behaviour</emphasis>. This difference is very important. All the behaviours send messages the same way, but, as stated earlier, every behaviour has its unique <emphasis>message template</emphasis> that specifies which kind of messages it may receive, and thus, each behaviour uses its own <literal>_receive</literal> method to receive its own messages.</para>
+			
+		</note>
+		
+		<note>
+			<title>Regarding messages at initialization time</title>
+			
+			<para><emphasis role="bold">WARNING:</emphasis> A SPADE agent cannot send nor receive messages until its behaviours are active. That is, do NOT place calls to the <literal>send</literal> or <literal>_receive</literal> methods inside the <literal>_setup</literal> and <literal>takeDown</literal> methods.</para>
+		</note>
+		
+		 <para>The <literal>_receive</literal> method accepts two parameters: a boolean representing wether the behaviour must block waiting for a message, and the number of seconds it must wait before resuming execution. Of course the latter is only needed if the former is set to "True". If only the first parameter is present and set to "True", the behaviour will block indefinitely.</para>
+		
+		<para>If there is a message for the behaviour calling the <literal>_receive</literal> method, the call will return an object of the <literal>spade.ACLMessage.ACLMessage</literal> class representing such message. If there is no message and the call is non-blocking or it times out, the return value will be <literal>None</literal>.</para>
+		
+		<para>In order to set a message template for a behaviour, you must first define such template. Or you can set a behaviour to be the <emphasis>default behaviour</emphasis>, which means it will receive all kind of messages (no need to specify a template). To define a template you can use the classes <literal>spade.Behaviour.ACLTemplate</literal> and <literal>spade.Behaviour.MessageTemplate</literal> . First, you need to instantiate a <literal>spade.Behaviour.ACLTemplate</literal> object (which quite the same methods as a <literal>spade.ACLMessage.ACLMessage</literal> object) and edit it to match your requirements (i.e. set the ontology, the language, the protocol, etc...). Then, you must wrap it around a <literal>spade.Behaviour.MessageTemplate</literal> object. That is the object that you will pass on to the <literal>addBehaviour</literal> method, along with the behaviour itself. Let's see an example:</para>
+		
+		<screen>			
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class ReceiveBehav(spade.Behaviour.Behaviour):
+		"""This behaviour will receive all kind of messages"""
+
+		def _process(self):
+			self.msg = None
+			
+			# Blocking receive for 10 seconds
+			self.msg = self._receive(True, 10)
+			
+			# Check wether the message arrived
+			if self.msg:
+				print "I got a message!"
+			else:
+				print "I waited but got no message"
+
+	class AnotherBehav(spade.Behaviour.Behaviour):
+		"""This behaviour will receive only messages of the 'cooking' ontology"""
+	
+		def _process(self):
+			self.msg = None
+			
+			# Blocking receive indefinitely
+			self.msg = self._receive(True)
+			
+			# Check wether the message arrived
+			if self.msg:
+				print "I got a cooking message!"
+			else:
+				print "I waited but got no cooking message"				
+
+	def _setup(self):
+		# Add the "ReceiveBehav" as the default behaviour
+		rb = self.ReceiveBehav()
+		self.setDefaultBehaviour(rb)
+		
+		# Prepare template for "AnotherBehav"
+		cooking_template = spade.Behaviour.ACLTemplate()
+		cooking_template.setOntology("cooking")
+		mt = spade.Behaviour.MessageTemplate(cooking_template)
+
+		# Add the behaviour WITH the template
+		self.addBehaviour(ab, mt)				
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</screen>
+		
+		<para>In the previous example, there are a couple of behaviours. The <literal>ReceiveBehav</literal> behaviour will wait for a new message for 10 seconds and then print wether a message arrived or not (and then start over). The <literal>AnotherBehav</literal> will wait indefinitely for a <emphasis>"cooking"</emphasis> message. How do we specify a <emphasis>"cooking"</emphasis> message? In this case, by means of the <literal>cooking</literal> ontology. So, when the behaviours are instantiated in the <literal>_setup</literal> method of the agent, we create the <literal>cooking_template</literal> template (an object of the <literal>spade.Behaviour.ACLTemplate</literal> class) and set its ontology to <literal>cooking</literal>. This means that whenever a message arrives with its ontology set to <literal>cooking</literal>, it will match with the template. Then, we create an object of the <literal>spade.Behaviour.MessageTemplate</literal> class to wrap the <literal>cooking_template</literal> and add the <literal>AnotherBehav</literal> behaviour to the agent with the new message template associated (the second parameter of the <literal>addBehaviour</literal> method).</para>	
+
+	</section>
+	
+	<section id="spade.basicagents.whatsnext">
+		<title>What's next</title>
+		
+		<para>In this chapter we have learned how to make SPADE agents with basic functionality and, specially, how to set up behaviours and send and receive messages. Coming up next we will learn how to make use of the facilities the platform offers in order to contact agents and services.</para>
+		
+	</section>
+</chapter>

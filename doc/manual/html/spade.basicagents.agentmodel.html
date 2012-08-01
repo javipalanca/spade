@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The SPADE agent model</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
+<link rel="prev" href="spade.basicagents.library.html" title="The SPADE Agent Library">
+<link rel="next" href="spade.basicagents.first.html" title="My first SPADE agent">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The SPADE agent model</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basicagents.library.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 4. Basic agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basicagents.first.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The SPADE agent model">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basicagents.agentmodel"></a>The SPADE agent model</h2></div></div></div>
+<p>The Agent Model is basically composed of a connection mechanism to the platform, a message dispatcher, and a set of different behaviors that the dispatcher gives the messages to. Every agent needs an identifier called Jabber ID <span class="emphasis"><em>a.k.a.</em></span> <span class="bold"><strong>JID</strong></span> and a valid password to establish a connection with the platform.</p>
+<p>The <span class="emphasis"><em>JID</em></span> (composed by a <span class="bold"><strong>username</strong></span>, an <span class="bold"><strong>@</strong></span>, and a <span class="bold"><strong>server domain</strong></span>) will be the name that identifies an agent in the platform, e.g. <code class="literal">myagent@myprovider.com</code>. The agent address (which is another important field on the Agent Identifier) would be the JID of the platform's ACC (e.g. <code class="literal">xmpp://acc.myprovider.com</code>). We have defined the prefix <code class="literal">xmpp://</code> for the XMPP addresses.</p>
+<div class="section" title="Connection to the platform">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="spade.basicagents.agentmodel.connection"></a>Connection to the platform</h3></div></div></div>
+<p>Communications in SPADE are handled internally by means of the Jabber protocol. This protocol has a mechanism to register and authenticate users against a Jabber server. Since the SPADE platform includes a Jabber server component, SPADE agents use the aforementioned mechanism to register in the server as Jabber clients. After a succesful register, each agent holds an open and persistent Jabber stream of communications with the platform. This process is automatically triggered as part of the agent registration process.</p>
+</div>
+<div class="section" title="The message dispatcher">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="spade.basicagents.agentmodel.dispatcher"></a>The message dispatcher</h3></div></div></div>
+<p>Each SPADE agent has an internal message dispatcher component. This message dispatcher acts as a mailman: when a message for the agent arrives, it places it in the correct <span class="emphasis"><em>"mailbox"</em></span> (more about that later); and when the agent needs to send a message, the message dispatcher does the job, putting it in the communication stream. The message dispatching is done automatically by the SPADE Agent Library whenever a new message arrives or is to be sent.</p>
+</div>
+<div class="section" title="The behaviors">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="spade.basicagents.agentmodel.behaviours"></a>The behaviors</h3></div></div></div>
+<p>An agent can run serveral behaviors simultaneously. A <span class="bold"><strong>behavior</strong></span> is a task that an agent can execute using repeating patterns. SPADE provides some predefined behavior types: Cyclic, One-Shot, Periodic, Time-Out, Finite State Machine and Event Behavior. Those behavior types help to implement the different tasks that an agent can perform. The kind of behaviors supported by a SPADE agent are the following:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Cyclic and Periodic behaviours are useful for performing repetitive tasks.</p></li>
+<li class="listitem"><p>One-Shot and Time-Out behaviors can be used to perform casual tasks.</p></li>
+<li class="listitem"><p>The Finite State Machine allows more complex behaviors to be built.</p></li>
+<li class="listitem"><p>Event behaviors respond to some event that the agent perceives.</p></li>
+</ul></div>
+<p>Every agent can have as many behaviors as desired. When a message arrives to the agent, the message dispatcher redirects it to the correct behavior queue. A behavior has a <span class="bold"><strong>message template</strong></span> attached to it. Therefore, the message dispatcher uses this template to determine which behavior the message is for, by matching it with the correct template. A behavior can thus select what kind of messages it wants to receive by using templates.</p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basicagents.library.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basicagents.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basicagents.first.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The SPADE Agent Library </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> My first SPADE agent</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

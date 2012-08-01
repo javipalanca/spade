@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The Knowledge Base</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
+<link rel="prev" href="spade.bdi.intro.html" title="The SPADE BDI Agent Model">
+<link rel="next" href="spade.bdi.plans.html" title="Plans and Services">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The Knowledge Base</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.bdi.intro.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. BDI Architecture for SPADE Agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.bdi.plans.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The Knowledge Base">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.bdi.kb"></a>The Knowledge Base</h2></div></div></div>
+<p>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make query for it.</p>
+<pre class="screen">
+		#Inserts a Knowledge
+		agent.addBelieve(expr("value(1)"))
+
+		#Deletes a Knowledge
+		agent.removeBelieve(expr("value(2)"))
+
+		#Ask for a Knowledge
+		agent.askBelieve(expr("value(1)"))
+		True
+
+		agent.askBelieve(expr("value(X)"))
+		True
+	</pre>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.bdi.intro.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.bdi.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.bdi.plans.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">The SPADE BDI Agent Model </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Plans and Services</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

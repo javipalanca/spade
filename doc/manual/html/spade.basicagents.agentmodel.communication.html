@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Agent Communication: Sending and Receiving Messages</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
+<link rel="prev" href="spade.basicagents.behav.html" title="An agent with a behavior">
+<link rel="next" href="spade.basicagents.whatsnext.html" title="What's next">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Agent Communication: Sending and Receiving Messages</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.basicagents.behav.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 4. Basic agents</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basicagents.whatsnext.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Agent Communication: Sending and Receiving Messages">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.basicagents.agentmodel.communication"></a>Agent Communication: Sending and Receiving Messages</h2></div></div></div>
+<p>As you know, messages are the basis of every MAS. They are the centre of the whole <span class="emphasis"><em>"computing as interaction"</em></span> paradigm in which MAS are based. So it is very important to understand which facilities are present in the SPADE Agent Library to work with agent messages.</p>
+<p>First and foremost, there is the Agent Identifier or AID. It is the information that identifies an agent and provides some information on how to communicate with it, i.e., its addresses. Every agent has a unique AID. In SPADE, that AID is composed of a unique name and a set of addresses which can be used to communicate with the agent. In most cases, an agent will use its JID as its name, and will have only one single (Jabber) address. For example:</p>
+<p><code class="literal">Name = "agent@myhost.myprovider.com" . Addresses = ["xmpp://agent@myhost.myprovider.com"] .</code></p>
+<p>The SPADE Agent Library uses the class <code class="literal">spade.AID.aid</code> to represent AID information. Translating the previous example into actual code would produce something like this:</p>
+<pre class="screen">
+import spade
+
+identification = spade.AID.aid(name="agent@myhost.myprovider.com", addresses=["xmpp://agent@myhost.myprovider.com"])
+		</pre>
+<p>Second, there is the class that represents a FIPA-ACL message. This class is <code class="literal">spade.ACLMessage.ACLMessage</code> , and you can instantiate it to create new messages to work with. The class provides several methods to construct and de-construct messages, based on the fields present in standard FIPA-ACL Messages. When a message is ready to be sent, it can be passed on to the <code class="literal">send()</code> method of the agent, which will trigger the internal communication process to actually send it to its destination. Here is a self-explaining example:</p>
+<pre class="screen">
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class InformBehav(spade.Behaviour.OneShotBehaviour):
+
+		def _process(self):
+			# First, form the receiver AID
+			receiver = spade.AID.aid(name="receiver@myhost.myprovider.com", 
+                                     addresses=["xmpp://receiver@myhost.myprovider.com"])
+			
+			# Second, build the message
+			self.msg = spade.ACLMessage.ACLMessage()  # Instantiate the message
+			self.msg.setPerformative("inform")        # Set the "inform" FIPA performative
+			self.msg.setOntology("myOntology")        # Set the ontology of the message content
+			self.msg.setLanguage("English")           # Set the language of the message content
+			self.msg.addReceiver(receiver)            # Add the message receiver
+			self.msg.setContent("Hello World")        # Set the message content
+			
+			# Third, send the message with the "send" method of the agent
+			self.myAgent.send(self.msg)
+
+	def _setup(self):
+		print "MyAgent starting . . ."
+		b = self.InformBehav()
+		self.addBehaviour(b, None)
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<p>The previous example is also an opportunity to introduce the <code class="literal">myAgent</code> attribute that can be used in any behaviour. It is a reference to the agent that holds the behaviour and thus it can be used as a shortcut to access any method or attribute the agent object has. In this particular case, the command <code class="literal">self.myAgent.send(self.msg)</code> is accessing the <code class="literal">send</code> method of the agent through the <code class="literal">myAgent</code> shortcut.</p>
+<p>There are two basic methods in message communication: <code class="literal">send</code> , which you already know, and <code class="literal">_receive</code> , which, as its name says, serves the purpose of receiving a message. At any given moment, a behaviour can make use of the <code class="literal">_receive</code> method in order to receive a message.</p>
+<div class="note" title="Regarding send and _receive" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding send and _receive">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Regarding <code class="literal">send</code> and <code class="literal">_receive</code>
+</th>
+</tr>
+<tr><td align="left" valign="top"><p><span class="bold"><strong>WARNING:</strong></span> Please take note that whereas <code class="literal">send</code> is a method of the agent, <code class="literal">_receive</code> is a method of the <span class="bold"><strong>behaviour</strong></span>. This difference is very important. All the behaviours send messages the same way, but, as stated earlier, every behaviour has its unique <span class="emphasis"><em>message template</em></span> that specifies which kind of messages it may receive, and thus, each behaviour uses its own <code class="literal">_receive</code> method to receive its own messages.</p></td></tr>
+</table></div>
+<div class="note" title="Regarding messages at initialization time" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding messages at initialization time">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Regarding messages at initialization time</th>
+</tr>
+<tr><td align="left" valign="top"><p><span class="bold"><strong>WARNING:</strong></span> A SPADE agent cannot send nor receive messages until its behaviours are active. That is, do NOT place calls to the <code class="literal">send</code> or <code class="literal">_receive</code> methods inside the <code class="literal">_setup</code> and <code class="literal">takeDown</code> methods.</p></td></tr>
+</table></div>
+<p>The <code class="literal">_receive</code> method accepts two parameters: a boolean representing wether the behaviour must block waiting for a message, and the number of seconds it must wait before resuming execution. Of course the latter is only needed if the former is set to "True". If only the first parameter is present and set to "True", the behaviour will block indefinitely.</p>
+<p>If there is a message for the behaviour calling the <code class="literal">_receive</code> method, the call will return an object of the <code class="literal">spade.ACLMessage.ACLMessage</code> class representing such message. If there is no message and the call is non-blocking or it times out, the return value will be <code class="literal">None</code>.</p>
+<p>In order to set a message template for a behaviour, you must first define such template. Or you can set a behaviour to be the <span class="emphasis"><em>default behaviour</em></span>, which means it will receive all kind of messages (no need to specify a template). To define a template you can use the classes <code class="literal">spade.Behaviour.ACLTemplate</code> and <code class="literal">spade.Behaviour.MessageTemplate</code> . First, you need to instantiate a <code class="literal">spade.Behaviour.ACLTemplate</code> object (which quite the same methods as a <code class="literal">spade.ACLMessage.ACLMessage</code> object) and edit it to match your requirements (i.e. set the ontology, the language, the protocol, etc...). Then, you must wrap it around a <code class="literal">spade.Behaviour.MessageTemplate</code> object. That is the object that you will pass on to the <code class="literal">addBehaviour</code> method, along with the behaviour itself. Let's see an example:</p>
+<pre class="screen">			
+import spade
+
+class MyAgent(spade.Agent.Agent):
+	class ReceiveBehav(spade.Behaviour.Behaviour):
+		"""This behaviour will receive all kind of messages"""
+
+		def _process(self):
+			self.msg = None
+			
+			# Blocking receive for 10 seconds
+			self.msg = self._receive(True, 10)
+			
+			# Check wether the message arrived
+			if self.msg:
+				print "I got a message!"
+			else:
+				print "I waited but got no message"
+
+	class AnotherBehav(spade.Behaviour.Behaviour):
+		"""This behaviour will receive only messages of the 'cooking' ontology"""
+	
+		def _process(self):
+			self.msg = None
+			
+			# Blocking receive indefinitely
+			self.msg = self._receive(True)
+			
+			# Check wether the message arrived
+			if self.msg:
+				print "I got a cooking message!"
+			else:
+				print "I waited but got no cooking message"				
+
+	def _setup(self):
+		# Add the "ReceiveBehav" as the default behaviour
+		rb = self.ReceiveBehav()
+		self.setDefaultBehaviour(rb)
+		
+		# Prepare template for "AnotherBehav"
+		cooking_template = spade.Behaviour.ACLTemplate()
+		cooking_template.setOntology("cooking")
+		mt = spade.Behaviour.MessageTemplate(cooking_template)
+
+		# Add the behaviour WITH the template
+		self.addBehaviour(ab, mt)				
+
+if __name__ == "__main__":
+	a = MyAgent("agent@myhost.myprovider.com", "secret")
+	a.start()
+		</pre>
+<p>In the previous example, there are a couple of behaviours. The <code class="literal">ReceiveBehav</code> behaviour will wait for a new message for 10 seconds and then print wether a message arrived or not (and then start over). The <code class="literal">AnotherBehav</code> will wait indefinitely for a <span class="emphasis"><em>"cooking"</em></span> message. How do we specify a <span class="emphasis"><em>"cooking"</em></span> message? In this case, by means of the <code class="literal">cooking</code> ontology. So, when the behaviours are instantiated in the <code class="literal">_setup</code> method of the agent, we create the <code class="literal">cooking_template</code> template (an object of the <code class="literal">spade.Behaviour.ACLTemplate</code> class) and set its ontology to <code class="literal">cooking</code>. This means that whenever a message arrives with its ontology set to <code class="literal">cooking</code>, it will match with the template. Then, we create an object of the <code class="literal">spade.Behaviour.MessageTemplate</code> class to wrap the <code class="literal">cooking_template</code> and add the <code class="literal">AnotherBehav</code> behaviour to the agent with the new message template associated (the second parameter of the <code class="literal">addBehaviour</code> method).</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.basicagents.behav.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.basicagents.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basicagents.whatsnext.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">An agent with a behavior </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> What's next</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

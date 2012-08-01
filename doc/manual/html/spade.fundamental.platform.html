@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>The Agent Platform</title>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="SPADE User's Manual">
+<link rel="up" href="spade.fundamental.html" title="Chapter 3. Fundamental Concepts">
+<link rel="prev" href="spade.fundamental.html" title="Chapter 3. Fundamental Concepts">
+<link rel="next" href="spade.basicagents.html" title="Chapter 4. Basic agents">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">The Agent Platform</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="spade.fundamental.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Fundamental Concepts</th>
+<td width="20%" align="right"> <a accesskey="n" href="spade.basicagents.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="The Agent Platform">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="spade.fundamental.platform"></a>The Agent Platform</h2></div></div></div>
+<p>As said in previous chapters, the agent platform is the environment where the agents are deployed. Think of it both as the <span class="emphasis"><em>"home"</em></span> of the agents and the main server of a network from a distributed application. In our case, that platform is SPADE, an agent platform based on the Jabber/XMPP protocols and technology.</p>
+<p>The SPADE platform is installed and executed on a host. That host becomes the centre of the multi-agent system that we are going to build. In order to properly deploy the SPADE platform, it needs to be configured first to suit the host where it is going to be. Along with the SPADE distribution comes a tool called <span class="command"><strong>configure.py</strong></span> which is a script to automatically configure SPADE for you. In most scenarios, the only configuration you need to do for SPADE to work is to invoke this tool with the desired hostname to use as the platform hostname. E.g:</p>
+<pre class="screen">
+$ python configure.py myhost.myprovider.com
+</pre>
+<p>Then, SPADE will be configured to work as a platform serving at the <span class="command"><strong>myhost.myprovider.com</strong></span> domain.</p>
+<p>Internally, the <span class="command"><strong>configure.py</strong></span> script creates the configuration files that SPADE needs to work. This configuration is stored in the <span class="command"><strong>etc/</strong></span> subdirectory inside the SPADE installation path.</p>
+<p>After a successful configuration, you can try to run SPADE for the first time. To do so, use the <span class="command"><strong>runspade.py</strong></span> script that is provided with the SPADE distribution. This script will launch the SPADE platform and set it ready to start working with agents. You should see something along the lines of:</p>
+<pre class="screen">
+$ python runspade.py
+SPADE 2.0 &lt;gusarba@gmail.com&gt; - http://spade2.googleprojects.com
+Starting SPADE...... [done]
+</pre>
+<p>You may also see some warnings and additional messages while the platform is starting. That's fine, we will discuss them later. You are now ready to start loading agents into the platform.</p>
+<p>To learn how to make your first SPADE agents, head on to the next chapter.</p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="spade.fundamental.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="spade.fundamental.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="spade.basicagents.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 3. Fundamental Concepts </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 4. Basic agents</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
