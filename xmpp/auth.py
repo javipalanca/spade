@@ -25,7 +25,7 @@ import base64,random,dispatcher
 import hashlib
 
 def HH(some): return hashlib.md5(some).hexdigest()
-def H(some): return hashlab.md5(some).digest()
+def H(some): return hashlib.md5(some).digest()
 def C(some): return ':'.join(some)
 
 class NonSASL(PlugIn):
