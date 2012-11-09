@@ -1,11 +1,12 @@
 import types
 import AID
+import json
 
 class Envelope:
     """
     FIPA envelope
     """
-    def __init__(self,to=None,_from=None,comments=None,aclRepresentation=None,payloadLength=None,payloadEncoding=None,date=None,encrypted=None,intendedReceiver=None,received=None,transportBehaviour=None,userDefinedProperties=None):
+    def __init__(self,to=None,_from=None,comments=None,aclRepresentation=None,payloadLength=None,payloadEncoding=None,date=None,encrypted=None,intendedReceiver=None,received=None,transportBehaviour=None,userDefinedProperties=None, jsonstring=None):
 
         self.to = list()
         if to != None:
@@ -57,6 +58,7 @@ class Envelope:
         else:
             self.userDefinedProperties = list()
 
+        if jsonstring: self.loadJSON(jsonstring)
 
     def getTo(self):
         return self.to
@@ -121,6 +123,9 @@ class Envelope:
         self.received = received
 
     def __str__(self):
+        return self.asXML()
+        
+    def asXML(self):        
         """
         returns a printable version of the envelope in XML
         """
@@ -150,7 +155,7 @@ class Envelope:
         if self.aclRepresentation:
             r=r+ "\t\t\t\t<acl-representation>"+ self.aclRepresentation + "</acl-representation>\n"
         if self.payloadLength:
-            r=r+ "\t\t\t\t<payload-length>"+self.payloadLength+"</payload-length>\n"
+            r=r+ "\t\t\t\t<payload-length>"+str(self.payloadLength)+"</payload-length>\n"
         if self.payloadEncoding:
             r=r+ "\t\t\t\t<payload-encoding>"+self.payloadEncoding+"</payload-encoding>\n"
         if self.date:
@@ -180,3 +185,103 @@ class Envelope:
         r=r+"\t\t</envelope>\n"
 
         return r
+
+
+    def asJSON(self):        
+        """
+        returns a printable version of the envelope in JSON
+        """
+        r = "{"
+        r=r+'"to":['
+        for aid in self.to:
+            r=r+'{'
+            r=r+'"name":"' + aid.getName() + '",'
+            r=r+'"addresses":['
+            for addr in aid.getAddresses():
+                r=r+ '"' + addr + '",'
+            if r[-1:]==",": r = r[:-1]
+            r=r+"]"
+            r=r+"},"
+        if r[-1:]==",": r = r[:-1]
+        r=r+"],"
+        if self._from:
+            r=r+'"from":{'
+            r=r+'"name":"' + self._from.getName() + '",'
+            r=r+'"addresses":['
+            for addr in self._from.getAddresses():
+                r=r+ '"' + addr + '",'
+            if r[-1:]==",": r = r[:-1]
+            r=r+"]},"
+        if self.aclRepresentation:
+            r=r+ '"acl-representation":"'+ self.aclRepresentation + '",'
+        if self.payloadLength:
+            r=r+ '"payload-length":"'+str(self.payloadLength)+'",'
+        if self.payloadEncoding:
+            r=r+ '"payload-encoding":"'+self.payloadEncoding+'",'
+        if self.date:
+            r=r+ '"date":"'+str(self.date)+'",'
+        if self.intendedReceiver:
+            r=r+ '"intended-receiver":['
+            for aid in self.intendedReceiver:
+             	r=r+"{"
+              	r=r+'"name":"' + aid.getName() + '",'
+               	r=r+'"addresses":['
+                for addr in aid.getAddresses():
+                 	r=r+ '"' + addr + '",'
+                if r[-1:]==",": r = r[:-1]
+                r=r+"],"
+                if r[-1:]==",": r = r[:-1]
+                r=r+"},"
+            if r[-1:]==",": r = r[:-1]
+            r=r+"],"
+        if self.received:
+            r=r+ '"received":{'
+            if self.received.getBy():
+                r=r+ '"received-by":"'+self.received.getBy() +'",'
+            if self.received.getDate():
+                r=r+ '"received-date":"'+ str(self.received.getDate()) +'",'
+            if self.received.getId():
+                r=r+ '"received-id":"'+ self.received.getId() +'"'
+            if r[-1:]==",": r = r[:-1]
+            r=r+ "}"
+
+        if r[-1:]==",": r = r[:-1]
+        r=r+"}"
+
+        return r
+
+    def loadJSON(self, jsonstring):        
+        """
+        loads a JSON string in the envelope
+        """
+        r = json.loads(jsonstring)
+        
+        if r.has_key("to"):
+            for a in r["to"]:
+                aid = AID.aid()
+                aid.setName(a["name"])
+                for addr in a["addresses"]:
+                    aid.addAddress(addr)
+                self.addTo(aid)
+        if r.has_key("from"):
+            aid = AID.aid()
+            aid.setName(r["from"]["name"])
+            for addr in r["from"]["addresses"]:
+                aid.addAddress(addr)
+            self.setFrom(aid)
+            
+        if r.has_key("acl-representation"):
+            self.setAclRepresentation(r["acl-representation"])
+        if r.has_key("payload-length"):
+            self.setPayloadLength(r["payload-length"])
+        if r.has_key("payload-encoding"):
+            self.setPayloadEncoding(r["payload-encoding"])
+        if r.has_key("date"):
+            self.setDate(r["date"])
+        if r.has_key("intended-receiver"):
+            for ag in r["intended-receiver"]:
+                aid = AID.aid()
+              	aid.setName(ag["name"])
+                for addr in ag["addresses"]:
+                 	aid.addAddress(addr)
+                self.addIntendedReceiver(aid)

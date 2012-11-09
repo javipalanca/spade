@@ -33,19 +33,23 @@ class PlatformRestart(Exception):
 
 
 class SpadePlatform(PlatformAgent):
+
     class RouteBehaviour(Behaviour.Behaviour):
+        #This behavior routes messages between agents.
+        #Also uses MTPs when different protocols are required (HTTP, ...)
         def __init__(self):
             Behaviour.Behaviour.__init__(self)
 
         def _process(self):
             msg = self._receive(True)
             if (msg != None):
-                self.myAgent.DEBUG("SPADE Platform Received a message: " + str(msg))
+                self.myAgent.DEBUG("SPADE Platform Received a message: " + str(msg),'info')
                 if msg.getSender() == self.myAgent.getAID():
                     # Prevent self-loopholes
                     self.myAgent.DEBUG("ACC LOOP HOLE", "warn")
                     return
 
+                #prepare to send the message to each one of the receivers separately
                 to_list = msg.getReceivers()
                 d = {}
                 for to in to_list:
@@ -68,28 +72,29 @@ class SpadePlatform(PlatformAgent):
                         self.myAgent.DEBUG("Message through protocol " + str(protocol))
                         #ap = ACLParser.ACLxmlParser()
                         #payload = ap.encodeXML(newmsg)
-                        payload = str(newmsg)
+                        #payload = str(newmsg)
+                        payload = newmsg
 
                         envelope = Envelope.Envelope()
                         envelope.setFrom(newmsg.getSender())
                         for i in newmsg.getReceivers():
                             envelope.addTo(i)
-                        envelope.setAclRepresentation("fipa.acl.rep.string.std")  # Always the same?
-                        envelope.setPayloadLength(len(payload))
+                        envelope.setAclRepresentation(newmsg.getAclRepresentation())
+                        envelope.setPayloadLength(len(str(payload)))
                         envelope.setPayloadEncoding("US-ASCII")
                         envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())
                         self.myAgent.mtps[protocol].send(envelope, payload)
                     else:
                         # Default case: it's an XMPP message
-                        self.myAgent.DEBUG("Message through protocol XMPP")
+                        self.myAgent.DEBUG("Message through protocol XMPP",'info')
                         platform = self.myAgent.getSpadePlatformJID().split(".",1)[1]
                         if not platform in receiver_URI:
                             # Outside platform
-                            self.myAgent.DEBUG("Message for another platform")
+                            self.myAgent.DEBUG("Message for another platform",'info')
                             self.myAgent.send(newmsg, "jabber")
                         else:
                             # THIS platform
-                            self.myAgent.DEBUG("Message for current platform")
+                            self.myAgent.DEBUG("Message for current platform",'info')
                             for recv in v:
                                 #self.myAgent._sendTo(newmsg, recv.getName(), "jabber")
                                 self.myAgent.send(newmsg, "jabber")
@@ -105,7 +110,7 @@ class SpadePlatform(PlatformAgent):
                     #print "Message to", to.getName(), "... Posting!"
                     """
             else:
-                self.myAgent.DEBUG("ACC::dying... it shouldn't happen", 'err')
+                self.myAgent.DEBUG("ACC::dying... this shouldn't happen", 'err')
 
     def __init__(self, node, password, server, port, config=None):
         PlatformAgent.__init__(self, node, password, server, port, config=config, debug=[])

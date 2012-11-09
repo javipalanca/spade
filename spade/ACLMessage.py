@@ -5,9 +5,14 @@ import string
 import cPickle as pickle
 #random.seed(time.time())
 import content
-import ACLParser
+from ACLParser import ACLxmlParser
 import xml
 import uuid
+import json
+
+FIPA_ACL_REP_STRING = "fipa.acl.rep.string.std"
+FIPA_ACL_REP_JSON   = "fipa.acl.rep.json.std"
+FIPA_ACL_REP_XML    = "fipa.acl.rep.xml.std"
 
 class ACLMessage:
 	"""
@@ -39,7 +44,7 @@ class ACLMessage:
 	cid_base = str("".join([string.ascii_letters[int(random.randint(0,len(string.ascii_letters)-1))] for a in range(4)]))
 	cid_autocount = 0
 
-	def __init__(self, performative=None):
+	def __init__(self, performative=None, jsonstring=None):
 		self._attrs = {}
 		#possible FIPA communicative acts
 		self.commacts = ['accept-proposal', 'agree', 'cancel', \
@@ -62,6 +67,8 @@ class ACLMessage:
 		self.receivers = []
 		self.content = None
 
+		self._attrs["acl_representation"] = FIPA_ACL_REP_XML
+
 		"""
 		self.reply_to = []
 		self.reply_with = None
@@ -80,6 +87,8 @@ class ACLMessage:
 		self._attrs['id'] = str(uuid.uuid4()).replace("-","")
 
 		#self.userDefProps = None
+		
+		if jsonstring: self.loadJSON(jsonstring)
 
 	def reset(self):
 		"""
@@ -251,6 +260,15 @@ class ACLMessage:
 		except:
 			return None
 
+	def setAclRepresentation(self,e):
+		self._attrs["acl_representation"] = str(e)
+
+	def getAclRepresentation(self):
+		try:
+			return str(self._attrs["acl_representation"])
+		except:
+			return None
+
 	def setOntology(self,e):
 		self._attrs["ontology"] = str(e)
 
@@ -324,7 +342,17 @@ class ACLMessage:
 
 
 	def __str__(self):
-	    p = ACLParser.ACLxmlParser()
+	    if self.getAclRepresentation() == FIPA_ACL_REP_JSON:
+	        return self.asJSON()
+	    elif self.getAclRepresentation() == FIPA_ACL_REP_STRING:
+	        return self.asString()
+	    elif self.getAclRepresentation() == FIPA_ACL_REP_XML:
+	        return self.asXML()
+	    else:
+	        return self.asXML()
+	    
+	def asXML(self):
+	    p = ACLxmlParser()
 	    return p.encodeXML(self)
 	    
 	def asString(self):
@@ -394,11 +422,12 @@ class ACLMessage:
 		"""
 		s = '<table class="servicesT" cellspacing="0">'
 		s += '<tr><td class="servHd">Performative</td><td class="servBodL">'+self.getPerformative()+'</td></tr>'
-		sndr = self.sender.asXML()
-		sndr = sndr.replace(">", "&gt;")
-		sndr = sndr.replace("<", "&lt;")
-		sndr = sndr.replace('"', "&quot;")
-		s += '<tr><td class="servHd">Sender</td><td class="servBodL"><pre>'+sndr+'</pre></td></tr>'
+		if self.sender:
+		    sndr = self.sender.asXML()
+		    sndr = sndr.replace(">", "&gt;")
+		    sndr = sndr.replace("<", "&lt;")
+		    sndr = sndr.replace('"', "&quot;")
+		    s += '<tr><td class="servHd">Sender</td><td class="servBodL"><pre>'+sndr+'</pre></td></tr>'
 		recvs = ""
 		for r in self.receivers:
 			escaped = r.asXML()
@@ -439,3 +468,118 @@ class ACLMessage:
 			s += '<tr><td class="servHd">Conversation ID</td><td class="servBodL">'+str(self.getConversationId())+'</td></tr>'
 		s += '</table>'
 		return s
+
+
+	def asJSON(self):
+		"""
+		returns a JSON version of the message
+		"""
+		p = "{"
+
+		p+='"performative":"'+str(self.getPerformative())+'",'
+
+		if self.sender:
+		    p+='"sender":' + self.sender.asJSON() + ","
+
+		if self.receivers:
+		    p+='"receivers":['
+		    for i in self.receivers:
+				p += i.asJSON()+","
+		    if p[-1:]==",":
+			    p = p[:-1]
+		    p+="],"
+			
+		if self.content:
+			p = p +  '"content":"' + str(self.content) + '",'
+
+		if self.getReplyWith():
+			p = p + '"reply-with":"' + str(self.getReplyWith()) + '",'
+
+		if self.getReplyBy():
+			p = p+ '"reply-by":"' + self.getReplyBy() + '",'
+
+		if self.getInReplyTo():
+			p = p+ '"in-reply-to":"' + self.getInReplyTo() + '",'
+
+		if self.getReplyTo():
+			p = p+ '"reply-to":['
+			for i in self.getReplyTo():
+				p= p+ i.asJSON()+","
+			if p[-1:]==",":
+			    p = p[:-1]
+			p+="],"
+
+		if self.getLanguage():
+			p = p+ '"language":"' + self.getLanguage() + '",'
+
+		if self.getEncoding():
+			p = p+ '"encoding":"' + self.getEncoding() + '",'
+
+		if self.getOntology():
+			p = p+ '"ontology":"' + self.getOntology() + '",'
+
+		if self.getProtocol():
+			p = p+ '"protocol":"' + self.getProtocol() + '",'
+
+		if self.getConversationId():
+			p = p+ '"conversation-id":"' + self.getConversationId() + '",'
+
+		if p[-1:]==",":
+		    p = p[:-1]
+		p = p + "}"
+
+		return p
+
+
+	def loadJSON(self, jsonstring):
+		"""
+		loads a JSON string in the message
+		"""
+		p = json.loads(jsonstring)
+
+		if p.has_key("performative"): self.setPerformative(p["performative"])
+
+		if p.has_key("sender"):
+		    s = AID.aid()
+		    s.loadJSON(p["sender"])
+		    self.setSender(s)
+
+		if p.has_key("receivers"):
+		    for i in p["receivers"]:
+		        s = AID.aid()
+		        s.loadJSON(i)
+		        self.addReceiver(s)
+
+		if p.has_key("content"):
+		    self.setContent(p["content"])
+
+		if p.has_key("reply-with"):
+		    self.setReplyWith(p["reply-with"])
+
+		if p.has_key("reply-by"):
+		    self.setReplyBy(p["reply-by"])
+
+		if p.has_key("in-reply-to"):
+		    self.setInReplyTo(p["in-reply-to"])
+
+		if p.has_key("reply-to"):
+			for i in p["reply-to"]:
+			    s = AID.aid()
+		        s.loadJSON(i)
+		        self.addReplyTo(s)
+
+		if p.has_key("language"):
+			self.setLanguage(p["language"])
+
+		if p.has_key("encoding"):
+			self.setEncoding(p["encoding"])
+
+		if p.has_key("ontology"):
+			self.setOntology(p['ontology'])
+
+		if p.has_key("protocol"):
+			self.setProtocol(p['protocol'])
+
+		if p.has_key("conversation-id"):
+			self.setConversationId(p["conversation-id"])
+		

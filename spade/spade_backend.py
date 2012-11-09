@@ -67,13 +67,13 @@ class SpadeBackend:
     def shutdown(self):
         if self.df:
 		    self.df.stop()
-		    #del self.df
+		    del self.df
         if self.ams: 
 		    self.ams.stop()
-		    #del self.ams
+		    del self.ams
         if self.acc:
 		    self.acc.stop()
-		    #del self.acc
+		    del self.acc
 		    
     def DEBUG(self,component="",msg="",typ=""):
 	    self.acc.DEBUG(msg,typ,component)

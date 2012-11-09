@@ -825,6 +825,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             return
         
         ACLmsg._attrs.update({"method":method})
+        if ACLmsg.getAclRepresentation()==None:
+            ACLmsg.setAclRepresentation(ACLMessage.FIPA_ACL_REP_XML)
         # Check for the sender field!!! (mistake #1)
         if not ACLmsg.getSender():
             ACLmsg.setSender(self.getAID())
@@ -865,7 +867,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         generate_envelope = False
         #If there is more than one address in the sender or
         #the only address is not an xmpp address,
-        #we need the fill sender AID field
+        #we need the full sender AID field
         try:
             if method=="xmppfipa" or len(ACLmsg.getSender().getAddresses()) > 1 or \
                 "xmpp" not in ACLmsg.getSender().getAddresses()[0]:
@@ -904,6 +906,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         #Generate the envelope ONLY if it is needed
         if generate_envelope:
+            envelope.setAclRepresentation(ACLmsg.getAclRepresentation())
             xc = XMLCodec.XMLCodec()
             envxml = xc.encodeXML(envelope)
             xenv['content-type']='fipa.mts.env.rep.xml.std'
@@ -933,7 +936,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 jabber_msg["from"]=self.getAID().getName()
                 jabber_msg.setBody(ACLmsg.getContent())
 
-            if (not self._running and method=="auto") or method=="jabber":
+            if (not self._running and method=="auto") or method=="jabber" or method=="xmppfipa":
                 self.jabber.send(jabber_msg)
                 continue
 

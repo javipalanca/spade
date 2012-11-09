@@ -1,7 +1,7 @@
 # -*- coding: cp1252 -*-
 from pyparsing import *
 import sys
-from ACLMessage import *
+import ACLMessage
 import AID
 from BasicFipaDateTime import *
 
@@ -284,7 +284,7 @@ class ACLParser:
 		#print m.asXML()
 		#print m.asList()
 
-		msg = ACLMessage()
+		msg = ACLMessage.ACLMessage()
 
 		if 'msgtype' in m:
 			msg.setPerformative(m['msgtype'])
@@ -373,7 +373,7 @@ class ACLxmlParser(handler.ContentHandler):
 	"""
 
 	def startDocument(self):
-		self.msg = ACLMessage()
+		self.msg = ACLMessage.ACLMessage()
 
 	def endDocument(self):
 		pass

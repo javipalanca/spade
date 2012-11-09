@@ -9,7 +9,10 @@
           <hostname>acc.127.0.0.1</hostname>
           <password>gxFgUdtH</password>
           <port>5222</port>
-
+          <mtp name="http">
+               <instance>http</instance>
+               <protocol>http</protocol>
+          </mtp>
    </acc>
 
    <ams>

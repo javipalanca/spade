@@ -213,6 +213,13 @@ class aid:
 	            co["properties"].append(p)
 	    return co
 
+	def asJSON(self):
+	    """
+	    returns a version of an AID in JSON format
+	    """
+	    import json
+	    return json.dumps(self.asContentObject())
+
 	def asXML(self):
 		"""
 		returns a printable version of an AID in XML
@@ -264,6 +271,23 @@ class aid:
 
 		else: return -1
 
+	def loadJSON(self, content):
+		"""
+		initialices an AID class using a JSON string
+		"""
+
+		if content.has_key("name"):
+			self.setName(content["name"])
+		else:
+			return -1
+
+		if content.has_key("addresses"):
+			for addr in content["addresses"]:
+				self.addAddress(addr)
+
+		if content.has_key("resolvers"):
+			for res in content["resolvers"]:
+				self.addResolvers(res)
 
 
 

@@ -108,6 +108,8 @@ def generateRandom(length):
 
 class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
+    def log_message(format,*args): pass
+
     def Session(self):
         """Session management
         If the client has sent a cookie named sessionId, take its value and 

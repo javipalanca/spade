@@ -87,9 +87,12 @@ def generateCode():
     #        print "EXCEPTION GETTING MTPS: ", str(e)
     
     # Fill the data
+    mtp_str = '''t\t\t<mtp name="http">\n\t\t\t\t<instance>http</instance>\n'''
+    mtp_str = mtp_str + """\t\t\t\t<protocol>http</protocol>\n"""
+    mtp_str = mtp_str + """\t\t\t</mtp>\n\n"""
+    spadexml = spadexml.replace("#MTPS#", mtp_str)
     # GUS: By default, no MTPs, thank you
-    #spadexml = spadexml.replace("#MTPS#", mtp_str) 
-    spadexml = spadexml.replace("#MTPS#", "")   
+    #spadexml = spadexml.replace("#MTPS#", "")   
 
     file = open("spade.xml", "w+")
     file.write(spadexml)

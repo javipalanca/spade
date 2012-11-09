@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+import urllib2
 
 
 import spade
@@ -47,10 +48,18 @@ class KBTestCase(unittest.TestCase):
             from spade import SPARQLKB
         except:
             self.skipTest("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
+
+        url = 'http://lod.openlinksw.com/sparql'
+        try:
+            request = urllib2.urlopen(url,timeout=5)
+        except:
+            self.skipTest("URL " + url + " is not currently available.")
+        if request.code != 200:
+            self.skipTest("URL " + url + " is not currently available.")
             
-        self.a.configureKB("SPARQL", sentence=None, path='http://lod.openlinksw.com/sparql')
+        self.a.configureKB("SPARQL", sentence=None, path=url)
         for result in self.a.askBelieve(sparql1):
-            assert result["p"] in ["0.5", "0.55", "0.75", "0.85"]
+            assert result["p"] in ["0.5", "0.55", "0.65", "0.69", "0.75", "0.85", "1.79"]
             assert result["c"] == "GBP"
 
     def testSPARQLdbpedia(self):
@@ -58,8 +67,16 @@ class KBTestCase(unittest.TestCase):
             from spade import SPARQLKB
         except:
             self.skipTest("Could not import SPARQLKB. Try installing SPARQLWrapper (sudo easy_install SPARQLWrapper)")
+
+        url = 'http://dbpedia.org/sparql'
+        try:
+            request = urllib2.urlopen(url,timeout=5)
+        except:
+            self.skipTest("URL " + url + " is not currently available.")
+        if request.code != 200:
+            self.skipTest("URL " + url + " is not currently available.")
             
-        self.a.configureKB("SPARQL", sentence=None, path='http://dbpedia.org/sparql')
+        self.a.configureKB("SPARQL", sentence=None, path=url)
         for result in self.a.askBelieve(sparql2):
             assert result["name"] in ["Croatia","Republic of Croatia","Republika Hrvatska"]
             
