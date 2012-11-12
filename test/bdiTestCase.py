@@ -58,7 +58,7 @@ class BDITestCase(unittest.TestCase):
         self.s3 = spade.DF.Service(name="s3", owner=self.a.getAID(), inputs=["Value3"],outputs=["Myoutput3"],P=["Var(Value3,3,Int)"],Q=["Var(Myoutput3,4,Int)"])
         self.s4 = spade.DF.Service(name="s4", owner=self.a.getAID(), inputs=["Myoutput3"],outputs=["Myoutput4"],P=["Var(Myoutput3,4,Int)"],Q=["Var(Myoutput4,5,Int)"])
 
-        self.a.registerService(self.s1,s1_method)                
+        self.a.registerService(self.s1,s1_method)
         self.a.registerService(self.s2,s2_method)
         self.a.registerService(self.s3,s3_method)
         self.a.registerService(self.s4,s4_method)

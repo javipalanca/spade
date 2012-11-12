@@ -177,7 +177,6 @@ class KBTestCase(unittest.TestCase):
         try:
             from spade import SWIKB
         except:
-            print "WOWWW"
             self.skipTest("Could not import SWIKB")
 
         self.assertRaises(SWIExecutableNotFound, self.a.configureKB, "SWI", None, "dummyswipl" )

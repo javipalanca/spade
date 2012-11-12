@@ -1,140 +1,250 @@
 <chapter id="spade.bdi">
-	<title>BDI Architecture for SPADE Agents</title>	
+    <title>BDI Architecture for SPADE Agents</title>    
     
-    <para>SPADE supports natively a BDI agent model based on the Goal Oriented Computation paradigm. This chapter of the documentation will introduce the BDI model and its use on the SPADE platform.</para>
-	
-	<section id="spade.bdi.intro">
-		<title>The SPADE BDI Agent Model</title>
-				
+    <para>SPADE supports natively a BDI agent model based on the Distributed Goal Oriented Computing paradigm. This chapter of the documentation will introduce the BDI model and its use on the SPADE platform.</para>
+    
+    <section id="spade.bdi.intro">
+        <title>The SPADE BDI Agent Model</title>
+                
           <para><emphasis>Michael Bratman's</emphasis>BDI agent model is based on 3 basic elements: <emphasis role="bold">Belief</emphasis>, <emphasis role="bold">Desire</emphasis> and <emphasis role="bold">Intention</emphasis> (you know, B-D-I).
-		<itemizedlist>		
-          <listitem><para>A Belief is an entry in the agent's knowledge base. It represents what the agent "knows" about its environment.</para></listitem>		
-          <listitem><para>Desires represent that which the agents wishes to achieve. The instantiation of a Desire is a Goal.</para></listitem>		
+        <itemizedlist>
+          <listitem><para>A Belief is an entry in the agent's knowledge base. It represents what the agent "knows" about its environment.</para></listitem>     
+          <listitem><para>Desires represent that which the agents wishes to achieve. The instantiation of a Desire is a Goal.</para></listitem>     
           <listitem><para>Intentions represent the deliberative state of the agent, that is, what the agent has decided to do in order to achieve its goals. The Intentions in execution are Plans, that is, a sequence of actions that the agent can execute in order to fulfill an Intention.</para></listitem>
-	</itemizedlist>
+    </itemizedlist>
            </para>
     
-           <para>The BDI implemented by SPADE is slightly different. We have tried to develop a distributed BDI system using <emphasis>Service Oriented Computation (SOC)</emphasis> together with dynamic compilation of services in SPADE, which we have called <emphasis role="bold">Goal Oriented Computation</emphasis>.</para>
-        
-		 <para>Este modelo BDI utiliza los principios básicos del modelo BDI tradicional de Michael Bratman pero introduciendo un modelo más complejo de intenciones. 
-		En el modelo BDI de SPADE aparecen los siguientes elementos:</para>
+           <para>The BDI implemented by SPADE is slightly different. We have tried to develop a distributed BDI system using <emphasis>Service Oriented Computing (SOC)</emphasis> together with dynamic compilation of services in SPADE, which we have called <emphasis role="bold">Distributed Goal Oriented Computing</emphasis>.</para>
         
            <para>This BDI model uses the same basic principles of the classic BDI model from Bratman, but it introduces a more complex model for the Intentions.
-		In SPADE's BDI model, the following elements appear:</para>
 
-		<itemizedlist>
-		<listitem><para> <emphasis role="bold">Belief:</emphasis> An entry of knowledge in the agent's KB. You can insert new knowledge, delete it and make queries to the KB about it.</para></listitem>		
-          <listitem><para> <emphasis role="bold">Goals:</emphasis> SPADE's BDI model does not differentiate Desires and Goals, there are only Goals. When an agent expresses a Goal, it means that the agents wishes to accomplish the expression contained in such Goal. When a goal is selected for accomplishment, it becomes active.</para></listitem>		
+        In the SPADE's BDI model, the following elements appear:</para>
+
+        <itemizedlist>
+        <listitem><para> <emphasis role="bold">Belief:</emphasis> An entry of knowledge in the agent's KB. You can insert new knowledge, delete it and make queries to the KB about it.</para></listitem>       
+          <listitem><para> <emphasis role="bold">Goals:</emphasis> SPADE's BDI model does not differentiate Desires and Goals, there are only Goals. When an agent expresses a Goal, it means that the agents wishes to accomplish the expression contained in such Goal. When a goal is selected for accomplishment, it becomes active.</para></listitem>      
           <listitem><para> <emphasis role="bold">Services:</emphasis> Given that SPADE's BDI model is grounded on SOC, it is necessary to include a Service element into the model. A Service is a method offered by the agent to the rest of the system agents. Services can be composed into a sequence forming the Plans. Services have in their description both a pre-condition (P) and a post-condition (Q). The pre-condition P represents a state of knowledge that must be present in order to execute the Service. The post-condition Q represents the state of knowledge that the agent will achieve once the Service has been invoked.</para></listitem>
         <listitem><para> <emphasis role="bold">Plans:</emphasis> Plans are a sequence of Services that work their way to achieve the agent's Goals. Agents reach their Goals by executing Plans. Such Plans are composed of a sequence of Services (with their pre-conditions and post-conditions connected) and both a pre-condition P and a post-condition Q that define the whole Plan. Whenever a Goal G must be achieved, the agent will look for a Plan whose post-condition <literal>Q</literal> equals <literal>G</literal> and also whose pre-condition <literal>P</literal> is present as a pre-requisite for the Plan to start. But, wait for this, the Services composing a Plan's actions <emphasis role="bold">do not necessarily belong to the same agent</emphasis>. There is where the distributed nature of SPADE's BDI model comes into play.</para></listitem>
-	</itemizedlist>
-	
-	</section>
+    </itemizedlist>
+    
+    </section>
 
-	<section id="spade.bdi.kb">
-		<title>The Knowledge Base</title>		
+    <section id="spade.bdi.kb">
+        <title>The Knowledge Base</title>       
         
-          <para>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make query for it.</para>
+        <para>Each agent has a Knowledge Base where it stores its acquired knowledge items. The technology to store these items can be selected from a set of different prolog engines: <literal>SWI-Prolog, XSB, Flora2, Eclipse</literal> and <literal>SPARQL</literal>. SPADE does also support an internal Prolog engine, which is less powerful but has no external requirements. This is the <literal>SpadeKB</literal> engine, wich supports first-order logic.
+        </para>
+        <para>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make queries.</para>
 
-		<screen>
-		#Inserts a Knowledge
-		agent.addBelieve(expr("value(1)"))
+        <screen>
+        #First configure the KB for using SWI-Prolog. The default KB is SpadeKB
+        $ agent.configureKB("SWI", None, "swipl") #third argument is the path to the swipl executable
 
-		#Deletes a Knowledge
-		agent.removeBelieve(expr("value(2)"))
+        #Insert some knowledge items
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.addBelieve( 'a(c,d)' )
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Y) )' ) 
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Z), p(_Z,_Y) )' )
 
-		#Ask for a Knowledge
-		agent.askBelieve(expr("value(1)"))
-		True
+        #Ask for a Knowledge
+        $ agent.askBelieve( 'p(X,Y)' )
+        > [{'Y': 'c', 'X': 'b'}, {'Y': 'd', 'X': 'c'}, {'Y': 'd', 'X': 'b'}]
 
-		agent.askBelieve(expr("value(X)"))
-		True
-	</screen>
+        #Deletes a Knowledge
+        $ agent.removeBelieve( 'a(b,c)' )
 
-	</section>
-	<section id="spade.bdi.plans">
-		<title>Plans and Services</title>		
+        #Check deletion
+        $ agent.askBelieve( 'p(X,Y)' )
+        > [{'Y': 'd', 'X': 'c'}]
+
+    </screen>
+
+    <screen>
+        #XSB
+        $ agent.configureKB("XSB", None, "xsb") #third argument is the path to the xsb executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.removeBelieve( 'a(c,d)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #Flora2
+        $ agent.configureKB("Flora2", None, "runflora") #third argument is the path to the flora2 executable
+        $ agent.addBelieve( 'a[ b->c ]' ) #Beware, Flora2 notation is different
+        $ agent.removeBelieve( 'a[ b->c ]' )
+        $ agent.askBelieve( '?x[ ?y->?z ]' )
+
+        #Eclipse
+        $ agent.configureKB("ECLiPSe", None, "eclipse") #third argument is the path to the eclipse executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #SPARQL
+        $ agent.configureKB("SPARQL", sentence=None, path='http://dbpedia.org/sparql')
+        $ sparql_query = '''
+                PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#>
+                SELECT ?name
+                WHERE { 
+                &lt;http://dbpedia.org/resource/Croatia> 
+                rdfs:name 
+                ?name 
+                }'''
+        $ result = agent.askBelieve(sparql_query)
+        $ for item in result:
+            assert item["name"] in ["Croatia","Republic of Croatia","Republika Hrvatska"]   
+
+    </screen>
+
+    <para>
+    The SpadeKB is a FOL knowledge base, which is the default KB in SPADE. This KB stores believes in the same format as the rest of types of KBs, using <literal>addBelieve, removeBelieve</literal> and <literal>askBelieve</literal>. But the SpadeKB has also the ability of storing <emphasis role='bold'>Facts</emphasis> in the KB. This is useful when you want to store variables with a name and a value. The types of value currently supported are: integer, string, float, list and dictionaries.
+    </para>
+
+    <screen>
+        $ agent.saveFact("MyFact", 1000) #parameters are name and value
+        $ agent.getFact("MyFact")
+        > 1000
+        $ agent.askBelieve("Var(MyFact,1000,Int)")
+        > True
+
+        $ agent.saveFact("MyFloat",1.34)
+        $ agent.getFact("MyFloat")
+        > 1.34
+
+        $ agent.saveFact("MyString","LoremIpsumAdHisScriptaBlanditPartiendo") #spaces still not supported, sorry
+        $ agent.getFact("MyString")
+        > 'LoremIpsumAdHisScriptaBlanditPartiendo'
+
+        $ agent.saveFact("MyList",[5,6,7,8])
+        $ agent.getFact("MyList")
+        > [5,6,7,8]
+
+        $ agent.saveFact("MyDict",{'a':123,'b':456,789:"c"})
+        $ agent.getFact("MyDict")
+        > {'a':123,'b':456,789:"c"}
+
+        $ agent.saveFact("MyMixedFact",{'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}})
+        $ agent.getFact("MyMixedFact")
+        > {'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}}      
+
+    </screen>
+
+    </section>
+    <section id="spade.bdi.plans">
+        <title>Plans and Services</title>       
         
-          <para>In order to offer a Service, an agent must use the <command>Service</command> class from the bdi module in SPADE.
-		The body of the Service is the <command>run</command> method. Everything that the Service must do has to be included in the <command>run</command> method. The Service constructor receives the pre-condition P and the post-condition Q as parameters.</para>
+          <para>
+            Services in SPADE are offered by agents registered in the system. These services, once are registered in the Directory Facilitator (DF) can be invoked using the RPC facilities of SPADE.
+          </para>
 
-		<screen>
-		class Serv1(Service):
-		    def run(self):
-		        self.addBelieve(expr("Value(1)"))
+        <screen>
+        #This is the method executed when the service is invoked
+        def s1_method(Value):
+            return {"Myoutput1":1} #the return value is a dict containing Facts in the form name:value
 
-		agent.registerService(name="name", service=Serv1())
-	</screen>
-		
-          <para>A Plan only needs a pre-condition P, a post-condition Q and a list of Services. Dictionaries are used in order to define them:</para>
-		<screen>
+        #Create the service profile
+        s = DF.Service(name="s1", owner=agent.getAID(), inputs=["Value"],outputs=["O1"],P=["Var(Value,0,Int)"],Q=["Var(O1,1,Int)"])
 
-		plan = {'P': expr("value(1)"),'Q':expr("value(4)"), services:[s1,s2,s3,s4]}
-		agent.addPlan(plan)
-	</screen>
-	
-	</section>
-	<section id="spade.bdi.goals">
-		<title>Goals</title>
-		
+        #Finally register the service
+        agent.registerService(s, s1_method)
+        </screen>
+        
+        <para>A Plan is a sequence of services where each postcondition matches the precondition of the next service. The plan has also a precondition (P) and postcondition (Q) and a set of inputs and outputs:</para>
+        <screen>
+
+        agent.addPlan(inputs=["Value"],outputs=["O2"],P=["Var(Value,0,Int)"],Q=["Var(O2,2,Int)"], services=["s1","s2"])
+        </screen>
+
+        <para>These are pre-compiled plans that the agent may have to improve the plan search. However, SPADE agents have the ability of composing on-line plans, with no need of creating pre-compiled plans.</para>
+    
+    </section>
+    <section id="spade.bdi.goals">
+        <title>Goals</title>
+        
           <para>Goals are instances of the <command>Goal</command> class. Its constructor receives as a parameter the expression of the Goal.</para>
 
-		<screen>
-		g = Goal(expr("value(4)"))
-		agent.addGoal(g)
-		</screen>
-	
-		</section>
-		<section id="spade.bdi.running">
-			<title>BDI in action</title>			
+        <screen>
+
+        g = Goal("Var(O1,1,Int)")
+        </screen>
+
+        <para>When a goal is added, the BDIAgent will try to perform this goal by invoking services. Once the goal is completed, the goalCompleted callback is called to notify the agent.
+        </para>
+
+        <screen>
+        $ def goalCompletedCB( goal ):
+            print "Goal completed!"
+            
+        $ agent.saveFact("Value",0)
+
+        $ agent.setGoalCompletedCB( goalCompletedCB )
+
+        $ agent.addGoal( Goal("Var(Value,0,Int)") )
+        > "Goal completed!"
+        </screen>
+    
+        </section>
+        <section id="spade.bdi.running">
+            <title>BDI in action</title>            
             
                <para>During the agent execution, classic SPADE behaviours can coexist with the BDI model. Every time that a new Goal is introduced into the agent, it will try to achieve it looking for a Plan that fits the task. All this work happens in a completely transparent way for the user.</para>
-			<screen>
-		import spade
-		from spade.bdi import *
 
-		agent = BDIAgent("bdi@127.0.0.1","secret")
-		agent.setDebugToScreen()
-		agent.addBelieve(expr("Value(0)"))
+        <screen>
 
-		g = Goal(expr("Value(2)"))
+        import spade
+        from spade.bdi import *
+        from spade.DF import Service
 
-		class Serv1(Service):
-		    def run(self):
-		        print "Service 1 running"
-		        self.addBelieve(expr("Value(1)"))
-		class Serv2(Service):
-		    def run(self):
-		        print "Service 2 running"
-		        self.addBelieve(expr("Value(2)"))
+        def s1_method(Value):
+            return {"O1":1}
 
-		s1 = Serv1(P=expr("Value(0)"),Q=expr("Value(1)"))
-		s2 = Serv2(P=expr("Value(1)"),Q=expr("Value(2)"))
+        def s2_method(Myoutput1):
+            return {"O2":2}
 
-		p = Plan(P=expr("Value(0)"),Q=expr("Value(2)"))
-		p.appendService(s1)
-		p.appendService(s2)
+        def goalCompletedCB(goal):
+            agent.goalCompleted = True
 
-		agent.addPlan(p)
-		agent.addGoal(g)
+        agent = BDIAgent("bdi@127.0.0.1","secret")
+        s1 = Service(name="s1", owner=agent.getAID(), inputs=["Value"],outputs=["O1"],P=["Var(Value,0,Int)"],Q=["Var(O1,1,Int)"])
+        s2 = Service(name="s2", owner=agent.getAID(), inputs=["O1"],outputs=["O2"],P=["Var(O1,1,Int)"],Q=["Var(O2,2,Int)"])
 
-		agent.start()
+        agent.registerService(self.s1,s1_method)
+        agent.registerService(self.s2,s2_method)
 
-		import time
-		try:
-		    while True:
-		        time.sleep(1)
-		except:
-		    agent.stop()
+        agent.goalCompleted = False
 
-		sys.exit(0)
-			</screen>
-	
-	</section>
-	<section id="spade.bdi.future">
-	<title>Future Work</title>
-	
-<para>In future versions of the BDI model we will introduce automatic Plan compilation using the whole database of services offered by all the agents in the platform. In order to do that, the platform will include a deliberative agent able to make searches through all the available services and compose a Plan on-the-fly whenever the set of pre-compiled Plans of an agent is not enough to achieve the desired Goal. But that, my friends, is another story</para>
+        agent.saveFact("Value",0)
 
-</section>
+        agent.setGoalCompletedCB( goalCompletedCB )
+
+        agent.addGoal( Goal("Var(O1,1,Int)") )
+
+        agent.start()
+
+        import time
+        counter = 0
+        while not agent.goalCompleted and counter &lt; 10:
+            time.sleep(1)
+            counter+=1
+
+        $ agent.goalCompleted
+        > True
+        $ agent.askBelieve( "Var(O1,1,Int)" )
+        > True
+        $ agent.getFact("O1")
+        > 1
+
+        agent.stop()
+        sys.exit(0)
+        </screen>
+
+    <para>Unit tests are always a good source of documentation. In the <literal>bdiTestCase.py</literal> you can find more examples of how to create complex plans and multiple goals that are reached thanks to the on-line planner of the BDIAgent.
+    You can also find more documentation in the following reference papers:
+
+    <itemizedlist>      
+          <listitem><para><ulink url="http://www.sciencedirect.com/science/article/pii/S0164121212000337">Distributed Goal-oriented Computing</ulink></para></listitem>
+          <listitem><para><ulink url="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5718856">A Goal-Oriented Execution Module Based on Agents</ulink></para></listitem>
+    </itemizedlist>
+
+    </para>
+    
+    </section>
+
 </chapter>

@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>The Knowledge Base</title>
-<link rel="stylesheet" href="styles.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="SPADE User's Manual">
 <link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
 <link rel="prev" href="spade.bdi.intro.html" title="The SPADE BDI Agent Model">
@@ -23,24 +23,98 @@
 </table>
 <hr>
 </div>
-<div class="section" title="The Knowledge Base">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="spade.bdi.kb"></a>The Knowledge Base</h2></div></div></div>
-<p>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make query for it.</p>
+<p>Each agent has a Knowledge Base where it stores its acquired knowledge items. The technology to store these items can be selected from a set of different prolog engines: <code class="literal">SWI-Prolog, XSB, Flora2, Eclipse</code> and <code class="literal">SPARQL</code>. SPADE does also support an internal Prolog engine, which is less powerful but has no external requirements. This is the <code class="literal">SpadeKB</code> engine, wich supports first-order logic.
+        </p>
+<p>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make queries.</p>
 <pre class="screen">
-		#Inserts a Knowledge
-		agent.addBelieve(expr("value(1)"))
+        #First configure the KB for using SWI-Prolog. The default KB is SpadeKB
+        $ agent.configureKB("SWI", None, "swipl") #third argument is the path to the swipl executable
 
-		#Deletes a Knowledge
-		agent.removeBelieve(expr("value(2)"))
+        #Insert some knowledge items
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.addBelieve( 'a(c,d)' )
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Y) )' ) 
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Z), p(_Z,_Y) )' )
 
-		#Ask for a Knowledge
-		agent.askBelieve(expr("value(1)"))
-		True
+        #Ask for a Knowledge
+        $ agent.askBelieve( 'p(X,Y)' )
+        &gt; [{'Y': 'c', 'X': 'b'}, {'Y': 'd', 'X': 'c'}, {'Y': 'd', 'X': 'b'}]
 
-		agent.askBelieve(expr("value(X)"))
-		True
-	</pre>
+        #Deletes a Knowledge
+        $ agent.removeBelieve( 'a(b,c)' )
+
+        #Check deletion
+        $ agent.askBelieve( 'p(X,Y)' )
+        &gt; [{'Y': 'd', 'X': 'c'}]
+
+    </pre>
+<pre class="screen">
+        #XSB
+        $ agent.configureKB("XSB", None, "xsb") #third argument is the path to the xsb executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.removeBelieve( 'a(c,d)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #Flora2
+        $ agent.configureKB("Flora2", None, "runflora") #third argument is the path to the flora2 executable
+        $ agent.addBelieve( 'a[ b-&gt;c ]' ) #Beware, Flora2 notation is different
+        $ agent.removeBelieve( 'a[ b-&gt;c ]' )
+        $ agent.askBelieve( '?x[ ?y-&gt;?z ]' )
+
+        #Eclipse
+        $ agent.configureKB("ECLiPSe", None, "eclipse") #third argument is the path to the eclipse executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #SPARQL
+        $ agent.configureKB("SPARQL", sentence=None, path='http://dbpedia.org/sparql')
+        $ sparql_query = '''
+                PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+                SELECT ?name
+                WHERE { 
+                &lt;http://dbpedia.org/resource/Croatia&gt; 
+                rdfs:name 
+                ?name 
+                }'''
+        $ result = agent.askBelieve(sparql_query)
+        $ for item in result:
+            assert item["name"] in ["Croatia","Republic of Croatia","Republika Hrvatska"]   
+
+    </pre>
+<p>
+    The SpadeKB is a FOL knowledge base, which is the default KB in SPADE. This KB stores believes in the same format as the rest of types of KBs, using <code class="literal">addBelieve, removeBelieve</code> and <code class="literal">askBelieve</code>. But the SpadeKB has also the ability of storing <span class="bold"><strong>Facts</strong></span> in the KB. This is useful when you want to store variables with a name and a value. The types of value currently supported are: integer, string, float, list and dictionaries.
+    </p>
+<pre class="screen">
+        $ agent.saveFact("MyFact", 1000) #parameters are name and value
+        $ agent.getFact("MyFact")
+        &gt; 1000
+        $ agent.askBelieve("Var(MyFact,1000,Int)")
+        &gt; True
+
+        $ agent.saveFact("MyFloat",1.34)
+        $ agent.getFact("MyFloat")
+        &gt; 1.34
+
+        $ agent.saveFact("MyString","LoremIpsumAdHisScriptaBlanditPartiendo") #spaces still not supported, sorry
+        $ agent.getFact("MyString")
+        &gt; 'LoremIpsumAdHisScriptaBlanditPartiendo'
+
+        $ agent.saveFact("MyList",[5,6,7,8])
+        $ agent.getFact("MyList")
+        &gt; [5,6,7,8]
+
+        $ agent.saveFact("MyDict",{'a':123,'b':456,789:"c"})
+        $ agent.getFact("MyDict")
+        &gt; {'a':123,'b':456,789:"c"}
+
+        $ agent.saveFact("MyMixedFact",{'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}})
+        $ agent.getFact("MyMixedFact")
+        &gt; {'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}}      
+
+    </pre>
 </div>
 <div class="navfooter">
 <hr>

@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Goals</title>
-<link rel="stylesheet" href="styles.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="SPADE User's Manual">
 <link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
 <link rel="prev" href="spade.bdi.plans.html" title="Plans and Services">
@@ -23,14 +23,27 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Goals">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="spade.bdi.goals"></a>Goals</h2></div></div></div>
 <p>Goals are instances of the <span class="command"><strong>Goal</strong></span> class. Its constructor receives as a parameter the expression of the Goal.</p>
 <pre class="screen">
-		g = Goal(expr("value(4)"))
-		agent.addGoal(g)
-		</pre>
+
+        g = Goal("Var(O1,1,Int)")
+        </pre>
+<p>When a goal is added, the BDIAgent will try to perform this goal by invoking services. Once the goal is completed, the goalCompleted callback is called to notify the agent.
+        </p>
+<pre class="screen">
+        $ def goalCompletedCB( goal ):
+            print "Goal completed!"
+            
+        $ agent.saveFact("Value",0)
+
+        $ agent.setGoalCompletedCB( goalCompletedCB )
+
+        $ agent.addGoal( Goal("Var(Value,0,Int)") )
+        &gt; "Goal completed!"
+        </pre>
 </div>
 <div class="navfooter">
 <hr>

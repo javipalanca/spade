@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Agent Communication: Sending and Receiving Messages</title>
-<link rel="stylesheet" href="styles.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="SPADE User's Manual">
 <link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
 <link rel="prev" href="spade.basicagents.behav.html" title="An agent with a behavior">
@@ -23,7 +23,7 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Agent Communication: Sending and Receiving Messages">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="spade.basicagents.agentmodel.communication"></a>Agent Communication: Sending and Receiving Messages</h2></div></div></div>
 <p>As you know, messages are the basis of every MAS. They are the centre of the whole <span class="emphasis"><em>"computing as interaction"</em></span> paradigm in which MAS are based. So it is very important to understand which facilities are present in the SPADE Agent Library to work with agent messages.</p>
@@ -51,7 +51,7 @@ class MyAgent(spade.Agent.Agent):
 			self.msg = spade.ACLMessage.ACLMessage()  # Instantiate the message
 			self.msg.setPerformative("inform")        # Set the "inform" FIPA performative
 			self.msg.setOntology("myOntology")        # Set the ontology of the message content
-			self.msg.setLanguage("English")           # Set the language of the message content
+			self.msg.setLanguage("OWL-S")	          # Set the language of the message content
 			self.msg.addReceiver(receiver)            # Add the message receiver
 			self.msg.setContent("Hello World")        # Set the message content
 			
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 		</pre>
 <p>The previous example is also an opportunity to introduce the <code class="literal">myAgent</code> attribute that can be used in any behaviour. It is a reference to the agent that holds the behaviour and thus it can be used as a shortcut to access any method or attribute the agent object has. In this particular case, the command <code class="literal">self.myAgent.send(self.msg)</code> is accessing the <code class="literal">send</code> method of the agent through the <code class="literal">myAgent</code> shortcut.</p>
 <p>There are two basic methods in message communication: <code class="literal">send</code> , which you already know, and <code class="literal">_receive</code> , which, as its name says, serves the purpose of receiving a message. At any given moment, a behaviour can make use of the <code class="literal">_receive</code> method in order to receive a message.</p>
-<div class="note" title="Regarding send and _receive" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding send and _receive">
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding send and _receive">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
 <th align="left">Regarding <code class="literal">send</code> and <code class="literal">_receive</code>
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 </tr>
 <tr><td align="left" valign="top"><p><span class="bold"><strong>WARNING:</strong></span> Please take note that whereas <code class="literal">send</code> is a method of the agent, <code class="literal">_receive</code> is a method of the <span class="bold"><strong>behaviour</strong></span>. This difference is very important. All the behaviours send messages the same way, but, as stated earlier, every behaviour has its unique <span class="emphasis"><em>message template</em></span> that specifies which kind of messages it may receive, and thus, each behaviour uses its own <code class="literal">_receive</code> method to receive its own messages.</p></td></tr>
 </table></div>
-<div class="note" title="Regarding messages at initialization time" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding messages at initialization time">
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note: Regarding messages at initialization time">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
 <th align="left">Regarding messages at initialization time</th>

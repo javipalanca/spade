@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>An agent with a behavior</title>
-<link rel="stylesheet" href="styles.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="SPADE User's Manual">
 <link rel="up" href="spade.basicagents.html" title="Chapter 4. Basic agents">
 <link rel="prev" href="spade.basicagents.first.html" title="My first SPADE agent">
@@ -23,7 +23,7 @@
 </table>
 <hr>
 </div>
-<div class="section" title="An agent with a behavior">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="spade.basicagents.behav"></a>An agent with a behavior</h2></div></div></div>
 <p>Let's build a more functional agent, one that uses an actual behavior to perform a task. As we stated earlier, the real programming of the SPADE agents is done mostly in the behaviors. Let's see how.</p>
@@ -152,7 +152,7 @@ class MyAgent(spade.Agent.Agent):
                 self.addBehaviour(b, None)
 
 if __name__ == "__main__":
-        a = MyAgent("agent@thx1138.dsic.upv.es", "secret")
+        a = MyAgent("agent@localhost", "secret")
         a.start()
 		</pre>
 <p>Other behaviour types are <code class="literal">spade.Behaviour.FSMBehaviour</code>, which represents a Finite State Machine, and <code class="literal">spade.Behaviour.EventBehaviour</code>, which is a special type of behaviour set to be triggered after an event happens in the agent. These are advanced types of behaviours and are covered in chapter 6.</p>

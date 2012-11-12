@@ -2,8 +2,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Plans and Services</title>
-<link rel="stylesheet" href="styles.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="SPADE User's Manual">
 <link rel="up" href="spade.bdi.html" title="Chapter 7. BDI Architecture for SPADE Agents">
 <link rel="prev" href="spade.bdi.kb.html" title="The Knowledge Base">
@@ -23,24 +23,29 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Plans and Services">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="spade.bdi.plans"></a>Plans and Services</h2></div></div></div>
-<p>In order to offer a Service, an agent must use the <span class="command"><strong>Service</strong></span> class from the bdi module in SPADE.
-		The body of the Service is the <span class="command"><strong>run</strong></span> method. Everything that the Service must do has to be included in the <span class="command"><strong>run</strong></span> method. The Service constructor receives the pre-condition P and the post-condition Q as parameters.</p>
+<p>
+            Services in SPADE are offered by agents registered in the system. These services, once are registered in the Directory Facilitator (DF) can be invoked using the RPC facilities of SPADE.
+          </p>
 <pre class="screen">
-		class Serv1(Service):
-		    def run(self):
-		        self.addBelieve(expr("Value(1)"))
+        #This is the method executed when the service is invoked
+        def s1_method(Value):
+            return {"Myoutput1":1} #the return value is a dict containing Facts in the form name:value
 
-		agent.registerService(name="name", service=Serv1())
-	</pre>
-<p>A Plan only needs a pre-condition P, a post-condition Q and a list of Services. Dictionaries are used in order to define them:</p>
+        #Create the service profile
+        s = DF.Service(name="s1", owner=agent.getAID(), inputs=["Value"],outputs=["O1"],P=["Var(Value,0,Int)"],Q=["Var(O1,1,Int)"])
+
+        #Finally register the service
+        agent.registerService(s, s1_method)
+        </pre>
+<p>A Plan is a sequence of services where each postcondition matches the precondition of the next service. The plan has also a precondition (P) and postcondition (Q) and a set of inputs and outputs:</p>
 <pre class="screen">
 
-		plan = {'P': expr("value(1)"),'Q':expr("value(4)"), services:[s1,s2,s3,s4]}
-		agent.addPlan(plan)
-	</pre>
+        agent.addPlan(inputs=["Value"],outputs=["O2"],P=["Var(Value,0,Int)"],Q=["Var(O2,2,Int)"], services=["s1","s2"])
+        </pre>
+<p>These are pre-compiled plans that the agent may have to improve the plan search. However, SPADE agents have the ability of composing on-line plans, with no need of creating pre-compiled plans.</p>
 </div>
 <div class="navfooter">
 <hr>

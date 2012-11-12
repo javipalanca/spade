@@ -11,7 +11,7 @@
 		<para>The SPADE platform is installed and executed on a host. That host becomes the centre of the multi-agent system that we are going to build. In order to properly deploy the SPADE platform, it needs to be configured first to suit the host where it is going to be. Along with the SPADE distribution comes a tool called <command>configure.py</command> which is a script to automatically configure SPADE for you. In most scenarios, the only configuration you need to do for SPADE to work is to invoke this tool with the desired hostname to use as the platform hostname. E.g:</para>
 		
 <screen>
-$ python configure.py myhost.myprovider.com
+$ configure.py myhost.myprovider.com
 </screen>
 
 		<para>Then, SPADE will be configured to work as a platform serving at the <command>myhost.myprovider.com</command> domain.</para>
@@ -23,8 +23,8 @@ $ python configure.py myhost.myprovider.com
 		<para>After a successful configuration, you can try to run SPADE for the first time. To do so, use the <command>runspade.py</command> script that is provided with the SPADE distribution. This script will launch the SPADE platform and set it ready to start working with agents. You should see something along the lines of:</para>
 		
 <screen>
-$ python runspade.py
-SPADE 2.0 &lt;gusarba@gmail.com&gt; - http://spade2.googleprojects.com
+$ runspade.py
+SPADE 2.1 &lt;gusarba@gmail.com&gt; - http://spade2.googleprojects.com
 Starting SPADE...... [done]
 </screen>
 
