@@ -1,9 +1,10 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 from xmpp import simplexml
 from exceptions import KeyError
 
+
 def co2xml(map):
-    """ Convenience recursive function for transforming ContentObjects into XML.  
+    """ Convenience recursive function for transforming ContentObjects into XML.
         The transformation is {x:y} --> <x>y</x> """
     xml = ""
     for key, value in map.items():
@@ -14,9 +15,10 @@ def co2xml(map):
             for i in value:
                 xml += "<%s>%s</%s>" % (key, i, key)
             xml += "</%s>" % (key)
-        elif value != None and value != "None":
+        elif value is not None and value != "None":
             xml += "<%s>%s</%s>" % (key, value, key)
     return xml
+
 
 class ContentObject(dict):
     """
@@ -30,17 +32,16 @@ class ContentObject(dict):
         #print "KEY: ", key, "VALUE: ", value
         try:
             if ":" in key:
-                prefix,tag = key.rsplit(":")
+                prefix, tag = key.rsplit(":")
                 if prefix not in self.namespaces:
                     # The usual FIPA namespace
                     if prefix == "fipa":
                         self.addNamespace("http://www.fipa.org/schemas/fipa-rdf0#", "fipa")
                     else:
-                        self.addNamespace("",prefix)
+                        self.addNamespace("", prefix)
         except:
             pass
         return dict.__setitem__(self, key, value)
-        
 
     def DEACTIVATED__setattr__(self, key, value):
         """
@@ -48,92 +49,90 @@ class ContentObject(dict):
         without worry.
         """
         #print "KEY: ", key, "VALUE: ", value
-        if not self.__dict__.has_key('_ContentObject__initialised'):
+        if '_ContentObject__initialised' not in self.__dict__.keys():
             return dict.__setattr__(self, key, value)
-        elif self.__dict__.has_key(key):
+        elif key in self.__dict__.keys():
             dict.__setattr__(self, key, value)
         else:
             #self.__setitem__(key, value)
             try:
                 if ":" in key:
-                    prefix,tag = key.rsplit(":")
+                    prefix, tag = key.rsplit(":")
                     if prefix not in self.namespaces:
                         # The usual FIPA namespace
                         if prefix == "fipa":
                             self.addNamespace("http://www.fipa.org/schemas/fipa-rdf0#", "fipa")
                         else:
-                            self.addNamespace("",prefix)
+                            self.addNamespace("", prefix)
             except:
                 pass
             self.__setitem__(key, value)
-                
 
     def __getattr__(self, name):
         #print "GETATTR:", name
         try:
-            if self.has_key(name):
+            if name in self.keys():
                 return self[name]
         except:
             pass
         for ns in self.namespaces.values():
             try:
-                if self.has_key(ns+name):
-                    return self[ns+name]
+                if ns + name in self.keys():
+                    return self[ns + name]
             except:
                 pass
         # Ethical dilemma: Should ContentObject return a None when trying to
         # access a key that does not exist or should it raise an Exception?
         #raise KeyError
         return None
-        
+
     def addNamespace(self, uri, abv):
         if abv[-1] != ":":
             abv = abv + ":"
         self.namespaces[uri] = abv
         return
-        
+
     def pprint(self, ind=0):
         s = ""
-        for k,v in self.items():
+        for k, v in self.items():
                 try:
-                        s = s + ('\t'*ind)+str(k)+":\n"+v.pprint(ind+1) + '\n'
+                        s = s + ('\t' * ind) + str(k) + ":\n" + v.pprint(ind + 1) + '\n'
                 except:
-                        s = s + ('\t'*ind)+str(k)+": " + str(v) + '\n'
+                        s = s + ('\t' * ind) + str(k) + ": " + str(v) + '\n'
         return s
-    
+
     def asRDFXML(self):
         # Build rdf:RDF node
-        root = simplexml.Node("rdf:RDF", {"xmlns:rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#"})
+        root = simplexml.Node("rdf:RDF", {"xmlns:rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"})
         nss = {}
-        for k,v in self.namespaces.items():
-            if v in ["xml:","rdf:"]:
+        for k, v in self.namespaces.items():
+            if v in ["xml:", "rdf:"]:
                 pass
-            elif v != None and v != "None":
-                    nss["xmlns:"+v[:-1]] = k
+            elif v is not None and v != "None":
+                    nss["xmlns:" + v[:-1]] = k
         root.attrs.update(nss)
         root.addData("#WILDCARD#")
-        return str(root).replace("#WILDCARD#",co2xml(self))
-
+        return str(root).replace("#WILDCARD#", co2xml(self))
 
     """CAWEN DIOS!!!
         def asSL0(self):
             return toSL0(self)
 
 def toSL0(self, data = None):
-        
+
         self.co = []
         self.l = []
         self.other = []
-        
+
         sl = ""
 
         for key,value in data.items():
             if "ContentObject" in str(type(value)): self.co.append((key,value))
             elif "list" in str(type(value)): self.l.append((key,value))
-            else self.other.append((key,value))        
+            else self.other.append((key,value))
 
 
-        
+
 
 
 
@@ -153,7 +152,7 @@ def toSL0(self, data = None):
 
         return sl
     """
-        
+
     def __str__(self):
         return co2xml(self)
         #return self.asRDFXML()
@@ -171,10 +170,10 @@ def Node2CO(node, nsdict):
             except:
                 return ""
     else:
-        # Blank node        
+        # Blank node
         is_list = False
         # Is it a list?
-        if node.attrs.has_key("list"):
+        if "list" in node.attrs.keys():
             # It IS a marked list
             is_list = True
         else:
@@ -186,18 +185,18 @@ def Node2CO(node, nsdict):
         if is_list:
             s = []
             for c in node.kids:
-                s.append(Node2CO(c,nsdict))            
+                s.append(Node2CO(c, nsdict))
         else:
             s = ContentObject()
             for c in node.kids:
                 #print "KID ",c.name," NS ",c.namespace
                 if c.namespace in nsdict.keys():
-                    key = nsdict[c.namespace]+c.name
+                    key = nsdict[c.namespace] + c.name
                 else:
-                    key = c.name            
-                s[key] = Node2CO(c,nsdict)                
+                    key = c.name
+                s[key] = Node2CO(c, nsdict)
         return s
-            
+
 
 def RDFXML2CO(rdfdata):
     #print "Gonna parse: "+rdfdata
@@ -208,21 +207,21 @@ def RDFXML2CO(rdfdata):
     return co
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     import urllib2
     #f = urllib2.urlopen("http://infomesh.net/2003/rdfparser/meta.rdf")
     #f = urllib2.urlopen("http://tourism.gti-ia.dsic.upv.es/rdf/ComidasTascaRapida.rdf")
 
     ex = """<rdf:RDF
       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
       xmlns:dc="http://purl.org/dc/elements/1.1/">
         <rdf:Description rdf:about="http://en.wikipedia.org/wiki/Tony_Benn">
             <dc:title>Tony Benn</dc:title>
             <dc:publisher>Wikipedia</dc:publisher>
             <foaf:primaryTopic>
                  <foaf:Person>
-                      <foaf:name>Tony Benn</foaf:name>  
+                      <foaf:name>Tony Benn</foaf:name>
                  </foaf:Person>
             </foaf:primaryTopic>
         </rdf:Description>
@@ -243,7 +242,7 @@ if __name__=="__main__":
     sco["spade:uno"] = ContentObject()
     sco["spade:uno"]["spade:dos"] = "COSA"
     sco.uno["spade:tres"] = "OTRA"
-    
+
     #print str(sco)
     print "ORIGINAL:"
     print sco.pprint()
@@ -254,5 +253,5 @@ if __name__=="__main__":
     print "SEGUNDO:"
     print sco2.pprint()
     print sco2.asRDFXML()
-    
+
     #print sco2.asSL0()

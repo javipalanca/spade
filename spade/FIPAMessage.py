@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 class FipaMessage:
     """
@@ -14,4 +15,3 @@ class FipaMessage:
 
     def getBody(self):
         return self.__messageBody
-

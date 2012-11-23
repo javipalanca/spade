@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
 class FlexQueue(list):
-    
+
     def empty(self):
-        if len(self)==0: return True
+        if len(self) == 0:
+            return True
         return False
 
     def qsize(self):
-        return len(self)        
+        return len(self)
 
     def get(self):
         if not self.empty():
@@ -19,4 +21,4 @@ class FlexQueue(list):
 
     def remove(self, item):
         if item in self:
-            list.remove(self,item)
+            list.remove(self, item)

@@ -1,11 +1,11 @@
 #!/usr/bin/python
-# -*- coding: UTF-8 -*- 
+# -*- coding: utf-8 -*-
 
 "Localized strings from xmppd.py"
 
 # English XMPPD Strings
 # Copyright (c) 2005 Kristopher Tate
-en_server_localized_strings="""
+en_server_localized_strings = """
 session-receive-error -- en -- Socket error while receiving data!
 session-send-error -- en -- Socket error while sending data!
 session-admin-set -- en -- Setting local user <%s> as administrator.
@@ -26,7 +26,7 @@ server-pvcy-access-notclear-falseanon -- en -- ###PRIVACY SUBSYSTEM :: JID <%(ji
 
 # French XMPPD Strings
 # Copyright (c) 2005 Eoban Binder
-fr_server_localized_strings="""
+fr_server_localized_strings = """
 session-receive-error -- fr -- Erreur de réseau tout en recevant des données
 session-send-error -- fr -- Erreur de réseau tout en envoyant des données
 session-admin-set -- fr -- Nous plaçons l'utilisateur appelé <%s> en tant qu'administrateur.
@@ -48,7 +48,7 @@ server-pvcy-access-notclear-falseanon -- fr -- ###SYSTÈME D'INTIMITÉ :: JID <%
 # Japanese XMPPD Strings
 # Copyright (c) 2005 Kristopher Tate
 # Special thanks to 大下 拓也 (Takuya Ohshita) for some technical clarification!
-ja_server_localized_strings="""
+ja_server_localized_strings = """
 session-receive-error -- ja -- データを受け取っている間、ソケット・エラーが起きました。
 session-send-error -- ja -- データを送っている間、ソケット・エラーが起きました。
 session-admin-set -- ja -- Adminとしてユーザ<%s>を設定中・・・
@@ -61,7 +61,7 @@ server-pvcy-activated -- ja -- ###プライバシー・サブシステム :: モ
 
 # Russian XMPPD Strings
 # Copyright (c) 2005 Alexey Nezhdanov
-ru_server_localized_strings="""
+ru_server_localized_strings = """
 session-receive-error -- ru -- Ошибка сокета при получении данных!
 session-send-error -- ru -- Ошибка сокета при отправке данных!
 session-admin-set -- ru -- Локальному пользователю <%s> даны права администратора.
@@ -80,5 +80,4 @@ server-pvcy-access-notclear-doublefalse -- ru -- ###Подсистема PRIVACY
 server-pvcy-access-notclear-modeto -- ru -- ###Подсистема PRIVACY :: JID <%(jid_from)s> не имеет доступа к <%(jid_to)s> [MODE=TO]###
 server-pvcy-access-notclear-falseanon -- ru -- ###Подсистема PRIVACY :: JID <%(jid_from)s> не имеет доступа к <%(jid_to)s> [ANON_ALLOW=FALSE]###"""
 
-globals()['LANG_LIST'] = [en_server_localized_strings,fr_server_localized_strings,ja_server_localized_strings,ru_server_localized_strings]
-
+globals()['LANG_LIST'] = [en_server_localized_strings, fr_server_localized_strings, ja_server_localized_strings, ru_server_localized_strings]

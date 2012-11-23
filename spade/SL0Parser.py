@@ -1,81 +1,82 @@
+# -*- coding: utf-8 -*-
 from pyparsing import *
 import sys
 
+
 class SL0Parser:
-	"""
-	SL parser
-	"""
+    """
+    SL parser
+    """
 
-	def __init__(self):
+    def __init__(self):
 
-		lpar = Literal("(").suppress()
-		rpar = Literal(")").suppress()
-		
+        lpar = Literal("(").suppress()
+        rpar = Literal(")").suppress()
 
-		word = ~Literal(":")+ Word(alphanums+"-_@./\\:")
-		StringLiteral = Combine( Literal('"') + ZeroOrMore( CharsNotIn('\"') | ( Literal('\\"') ) ) + Literal('"') ).streamline()
-		String = ( word | StringLiteral )     #| ByteLengthEncodedString )
-		Constant = String
-		
-		Key = String
-		Expr = Forward()
-		Parameter =  Dict(Group(Literal(":").suppress() + Key + Group(Constant|Expr)))
-		Expr << Dict(Group( lpar + Key + Group(OneOrMore(Parameter)|OneOrMore(Constant)|OneOrMore(Expr)) + rpar ))
-		Content = ( lpar + OneOrMore(Expr) + rpar )
- 
-		self.bnf = Content
+        word = ~Literal(":") + Word(alphanums + "-_@./\\:")
+        StringLiteral = Combine(Literal('"') + ZeroOrMore(CharsNotIn('\"') | (Literal('\\"'))) + Literal('"')).streamline()
+        String = (word | StringLiteral)  # | ByteLengthEncodedString )
+        Constant = String
 
-		#self.bnf.setDebug()
+        Key = String
+        Expr = Forward()
+        Parameter = Dict(Group(Literal(":").suppress() + Key + Group(Constant | Expr)))
+        Expr << Dict(Group(lpar + Key + Group(OneOrMore(Parameter) | OneOrMore(Constant) | OneOrMore(Expr)) + rpar))
+        Content = (lpar + OneOrMore(Expr) + rpar)
 
-		try:
-			self.bnf.validate()
-			#print "BNF VALID!!!"
+        self.bnf = Content
 
-		except Exception, err:
-			print "ERROR: BNF NOT VALID!!!" 
-			print err
-			#sys.exit(-1)
+        #self.bnf.setDebug()
 
-	def parse(self,string):
-		"""
-		parses a string
-		returns a pyparsing.ParseResults
-		"""
+        try:
+            self.bnf.validate()
+            #print "BNF VALID!!!"
 
-		m = None
-		try:
-			m = self.bnf.parseString(str(string))
-		except ParseException, err:
-			print err.line
-			print " "*(err.column-1)+"|"
-			print err
-			#sys.exit(-1)
-		except Exception, err:
-			print "Unknown Parsing Exception"
-			print err
-			#sys.exit(-1)
+        except Exception, err:
+            print "ERROR: BNF NOT VALID!!!"
+            print err
+            #sys.exit(-1)
 
-		return m
+    def parse(self, string):
+        """
+        parses a string
+        returns a pyparsing.ParseResults
+        """
 
-	def parseFile(self,file):
-		"""
-		parses a file
-		returns a pyparsing.ParseResults
-		"""
+        m = None
+        try:
+            m = self.bnf.parseString(str(string))
+        except ParseException, err:
+            print err.line
+            print " " * (err.column - 1) + "|"
+            print err
+            #sys.exit(-1)
+        except Exception, err:
+            print "Unknown Parsing Exception"
+            print err
+            #sys.exit(-1)
 
-		try:
-			m = self.bnf.parseFile(file)
-		except ParseException, err:
-			print err.line
-			print " "*(err.column-1)+"|"
-			print err
-			sys.exit(-1)
-		except Exception, err:
-			print "Unkwonw Exception"
-			print err
-			sys.exit(-1)
+        return m
 
-		return m
+    def parseFile(self, file):
+        """
+        parses a file
+        returns a pyparsing.ParseResults
+        """
+
+        try:
+            m = self.bnf.parseFile(file)
+        except ParseException, err:
+            print err.line
+            print " " * (err.column - 1) + "|"
+            print err
+            sys.exit(-1)
+        except Exception, err:
+            print "Unkwonw Exception"
+            print err
+            sys.exit(-1)
+
+        return m
 
 if __name__ == "__main__":
     p = SL0Parser()
@@ -100,9 +101,9 @@ if __name__ == "__main__":
     print msg.prueba.name.set.values()
     """
     print "--"
-    
+
     slgrande = """((result
-      (search        
+      (search
         (set
           (df-agent-description
             :name
@@ -118,10 +119,10 @@ if __name__ == "__main__":
               (service-description
                 :name profiling
                 :type user-profiling-service)))))))"""
-    slgrande="""((result  (set (ams-agent-description
+    slgrande = """((result  (set (ams-agent-description
 :name (agent-identifier
 :name agent@alien3.dsic.upv.es
-:addresses 
+:addresses
 (sequence
 xmpp://agent@alien3.dsic.upv.es
 )
@@ -132,7 +133,7 @@ xmpp://agent@alien3.dsic.upv.es
  (ams-agent-description
 :name (agent-identifier
 :name ams.alien3.dsic.upv.es
-:addresses 
+:addresses
 (sequence
 xmpp://ams.alien3.dsic.upv.es
 )
@@ -143,7 +144,7 @@ xmpp://ams.alien3.dsic.upv.es
  (ams-agent-description
 :name (agent-identifier
 :name df.alien3.dsic.upv.es
-:addresses 
+:addresses
 (sequence
 xmpp://df.alien3.dsic.upv.es
 )
@@ -156,7 +157,6 @@ xmpp://df.alien3.dsic.upv.es
     msg = p.parse(slgrande)
     print msg
     for dfd in msg.result.search.set:
-    	d = DfAgentDescription()
-    	d.loadSL0(dfd[1])
-    	print str(d)
-    
+        d = DfAgentDescription()
+        d.loadSL0(dfd[1])
+        print str(d)

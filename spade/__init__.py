@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import ACLMessage
 import Behaviour
 import Envelope

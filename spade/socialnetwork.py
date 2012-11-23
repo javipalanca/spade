@@ -1,30 +1,33 @@
+# -*- coding: utf-8 -*-
 import Behaviour
 import AID
 from xmpp import *
 
+
 class PresenceBehaviour(Behaviour.EventBehaviour):
     def _process(self):
         self.msg = self._receive(False)
-        if self.msg != None:
+        if self.msg is not None:
+            self.DEBUG("PRESENCE MSG:" + str(self.msg), 'ok')
             if self.msg.getType() == "subscribe":
                 # Subscribe petition
                 # Answer YES
                 rep = Presence(to=self.msg.getFrom())
                 rep.setType("subscribed")
                 self.myAgent.send(rep)
-                self.DEBUG( str(self.msg.getFrom())  + " subscribes to me")
+                self.DEBUG(str(self.msg.getFrom()) + " subscribes to me")
                 rep.setType("subscribe")
                 self.myAgent.send(rep)
             if self.msg.getType() == "subscribed":
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
                     # Subscription confirmation from AMS
-                    self.DEBUG( "Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)","ok")
+                    self.DEBUG("Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)", "ok")
                 else:
                     self.DEBUG(str(self.msg.getFrom()) + "has subscribed me")
             elif self.msg.getType() == "unsubscribed":
                 # Unsubscription from AMS
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
-                    self.DEBUG("There was an error registering in the AMS: " + str(self.getAID().getName()),"err")
+                    self.DEBUG("There was an error registering in the AMS: " + str(self.getAID().getName()), "err")
                 else:
                     self.DEBUG(str(self.msg.getFrom()) + " has unsubscribed me")
             elif self.msg.getType() in ["available", ""]:
@@ -38,19 +41,25 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
 class RosterBehaviour(Behaviour.EventBehaviour):
     def _process(self):
         stanza = self._receive(False)
-        if stanza != None:
+        if stanza is not None:
+            self.DEBUG("ROSTER received:" + str(stanza), 'ok')
             for item in stanza.getTag('query').getTags('item'):
-                jid=item.getAttr('jid')
-                if item.getAttr('subscription')=='remove':
-                    if self.myAgent._roster.has_key(jid): del self.myAgent.roster[jid]
-                elif not self.myAgent._roster.has_key(jid): self.myAgent._roster[jid]={}
-                self.myAgent._roster[jid]['name']=item.getAttr('name')
-                self.myAgent._roster[jid]['ask']=item.getAttr('ask')
-                self.myAgent._roster[jid]['subscription']=item.getAttr('subscription')
-                self.myAgent._roster[jid]['groups']=[]
-                if not self.myAgent._roster[jid].has_key('resources'): self.myAgent._roster[jid]['resources']={}
-                for group in item.getTags('group'): self.myAgent._roster[jid]['groups'].append(group.getData())
+                jid = item.getAttr('jid')
+                if item.getAttr('subscription') == 'remove':
+                    if jid in self.myAgent._roster:
+                        del self.myAgent.roster[jid]
+                elif jid not in self.myAgent._roster:
+                    self.myAgent._roster[jid] = {}
+                self.myAgent._roster[jid]['name'] = item.getAttr('name')
+                self.myAgent._roster[jid]['ask'] = item.getAttr('ask')
+                self.myAgent._roster[jid]['subscription'] = item.getAttr('subscription')
+                self.myAgent._roster[jid]['groups'] = []
+                if 'resources' not in self.myAgent._roster[jid]:
+                    self.myAgent._roster[jid]['resources'] = {}
+                for group in item.getTags('group'):
+                    self.myAgent._roster[jid]['groups'].append(group.getData())
             self.myAgent._waitingForRoster = False
+
 
 class SocialItem:
     """
@@ -63,12 +72,12 @@ class SocialItem:
         self._presence = presence
 
         # Generate AID
-        self._aid = AID.aid(name=jid, addresses=["xmpp://"+str(jid)])
+        self._aid = AID.aid(name=jid, addresses=["xmpp://" + str(jid)])
 
         # Get subscription from roster
         roster = agent._roster
-        if roster.has_key(jid):
-            if roster[jid].has_key("subscription"):
+        if jid in roster:
+            if "subscription" in roster[jid]:
                 self._subscription = roster[jid]["subscription"]
             else:
                 self._subscription = "none"
@@ -83,4 +92,3 @@ class SocialItem:
 
     def subscribe(self):
         self.myAgent.jabber.Roster.Subscribe(self._jid)
-

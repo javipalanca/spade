@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from Behaviour import MessageTemplate, OneShotBehaviour
 
 from xmpp.protocol import *
 from xmpp.simplexml import Node
 import uuid
+
 
 def gen_id():
     return str(uuid.uuid4())
@@ -27,7 +29,7 @@ def gen_id():
 
 class PubSub(object):
 
-    def __init__(self, agent): #, msgrecv):
+    def __init__(self, agent):  # , msgrecv):
         self._client = agent.getAID().getName()
         #self.msgrecv = msgrecv
         self.myAgent = agent
@@ -35,58 +37,56 @@ class PubSub(object):
 
     def _sendAndReceive(self, iq, getContents):
         id = gen_id()
-        t = MessageTemplate(Iq(attrs={'id':id}))
+        t = MessageTemplate(Iq(attrs={'id': id}))
         iq.setID(id)
-        b = self._sendAndReceiveBehav(iq,getContents)
-        
+        b = self._sendAndReceiveBehav(iq, getContents)
+
         if self.myAgent._running:
-            self.myAgent.addBehaviour(b,t)
+            self.myAgent.addBehaviour(b, t)
             b.join()
         else:
-            self.myAgent.runBehaviourOnce(b,t)
-        
+            self.myAgent.runBehaviourOnce(b, t)
+
         return b.result
-        
+
     class _sendAndReceiveBehav(OneShotBehaviour):
-            def __init__(self,iq,getContents):
+            def __init__(self, iq, getContents):
                 OneShotBehaviour.__init__(self)
                 self.iq = iq
                 self.getContents = getContents
                 self.timeout = 15
-                self.result = (None,None)
-                
+                self.result = (None, None)
+
             def _process(self):
                 #print 'Sending ', str(self.iq)
                 self.myAgent.send(self.iq)
 
                 #Wait for the answer
-                msg = self._receive(block=True,timeout=self.timeout)
+                msg = self._receive(block=True, timeout=self.timeout)
                 #print 'Received ', str(msg)
                 if msg is None:
                     #Timeout
-                    self.result =  ('error',['timeout'])
+                    self.result = ('error', ['timeout'])
                     return
                 if msg['type'] == 'error':
                     errors = []
                     for error in msg.getTag('error').getChildren():
-                        if error.getName() == 'text': continue
+                        if error.getName() == 'text':
+                            continue
                         errors.append(error.getName())
-                    self.result = ('error',errors)
+                    self.result = ('error', errors)
                     return
                 if msg['type'] == 'result':
-                    self.result = ('ok',self.getContents(msg))
+                    self.result = ('ok', self.getContents(msg))
                     return
 
-                self.result = ('error',['unknown'])
+                self.result = ('error', ['unknown'])
                 return
-
-
-
 
     def publish(self, node, event=None):
         """
-        Publishes an item to a given node. 
-        
+        Publishes an item to a given node.
+
         XXX: 'node' here is not an XML node, but the attribute for <publish>
 
         @type node: string
@@ -99,14 +99,14 @@ class PubSub(object):
             'ok' the name of the created node.
         """
         iq = Iq(
-                typ='set',
+            typ='set',
                 queryNS=None,
                 attrs={},
                 frm=self._client
-                )
+        )
 
-        pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB})
-        publish_node = Node(tag='publish', attrs={'node':node})
+        pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB})
+        publish_node = Node(tag='publish', attrs={'node': node})
         item_node = Node(tag='item')
         if event is not None:
             item_node.addChild(node=event)
@@ -118,12 +118,9 @@ class PubSub(object):
             node_publish = msg.getTag('pubsub').getTag('publish')
             #XXX: Server implementation always returns the item id, but XEP-60 does
             #   vim snot require it
-            return [node_publish['node'],node_publish.getTag('item')['id']]
+            return [node_publish['node'], node_publish.getTag('item')['id']]
 
         return self._sendAndReceive(iq, getContents)
-       
-
-
 
     def subscribe(self, node, server=None, jid=None):
         """
@@ -139,10 +136,10 @@ class PubSub(object):
             'ok', an empty list.
 
         """
-        
+
         if server is None:
             server = self._server
-        
+
         if jid is None:
             jid = self._client
 
@@ -152,10 +149,10 @@ class PubSub(object):
             attrs={},
             frm=self._client,
             to=server
-           )
+        )
 
-        pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB})
-        subscribe_node = Node(tag='subscribe', attrs={'node':node, 'jid':jid})
+        pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB})
+        subscribe_node = Node(tag='subscribe', attrs={'node': node, 'jid': jid})
         pubsub_node.addChild(node=subscribe_node)
         iq.addChild(node=pubsub_node)
 
@@ -188,10 +185,10 @@ class PubSub(object):
             attrs={},
             frm=self._client,
             to=server
-           )
+        )
 
-        pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB_OWNER})
-        unsubscribe_node = Node(tag='unsubscribe', attrs={'node':node, 'jid':jid})
+        pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB_OWNER})
+        unsubscribe_node = Node(tag='unsubscribe', attrs={'node': node, 'jid': jid})
         pubsub_node.addChild(node=unsubscribe_node)
         iq.addChild(node=pubsub_node)
         return self._sendAndReceive(iq, lambda msg: [])
@@ -225,47 +222,43 @@ class PubSub(object):
             attrs={},
             frm=self._client,
             to=server
-           )
+        )
 
-
-        pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB})
-        create_node = Node(tag='create', attrs={} if node is None else {'node':node})
+        pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB})
+        create_node = Node(tag='create', attrs={} if node is None else {'node': node})
 
         pubsub_node.addChild(node=create_node)
         iq.addChild(node=pubsub_node)
-        if parent is not None or type=='collection' or access is not None:
-            field_nodes=[]
+        if parent is not None or type == 'collection' or access is not None:
+            field_nodes = []
             configure_node = Node(tag='configure')
-            field_nodes.append(DataField('FORM_TYPE', NS_PUBSUB+'#node_config','hidden'))
+            field_nodes.append(DataField('FORM_TYPE', NS_PUBSUB + '#node_config', 'hidden'))
             if parent is not None:
-                field_nodes.append(DataField('pubsub#collection',parent))
+                field_nodes.append(DataField('pubsub#collection', parent))
                 # <field var='pubsub#collection'><value>announcements</value></field>
             if type == 'collection':
-                field_nodes.append(DataField('pubsub#node_type','collection'))
+                field_nodes.append(DataField('pubsub#node_type', 'collection'))
             if access is not None:
-                field_nodes.append(DataField('pubsub#access_model',access))
-            x_node = DataForm(typ='submit',data=field_nodes)
+                field_nodes.append(DataField('pubsub#access_model', access))
+            x_node = DataForm(typ='submit', data=field_nodes)
             configure_node.addChild(x_node)
             pubsub_node.addChild(configure_node)
 
-        return self._sendAndReceive(iq, lambda msg:[msg.getTag('pubsub').getTag('create')['node']])
-
-
+        return self._sendAndReceive(iq, lambda msg: [msg.getTag('pubsub').getTag('create')['node']])
 
     def createInstantNode(self, server=None, type='leaf', parent=None, access=None):
         """
         Creates an instant node without a name. The server will generate id.
         """
-        
+
         if server is None:
             server = self._server
-            
-        return createNode(self, None, server, type, parent, access)
 
+        return createNode(self, None, server, type, parent, access)
 
     def deleteNode(self, node, server=None):
         """
-        Deletes the selected node.       
+        Deletes the selected node.
 
         @type node: string
         @param node: id of the node to delete
@@ -278,26 +271,22 @@ class PubSub(object):
 
 
         """
-        
+
         #TODO: A method to redirect the subscriptions to the node to another one COULD be implemented
 
         if server is None:
             server = self._server
-        
+
         iq = Iq(
             typ='set',
             queryNS=None,
             attrs={},
             frm=self._client,
             to=server,
-           )
+        )
 
-        pubsub_node = Node(tag='pubsub', attrs={'xmlns':NS_PUBSUB_OWNER})
-        pubsub_node.addChild(name='delete', attrs={'node':node})
+        pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB_OWNER})
+        pubsub_node.addChild(name='delete', attrs={'node': node})
         iq.addChild(node=pubsub_node)
 
         return self._sendAndReceive(iq, lambda msg: [])
-
-
-
-

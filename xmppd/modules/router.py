@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 # Distributed under the terms of GPL version 2 or any later
 # Copyright (C) Alexey Nezhdanov 2004
 # Copyright (C) Kristopher Tate / BlueBridge Technologies Group 2005
@@ -14,74 +14,75 @@ from xmppd import *
 
 # XMPP-session flags
 # From the server
-SESSION_NOT_AUTHED  = 1
-SESSION_AUTHED      = 2
-SESSION_BOUND       = 3
-SESSION_OPENED      = 4
+SESSION_NOT_AUTHED = 1
+SESSION_AUTHED = 2
+SESSION_BOUND = 3
+SESSION_OPENED = 4
+
 
 class Router(PlugIn):
     """ The first entity that gets access to arrived stanza. """
-    NS='presence'
-    def plugin(self,server):
-        self._data = {}
-        server.Dispatcher.RegisterHandler('presence',self.presenceHandler,xmlns=NS_CLIENT)
-        server.Dispatcher.RegisterHandler('presence',self.presenceHandler,xmlns=NS_SERVER)
-#        server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
-        server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_CLIENT)
-        server.Dispatcher.RegisterHandler('message',self.routerHandler,xmlns=NS_SERVER)
-        #server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_SERVER)
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_CLIENT)
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_INFO,xmlns=NS_CLIENT)
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_INFO,xmlns=NS_SERVER)
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_ITEMS,xmlns=NS_CLIENT)
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns=NS_DISCO_ITEMS,xmlns=NS_SERVER)
-	# MUC namespaces
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/muc')
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/muc#user')
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/muc#admin')
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/muc#owner')
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#roominfo")
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#traffic")
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#roomconfig")
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns="http://jabber.org/protocol/muc#register")
-	# Stream Initiation	
-        server.Dispatcher.RegisterHandler('iq',self.routerHandler,ns='http://jabber.org/protocol/si')
+    NS = 'presence'
 
-	server.Dispatcher.RegisterNamespaceHandler(NS_SERVER,self.routerHandler)
+    def plugin(self, server):
+        self._data = {}
+        server.Dispatcher.RegisterHandler('presence', self.presenceHandler, xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('presence', self.presenceHandler, xmlns=NS_SERVER)
+        #server.Dispatcher.RegisterNamespaceHandler(NS_CLIENT,self.routerHandler)
+        server.Dispatcher.RegisterHandler('message', self.routerHandler, xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('message', self.routerHandler, xmlns=NS_SERVER)
+        #server.Dispatcher.RegisterHandler('iq',self.routerHandler,xmlns=NS_SERVER)
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns=NS_DISCO_INFO, xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns=NS_DISCO_INFO, xmlns=NS_SERVER)
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns=NS_DISCO_ITEMS, xmlns=NS_CLIENT)
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns=NS_DISCO_ITEMS, xmlns=NS_SERVER)
+        # MUC namespaces
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns='http://jabber.org/protocol/muc')
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns='http://jabber.org/protocol/muc#user')
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns='http://jabber.org/protocol/muc#admin')
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns='http://jabber.org/protocol/muc#owner')
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns="http://jabber.org/protocol/muc#roominfo")
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns="http://jabber.org/protocol/muc#traffic")
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns="http://jabber.org/protocol/muc#roomconfig")
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns="http://jabber.org/protocol/muc#register")
+        # Stream Initiation
+        server.Dispatcher.RegisterHandler('iq', self.routerHandler, ns='http://jabber.org/protocol/si')
+
+        server.Dispatcher.RegisterNamespaceHandler(NS_SERVER, self.routerHandler)
 
     def isFromOutside(self, domain):
-	for servername in self._owner.servernames:
-		if str(domain).endswith(servername):
-			return False
-	return True
+        for servername in self._owner.servernames:
+            if str(domain).endswith(servername):
+                return False
+        return True
 
-    def pluginRelay(self,session,stanza):
-	"""
-	Relays a stanza to a plugin dispatcher if such plugin is the correct receiver of the stanza
-	"""
+    def pluginRelay(self, session, stanza):
+        """
+        Relays a stanza to a plugin dispatcher if such plugin is the correct receiver of the stanza
+        """
 
-	to = stanza['to']
-	if not to: return False
-	for k,p in self._owner.plugins.items():
-		if p.has_key('jid') and p['jid'] == to.getDomain():
-			try:
-				self.DEBUG("Dispatching stanza to %s plugin"%(k),"info")
-				exec("self._owner."+k+".dispatch(session,stanza)")
-			except:
-				self.DEBUG("Could not dispatch stanza to plugin "+k, "error")
-				return False
-			return True
-	return False
+        to = stanza['to']
+        if not to:
+            return False
+        for k, p in self._owner.plugins.items():
+            if 'jid' in p.keys() and p['jid'] == to.getDomain():
+                try:
+                    self.DEBUG("Dispatching stanza to %s plugin" % (k), "info")
+                    exec("self._owner." + k + ".dispatch(session,stanza)")
+                except:
+                    self.DEBUG("Could not dispatch stanza to plugin " + k, "error")
+                    return False
+                return True
+        return False
 
-
-
-    def presenceHandler(self,session,stanza,raiseFlag=True,fromLocal=False):
-        self.DEBUG('Presence handler called (%s::%s)' % (session.peer,str(stanza.getType())),'info')
+    def presenceHandler(self, session, stanza, raiseFlag=True, fromLocal=False):
+        self.DEBUG('Presence handler called (%s::%s)' % (session.peer, str(stanza.getType())), 'info')
         #filter out presences that should not influate our 'roster'
         #This is presences, that's addressed:
         #1) any other server
         #2) any user
-        to=stanza['to']
+        to = stanza['to']
         internal = stanza.getAttr('internal')
         fromOutside = False
         #<presence to="test3@172.16.0.2" from="test2@172.16.1.34/Adium" type="probe" />
@@ -91,17 +92,18 @@ class Router(PlugIn):
         #    if v.has_key('jid'):
         #        component_jids.append(v['jid'])
 
-	if self.pluginRelay(session,stanza) and raiseFlag: raise NodeProcessed
+        if self.pluginRelay(session, stanza) and raiseFlag:
+            raise NodeProcessed
 
         if to and self.isFromOutside(to.getDomain()) and internal != 'True':
             #self.DEBUG("Presence stanza has an invalid recipient","warn")
             #return
-            self.DEBUG("Presence stanza has an external or component receiver: %s"%(to.getDomain()),"warn")
+            self.DEBUG("Presence stanza has an external or component receiver: %s" % (to.getDomain()), "warn")
 
-        typ=stanza.getType()
-        jid=session.peer  #172.16.1.34
-	if not jid:
-		raise NodeProcessed
+        typ = stanza.getType()
+        jid = session.peer  # 172.16.1.34
+        if not jid:
+            raise NodeProcessed
         fromOutside = False
         try:
             barejid = ""
@@ -109,27 +111,27 @@ class Router(PlugIn):
             #jlist =str(jid).split('/')
             #if len(jlist) > 0: barejid  = jlist[0]
             #if len(jlist) > 1: resource = jlist[1]
-	    barejid  = JID(jid).getStripped()
-	    resource = JID(jid).getResource()
-	    domain   = JID(jid).getDomain()
+            barejid = JID(jid).getStripped()
+            resource = JID(jid).getResource()
+            domain = JID(jid).getDomain()
             supposed_from = stanza.getFrom()
             if (barejid and supposed_from) and (barejid == supposed_from.getDomain()):
                 barejid = str(supposed_from)
 
-	    fromOutside = self.isFromOutside(JID(barejid).getDomain())
+            fromOutside = self.isFromOutside(JID(barejid).getDomain())
 
-	    """
+            """
             if not JID(barejid).getDomain() in self._owner.servernames:
                 self.DEBUG("Presence from Outside","info")
                 fromOutside = True
-	    """
+            """
 
-            self.DEBUG("The real from seems to be "+barejid, "info")
+            self.DEBUG("The real from seems to be " + barejid, "info")
         except:
             #self.DEBUG('Presence: Could not set barejid from jid: %s, fromOutside=True'%(str(jid)),'error')
-            self.DEBUG('Presence: Could not set barejid from jid: %s'%(str(jid)),'error')
+            self.DEBUG('Presence: Could not set barejid from jid: %s' % (str(jid)), 'error')
 
-	"""
+        """
         if fromOutside == True:
             if typ in ['subscribe','subscribed','unsubscribe','unsubscribed']:
                 self.DEBUG("Redirecting stanza to subscriber", "warn")
@@ -162,302 +164,320 @@ class Router(PlugIn):
             else:
                 self.DEBUG("Stupid situation: from and to are outsiders. WTF?","error")
                 return
-	"""
+        """
 
-
-        if not typ or typ=='available': # and fromOutside == False:
-	    if fromOutside:
-		# Find each session
+        if not typ or typ == 'available':  # and fromOutside == False:
+            if fromOutside:
+                # Find each session
                 s = None
-		s = self._owner.getsession(str(to))
-		if s == None:
-		    # TODO: Store if it's real user
-		    self.DEBUG("Could not find session for "+str(to),"warn")
-		    return
-		stanza.setNamespace(NS_CLIENT)
-		s.enqueue(stanza)
-		raise NodeProcessed
+                s = self._owner.getsession(str(to))
+                if s is None:
+                    # TODO: Store if it's real user
+                    self.DEBUG("Could not find session for " + str(to), "warn")
+                    return
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
+                raise NodeProcessed
 
-	    else:
+            else:
 
-		    if not self._data.has_key(barejid): self._data[barejid]={}
-		    if not self._data[barejid].has_key(resource): self._data[barejid][resource]=Presence(frm=jid,typ=typ)
-		    bp=self._data[barejid][resource]
+                if barejid not in self._data.keys():
+                    self._data[barejid] = {}
+                if resource not in self._data[barejid].keys():
+                    self._data[barejid][resource] = Presence(frm=jid, typ=typ)
+                bp = self._data[barejid][resource]
 
-		    try: priority=int(stanza.getTagData('priority'))
-		    except: priority=0
-		    bp.T.priority=`priority`
-		    self._owner.activatesession(session)
+                try:
+                    priority = int(stanza.getTagData('priority'))
+                except:
+                    priority = 0
+                bp.T.priority = str(priority)
+                self._owner.activatesession(session)
 
-		    show=stanza.getTag('show')
-		    if show: bp.T.show=show
-		    else: bp.T.show=''
-		    status=stanza.getTag('status')
-		    if status: bp.T.status=status
-		    else: bp.T.status=''
-		    for x in bp.getTags('x',namespace='jabber:x:delay'):
-			    bp.delChild(x)
-		    bp.setTimestamp()
-		    self.update(barejid)
+                show = stanza.getTag('show')
+                if show:
+                    bp.T.show = show
+                else:
+                    bp.T.show = ''
+                status = stanza.getTag('status')
+                if status:
+                    bp.T.status = status
+                else:
+                    bp.T.status = ''
+                for x in bp.getTags('x', namespace='jabber:x:delay'):
+                    bp.delChild(x)
+                bp.setTimestamp()
+                self.update(barejid)
 
-		    self.DEBUG("available presence " + str(bp),'info')
+                self.DEBUG("available presence " + str(bp), 'info')
 
+                self.broadcastAvailable(session)  # Pass onto broadcaster!
 
-		    self.broadcastAvailable(session) # Pass onto broadcaster!
+            if self._owner._socker is not None:
+                self._owner._socker.add_data_root({'jid': {barejid: self._data[barejid].keys()}})
+                self._owner._socker.add_data({'jid': {barejid: self._data[barejid].keys()}})
 
-            if self._owner._socker != None:
-                self._owner._socker.add_data_root({'jid':{barejid:self._data[barejid].keys()}})
-                self._owner._socker.add_data({'jid':{barejid:self._data[barejid].keys()}})
+        elif (typ == 'unavailable' or typ == 'error'):  # and fromOutside == False:
 
-        elif (typ=='unavailable' or typ=='error'): # and fromOutside == False:
+            if not fromOutside:
+                jid_info = self._owner.tool_split_jid(barejid)
+                contacts = session.getRoster()
+                for k, v in contacts.iteritems():
+                    if v['subscription'] in ['from', 'both']:
+                        self.DEBUG('Un-Presence attempt for contact "%s":' % k, 'warn')
+                        p = Presence(to=k, frm=session.peer, typ='unavailable')
+                        status = stanza.getTag('status')
+                        if status:
+                            p.T.show = status
+                        else:
+                            p.T.show = 'Logged Out'
+                        #self._owner.Dispatcher.dispatch(p,session)
 
-	    if not fromOutside:
-		    jid_info = self._owner.tool_split_jid(barejid)
-		    contacts = session.getRoster()
-		    for k,v in contacts.iteritems():
-			if v['subscription'] in ['from','both']:
-			    self.DEBUG('Un-Presence attempt for contact "%s":'%k,'warn')
-			    p = Presence(to=k,frm=session.peer,typ='unavailable')
-			    status=stanza.getTag('status')
-			    if status: p.T.show=status
-			    else: p.T.show='Logged Out'
-			    #self._owner.Dispatcher.dispatch(p,session)
+                        k_jid = JID(k)
+                        # Find each session
+                        s = None
+                        # If it's our server
+                        if k_jid.getDomain() in self._owner.servernames or k in self._owner.servernames:
+                            s = self._owner.getsession(k)
+                            if s is None:
+                                # TODO: Store
+                                pass
+                        else:
+                            s = self._owner.S2S(session.ourname, k_jid.getDomain())
 
-			    k_jid = JID(k)
-			    # Find each session
-			    s = None
-			    # If it's our server
-			    if k_jid.getDomain() in self._owner.servernames or k in self._owner.servernames:
-				s = self._owner.getsession(k)
-				if s == None:
-				    # TODO: Store
-				    pass
-			    else:
-				s=self._owner.S2S(session.ourname,k_jid.getDomain())
+                        # Send the presence
+                        if s is not None:
+                            s.enqueue(p)
+                        else:
+                            self.DEBUG('Could not find active session for contact %s' % (k), 'warn')
 
-			    # Send the presence
-			    if s != None:
-				s.enqueue(p)
-			    else:
-				self.DEBUG('Could not find active session for contact %s'%(k),'warn')
-
-	    else:
-		# Find each session
+            else:
+                # Find each session
                 s = None
-		s = self._owner.getsession(str(to))
-		if s == None:
-		    # TODO: Store if it's real user
-		    self.DEBUG("Could not find session for "+str(to),"warn")
-		    return
-		stanza.setNamespace(NS_CLIENT)
-		s.enqueue(stanza)
-		raise NodeProcessed
+                s = self._owner.getsession(str(to))
+                if s is None:
+                # TODO: Store if it's real user
+                    self.DEBUG("Could not find session for " + str(to), "warn")
+                    return
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
+                raise NodeProcessed
 
+            self.DEBUG('Finished for "%s"' % k, 'info')
 
-            self.DEBUG('Finished for "%s"'%k,'info')
+            if self._owner._socker is not None:
+                self._owner._socker.remove_data_root(['jid', barejid])
+                self._owner._socker.remove_data(['jid', barejid])
 
-            if self._owner._socker != None:
-                self._owner._socker.remove_data_root(['jid',barejid])
-                self._owner._socker.remove_data(['jid',barejid])
-
-            if not self._data.has_key(barejid) and raiseFlag == True: raise NodeProcessed
+            if barejid not in self._data.keys() and raiseFlag is True:
+                raise NodeProcessed
             #if self._data[barejid].has_key(resource): del self._data[barejid][resource]
             #self.update(barejid)
             #if not self._data[barejid]: del self._data[barejid]
             #self._owner.deactivatesession(session.peer)
 
-        elif typ=='invisible' and fromOutside == False:
+        elif typ == 'invisible' and fromOutside is False:
 
             jid_info = self._owner.tool_split_jid(barejid)
             contacts = session.getRoster()
-            for k,v in contacts.iteritems():
-                self.DEBUG('Un-Presence attempt for contact [INVISIBLE!!!]"%s":'%k,'warn')
-                p = Presence(to=k,frm=session.peer,typ='unavailable')
-                status=stanza.getTag('status')
-                if status: p.T.show=status
-                else: p.T.show='Logged Out'
+            for k, v in contacts.iteritems():
+                self.DEBUG('Un-Presence attempt for contact [INVISIBLE!!!]"%s":' % k, 'warn')
+                p = Presence(to=k, frm=session.peer, typ='unavailable')
+                status = stanza.getTag('status')
+                if status:
+                    p.T.show = status
+                else:
+                    p.T.show = 'Logged Out'
                 session.dispatch(p)
-                self.DEBUG('Finished for "%s" [INVISIBLE!!!]'%k,'info')
+                self.DEBUG('Finished for "%s" [INVISIBLE!!!]' % k, 'info')
 
-        elif typ=='probe':
-            self.DEBUG('Probe activated!','info')
+        elif typ == 'probe':
+            self.DEBUG('Probe activated!', 'info')
             if stanza.getTo() in self._owner.servernames:
-                session.enqueue(Presence(to=stanza.getFrom(),frm=stanza.getTo()))
+                session.enqueue(Presence(to=stanza.getFrom(), frm=stanza.getTo()))
                 raise NodeProcessed
             if stanza.getAttr('internal') == 'True':
-                self.DEBUG('Internal Probe activated!','info')
+                self.DEBUG('Internal Probe activated!', 'info')
                 try:
-                    resources=[stanza.getTo().getResource()]
-                    if not resources[0]: resources=self._data[stanza.getTo()].keys()
-                    flag=1
+                    resources = [stanza.getTo().getResource()]
+                    if not resources[0]:
+                        resources = self._data[stanza.getTo()].keys()
+                    flag = 1
                     for resource in resources:
-                        p=Presence(to=stanza.getFrom(),frm='%s/%s'%(stanza.getTo(),resource),node=self._data[stanza.getTo()][resource])
+                        p = Presence(to=stanza.getFrom(), frm='%s/%s' % (stanza.getTo(), resource), node=self._data[stanza.getTo()][resource])
                         if flag:
-                            #self._owner.Privacy(session,p)  # Desactivado de momento
-                            flag=None
+                        #self._owner.Privacy(session,p)  # Desactivado de momento
+                            flag = None
                         session.enqueue(p)
-                except KeyError: pass #Wanted session is not active! #session.enqueue(Presence(to=stanza.getTo(),frm=jid,typ='unavailable'))
+                except KeyError:
+                    pass  # Wanted session is not active! #session.enqueue(Presence(to=stanza.getTo(),frm=jid,typ='unavailable'))
             else:
-		if not self.isFromOutside(stanza.getTo().getDomain()):
-			#TODO: test if contact is authorized to know its presence
-			bareto = stanza.getTo().getStripped()
-			#resourceto = stanza.getTo().getResource()
-			if self._data.has_key(bareto):
-				#if self._data[bareto].has_key(resourceto):
-				for resourceto in self._data[bareto].keys():
-					p = copy.copy(self._data[bareto][resourceto])
-					p.setTo(barejid)
-					s = None
-					if not fromOutside:
-						s = self._owner.getsession(barejid)
-					else:
-						s = self._owner.S2S(session.ourname,domain)
-					if s:
-						s.enqueue(p)
-						self.DEBUG('Probe '+str(p) +' sent','info')
-						raise NodeProcessed
-			session.enqueue(Presence(to=stanza.getFrom(),frm=stanza.getTo(),typ='unavailable'))
-			self.DEBUG('Probe "unavailable" sent','info')
-			raise NodeProcessed
-		else:
-			self.DEBUG("Probe message ignored",'warn')
+                if not self.isFromOutside(stanza.getTo().getDomain()):
+                        #TODO: test if contact is authorized to know its presence
+                    bareto = stanza.getTo().getStripped()
+                    #resourceto = stanza.getTo().getResource()
+                    if bareto in self._data.keys():
+                        #if self._data[bareto].has_key(resourceto):
+                        for resourceto in self._data[bareto].keys():
+                            p = copy.copy(self._data[bareto][resourceto])
+                            p.setTo(barejid)
+                            s = None
+                            if not fromOutside:
+                                s = self._owner.getsession(barejid)
+                            else:
+                                s = self._owner.S2S(session.ourname, domain)
+                            if s:
+                                s.enqueue(p)
+                                self.DEBUG('Probe ' + str(p) + ' sent', 'info')
+                                raise NodeProcessed
+                    session.enqueue(Presence(to=stanza.getFrom(), frm=stanza.getTo(), typ='unavailable'))
+                    self.DEBUG('Probe "unavailable" sent', 'info')
+                    raise NodeProcessed
+                else:
+                    self.DEBUG("Probe message ignored", 'warn')
 
-    	elif typ in ['subscribe', 'subscribed', 'unsubscribe', 'unsubscribed']:
-			self.DEBUG("Redirecting stanza to subscriber", "warn")
-			self.subscriber(session, stanza)
+        elif typ in ['subscribe', 'subscribed', 'unsubscribe', 'unsubscribed']:
+            self.DEBUG("Redirecting stanza to subscriber", "warn")
+            self.subscriber(session, stanza)
 
         else:
-            self.DEBUG('Woah, nothing to call???','warn')
-            if raiseFlag: raise NodeProcessed
+            self.DEBUG('Woah, nothing to call???', 'warn')
+            if raiseFlag:
+                raise NodeProcessed
 
-    def broadcastAvailable(self,session,to=None):
+    def broadcastAvailable(self, session, to=None):
         try:
             #barejid,resource=session.peer.split('/')
-	    barejid  = JID(session.peer).getStripped()
-	    resource = JID(session.peer).getResource()
+            barejid = JID(session.peer).getStripped()
+            resource = JID(session.peer).getResource()
         except:
             fromOutside = True
-            self.DEBUG('Presence: Could not set barejid, fromOutside=True','warn')
+            self.DEBUG('Presence: Could not set barejid, fromOutside=True', 'warn')
 
         contacts = session.getRoster()
-        if contacts == None: return
+        if contacts is None:
+            return
 
-	#print "MY CONTACTS: "+ str(contacts)
+        #print "MY CONTACTS: "+ str(contacts)
 
         #for x,y in contacts.iteritems():
-        for x,y in contacts.items():
+        for x, y in contacts.items():
             #x_split = self._owner.tool_split_jid(x)
             j = JID(x)
-            name = j.getNode(); domain = j.getDomain()
-            self.DEBUG('Presence attempt for contact "%s":'%x,'warn')
-	    #print str(y['subscription'])
+            name = j.getNode()
+            domain = j.getDomain()
+            self.DEBUG('Presence attempt for contact "%s":' % x, 'warn')
+            #print str(y['subscription'])
             try:
-                if y['subscription'] in ['from','both']:
+                if y['subscription'] in ['from', 'both']:
                     #if x_split[1] not in self._owner.servernames \
                     #or self._owner.DB.pull_roster(x_split[1],x_split[0],barejid) != None:
                     if self.isFromOutside(domain) \
-                    or self._owner.DB.pull_roster(domain,name,barejid) != None:
+                            or self._owner.DB.pull_roster(domain, name, barejid) is not None:
                         if (x in self._owner.servernames):
-                            self.DEBUG("Contact %s is the server. returning"%(str(x)),'warn')
+                            self.DEBUG("Contact %s is the server. returning" % (str(x)), 'warn')
                             return
-                        self.DEBUG('Contact "%s" has from/both'%x,'warn')
-			###session.dispatch(Presence(to=x,frm=session.peer,node=self._data[barejid][session.getResource()]))
+                        self.DEBUG('Contact "%s" has from/both' % x, 'warn')
+                        ###session.dispatch(Presence(to=x,frm=session.peer,node=self._data[barejid][session.getResource()]))
 
-			# Find each session
-			s = None
-			# If it's our server
-			#if x_split[1] in self._owner.servernames or x in self._owner.servernames:
-			pres = Presence(to=x,frm=session.peer,node=self._data[barejid][session.getResource()])
-			if not self.isFromOutside(domain) or x in self._owner.servernames:
-				s = self._owner.getsession(x)
-				if s == None:
-        		                # TODO: Store
-                        		pass
-			else:
-                        	#s=self._owner.S2S(session.ourname,x_split[1])
-	                        s=self._owner.S2S(session.ourname,domain)
-				#pres.setNamespace(NS_SERVER)
+                        # Find each session
+                        s = None
+                        # If it's our server
+                        #if x_split[1] in self._owner.servernames or x in self._owner.servernames:
+                        pres = Presence(to=x, frm=session.peer, node=self._data[barejid][session.getResource()])
+                        if not self.isFromOutside(domain) or x in self._owner.servernames:
+                            s = self._owner.getsession(x)
+                            if s is None:
+                            # TODO: Store
+                                pass
+                        else:
+                            #s=self._owner.S2S(session.ourname,x_split[1])
+                            s = self._owner.S2S(session.ourname, domain)
+                            #pres.setNamespace(NS_SERVER)
 
-                	# Send the presence
-	                if s != None:
-        	            s.enqueue(pres)
-                	    self.DEBUG('Finished for "%s" (from/both)'%x,'info')
+                        # Send the presence
+                        if s is not None:
+                            s.enqueue(pres)
+                            self.DEBUG('Finished for "%s" (from/both)' % x, 'info')
 
-	        if y['subscription'] in ['to','both']:
-			#if (x_split == None and x in self._owner.servernames) \
-			#or x_split[1] not in self._owner.servernames          \
-			#or self._owner.DB.pull_roster(x_split[1],x_split[0],barejid) != None:
-			if (x in self._owner.servernames) \
-			or self.isFromOutside(domain) \
-			or self._owner.DB.pull_roster(domain,name,barejid) != None:
-			    self.DEBUG('Contact "%s" has to/both'%x,'warn')
-			    #p = Presence(to=x,frm=session.peer,typ='probe')
-			    #p.setAttr('type','probe')
-			    #session.dispatch(p)
-			    if self._data.has_key(str(x)):
-		          	  # Send the presence information of this client
-                		  for res in self._data[str(x)].keys():
-		                       session.enqueue(self._data[x][res])
-                	    elif x in self._owner.servernames or str(x) in self._owner.servernames:
-                	    	  # Generate an 'available' presence on our behalf (the server is always available)
-		                  session.enqueue(Presence(to=session.peer, frm=str(x), typ='available'))
-                	    elif self.isFromOutside(domain):
-	                    	  s=self._owner.S2S(session.ourname,domain)
-				  if s:
-					s.enqueue(Presence(to=x, frm=session.peer, typ='probe'))
-			    else:
-			         # Generate an 'unavailable' presence on behalf of this client
-                        	 session.enqueue(Presence(to=session.peer, frm=str(x), typ='unavailable'))
+                if y['subscription'] in ['to', 'both']:
+                        #if (x_split == None and x in self._owner.servernames) \
+                        #or x_split[1] not in self._owner.servernames          \
+                        #or self._owner.DB.pull_roster(x_split[1],x_split[0],barejid) != None:
+                    if (x in self._owner.servernames) \
+                        or self.isFromOutside(domain) \
+                            or self._owner.DB.pull_roster(domain, name, barejid) is not None:
+                        self.DEBUG('Contact "%s" has to/both' % x, 'warn')
+                        #p = Presence(to=x,frm=session.peer,typ='probe')
+                        #p.setAttr('type','probe')
+                        #session.dispatch(p)
+                        if str(x) in self._data.keys():
+                            # Send the presence information of this client
+                            for res in self._data[str(x)].keys():
+                                session.enqueue(self._data[x][res])
+                        elif x in self._owner.servernames or str(x) in self._owner.servernames:
+                            # Generate an 'available' presence on our behalf (the server is always available)
+                            session.enqueue(Presence(to=session.peer, frm=str(x), typ='available'))
+                        elif self.isFromOutside(domain):
+                            s = self._owner.S2S(session.ourname, domain)
+                            if s:
+                                s.enqueue(Presence(to=x, frm=session.peer, typ='probe'))
+                        else:
+                            # Generate an 'unavailable' presence on behalf of this client
+                            session.enqueue(Presence(to=session.peer, frm=str(x), typ='unavailable'))
 
-                            self.DEBUG('Finished for "%s" (to/both)'%x,'info')
+                        self.DEBUG('Finished for "%s" (to/both)' % x, 'info')
 
             except Exception, err:
-                self.DEBUG("PRESENCE_BROADCAST_ERR: %s\nx:%s\ny:%s"%(err,x,y),'error')
+                self.DEBUG("PRESENCE_BROADCAST_ERR: %s\nx:%s\ny:%s" % (err, x, y), 'error')
 
-    def update(self,barejid):
-    	self.DEBUG("Router update","info")
-        pri=-1
-        s=None
+    def update(self, barejid):
+        self.DEBUG("Router update", "info")
+        pri = -1
+        s = None
         for resource in self._data[barejid].keys():
-            rpri=int(self._data[barejid][resource].getTagData('priority'))
-            if rpri>pri: s=self._owner.getsession(barejid+'/'+resource)
+            rpri = int(self._data[barejid][resource].getTagData('priority'))
+            if rpri > pri:
+                s = self._owner.getsession(barejid + '/' + resource)
         if s:
-            self._owner.activatesession(s,barejid)
+            self._owner.activatesession(s, barejid)
         else:
             self._owner.deactivatesession(barejid)
 
+    def safeguard(self, session, stanza):
+        if stanza.getNamespace() not in [NS_CLIENT, NS_SERVER]:
+            return  # this is not XMPP stanza
 
-    def safeguard(self,session,stanza):
-        if stanza.getNamespace() not in [NS_CLIENT,NS_SERVER]: return # this is not XMPP stanza
-
-        if session._session_state<SESSION_AUTHED: # NOT AUTHED yet (stream's stuff already done)
+        if session._session_state < SESSION_AUTHED:  # NOT AUTHED yet (stream's stuff already done)
             session.terminate_stream(STREAM_NOT_AUTHORIZED)
             raise NodeProcessed
 
-        frm=stanza['from']
-        to=stanza['to']
-        if stanza.getNamespace()==NS_SERVER:
+        frm = stanza['from']
+        to = stanza['to']
+        if stanza.getNamespace() == NS_SERVER:
             if not frm or not to \
-              or frm.getDomain()<>session.peer \
-              or to.getDomain()<>session.ourname:
+                or frm.getDomain() != session.peer \
+                    or to.getDomain() != session.ourname:
                 session.terminate_stream(STREAM_IMPROPER_ADDRESSING)
                 raise NodeProcessed
         else:
-            if frm and frm<>session.peer:   # if the from address specified and differs
-                if frm.getResource() or not frm.bareMatch(session.peer): # ...it can differ only while comparing inequally
+            if frm and frm != session.peer:   # if the from address specified and differs
+                if frm.getResource() or not frm.bareMatch(session.peer):  # ...it can differ only while comparing inequally
                     session.terminate_stream(STREAM_INVALID_FROM)
                     raise NodeProcessed
 
-            if session._session_state<SESSION_BOUND: # NOT BOUND yet (bind stuff already done)
-                if stanza.getType()<>'error': session.send(Error(stanza,ERR_NOT_AUTHORIZED))
+            if session._session_state < SESSION_BOUND:  # NOT BOUND yet (bind stuff already done)
+                if stanza.getType() != 'error':
+                    session.send(Error(stanza, ERR_NOT_AUTHORIZED))
                 raise NodeProcessed
 
-            if name=='presence' and session._session_state<SESSION_OPENED:
-                if stanza.getType()<>'error': session.send(Error(stanza,ERR_NOT_ALLOWED))
+            if name == 'presence' and session._session_state < SESSION_OPENED:
+                if stanza.getType() != 'error':
+                    session.send(Error(stanza, ERR_NOT_ALLOWED))
                 raise NodeProcessed
             stanza.setFrom(session.peer)
 
-    def subscriber(self,session,stanza):
+    def subscriber(self, session, stanza):
         """
         Subscription manager that actually works (cough, cough, BoP, cough, cough ;-)
 
@@ -468,12 +488,12 @@ class Router(PlugIn):
 
         try:
             supposed_from = JID(session.peer)
-            if supposed_from.getNode() == '': # and supposed_from.getDomain() not in self._owner.servernames:
-		fromOutside = self.isFromOutside(JID(supposed_from).getDomain())
-		if fromOutside:
-	                frm = str(stanza.getFrom())
-		else:
-                	frm = str(JID(session.peer).getStripped())
+            if supposed_from.getNode() == '':  # and supposed_from.getDomain() not in self._owner.servernames:
+                fromOutside = self.isFromOutside(JID(supposed_from).getDomain())
+                if fromOutside:
+                    frm = str(stanza.getFrom())
+                else:
+                    frm = str(JID(session.peer).getStripped())
             else:
                 frm = str(JID(session.peer).getStripped())
                 fromOutside = False
@@ -488,43 +508,44 @@ class Router(PlugIn):
         jfrom_domain = JID(session.peer).getDomain()
 
         # Construct correct bareto
-        if session_jid[0] == '': bareto = session_jid[1]     # OMG it's a component!
-        else: bareto = session_jid[0] + '@' + session_jid[1] # It's a regular client
+        if session_jid[0] == '':
+            bareto = session_jid[1]     # OMG it's a component!
+        else:
+            bareto = session_jid[0] + '@' + session_jid[1]  # It's a regular client
 
         # 0.2 Get the session of the receiver
         s = None
         s = self._owner.getsession(bareto)
-        if s == None:
-           if self.isFromOutside(to.getDomain()):
-               s=self._owner.S2S(session.ourname,to.getDomain())
+        if s is None:
+            if self.isFromOutside(to.getDomain()):
+                s = self._owner.S2S(session.ourname, to.getDomain())
 
-           if s == None:
-               self.DEBUG("DANGER! There is still no session for the receiver","error")
-               # There was no session for the receiver
-               # TODO: Store the stanza and relay it later
-               raise NodeProcessed
-
+            if s is None:
+                self.DEBUG("DANGER! There is still no session for the receiver", "error")
+                # There was no session for the receiver
+                # TODO: Store the stanza and relay it later
+                raise NodeProcessed
 
         if not fromOutside:
-            contact = self._owner.DB.pull_roster(str(jfrom_domain),str(jfrom_node),str(bareto))
+            contact = self._owner.DB.pull_roster(str(jfrom_domain), str(jfrom_node), str(bareto))
             #print "### CONTACT: " + str(contact)
-        else: contact = None
+        else:
+            contact = None
 
-	# Inbound-Outbound Shit
-	if not self.isFromOutside(to.getDomain()):
-		inbound = True
-		inbound_contact = self._owner.DB.pull_roster(to.getDomain(), to.getNode(), frm)
-		self.DEBUG("Inbound Contact: %s : %s"%(bareto,str(inbound_contact)),"warn")
-	else:
-		inbound = False
+        # Inbound-Outbound Shit
+        if not self.isFromOutside(to.getDomain()):
+            inbound = True
+            inbound_contact = self._owner.DB.pull_roster(to.getDomain(), to.getNode(), frm)
+            self.DEBUG("Inbound Contact: %s : %s" % (bareto, str(inbound_contact)), "warn")
+        else:
+            inbound = False
 
-	if not self.isFromOutside(jfrom_domain):
-		outbound = True
-		outbound_contact = self._owner.DB.pull_roster( str(jfrom_domain), str(jfrom_node), str(bareto))
-		self.DEBUG("Outbound Contact: %s : %s"%(frm,str(outbound_contact)),"warn")
-	else:
-		outbound = False
-
+        if not self.isFromOutside(jfrom_domain):
+            outbound = True
+            outbound_contact = self._owner.DB.pull_roster(str(jfrom_domain), str(jfrom_node), str(bareto))
+            self.DEBUG("Outbound Contact: %s : %s" % (frm, str(outbound_contact)), "warn")
+        else:
+            outbound = False
 
         if stanza.getType() == "subscribe":
             #print "### IT'S SUBSCRIBE"
@@ -536,7 +557,7 @@ class Router(PlugIn):
                 1.4 Do the victory dance and raise NodeProcessed
             """
 
-	    """
+            """
             self.DEBUG("Checking if contact is already subscribed","info")
             try:
                 if contact and contact['subscription'] in ['both', 'to']:
@@ -549,88 +570,103 @@ class Router(PlugIn):
                 self.DEBUG("This contact wasn't in the roster or the subscription wasn't done","warn")
             except AttributeError:
                 self.DEBUG("The subscription wasn't done","warn")
-	    """
+            """
 
             #self.DEBUG("Contact is not subscribed yet. jfrom = %s %s"%(str(jfrom_node),str(jfrom_domain)),"info")
             # 1.2 Modify and push the sender's roster (if it's a client of this server)
             #if str(jfrom_domain) in self._owner.servernames:
-	    route=False
+            route = False
             if inbound:
 
-		    """
-		    if contact and not fromOutside:
-		        # Add 'ask' key to the roster
-		        contact.update({'ask':'subscribe'})
-		        self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, contact)
-		    elif not fromOutside:
-		    """
+                """
+                if contact and not fromOutside:
+                    # Add 'ask' key to the roster
+                    contact.update({'ask':'subscribe'})
+                    self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, contact)
+                elif not fromOutside:
+                """
 
-                    # Create roster for this contact
-                    #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
-		    # F?CKING inbound-outbound control schema
-		    if inbound_contact and inbound_contact.has_key('subscription'): subs = inbound_contact['subscription']
-		    else: subs = "none"
-		    if inbound_contact and inbound_contact.has_key('state'): state = inbound_contact['state']
-		    else: state = ""
+                # Create roster for this contact
+                #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
+                # F?CKING inbound-outbound control schema
+                if inbound_contact and 'subscription' in inbound_contact.keys():
+                    subs = inbound_contact['subscription']
+                else:
+                    subs = "none"
+                if inbound_contact and 'state' in inbound_contact.keys():
+                    state = inbound_contact['state']
+                else:
+                    state = ""
 
-		    #print "subs",subs,state,route
+                #print "subs",subs,state,route
 
-		    route = True
-		    if   subs == "none" and not state: state="pending_in"
-		    elif subs == "none" and state == "pending_out": state = "pending_out_in"
-		    elif subs == "to" and not state: state = "pending_in"
-		    else: route = False
+                route = True
+                if   subs == "none" and not state:
+                    state = "pending_in"
+                elif subs == "none" and state == "pending_out":
+                    state = "pending_out_in"
+                elif subs == "to" and not state:
+                    state = "pending_in"
+                else:
+                    route = False
 
-		    #print "subs",subs,state,route
+                #print "subs",subs,state,route
 
-		    if subs in ['from','both']:
-			session.enqueue(Presence(frm=bareto,typ='subscribed',to=frm))  # Auto-Reply
-			raise NodeProcessed
+                if subs in ['from', 'both']:
+                    session.enqueue(Presence(frm=bareto, typ='subscribed', to=frm))  # Auto-Reply
+                    raise NodeProcessed
 
-                    try:
-			if not inbound_contact: inbound_contact = {}
-			inbound_contact.update({'subscription':subs})
-			inbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
+                try:
+                    if not inbound_contact:
+                        inbound_contact = {}
+                    inbound_contact.update({'subscription': subs})
+                    inbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
 
-		        self._owner.ROSTER.RosterPushOneToClient(contact=frm,to=bareto,to_session=s)
-	    		#print "route: ",route,outbound
+                    self._owner.ROSTER.RosterPushOneToClient(contact=frm, to=bareto, to_session=s)
+                    #print "route: ",route,outbound
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(bareto), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(bareto), 'error')
 
+            if outbound:
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if outbound_contact and 'subscription' in outbound_contact.keys():
+                        subs = outbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if outbound_contact and 'state' in outbound_contact.keys():
+                        state = outbound_contact['state']
+                    else:
+                        state = ""
 
-	    if outbound:
-		     try:
-			# F?CKING inbound-outbound control schema
-			if outbound_contact and outbound_contact.has_key('subscription'):subs=outbound_contact['subscription']
-			else: subs = "none"
-			if outbound_contact and outbound_contact.has_key('state'): state = outbound_contact['state']
-			else: state = ""
+                    if   subs == "none" and not state:
+                        state = "pending_out"
+                    elif subs == "none" and state == "pending_in":
+                        state = "pending_out_in"
+                    elif subs == "from" and not state:
+                        state = "pending_out"
 
-			if   subs == "none" and not state: state="pending_out"
-			elif subs == "none" and state == "pending_in": state = "pending_out_in"
-			elif subs == "from" and not state: state = "pending_out"
+                    if not outbound_contact:
+                        outbound_contact = {}
+                    outbound_contact.update({'subscription': subs})
+                    outbound_contact.update({'state': state})
+                    if not subs or subs == "none":
+                        outbound_contact.update({'ask': 'subscribe'})
+                    self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
 
+                    self._owner.ROSTER.RosterPushOneToClient(contact=bareto, to=frm, to_session=session)
 
-			if not outbound_contact: outbound_contact = {}
-			outbound_contact.update({'subscription':subs})
-			outbound_contact.update({'state':state})
-			if not subs or subs == "none": outbound_contact.update({'ask':'subscribe'})
-			self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
-
-		        self._owner.ROSTER.RosterPushOneToClient(contact=bareto,to=frm,to_session=session)
-
-                     except:
-                        self.DEBUG("Could not create roster for client "+str(frm), 'error')
-
+                except:
+                    self.DEBUG("Could not create roster for client " + str(frm), 'error')
 
             # 1.3 Relay the presence stanza to the receiver
-	    if outbound or route:
-		    self.DEBUG("Routing stanza to receiver: "+str(bareto),"info")
-	            stanza.setFrom(frm)
-        	    stanza.setNamespace(NS_CLIENT)
-	            s.enqueue(stanza)
+            if outbound or route:
+                self.DEBUG("Routing stanza to receiver: " + str(bareto), "info")
+                stanza.setFrom(frm)
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
 
             # 1.4 Do the victory dance
             #   o
@@ -648,78 +684,106 @@ class Router(PlugIn):
                     2.2.2 Modify and push the sender's roster ??
                 2.3 Send a presence probe on behalf of the sender
             """
-	    route=False
+            route = False
             if inbound:
-                    #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
-                    try:
-			# F?CKING inbound-outbound control schema
-			if inbound_contact and inbound_contact.has_key('subscription'): subs = inbound_contact['subscription']
-			else: subs = "none"
-			if inbound_contact and inbound_contact.has_key('state'): state = inbound_contact['state']
-			else: state = ""
+                #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if inbound_contact and 'subscription' in inbound_contact.keys():
+                        subs = inbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if inbound_contact and 'state' in inbound_contact.keys():
+                        state = inbound_contact['state']
+                    else:
+                        state = ""
 
-	    		route = True
-			if subs == "none" and state == "pending_out": subs = "to"; state = ""
-			elif subs == "none" and state == "pending_out_in": subs = "to"; state = "pending_in"
-			elif subs == "from" and state == "pending_out": subs = "both"; state = ""
-			elif subs == "from" and not state: subs = "both" #this is not standard
-			else: route = False
+                    route = True
+                    if subs == "none" and state == "pending_out":
+                        subs = "to"
+                        state = ""
+                    elif subs == "none" and state == "pending_out_in":
+                        subs = "to"
+                        state = "pending_in"
+                    elif subs == "from" and state == "pending_out":
+                        subs = "both"
+                        state = ""
+                    elif subs == "from" and not state:
+                        subs = "both"  # this is not standard
+                    else:
+                        route = False
 
-			if not inbound_contact: inbound_contact = {}
-			inbound_contact.update({'subscription':subs})
-			inbound_contact.update({'state':state})
-			if inbound_contact.has_key('ask'): del inbound_contact['ask']
-			self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
+                    if not inbound_contact:
+                        inbound_contact = {}
+                    inbound_contact.update({'subscription': subs})
+                    inbound_contact.update({'state': state})
+                    if 'ask' in inbound_contact.keys():
+                        del inbound_contact['ask']
+                    self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
 
-		        #self._owner.ROSTER.RosterPushOne(session,stanza)
-		        self._owner.ROSTER.RosterPushOneToClient(contact=frm, to=bareto, to_session=s)
+                    #self._owner.ROSTER.RosterPushOne(session,stanza)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=frm, to=bareto, to_session=s)
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(bareto), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(bareto), 'error')
 
-	    if outbound:
-                    try:
-			# F?CKING inbound-outbound control schema
-			if outbound_contact and outbound_contact.has_key('subscription'): subs = outbound_contact['subscription']
-			else: subs = None
-			if outbound_contact and outbound_contact.has_key('state'): state = outbound_contact['state']
-			else: state = None
+            if outbound:
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if outbound_contact and 'subscription' in outbound_contact.keys():
+                        subs = outbound_contact['subscription']
+                    else:
+                        subs = None
+                    if outbound_contact and 'state' in outbound_contact.keys():
+                        state = outbound_contact['state']
+                    else:
+                        state = None
 
-			if subs == "none" and state == "pending_in": subs = "from"; state = ""; route = True
-			elif subs == "none" and state == "pending_out_in": subs = "from"; state = "pending_out"; route = True
-			elif subs == "to" and state == "pending_in": subs = "both"; state = ""; route = True
+                    if subs == "none" and state == "pending_in":
+                        subs = "from"
+                        state = ""
+                        route = True
+                    elif subs == "none" and state == "pending_out_in":
+                        subs = "from"
+                        state = "pending_out"
+                        route = True
+                    elif subs == "to" and state == "pending_in":
+                        subs = "both"
+                        state = ""
+                        route = True
 
-			if not outbound_contact: outbound_contact = {}
-			outbound_contact.update({'subscription':subs})
-			outbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
+                    if not outbound_contact:
+                        outbound_contact = {}
+                    outbound_contact.update({'subscription': subs})
+                    outbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
 
-		        #self._owner.ROSTER.RosterPushOne(session,stanza)
-		        self._owner.ROSTER.RosterPushOneToClient(contact=bareto,to=frm, to_session=session)
+                    #self._owner.ROSTER.RosterPushOne(session,stanza)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=bareto, to=frm, to_session=session)
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(frm), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(frm), 'error')
 
-	    if route:
-	            stanza.setFrom(frm)
-        	    stanza.setNamespace(NS_CLIENT)
-	            s.enqueue(stanza)
-		    self.DEBUG("Subscribed-stanza relied to proper client","ok")
+            if route:
+                stanza.setFrom(frm)
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
+                self.DEBUG("Subscribed-stanza relied to proper client", "ok")
 
             # 2.3 Send an available presence probe on behalf of the one who allows subscription
             try:
-		    barefrom = JID(frm).getStripped()
-		    if self._data.has_key(barefrom):
-			for pres in self._data[barefrom].values():
-			    pres_c = copy.copy(pres)
-			    pres_c.setType('available')
-			    pres_c.setTo(bareto)
-			    s.enqueue(pres_c)
+                barefrom = JID(frm).getStripped()
+                if barefrom in self._data.keys():
+                    for pres in self._data[barefrom].values():
+                        pres_c = copy.copy(pres)
+                        pres_c.setType('available')
+                        pres_c.setTo(bareto)
+                        s.enqueue(pres_c)
             except Exception, e:
                 print "### EXCEPTION " + str(e)
 
             #print "### PRESENCE STANZA ON BEHALF OF " + barefrom
-	    #self._owner.DB.print_database()
+            #self._owner.DB.print_database()
 
             raise NodeProcessed
 
@@ -734,81 +798,107 @@ class Router(PlugIn):
                 3.5 Send the sender (wowwow) probes of 'unavailable' on behalf of the receiver
             """
 
-	    route = False
+            route = False
             if inbound:
 
-                    #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
-                    try:
-			# F?CKING inbound-outbound control schema
-			if inbound_contact and inbound_contact.has_key('subscription'): subs = inbound_contact['subscription']
-			else: subs = "none"
-			if inbound_contact and inbound_contact.has_key('state'): state = inbound_contact['state']
-			else: state = ""
+                #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if inbound_contact and 'subscription' in inbound_contact.keys():
+                        subs = inbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if inbound_contact and 'state' in inbound_contact.keys():
+                        state = inbound_contact['state']
+                    else:
+                        state = ""
 
-			if   subs == "none" and state == "pending_in": state=""; route = True
-			elif subs == "none" and state == "pending_out_in": state = "pending_out"; route = True
-			elif   subs == "to" and state == "pending_in": state=""; route = True
-			elif   subs == "from" and not state : subs="none"; route = True
-			elif   subs == "from" and state == "pending_out" : subs="none"; route = True
-			elif   subs == "both" and not state : subs="to"; route = True
+                    if   subs == "none" and state == "pending_in":
+                        state = ""
+                        route = True
+                    elif subs == "none" and state == "pending_out_in":
+                        state = "pending_out"
+                        route = True
+                    elif   subs == "to" and state == "pending_in":
+                        state = ""
+                        route = True
+                    elif   subs == "from" and not state:
+                        subs = "none"
+                        route = True
+                    elif   subs == "from" and state == "pending_out":
+                        subs = "none"
+                        route = True
+                    elif   subs == "both" and not state:
+                        subs = "to"
+                        route = True
 
-			if not inbound_contact: inbound_contact = {}
-			inbound_contact.update({'subscription':subs})
-			inbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
+                    if not inbound_contact:
+                        inbound_contact = {}
+                    inbound_contact.update({'subscription': subs})
+                    inbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
 
-		        self._owner.ROSTER.RosterPushOneToClient(contact=frm,to=bareto,to_session=s)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=frm, to=bareto, to_session=s)
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(bareto), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(bareto), 'error')
 
+            if outbound:
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if outbound_contact and 'subscription' in outbound_contact.keys():
+                        subs = outbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if outbound_contact and 'state' in outbound_contact.keys():
+                        state = outbound_contact['state']
+                    else:
+                        state = ""
 
-	    if outbound:
-                    try:
-			# F?CKING inbound-outbound control schema
-			if outbound_contact and outbound_contact.has_key('subscription'):subs=outbound_contact['subscription']
-			else: subs = "none"
-			if outbound_contact and outbound_contact.has_key('state'): state = outbound_contact['state']
-			else: state = ""
+                    if    subs == "none" and state == "pending_out":
+                        state = ""  # ; route = True
+                    elif  subs == "none" and state == "pending_out_in":
+                        state = "pending_in"  # ; route = True
+                    elif  subs == "to" and not state:
+                        subs = "none"  # ; route = True
+                    elif  subs == "to" and state == "pending_in":
+                        subs = "none"  # ; route = True
+                    elif  subs == "from" and state == "pending_out":
+                        state = ""  # ; route = True
+                    elif  subs == "both" and not state:
+                        subs = "from"  # ; route = True
 
-			if    subs == "none" and state == "pending_out": state=""    #; route = True
-			elif  subs == "none" and state == "pending_out_in": state = "pending_in" #; route = True
-			elif  subs == "to" and not state: subs = "none"              #; route = True
-			elif  subs == "to" and state == "pending_in" : subs="none"   #; route = True
-			elif  subs == "from" and state == "pending_out" : state=""   #; route = True
-			elif  subs == "both" and not state : subs="from"             #; route = True
+                    if not outbound_contact:
+                        outbound_contact = {}
+                    outbound_contact.update({'subscription': subs})
+                    outbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
 
-			if not outbound_contact: outbound_contact = {}
-			outbound_contact.update({'subscription':subs})
-			outbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=bareto, to=frm, to_session=session)
 
-		        self._owner.ROSTER.RosterPushOneToClient(contact=bareto,to=frm,to_session=session)
-
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(frm), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(frm), 'error')
 
             # 1.3 Relay the presence stanza to the receiver
-	    if outbound or route:
-	            stanza.setFrom(frm)
-        	    stanza.setNamespace(NS_CLIENT)
-	            s.enqueue(stanza)
-		    if route:
-			session.enqueue(Presence(to=frm,frm=bareto,typ="unsubscribed"))
+            if outbound or route:
+                stanza.setFrom(frm)
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
+                if route:
+                    session.enqueue(Presence(to=frm, frm=bareto, typ="unsubscribed"))
 
             raise NodeProcessed
 
             # 3.5 Send the sender (wowwow) probes of 'unavailable' on behalf of the receiver
-	    """
+            """
             for pres in self._data[bareto].values():
-		    p = copy.copy(pres)
-                    p.setType('unavailable')
-		    p.setTo(frm)
-                    session.enqueue(p)
-	    """
+                p = copy.copy(pres)
+                p.setType('unavailable')
+                p.setTo(frm)
+                session.enqueue(p)
+            """
 
-	    raise NodeProcessed
-
+            raise NodeProcessed
 
         elif stanza.getType() == "unsubscribed":
             pass
@@ -819,65 +909,100 @@ class Router(PlugIn):
                 4.2 Modify and push the receiver and sender rosters
             """
 
-	    route = False
+            route = False
             if inbound:
-                    #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
-                    try:
-			# F?CKING inbound-outbound control schema
-			if inbound_contact and inbound_contact.has_key('subscription'): subs = inbound_contact['subscription']
-			else: subs = "none"
-			if inbound_contact and inbound_contact.has_key('state'): state = inbound_contact['state']
-			else: state = ""
+                #print "### JFROM = %s %s  ;  BARETO = %s"%(jfrom_node, jfrom_node, bareto)
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if inbound_contact and 'subscription' in inbound_contact.keys():
+                        subs = inbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if inbound_contact and 'state' in inbound_contact.keys():
+                        state = inbound_contact['state']
+                    else:
+                        state = ""
 
-			if subs == "none" and state == "pending_out": subs = "none"; state = ""; route = True
-			elif subs == "none" and state == "pending_out_in": subs = "none"; state = "pending_in"; route = True
-			elif subs == "to" and not state: subs = "none"; route = True
-			elif subs == "to" and state == "pending_in": subs = "none"; route = True
-			elif subs == "from" and state == "pending_out": subs = "from"; route = True
-			elif subs == "both" and not state: subs = "from"; route = True
+                    if subs == "none" and state == "pending_out":
+                        subs = "none"
+                        state = ""
+                        route = True
+                    elif subs == "none" and state == "pending_out_in":
+                        subs = "none"
+                        state = "pending_in"
+                        route = True
+                    elif subs == "to" and not state:
+                        subs = "none"
+                        route = True
+                    elif subs == "to" and state == "pending_in":
+                        subs = "none"
+                        route = True
+                    elif subs == "from" and state == "pending_out":
+                        subs = "from"
+                        route = True
+                    elif subs == "both" and not state:
+                        subs = "from"
+                        route = True
 
-			if not inbound_contact: inbound_contact = {}
-			inbound_contact.update({'subscription':subs})
-			inbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
+                    if not inbound_contact:
+                        inbound_contact = {}
+                    inbound_contact.update({'subscription': subs})
+                    inbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(to.getDomain(), to.getNode(), frm, inbound_contact)
 
-		        #self._owner.ROSTER.RosterPushOne(session,stanza)
-		        self._owner.ROSTER.RosterPushOneToClient(contact=frm,to=bareto,to_session=s)
+                    #self._owner.ROSTER.RosterPushOne(session,stanza)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=frm, to=bareto, to_session=s)
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(bareto), 'error')
+                except:
+                    self.DEBUG("Could not create roster for client " + str(bareto), 'error')
 
-	    if outbound:
-                    try:
-			# F?CKING inbound-outbound control schema
-			if outbound_contact and outbound_contact.has_key('subscription'): subs = outbound_contact['subscription']
-			else: subs = "none"
-			if outbound_contact and outbound_contact.has_key('state'): state = outbound_contact['state']
-			else: state = ""
+            if outbound:
+                try:
+                    # F?CKING inbound-outbound control schema
+                    if outbound_contact and 'subscription' in outbound_contact.keys():
+                        subs = outbound_contact['subscription']
+                    else:
+                        subs = "none"
+                    if outbound_contact and 'state' in outbound_contact.keys():
+                        state = outbound_contact['state']
+                    else:
+                        state = ""
 
-			if subs == "none" and state == "pending_in": state = ""; route = True
-			elif subs == "none" and state == "pending_out_in": state = "pending_out"; route = True
-			elif subs == "to" and state == "pending_in": state = ""; route = True
-			elif subs == "from" and not state: subs = "none"; route = True
-			elif subs == "from" and state == "pending_out": subs = "none"; route = True
-			elif subs == "both" and not state: subs = "to"; route = True
+                    if subs == "none" and state == "pending_in":
+                        state = ""
+                        route = True
+                    elif subs == "none" and state == "pending_out_in":
+                        state = "pending_out"
+                        route = True
+                    elif subs == "to" and state == "pending_in":
+                        state = ""
+                        route = True
+                    elif subs == "from" and not state:
+                        subs = "none"
+                        route = True
+                    elif subs == "from" and state == "pending_out":
+                        subs = "none"
+                        route = True
+                    elif subs == "both" and not state:
+                        subs = "to"
+                        route = True
 
-			if not outbound_contact: outbound_contact = {}
-			outbound_contact.update({'subscription':subs})
-			outbound_contact.update({'state':state})
-			self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
+                    if not outbound_contact:
+                        outbound_contact = {}
+                    outbound_contact.update({'subscription': subs})
+                    outbound_contact.update({'state': state})
+                    self._owner.DB.save_to_roster(jfrom_domain, jfrom_node, bareto, outbound_contact)
 
-		        #self._owner.ROSTER.RosterPushOne(session,stanza)
-		        self._owner.ROSTER.RosterPushOneToClient(contact=bareto, to=frm, to_session=session)
+                    #self._owner.ROSTER.RosterPushOne(session,stanza)
+                    self._owner.ROSTER.RosterPushOneToClient(contact=bareto, to=frm, to_session=session)
 
+                except:
+                    self.DEBUG("Could not create roster for client " + str(frm), 'error')
 
-                    except:
-                        self.DEBUG("Could not create roster for client "+str(frm), 'error')
-
-	    if route:
-	            stanza.setFrom(frm)
-        	    stanza.setNamespace(NS_CLIENT)
-	            s.enqueue(stanza)
+            if route:
+                stanza.setFrom(frm)
+                stanza.setNamespace(NS_CLIENT)
+                s.enqueue(stanza)
 
             """
             # 4.3 Send the receiver probes of 'unavailable' on behalf of the sender
@@ -888,17 +1013,14 @@ class Router(PlugIn):
                     s.enqueue(pres)
             """
 
-	    raise NodeProcessed
-
-
-
+            raise NodeProcessed
 
     """
     def balance_of_presence(self,session,stanza):
         "Figures-out what should be done to a particular contact"
         self.DEBUG('###BoP: SYSTEM PASS-THROUGH INSTIGATED [%s]'%unicode(stanza).encode('utf-8'),'warn')
         #Predefined settings
-#        ["subscribe", "subscribed", "unsubscribe", "unsubscribed"]
+        #["subscribe", "subscribed", "unsubscribe", "unsubscribed"]
 
         #Stanza Stuff
         try:
@@ -912,23 +1034,22 @@ class Router(PlugIn):
             self.DEBUG('###BoP: RECIEVED STANZA WITHOUT \'FROM\' ATTR','warn')
 
 
-	component = False
-	session_jid = session.getSplitJID()
+        component = False
+        session_jid = session.getSplitJID()
         to=stanza['to']
         if not to: return # Not for us.
         to_node=to.getNode()
         #if not to_node: return # Yep, not for us.
         to_domain=to.getDomain()
-	if str(to_domain) in self._owner.components.keys(): component = True
-	if not component or (component and to_node): bareto=to_node+'@'+to_domain
-	else: bareto = to_domain
+        if str(to_domain) in self._owner.components.keys(): component = True
+        if not component or (component and to_node): bareto=to_node+'@'+to_domain
+        else: bareto = to_domain
 
-	if component:
-		s = self._owner.getsession(to)
-		if s:
-			s.enqueue(stanza)
-		raise NodeProcessed
-
+        if component:
+            s = self._owner.getsession(to)
+            if s:
+                s.enqueue(stanza)
+            raise NodeProcessed
 
         #bareto=to_node+'@'+to_domain
 
@@ -1167,79 +1288,78 @@ class Router(PlugIn):
         return session,stanza
     """
 
-    def karmatize_me_captain(self,s,stanza):
-            karma = s.getKarma()
-            data_len = len(unicode(stanza))
-            if karma != None and time.time() - karma['last_time'] >= 60: # reset counters and stuff!
-                karma['last_time'] == time.time()
-                karma['tot_up'] = 0
-                karma['tot_down'] = 0
-            if karma != None and karma['tot_up'] + data_len > karma['up']:
-                s.send(Error(stanza,ERR_NOT_ALLOWED))
-                raise NodeProcessed
-            else:
-                if karma != None:
-                    karma['tot_up'] += data_len
-                    s.updateKarma(karma)
+    def karmatize_me_captain(self, s, stanza):
+        karma = s.getKarma()
+        data_len = len(unicode(stanza))
+        if karma is not None and time.time() - karma['last_time'] >= 60:  # reset counters and stuff!
+            karma['last_time'] == time.time()
+            karma['tot_up'] = 0
+            karma['tot_down'] = 0
+        if karma is not None and karma['tot_up'] + data_len > karma['up']:
+            s.send(Error(stanza, ERR_NOT_ALLOWED))
+            raise NodeProcessed
+        else:
+            if karma is not None:
+                karma['tot_up'] += data_len
+                s.updateKarma(karma)
 
-    def intra_route(self,stanza):
-        getsession=self._owner.getsession
+    def intra_route(self, stanza):
+        getsession = self._owner.getsession
         internal_router = getsession('__ir__@127.0.0.1/ROUTER')
         if internal_router:
             internal_router.enqueue(stanza)
 
-
-    def routerHandler(self,session,stanza,raiseFlag=True):
+    def routerHandler(self, session, stanza, raiseFlag=True):
         """ XMPP-Core 9.1.1 rules """
 
-        name=stanza.getName()
-        self.DEBUG('Router handler called','info')
-	#self.DEBUG('Recent Errors', "error")
+        name = stanza.getName()
+        self.DEBUG('Router handler called', 'info')
+        #self.DEBUG('Recent Errors', "error")
 
         if name == "presence":
-	    	# They won't catch me alive !
-	    	return
+            # They won't catch me alive !
+            return
 
         try:
-            self.DEBUG('with stanza %s'%(str(stanza)),'info')
+            self.DEBUG('with stanza %s' % (str(stanza)), 'info')
         except:
-            self.DEBUG('with UNKNOWN stanza','info')
+            self.DEBUG('with UNKNOWN stanza', 'info')
 #        try: print stanza
 #        except: pass
 
-
         #print "### ROUTES: %s"%(self._owner.routes)
         #print stanza
-
         """
         # Sometimes, a presence stanza arrives here. Let's redirect it to presenceHandler
         if name == "presence" and stanza.getNamespace() == NS_SERVER:
         """
 
-        to=stanza['to']
-        if stanza.getNamespace()==NS_CLIENT and \
-        (not to or to==session.ourname) and \
-        stanza.props in ( [NS_AUTH], [NS_REGISTER], [NS_BIND], [NS_SESSION] ):
+        to = stanza['to']
+        if stanza.getNamespace() == NS_CLIENT and \
+            (not to or to == session.ourname) and \
+                stanza.props in ([NS_AUTH], [NS_REGISTER], [NS_BIND], [NS_SESSION]):
             return
 
-	try:
-	        if not session.trusted and session.peer != '__ir__@127.0.0.1/ROUTER': self.safeguard(session,stanza)
-	except:
-		self.DEBUG("NOT SAFEGUARD","error")
+        try:
+            if not session.trusted and session.peer != '__ir__@127.0.0.1/ROUTER':
+                self.safeguard(session, stanza)
+        except:
+            self.DEBUG("NOT SAFEGUARD", "error")
 
-        if not to: #return
+        if not to:  # return
             stanza.setTo(session.ourname)
-            to=stanza['to']
+            to = stanza['to']
             #print "### SESSION.OURNAME = " + str(session.ourname)
 
-	if self.pluginRelay(session,stanza) and raiseFlag: raise NodeProcessed
-	self.DEBUG("Stanza not for a plugin","warn")
+        if self.pluginRelay(session, stanza) and raiseFlag:
+            raise NodeProcessed
+        self.DEBUG("Stanza not for a plugin", "warn")
 
         #Karma stuff!
         #if name != 'presence': self.karmatize_me_captain(session,stanza)
 
-        domain=to.getDomain()
-	#print "DOMAIN:",domain
+        domain = to.getDomain()
+        #print "DOMAIN:",domain
 
         component = False
         """
@@ -1253,46 +1373,47 @@ class Router(PlugIn):
             print str(e)
         """
 
-
-        getsession=self._owner.getsession
-	if not self.isFromOutside(domain):
+        getsession = self._owner.getsession
+        if not self.isFromOutside(domain):
         #if domain in self._owner.servernames or domain in self._owner.components.keys():
-	    for v in self._owner.components.values():
-		try:
-			#if domain in v['jid']:
-			if v['jid'] in domain:
-                		component = True
-                		break
-		except:
-			pass
+            for v in self._owner.components.values():
+                try:
+                    #if domain in v['jid']:
+                    if v['jid'] in domain:
+                        component = True
+                        break
+                except:
+                    pass
 
             #if domain in self._owner.components.keys(): component = True
-            node=to.getNode()
+            node = to.getNode()
             if not node and not component:
                 return
             #self._owner.Privacy(session,stanza) # it will if raiseFlag: raise NodeProcessed if needed  # Desactivado de momento
-            if not component or (component and node): bareto=node+'@'+domain
-            else: bareto = domain
-            resource=to.getResource()
+            if not component or (component and node):
+                bareto = node + '@' + domain
+            else:
+                bareto = domain
+            resource = to.getResource()
 
-	    #print "***BARETO:",bareto
-
+            #print "***BARETO:",bareto
 
 # 1. If the JID is of the form <user@domain/resource> and an available resource matches the full JID,
 #    the recipient's server MUST deliver the stanza to that resource.
             try:
-                rpri=int(self._data[bareto][resource].getTagData('priority'))
-                if rpri<0:
-                    session.enqueue(Error(stanza,ERR_SERVICE_UNAVAILABLE))
+                rpri = int(self._data[bareto][resource].getTagData('priority'))
+                if rpri < 0:
+                    session.enqueue(Error(stanza, ERR_SERVICE_UNAVAILABLE))
                     return
             except:
                 rpri = None
-            if resource and rpri != None and rpri>-1:
-                to=bareto+'/'+resource
-                s=getsession(to)
+            if resource and rpri is not None and rpri > -1:
+                to = bareto + '/' + resource
+                s = getsession(to)
                 if s:
                     s.enqueue(stanza)
-                    if raiseFlag: raise NodeProcessed
+                    if raiseFlag:
+                        raise NodeProcessed
 #            else:
 ##                print "SPOOOOOTTTTTTTSPOOOOOTTTTTTT 1"
 #                self.intra_route(stanza)
@@ -1303,40 +1424,44 @@ class Router(PlugIn):
 #    to the sender if it is an IQ stanza, and (c) SHOULD return a <service-unavailable/> stanza error to the
 #    sender if it is a message stanza.
             if component:
-                node,domain = domain.split(".",1)
-            if not self._owner.AUTH.isuser(node,domain):
-		if name in ['iq','message']:
-		    if stanza.getType()<>'error': session.enqueue(Error(stanza,ERR_SERVICE_UNAVAILABLE))
-		if raiseFlag: raise NodeProcessed
+                node, domain = domain.split(".", 1)
+            if not self._owner.AUTH.isuser(node, domain):
+                if name in ['iq', 'message']:
+                    if stanza.getType() != 'error':
+                        session.enqueue(Error(stanza, ERR_SERVICE_UNAVAILABLE))
+                if raiseFlag:
+                    raise NodeProcessed
 # 3. Else if the JID is of the form <user@domain/resource> and no available resource matches the full JID,
 #    the recipient's server (a) SHOULD silently ignore the stanza (i.e., neither deliver it nor return an
 #    error) if it is a presence stanza, (b) MUST return a <service-unavailable/> stanza error to the sender
 #    if it is an IQ stanza, and (c) SHOULD treat the stanza as if it were addressed to <user@domain> if it
 #    is a message stanza.
-	    if resource and name<>'message':
-		self.intra_route(stanza) # Maybe there is one elsewhere?
-		if name=='iq' and stanza.getType()<>'error': session.enqueue(Error(stanza,ERR_SERVICE_UNAVAILABLE))
-		if raiseFlag: raise NodeProcessed
+            if resource and name != 'message':
+                self.intra_route(stanza)  # Maybe there is one elsewhere?
+                if name == 'iq' and stanza.getType() != 'error':
+                    session.enqueue(Error(stanza, ERR_SERVICE_UNAVAILABLE))
+                if raiseFlag:
+                    raise NodeProcessed
 # 4. Else if the JID is of the form <user@domain> and there is at least one available resource available
 #    for the user, the recipient's server MUST follow these rules:
 
-	    pri=-1
-	    highest_pri = {'pri':0,'s':None}
-	    s=None
-	    try:
-		for resource in self._data[bareto].keys():
-		    rpri=int(self._data[bareto][resource].getTagData('priority'))
-		    if rpri>pri and rpri>=highest_pri['pri']:
-			highest_pri['pri'] = rpri
-			highest_pri['s'] = self._owner.getsession(bareto+'/'+resource)
+            pri = -1
+            highest_pri = {'pri': 0, 's': None}
+            s = None
+            try:
+                for resource in self._data[bareto].keys():
+                    rpri = int(self._data[bareto][resource].getTagData('priority'))
+                    if rpri > pri and rpri >= highest_pri['pri']:
+                        highest_pri['pri'] = rpri
+                        highest_pri['s'] = self._owner.getsession(bareto + '/' + resource)
 
-		if highest_pri['s'] != None:
-		    s=highest_pri['s']
-		else:
-		    s=getsession(to)
-	    except:
-		s=getsession(to)
-	    if s:
+                if highest_pri['s'] is not None:
+                    s = highest_pri['s']
+                else:
+                    s = getsession(to)
+            except:
+                s = getsession(to)
+            if s:
 #       1. For message stanzas, the server SHOULD deliver the stanza to the highest-priority available
 #          resource (if the resource did not provide a value for the <priority/> element, the server SHOULD
 #          consider it to have provided a value of zero). If two or more available resources have the same
@@ -1347,83 +1472,90 @@ class Router(PlugIn):
 #          available resource has a negative priority, the server SHOULD handle the message as if there
 #          were no available resources (defined below). In addition, the server MUST NOT rewrite the 'to'
 #          attribute (i.e., it MUST leave it as <user@domain> rather than change it to <user@domain/resource>).
-		if name=='message':
-		    s.enqueue(stanza)
-		    if raiseFlag: raise NodeProcessed
+                if name == 'message':
+                    s.enqueue(stanza)
+                    if raiseFlag:
+                        raise NodeProcessed
 #       2. For presence stanzas other than those of type "probe", the server MUST deliver the stanza to all
 #          available resources; for presence probes, the server SHOULD reply based on the rules defined in
 #          Presence Probes. In addition, the server MUST NOT rewrite the 'to' attribute (i.e., it MUST leave
 #          it as <user@domain> rather than change it to <user@domain/resource>).
-	       # elif name=='presence' and stanza.getType() == 'probe': # differ to Presence Handler!
-		#    return self.presenceHandler(session,stanza,raiseFlag)
-		elif name=='presence':
-		    self.DEBUG('Presence stanza detected! (%s)'%stanza['to'],'warn')
-		    if stanza.getType() == 'probe' and stanza['to'].getDomain() in self._owner.servernames:
-			stanza.setAttr('internal','True')
-			self.presenceHandler(session,stanza,raiseFlag)
+                # elif name=='presence' and stanza.getType() == 'probe': # differ to Presence Handler!
+                #    return self.presenceHandler(session,stanza,raiseFlag)
+                elif name == 'presence':
+                    self.DEBUG('Presence stanza detected! (%s)' % stanza['to'], 'warn')
+                    if stanza.getType() == 'probe' and stanza['to'].getDomain() in self._owner.servernames:
+                        stanza.setAttr('internal', 'True')
+                        self.presenceHandler(session, stanza, raiseFlag)
 
-		    if stanza.getType() in ["subscribe", "subscribed", "unsubscribe", "unsubscribed"]:
-			#session,stanza = self.balance_of_presence(session,stanza)
-			session,stanza = self.subscriber(session,stanza)
+                    if stanza.getType() in ["subscribe", "subscribed", "unsubscribe", "unsubscribed"]:
+                        #session,stanza = self.balance_of_presence(session,stanza)
+                        session, stanza = self.subscriber(session, stanza)
 
-		    # all probes already processed so safely assuming "other" type
-		    ps = None
-		    for resource in self._data[bareto].keys():
-			ps=getsession(bareto+'/'+resource)
-			if ps: ps.enqueue(stanza)
-		    if raiseFlag: raise NodeProcessed
+                    # all probes already processed so safely assuming "other" type
+                    ps = None
+                    for resource in self._data[bareto].keys():
+                        ps = getsession(bareto + '/' + resource)
+                        if ps:
+                            ps.enqueue(stanza)
+                    if raiseFlag:
+                        raise NodeProcessed
 #       3. For IQ stanzas, the server itself MUST reply on behalf of the user with either an IQ result or an
 #          IQ error, and MUST NOT deliver the IQ stanza to any of the available resources. Specifically, if
 #          the semantics of the qualifying namespace define a reply that the server can provide, the server
 #          MUST reply to the stanza on behalf of the user; if not, the server MUST reply with a
 #          <service-unavailable/> stanza error.
 #	UPDATE: Or not.
-		if name=='iq':
-		    s.enqueue(stanza)
-		    if raiseFlag: raise NodeProcessed
-		return
+                if name == 'iq':
+                    s.enqueue(stanza)
+                    if raiseFlag:
+                        raise NodeProcessed
+                return
 # 5. Else if the JID is of the form <user@domain> and there are no available resources associated with
 #    the user, how the stanza is handled depends on the stanza type:
-	    else:
-		self.intra_route(stanza) ## Try to outsource this guy!
+            else:
+                self.intra_route(stanza)  # Try to outsource this guy!
 
 #       1. For presence stanzas of type "subscribe", "subscribed", "unsubscribe", and "unsubscribed",
 #          the server MUST maintain a record of the stanza and deliver the stanza at least once (i.e., when
 #          the user next creates an available resource); in addition, the server MUST continue to deliver
 #          presence stanzas of type "subscribe" until the user either approves or denies the subscription
 #          request (see also Presence Subscriptions).
-		if name=='presence':
-		    if stanza.getType() == 'probe' and stanza['to'].getDomain() in self._owner.servernames:
-			stanza.setAttr('internal','True')
-			self.presenceHandler(session,stanza,raiseFlag)
+                if name == 'presence':
+                    if stanza.getType() == 'probe' and stanza['to'].getDomain() in self._owner.servernames:
+                        stanza.setAttr('internal', 'True')
+                        self.presenceHandler(session, stanza, raiseFlag)
 
-		    if stanza.getType() in ["subscribe", "subscribed", "unsubscribe", "unsubscribed"]:
-			#session,stanza = self.balance_of_presence(session,stanza)
-			session,stanza = self.subscriber(session,stanza)
-		    #elif stanza.getType() == 'probe': # differ to Presence Handler!
-		     #   return self.presenceHandler(session,stanza,raiseFlag)
+                    if stanza.getType() in ["subscribe", "subscribed", "unsubscribe", "unsubscribed"]:
+                        #session,stanza = self.balance_of_presence(session,stanza)
+                        session, stanza = self.subscriber(session, stanza)
+                    #elif stanza.getType() == 'probe': # differ to Presence Handler!
+                #   return self.presenceHandler(session,stanza,raiseFlag)
 #       2. For all other presence stanzas, the server SHOULD silently ignore the stanza by not storing it
 #          for later delivery or replying to it on behalf of the user.
-		    if raiseFlag: raise NodeProcessed
+                    if raiseFlag:
+                        raise NodeProcessed
 #       3. For message stanzas, the server MAY choose to store the stanza on behalf of the user and deliver
 #          it when the user next becomes available, or forward the message to the user via some other means
 #          (e.g., to the user's email account). However, if offline message storage or message forwarding
 #          is not enabled, the server MUST return to the sender a <service-unavailable/> stanza error. (Note:
 #          Offline message storage and message forwarding are not defined in XMPP, since they are strictly a
 #          matter of implementation and service provisioning.)
-		elif name=='message':
-		    #self._owner.DB.store(domain,node,stanza)
+                elif name == 'message':
+                    #self._owner.DB.store(domain,node,stanza)
 #                    if stanza.getType()<>'error': session.enqueue(Error(stanza,ERR_RECIPIENT_UNAVAILABLE))
-		    if raiseFlag: raise NodeProcessed
+                    if raiseFlag:
+                        raise NodeProcessed
 #       4. For IQ stanzas, the server itself MUST reply on behalf of the user with either an IQ result or
 #          an IQ error. Specifically, if the semantics of the qualifying namespace define a reply that the
 #          server can provide, the server MUST reply to the stanza on behalf of the user; if not, the server
  #          MUST reply with a <service-unavailable/> stanza error.
-		return
-	else:
-	    s=getsession(domain)
-	    if not s:
-		s=self._owner.S2S(session.ourname,domain)
+                return
+        else:
+            s = getsession(domain)
+            if not s:
+                s = self._owner.S2S(session.ourname, domain)
 
-	    s.enqueue(stanza)
-	    if raiseFlag: raise NodeProcessed
+            s.enqueue(stanza)
+            if raiseFlag:
+                raise NodeProcessed

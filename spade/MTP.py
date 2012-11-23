@@ -1,8 +1,9 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 from spade import SpadeConfigParser
 from spade import XMLCodec
 from spade import ACLParser
 from xmpp import *
+
 
 class MTP:
 
@@ -17,7 +18,8 @@ class MTP:
 
         try:
             self.protocol = self.config.acc.mtp[name].protocol
-        except: pass
+        except:
+            pass
         #self.instance = self.config.acc.mtp[name].instance
 
         self.setup()
@@ -34,7 +36,6 @@ class MTP:
         #raise NotImplemented
         pass
 
-
     def dispatch(self, envelope, msg):
         # Try to send message through XMPP
         # If no xmpp address is found, try to come uo with one
@@ -46,7 +47,7 @@ class MTP:
                         jabber_id = addr
                         break
                 if not jabber_id:
-                    jabber_id = "xmpp://"+str(recv.getName())
+                    jabber_id = "xmpp://" + str(recv.getName())
                     # Figuring out the XMPP address
                     recv.addAddress(jabber_id)
 
@@ -72,7 +73,5 @@ class MTP:
         """
 
 
-
-PROTOCOL = None  #This must be overriden
-INSTANCE = None  #This must be overriden
-
+PROTOCOL = None  # This must be overriden
+INSTANCE = None  # This must be overriden

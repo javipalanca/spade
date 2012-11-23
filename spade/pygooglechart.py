@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 pygooglechart - A complete Python wrapper for the Google Chart API
 
@@ -37,11 +38,12 @@ __author__ = 'Gerald Kaszuba'
 
 reo_colour = re.compile('^([A-Fa-f0-9]{2,2}){3,4}$')
 
+
 def _check_colour(colour):
     if not reo_colour.match(colour):
-        raise InvalidParametersException('Colours need to be in ' \
-            'RRGGBB or RRGGBBAA format. One of your colours has %s' % \
-            colour)
+        raise InvalidParametersException('Colours need to be in '
+                                         'RRGGBB or RRGGBBAA format. One of your colours has %s' %
+                                         colour)
 
 
 def _reset_warnings():
@@ -122,7 +124,7 @@ class Data(object):
     def check_clip(scaled, clipped):
         if clipped != scaled:
             warnings.warn('One or more of of your data points has been '
-                'clipped because it is out of range.')
+                          'clipped because it is out of range.')
 
 
 class SimpleData(Data):
@@ -194,8 +196,8 @@ class ExtendedData(Data):
                         ExtendedData.enc_map[first],
                         ExtendedData.enc_map[second]))
                 else:
-                    raise DataOutOfRangeException( \
-                        'Item #%i "%s" is out of range' % (data.index(value), \
+                    raise DataOutOfRangeException(
+                        'Item #%i "%s" is out of range' % (data.index(value),
                         value))
             encoded_data.append(''.join(sub_data))
         return 'chd=e:' + ','.join(encoded_data)
@@ -291,8 +293,8 @@ class Chart(object):
     LINEAR_STRIPES = 'ls'
 
     def __init__(self, width, height, title=None, legend=None, colours=None,
-            auto_scale=True, x_range=None, y_range=None,
-            colours_within_series=None):
+                 auto_scale=True, x_range=None, y_range=None,
+                 colours_within_series=None):
         if type(self) == Chart:
             raise AbstractClassException('This is an abstract class')
         assert(isinstance(width, int))
@@ -350,7 +352,7 @@ class Chart(object):
         if self.legend_position:
             url_bits.append('chdlp=%s' % (self.legend_position))
         if self.colours:
-            url_bits.append('chco=%s' % ','.join(self.colours))            
+            url_bits.append('chco=%s' % ','.join(self.colours))
         if self.colours_within_series:
             url_bits.append('chco=%s' % '|'.join(self.colours_within_series))
         ret = self.fill_to_url()
@@ -358,9 +360,9 @@ class Chart(object):
             url_bits.append(ret)
         ret = self.axis_to_url()
         if ret:
-            url_bits.append(ret)                    
+            url_bits.append(ret)
         if self.markers:
-            url_bits.append(self.markers_to_url())        
+            url_bits.append(self.markers_to_url())
         if self.line_styles:
             style = []
             for index in xrange(max(self.line_styles) + 1):
@@ -381,8 +383,8 @@ class Chart(object):
         opener = urllib2.urlopen(self.get_url())
 
         if opener.headers['content-type'] != 'image/png':
-            raise BadContentTypeException('Server responded with a ' \
-                'content-type of %s' % opener.headers['content-type'])
+            raise BadContentTypeException('Server responded with a '
+                                          'content-type of %s' % opener.headers['content-type'])
 
         open(file_name, 'wb').write(opener.read())
 
@@ -398,7 +400,7 @@ class Chart(object):
     def set_legend(self, legend):
         """legend needs to be a list, tuple or None"""
         assert(isinstance(legend, list) or isinstance(legend, tuple) or
-            legend is None)
+               legend is None)
         if legend:
             self.legend = [urllib.quote(a) for a in legend]
         else:
@@ -407,7 +409,7 @@ class Chart(object):
     def set_legend_position(self, legend_position):
         if legend_position:
             self.legend_position = urllib.quote(legend_position)
-        else:    
+        else:
             self.legend_position = None
 
     # Chart colours
@@ -416,7 +418,7 @@ class Chart(object):
     def set_colours(self, colours):
         # colours needs to be a list, tuple or None
         assert(isinstance(colours, list) or isinstance(colours, tuple) or
-            colours is None)
+               colours is None)
         # make sure the colours are in the right format
         if colours:
             for col in colours:
@@ -426,12 +428,12 @@ class Chart(object):
     def set_colours_within_series(self, colours):
         # colours needs to be a list, tuple or None
         assert(isinstance(colours, list) or isinstance(colours, tuple) or
-            colours is None)
+               colours is None)
         # make sure the colours are in the right format
         if colours:
             for col in colours:
                 _check_colour(col)
-        self.colours_within_series = colours        
+        self.colours_within_series = colours
 
     # Background/Chart colours
     # -------------------------------------------------------------------------
@@ -471,8 +473,8 @@ class Chart(object):
         areas = []
         for area in (Chart.BACKGROUND, Chart.CHART, Chart.ALPHA):
             if self.fill_types[area]:
-                areas.append('%s,%s,%s' % (area, self.fill_types[area], \
-                    self.fill_area[area]))
+                areas.append('%s,%s,%s' % (area, self.fill_types[area],
+                                           self.fill_area[area]))
         if areas:
             return 'chf=' + '|'.join(areas)
 
@@ -620,16 +622,16 @@ class Chart(object):
         try:
             self.axis[axis_index].set_positions(positions)
         except IndexError:
-            raise InvalidParametersException('Axis index %i has not been ' \
-                'created' % axis)
+            raise InvalidParametersException('Axis index %i has not been '
+                                             'created' % axis)
 
-    def set_axis_style(self, axis_index, colour, font_size=None, \
-            alignment=None):
+    def set_axis_style(self, axis_index, colour, font_size=None,
+                       alignment=None):
         try:
             self.axis[axis_index].set_style(colour, font_size, alignment)
         except IndexError:
-            raise InvalidParametersException('Axis index %i has not been ' \
-                'created' % axis)
+            raise InvalidParametersException('Axis index %i has not been '
+                                             'created' % axis)
 
     def axis_to_url(self):
         available_axis = []
@@ -665,12 +667,12 @@ class Chart(object):
     # Markers, Ranges and Fill area (chm)
     # -------------------------------------------------------------------------
 
-    def markers_to_url(self):        
+    def markers_to_url(self):
         return 'chm=%s' % '|'.join([','.join(a) for a in self.markers])
 
     def add_marker(self, index, point, marker_type, colour, size, priority=0):
-        self.markers.append((marker_type, colour, str(index), str(point), \
-            str(size), str(priority)))
+        self.markers.append((marker_type, colour, str(index), str(point),
+                             str(size), str(priority)))
 
     def add_horizontal_range(self, colour, start, stop):
         self.markers.append(('r', colour, '0', str(start), str(stop)))
@@ -679,14 +681,14 @@ class Chart(object):
         self.markers.append(('D', colour, str(data_set), '0', str(size), str(priority)))
 
     def add_marker_text(self, string, colour, data_set, data_point, size, priority=0):
-        self.markers.append((str(string), colour, str(data_set), str(data_point), str(size), str(priority)))        
+        self.markers.append((str(string), colour, str(data_set), str(data_point), str(size), str(priority)))
 
     def add_vertical_range(self, colour, start, stop):
         self.markers.append(('R', colour, '0', str(start), str(stop)))
 
     def add_fill_range(self, colour, index_start, index_end):
-        self.markers.append(('b', colour, str(index_start), str(index_end), \
-            '1'))
+        self.markers.append(('b', colour, str(index_start), str(index_end),
+                             '1'))
 
     def add_fill_simple(self, colour):
         self.markers.append(('B', colour, '1', '1', '1'))
@@ -694,8 +696,8 @@ class Chart(object):
     # Line styles
     # -------------------------------------------------------------------------
 
-    def set_line_style(self, index, thickness=1, line_segment=None, \
-            blank_segment=None):
+    def set_line_style(self, index, thickness=1, line_segment=None,
+                       blank_segment=None):
         value = []
         value.append(str(thickness))
         if line_segment:
@@ -706,10 +708,10 @@ class Chart(object):
     # Grid
     # -------------------------------------------------------------------------
 
-    def set_grid(self, x_step, y_step, line_segment=1, \
-            blank_segment=0):
-        self.grid = '%s,%s,%s,%s' % (x_step, y_step, line_segment, \
-            blank_segment)
+    def set_grid(self, x_step, y_step, line_segment=1,
+                 blank_segment=0):
+        self.grid = '%s,%s,%s,%s' % (x_step, y_step, line_segment,
+                                     blank_segment)
 
 
 class ScatterChart(Chart):
@@ -832,20 +834,20 @@ class GroupedBarChart(BarChart):
         # Skip 'BarChart.get_url_bits' and call Chart directly so the parent
         # doesn't add "chbh" before we do.
         url_bits = BarChart.get_url_bits(self, data_class=data_class,
-            skip_chbh=True)
+                                         skip_chbh=True)
         if self.group_spacing is not None:
             if self.bar_spacing is None:
-                raise InvalidParametersException('Bar spacing is required ' \
-                    'to be set when setting group spacing')
+                raise InvalidParametersException('Bar spacing is required '
+                                                 'to be set when setting group spacing')
             if self.bar_width is None:
-                raise InvalidParametersException('Bar width is required to ' \
-                    'be set when setting bar spacing')
+                raise InvalidParametersException('Bar width is required to '
+                                                 'be set when setting bar spacing')
             url_bits.append('chbh=%i,%i,%i'
-                % (self.bar_width, self.bar_spacing, self.group_spacing))
+                            % (self.bar_width, self.bar_spacing, self.group_spacing))
         elif self.bar_spacing is not None:
             if self.bar_width is None:
-                raise InvalidParametersException('Bar width is required to ' \
-                    'be set when setting bar spacing')
+                raise InvalidParametersException('Bar width is required to '
+                                                 'be set when setting bar spacing')
             url_bits.append('chbh=%i,%i' % (self.bar_width, self.bar_spacing))
         elif self.bar_width:
             url_bits.append('chbh=%i' % self.bar_width)
@@ -876,8 +878,8 @@ class PieChart(Chart):
         Chart.__init__(self, *args, **kwargs)
         self.pie_labels = []
         if self.y_range:
-            warnings.warn('y_range is not used with %s.' % \
-                (self.__class__.__name__))
+            warnings.warn('y_range is not used with %s.' %
+                         (self.__class__.__name__))
 
     def set_pie_labels(self, labels):
         self.pie_labels = [urllib.quote(a) for a in labels]
@@ -962,7 +964,7 @@ class GoogleOMeterChart(PieChart):
         PieChart.__init__(self, *args, **kwargs)
         if self.auto_scale and not self.x_range:
             warnings.warn('Please specify an x_range with GoogleOMeterChart, '
-                'otherwise one arrow will always be at the max.')
+                          'otherwise one arrow will always be at the max.')
 
     def type_to_url(self):
         return 'cht=gom'
@@ -1057,10 +1059,9 @@ class ChartGrammar(object):
         types = ChartGrammar.get_possible_chart_types()
         if chart_type not in types:
             raise UnknownChartType('%s is an unknown chart type. Possible '
-                'chart types are %s' % (chart_type, ','.join(types)))
+                                   'chart types are %s' % (chart_type, ','.join(types)))
         return globals()[chart_type + 'Chart'](w, h, auto_scale=auto_scale,
-            x_range=x_range, y_range=y_range)
+                                               x_range=x_range, y_range=y_range)
 
     def download(self):
         pass
-
