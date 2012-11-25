@@ -130,32 +130,20 @@ class SpadePlatform(PlatformAgent):
         self.wui.setPort(8008)
         self.wui.start()
 
+	import mtp
         # Load MTPs
-        for name, mtp in self.config.acc.mtp.items():
-        #self.mtps[mtp.protocol] = mtp.instance(name)
+        for name, _mtp in self.config.acc.mtp.items():
             try:
-                mtp_path = "." + os.sep + "spade" + os.sep + "mtp"
-                if os.path.exists(mtp_path):
-                    sys.path.append(mtp_path)
-                else:
-                    # This path should come from the config file . . .
-                    mtp_path = os.sep + "usr" + os.sep + "share" + os.sep + "spade" + os.sep + "mtp"
-                    sys.path.append(mtp_path)
-
-                mod = __import__(name)
-                self.mtps[mtp['protocol']] = mod.INSTANCE(name, self.config, self)
-
+                mod = "mtp."+name
+                mod = __import__(mod, globals(), locals(),[name])
+                self.mtps[_mtp['protocol']] = mod.INSTANCE(name, self.config, self)
             except Exception, e:
-                print "EXCEPTION IMPORTING MTPS: ", str(e)
-                _exception = sys.exc_info()
-                if _exception[0]:
-                    msg = '\n' + ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                    print msg
+                self.DEBUG("EXCEPTION IMPORTING MTPS: "+ str(e), 'err','acc')
 
     def takeDown(self):
-        for k, mtp in self.mtps.items():
+        for k, _mtp in self.mtps.items():
             try:
-                mtp.stop()
+                _mtp.stop()
                 del self.mtps[k]
             except:
                 pass
