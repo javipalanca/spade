@@ -35,6 +35,16 @@ class PubSub(object):
         self.myAgent = agent
         self._server = agent.server
 
+    def register(self):
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_PUBSUB)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_PUBSUB)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_PUBSUB)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_PUBSUB)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_PUBSUB_OWNER)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_PUBSUB_OWNER)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_PUBSUB_OWNER)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_PUBSUB_OWNER)
+
     def _sendAndReceive(self, iq, getContents):
         id = gen_id()
         t = MessageTemplate(Iq(attrs={'id': id}))

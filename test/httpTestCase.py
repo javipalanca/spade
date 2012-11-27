@@ -119,7 +119,8 @@ class HTTPTestCase(unittest.TestCase):
 
     def testSendAndRecvMsg(self):
         template = spade.Behaviour.ACLTemplate()
-        template.setSender(self.Aaid)
+        #template.setSender(self.Aaid)
+        template.setContent("HTTPtestSendAndRecvMsg")
         t = spade.Behaviour.MessageTemplate(template)
         self.b.addBehaviour(AnswerMsgBehav(), t)
         template.setSender(self.Baid)
@@ -175,7 +176,8 @@ class HTTPTestCase(unittest.TestCase):
     def testSend2HTTPServer(self):
         import json
         template = spade.Behaviour.ACLTemplate()
-        template.setSender(self.Aaid)
+        #template.setSender(self.Aaid)
+        template.setContent("HTTPtestSendJSONMsg")
         t = spade.Behaviour.MessageTemplate(template)
 
         httpd = BaseHTTPServer.HTTPServer(("", 2100), self.Handler)
