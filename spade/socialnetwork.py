@@ -82,7 +82,20 @@ class Roster:
         self.roster = self.myAgent.jabber.Roster
 
     def sendPresence(self, typ=None, priority=None, show=None, status=None):
-        self.myAgent.jabber.send(Presence(typ=typ, priority=priority, show=show, status=status))
+        jid = self.myAgent.getName() + self.myAgent.resource
+        self.myAgent.jabber.send(Presence(jid, typ=typ, priority=priority, show=show, status=status))
+
+    def isAvailable(self, jid):
+        item = self.getContact(jid)
+        if item:
+            return len(item['resources']) > 0
+        return False
+
+    def checkSubscription(self, jid):
+        item = self.getContact(jid)
+        if item and 'subscription' in item.keys():
+                return item['subscription']
+        return 'none'
 
     def requestRoster(self, force=False):
         if force:

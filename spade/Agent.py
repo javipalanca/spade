@@ -938,6 +938,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         Stops the agent execution and blocks until the agent dies
         """
+        try:
+            self.roster.sendPresence("unavailable")
+        except Exception, e:
+            self.DEBUG("Did not send 'unavailable' presence: " + str(e), 'warn')
+
         self.wui.stop()
         if not self.forceKill():
             self._shutdown()
@@ -1601,8 +1606,9 @@ class PlatformAgent(AbstractAgent):
         #Stop the Behaviours
         for b in self._behaviourList.keys():  # copy.copy(self._behaviourList.keys()):
             try:
-                if not issubclass(b, Behaviour.EventBehaviour):
-                    b.kill()
+                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)):
+                    if not issubclass(b.__class__, Behaviour.EventBehaviour):
+                        b.kill()
             except Exception, e:
                 self.DEBUG("Could not kill behavior " + str(b) + ": " + str(e), "warn")
 
@@ -1627,9 +1633,10 @@ class Agent(AbstractAgent):
     This is the main class which may be inherited to build a SPADE agent
     """
 
-    def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
+    def __init__(self, agentjid, password, resource="spade", port=5222, debug=[], p2p=False):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
+        self.resource = resource
         self.port = port
         self.debug = debug
         self.jabber = xmpp.Client(jid.getDomain(), port, debug)
@@ -1696,7 +1703,7 @@ class Agent(AbstractAgent):
             self.DEBUG("There is no SPADE platform at " + self.server + " . Agent dying...", "err")
             return False
 
-        if (self.jabber.auth(name, password, "spade") is None):
+        if (self.jabber.auth(name, password, self.resource) is None):
 
             self.DEBUG("First auth attempt failed. Trying to register", "warn")
 
