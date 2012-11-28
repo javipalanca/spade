@@ -8,20 +8,22 @@ import spade
 
 host = "127.0.0.1"
 
-class SocialAgent(spade.Agent.Agent):
-    def availableHandler(self, msg):
-        if msg.getFrom() == "b@" + host:
-            self.recvAvailable = msg
 
-    def unavailableHandler(self, msg):
-        if msg.getFrom() == "b@" + host:
-            self.recvUnavailable = msg
+class PresenceBehavior(spade.Behaviour.EventBehaviour):
+    def _process(self):
+        msg = self._receive(False)
+        if msg.getSender().getName() == "b@" + host:
+            if msg.getProtocol() == "available":
+                self.myAgent.recvAvailable = msg
+            elif msg.getProtocol() == "unavailable":
+                self.myAgent.recvUnavailable = msg
 
-class SubscribeBehaviour(spade.Behaviour.EventBehaviour):
+'''class SubscribeBehaviour(spade.Behaviour.EventBehaviour):
 
     def _process(self):
         msg = self._receive(True)
         self.myAgent.eventmsg = msg
+'''
 
 
 class socialTestCase(unittest.TestCase):
@@ -31,15 +33,17 @@ class socialTestCase(unittest.TestCase):
         self.jida = "a@" + host
         self.jidb = "b@" + host
 
-        self.a = SocialAgent(self.jida, "secret")
+        self.a = spade.Agent.Agent(self.jida, "secret")
+        template = spade.Behaviour.ACLTemplate()
+        template.setOntology("Presence")
+        t = spade.Behaviour.MessageTemplate(template)
+        self.a.addBehaviour(PresenceBehavior(), t)
         self.a.start()
         #self.a.setDebugToScreen()
 
-        self.b = SocialAgent(self.jidb, "secret") #, "OTHER")
+        self.b = spade.Agent.Agent(self.jidb, "secret")
         self.b.start()
         #self.b.setDebugToScreen()
-        #self.b2 = SocialAgent(self.jidb, "secret", "FIRST")
-        #self.b2.start()        
 
         self.a.roster.unsubscribe(self.jidb)
         self.b.roster.unsubscribe(self.jida)
@@ -70,6 +74,9 @@ class socialTestCase(unittest.TestCase):
         assert item['subscription'] == None
 
     def testSubscribe(self):
+        self.a.roster.acceptAllSubscriptions()
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
 
         # Wait until updated roster arrives
@@ -77,12 +84,15 @@ class socialTestCase(unittest.TestCase):
         while self.a.roster.checkSubscription(self.jidb) != 'both' and counter>0:
             time.sleep(1)
             counter-=1
-
+        
         # check that subscription has been done in both ways
         assert self.a.roster.checkSubscription(self.jidb) == 'both'
         assert self.b.roster.checkSubscription(self.jida) == 'both'
 
     def testUnsubscribeFromOrigin(self):
+        self.a.roster.acceptAllSubscriptions()
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
 
         # Wait until updated roster arrives
@@ -103,6 +113,9 @@ class socialTestCase(unittest.TestCase):
         assert self.a.roster.checkSubscription(self.jidb) == 'from'
 
     def testUnsubscribeFromDestination(self):
+        self.a.roster.acceptAllSubscriptions()
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
 
         # Wait until updated roster arrives
@@ -122,6 +135,9 @@ class socialTestCase(unittest.TestCase):
         assert self.b.roster.checkSubscription(self.jida) == 'from'
 
     def testUnsubscribeFromBoth(self):
+        self.a.roster.acceptAllSubscriptions()
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
 
         # Wait until updated roster arrives
@@ -144,13 +160,14 @@ class socialTestCase(unittest.TestCase):
 
     def testAvailable(self):
         self.a.recvAvailable = None
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
         self.b.roster.sendPresence(typ='available', priority=1, show="MyShowMsg", status="Do Not Disturb")
 
         #wait for subscription
         counter=5
         while self.a.roster.checkSubscription(self.jidb) != 'both' and counter>0:
-            assert not self.a.roster.isAvailable(self.jidb)
             time.sleep(1)
             counter-=1
 
@@ -169,6 +186,11 @@ class socialTestCase(unittest.TestCase):
 
     def testUnavailable(self):
         self.a.recvUnavailable = None
+
+        self.b.roster.acceptAllSubscriptions()
+        self.b.roster.followbackAllSubscriptions()
+        self.a.roster.acceptAllSubscriptions()
+        self.a.roster.followbackAllSubscriptions()
 
         self.a.roster.subscribe(self.jidb)
         self.b.roster.subscribe(self.jida)
@@ -198,3 +220,17 @@ class socialTestCase(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
     sys.exit()
+
+    '''suite = unittest.TestSuite()
+    suite.addTest(socialTestCase('testUnsubscribeFromDestination'))
+    result = unittest.TestResult()
+
+    suite.run(result)
+    print str(result)
+    for f in  result.errors:
+        print f[0]
+        print f[1]
+
+    for f in  result.failures:
+        print f[0]
+        print f[1]'''

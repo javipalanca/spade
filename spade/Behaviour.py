@@ -447,7 +447,7 @@ class Behaviour(MessageReceiver.MessageReceiver):
         """
         try:
             self._forceKill.set()
-            self.myAgent.DEBUG("Stoping Behavior " + str(self), "info")
+            self.myAgent.DEBUG("Stopping Behavior " + str(self), "info")
         except:
             #Behavior is already dead
             self.myAgent.DEBUG("Behavior " + str(self) + " is already dead", "warn")

@@ -13,9 +13,9 @@ from test.kbTestCase import *
 from test.p2pTestCase import *
 #from test.pubsubTestCase import *
 from test.rpcTestCase import *
+from test.socialTestCase import *
 from test.tbcbpTestCase import *
 from test.xfTestCase import *
-
 
 from spade import spade_backend
 from xmppd.xmppd import Server

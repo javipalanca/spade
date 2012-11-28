@@ -9,23 +9,37 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
     def _process(self):
         self.msg = self._receive(False)
         if self.msg is not None:
+            typ = self.msg.getType()
+            to = self.msg.getFrom()
+            if typ == "":
+                typ = "available"
             self.DEBUG("Presence msg received:" + str(self.msg), 'ok')
-            if self.msg.getType() == "subscribe":
+            if typ == "subscribe":
                 # Subscribe petition
-                # Answer YES
+                '''# Answer YES
                 rep = Presence(to=self.msg.getFrom())
                 rep.setType("subscribed")
                 self.myAgent.send(rep)
                 self.DEBUG(str(self.msg.getFrom()) + " subscribes to me")
                 rep.setType("subscribe")
-                self.myAgent.send(rep)
-            if self.msg.getType() == "subscribed":
+                self.myAgent.send(rep)'''
+                if self.myAgent.roster._acceptAllSubscriptions:
+                    self.myAgent.roster.acceptSubscription(to)
+
+                    if self.myAgent.roster._followbackAllSubscriptions:
+                        self.myAgent.roster.subscribe(to)
+
+                elif self.myAgent.roster._declineAllSubscriptions:
+                    to = self.msg.getFrom()
+                    self.myAgent.roster.declineSubscription(to)
+
+            elif typ == "subscribed":
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
                     # Subscription confirmation from AMS
                     self.DEBUG("Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)", "ok")
                 else:
                     self.DEBUG(str(self.msg.getFrom()) + " has subscribed me")
-            elif self.msg.getType() == "unsubscribed":
+            elif typ == "unsubscribed":
                 # Unsubscription from AMS
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
                     self.DEBUG("There was an error registering in the AMS: " + str(self.getAID().getName()), "err")
@@ -33,21 +47,25 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
                     self.DEBUG(str(self.msg.getFrom()) + " has unsubscribed me")
 
 
-            elif self.msg.getType() in ["available", ""]:
+            elif typ in ["available", ""]:
                 self.msg.setType("")
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
                 self.DEBUG(str(self.msg.getFrom()) + " is now available.", 'ok','presence')
-                #Call the Available handler. This may be overridde
-                self.myAgent.availableHandler(self.msg)
-            elif self.msg.getType() == "unavailable":
+            elif typ == "unavailable":
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
                 self.DEBUG(str(self.msg.getFrom()) + " is now unavailable.", 'ok','presence')
-                #Call the Unavailable handler. This may be overridden
-                self.myAgent.unavailableHandler(self.msg)
 
             else:
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
 
+            #Send and ACLMessage with the presence information to be aware
+            msg = self.myAgent.newMessage()
+            msg.setPerformative('inform')
+            msg.setSender(AID.aid(to, ["xmpp://"+str(to)]))
+            msg.setOntology("Presence")
+            msg.setProtocol(typ)
+            msg.setContent(str(self.msg))
+            self.myAgent.send(msg)
 
 class RosterBehaviour(Behaviour.Behaviour):
     def _process(self):
@@ -80,6 +98,9 @@ class Roster:
         self.myAgent = agent
         self.myAgent.jabber.getRoster()
         self.roster = self.myAgent.jabber.Roster
+        self._acceptAllSubscriptions = False
+        self._declineAllSubscriptions = False
+        self._followbackAllSubscriptions = False
 
     def sendPresence(self, typ=None, priority=None, show=None, status=None):
         jid = self.myAgent.getName() + self.myAgent.resource
@@ -91,11 +112,43 @@ class Roster:
             return len(item['resources']) > 0
         return False
 
+    def subscribe(self, jid):
+        self.roster.Subscribe(jid)
+
+    def unsubscribe(self,jid):
+        self.roster.Unsubscribe(jid)
+
     def checkSubscription(self, jid):
         item = self.getContact(jid)
         if item and 'subscription' in item.keys():
                 return item['subscription']
         return 'none'
+
+    def acceptSubscription(self, jid):
+        msg = Presence(to=jid, typ="subscribed")
+        self.myAgent.send(msg)
+        self.myAgent.DEBUG(str(jid) + " subscribes to me")
+
+    def declineSubscription(self, jid):
+        msg = Presence(to=jid, typ="unsubscribed")
+        self.myAgent.send(msg)
+        self.myAgent.DEBUG("I have declined the " + str(jid) + "'s request of subscription to me")
+
+    def acceptAllSubscriptions(self, accept=True):
+        self._acceptAllSubscriptions = accept
+        if accept:
+            self._declineAllSubscriptions = False
+        self.myAgent.DEBUG("Accept all subscription requests.", 'info')
+
+    def declineAllSubscriptions(self, accept=True):
+        self._declineAllSubscriptions = accept
+        if accept:
+            self._acceptAllSubscriptions = False
+        self.myAgent.DEBUG("Decline all subscription requests.", 'info')
+
+    def followbackAllSubscriptions(self, accept=True):
+        self._followbackAllSubscriptions = accept
+        self.myAgent.DEBUG("Followback all subscription requests.", 'info')
 
     def requestRoster(self, force=False):
         if force:
@@ -159,9 +212,4 @@ class Roster:
             groups.append(group)
         self.roster.setItem(jid=jid, groups=groups)
 
-    def subscribe(self, jid):
-        self.roster.Subscribe(jid)
-
-    def unsubscribe(self,jid):
-        self.roster.Unsubscribe(jid)
 

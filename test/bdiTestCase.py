@@ -33,6 +33,7 @@ class PlanTestCase(unittest.TestCase):
 
         self.a = BDIAgent("bdi@" + host, "secret")
         self.a.start()
+        #self.a.setDebugToScreen()
 
     def tearDown(self):
         self.a.stop()

@@ -576,12 +576,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             # There is not a default behaviour yet
             self.DEBUG(str(e), "err")
 
-    def availableHandler(self, msg):
-        pass
-
-    def unavailableHandler(self, msg):
-        pass
-
     def _jabber_messageCB(self, conn, mess, raiseFlag=True):
         """
         message callback
@@ -1741,8 +1735,9 @@ class Agent(AbstractAgent):
         #Stop the Behaviours
         for b in self._behaviourList.keys():  # copy.copy(self._behaviourList.keys()):
             try:
-                if not issubclass(b, Behaviour.EventBehaviour):
-                    b.kill()
+                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)):
+                    if not issubclass(b.__class__, Behaviour.EventBehaviour):
+                        b.kill()
             except Exception, e:
                 self.DEBUG("Could not kill behavior " + str(b) + ": " + str(e), "warn")
 
