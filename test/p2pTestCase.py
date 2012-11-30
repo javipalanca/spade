@@ -241,3 +241,19 @@ class BasicTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    sys.exit(0)
+
+    suite = unittest.TestSuite()
+    suite.addTest(BasicTestCase('testSendMsgP2P'))
+    result = unittest.TestResult()
+
+    suite.run(result)
+    print str(result)
+    for f in  result.errors:
+        print f[0]
+        print f[1]
+
+    for f in  result.failures:
+        print f[0]
+        print f[1]
+

@@ -15,14 +15,8 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
                 typ = "available"
             self.DEBUG("Presence msg received:" + str(self.msg), 'ok')
             if typ == "subscribe":
+                self.DEBUG("Agent " + str(to) + " wants to subscribe to me", "info")
                 # Subscribe petition
-                '''# Answer YES
-                rep = Presence(to=self.msg.getFrom())
-                rep.setType("subscribed")
-                self.myAgent.send(rep)
-                self.DEBUG(str(self.msg.getFrom()) + " subscribes to me")
-                rep.setType("subscribe")
-                self.myAgent.send(rep)'''
                 if self.myAgent.roster._acceptAllSubscriptions:
                     self.myAgent.roster.acceptSubscription(to)
 
@@ -38,7 +32,7 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
                     # Subscription confirmation from AMS
                     self.DEBUG("Agent: " + str(self.myAgent.getAID().getName()) + " registered correctly (inform)", "ok")
                 else:
-                    self.DEBUG(str(self.msg.getFrom()) + " has subscribed me")
+                    self.DEBUG(str(self.msg.getFrom()) + " has accepted my subscription")
             elif typ == "unsubscribed":
                 # Unsubscription from AMS
                 if self.msg.getFrom() == self.myAgent.getAMS().getName():
@@ -65,7 +59,7 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             msg.setOntology("Presence")
             msg.setProtocol(typ)
             msg.setContent(str(self.msg))
-            self.myAgent.send(msg)
+            self.myAgent.postMessage(msg)
 
 class RosterBehaviour(Behaviour.Behaviour):
     def _process(self):
@@ -127,7 +121,7 @@ class Roster:
     def acceptSubscription(self, jid):
         msg = Presence(to=jid, typ="subscribed")
         self.myAgent.send(msg)
-        self.myAgent.DEBUG(str(jid) + " subscribes to me")
+        self.myAgent.DEBUG("I have accepted the " + str(jid) + "'s request of subscription to me")
 
     def declineSubscription(self, jid):
         msg = Presence(to=jid, typ="unsubscribed")

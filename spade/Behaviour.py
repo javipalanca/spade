@@ -75,7 +75,8 @@ class ACLTemplate(BehaviourTemplate):
         #self.userDefProps = None
 
     def __str__(self):
-        return str({"performative": self.performative, "sender": str(self.sender), "receivers": str(self.receivers), "reply_to": self.reply_to, "content": self.content, "reply_with": self.reply_with, "reply_by": self.reply_by, "in_reply_to": self.in_reply_to, "encoding": self.encoding, "language": self.language, "ontology": self.ontology, "protocol": self.protocol, "conversation_id": self.conversation_id})
+        d = {"performative": self.performative, "sender": str(self.sender), "receivers": str(self.receivers), "reply_to": self.reply_to, "content": self.content, "reply_with": self.reply_with, "reply_by": self.reply_by, "in_reply_to": self.in_reply_to, "encoding": self.encoding, "language": self.language, "ontology": self.ontology, "protocol": self.protocol, "conversation_id": self.conversation_id}
+        return str(dict((data for data in d.iteritems() if data[1])))
 
     def reset(self):
         self.__init__()
@@ -226,6 +227,9 @@ class MessageTemplate(BehaviourTemplate):
 
         self.template = copy.copy(Template)
 
+    def __str__(self):
+        return str(self.template)
+
     def acl_match(self, message):
         if message.__class__ != ACLMessage.ACLMessage:
             return False
@@ -367,7 +371,6 @@ class MessageTemplate(BehaviourTemplate):
 
     def iq_match(self, iq):
         return self.node_match(iq)
-
 
 class Behaviour(MessageReceiver.MessageReceiver):
     def __init__(self):

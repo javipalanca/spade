@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import traceback
 import SocketServer
 import SimpleHTTPServer
 import BaseHTTPServer

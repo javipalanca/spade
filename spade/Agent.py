@@ -652,6 +652,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         non jabber:x:fipa chat messages callback
         """
         self.DEBUG("Arrived an unknown message " + str(mess), "warn")
+        self.postMessage(mess)
 
     def _jabber_iqCB(self, conn, mess):
         """
@@ -661,7 +662,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         # We post every jabber iq
         ##self.postMessage(mess)
         ##self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()), "info")
-        print "IQ ARRIVED " + str(mes)
 
     def getAID(self):
         """
@@ -1020,28 +1020,26 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = bL[b]
                         if t is not None:
                             if t.match(msg) is True:
-                                if (isinstance(b, types.ClassType) or isinstance(b, types.TypeType)) and issubclass(b, Behaviour.EventBehaviour):
+                                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)) and not issubclass(b.__class__, Behaviour.EventBehaviour):
+                                    b.postMessage(msg)
+                                else:
                                     ib = b()
                                     if ib.onetime:
                                         toRemove.append(b)
                                     ib.setAgent(self)
                                     ib.postMessage(msg)
                                     ib.start()
-                                else:
-                                    b.postMessage(msg)
                                 proc = True
 
                     if proc is False:
                         #If no template matches, post the message to the Default behaviour
                         self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "info", "msg")
-                        print "MESSAGE: " + str(msg)
                         if (self._defaultbehaviour is not None):
                             self._defaultbehaviour.postMessage(msg)
                     for beh in toRemove:
                         self.removeBehaviour(beh)
-
             except Exception, e:
-                self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
+                self.DEBUG("Agent " + self.getName() + " Exception in run: " + str(e), "err")
                 self._kill()
 
         self.DEBUG("Agent starts shutdown", 'info')
@@ -1583,7 +1581,8 @@ class PlatformAgent(AbstractAgent):
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
         self.jabber.RegisterHandler('presence', self._jabber_messageCB)
-        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        self.jabber.RegisterDefaultHandler(self._other_messageCB)
+        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
         #self.jabber.RegisterHandler('iq',self._jabber_iqCB)
 
@@ -1671,14 +1670,6 @@ class Agent(AbstractAgent):
         # Ask for roster
         ##self.getSocialNetwork(nowait=True)
 
-    '''def setSocialItem(self, jid, presence=""):
-        if jid in self._socialnetwork.keys():
-            if not self._socialnetwork[jid].getPresence():
-                # If we have no previous presence information, update it
-                self._socialnetwork[jid].setPresence(presence)
-        else:
-            self._socialnetwork[jid] = socialnetwork.SocialItem(self, jid, presence)
-    '''
 
     def _register(self, password, autoregister=True):
         """
@@ -1718,8 +1709,7 @@ class Agent(AbstractAgent):
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
         self.jabber.RegisterHandler('presence', self._jabber_messageCB)
-        #self.jabber.RegisterHandler('iq', self.jabber.Roster.RosterIqHandler,'result', xmpp.protocol.NS_ROSTER)
-        #self.jabber.RegisterHandler('iq', self.jabber.Roster.RosterIqHandler,'set', xmpp.protocol.NS_ROSTER)
+        self.jabber.RegisterDefaultHandler(self._other_messageCB)
 
         self.jabber_process = jabberProcess(self.jabber, owner=self)
         self.jabber_process.start()

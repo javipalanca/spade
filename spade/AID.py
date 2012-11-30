@@ -97,9 +97,7 @@ class aid:
 
         if other is None:
             return True
-
-        if (self.getName() is not None and other.getName() is not None
-                and not (other.getName() in self.getName())):
+        if (self.getName() is not None and other.getName() is not None and not (str(other.getName()) in str(self.getName()))):
             return False
         if (len(self.getAddresses()) > 0 and len(other.getAddresses()) > 0):
             for oaddr in other.getAddresses():

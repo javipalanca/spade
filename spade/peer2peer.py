@@ -9,6 +9,7 @@ import time
 import threading
 import socket
 import time
+import itertools
 from xmpp import Iq
 from xmpp.protocol import NS_DISCO_INFO, NS_SI
 
@@ -43,13 +44,9 @@ class P2P(object):
             agent.addBehaviour(p2pb)
 
     def register(self):
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_DISCO_INFO)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_DISCO_INFO)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_DISCO_INFO)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_DISCO_INFO)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, 'set', NS_SI)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, 'result', NS_SI)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, 'error', NS_SI)
+        NS_SPADE_P2P = 'http://jabber.org/protocol/si/profile/spade-p2p-messaging'
+        for typ, ns in itertools.product(['set','get','result','error'],[NS_DISCO_INFO, NS_SI, NS_SPADE_P2P]):
+            self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, typ, ns)
 
     def isReady(self):
         return self.p2p_ready
@@ -430,7 +427,7 @@ class SendStreamInitiationBehav(Behaviour.OneShotBehaviour):
         iq.addChild(node=si)
         self.myAgent.send(iq)
 
-        msg = self._receive(True, 4)
+        msg = self._receive(True)
         if msg:
             self.result = False
             if msg.getType() == "result":
@@ -451,7 +448,7 @@ class SendStreamInitiationBehav(Behaviour.OneShotBehaviour):
                 self.myAgent._P2P.p2p_routes[str(msg.getFrom().getStripped())] = {'p2p': False}
         else:
             #Not message, treat like a refuse
-            self.myAgent.DEBUG("StreamRequest REFUSED", "warn")
+            self.myAgent.DEBUG("No msg received. StreamRequest REFUSED", "warn")
             self.myAgent._P2P.p2p_routes[str(iq.getTo().getStripped())] = {'p2p': False}
 
 

@@ -167,6 +167,7 @@ class PubSubServer(PlugIn):
 
             # DELETE NODE
             elif pubsub_node.getTag('delete') is not None:
+                self.DEBUG('PubSub Delete Node', 'info')
 
                 node_id = pubsub_node.getTag('delete').getAttr('node')
 
@@ -183,6 +184,7 @@ class PubSubServer(PlugIn):
                 node = self.nodes[node_id]
 
                 if not node.owner.bareMatch(stanza.getFrom()):
+                    self.DEBUG('You are not allowed to delete this node: %s' % node, 'err')
                     session.send(self._getIqError(stanza, 'forbidden'))
                     raise NodeProcessed
 
@@ -192,6 +194,7 @@ class PubSubServer(PlugIn):
 
                 # SUCCESS
                 session.send(stanza.buildReply('result'))
+                self.DEBUG('Node was deleted succesfully %s'%str(stanza.buildReply('result')), 'info')
 
                 # Notify no all subscribers
                 for jid in node.members.keys():

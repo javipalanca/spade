@@ -11,7 +11,7 @@ from test.httpTestCase import *
 from test.jsonTestCase import *
 from test.kbTestCase import *
 from test.p2pTestCase import *
-#from test.pubsubTestCase import *
+from test.pubsubTestCase import *
 from test.rpcTestCase import *
 from test.socialTestCase import *
 from test.tbcbpTestCase import *

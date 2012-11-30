@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import itertools
 from Behaviour import MessageTemplate, OneShotBehaviour
 
 from xmpp.protocol import *
@@ -8,22 +9,6 @@ import uuid
 
 def gen_id():
     return str(uuid.uuid4())
-
-#def PubSubMessageTemplate():
-#    msgs = []
-#    for ns in (NS_PUBSUB, NS_PUBSUB_OWNER):
-#        msg = Iq()
-#        msg.addChild(name='pubsub', namespace=ns)
-#        msgs.append(msg)
-#    return reduce(lambda a,b: a | b, map(lambda msg: MessageTemplate(msg), msgs))
-
-
-#class XMPPIdTemplate(MessageTemplate):
-
-#    def __init__(self, id):
-#        iq = Iq()
-#        iq.setID(id)
-#        MessageTemplate.__init__(self, iq)
 
 #TODO: Implementar retrieve nodes y discovery
 
@@ -36,14 +21,9 @@ class PubSub(object):
         self._server = agent.server
 
     def register(self):
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_PUBSUB)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_PUBSUB)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_PUBSUB)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_PUBSUB)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_PUBSUB_OWNER)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_PUBSUB_OWNER)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_PUBSUB_OWNER)
-        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_PUBSUB_OWNER)
+	namespaces = [NS_PUBSUB, NS_PUBSUB_ERRORS, NS_PUBSUB_EVENTS, NS_PUBSUB_OWNER]
+	for typ,ns in itertools.product(['set','get','result','error'], namespaces):
+            self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, typ, ns)
 
     def _sendAndReceive(self, iq, getContents):
         id = gen_id()
@@ -70,7 +50,6 @@ class PubSub(object):
             def _process(self):
                 #print 'Sending ', str(self.iq)
                 self.myAgent.send(self.iq)
-
                 #Wait for the answer
                 msg = self._receive(block=True, timeout=self.timeout)
                 #print 'Received ', str(msg)

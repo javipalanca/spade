@@ -35,10 +35,10 @@ class PubSubTestCase(unittest.TestCase):
         #self.b.setDebugToScreen()
         self.b.start()
 
-        self.a.setSocialItem('pubb@' + host)
-        self.a._socialnetwork['pubb@' + host].subscribe()
-        self.b.setSocialItem('puba@' + host)
-        self.b._socialnetwork['puba@' + host].subscribe()
+        self.a.roster.acceptAllSubscriptions()
+        self.b.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe('pubb@' + host)
+        self.b.roster.subscribe('puba@' + host)
 
         self.a.deleteEvent("ExistsNode")
         self.b.deleteEvent("ExistsNode")
@@ -50,6 +50,10 @@ class PubSubTestCase(unittest.TestCase):
         self.b.deleteEvent("ExistsNode")
         self.a.deleteEvent("NENode")
         self.b.deleteEvent("NENode")
+
+        self.a.roster.unsubscribe('pubb@' + host)
+        self.b.roster.unsubscribe('puba@' + host)
+
         self.a.stop()
         self.b.stop()
 
@@ -157,11 +161,16 @@ if __name__ == "__main__":
     unittest.main()
     sys.exit()
 
-    '''suite = unittest.TestSuite()
+    suite = unittest.TestSuite()
     suite.addTest(PubSubTestCase('testCreateEvent'))
     result = unittest.TestResult()
 
     suite.run(result)
+    print str(result)
+    for f in  result.errors:
+        print f[0]
+        print f[1]
+
     for f in  result.failures:
         print f[0]
-        print f[1]'''
+        print f[1]

@@ -47,18 +47,20 @@ class SpadeBackend:
         agent.start()
         return agent
 
-    def __init__(self, configfilename="spade.xml"):
+    def __init__(self, configfilename="spade.xml", debug=False):
         parser = SpadeConfigParser.ConfigParser()
         self.config = parser.parse(configfilename)
         self.ams = None
         self.df = None
         self.acc = None
         self.alive = True  # Alive flag
+	self._debug_flag = debug
 
     def start(self):
         #TODO: this should be configurable
         self.acc = self.runAgent(self.config, "acc", Platform.SpadePlatform)
-        #self.acc.setDebugToScreen()
+	if self._debug_flag:
+            self.acc.setDebugToScreen()
         self.ams = self.runAgent(self.config, "ams", AMS.AMS)
         self.ams.DEBUG = self.acc.DEBUG
         #self.ams.setDebugToScreen()
