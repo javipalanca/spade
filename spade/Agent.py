@@ -1033,7 +1033,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
                     if proc is False:
                         #If no template matches, post the message to the Default behaviour
-                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "info", "msg")
+                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL.keys()), "info", "msg")
                         if (self._defaultbehaviour is not None):
                             self._defaultbehaviour.postMessage(msg)
                     for beh in toRemove:
@@ -1118,7 +1118,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._behaviourList.pop(behaviour)
             self.DEBUG("Behaviour removed: " + str(behaviour.getName()), "info", "behaviour")
         except KeyError:
-            self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) + "with type " + str(type(behaviour)) + " is not registered in " + str(self._behaviourList), "warn")
+            self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) + "with type " + str(type(behaviour)) + " is not registered in " + str(self._behaviourList.keys()), "warn")
 
     def hasBehaviour(self, behaviour):
         """

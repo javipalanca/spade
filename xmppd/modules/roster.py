@@ -31,7 +31,7 @@ class ROSTER(PlugIn):
                     if subscription is not None:
                         info.update({'subscription': subscription})
                     elif kid.getAttr('jid') not in the_roster.keys() or ('subscription' in the_roster[kid.getAttr('jid')]) is False:
-                        self.DEBUG('###ROSTER+: Wow, subscription is not active -- better create one pronto!', 'warn')
+                        self.DEBUG('Wow, subscription is not active -- better create one pronto!', 'warn')
                         #kid.setAttr('subscription','none')
                         info.update({'subscription': 'none'})
 
@@ -40,7 +40,6 @@ class ROSTER(PlugIn):
                         info.update({'ask': ask})
                     elif ask == 'InternalDelete':
                         kid.delAttr('ask')
-                        print "### ROSTER: INTERNAL DELETE"
                         self._owner.DB.del_from_roster_jid(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], 'ask')
 
                     #self.DEBUG(unicode(info).encode('utf-8'),'error')
@@ -52,7 +51,6 @@ class ROSTER(PlugIn):
                                 group_list += [grandkid.getData()]
 
                         self._owner.DB.save_groupie(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], group_list)
-        print "### RA: ENDED WITH INFO " + str(info)
 
     def RosterRemove(self, session, stanza):
         s_split_jid = session.getSplitJID()

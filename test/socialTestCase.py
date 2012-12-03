@@ -50,6 +50,7 @@ class socialTestCase(unittest.TestCase):
 
         self.jida = "a@" + host
         self.jidb = "b@" + host
+        self.jidc = "c@" + host
 
         self.a = spade.Agent.Agent(self.jida, "secret")
         template = spade.Behaviour.ACLTemplate()
@@ -63,20 +64,32 @@ class socialTestCase(unittest.TestCase):
         self.b.start()
         #self.b.setDebugToScreen()
 
+        self.c = spade.Agent.Agent(self.jidc, "secret")
+        self.c.start()
+        #self.c.setDebugToScreen()
+
         self.a.roster.unsubscribe(self.jidb)
         self.b.roster.unsubscribe(self.jida)
+        self.a.roster.unsubscribe(self.jidc)
+        self.b.roster.unsubscribe(self.jidc)
+        self.c.roster.unsubscribe(self.jida)
+        self.c.roster.unsubscribe(self.jidb)
 
     def tearDown(self):
         self.a.roster.unsubscribe(self.jidb)
         self.b.roster.unsubscribe(self.jida)
+        self.a.roster.unsubscribe(self.jidc)
+        self.b.roster.unsubscribe(self.jidc)
+        self.c.roster.unsubscribe(self.jida)
+        self.c.roster.unsubscribe(self.jidb)
         self.a.stop()
         self.b.stop()
+        self.c.stop()
 
     def testGetRoster(self):
         assert 'ams.'+host in self.a.roster.getContacts()
         assert 'a@'+host in self.a.roster.getContacts()
 
-        #for i in self.a.roster.getContacts():
         item = self.a.roster.getContact(self.jida)
         assert 'ask' in item
         assert item['ask'] == None
@@ -85,10 +98,8 @@ class socialTestCase(unittest.TestCase):
         assert 'name' in item
         assert item['name'] in [None, 'b']
         assert 'groups' in item
-        #assert item['groups'] == []
         assert item['groups'] == None
         assert 'subscription' in item
-        #assert item['subscription'] == 'none'
         assert item['subscription'] == None
 
     def testSubscribeAlways(self):
@@ -300,12 +311,70 @@ class socialTestCase(unittest.TestCase):
             counter-=1
         assert not self.a.roster.isAvailable(self.jidb)
 
+
+    def testAddContactToGroup(self):
+        self.b.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe(self.jidb)
+        self.b.roster.sendPresence("available")
+
+        self.a.roster.addContactToGroup(self.jidb, "MyFirstGroup")
+
+        assert "MyFirstGroup" in self.a.roster.getGroups(self.jidb)
+
+    def testDelContactToGroup(self):
+        self.b.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe(self.jidb)
+        self.b.roster.sendPresence("available")
+
+        self.a.roster.addContactToGroup(self.jidb, "MyFirstGroup")
+
+        assert "MyFirstGroup" in self.a.roster.getGroups(self.jidb)
+
+        self.a.roster.delContactFromGroup(self.jidb, "MyFirstGroup")
+
+        assert "MyFirstGroup" not in self.a.roster.getGroups(self.jidb)
+
+    def testIsContactInGroup(self):
+        self.b.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe(self.jidb)
+        self.b.roster.sendPresence("available")
+
+        self.a.roster.addContactToGroup(self.jidb, "MyFirstGroup")
+
+        assert self.a.roster.isContactInGroup(self.jidb, "MyFirstGroup")
+
+    def testGetContactsInGroup(self):
+        self.b.roster.acceptAllSubscriptions()
+        self.c.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe(self.jidb)
+        self.a.roster.subscribe(self.jidc)
+        self.b.roster.sendPresence("available")
+        self.c.roster.sendPresence("available")
+        #self.a.setDebugToScreen()
+
+        self.a.roster.addContactToGroup(self.jidb, "Group_testGetContactsInGroup")
+        self.a.roster.addContactToGroup(self.jidc, "Group_testGetContactsInGroup")
+
+        #assert "Group_testGetContactsInGroup" in self.a.roster.getGroups(self.jidb)
+        #assert "Group_testGetContactsInGroup" in self.a.roster.getGroups(self.jidc)
+
+        grouplist = self.a.roster.getContactsInGroup("Group_testGetContactsInGroup")
+
+	print "GROUPLIST", grouplist
+        assert len(grouplist) == 2
+        assert self.jidb in grouplist
+        assert self.jidc in grouplist
+
+
+    #def sendToGroup(self, msg, group):
+
+
 if __name__ == "__main__":
-    unittest.main()
-    sys.exit()
+    #unittest.main()
+    #sys.exit()
 
     suite = unittest.TestSuite()
-    suite.addTest(socialTestCase('testDeclineSubscription'))
+    suite.addTest(socialTestCase('testGetContactsInGroup'))
     result = unittest.TestResult()
 
     suite.run(result)

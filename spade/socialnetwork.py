@@ -61,32 +61,11 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             msg.setContent(str(self.msg))
             self.myAgent.postMessage(msg)
 
-class RosterBehaviour(Behaviour.Behaviour):
-    def _process(self):
-        stanza = self._receive(True)
-        if stanza is not None:
-            self.DEBUG("ROSTER received:" + str(stanza), 'ok')
-            for item in stanza.getTag('query').getTags('item'):
-                jid = item.getAttr('jid')
-                if item.getAttr('subscription') == 'remove':
-                    if jid in self.myAgent._roster:
-                        del self.myAgent.roster[jid]
-                        continue
-                elif jid not in self.myAgent._roster:
-                    self.myAgent._roster[jid] = Contact(self.myAgent, jid)
-                self.myAgent._roster[jid].setName(item.getAttr('name'))
-                self.myAgent._roster[jid].setAsk(item.getAttr('ask'))
-                self.myAgent._roster[jid].setSubscription(item.getAttr('subscription'))
-                #self.myAgent._roster[jid]['groups'] = []
-                #if 'resources' not in self.myAgent._roster[jid]:
-                #    self.myAgent._roster[jid]['resources'] = {}
-                for group in item.getTags('group'):
-                    self.myAgent._roster[jid].addGroup(group.getData())
-            self.myAgent._waitingForRoster = False
-
-
 class Roster:
     """
+    This class manages the social aspect of the agents.
+    It provides the necessary methods to ask for contacts,
+    ask for contacts status, subscriptions, etc.
     """
     def __init__(self, agent):
         self.myAgent = agent
@@ -97,50 +76,95 @@ class Roster:
         self._followbackAllSubscriptions = False
 
     def sendPresence(self, typ=None, priority=None, show=None, status=None):
+        '''
+        Updates your presence to all your contacts
+        typ - your presence type (available, unavailable,...) default='available'
+        priority - the priority of the resource you are connected from
+        show - The message shown to your contacts
+        status - a brief description of your status
+        '''
         jid = self.myAgent.getName() + self.myAgent.resource
         self.myAgent.jabber.send(Presence(jid, typ=typ, priority=priority, show=show, status=status))
 
     def isAvailable(self, jid):
+        '''
+        return True if a contact is available
+        Otherwise return False
+        jid - is teh JabberID of the contact, not the AID (user@server/optionalresource)
+        '''
         item = self.getContact(jid)
         if item:
             return len(item['resources']) > 0
         return False
 
     def subscribe(self, jid):
+        '''
+        Ask for a friendship subscription to another agent
+        The forementioned agent may accept or refuse the subscription
+        by means of the methods acceptSubscription and declineSubscription
+        '''
         self.roster.Subscribe(jid)
 
     def unsubscribe(self,jid):
+        '''
+        Unsubscribe from an agent
+        There is no need of confirmation by the forementioned agent
+        '''
         self.roster.Unsubscribe(jid)
 
     def checkSubscription(self, jid):
+        '''
+        Returns the subscription status of agent 'jid':
+        'none' - there is no subscription with the agent
+        'from' - you are subscribed to its notifications
+        'to' - the agent is subscribed to your notifications
+        'both' - both agents are subscribed to their corresponding notifications
+        '''
         item = self.getContact(jid)
         if item and 'subscription' in item.keys():
                 return item['subscription']
         return 'none'
 
     def acceptSubscription(self, jid):
+        ''' 
+        Accepts the subscription request from 'jid'
+        ''' 
         msg = Presence(to=jid, typ="subscribed")
         self.myAgent.send(msg)
         self.myAgent.DEBUG("I have accepted the " + str(jid) + "'s request of subscription to me")
 
     def declineSubscription(self, jid):
+        ''' 
+        Declines the subscription request from 'jid'
+        ''' 
         msg = Presence(to=jid, typ="unsubscribed")
         self.myAgent.send(msg)
         self.myAgent.DEBUG("I have declined the " + str(jid) + "'s request of subscription to me")
 
     def acceptAllSubscriptions(self, accept=True):
+        ''' 
+        Accepts all future incoming subscription requests from any agent if accept==True
+        ''' 
         self._acceptAllSubscriptions = accept
         if accept:
             self._declineAllSubscriptions = False
         self.myAgent.DEBUG("Accept all subscription requests.", 'info')
 
     def declineAllSubscriptions(self, accept=True):
+        ''' 
+        Declines all future incoming subscription requests from any agent if accept==True
+        ''' 
         self._declineAllSubscriptions = accept
         if accept:
             self._acceptAllSubscriptions = False
         self.myAgent.DEBUG("Decline all subscription requests.", 'info')
 
     def followbackAllSubscriptions(self, accept=True):
+        ''' 
+        Answers all future incoming subscription requests from any agent 
+        with a subcribe request if accept==True
+        This not affects to the acceptance or declination of the incoming request
+        ''' 
         self._followbackAllSubscriptions = accept
         self.myAgent.DEBUG("Followback all subscription requests.", 'info')
 
@@ -164,23 +188,24 @@ class Roster:
     def setStatus(self, status):
         self.myAgent.jabber.send(Presence(status=status))
 
-    #def addContact(self, jid, name=None, groups=[]):
-    #    self.roster.setItem(jid, name, groups)
-
-    def delContact(self, jid):
-        self.roster.delItem(jid)
-
     def getContact(self, jid):
+        '''
+        Returns a dict containing the presence information of contact 'jid'
+        '''
         return self.roster.getItem(jid)
 
     def getContacts(self):
+        '''
+        returns a list of your contacts with their presence information
+        '''
         return self.roster.getItems()
 
     def getAsk(self, jid):
         return self.roster.getAsk(jid)
 
     def getGroups(self, jid):
-        return self.roster.getGroups(jid)
+        if self.getContact(jid):
+             return self.roster.getGroups(jid)
 
     def getName(self, jid):
         return self.roster.getName(jid)
@@ -202,8 +227,35 @@ class Roster:
 
     def addContactToGroup(self, jid, group):
         groups = self.getGroups(jid)
+        if not groups:
+            groups = list()
         if group not in groups:
             groups.append(group)
         self.roster.setItem(jid=jid, groups=groups)
 
+    def delContactFromGroup(self, jid, group):
+        groups = self.getGroups(jid)
+        if group in groups:
+            groups.remove(group)
+        self.roster.setItem(jid=jid, groups=groups)
 
+    def isContactInGroup(self, jid, group):
+        return group in self.getGroups(jid)
+
+    def getContactsInGroup(self, group):
+        result = list()
+        for jid in self.getContacts():
+            contact = self.getContact(jid)
+            if contact != None and contact['groups'] != None and group in contact['groups']:
+                result.append(jid)
+        return result
+
+    def sendToGroup(self, msg, group):
+        if isinstance(msg, ACLMessage.ACLMessage):
+            for jid in self.getContactsInGroup(group):
+                msg.addReceiver(AID.aid(jid,['xmpp://'+str(jid)]))
+            self.myAgent.send(msg)
+        else:
+            for jid in self.getContactsInGroup(group):
+               msg.setTo(jid)
+               self.myAgent.send(msg)
