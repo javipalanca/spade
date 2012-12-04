@@ -888,7 +888,7 @@ class RPC_Client:
 
 class multisession_manager:
 
-    def __init__(self, owner, nthreads=128):
+    def __init__(self, owner, nthreads=32):
 
         self._owner = owner
         self.nthreads = nthreads

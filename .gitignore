@@ -45,4 +45,5 @@ test/logic/test_flora.fld
 test/logic/test_flora_main.xwam
 test/logic/test_xsb.xwam
 user_db.xml
+user_db.dbm
 xmppd.xml
