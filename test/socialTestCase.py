@@ -316,9 +316,11 @@ class socialTestCase(unittest.TestCase):
         self.b.roster.acceptAllSubscriptions()
         self.a.roster.subscribe(self.jidb)
         self.b.roster.sendPresence("available")
-
+	time.sleep(5)
         self.a.roster.addContactToGroup(self.jidb, "MyFirstGroup")
-
+        self.a.roster.requestRoster()
+	time.sleep(5)
+	print self.a.roster.getGroups(self.jidb)
         assert "MyFirstGroup" in self.a.roster.getGroups(self.jidb)
 
     def testDelContactToGroup(self):
@@ -374,7 +376,7 @@ if __name__ == "__main__":
     #sys.exit()
 
     suite = unittest.TestSuite()
-    suite.addTest(socialTestCase('testGetContactsInGroup'))
+    suite.addTest(socialTestCase('testAddContactToGroup'))
     result = unittest.TestResult()
 
     suite.run(result)

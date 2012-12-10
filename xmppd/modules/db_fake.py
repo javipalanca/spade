@@ -280,20 +280,18 @@ class DB(PlugIn):
     def save_groupie(self, domain, node, jid, groups):
         if not node:
             node, domain = domain.split(".", 1)
-        temp = []
-        for x in groups:
-            if type(x) == type(u''):
-                x = x.encode('utf-8')
-            elif type(x) == type(u''):
-                x = unicode(x).encode('utf-8')
-            temp += [x]
-        group_list = x
+        temp = [x for x in groups]
+        group_list = temp #[0] # will crash if empty!
         self.DEBUG("Saving groupie jid to database %s-->(%s) [%s]:\n" % (jid, node + '@' + domain, unicode(groups).encode('utf-8')), 'info')
+        if db[domain][node]['groups'] == {}:
+            for gn in group_list:
+                db[domain][node]['groups'][gn] = [jid]
         for gn, gm in db[domain][node]['groups'].iteritems():
             if gn not in group_list and jid in db[domain][node]['groups'][gn]:
                 db[domain][node]['groups'][gn].remove(jid)
             elif gn in group_list and jid not in db[domain][node]['groups'][gn]:
                 db[domain][node]['groups'][gn] += [jid]
+        self.DEBUG("Saved groupie jid to database %s-->(%s) [%s]:\n" % (jid, db[domain][node], unicode(groups).encode('utf-8')), 'info')
         self.save_database()
 
     def del_groupie(self, domain, node, jid):
