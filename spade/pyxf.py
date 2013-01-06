@@ -18,7 +18,7 @@ __doc__ = ''' Python interface to XSB Prolog, SWI Prolog, ECLiPSe Prolog and Flo
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA'''
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 import pexpect as px
 import re
@@ -264,7 +264,6 @@ class ECLiPSeQueryError(Exception):
     '''Exception raised if query raises an error.'''
     pass
 
-
 class eclipse:
     '''Python interface to ECLiPSe Prolog (http://eclipseclp.org)'''
     def __init__(self, path='eclipse', args=''):
@@ -280,7 +279,10 @@ class eclipse:
             self.engine = px.spawn(path + ' ' + args, timeout=5)
         except px.ExceptionPexpect:
             raise ECLiPSeExecutableNotFound('ECLiPSe Prolog executable not found on the specified path.')
-        self.engine.expect(eclipseprompt)
+        try:
+            self.engine.expect(eclipseprompt)
+        except:
+            raise ECLiPSeExecutableNotFound('Executable on specified path is not ECLiPSe Prolog.')
 
     def load(self, module):
         '''Loads module into self.engine
