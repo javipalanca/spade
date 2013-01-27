@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="SPADE : Smart Python Agent Development Environment" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>SPADE</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/javipalanca/spade">View on GitHub</a>
+
+          <h1 id="project_title">SPADE</h1>
+          <h2 id="project_tagline">Smart Python Agent Development Environment</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/javipalanca/spade/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/javipalanca/spade/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Overview</h1>
+
+<p>SPADE (Smart Python multi-Agent Development Environment) is a Multiagent and Organizations Platform based on the <a href="http://www.xmpp.org">XMPP/Jabber technology</a> and written in the <a href="http://www.python.org">Python</a> programming language. This technology offers by itself many features and facilities that ease the construction of MAS, such as an existing communication channel, the concepts of users (agents) and servers (platforms) and an extensible communication protocol based on XML, just like <a href="http://www.fipa.org">FIPA-ACL</a>. Many other agent platforms exist, but SPADE is the first to base its roots on the XMPP technology.</p>
+
+<p><img src="http://spade2.googlecode.com/files/spade_overview.png" height="420px/"></p>
+
+<h1>User Documentation</h1>
+
+<ul>
+<li><a href="http://packages.python.org/SPADE/manual/html/index.html">User Manual</a></li>
+<li><a href="http://packages.python.org/SPADE/api/index.html">API Documentation</a></li>
+</ul><h1>Installing</h1>
+
+<p>You can install SPADE with easy_install or pip:</p>
+
+<pre><code>pip install SPADE
+</code></pre>
+
+<p>or</p>
+
+<pre><code>easy_install SPADE
+</code></pre>
+
+<p>It can also be installed from inside the package using the setup.py script:</p>
+
+<pre><code>python setup.py install
+</code></pre>
+
+<p>...and the package will install automatically.</p>
+
+<h1>Features</h1>
+
+<p>The main features of SPADE are:</p>
+
+<ul>
+<li>Developed using Python</li>
+<li>Covers the FIPA standard</li>
+<li>Implements four MTPs: XMPP, P2P, HTTP and SIMBA</li>
+<li>Supports two content languages: FIPA-SL and RDF</li>
+<li>SPADE agents do reach their goals by running deliberative and reactive tasks</li>
+<li>Has a web interface to manage the platform</li>
+<li>Allows its execution in several platforms and operating systems</li>
+<li>Presence notification allows the system to determine the current state of the agents in real-time</li>
+<li>Multi-user conference allows agents to create organizations and groups of agents</li>
+</ul><p>The SPADE Agent Platform does not require (but strongly recommends) the operation of agents made with the SPADE Agent Library. The platform itself uses the library to empower its internals, but aside from that, you can develop your own agents in the programming language of your choice and use them with SPADE. The only requirement those agents must fulfill is to be able to communicate through the XMPP protocol. The FIPA-ACL messages will be embedded in XMPP messages. Be warned, however, that some features of the whole SPADE experience may not be available if you do not use the SPADE Agent Library to build your agents.</p>
+
+<p>The SPADE Agent Library is a module for the Python programming language for building SPADE agents. It is a collection of classes, functions and tools for creating new SPADE agents that can work with the SPADE Agent Platform. Using it is the best way to start developing your own SPADE agents. In the future, we would like to offer bindings of the SPADE Agent Library for more programming languages, like Java or C#, but for now only Python is supported.</p>
+
+<p>If you have worked with Python before, you will find the SPADE Agent Library easy to understand and use, with classes ready to use and expand, and many functionalities already built in the library. If you have worked with other high-level behavioral agent platforms (like Jade or Madkit) you will find some similarities in the way the library works, although the agent model present in SPADE is a bit different.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">SPADE maintained by <a href="https://github.com/javipalanca">javipalanca</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
