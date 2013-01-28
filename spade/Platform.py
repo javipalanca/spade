@@ -25,7 +25,6 @@ import BasicFipaDateTime
 
 #from swi import SWIHandler
 from wui import *
-from os.path import *
 
 
 class PlatformRestart(Exception):
@@ -130,7 +129,7 @@ class SpadePlatform(PlatformAgent):
         self.wui.setPort(8008)
         self.wui.start()
 
-	import mtp
+	import mtps
         # Load MTPs
         for name, _mtp in self.config.acc.mtp.items():
             try:

@@ -7,7 +7,10 @@ import content
 from ACLParser import ACLxmlParser
 import xml
 import uuid
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json 
 
 FIPA_ACL_REP_STRING = "fipa.acl.rep.string.std"
 FIPA_ACL_REP_JSON = "fipa.acl.rep.json.std"

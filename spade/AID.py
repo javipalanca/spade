@@ -222,7 +222,10 @@ class aid:
         """
         returns a version of an AID in JSON format
         """
-        import json
+	try:
+	    import json
+	except ImportError:
+	    import simplejson as json 
         return json.dumps(self.asContentObject())
 
     def asXML(self):

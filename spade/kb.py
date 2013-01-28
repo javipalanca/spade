@@ -157,7 +157,7 @@ class KB:
             else:
                 raise KBConfigurationFailed("Could not import " + str(typ) + " KB.")
 
-        except KBConfigurationFailed as e:
+        except KBConfigurationFailed, e:
             #self.myAgent.DEBUG(str(e)+" Using Fol KB.", 'warn')
             typ = "Spade"
 

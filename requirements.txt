@@ -1,3 +1,4 @@
 pexpect
 SPARQLWrapper
 unittest-xml-reporting
+simplejson

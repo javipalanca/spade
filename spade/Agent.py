@@ -42,7 +42,10 @@ import SocketServer
 import colors
 import cPickle as pickle
 import uuid
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json 
 
 
 import DF
