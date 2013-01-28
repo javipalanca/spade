@@ -89,7 +89,7 @@ class BehaviourTestCase(unittest.TestCase):
 
         mt = spade.Behaviour.MessageTemplate(xmpptemplate)
 
-        self.assertFalse(mt.match(message))
+        self.assertTrue(mt.match(message))
 
     def testXMPPMessageMatchFalse(self):
         xmpptemplate = xmpp.Message()
@@ -103,6 +103,99 @@ class BehaviourTestCase(unittest.TestCase):
         mt = spade.Behaviour.MessageTemplate(xmpptemplate)
 
         self.assertFalse(mt.match(message))
+
+
+    def testXMPPPresenceMatchTrue(self):
+        xmpptemplate = xmpp.Presence()
+        xmpptemplate.setFrom(xmpp.JID("sender1@host"))
+        xmpptemplate.setTo(xmpp.JID("recv1@host"))
+        xmpptemplate.setType("unavailable")
+        xmpptemplate.setShow("myShow msg")
+        xmpptemplate.setStatus("I am sleeping")
+
+        message = xmpp.Presence()
+        message.setFrom(xmpp.JID("sender1@host"))
+        message.setTo(xmpp.JID("recv1@host"))
+        message.setType("unavailable")
+        message.setShow("myShow msg")
+        message.setStatus("I am sleeping")
+
+        mt = spade.Behaviour.MessageTemplate(xmpptemplate)
+
+        self.assertTrue(mt.match(message))
+
+    def testXMPPPresenceMatchFalse(self):
+        xmpptemplate = xmpp.Presence()
+        xmpptemplate.setFrom(xmpp.JID("sender1@host"))
+        xmpptemplate.setTo(xmpp.JID("recv1@host"))
+        xmpptemplate.setType("unavailable")
+        xmpptemplate.setShow("myShow msg")
+        xmpptemplate.setStatus("I am sleeping")
+
+        message = xmpp.Presence()
+        message.setFrom(xmpp.JID("sender1@host"))
+        message.setTo(xmpp.JID("recv1@host"))
+        message.setType("unavailable")
+        message.setShow("myShow msg")
+        message.setStatus("Back to work!")
+
+        mt = spade.Behaviour.MessageTemplate(xmpptemplate)
+
+        self.assertFalse(mt.match(message))
+
+
+    def testXMPPPresenceMatchFalseByNS(self):
+        xmpptemplate = xmpp.Presence()
+        xmpptemplate.setFrom(xmpp.JID("sender1@host"))
+        xmpptemplate.setTo(xmpp.JID("recv1@host"))
+        xmpptemplate.setType("unavailable")
+        xmpptemplate.setShow("myShow msg")
+        xmpptemplate.setStatus("I am sleeping")
+        xmpptemplate.setNamespace(xmpp.NS_MUC_OWNER)
+
+        message = xmpp.Presence()
+        message.setFrom(xmpp.JID("sender1@host"))
+        message.setTo(xmpp.JID("recv1@host"))
+        message.setType("unavailable")
+        message.setShow("myShow msg")
+        message.setStatus("I am sleeping")
+        xmpptemplate.setNamespace(xmpp.NS_MUC_USER)
+
+        mt = spade.Behaviour.MessageTemplate(xmpptemplate)
+
+        self.assertFalse(mt.match(message))
+
+    def testXMPPIqMatchTrue(self):
+        xmpptemplate = xmpp.Iq()
+        xmpptemplate.setFrom(xmpp.JID("sender1@host"))
+        xmpptemplate.setTo(xmpp.JID("recv1@host"))
+        xmpptemplate.setType("set")
+
+        message = xmpp.Iq()
+        message.setFrom(xmpp.JID("sender1@host"))
+        message.setTo(xmpp.JID("recv1@host"))
+        message.setType("set")
+
+        mt = spade.Behaviour.MessageTemplate(xmpptemplate)
+
+        self.assertTrue(mt.match(message))
+
+    def testXMPPIqMatchFalse(self):
+        xmpptemplate = xmpp.Iq()
+        xmpptemplate.setFrom(xmpp.JID("sender1@host"))
+        xmpptemplate.setTo(xmpp.JID("recv1@host"))
+        xmpptemplate.setType("set")
+
+        message = xmpp.Iq()
+        message.setFrom(xmpp.JID("sender1@host"))
+        message.setTo(xmpp.JID("recv1@host"))
+        message.setType("get")
+
+        mt = spade.Behaviour.MessageTemplate(xmpptemplate)
+
+        self.assertFalse(mt.match(message))
+
+
 
 if __name__ == "__main__":
     unittest.main()

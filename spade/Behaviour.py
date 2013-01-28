@@ -365,11 +365,11 @@ class MessageTemplate(BehaviourTemplate):
                     return False
             if self.template.attrs is not None and self.template.attrs != {}:
                 for i, j in self.template.attrs.items():
-                    if (i, j) not in (other.attrs.items()):  # not in other.attrs.items():
-                        if not self.regex:
+                    if not self.regex:
+                        if (i not in other.attrs.keys()) or (str(j) != str(other.attrs[i])):
                             return False
-                        if not re.match(str(j), str(other.attrs[i])):
-                            return False
+                    if not re.match(str(j), str(other.attrs[i])):
+                        return False
             if self.template.data is not None and self.template.data != []:
                 if self.template.data != other.data:
                     if not self.regex:
@@ -399,6 +399,7 @@ class MessageTemplate(BehaviourTemplate):
         except Exception:
             return False
         # Arriving here means this is a perfect match
+
         return True
 
     def presence_match(self, message):  # frm=None, type=None, status=None, show=None):
