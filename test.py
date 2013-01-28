@@ -1,4 +1,4 @@
-from test.aidTestCase import *
+'''from test.aidTestCase import *
 from test.amsTestCase import *
 from test.basicTestCase import *
 from test.bdiTestCase import *
@@ -16,6 +16,8 @@ from test.rpcTestCase import *
 from test.socialTestCase import *
 from test.tbcbpTestCase import *
 from test.xfTestCase import *
+'''
+from test.behaviourTestCase import *
 
 from spade import spade_backend
 from xmppd.xmppd import Server
@@ -31,10 +33,10 @@ if __name__ == '__main__':
     s = Server(cfgfile=d + "unittests_xmppd.xml")
                # , cmd_options={'enable_debug':dbg, 'enable_psyco':False})
 
-    thread.start_new_thread(s.run, tuple())
+    #thread.start_new_thread(s.run, tuple())
 
     platform = spade_backend.SpadeBackend(d + "unittests_spade.xml")
-    platform.start()
+    #platform.start()
 
     try:
         import xmlrunner

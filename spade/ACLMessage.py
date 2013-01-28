@@ -60,8 +60,11 @@ class ACLMessage:
             self.performative = performative.lower()
         else: self.performative = None
         """
-        if performative and (performative.lower() in self.commacts):
+        if performative:
             self._attrs["performative"] = performative.lower()
+             # we do not check if is a fipa performative
+             # any string is valid...
+             # (performative.lower() in self.commacts):
 
         self.sender = None
         self.receivers = []
@@ -158,9 +161,10 @@ class ACLMessage:
         sets the message performative (string)
         must be in ACLMessage.commacts
         """
-        if p and (p.lower() in self.commacts):
-            #self.performative = p.lower()
-            self._attrs["performative"] = p.lower()
+        # we do not check if is a fipa performative
+        # any string is valid...
+        #if p and (p.lower() in self.commacts):
+        self._attrs["performative"] = p.lower()
 
     def getPerformative(self):
         """

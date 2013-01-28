@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import ACLMessage
+import AID
 import MessageReceiver
 import threading
 import types
@@ -12,6 +13,7 @@ import traceback
 from xmpp import Node, Message, Presence, Iq
 import xmpp
 import re
+import json
 
 
 class BehaviourTemplate:
@@ -58,7 +60,7 @@ class ACLTemplate(BehaviourTemplate):
     """
     Template for message matching
     """
-    def __init__(self, performative=None):
+    def __init__(self, performative=None, jsonstring=None):
         self.performative = performative
         self.sender = None
         self.receivers = []
@@ -74,9 +76,66 @@ class ACLTemplate(BehaviourTemplate):
         self.conversation_id = None
         #self.userDefProps = None
 
+        if jsonstring!=None:
+            self.loadJSON(jsonstring)
+
     def __str__(self):
         d = {"performative": self.performative, "sender": str(self.sender), "receivers": str(self.receivers), "reply_to": self.reply_to, "content": self.content, "reply_with": self.reply_with, "reply_by": self.reply_by, "in_reply_to": self.in_reply_to, "encoding": self.encoding, "language": self.language, "ontology": self.ontology, "protocol": self.protocol, "conversation_id": self.conversation_id}
         return str(dict((data for data in d.iteritems() if data[1])))
+
+    def loadJSON(self, jsonstring):
+        """
+        loads a JSON string in the message
+        """
+        p = json.loads(jsonstring)
+
+        if "performative" in p:
+            self.setPerformative(p["performative"])
+
+        if "sender" in p:
+            s = AID.aid()
+            s.loadJSON(p["sender"])
+            self.setSender(s)
+
+        if "receivers" in p:
+            for i in p["receivers"]:
+                s = AID.aid()
+                s.loadJSON(i)
+                self.addReceiver(s)
+
+        if "content" in p:
+            self.setContent(p["content"])
+
+        if "reply-with" in p:
+            self.setReplyWith(p["reply-with"])
+
+        if "reply-by" in p:
+            self.setReplyBy(p["reply-by"])
+
+        if "in-reply-to" in p:
+            self.setInReplyTo(p["in-reply-to"])
+
+        if "reply-to" in p:
+            for i in p["reply-to"]:
+                s = AID.aid()
+            s.loadJSON(i)
+            self.addReplyTo(s)
+
+        if "language" in p:
+            self.setLanguage(p["language"])
+
+        if "encoding" in p:
+            self.setEncoding(p["encoding"])
+
+        if "ontology" in p:
+            self.setOntology(p['ontology'])
+
+        if "protocol" in p:
+            self.setProtocol(p['protocol'])
+
+        if "conversation-id" in p:
+            self.setConversationId(p["conversation-id"])
+
 
     def reset(self):
         self.__init__()
@@ -168,6 +227,57 @@ class ACLTemplate(BehaviourTemplate):
     def getConversationId(self):
         return self.conversation_id
 
+    def match(self, message):
+    #def acl_match(self, message):
+        if message.__class__ != ACLMessage.ACLMessage:
+            return False
+        if (self.getPerformative() is not None):
+            if (self.getPerformative() != message.getPerformative()):
+                return False
+        if (self.getConversationId() is not None):
+            if (str(self.getConversationId()) != str(message.getConversationId())):
+                return False
+        if (self.sender is not None):
+            if not message.sender.match(self.sender):
+                return False
+        if (self.receivers != []):
+            for tr in self.receivers:
+                found = False
+                for mr in message.receivers:
+                    if mr.match(tr):
+                        found = True
+                        break
+                if not found:
+                    return False
+        if (self.getReplyTo() != []):
+            if (self.getReplyTo() != message.getReplyTo()):
+                return False
+        if (self.content is not None):
+            if (self.content != message.content):
+                return False
+        if (self.getReplyWith() is not None):
+            if (self.getReplyWith() != message.getReplyWith()):
+                return False
+        if (self.getReplyBy() is not None):
+            if (self.getReplyBy() != message.getReplyBy()):
+                return False
+        if (self.getInReplyTo() is not None):
+            if (self.getInReplyTo() != message.getInReplyTo()):
+                return False
+        if (self.getEncoding() is not None):
+            if (self.getEncoding() != message.getEncoding()):
+                return False
+        if (self.getLanguage() is not None):
+            if (self.getLanguage() != message.getLanguage()):
+                return False
+        if (self.getOntology() is not None):
+            if (self.getOntology() != message.getOntology()):
+                return False
+        if (self.getProtocol() is not None):
+            if (self.getProtocol() != message.getProtocol()):
+                return False
+        return True
+
 
 class NOTTemplate(BehaviourTemplate):
     def __init__(self, expr):
@@ -215,70 +325,22 @@ class PresenceTemplate(BehaviourTemplate):
 
 
 class MessageTemplate(BehaviourTemplate):
-    def __init__(self, Template, regex=False):
+    def __init__(self, template, regex=False):
         # Discriminate Template class
         BehaviourTemplate.__init__(self, regex)
-        if isinstance(Template, types.InstanceType):
-            if Template.__class__ == ACLTemplate:
-                self.match = self.acl_match
-            else:
+        self.template = copy.copy(template)
+        if isinstance(template, ACLTemplate):
+                self.match = self.template.match
+        elif isinstance(template, ACLMessage.ACLMessage):
+                self.template = ACLTemplate(jsonstring=template.asJSON())
+                self.match = self.template.match
+        else:
                 # Default template option
                 self.match = self.node_match
-
-        self.template = copy.copy(Template)
 
     def __str__(self):
         return str(self.template)
 
-    def acl_match(self, message):
-        if message.__class__ != ACLMessage.ACLMessage:
-            return False
-        if (self.template.getPerformative() is not None):
-            if (self.template.getPerformative() != message.getPerformative()):
-                return False
-        if (self.template.getConversationId() is not None):
-            if (str(self.template.getConversationId()) != str(message.getConversationId())):
-                return False
-        if (self.template.sender is not None):
-            if not message.sender.match(self.template.sender):
-                return False
-        if (self.template.receivers != []):
-            for tr in self.template.receivers:
-                found = False
-                for mr in message.receivers:
-                    if mr.match(tr):
-                        found = True
-                        break
-                if not found:
-                    return False
-        if (self.template.getReplyTo() != []):
-            if (self.template.getReplyTo() != message.getReplyTo()):
-                return False
-        if (self.template.content is not None):
-            if (self.template.content != message.content):
-                return False
-        if (self.template.getReplyWith() is not None):
-            if (self.template.getReplyWith() != message.getReplyWith()):
-                return False
-        if (self.template.getReplyBy() is not None):
-            if (self.template.getReplyBy() != message.getReplyBy()):
-                return False
-        if (self.template.getInReplyTo() is not None):
-            if (self.template.getInReplyTo() != message.getInReplyTo()):
-                return False
-        if (self.template.getEncoding() is not None):
-            if (self.template.getEncoding() != message.getEncoding()):
-                return False
-        if (self.template.getLanguage() is not None):
-            if (self.template.getLanguage() != message.getLanguage()):
-                return False
-        if (self.template.getOntology() is not None):
-            if (self.template.getOntology() != message.getOntology()):
-                return False
-        if (self.template.getProtocol() is not None):
-            if (self.template.getProtocol() != message.getProtocol()):
-                return False
-        return True
 
     def node_match(self, other):
         """
@@ -334,8 +396,7 @@ class MessageTemplate(BehaviourTemplate):
                     # If we reach this point, there is no hope left . . . (no match among the suspects)
                     return False
 
-        except Exception, e:
-            #print "Exception in node_match:", e
+        except Exception:
             return False
         # Arriving here means this is a perfect match
         return True
@@ -357,8 +418,8 @@ class MessageTemplate(BehaviourTemplate):
             return False
 
         if self._frm:
-            if not JID(self._frm).getResource():
-                if self._frm != JID(frm).getBareJID():
+            if not xmpp.JID(self._frm).getResource():
+                if self._frm != xmpp.JID(frm).getBareJID():
                     return False
             else:
                 if self._frm != frm:
