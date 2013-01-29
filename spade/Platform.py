@@ -133,7 +133,7 @@ class SpadePlatform(PlatformAgent):
         # Load MTPs
         for name, _mtp in self.config.acc.mtp.items():
             try:
-                mod = "mtp."+name
+                mod = "mtps."+name
                 mod = __import__(mod, globals(), locals(),[name])
                 self.mtps[_mtp['protocol']] = mod.INSTANCE(name, self.config, self)
             except Exception, e:
