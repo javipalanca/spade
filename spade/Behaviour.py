@@ -6,11 +6,6 @@ import MessageReceiver
 import threading
 import types
 import copy
-import colors
-import sys
-import traceback
-
-from xmpp import Node, Message, Presence, Iq
 import xmpp
 import re
 import json
@@ -238,7 +233,10 @@ class ACLTemplate(BehaviourTemplate):
             if (str(self.getConversationId()) != str(message.getConversationId())):
                 return False
         if (self.sender is not None):
-            if not message.sender.match(self.sender):
+            if message.sender is not None:
+                if not message.sender.match(self.sender):
+                    return False
+            else:
                 return False
         if (self.receivers != []):
             for tr in self.receivers:
@@ -329,14 +327,14 @@ class MessageTemplate(BehaviourTemplate):
         # Discriminate Template class
         BehaviourTemplate.__init__(self, regex)
         self.template = copy.copy(template)
-        if isinstance(template, ACLTemplate):
-                self.match = self.template.match
-        elif isinstance(template, ACLMessage.ACLMessage):
+        if isinstance(template, ACLMessage.ACLMessage):
                 self.template = ACLTemplate(jsonstring=template.asJSON())
                 self.match = self.template.match
-        else:
-                # Default template option
+        elif "Message" in str(self.template.__class__) or "Presence" in str(self.template.__class__) or "Iq" in str(self.template.__class__) or "Node" in str(self.template.__class__):
                 self.match = self.node_match
+        else:  #isinstance(template, ACLTemplate):
+                self.match = self.template.match
+                # Default template option
 
     def __str__(self):
         return str(self.template)

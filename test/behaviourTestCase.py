@@ -196,6 +196,60 @@ class BehaviourTestCase(unittest.TestCase):
         self.assertFalse(mt.match(message))
 
 
+    def testACLTemplateMatchAND(self):
+        t1 = spade.Behaviour.ACLTemplate()
+        t1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        t2 = spade.Behaviour.ACLTemplate()
+        t2.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        t2.setPerformative("query")
+
+        mt = spade.Behaviour.MessageTemplate(t1 & t2)
+
+        m1= spade.ACLMessage.ACLMessage()
+        m1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+
+        self.assertFalse(mt.match(m1))
+
+        m2= spade.ACLMessage.ACLMessage()
+        m2.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        m2.setPerformative("query")
+
+        self.assertFalse(mt.match(m2))
+
+        m3= spade.ACLMessage.ACLMessage()
+        m3.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        m3.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        m3.setPerformative("query")
+
+        self.assertTrue(mt.match(m3))
+
+    def testACLTemplateMatchOR(self):
+        t1 = spade.Behaviour.ACLTemplate()
+        t1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        t2 = spade.Behaviour.ACLTemplate()
+        t2.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        t2.setPerformative("query")
+
+        mt = spade.Behaviour.MessageTemplate(t1 | t2)
+
+        m1= spade.ACLMessage.ACLMessage()
+        m1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+
+        self.assertTrue(mt.match(m1))
+
+        m2= spade.ACLMessage.ACLMessage()
+        m2.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        m2.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        m2.setPerformative("query")
+
+        self.assertTrue(mt.match(m2))
+
+        m3= spade.ACLMessage.ACLMessage()
+        m3.setSender(aid(name="sender2@host", addresses=["sender2@host"]))
+        m3.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        m3.setPerformative("inform")
+
+        self.assertFalse(mt.match(m3))
 
 if __name__ == "__main__":
     unittest.main()
