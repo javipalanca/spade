@@ -1,4 +1,4 @@
-'''from test.aidTestCase import *
+from test.aidTestCase import *
 from test.amsTestCase import *
 from test.basicTestCase import *
 from test.bdiTestCase import *
@@ -15,9 +15,8 @@ from test.pubsubTestCase import *
 from test.rpcTestCase import *
 from test.socialTestCase import *
 from test.tbcbpTestCase import *
+from test.templateTestCase import *
 from test.xfTestCase import *
-'''
-from test.behaviourTestCase import *
 
 from spade import spade_backend
 from xmppd.xmppd import Server

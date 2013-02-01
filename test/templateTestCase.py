@@ -8,7 +8,7 @@ import xmpp
 host = "127.0.0.1"
 
 
-class BehaviourTestCase(unittest.TestCase):
+class TemplateTestCase(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -248,6 +248,32 @@ class BehaviourTestCase(unittest.TestCase):
         m3.setSender(aid(name="sender2@host", addresses=["sender2@host"]))
         m3.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
         m3.setPerformative("inform")
+
+        self.assertFalse(mt.match(m3))
+
+    def testACLTemplateMatchNOT(self):
+        t1 = spade.Behaviour.ACLTemplate()
+        t1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        t1.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        t1.setPerformative("query")
+
+        mt = spade.Behaviour.MessageTemplate( ~t1 )
+
+        m1= spade.ACLMessage.ACLMessage()
+        m1.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+
+        self.assertTrue(mt.match(m1))
+
+        m2= spade.ACLMessage.ACLMessage()
+        m2.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        m2.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+
+        self.assertTrue(mt.match(m2))
+
+        m3= spade.ACLMessage.ACLMessage()
+        m3.setSender(aid(name="sender1@host", addresses=["sender1@host"]))
+        m3.addReceiver(aid(name="recv1@host", addresses=["recv1@host"]))
+        m3.setPerformative("query")
 
         self.assertFalse(mt.match(m3))
 
