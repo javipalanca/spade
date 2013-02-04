@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
 import sys
+import time
 import unittest
 
 import spade
 from spade.bdi import *
 from spade.Agent import BDIAgent
-from spade.tbcbp import Plan
 
 host = "127.0.0.1"
 
@@ -65,10 +64,7 @@ class BDITestCase(unittest.TestCase):
         self.s3 = spade.DF.Service(name="s3", owner=self.a.getAID(), inputs=["Value3"], outputs=["Myoutput3"], P=["Var(Value3,3,Int)"], Q=["Var(Myoutput3,4,Int)"])
         self.s4 = spade.DF.Service(name="s4", owner=self.a.getAID(), inputs=["Myoutput3"], outputs=["Myoutput4"], P=["Var(Myoutput3,4,Int)"], Q=["Var(Myoutput4,5,Int)"])
 
-        self.a.registerService(self.s1, s1_method)
-        self.a.registerService(self.s2, s2_method)
-        self.a.registerService(self.s3, s3_method)
-        self.a.registerService(self.s4, s4_method)
+        time.sleep(1)
 
     def tearDown(self):
         s = spade.DF.Service()
@@ -78,6 +74,9 @@ class BDITestCase(unittest.TestCase):
         del self.a
 
     def testAddPlan(self):
+
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
 
         self.a.bdiBehav.discover()
         result = self.a.addPlan(inputs=["Value"], outputs=["Myoutput2"], P=["Var(Value,0,Int)"], Q=["Var(Myoutput2,2,Int)"], services=["s1", "s2"])
@@ -90,6 +89,7 @@ class BDITestCase(unittest.TestCase):
     def testSimpleGoalCompleted(self):
 
         self.goalCompleted = False
+        self.a.registerService(self.s1, s1_method)
 
         self.a.saveFact("Value", 0)
 
@@ -97,7 +97,6 @@ class BDITestCase(unittest.TestCase):
 
         self.a.addGoal(Goal("Var(Myoutput1,1,Int)"))
 
-        import time
         counter = 0
         while not self.goalCompleted and counter < 10:
             time.sleep(1)
@@ -110,6 +109,8 @@ class BDITestCase(unittest.TestCase):
     def testGoalCompleted_withPlan(self):
 
         self.goalCompleted = False
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
 
         self.a.saveFact("Value", 0)
 
@@ -117,7 +118,6 @@ class BDITestCase(unittest.TestCase):
 
         self.a.addGoal(Goal("Var(Myoutput2,2,Int)"))
 
-        import time
         counter = 0
         while not self.goalCompleted and counter < 10:
             time.sleep(1)
@@ -142,6 +142,9 @@ class BDITestCase(unittest.TestCase):
         self.s1Completed = False
         self.s3Completed = False
 
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s3, s3_method)
+
         self.a.saveFact("Value", 0)
         self.a.saveFact("Value3", 3)
 
@@ -150,7 +153,6 @@ class BDITestCase(unittest.TestCase):
         self.a.addGoal(Goal("Var(Myoutput3,4,Int)"))
         self.a.addGoal(Goal("Var(Myoutput1,1,Int)"))
 
-        import time
         counter = 0
         while counter < 10 and (self.s1Completed is False or self.s3Completed is False):
             time.sleep(1)
@@ -167,6 +169,11 @@ class BDITestCase(unittest.TestCase):
         self.s2Completed = False
         self.s4Completed = False
 
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
+        self.a.registerService(self.s3, s3_method)
+        self.a.registerService(self.s4, s4_method)
+
         self.a.saveFact("Value", 0)
         self.a.saveFact("Value3", 3)
 
@@ -175,7 +182,6 @@ class BDITestCase(unittest.TestCase):
         self.a.addGoal(Goal("Var(Myoutput2,2,Int)"))
         self.a.addGoal(Goal("Var(Myoutput4,5,Int)"))
 
-        import time
         counter = 0
         while counter < 10 and (self.s2Completed is False or self.s4Completed is False):
             time.sleep(1)
