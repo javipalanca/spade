@@ -69,8 +69,7 @@ class Roster:
     """
     def __init__(self, agent):
         self.myAgent = agent
-        self.myAgent.jabber.getRoster()
-        self.roster = self.myAgent.jabber.Roster
+        self.roster = self.myAgent.jabber.getRoster() #self.myAgent.jabber.Roster
         self._acceptAllSubscriptions = False
         self._declineAllSubscriptions = False
         self._followbackAllSubscriptions = False
@@ -126,45 +125,45 @@ class Roster:
         return 'none'
 
     def acceptSubscription(self, jid):
-        ''' 
+        '''
         Accepts the subscription request from 'jid'
-        ''' 
+        '''
         msg = Presence(to=jid, typ="subscribed")
         self.myAgent.send(msg)
         self.myAgent.DEBUG("I have accepted the " + str(jid) + "'s request of subscription to me")
 
     def declineSubscription(self, jid):
-        ''' 
+        '''
         Declines the subscription request from 'jid'
-        ''' 
+        '''
         msg = Presence(to=jid, typ="unsubscribed")
         self.myAgent.send(msg)
         self.myAgent.DEBUG("I have declined the " + str(jid) + "'s request of subscription to me")
 
     def acceptAllSubscriptions(self, accept=True):
-        ''' 
+        '''
         Accepts all future incoming subscription requests from any agent if accept==True
-        ''' 
+        '''
         self._acceptAllSubscriptions = accept
         if accept:
             self._declineAllSubscriptions = False
         self.myAgent.DEBUG("Accept all subscription requests.", 'info')
 
     def declineAllSubscriptions(self, accept=True):
-        ''' 
+        '''
         Declines all future incoming subscription requests from any agent if accept==True
-        ''' 
+        '''
         self._declineAllSubscriptions = accept
         if accept:
             self._acceptAllSubscriptions = False
         self.myAgent.DEBUG("Decline all subscription requests.", 'info')
 
     def followbackAllSubscriptions(self, accept=True):
-        ''' 
-        Answers all future incoming subscription requests from any agent 
+        '''
+        Answers all future incoming subscription requests from any agent
         with a subcribe request if accept==True
         This not affects to the acceptance or declination of the incoming request
-        ''' 
+        '''
         self._followbackAllSubscriptions = accept
         self.myAgent.DEBUG("Followback all subscription requests.", 'info')
 

@@ -203,28 +203,31 @@ class ROSTER(PlugIn):
         the_roster_guy = session.getRoster()
         if the_roster_guy is None:
             return
-        for k, v in the_roster_guy.iteritems():
-            atag = rep.T.query.NT.item
-            split_jid = self._owner.tool_split_jid(k)
-            if split_jid is not None:
-                name = self._owner.DB.get(split_jid[1], split_jid[0], 'name')
-            else:
-                name = None
-            groups = session.getGroups()
-            atag.setAttr('jid', k)
-            for x, y in v.iteritems():
-                atag.setAttr(x, y)
-            if atag.getAttr('name') is None and name is not None:
-                atag.setAttr('name', name)
-
-            if groups is not None:
-                for gn, gm in groups.iteritems():
-                    for igm in gm:
-                        if igm == k:
-                            atag.T.group.setData(gn)
-                            break
-            else:
-                atag.T.group.setData('My Friends')
+        for k, v in the_roster_guy.items():
+            try:
+                atag = rep.T.query.NT.item
+                split_jid = self._owner.tool_split_jid(k)
+                if split_jid is not None:
+                    name = self._owner.DB.get(split_jid[1], split_jid[0], 'name')
+                else:
+                    name = None
+                groups = session.getGroups()
+                atag.setAttr('jid', k)
+                for x, y in v.items():
+                    atag.setAttr(x, y)
+                if atag.getAttr('name') is None and name is not None:
+                    atag.setAttr('name', name)
+                if groups is not None:
+                    for gn, gm in groups.items():
+                        for igm in gm:
+                            if igm == k:
+                                atag.T.group.setData(gn)
+                                break
+                else:
+                    atag.T.group.setData('My Friends')
+            except Exception, e:
+                self.DEBUG("Exception in RosterPush: " + str(e), 'err')
+        self.DEBUG("RosterPush sending " +str(rep), 'info')
         session.send(rep)
 
     def RosterPushToClient(self, bareto, to_session=None):

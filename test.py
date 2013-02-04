@@ -13,7 +13,7 @@ from test.kbTestCase import *
 from test.p2pTestCase import *
 from test.pubsubTestCase import *
 from test.rpcTestCase import *
-from test.socialTestCase import *
+#from test.socialTestCase import *
 from test.tbcbpTestCase import *
 from test.templateTestCase import *
 from test.xfTestCase import *
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     d = "test" + os.sep
     dbg = ['always']
     s = Server(cfgfile=d + "unittests_xmppd.xml")
-               # , cmd_options={'enable_debug':dbg, 'enable_psyco':False})
+                        #, cmd_options={'enable_debug':dbg, 'enable_psyco':False})
 
     thread.start_new_thread(s.run, tuple())
 

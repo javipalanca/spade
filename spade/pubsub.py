@@ -21,14 +21,14 @@ class PubSub(object):
         self._server = agent.server
 
     def register(self):
-	namespaces = [NS_PUBSUB, NS_PUBSUB_ERRORS, NS_PUBSUB_EVENTS, NS_PUBSUB_OWNER]
-	for typ,ns in itertools.product(['set','get','result','error'], namespaces):
+        namespaces = [NS_PUBSUB, NS_PUBSUB_ERRORS, NS_PUBSUB_EVENTS, NS_PUBSUB_OWNER]
+        for typ,ns in itertools.product(['set','get','result','error'], namespaces):
             self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB, typ, ns)
 
     def _sendAndReceive(self, iq, getContents):
-        id = gen_id()
-        t = MessageTemplate(Iq(attrs={'id': id}))
-        iq.setID(id)
+        varid = gen_id()
+        t = MessageTemplate(Iq(attrs={'id': varid}))
+        iq.setID(varid)
         b = self._sendAndReceiveBehav(iq, getContents)
 
         if self.myAgent._running:

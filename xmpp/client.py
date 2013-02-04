@@ -75,11 +75,11 @@ class PlugIn:
     def PlugOut(self):
         """ Unregister all our staff from main instance and detach from it. """
         self.DEBUG('Plugging %s out of %s.'%(self,self._owner),'stop')
-	self._owner.debug_flags.remove(self.DBG_LINE)
-	for method in self._exported_methods:
-		try:
-			del self._owner.__dict__[method.__name__]
-		except: pass
+        self._owner.debug_flags.remove(self.DBG_LINE)
+        for method in self._exported_methods:
+            try:
+                del self._owner.__dict__[method.__name__]
+            except: pass
         for method in self._old_owners_methods: self._owner.__dict__[method.__name__]=method
         del self._owner.__dict__[self.__class__.__name__]
         if self.__class__.__dict__.has_key('plugout'): return self.plugout()

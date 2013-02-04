@@ -1176,20 +1176,21 @@ class Server:
         "Returns tuple of id,server,resource"
         if "@" in jid:
             try:
-                id, extras = jid.split('@')
+                name, extras = jid.split('@')
             except:
                 return None
             try:
                 server, resource = extras.split('/')
             except:
-                return (id, extras)
-            return (id, server, resource)
+                return (name, extras)
+            return (name, server, resource)
         else:  # Component or Server
-            if "/" in jid:  # With resource
-                server, extras = jid.split("/")
-                return (server, extras)
+            name, extras = jid.split('.',1)
+            if "/" in extras:  # With resource
+                server, resource = jid.split("/")
+                return (name, server, resource)
             else:  # No resource, only dots
-                return (jid)
+                return (name, extras)
 
     def tool_timeDurration(self, the_time):
         days = floor(the_time / 60 / 60 / 24)

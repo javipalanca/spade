@@ -190,7 +190,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     @require_login
     def WUIController_admin(self):
-        import types
         behavs = {}
         attrs = {}
         sorted_attrs = []
@@ -440,7 +439,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     @require_login
     def WUIController_sent(self, receivers=[], performative=None, sender=None, reply_with=None, reply_by=None, reply_to=None, in_reply_to=None, encoding=None, language=None, ontology=None, protocol=None, conversation_id=None, content=""):
         msg = ACLMessage.ACLMessage()
-        import types
         if isinstance(receivers, types.StringType):
             a = AID.aid(name=receivers, addresses=["xmpp://" + receivers])
             msg.addReceiver(a)
@@ -1582,7 +1580,7 @@ class PlatformAgent(AbstractAgent):
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
         self.jabber.RegisterHandler('presence', self._jabber_messageCB)
         self.jabber.RegisterDefaultHandler(self._other_messageCB)
-        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
         #self.jabber.RegisterHandler('iq',self._jabber_iqCB)
 
@@ -1709,6 +1707,7 @@ class Agent(AbstractAgent):
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
         self.jabber.RegisterHandler('presence', self._jabber_messageCB)
+        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         self.jabber.RegisterDefaultHandler(self._other_messageCB)
 
         self.jabber_process = jabberProcess(self.jabber, owner=self)
