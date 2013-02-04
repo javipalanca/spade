@@ -39,7 +39,7 @@ class P2P(object):
         self._p2p_failures = 0  # Counter for failed attempts to send p2p messages
         if p2p:
             agent.registerLogComponent("p2p")
-            self.P2PPORT = random.randint(1025, 65535)  # Random P2P port number
+            self.P2PPORT = random.randint(70000, 80000)  # Random P2P port number
             p2pb = P2PBehaviour()
             agent.addBehaviour(p2pb)
 

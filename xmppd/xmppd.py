@@ -1341,8 +1341,11 @@ class Server:
 
     def select_handle(self):
         "Handles select-based socket handling"
-        for fileno, ev in self.sockpoll.poll(1000):
-            self._socket_handler(self.sockets[fileno], 'select')
+        try:
+            for fileno, ev in self.sockpoll.poll(1000):
+                self._socket_handler(self.sockets[fileno], 'select')
+        except Exception, e:
+            self.DEBUG('server', str(e), 'err')
 
     def _socket_handler(self, sock, mode):
         "Accepts incoming sockets and ultimately handles the core-routing of packets"

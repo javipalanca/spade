@@ -9,14 +9,13 @@ www.fipa.org
 """
 
 import BaseHTTPServer
-import sys
+import SocketServer
 import threading
 from spade import MTP
 from spade import XMLCodec
-from spade import SpadeConfigParser, ACLParser
+from spade import ACLParser
 from spade import ACLMessage, Envelope, AID
 import httplib
-
 
 #Specific constants
 PORT = 2099
@@ -158,11 +157,18 @@ class http(MTP.MTP):
                     # HTTP Connection closed
 
 
+class ForkingHTTPServer(SocketServer.ForkingMixIn, BaseHTTPServer.HTTPServer):
+    def finish_request(self, request, client_address):
+        request.settimeout(1)
+        # "super" can not be used because BaseServer is not created from object
+        BaseHTTPServer.HTTPServer.finish_request(self, request, client_address)
+
 class HttpServer(threading.Thread):
     def run(self):
         BaseHTTPServer.HTTPServer.allow_reuse_address = True
         BaseHTTPServer.HTTPServer.timeout = 1
-        self.httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+        self.httpd = ForkingHTTPServer(("", PORT), Handler)
+        #BaseHTTPServer.HTTPServer(("", PORT), Handler)
         self.httpd.mtp = self.mtp
         self.httpd.serve_forever(poll_interval=0.5)
 
@@ -223,7 +229,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         clen = self.headers.getheader('Content-Length')
         if clen <= 0:
-            send_error(411)
+            self.send_error(411)
 
         envelope, payload = self.getContent(self.rfile, boundary, clen)
 
@@ -305,7 +311,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             env = env.strip("\r\n")
             try:
                 envelope = xc.parse(env)
-            except Exception, e:
+            except Exception:
                 self.send_error(400, "Malformed FIPA Envelope")
         elif type_env == CT_JSON:
             envelope = Envelope.Envelope(jsonstring=env)
@@ -317,14 +323,14 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             p = ACLParser.ACLParser()
             try:
                 payload = p.parse(pay)
-            except Exception, e:
+            except Exception:
                 self.send_error(400, "Malformed FIPA ACL Payload")
                 return envelope, None
         elif type_pay == CT_XML or type_pay == "application/" + ACLMessage.FIPA_ACL_REP_XML:
             p = ACLParser.ACLxmlParser()
             try:
                 payload = p.parse(pay)
-            except Exception, e:
+            except Exception:
                 self.send_error(400, "Malformed FIPA XML Payload")
                 return envelope, None
         elif type_pay == CT_JSON:

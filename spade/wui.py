@@ -50,8 +50,8 @@ class WUI(Thread):
                 self.httpd = SocketServer.ThreadingTCPServer(('', self.port), WUIHandler)
                 self.httpd.owner = self
                 self.httpd.timeout = 1
-            except Exception, e:
-                self.port = random.randint(1024, 65536)
+            except Exception:
+                self.port = random.randint(20000, 30000)
             timeout -= 1
             time.sleep(1)
 
