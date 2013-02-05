@@ -1,3 +1,2 @@
-pexpect
 SPARQLWrapper
 unittest-xml-reporting
