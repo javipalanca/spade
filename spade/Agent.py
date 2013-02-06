@@ -579,7 +579,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
-
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
@@ -1578,9 +1577,9 @@ class PlatformAgent(AbstractAgent):
             raise NotImplementedError
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
-        self.jabber.RegisterHandler('presence', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('presence', self._jabber_messageCB)
         self.jabber.RegisterDefaultHandler(self._other_messageCB)
-        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
         #self.jabber.RegisterHandler('iq',self._jabber_iqCB)
 
@@ -1706,8 +1705,8 @@ class Agent(AbstractAgent):
         self.roster = socialnetwork.Roster(self)
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
-        self.jabber.RegisterHandler('presence', self._jabber_messageCB)
-        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('presence', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         self.jabber.RegisterDefaultHandler(self._other_messageCB)
 
         self.jabber_process = jabberProcess(self.jabber, owner=self)

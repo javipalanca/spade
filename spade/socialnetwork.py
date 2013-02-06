@@ -14,6 +14,7 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             if typ == "":
                 typ = "available"
             self.DEBUG("Presence msg received:" + str(self.msg), 'ok')
+            #print self.myAgent.getName() + "--> Presence msg received:" + str(self.msg)
             if typ == "subscribe":
                 self.DEBUG("Agent " + str(to) + " wants to subscribe to me", "info")
                 # Subscribe petition

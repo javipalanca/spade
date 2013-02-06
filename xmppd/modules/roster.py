@@ -132,6 +132,7 @@ class ROSTER(PlugIn):
                     s.send(out)
             except:
                 pass
+
         self.DEBUG('#ROSTER#: Pushing one out to client %s! [COMPLETE]' % (barejid), 'warn')
 
     def RosterPushOne(self, session, stanza, mode='set', options=None):

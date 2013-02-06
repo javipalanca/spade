@@ -1185,12 +1185,11 @@ class Server:
                 return (name, extras)
             return (name, server, resource)
         else:  # Component or Server
-            name, extras = jid.split('.',1)
-            if "/" in extras:  # With resource
+            if "/" in jid:  # With resource
                 server, resource = jid.split("/")
-                return (name, server, resource)
+                return (server, resource)
             else:  # No resource, only dots
-                return (name, extras)
+                return (jid)
 
     def tool_timeDurration(self, the_time):
         days = floor(the_time / 60 / 60 / 24)
