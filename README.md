@@ -6,8 +6,7 @@ SPADE (Smart Python multi-Agent Development Environment) is a Multiagent and Org
 
 # User Documentation
 
-- [User Manual](http://packages.python.org/SPADE/manual/html/index.html)
-- [API Documentation](http://packages.python.org/SPADE/api/index.html)
+- [User Manual](http://packages.python.org/SPADE/index.html)
 
 # Installing
 
