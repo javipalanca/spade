@@ -222,10 +222,10 @@ class ROSTER(PlugIn):
                     for gn, gm in groups.items():
                         for igm in gm:
                             if igm == k:
-                                atag.T.group.setData(gn)
+                                atag.NT.group.setData(gn)
                                 break
                 else:
-                    atag.T.group.setData('My Friends')
+                    atag.NT.group.setData('My Friends')
             except Exception, e:
                 self.DEBUG("Exception in RosterPush: " + str(e), 'err')
         self.DEBUG("RosterPush sending " +str(rep), 'info')
