@@ -47,6 +47,12 @@ class ReceiveDeclinationBehavior(spade.Behaviour.EventBehaviour):
         if "b@" + host in str(msg.getSender().getName()):
             self.myAgent.receivedDeclination = True
 
+class ReceiveGroupMessage(spade.Behaviour.EventBehaviour):
+    def _process(self):
+        msg = self._receive(False)
+        if "a@" + host in str(msg.getSender().getName()):
+            if msg.getContent() == "GroupMessage":
+                self.myAgent.receivedGroupMessage = True
 
 class socialTestCase(unittest.TestCase):
 
@@ -444,15 +450,54 @@ class socialTestCase(unittest.TestCase):
         assert self.a.roster.getContact(self.jidb) == None
 
 
-    #def sendToGroup(self, msg, group):
+    def testSendToGroup(self):
+        self.b.roster.acceptAllSubscriptions()
+        self.c.roster.acceptAllSubscriptions()
+        self.a.roster.subscribe(self.jidb)
+        self.a.roster.subscribe(self.jidc)
+        self.b.roster.sendPresence("available")
+        self.c.roster.sendPresence("available")
+        self.b.receivedGroupMessage = False
+        self.c.receivedGroupMessage = False
 
+        template = spade.Behaviour.ACLTemplate()
+        t = spade.Behaviour.MessageTemplate(template)
+        self.b.addBehaviour(ReceiveGroupMessage(), t)
+        self.c.addBehaviour(ReceiveGroupMessage(), t)
+
+        counter = 5
+        while not self.a.roster.isAvailable(self.jidb) and counter > 0:
+            time.sleep(1)
+            counter -= 1
+        assert self.a.roster.isAvailable(self.jidb)
+
+        counter = 5
+        while not self.a.roster.isAvailable(self.jidc) and counter > 0:
+            time.sleep(1)
+            counter -= 1
+        assert self.a.roster.isAvailable(self.jidc)
+
+        self.a.roster.addContactToGroup(self.jidb, "Group_SendToGroup")
+        self.a.roster.addContactToGroup(self.jidc, "Group_SendToGroup")
+
+        msg = self.a.newMessage()
+        msg.setContent("GroupMessage")
+        self.a.roster.sendToGroup(msg, "Group_SendToGroup")
+
+        counter = 5
+        while not self.b.receivedGroupMessage and not self.c.receivedGroupMessage and counter > 0:
+            time.sleep(1)
+            counter -= 1
+
+        assert self.b.receivedGroupMessage
+        assert self.c.receivedGroupMessage
 
 if __name__ == "__main__":
     #unittest.main()
     #sys.exit()
 
     suite = unittest.TestSuite()
-    suite.addTest(socialTestCase('testAddContactToGroup'))
+    suite.addTest(socialTestCase('testSendToGroup'))
     '''suite.addTest(socialTestCase('testAvailable'))
     suite.addTest(socialTestCase('testDelContactFromGroup'))
     suite.addTest(socialTestCase('testGetContactsInGroup'))

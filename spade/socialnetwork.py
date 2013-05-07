@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-import Behaviour
-import AID
+import spade.Behaviour
+import spade.AID
 from xmpp.protocol import Presence
 import time
 
 class ContactNotInGroup(Exception): pass
 class ContactInGroup(Exception): pass
 
-class PresenceBehaviour(Behaviour.EventBehaviour):
+class PresenceBehaviour(spade.Behaviour.EventBehaviour):
     def _process(self):
         self.msg = self._receive(False)
         if self.msg is not None:
@@ -58,7 +58,7 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             #Send and ACLMessage with the presence information to be aware
             msg = self.myAgent.newMessage()
             msg.setPerformative('inform')
-            msg.setSender(AID.aid(to, ["xmpp://" + str(to)]))
+            msg.setSender(spade.AID.aid(to, ["xmpp://" + str(to)]))
             msg.setOntology("Presence")
             msg.setProtocol(typ)
             msg.setContent(str(self.msg))
@@ -262,7 +262,6 @@ class Roster:
         if group in self.getGroups(jid):
             raise ContactInGroup
 
-
     def isContactInGroup(self, jid, group):
         return group in self.getGroups(jid)
 
@@ -275,9 +274,9 @@ class Roster:
         return result
 
     def sendToGroup(self, msg, group):
-        if isinstance(msg, ACLMessage.ACLMessage):
+        if isinstance(msg, spade.ACLMessage.ACLMessage):
             for jid in self.getContactsInGroup(group):
-                msg.addReceiver(AID.aid(jid, ['xmpp://' + str(jid)]))
+                msg.addReceiver(spade.AID.aid(jid, ['xmpp://' + str(jid)]))
             self.myAgent.send(msg)
         else:
             for jid in self.getContactsInGroup(group):
