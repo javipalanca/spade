@@ -492,13 +492,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if self._debug:
             # Print on screen
             if typ == "info":
-                print colors.color_none + "DEBUG:[" + component + "] " + dmsg + " , info" + colors.color_none
+                print colors.color_none + self.getName() +":[" + component + "] " + dmsg + " , info" + colors.color_none
             elif typ == "err":
-                print colors.color_none + "DEBUG:[" + component + "] " + color_red + dmsg + " , error" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + color_red + dmsg + " , error" + colors.color_none
             elif typ == "ok":
-                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_green + dmsg + " , ok" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + colors.color_green + dmsg + " , ok" + colors.color_none
             elif typ == "warn":
-                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_yellow + dmsg + " , warn" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + colors.color_yellow + dmsg + " , warn" + colors.color_none
 
         # Log to file
         if self._debug_file:
@@ -518,6 +518,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def setDebugToScreen(self, activate=True):
         self._debug = activate
+        if activate:
+            self.jabber._DEBUG.active_set(['always'])
+        else:
+            self.jabber._DEBUG.active_set()
 
     def setDebugToFile(self, activate=True, fname=""):
         if not fname:

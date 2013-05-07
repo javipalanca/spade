@@ -133,9 +133,9 @@ def main():
             raise SystemExit
 
 	if dbg==['always']:
-            platform = spade_backend.SpadeBackend(configfilename, debug=True)
+            platform = spade_backend.SpadeBackend(s, configfilename, debug=True)
 	else:
-            platform = spade_backend.SpadeBackend(configfilename)
+            platform = spade_backend.SpadeBackend(s, configfilename)
         sys.stdout.write(".")
         sys.stdout.flush()
         platform.start()

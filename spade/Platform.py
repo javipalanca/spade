@@ -1,48 +1,30 @@
 # -*- coding: utf-8 -*-
-from AMS import AmsAgentDescription
-from DF import DfAgentDescription, ServiceDescription, Service
-from Agent import PlatformAgent, require_login
-import xmpp
-import threading
-#import Agent
-import Envelope
-import FIPAMessage
-import AID
-import Behaviour
-import os.path
-import sys
-import traceback
-import SocketServer
-import SimpleHTTPServer
-import BaseHTTPServer
-import time
-import thread
-import copy
-import ACLMessage
-import types
-import ACLParser
-import BasicFipaDateTime
+from spade.AMS import AmsAgentDescription
+from spade.DF import DfAgentDescription, Service
+from spade.Agent import PlatformAgent, require_login
+import spade.Envelope
+import spade.AID
+import spade.Behaviour
+import spade.ACLMessage
+import spade.BasicFipaDateTime
 
-#from swi import SWIHandler
-from wui import *
-from os.path import *
+
+#from spade.wui import require_login
+from os.path import abspath
 
 
 class PlatformRestart(Exception):
-    def __init__(self):
-        pass
-
     def __str__(self):
         return
 
 
 class SpadePlatform(PlatformAgent):
 
-    class RouteBehaviour(Behaviour.Behaviour):
+    class RouteBehaviour(spade.Behaviour.Behaviour):
         #This behavior routes messages between agents.
         #Also uses MTPs when different protocols are required (HTTP, ...)
         def __init__(self):
-            Behaviour.Behaviour.__init__(self)
+            spade.Behaviour.Behaviour.__init__(self)
 
         def _process(self):
             msg = self._receive(True)
@@ -74,19 +56,16 @@ class SpadePlatform(PlatformAgent):
                     #switch(protocol)
                     if protocol in self.myAgent.mtps.keys():
                         self.myAgent.DEBUG("Message through protocol " + str(protocol))
-                        #ap = ACLParser.ACLxmlParser()
-                        #payload = ap.encodeXML(newmsg)
-                        #payload = str(newmsg)
                         payload = newmsg
 
-                        envelope = Envelope.Envelope()
+                        envelope = spade.Envelope.Envelope()
                         envelope.setFrom(newmsg.getSender())
                         for i in newmsg.getReceivers():
                             envelope.addTo(i)
                         envelope.setAclRepresentation(newmsg.getAclRepresentation())
                         envelope.setPayloadLength(len(str(payload)))
                         envelope.setPayloadEncoding("US-ASCII")
-                        envelope.setDate(BasicFipaDateTime.BasicFipaDateTime())
+                        envelope.setDate(spade.BasicFipaDateTime.BasicFipaDateTime())
                         self.myAgent.mtps[protocol].send(envelope, payload)
                     else:
                         # Default case: it's an XMPP message
@@ -127,18 +106,19 @@ class SpadePlatform(PlatformAgent):
         self.wui.registerController("index", self.index)
         self.wui.registerController("agents", self.agents)
         self.wui.registerController("services", self.services)
+        self.wui.registerController("roster", self.get_roster)
         self.wui.setPort(8008)
         self.wui.start()
 
-	import mtp
+        import spade.mtp
         # Load MTPs
         for name, _mtp in self.config.acc.mtp.items():
             try:
-                mod = "mtp."+name
-                mod = __import__(mod, globals(), locals(),[name])
+                mod = "spade.mtp." + name
+                mod = __import__(mod, globals(), locals(), [name])
                 self.mtps[_mtp['protocol']] = mod.INSTANCE(name, self.config, self)
             except Exception, e:
-                self.DEBUG("EXCEPTION IMPORTING MTPS: "+ str(e), 'err','acc')
+                self.DEBUG("EXCEPTION IMPORTING MTPS: " + str(e), 'err', 'acc')
 
     def takeDown(self):
         for k, _mtp in self.mtps.items():
@@ -147,6 +127,9 @@ class SpadePlatform(PlatformAgent):
                 del self.mtps[k]
             except:
                 pass
+
+    def setXMPPServer(self, server):
+        self.server = server
 
     #Controllers
     def index(self):
@@ -163,7 +146,7 @@ class SpadePlatform(PlatformAgent):
     def agents(self):
         import sys
         import time
-        so = self.session
+        #so = self.session
         servername = self.getDomain()
         platform = self.getName()
         version = str(sys.version)
@@ -212,12 +195,32 @@ class SpadePlatform(PlatformAgent):
         self.DEBUG("Services: " + str(servs))
         return "services.pyra", dict(name=platform, servername=servername, platform=platform, version=version, time=the_time, services=servs)
 
+    @require_login
+    def get_roster(self):
+        import sys
+        import time
+        import copy
+        servername = self.getDomain()
+        platform = self.getName()
+        version = str(sys.version)
+        the_time = str(time.ctime())
+        roster = copy.copy(self.server.DB.db)
+        for server, v in roster.items():
+            try:
+                del v["__ir__"]
+            except: pass
+            for r in v.values():
+                try:
+                    del r["roster"]["__ir__"]
+                except: pass
+        return "roster.pyra", dict(name=platform, servername=servername, platform=platform, version=version, time=the_time, roster=roster)
+
     def getMembers(self, aname):
-        msg = ACLMessage.ACLMessage()
+        msg = spade.ACLMessage.ACLMessage()
         msg.setOntology("spade:x:organization")
-        template = Behaviour.ACLTemplate()
+        template = spade.Behaviour.ACLTemplate()
         template.setConversationId(msg.getConversationId())
-        t = Behaviour.MessageTemplate(template)
+        t = spade.Behaviour.MessageTemplate(template)
         b = self.GetMembersBehav()
         b.msg = msg
         b.aname = aname
@@ -225,10 +228,10 @@ class SpadePlatform(PlatformAgent):
         b.join()
         return b.result
 
-    class GetMembersBehav(Behaviour.OneShotBehaviour):
+    class GetMembersBehav(spade.Behaviour.OneShotBehaviour):
         def _process(self):
             self.result = []
-            self.msg.addReceiver(AID.aid(self.aname, addresses=["xmpp://" + self.aname]))
+            self.msg.addReceiver(spade.AID.aid(self.aname, addresses=["xmpp://" + self.aname]))
             self.msg.setContent("MEMBERS")
             self.myAgent.send(self.msg)
             rep = None

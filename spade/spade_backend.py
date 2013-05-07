@@ -1,24 +1,9 @@
 #! python
 # -*- coding: utf-8 -*-
-import sys
 
-
-from spade import ACLMessage
-from spade import Agent
 from spade import AMS
-from spade import Behaviour
-from spade import Envelope
 from spade import Platform
-from spade import ReceivedObject
-from spade import ACLParser
-from spade import AID
-from spade import BasicFipaDateTime
 from spade import DF
-from spade import FIPAMessage
-from spade import MessageReceiver
-from spade import pyparsing
-from spade import SL0Parser
-from spade import XMLCodec
 from spade import SpadeConfigParser
 
 
@@ -47,20 +32,22 @@ class SpadeBackend:
         agent.start()
         return agent
 
-    def __init__(self, configfilename="spade.xml", debug=False):
+    def __init__(self, xmpp_server, configfilename="spade.xml", debug=False):
         parser = SpadeConfigParser.ConfigParser()
         self.config = parser.parse(configfilename)
         self.ams = None
         self.df = None
         self.acc = None
         self.alive = True  # Alive flag
-	self._debug_flag = debug
+        self._debug_flag = debug
+        self.server = xmpp_server
 
     def start(self):
         #TODO: this should be configurable
         self.acc = self.runAgent(self.config, "acc", Platform.SpadePlatform)
-	if self._debug_flag:
+        if self._debug_flag:
             self.acc.setDebugToScreen()
+        self.acc.setXMPPServer(self.server)
         self.ams = self.runAgent(self.config, "ams", AMS.AMS)
         self.ams.DEBUG = self.acc.DEBUG
         #self.ams.setDebugToScreen()

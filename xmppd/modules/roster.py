@@ -44,13 +44,14 @@ class ROSTER(PlugIn):
 
                     #self.DEBUG(unicode(info).encode('utf-8'),'error')
                     self._owner.DB.save_to_roster(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], info)
-                    if kid.kids != []:
-                        group_list = []
-                        for grandkid in kid.kids:
-                            if grandkid.getName() == 'group':
-                                group_list += [grandkid.getData()]
-
-                        self._owner.DB.save_groupie(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], group_list)
+                    #WARNING: When no group is defined, we remove the membership to any group
+                    #Not sure if this is XMPP complaint
+                    #if kid.kids != []:
+                    group_list = []
+                    for grandkid in kid.kids:
+                        if grandkid.getName() == 'group':
+                            group_list += [grandkid.getData()]
+                    self._owner.DB.save_groupie(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], group_list)
 
     def RosterRemove(self, session, stanza):
         s_split_jid = session.getSplitJID()
@@ -58,9 +59,10 @@ class ROSTER(PlugIn):
             for kid in stanza.getTag('query').kids:
                 if kid.getName() == 'item' and kid.getAttr('subscription') == 'remove':
                     #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    self.DEBUG("Removing contact from " + str(session.getBareJID()) + " to " + str(kid.getAttr('jid')), 'ok')
                     p = Presence(to=kid.getAttr('jid'), frm=session.getBareJID(), typ='unsubscribe')
                     session.dispatch(p)
-                    split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
                     p = Presence(to=kid.getAttr('jid'), frm=session.getBareJID(), typ='unsubscribed')
                     session.dispatch(p)
 
@@ -70,7 +72,7 @@ class ROSTER(PlugIn):
                     self._owner.DB.del_groupie(s_split_jid[1], s_split_jid[0], kid.getAttr('jid'))
 
                     #Tell 'em we just road-off into the sunset
-                    split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
                     p = Presence(to=kid.getAttr('jid'), frm=session.peer, typ='unavailable')
                     session.dispatch(p)
 

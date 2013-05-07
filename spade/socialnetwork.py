@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import Behaviour
 import AID
-from xmpp import *
 from xmpp.protocol import Presence
+import time
 
+class ContactNotInGroup(Exception): pass
+class ContactInGroup(Exception): pass
 
 class PresenceBehaviour(Behaviour.EventBehaviour):
     def _process(self):
@@ -45,10 +47,10 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             elif typ in ["available", ""]:
                 self.msg.setType("")
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
-                self.DEBUG(str(self.msg.getFrom()) + " is now available.", 'ok','presence')
+                self.DEBUG(str(self.msg.getFrom()) + " is now available.", 'ok', 'presence')
             elif typ == "unavailable":
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
-                self.DEBUG(str(self.msg.getFrom()) + " is now unavailable.", 'ok','presence')
+                self.DEBUG(str(self.msg.getFrom()) + " is now unavailable.", 'ok', 'presence')
 
             else:
                 self.myAgent.roster.roster.PresenceHandler(dis=None, pres=self.msg)
@@ -56,11 +58,12 @@ class PresenceBehaviour(Behaviour.EventBehaviour):
             #Send and ACLMessage with the presence information to be aware
             msg = self.myAgent.newMessage()
             msg.setPerformative('inform')
-            msg.setSender(AID.aid(to, ["xmpp://"+str(to)]))
+            msg.setSender(AID.aid(to, ["xmpp://" + str(to)]))
             msg.setOntology("Presence")
             msg.setProtocol(typ)
             msg.setContent(str(self.msg))
             self.myAgent.postMessage(msg)
+
 
 class Roster:
     """
@@ -70,7 +73,7 @@ class Roster:
     """
     def __init__(self, agent):
         self.myAgent = agent
-        self.roster = self.myAgent.jabber.getRoster() #self.myAgent.jabber.Roster
+        self.roster = self.myAgent.jabber.getRoster()  # self.myAgent.jabber.Roster
         self._acceptAllSubscriptions = False
         self._declineAllSubscriptions = False
         self._followbackAllSubscriptions = False
@@ -105,7 +108,7 @@ class Roster:
         '''
         self.roster.Subscribe(jid)
 
-    def unsubscribe(self,jid):
+    def unsubscribe(self, jid):
         '''
         Unsubscribe from an agent
         There is no need of confirmation by the forementioned agent
@@ -122,7 +125,7 @@ class Roster:
         '''
         item = self.getContact(jid)
         if item and 'subscription' in item.keys():
-                return item['subscription']
+            return item['subscription']
         return 'none'
 
     def acceptSubscription(self, jid):
@@ -169,9 +172,11 @@ class Roster:
         self.myAgent.DEBUG("Followback all subscription requests.", 'info')
 
     def requestRoster(self, force=False):
-        if force:
-            self.roster.set = 0
-        return self.roster.getRoster()
+        self.roster.Request(force)
+        #self.myAgent.DEBUG("Received roster: " + str(self.roster._data), 'ok')
+
+    def getRoster(self):
+        return self.roster
 
     def waitingRoster(self):
         return not self.roster.set
@@ -194,6 +199,9 @@ class Roster:
         '''
         return self.roster.getItem(jid)
 
+    def deleteContact(self, jid):
+        self.roster.delItem(jid)
+
     def getContacts(self):
         '''
         returns a list of your contacts with their presence information
@@ -205,7 +213,9 @@ class Roster:
 
     def getGroups(self, jid):
         if self.getContact(jid):
-             return self.roster.getGroups(jid)
+            return self.roster.getGroups(jid)
+        else:
+            return []
 
     def getName(self, jid):
         return self.roster.getName(jid)
@@ -232,12 +242,26 @@ class Roster:
         if group not in groups:
             groups.append(group)
         self.roster.setItem(jid=jid, groups=groups)
+        counter = 20
+        while group not in self.getGroups(jid) and counter > 0:
+            time.sleep(0.5)
+            counter -= 1
+        if group not in self.getGroups(jid):
+            raise ContactNotInGroup
 
     def delContactFromGroup(self, jid, group):
         groups = self.getGroups(jid)
         if group in groups:
             groups.remove(group)
-        self.roster.setItem(jid=jid, groups=groups)
+            self.roster.setItem(jid=jid, groups=groups)
+
+        counter = 20
+        while group in self.getGroups(jid) and counter > 0:
+            time.sleep(0.5)
+            counter -= 1
+        if group in self.getGroups(jid):
+            raise ContactInGroup
+
 
     def isContactInGroup(self, jid, group):
         return group in self.getGroups(jid)
@@ -245,17 +269,17 @@ class Roster:
     def getContactsInGroup(self, group):
         result = list()
         for jid in self.getContacts():
-            contact = self.getContact(jid)
-            if contact != None and contact['groups'] != None and group in contact['groups']:
+            groups = self.getGroups(jid)
+            if groups and group in groups:
                 result.append(jid)
         return result
 
     def sendToGroup(self, msg, group):
         if isinstance(msg, ACLMessage.ACLMessage):
             for jid in self.getContactsInGroup(group):
-                msg.addReceiver(AID.aid(jid,['xmpp://'+str(jid)]))
+                msg.addReceiver(AID.aid(jid, ['xmpp://' + str(jid)]))
             self.myAgent.send(msg)
         else:
             for jid in self.getContactsInGroup(group):
-               msg.setTo(jid)
-               self.myAgent.send(msg)
+                msg.setTo(jid)
+                self.myAgent.send(msg)

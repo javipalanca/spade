@@ -37,6 +37,11 @@
 		<!--(else)-->
 			<li><a href='services' title='Services'><span class='left'>Services</span></a></li>
 		<!--(end)-->
+		<!--(if item=="roster")-->
+			<li><a class='current' href='roster' title='Roster'><span class='left'>Roster</span></a></li>
+		<!--(else)-->
+			<li><a href='roster' title='Roster'><span class='left'>Roster</span></a></li>
+		<!--(end)-->
 	<!--(end)-->
 
 	<!--(if item=="admin")-->
