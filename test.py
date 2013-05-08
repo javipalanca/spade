@@ -52,7 +52,7 @@ if __name__ == '__main__':
         p = unittest.main(testRunner=xmlrunner.XMLTestRunner(
             output='test-reports'), exit=False)
     else:
-        unittest.main(exit=False)
+        p = unittest.main(exit=False)
 
     platform.shutdown()
     s.shutdown("Jabber server terminated...")
