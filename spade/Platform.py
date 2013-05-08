@@ -8,7 +8,6 @@ import spade.Behaviour
 import spade.ACLMessage
 import spade.BasicFipaDateTime
 
-
 #from spade.wui import require_login
 from os.path import abspath
 
@@ -110,12 +109,12 @@ class SpadePlatform(PlatformAgent):
         self.wui.setPort(8008)
         self.wui.start()
 
-        import spade.mtp
+        import mtps
         # Load MTPs
         for name, _mtp in self.config.acc.mtp.items():
             try:
-                mod = "spade.mtp." + name
-                mod = __import__(mod, globals(), locals(), [name])
+                mod = "mtps."+name
+                mod = __import__(mod, globals(), locals(),[name])
                 self.mtps[_mtp['protocol']] = mod.INSTANCE(name, self.config, self)
             except Exception, e:
                 self.DEBUG("EXCEPTION IMPORTING MTPS: " + str(e), 'err', 'acc')

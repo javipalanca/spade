@@ -5,6 +5,11 @@ import time
 import unittest
 import BaseHTTPServer
 
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 import spade
 
 host = "127.0.0.1"
@@ -174,7 +179,6 @@ class HTTPTestCase(unittest.TestCase):
             self.server.done = True
 
     def testSend2HTTPServer(self):
-        import json
         template = spade.Behaviour.ACLTemplate()
         #template.setSender(self.Aaid)
         template.setContent("HTTPtestSendJSONMsg")
