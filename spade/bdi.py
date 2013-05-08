@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from logic import *
-from copy import copy
-import types
 import random
 
 import Behaviour
@@ -322,7 +320,7 @@ class BDIBehaviour(Behaviour.PeriodicBehaviour):
         Q = service.getQ()
         I = service.getInputs()
         O = service.getOutputs()
-        self.TBCBP.punish(Case(P=P, Q=Q, inputs=I, outputs=O, services=[service.getName()]))
+        self.TBCBP.punish(tbcbp.Case(P=P, Q=Q, inputs=I, outputs=O, services=[service.getName()]))
         return
 
         ####Init The agent

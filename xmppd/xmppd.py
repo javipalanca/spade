@@ -888,7 +888,7 @@ class RPC_Client:
 
 class multisession_manager:
 
-    def __init__(self, owner, nthreads=128):
+    def __init__(self, owner, nthreads=32):
 
         self._owner = owner
         self.nthreads = nthreads
@@ -1176,18 +1176,18 @@ class Server:
         "Returns tuple of id,server,resource"
         if "@" in jid:
             try:
-                id, extras = jid.split('@')
+                name, extras = jid.split('@')
             except:
                 return None
             try:
                 server, resource = extras.split('/')
             except:
-                return (id, extras)
-            return (id, server, resource)
+                return (name, extras)
+            return (name, server, resource)
         else:  # Component or Server
             if "/" in jid:  # With resource
-                server, extras = jid.split("/")
-                return (server, extras)
+                server, resource = jid.split("/")
+                return (server, resource)
             else:  # No resource, only dots
                 return (jid)
 
@@ -1340,8 +1340,11 @@ class Server:
 
     def select_handle(self):
         "Handles select-based socket handling"
-        for fileno, ev in self.sockpoll.poll(1000):
-            self._socket_handler(self.sockets[fileno], 'select')
+        try:
+            for fileno, ev in self.sockpoll.poll(1000):
+                self._socket_handler(self.sockets[fileno], 'select')
+        except Exception, e:
+            self.DEBUG('server', str(e), 'err')
 
     def _socket_handler(self, sock, mode):
         "Accepts incoming sockets and ultimately handles the core-routing of packets"

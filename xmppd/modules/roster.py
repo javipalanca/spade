@@ -31,7 +31,7 @@ class ROSTER(PlugIn):
                     if subscription is not None:
                         info.update({'subscription': subscription})
                     elif kid.getAttr('jid') not in the_roster.keys() or ('subscription' in the_roster[kid.getAttr('jid')]) is False:
-                        self.DEBUG('###ROSTER+: Wow, subscription is not active -- better create one pronto!', 'warn')
+                        self.DEBUG('Wow, subscription is not active -- better create one pronto!', 'warn')
                         #kid.setAttr('subscription','none')
                         info.update({'subscription': 'none'})
 
@@ -40,19 +40,18 @@ class ROSTER(PlugIn):
                         info.update({'ask': ask})
                     elif ask == 'InternalDelete':
                         kid.delAttr('ask')
-                        print "### ROSTER: INTERNAL DELETE"
                         self._owner.DB.del_from_roster_jid(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], 'ask')
 
                     #self.DEBUG(unicode(info).encode('utf-8'),'error')
                     self._owner.DB.save_to_roster(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], info)
-                    if kid.kids != []:
-                        group_list = []
-                        for grandkid in kid.kids:
-                            if grandkid.getName() == 'group':
-                                group_list += [grandkid.getData()]
-
-                        self._owner.DB.save_groupie(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], group_list)
-        print "### RA: ENDED WITH INFO " + str(info)
+                    #WARNING: When no group is defined, we remove the membership to any group
+                    #Not sure if this is XMPP complaint
+                    #if kid.kids != []:
+                    group_list = []
+                    for grandkid in kid.kids:
+                        if grandkid.getName() == 'group':
+                            group_list += [grandkid.getData()]
+                    self._owner.DB.save_groupie(s_split_jid[1], s_split_jid[0], split_jid[0] + '@' + split_jid[1], group_list)
 
     def RosterRemove(self, session, stanza):
         s_split_jid = session.getSplitJID()
@@ -60,9 +59,10 @@ class ROSTER(PlugIn):
             for kid in stanza.getTag('query').kids:
                 if kid.getName() == 'item' and kid.getAttr('subscription') == 'remove':
                     #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    self.DEBUG("Removing contact from " + str(session.getBareJID()) + " to " + str(kid.getAttr('jid')), 'ok')
                     p = Presence(to=kid.getAttr('jid'), frm=session.getBareJID(), typ='unsubscribe')
                     session.dispatch(p)
-                    split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
                     p = Presence(to=kid.getAttr('jid'), frm=session.getBareJID(), typ='unsubscribed')
                     session.dispatch(p)
 
@@ -72,7 +72,7 @@ class ROSTER(PlugIn):
                     self._owner.DB.del_groupie(s_split_jid[1], s_split_jid[0], kid.getAttr('jid'))
 
                     #Tell 'em we just road-off into the sunset
-                    split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
+                    #split_jid = self._owner.tool_split_jid(kid.getAttr('jid'))
                     p = Presence(to=kid.getAttr('jid'), frm=session.peer, typ='unavailable')
                     session.dispatch(p)
 
@@ -134,6 +134,7 @@ class ROSTER(PlugIn):
                     s.send(out)
             except:
                 pass
+
         self.DEBUG('#ROSTER#: Pushing one out to client %s! [COMPLETE]' % (barejid), 'warn')
 
     def RosterPushOne(self, session, stanza, mode='set', options=None):
@@ -205,28 +206,31 @@ class ROSTER(PlugIn):
         the_roster_guy = session.getRoster()
         if the_roster_guy is None:
             return
-        for k, v in the_roster_guy.iteritems():
-            atag = rep.T.query.NT.item
-            split_jid = self._owner.tool_split_jid(k)
-            if split_jid is not None:
-                name = self._owner.DB.get(split_jid[1], split_jid[0], 'name')
-            else:
-                name = None
-            groups = session.getGroups()
-            atag.setAttr('jid', k)
-            for x, y in v.iteritems():
-                atag.setAttr(x, y)
-            if atag.getAttr('name') is None and name is not None:
-                atag.setAttr('name', name)
-
-            if groups is not None:
-                for gn, gm in groups.iteritems():
-                    for igm in gm:
-                        if igm == k:
-                            atag.T.group.setData(gn)
-                            break
-            else:
-                atag.T.group.setData('My Friends')
+        for k, v in the_roster_guy.items():
+            try:
+                atag = rep.T.query.NT.item
+                split_jid = self._owner.tool_split_jid(k)
+                if split_jid is not None:
+                    name = self._owner.DB.get(split_jid[1], split_jid[0], 'name')
+                else:
+                    name = None
+                groups = session.getGroups()
+                atag.setAttr('jid', k)
+                for x, y in v.items():
+                    atag.setAttr(x, y)
+                if atag.getAttr('name') is None and name is not None:
+                    atag.setAttr('name', name)
+                if groups is not None:
+                    for gn, gm in groups.items():
+                        for igm in gm:
+                            if igm == k:
+                                atag.NT.group.setData(gn)
+                                break
+                else:
+                    atag.NT.group.setData('My Friends')
+            except Exception, e:
+                self.DEBUG("Exception in RosterPush: " + str(e), 'err')
+        self.DEBUG("RosterPush sending " +str(rep), 'info')
         session.send(rep)
 
     def RosterPushToClient(self, bareto, to_session=None):

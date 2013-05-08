@@ -33,3 +33,17 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+#SPADE files
+caseDB
+roomdb.xml
+spade.xml
+test-reports
+test/logic/test_flora.P
+test/logic/test_flora.fdb
+test/logic/test_flora.fld
+test/logic/test_flora_main.xwam
+test/logic/test_xsb.xwam
+user_db.xml
+user_db.dbm
+xmppd.xml

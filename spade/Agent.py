@@ -140,10 +140,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
         self._aclparser = ACLParser.ACLxmlParser()
 
-        #self._friend_list = []  # Legacy
-        #self._muc_list= {}
-        self._roster = {}
-        self._socialnetwork = {}
+        #self._socialnetwork = {}
         self._subscribeHandler = lambda frm, typ, stat, show: False
         self._unsubscribeHandler = lambda frm, typ, stat, show: False
 
@@ -159,31 +156,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.behavioursGo = threading.Condition()  # Condition to synchronise behaviours
         self._running = False
 
-        # Add Disco Behaviour
-        self.addBehaviour(P2P.DiscoBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_DISCO_INFO)))
+        # Peer2Peer messaging support
+        self._P2P = P2P.P2P(self, p2p)
 
-        # Add Stream Initiation Behaviour
-        iqsi = Iq()
-        si = iqsi.addChild("si")
-        si.setNamespace("http://jabber.org/protocol/si")
-        self.addBehaviour(P2P.StreamInitiationBehaviour(), Behaviour.MessageTemplate(iqsi))
-
-        # Add P2P Behaviour
-        self.p2p_ready = False  # Actually ready for P2P communication
-        self.p2p = p2p
-        self.p2p_routes = {}
-        self.p2p_lock = thread.allocate_lock()
-        self.p2p_send_lock = thread.allocate_lock()
-        self._p2p_failures = 0  # Counter for failed attempts to send p2p messages
-        if p2p:
-            self.registerLogComponent("p2p")
-            self.P2PPORT = random.randint(1025, 65535)  # Random P2P port number
-            p2pb = P2P.P2PBehaviour()
-            self.addBehaviour(p2pb)
-
-        #Remote Procedure Calls support
+        # Remote Procedure Calls support
         self.RPC = {}
-        self.addBehaviour(RPC.RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set', queryNS=NS_RPC)))
+        self._RPC = RPC.RPC(self)
 
     def setAdminPasswd(self, passwd):
         self.wui.passwd = str(passwd)
@@ -212,7 +190,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     @require_login
     def WUIController_admin(self):
-        import types
         behavs = {}
         attrs = {}
         sorted_attrs = []
@@ -228,7 +205,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         chart = pygooglechart.QRChart(125, 125)
         chart.add_data(self.getAID().asXML())
         chart.set_ec('H', 0)
-        return "admin.pyra", {"name": self.getName(), "aid": self.getAID(), "qrcode": chart.get_url(), "defbehav": (id(self._defaultbehaviour), self._defaultbehaviour), "behavs": behavs, "p2pready": self.p2p_ready, "p2proutes": self.p2p_routes, "attrs": attrs, "sorted_attrs": sorted_attrs}
+        return "admin.pyra", {"name": self.getName(), "aid": self.getAID(), "qrcode": chart.get_url(), "defbehav": (id(self._defaultbehaviour), self._defaultbehaviour), "behavs": behavs, "p2pready": self._P2P.isReady(), "p2proutes": self._P2P.getRoutes(), "attrs": attrs, "sorted_attrs": sorted_attrs}
 
     @require_login
     def WUIController_log(self):
@@ -462,7 +439,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     @require_login
     def WUIController_sent(self, receivers=[], performative=None, sender=None, reply_with=None, reply_by=None, reply_to=None, in_reply_to=None, encoding=None, language=None, ontology=None, protocol=None, conversation_id=None, content=""):
         msg = ACLMessage.ACLMessage()
-        import types
         if isinstance(receivers, types.StringType):
             a = AID.aid(name=receivers, addresses=["xmpp://" + receivers])
             msg.addReceiver(a)
@@ -516,13 +492,13 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if self._debug:
             # Print on screen
             if typ == "info":
-                print colors.color_none + "DEBUG:[" + component + "] " + dmsg + " , info" + colors.color_none
+                print colors.color_none + self.getName() +":[" + component + "] " + dmsg + " , info" + colors.color_none
             elif typ == "err":
-                print colors.color_none + "DEBUG:[" + component + "] " + color_red + dmsg + " , error" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + color_red + dmsg + " , error" + colors.color_none
             elif typ == "ok":
-                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_green + dmsg + " , ok" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + colors.color_green + dmsg + " , ok" + colors.color_none
             elif typ == "warn":
-                print colors.color_none + "DEBUG:[" + component + "] " + colors.color_yellow + dmsg + " , warn" + colors.color_none
+                print colors.color_none + self.getName() + ":[" + component + "] " + colors.color_yellow + dmsg + " , warn" + colors.color_none
 
         # Log to file
         if self._debug_file:
@@ -542,6 +518,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
     def setDebugToScreen(self, activate=True):
         self._debug = activate
+        if activate:
+            self.jabber._DEBUG.active_set(['always'])
+        else:
+            self.jabber._DEBUG.active_set()
 
     def setDebugToFile(self, activate=True, fname=""):
         if not fname:
@@ -595,7 +575,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
 
             self._defaultbehaviour.managePresence(frm, typ, status, show, role, affiliation)
         except Exception, e:
-            #There is not a default behaviour yet
+            # There is not a default behaviour yet
             self.DEBUG(str(e), "err")
 
     def _jabber_messageCB(self, conn, mess, raiseFlag=True):
@@ -603,19 +583,18 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         message callback
         read the message envelope and post the message to the agent
         """
-
         for child in mess.getChildren():
             if (child.getNamespace() == "jabber:x:fipa") or (child.getNamespace() == u"jabber:x:fipa"):
                 # It is a jabber-fipa message
                 ACLmsg = ACLMessage.ACLMessage()
                 ACLmsg._attrs.update(mess.attrs)
                 try:
-                # Clean
+                # Clean
                     del ACLmsg._attrs["from"]
                 except:
                     pass
                 try:
-                    # Clean
+                    # Clean
                     del ACLmsg._attrs["to"]
                 except:
                     pass
@@ -658,62 +637,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self._messages.append((timestamp, mess))
         self._messages_mutex.release()
 
-        # Check wether is an offline action
-        if not self._running:
-            if mess.getName() == "iq":
-                # Check if it's an offline disco info request
-                if mess.getAttr("type") == "get":
-                    q = mess.getTag("query")
-                    if q and q.getNamespace() == NS_DISCO_INFO:
-                        self.DEBUG("DISCO Behaviour called (offline)", "info")
-                        # Inform of services
-                        reply = mess.buildReply("result")
-                        if self.p2p_ready:
-                            reply.getTag("query").addChild("feature", {"var": "http://jabber.org/protocol/si"})
-                            reply.getTag("query").addChild("feature", {"var": "http://jabber.org/protocol/si/profile/spade-p2p-messaging"})
-                        self.send(reply)
-                        if raiseFlag:
-                            raise xmpp.NodeProcessed
-                        return True
-                # Check if it's an offline stream initiation request
-                if mess.getAttr("type") == "set":
-                    q = mess.getTag("si")
-                    if q:
-                        if mess.getType() == "set":
-                            if mess.getTag("si").getAttr("profile") == "http://jabber.org/protocol/si/profile/spade-p2p-messaging":
-                                # P2P Messaging Offer
-                                if self.p2p_ready:
-                                    # Take note of sender's p2p address if any
-                                    if mess.getTag("si").getTag("p2p"):
-                                        remote_address = str(mess.getTag("si").getTag("p2p").getData())
-                                        d = {"url": remote_address, "p2p": True}
-                                        self.p2p_lock.acquire()
-                                        if str(mess.getFrom().getStripped()) in self.p2p_routes.keys():
-                                            self.p2p_routes[str(mess.getFrom().getStripped())].update(d)
-                                            if "socket" in self.p2p_routes[str(mess.getFrom().getStripped())].keys():
-                                                self.p2p_routes[str(mess.getFrom().getStripped())]["socket"].close()
-                                        else:
-                                            self.p2p_routes[str(mess.getFrom().getStripped())] = d
-                                        self.p2p_lock.release()
-
-                                    # Accept offer
-                                    reply = mess.buildReply("result")
-                                    si = reply.addChild("si")
-                                    si.setNamespace("http://jabber.org/protocol/si")
-                                    p2p = si.addChild("p2p")
-                                    p2p.setNamespace('http://jabber.org/protocol/si/profile/spade-p2p-messaging')
-                                    value = p2p.addChild("value")
-                                    value.setData(self.getP2PUrl())
-                                else:
-                                    # Refuse offer
-                                    reply = mess.buildReply("error")
-                                    err = reply.addChild("error", attrs={"code": "403", "type": "cancel"})
-                                    err.addChild("forbidden")
-                                    err.setNamespace("urn:ietf:params:xml:ns:xmpp-stanzas")
-                                self.send(reply)
-                                if raiseFlag:
-                                    raise xmpp.NodeProcessed
-                                return True
+        # Check wether is an offline action
+        #if not self._running:
+        #    if mess.getName() == "iq":
+        #        print "IQ ARRIVED " + str(mess)
 
         self.DEBUG("Posting message " + str(mess), "info", "msg")
         self.postMessage(mess)
@@ -726,6 +653,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         non jabber:x:fipa chat messages callback
         """
         self.DEBUG("Arrived an unknown message " + str(mess), "warn")
+        self.postMessage(mess)
 
     def _jabber_iqCB(self, conn, mess):
         """
@@ -733,8 +661,8 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         manages jabber stanzas of the 'iq' protocol
         """
         # We post every jabber iq
-        self.postMessage(mess)
-        self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()), "info")
+        ##self.postMessage(mess)
+        ##self.DEBUG("Jabber Iq posted to agent " + str(self.getAID().getName()), "info")
 
     def getAID(self):
         """
@@ -785,7 +713,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return self._serverplatform
 
     def getP2PUrl(self):
-        return str("spade://" + socket.gethostbyname(socket.gethostname()) + ":" + str(self.P2PPORT))
+        return str("spade://" + socket.gethostbyname(socket.gethostname()) + ":" + str(self._P2P.getPort()))
 
     def requestDiscoInfo(self, to):
 
@@ -868,7 +796,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         if "xmpp://" in address:
                             to = address.split("://")[1]
                             break
-                    if to and self.send_p2p(None, to, method="p2ppy", ACLmsg=ACLmsg):
+                    if to and self._P2P.send(None, to, method="p2ppy", ACLmsg=ACLmsg):
                         #The Ultra-Fast(tm) way worked. Remove this receiver from the remaining receivers
                         remaining.remove(receiver)
 
@@ -880,7 +808,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self.DEBUG("Could not send through P2PPY: " + str(e), "warn")
             method = "jabber"
 
-        # Second, try it the old way
+        # Second, try it the old way
         xenv = xmpp.protocol.Node('jabber:x:fipa x')
         envelope = Envelope.Envelope()
         generate_envelope = False
@@ -963,15 +891,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             #We suppose method in ['p2p']
             jabber_id = xmpp.JID(jabber_id).getStripped()
 
-            if self.p2p_ready:
+            if self._P2P.isReady():
                 sent = False
-                self.p2p_send_lock.acquire()
+                self._P2P.acquire()
                 try:
-                    sent = self.send_p2p(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
+                    sent = self._P2P.send(jabber_msg, jabber_id, method=method, ACLmsg=ACLmsg)
                 except Exception, e:
-                    self.DEBUG("P2P Connection to " + str(self.p2p_routes) + jabber_id + " prevented. Falling back. " + str(e), "warn")
+                    self.DEBUG("P2P Connection to " + str(self._P2P.getRoutes()) + jabber_id + " prevented. Falling back. " + str(e), "warn")
                     sent = False
-                self.p2p_send_lock.release()
+                self._P2P.release()
                 if not sent:
                     #P2P failed, try to send it through jabber
                     self.DEBUG("P2P failed, try to send it through jabber", "warn")
@@ -986,156 +914,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 jabber_msg.attrs.update({"method": "jabber"})
                 if method in ["auto", "p2p", "p2ppy"]:
                     self.jabber.send(jabber_msg)
-
-    def send_p2p(self, jabber_msg=None, to="", method="p2ppy", ACLmsg=None):
-
-        #If this agent supports P2P, wait for P2PBehaviour to properly start
-        if self.p2p:
-            counter = 50
-            while not self.p2p_ready and counter > 0:
-                time.sleep(0.1)
-                counter -= 1
-            if not self.p2p_ready:
-                self.DEBUG("This agent could not activate p2p messages behaviour", "err")
-                return False
-        else:
-            # send_p2p should not be called in a P2P-disabled agent !
-            self.DEBUG("This agent does not support sending p2p messages", "warn")
-            return False
-
-        #Get the address
-        if not to:
-            if not jabber_msg:
-                return False
-            else:
-                to = str(jabber_msg.getTo())
-        if jabber_msg:
-            self.DEBUG("Trying to send Jabber msg through P2P")
-        elif ACLmsg:
-            self.DEBUG("Trying to send ACL msg through P2P")
-
-        try:
-            #Try to get the contact's url
-            url = self.p2p_routes[to]["url"]
-        except:
-            #The contact is not in our routes
-            self.DEBUG("P2P: The contact " + str(to) + " is not in our routes. Starting negotiation", "warn")
-            self.initiateStream(to)
-            if to in self.p2p_routes.keys() and 'p2p' in self.p2p_routes[to].keys():
-                #If this p2p connection is marked as faulty,
-                #check if enough time has passed to try again a possible p2p connection
-                if not self.p2p_routes[to]['p2p']:
-                    try:
-                        t1 = time.time()
-                        t = t1 - self.p2p_routes[to]['failed_time']
-                        #If more than 10 seconds have passed . . .
-                        if t > 10.0:
-                            self.p2p_lock.acquire()
-                            self.p2p_routes[to]['p2p'] = True
-                            self.p2p_routes[to]['failed_time'] = 0.0
-                            self.p2p_lock.release()
-                    except:
-                        #The p2p connection is really faulty
-                        self.DEBUG("P2P: The p2p connection is really faulty", "warn")
-                        return False
-                url = self.p2p_routes[to]["url"]
-            else:
-                #There is no p2p for this contact
-                self.DEBUG("P2P: There is no p2p support for this contact", "warn")
-                return False
-
-        #Check if there is already an open socket
-        s = None
-        if "socket" in self.p2p_routes[to].keys():
-            s = self.p2p_routes[to]["socket"]
-        if not s:
-            #Parse url
-            scheme, address = url.split("://", 1)
-            if scheme == "spade":
-                #Check for address and port number
-                l = address.split(":", 1)
-                if len(l) > 1:
-                    address = l[0]
-                    port = int(l[1])
-
-            #Create a socket connection to the destination url
-            connected = False
-            tries = 2
-            while not connected and tries > 0:
-                try:
-                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s.connect((address, port))
-                    self.p2p_lock.acquire()
-                    self.p2p_routes[to]["socket"] = s
-                    self.p2p_lock.release()
-                    connected = True
-                except:
-                    tries -= 1
-                    _exception = sys.exc_info()
-                    if _exception[0]:
-                        self.DEBUG("Error opening p2p socket " + '\n' + ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip(), "err")
-
-            if not connected:
-                self.DEBUG("Socket creation failed", "warn")
-                return False
-
-        #Send length + message
-        sent = False
-        tries = 2
-        while not sent and tries > 0:
-            try:
-                if method in ["p2p", "auto"]:
-                    jabber_msg.attrs.update({"method": "p2p"})
-                    length = "%08d" % (len(str(jabber_msg)))
-                    #Send message through socket
-                    s.send(length + str(jabber_msg))
-                    self.DEBUG("P2P message sent through p2p", "ok")
-                elif method in ["p2ppy"]:
-                    ACLmsg._attrs.update({"method": "p2ppy"})
-                    ser = pickle.dumps(ACLmsg)
-                    length = "%08d" % (len(str(ser)))
-                    s.send(length + ser)
-                    self.DEBUG("P2P message sent through p2ppy", "ok")
-                sent = True
-
-            except Exception, e:
-                self.DEBUG("Socket: send failed, threw an exception: " + str(e), "err")
-                self._p2p_failures += 1
-                # Dispose of old socket
-                self.p2p_lock.acquire()
-                s.close()
-                try:
-                    del s
-                    del self.p2p_routes[to]["socket"]
-                except:
-                    pass
-                self.p2p_lock.release()
-                #Get address and port AGAIN
-                scheme, address = url.split("://", 1)
-                if scheme == "spade":
-                    #Check for address and port number
-                    l = address.split(":", 1)
-                    if len(l) > 1:
-                        address = l[0]
-                        port = int(l[1])
-                    #Try again
-                    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s.connect((address, port))
-                    self.p2p_lock.acquire()
-                    self.p2p_routes[to]["socket"] = s
-                    self.p2p_lock.release()
-                else:
-                    return False
-                tries -= 1
-        if not sent:
-            self.DEBUG("Socket send failed", "warn")
-            self.p2p_lock.acquire()
-            self.p2p_routes[to]["p2p"] = False
-            self.p2p_routes[to]["failed_time"] = time.time()
-            self.p2p_lock.release()
-            return False
-        else:
-            return True
 
     def _kill(self):
         """
@@ -1155,6 +933,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         """
         Stops the agent execution and blocks until the agent dies
         """
+        try:
+            self.roster.sendPresence("unavailable")
+        except Exception, e:
+            self.DEBUG("Did not send 'unavailable' presence: " + str(e), 'warn')
+
         self.wui.stop()
         if not self.forceKill():
             self._shutdown()
@@ -1214,12 +997,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._defaultbehaviour.start()
 
         #If this agent supports P2P, wait for P2PBEhaviour to properly start
-        if self.p2p:
+        if self._P2P.p2p:
             counter = 10
-            while not self.p2p_ready and counter > 0:
+            while not self._P2P.isReady() and counter > 0:
                 time.sleep(0.2)
                 counter -= 1
-            if not self.p2p_ready:
+            if not self._P2P.isReady():
                 self.DEBUG("This agent could not activate p2p messages behaviour", "err")
 
         #############
@@ -1238,27 +1021,26 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                         t = bL[b]
                         if t is not None:
                             if t.match(msg) is True:
-                                if (isinstance(b, types.ClassType) or isinstance(b, types.TypeType)) and issubclass(b, Behaviour.EventBehaviour):
+                                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)) and not issubclass(b.__class__, Behaviour.EventBehaviour):
+                                    b.postMessage(msg)
+                                else:
                                     ib = b()
                                     if ib.onetime:
                                         toRemove.append(b)
                                     ib.setAgent(self)
                                     ib.postMessage(msg)
                                     ib.start()
-                                else:
-                                    b.postMessage(msg)
                                 proc = True
 
                     if proc is False:
                         #If no template matches, post the message to the Default behaviour
-                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL), "info", "msg")
+                        self.DEBUG("Message was not reclaimed by any behaviour. Posting to default behaviour: " + str(msg) + str(bL.keys()), "info", "msg")
                         if (self._defaultbehaviour is not None):
                             self._defaultbehaviour.postMessage(msg)
                     for beh in toRemove:
                         self.removeBehaviour(beh)
-
             except Exception, e:
-                self.DEBUG("Agent " + self.getName() + "Exception in run:" + str(e), "err")
+                self.DEBUG("Agent " + self.getName() + " Exception in run: " + str(e), "err")
                 self._kill()
 
         self.DEBUG("Agent starts shutdown", 'info')
@@ -1337,7 +1119,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             self._behaviourList.pop(behaviour)
             self.DEBUG("Behaviour removed: " + str(behaviour.getName()), "info", "behaviour")
         except KeyError:
-            self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) + "with type " + str(type(behaviour)) + " is not registered in " + str(self._behaviourList), "warn")
+            self.DEBUG("removeBehaviour: Behaviour " + str(behaviour) + "with type " + str(type(behaviour)) + " is not registered in " + str(self._behaviourList.keys()), "warn")
 
     def hasBehaviour(self, behaviour):
         """
@@ -1365,12 +1147,12 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         get list of social agents which have some relation with the agent
         """
         self._waitingForRoster = True
-        iq = Iq("get", NS_ROSTER)
-        self.send(iq)
-        if not nowait:
-            while self._waitingForRoster:
-                time.sleep(0.3)
-            return self._roster
+        #iq = Iq("get", NS_ROSTER)
+        #self.send(iq)
+        #if not nowait:
+        #    while self._waitingForRoster:
+        #        time.sleep(0.3)
+        #    return self._roster
 
     ##################
     # FIPA procedures #
@@ -1758,14 +1540,26 @@ class PlatformAgent(AbstractAgent):
     Examples: AMS, DF, ACC, ...
     """
     def __init__(self, node, password, server="localhost", port=5347, config=None, debug=[], p2p=False):
+
+        self.jabber = xmpp.Component(server=server, port=port, debug=debug)
         AbstractAgent.__init__(self, node, server, p2p=p2p)
+
         self.config = config
         if 'adminpasswd' in config.keys():
             self.wui.passwd = config['adminpasswd']
+
         self.debug = debug
-        self.jabber = xmpp.Component(server=server, port=port, debug=self.debug)
         if not self._register(password):
             self._shutdown()
+
+        # Register PubSub handlers
+        self._pubsub.register()
+
+        # Register RPC handlers
+        self._RPC.register()
+
+        # Register P2P handlers
+        self._P2P.register()
 
     def _register(self, password, autoregister=True):
         """
@@ -1787,8 +1581,9 @@ class PlatformAgent(AbstractAgent):
             raise NotImplementedError
 
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
-        self.jabber.RegisterHandler('presence', self._jabber_messageCB)
-        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('presence', self._jabber_messageCB)
+        self.jabber.RegisterDefaultHandler(self._other_messageCB)
+        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
         #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
         #self.jabber.RegisterHandler('iq',self._jabber_iqCB)
 
@@ -1805,9 +1600,11 @@ class PlatformAgent(AbstractAgent):
         #Stop the Behaviours
         for b in self._behaviourList.keys():  # copy.copy(self._behaviourList.keys()):
             try:
-                b.kill()
-            except:
-                self.DEBUG("Could not kill behavior " + str(b), "warn")
+                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)):
+                    if not issubclass(b.__class__, Behaviour.EventBehaviour):
+                        b.kill()
+            except Exception, e:
+                self.DEBUG("Could not kill behavior " + str(b) + ": " + str(e), "warn")
 
         if issubclass(self.__class__, BDIAgent):
             self.bdiBehav.kill()
@@ -1830,13 +1627,14 @@ class Agent(AbstractAgent):
     This is the main class which may be inherited to build a SPADE agent
     """
 
-    def __init__(self, agentjid, password, port=5222, debug=[], p2p=False):
+    def __init__(self, agentjid, password, resource="spade", port=5222, debug=[], p2p=False):
         jid = xmpp.protocol.JID(agentjid)
         self.server = jid.getDomain()
+        self.resource = resource
         self.port = port
         self.debug = debug
-        AbstractAgent.__init__(self, agentjid, jid.getDomain(), p2p=p2p)
         self.jabber = xmpp.Client(jid.getDomain(), port, debug)
+        AbstractAgent.__init__(self, agentjid, jid.getDomain(), p2p=p2p)
 
         # Try to register
         self.DEBUG("Trying to register agent " + agentjid)
@@ -1849,8 +1647,17 @@ class Agent(AbstractAgent):
         # Add Presence Control Behaviour
         self.addBehaviour(socialnetwork.PresenceBehaviour(), Behaviour.MessageTemplate(Presence()))
 
+        # Register PubSub handlers
+        self._pubsub.register()
+
+        # Register RPC handlers
+        self._RPC.register()
+
+        # Register P2P handlers
+        self._P2P.register()
+
         # Add Roster Behaviour
-        self.addBehaviour(socialnetwork.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
+        ##self.addBehaviour(socialnetwork.RosterBehaviour(), Behaviour.MessageTemplate(Iq(queryNS=NS_ROSTER)))
 
         # Add BDI Behaviour #only for BDI agents
         self._initBdiBehav()
@@ -1864,13 +1671,6 @@ class Agent(AbstractAgent):
         # Ask for roster
         ##self.getSocialNetwork(nowait=True)
 
-    def setSocialItem(self, jid, presence=""):
-        if jid in self._socialnetwork.keys():
-            if not self._socialnetwork[jid].getPresence():
-                # If we have no previous presence information, update it
-                self._socialnetwork[jid].setPresence(presence)
-        else:
-            self._socialnetwork[jid] = socialnetwork.SocialItem(self, jid, presence)
 
     def _register(self, password, autoregister=True):
         """
@@ -1889,7 +1689,7 @@ class Agent(AbstractAgent):
             self.DEBUG("There is no SPADE platform at " + self.server + " . Agent dying...", "err")
             return False
 
-        if (self.jabber.auth(name, password, "spade") is None):
+        if (self.jabber.auth(name, password, self.resource) is None):
 
             self.DEBUG("First auth attempt failed. Trying to register", "warn")
 
@@ -1906,10 +1706,12 @@ class Agent(AbstractAgent):
 
         self.DEBUG("Agent %s got authed" % (self._aid.getName()), "ok")
 
+        self.roster = socialnetwork.Roster(self)
+
         self.jabber.RegisterHandler('message', self._jabber_messageCB)
-        self.jabber.RegisterHandler('presence', self._jabber_messageCB)
-        self.jabber.RegisterHandler('iq', self._jabber_messageCB)
-        #self.jabber.RegisterHandler('presence',self._jabber_presenceCB)
+        #self.jabber.RegisterHandler('presence', self._jabber_messageCB)
+        #self.jabber.RegisterHandler('iq', self._jabber_messageCB)
+        self.jabber.RegisterDefaultHandler(self._other_messageCB)
 
         self.jabber_process = jabberProcess(self.jabber, owner=self)
         self.jabber_process.start()
@@ -1925,9 +1727,11 @@ class Agent(AbstractAgent):
         #Stop the Behaviours
         for b in self._behaviourList.keys():  # copy.copy(self._behaviourList.keys()):
             try:
-                b.kill()
-            except:
-                self.DEBUG("Could not kill behavior " + str(b), "warn")
+                if not (isinstance(b, types.TypeType) or isinstance(b, types.ClassType)):
+                    if not issubclass(b.__class__, Behaviour.EventBehaviour):
+                        b.kill()
+            except Exception, e:
+                self.DEBUG("Could not kill behavior " + str(b) + ": " + str(e), "warn")
 
         if issubclass(self.__class__, BDIAgent):
             self.bdiBehav.kill()

@@ -72,8 +72,8 @@ class BasicTestCase(unittest.TestCase):
         self.Baid = spade.AID.aid("b@" + host, ["xmpp://b@" + host])
 
         self.a = MyAgent("a@" + host, "secret")
+        #self.a.setDebug()
         self.a.start()
-        #self.a.setDebugToScreen()
         self.b = MyAgent("b@" + host, "secret")
         self.b.start()
 
@@ -92,7 +92,7 @@ class BasicTestCase(unittest.TestCase):
             time.sleep(1)
             counter += 1
         self.assertNotEqual(self.a.pi, None)
-        from coTestCase import isEqualElement, isEqualXML
+        from coTestCase import isEqualXML
         #self.assertEqual( str(self.a.pi),  self.rdf) # 'Incorrect Platform Info'
         assert isEqualXML(str(self.a.pi.asRDFXML()), self.rdf)
 

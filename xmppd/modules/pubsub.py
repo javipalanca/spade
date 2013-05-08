@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from pprint import pprint
 from uuid import uuid4
 from datetime import datetime
 
@@ -109,9 +108,6 @@ class PubSubServer(PlugIn):
 
             self.DEBUG('PubSub Iq handler called', 'info')
 
-            #pprint(self._owner.DB.db)
-
-            #print stanza.__str__(fancy=True)
             #if stanza.getType() == 'set':
             pubsub_node = stanza.getTag('pubsub')
 
@@ -151,13 +147,13 @@ class PubSubServer(PlugIn):
                 #print self.nodes
                 self.DEBUG('Creating node: %s' % create_node, 'info')
 
-                id = stanza.getAttr('id')
+                varid = stanza.getAttr('id')
                 if isinstance(stanza, Protocol):
                     stanza = Iq(node=stanza)
 
                 iq = stanza.buildReply('result')
-                if id:
-                    iq.setID(id)
+                if varid:
+                    iq.setID(varid)
                 pubsub_node = Node(tag='pubsub', attrs={'xmlns': NS_PUBSUB})
                 pubsub_node.addChild(node=create_node)
                 iq.addChild(node=pubsub_node)
@@ -167,6 +163,7 @@ class PubSubServer(PlugIn):
 
             # DELETE NODE
             elif pubsub_node.getTag('delete') is not None:
+                self.DEBUG('PubSub Delete Node', 'info')
 
                 node_id = pubsub_node.getTag('delete').getAttr('node')
 
@@ -183,6 +180,7 @@ class PubSubServer(PlugIn):
                 node = self.nodes[node_id]
 
                 if not node.owner.bareMatch(stanza.getFrom()):
+                    self.DEBUG('You are not allowed to delete this node: %s' % node, 'err')
                     session.send(self._getIqError(stanza, 'forbidden'))
                     raise NodeProcessed
 
@@ -192,6 +190,7 @@ class PubSubServer(PlugIn):
 
                 # SUCCESS
                 session.send(stanza.buildReply('result'))
+                self.DEBUG('Node was deleted succesfully %s'%str(stanza.buildReply('result')), 'info')
 
                 # Notify no all subscribers
                 for jid in node.members.keys():

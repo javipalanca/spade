@@ -3,7 +3,7 @@ table.servicesT
 font-weight: normal;
 font-size: 11px;
 color: #404040;
-width: 520px;
+width: 100%;
 background-color: #FFFFCC;
 border: 1px #987654 solid;
 border-collapse: collapse;
@@ -18,7 +18,9 @@ text-align: center;
 /*font-family: Verdana;*/
 font-weight: bold;
 font-size: 11px;
-color: #404040;}
+color: #404040;
+width:5%;
+}
 
 
 table.servicesT td
@@ -30,6 +32,10 @@ color: #404040;
 background-color: white;
 text-align: left;
 padding-left: 3px;
-padding-top: 3px;}
+padding-top: 3px;
+}
 
-.servBodL { border-left: 1px dotted #CEDCEA; }
+.servBodL { 
+border-left: 1px dotted #CEDCEA;
+width:95%;
+}

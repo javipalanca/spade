@@ -3,6 +3,7 @@
    <platform>
            <hostname>127.0.0.1</hostname>
            <port>5222</port>
+           <adminpasswd>secret</adminpasswd>
    </platform>
 
    <acc>

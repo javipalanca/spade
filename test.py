@@ -13,16 +13,16 @@ from test.kbTestCase import *
 from test.p2pTestCase import *
 from test.pubsubTestCase import *
 from test.rpcTestCase import *
+from test.socialTestCase import *
 from test.tbcbpTestCase import *
+from test.templateTestCase import *
 from test.xfTestCase import *
-
 
 from spade import spade_backend
 from xmppd.xmppd import Server
 import thread
 import sys
 import os
-import signal
 
 if __name__ == '__main__':
 
@@ -35,11 +35,11 @@ if __name__ == '__main__':
     d = "test" + os.sep
     dbg = ['always']
     s = Server(cfgfile=d + "unittests_xmppd.xml")
-               # , cmd_options={'enable_debug':dbg, 'enable_psyco':False})
+    #       , cmd_options={'enable_debug':dbg, 'enable_psyco':False})
 
     thread.start_new_thread(s.run, tuple())
 
-    platform = spade_backend.SpadeBackend(d + "unittests_spade.xml")
+    platform = spade_backend.SpadeBackend(s, d + "unittests_spade.xml")
     platform.start()
 
     try:
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         use_xmlrunner = False
 
     if use_xmlrunner:
-        unittest.main(testRunner=xmlrunner.XMLTestRunner(
+        p = unittest.main(testRunner=xmlrunner.XMLTestRunner(
             output='test-reports'), exit=False)
     else:
         unittest.main(exit=False)
@@ -58,6 +58,6 @@ if __name__ == '__main__':
     s.shutdown("Jabber server terminated...")
 
     if sys.platform == 'win32':
-        os._exit(0)
+        os._exit(len(p.result.failures))
     else:
-        sys.exit(0)
+        sys.exit(len(p.result.failures))

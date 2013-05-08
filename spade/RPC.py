@@ -2,9 +2,25 @@
 import Behaviour
 import xmlrpclib
 import xmpp
+from xmpp.protocol import NS_RPC
+from xmpp import Iq
 
 import types
 
+class RPC(object):
+
+    def __init__(self, agent):  # , msgrecv):
+        self._client = agent.getAID().getName()
+        #self.msgrecv = msgrecv
+        self.myAgent = agent
+        self._server = agent.server
+        agent.addBehaviour(RPCServerBehaviour(), Behaviour.MessageTemplate(Iq(typ='set', queryNS=NS_RPC)))
+
+    def register(self):
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'set', NS_RPC)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'get', NS_RPC)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'result', NS_RPC)
+        self.myAgent.jabber.RegisterHandler('iq', self.myAgent._jabber_messageCB,'error', NS_RPC)
 
 class RPCServerBehaviour(Behaviour.EventBehaviour):
 

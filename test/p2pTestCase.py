@@ -92,9 +92,9 @@ class p2pSendMultiMsgBehav(spade.Behaviour.OneShotBehaviour):
             msg.setContent(str(i + 1))
             self.myAgent.send(msg, method=self.method)
             if i == 0:
-                socket = self.myAgent.p2p_routes["p2pb@" + host]["socket"]
+                socket = self.myAgent._P2P.p2p_routes["p2pb@" + host]["socket"]
             else:
-                if socket != self.myAgent.p2p_routes["p2pb@" + host]["socket"]:
+                if socket != self.myAgent._P2P.p2p_routes["p2pb@" + host]["socket"]:
                     self.myAgent.routeTag.append(str(i + 1))
 
 
@@ -126,10 +126,10 @@ class BasicTestCase(unittest.TestCase):
         self.Baid = spade.AID.aid("p2pb@" + host, ["xmpp://p2pb@" + host])
 
         self.a = MyAgent("p2pa@" + host, "secret", p2p=True)
-        #self.a._debug = True
+        #self.a.setDebugToScreen()
         self.a.start()
         self.b = MyAgent("p2pb@" + host, "secret", p2p=True)
-        #self.b._debug=True
+        #self.b.setDebugToScreen()
         self.b.start()
 
     def tearDown(self):
@@ -241,3 +241,19 @@ class BasicTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    sys.exit(0)
+
+    suite = unittest.TestSuite()
+    suite.addTest(BasicTestCase('testSendMsgP2P'))
+    result = unittest.TestResult()
+
+    suite.run(result)
+    print str(result)
+    for f in  result.errors:
+        print f[0]
+        print f[1]
+
+    for f in  result.failures:
+        print f[0]
+        print f[1]
+
