@@ -26,6 +26,12 @@ import signal
 
 if __name__ == '__main__':
 
+    if len(sys.argv) > 1 and sys.argv[1] == "coverage":
+        use_xmlrunner= True
+        del sys.argv[1]
+    else:
+        use_xmlrunner = False
+
     d = "test" + os.sep
     dbg = ['always']
     s = Server(cfgfile=d + "unittests_xmppd.xml")
@@ -38,15 +44,14 @@ if __name__ == '__main__':
 
     try:
         import xmlrunner
-        use_xmlrunner = True
     except:
+        print "XMLTestRunner not found."
         use_xmlrunner = False
 
     if use_xmlrunner:
         unittest.main(testRunner=xmlrunner.XMLTestRunner(
             output='test-reports'), exit=False)
     else:
-        print "XMLTestRunner not found."
         unittest.main(exit=False)
 
     platform.shutdown()
