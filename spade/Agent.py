@@ -139,6 +139,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.wui.registerController("search", self.WUIController_search)
         self.wui.registerController("send", self.WUIController_sendmsg)
         self.wui.registerController("sent", self.WUIController_sent)
+        self.wui.registerController("roster", self.WUIController_roster)
         self.wui.passwd = None
 
         self._aclparser = ACLParser.ACLxmlParser()
@@ -200,7 +201,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             behavs[id(k)] = k
         for attribute in self.__dict__:
             if eval("type(self." + attribute + ") not in [types.MethodType, types.BuiltinFunctionType, types.BuiltinMethodType, types.FunctionType]"):
-                if attribute not in ["_agent_log"]:
+                if attribute not in ["_agent_log", "_messages"]:
                     attrs[attribute] = eval("str(self." + attribute + ")")
         sorted_attrs = attrs.keys()
         sorted_attrs.sort()
@@ -213,6 +214,15 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     @require_login
     def WUIController_log(self):
         return "log.pyra", {"name": self.getName(), "log": self.getLog()}
+
+    @require_login
+    def WUIController_roster(self):
+        roster = {}
+        for friend in self.roster.getContacts():
+            if friend == self.getName():
+                continue
+            roster[friend] = self.roster.getContact(friend)
+        return "agent_roster.pyra", {"name": self.getName(), "roster": roster}
 
     @require_login
     def WUIController_messages(self, agents=None):
@@ -716,7 +726,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return self._serverplatform
 
     def getP2PUrl(self):
-        return str("spade://" + socket.gethostbyname(socket.gethostname()) + ":" + str(self._P2P.getPort()))
+        try:
+            ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+        except:
+            ip = socket.gethostbyname(socket.gethostname())
+        return str("spade://" + ip + ":" + str(self._P2P.getPort()))
 
     def requestDiscoInfo(self, to):
 

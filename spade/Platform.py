@@ -212,7 +212,7 @@ class SpadePlatform(PlatformAgent):
                 try:
                     del r["roster"]["__ir__"]
                 except: pass
-        return "roster.pyra", dict(name=platform, servername=servername, platform=platform, version=version, time=the_time, roster=roster)
+        return "rosterdb.pyra", dict(name=platform, servername=servername, platform=platform, version=version, time=the_time, roster=roster)
 
     def getMembers(self, aname):
         msg = spade.ACLMessage.ACLMessage()

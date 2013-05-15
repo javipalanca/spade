@@ -37,12 +37,16 @@
 		<!--(else)-->
 			<li><a href='services' title='Services'><span class='left'>Services</span></a></li>
 		<!--(end)-->
-		<!--(if item=="roster")-->
-			<li><a class='current' href='roster' title='Roster'><span class='left'>Roster</span></a></li>
-		<!--(else)-->
-			<li><a href='roster' title='Roster'><span class='left'>Roster</span></a></li>
-		<!--(end)-->
 	<!--(end)-->
+
+    <!--(if "ams" not in name and "df" not in name)-->
+        <!--(if item=="roster")-->
+		    <li><a class='current' href='roster' title='Roster'><span class='left'>Roster</span></a></li>
+        <!--(else)-->
+		    <li><a href='roster' title='Roster'><span class='left'>Roster</span></a></li>
+        <!--(end)-->
+    <!--(end)-->
+
 
 	<!--(if item=="admin")-->
 		<li><a class='current' href='admin' title='Admin'><span class='left'>Admin</span></a></li>

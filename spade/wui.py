@@ -100,7 +100,11 @@ class WUI(Thread):
         from spade.AMS import AmsAgentDescription
         aad = AmsAgentDescription()
         aid = self.owner.getAID()
-        aid.addAddress("awui://" + str(socket.gethostbyname(socket.gethostname())) + ":" + str(self.port))
+        try:
+            ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+        except:
+            ip = socket.gethostbyname(socket.gethostname())
+        aid.addAddress("awui://" + str(ip) + ":" + str(self.port))
         aad.setAID(aid)
         self.owner.modifyAgent(aad)
 
@@ -301,17 +305,18 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 ret = {"template": page, "error": str(_err), "name": self.server.owner.owner.getName()}
                 code = 501
 
+            #check if user is authenticated
+            authenticated = False
+            if hasattr(sess, "user_authenticated"):
+                if sess.user_authenticated is True:
+                    authenticated = True
+            ret['authenticated'] = authenticated
             try:
                 if os.path.exists(self.server.owner.template_path + os.sep + template):
                     t = pyratemp.Template(filename=self.server.owner.template_path + os.sep + template, data=ret)
                 else:
                     #olddir = os.path.curdir
                     #os.chdir(self.server.spade_path)
-                    authenticated = False
-                    if hasattr(sess, "user_authenticated"):
-                        if sess.user_authenticated is True:
-                            authenticated = True
-                    ret['authenticated'] = authenticated
                     t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + template, data=ret)
                     #print template, ret
                     #os.chdir(olddir)
@@ -319,7 +324,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName()})
+                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
                 code = 501
             except Exception, e:
                 #No template
@@ -327,7 +332,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
                 #print "###", _err, "###"
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "503.pyra", data={"page": template, "name": self.server.owner.owner.getName()})
+                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "503.pyra", data={"page": template, "name": self.server.owner.owner.getName(), "authenticated":authenticated})
                 code = 503
             try:
                 result = t()
@@ -336,7 +341,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 _exception = sys.exc_info()
                 if _exception[0]:
                     _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName()})
+                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
                 result = t()
                 code = 501
 
