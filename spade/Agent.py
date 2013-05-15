@@ -729,7 +729,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         try:
             ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         except:
-            ip = socket.gethostbyname(socket.gethostname())
+            ip = "127.0.0.1"
         return str("spade://" + ip + ":" + str(self._P2P.getPort()))
 
     def requestDiscoInfo(self, to):

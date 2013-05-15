@@ -103,7 +103,7 @@ class WUI(Thread):
         try:
             ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         except:
-            ip = socket.gethostbyname(socket.gethostname())
+            ip = "127.0.0.1"
         aid.addAddress("awui://" + str(ip) + ":" + str(self.port))
         aad.setAID(aid)
         self.owner.modifyAgent(aad)
