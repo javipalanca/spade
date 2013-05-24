@@ -1,0 +1,239 @@
+<chapter id="spade.social">
+    <title>Social Network</title>    
+    
+    <section id="spade.social.intro">
+        <title>The SPADE Social Network Agent Module</title>
+                
+    <para>SPADE Agents make use of the social features that XMPP intrinsically provides. These are mainly the friends list (called roster) and the Presence Notification protocol. By means of this Social Network module an agent can add other agents (or humans) as his friends too his roster and subscribe to their presence notification, receiving events when a friend becomes <emphasis>available, unavailable, busy</emphasis>, or any other status. You can also create groups of friends and send messages to any of your group of friends.</para>    
+    </section>
+
+    <section id="spade.bdi.roster">
+        <title>The Roster: How to add friends</title>       
+        
+        <para>Each agent has a friend list called <empahis role="bold">roster</empahis>. This roster stores many information about your friends. This informations includes the following items:
+        <itemizedlist>
+            <listitem>Type</listitem>
+            <listitem>Pritority</listitem>
+            <listitem>Show</listitem>
+            <listitem>Status</listitem>
+        </itemizedlist>
+            
+            
+            
+            Knowledge Base where it stores its acquired knowledge items. The technology to store these items can be selected from a set of different prolog engines: <literal>SWI-Prolog, XSB, Flora2, Eclipse</literal> and <literal>SPARQL</literal>. SPADE does also support an internal Prolog engine, which is less powerful but has no external requirements. This is the <literal>SpadeKB</literal> engine, wich supports first-order logic.
+        </para>
+        <para>Accessing the KB is really simple. As said, you can add knowledge, delete it, or make queries.</para>
+
+        <screen>
+        #First configure the KB for using SWI-Prolog. The default KB is SpadeKB
+        $ agent.configureKB("SWI", None, "swipl") #third argument is the path to the swipl executable
+
+        #Insert some knowledge items
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.addBelieve( 'a(c,d)' )
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Y) )' ) 
+        $ agent.addBelieve( '( p(_X,_Y) :- a(_X,_Z), p(_Z,_Y) )' )
+
+        #Ask for a Knowledge
+        $ agent.askBelieve( 'p(X,Y)' )
+        > [{'Y': 'c', 'X': 'b'}, {'Y': 'd', 'X': 'c'}, {'Y': 'd', 'X': 'b'}]
+
+
+        #Deletes a Knowledge
+        $ agent.removeBelieve( 'a(b,c)' )
+
+        #Check deletion
+        $ agent.askBelieve( 'p(X,Y)' )
+        > [{'Y': 'd', 'X': 'c'}]
+
+    </screen>
+
+    <screen>
+        #XSB
+        $ agent.configureKB("XSB", None, "xsb") #third argument is the path to the xsb executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.removeBelieve( 'a(c,d)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #Flora2
+        $ agent.configureKB("Flora2", None, "runflora") #third argument is the path to the flora2 executable
+        $ agent.addBelieve( 'a[ b->c ]' ) #Beware, Flora2 notation is different
+        $ agent.removeBelieve( 'a[ b->c ]' )
+        $ agent.askBelieve( '?x[ ?y->?z ]' )
+
+        #Eclipse
+        $ agent.configureKB("ECLiPSe", None, "eclipse") #third argument is the path to the eclipse executable
+        $ agent.addBelieve( 'a(b,c)' )
+        $ agent.askBelieve( 'p(X,Y)' )
+
+        #SPARQL
+        $ agent.configureKB("SPARQL", sentence=None, path='http://dbpedia.org/sparql')
+        $ sparql_query = '''
+                PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#>
+                SELECT ?name
+                WHERE { 
+                &lt;http://dbpedia.org/resource/Croatia> 
+                rdfs:name 
+                ?name 
+                }'''
+        $ result = agent.askBelieve(sparql_query)
+        $ for item in result:
+            assert item["name"] in ["Croatia","Republic of Croatia","Republika Hrvatska"]   
+
+    </screen>
+
+    <para>
+    The SpadeKB is a FOL knowledge base, which is the default KB in SPADE. This KB stores believes in the same format as the rest of types of KBs, using <literal>addBelieve, removeBelieve</literal> and <literal>askBelieve</literal>. But the SpadeKB has also the ability of storing <emphasis role='bold'>Facts</emphasis> in the KB. This is useful when you want to store variables with a name and a value. The types of value currently supported are: integer, string, float, list and dictionaries.
+    </para>
+
+    <screen>
+        $ agent.saveFact("MyFact", 1000) #parameters are name and value
+        $ agent.getFact("MyFact")
+        > 1000
+        $ agent.askBelieve("Var(MyFact,1000,Int)")
+        > True
+
+        $ agent.saveFact("MyFloat",1.34)
+        $ agent.getFact("MyFloat")
+        > 1.34
+
+        $ agent.saveFact("MyString","LoremIpsumAdHisScriptaBlanditPartiendo") #spaces still not supported, sorry
+        $ agent.getFact("MyString")
+        > 'LoremIpsumAdHisScriptaBlanditPartiendo'
+
+        $ agent.saveFact("MyList",[5,6,7,8])
+        $ agent.getFact("MyList")
+        > [5,6,7,8]
+
+        $ agent.saveFact("MyDict",{'a':123,'b':456,789:"c"})
+        $ agent.getFact("MyDict")
+        > {'a':123,'b':456,789:"c"}
+
+        $ agent.saveFact("MyMixedFact",{'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}})
+        $ agent.getFact("MyMixedFact")
+        > {'a':[123.25],'b':[4,5,6],789:{'a':1,'b':2}}      
+
+    </screen>
+
+    </section>
+    <section id="spade.bdi.plans">
+        <title>Plans and Services</title>       
+        
+          <para>
+            Services in SPADE are offered by agents registered in the system. These services, once are registered in the Directory Facilitator (DF) can be invoked using the RPC facilities of SPADE.
+          </para>
+
+        <screen>
+        #This is the method executed when the service is invoked
+        def s1_method(Value):
+            return {"Myoutput1":1} #the return value is a dict containing Facts in the form name:value
+
+        #Create the service profile
+        s = DF.Service(name="s1", owner=agent.getAID(), inputs=["Value"],outputs=["O1"],P=["Var(Value,0,Int)"],Q=["Var(O1,1,Int)"])
+
+        #Finally register the service
+        agent.registerService(s, s1_method)
+        </screen>
+        
+        <para>A Plan is a sequence of services where each postcondition matches the precondition of the next service. The plan has also a precondition (P) and postcondition (Q) and a set of inputs and outputs:</para>
+        <screen>
+
+        agent.addPlan(inputs=["Value"],outputs=["O2"],P=["Var(Value,0,Int)"],Q=["Var(O2,2,Int)"], services=["s1","s2"])
+        </screen>
+
+        <para>These are pre-compiled plans that the agent may have to improve the plan search. However, SPADE agents have the ability of composing on-line plans, with no need of creating pre-compiled plans.</para>
+    
+    </section>
+    <section id="spade.bdi.goals">
+        <title>Goals</title>
+        
+          <para>Goals are instances of the <command>Goal</command> class. Its constructor receives as a parameter the expression of the Goal.</para>
+
+        <screen>
+
+        g = Goal("Var(O1,1,Int)")
+        </screen>
+
+        <para>When a goal is added, the BDIAgent will try to perform this goal by invoking services. Once the goal is completed, the goalCompleted callback is called to notify the agent.
+        </para>
+
+        <screen>
+        $ def goalCompletedCB( goal ):
+            print "Goal completed!"
+            
+        $ agent.saveFact("Value",0)
+
+        $ agent.setGoalCompletedCB( goalCompletedCB )
+
+        $ agent.addGoal( Goal("Var(Value,0,Int)") )
+        > "Goal completed!"
+        </screen>
+    
+        </section>
+        <section id="spade.bdi.running">
+            <title>BDI in action</title>            
+            
+               <para>During the agent execution, classic SPADE behaviours can coexist with the BDI model. Every time that a new Goal is introduced into the agent, it will try to achieve it looking for a Plan that fits the task. All this work happens in a completely transparent way for the user.</para>
+
+        <screen>
+
+        import spade
+        from spade.bdi import *
+        from spade.DF import Service
+
+        def s1_method(Value):
+            return {"O1":1}
+
+        def s2_method(Myoutput1):
+            return {"O2":2}
+
+        def goalCompletedCB(goal):
+            agent.goalCompleted = True
+
+        agent = BDIAgent("bdi@127.0.0.1","secret")
+        s1 = Service(name="s1", owner=agent.getAID(), inputs=["Value"],outputs=["O1"],P=["Var(Value,0,Int)"],Q=["Var(O1,1,Int)"])
+        s2 = Service(name="s2", owner=agent.getAID(), inputs=["O1"],outputs=["O2"],P=["Var(O1,1,Int)"],Q=["Var(O2,2,Int)"])
+
+        agent.registerService(self.s1,s1_method)
+        agent.registerService(self.s2,s2_method)
+
+        agent.goalCompleted = False
+
+        agent.saveFact("Value",0)
+
+        agent.setGoalCompletedCB( goalCompletedCB )
+
+        agent.addGoal( Goal("Var(O1,1,Int)") )
+
+        agent.start()
+
+        import time
+        counter = 0
+        while not agent.goalCompleted and counter &lt; 10:
+            time.sleep(1)
+            counter+=1
+
+        $ agent.goalCompleted
+        > True
+        $ agent.askBelieve( "Var(O1,1,Int)" )
+        > True
+        $ agent.getFact("O1")
+        > 1
+
+        agent.stop()
+        sys.exit(0)
+        </screen>
+
+    <para>Unit tests are always a good source of documentation. In the <literal>bdiTestCase.py</literal> you can find more examples of how to create complex plans and multiple goals that are reached thanks to the on-line planner of the BDIAgent.
+    You can also find more documentation in the following reference papers:
+
+    <itemizedlist>      
+          <listitem><para><ulink url="http://www.sciencedirect.com/science/article/pii/S0164121212000337">Distributed Goal-oriented Computing</ulink></para></listitem>
+          <listitem><para><ulink url="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5718856">A Goal-Oriented Execution Module Based on Agents</ulink></para></listitem>
+    </itemizedlist>
+
+    </para>
+    
+    </section>
+
+</chapter>

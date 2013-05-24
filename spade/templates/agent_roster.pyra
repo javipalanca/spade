@@ -35,7 +35,7 @@ header.pyra
                             <!--(if len(v['resources'])>0)-->
                             <tr>
                             <td rowspan=@!len(v['resources'])+1!@><img src="statusGreen.png" width="10" height="10"></td>
-                            <td><b>@!str(jid)!@</b></td>
+                            <td style="color:green"><b>@!str(jid)!@</b></td>
                             </tr>
                                 <!--(for res, stat in v['resources'].items())-->
                                 <tr><td>@!str(res)!@: @!str(stat)!@</td></tr>
@@ -43,7 +43,7 @@ header.pyra
                             <!--(else)-->
                             <tr>
                             <td><img src="statusRed.png" width="10" height="10"></td>
-                            <td><b>@!str(jid)!@</b></td>
+                            <td style="color:red"><b>@!str(jid)!@</b></td>
                             </tr>
                             <!--(end)-->
                 <!--(end)-->
