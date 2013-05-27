@@ -236,20 +236,19 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 x = xml.dom.minidom.parseString(strm)
                 #strm = x.toprettyxml()
                 strm = m.asHTML()
-                frm = m.getSender()
-                if frm is not None:
-                    frm = str(frm.getName())
-                else:
+                frm = m.getSender().getName()
+                if frm is None or frm is "":
                     frm = "Unknown"
-                if "/" in frm:
-                    frm = frm.split("/")[0]
+                else:
+                    frm = str(frm).split("/")[0].split("@")[0].split(".")[0]
                 r = m.getReceivers()
                 if len(r) >= 1:
                     to = r[0].getName()
+                    to = to.split("/")[0].split("@")[0].split(".")[0]
                 else:
                     to = "Unknown"
-                if "/" in to:
-                    to = to.split("/")[0]
+                if to is "":
+                    to = "Unknown"
                 if agents:
                     if to in agents or frm in agents:
                         msc += frm + "->" + to + ':' + str(index) + " " + str(m.getPerformative()) + '\n'
@@ -267,20 +266,16 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 strm = strm.replace(">", "&gt;")
                 strm = strm.replace("<", "&lt;")
                 strm = strm.replace('"', "&quot;")
-                frm = m.getFrom()
-                if frm is None:
+                frm = m.getFrom().getNode()
+                if frm is None or frm is "":
                     frm = "Unknown"
                 else:
-                    frm = str(frm)
-                if "/" in frm:
-                    frm = frm.split("/")[0]
-                to = m.getTo()
-                if to is None:
+                    frm = str(frm).split("/")[0].split("@")[0].split(".")[0]
+                to = m.getTo().getNode()
+                if to is None or to is "":
                     to = "Unknown"
                 else:
-                    to = str(to)
-                if "/" in to:
-                    to = to.split("/")[0]
+                    to = str(to).split("/")[0].split("@")[0].split(".")[0]
                 if agents:
                     if to in agents or frm in agents:
                         msc += frm + "-->" + to + ':' + str(index) + ' ' + str(m.getName())

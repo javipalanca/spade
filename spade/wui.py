@@ -240,6 +240,12 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         #if page.endswith("css"):
         if page.endswith(".css") or page.endswith(".png") or page.endswith(".html") or page.endswith(".js"):
             #self.copyfile(urllib.urlopen(self.path), self.wfile)
+            if page.endswith(".js"):
+                content_type = 'application/javascript'
+            elif page.endswith(".css"):
+                content_type = 'text/css'
+            else:
+                content_type = 'text/plain'
             try:
                 if os.path.exists(self.server.owner.template_path + os.sep + page):
                     page = self.server.owner.template_path + os.sep + page
@@ -258,6 +264,7 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 self.send_response(200)
                 for morsel in self.cookie.values():
                     self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+                self.send_header('Content-type', content_type)
                 self.end_headers()
                 f = open(page, "r")
                 self.copyfile(f, self.wfile)

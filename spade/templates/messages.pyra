@@ -13,6 +13,10 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
 <script src="jquery.colorbox.js"></script>
 
+<script src="raphael-min.js"></script>
+<script src="underscore-min.js"></script>
+<script src="sequence-diagram-min.js"></script>
+
 <script language="javascript" type="text/javascript"> 
 <!-- 
 function showdiv( form ) {
@@ -86,9 +90,17 @@ header.pyra
 			<h1>@!name!@</h1>
 			
 			<!--(if diagram!=False)-->
-			<div class=wsd wsd_style="napkin"><pre>
+            <div class="diagram">$!diagram!$</div>
+            <script>
+            $(".diagram").sequenceDiagram({theme: 'hand'});
+            </script>
+            
+			<!-- Diagrams using a external service. Replaced by sequence-diagram.js--> 
+            <!--><div class=wsd wsd_style="napkin"><pre>
 			@!diagram!@
 			</pre></div><script type="text/javascript" src="http://www.websequencediagrams.com/service.js"></script>
+            -->
+            
 			<!--(end)-->
 									
 			<div style="display:none">
