@@ -21,7 +21,7 @@
 		<section id="spade.basicagents.agentmodel.connection">
 			<title>Connection to the platform</title>
 			
-			<para>Communications in SPADE are handled internally by means of the Jabber protocol. This protocol has a mechanism to register and authenticate users against a Jabber server. Since the SPADE platform includes a Jabber server component, SPADE agents use the aforementioned mechanism to register in the server as Jabber clients. After a succesful register, each agent holds an open and persistent Jabber stream of communications with the platform. This process is automatically triggered as part of the agent registration process.</para>
+			<para>Communications in SPADE are handled internally by means of the Jabber protocol. This protocol has a mechanism to register and authenticate users against a Jabber server. Since the SPADE platform includes a Jabber server component, SPADE agents use the aforementioned mechanism to register in the server as Jabber clients. After a succesful registration, each agent holds an open and persistent Jabber stream of communications with the platform. This process is automatically triggered as part of the agent registration process.</para>
 		</section>
 		
 		<section id="spade.basicagents.agentmodel.dispatcher">
