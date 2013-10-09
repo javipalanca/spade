@@ -33,7 +33,7 @@
 		<section id="spade.basicagents.agentmodel.behaviours">
 			<title>The behaviors</title>
 
-			<para>An agent can run serveral behaviors simultaneously. A <emphasis role="bold">behavior</emphasis> is a task that an agent can execute using repeating patterns. SPADE provides some predefined behavior types: Cyclic, One-Shot, Periodic, Time-Out, Finite State Machine and Event Behavior. Those behavior types help to implement the different tasks that an agent can perform. The kind of behaviors supported by a SPADE agent are the following:</para>
+			<para>An agent can run several behaviors simultaneously. A <emphasis role="bold">behavior</emphasis> is a task that an agent can execute using repeating patterns. SPADE provides some predefined behavior types: Cyclic, One-Shot, Periodic, Time-Out, Finite State Machine and Event Behavior. Those behavior types help to implement the different tasks that an agent can perform. The kind of behaviors supported by a SPADE agent are the following:</para>
 
 			<itemizedlist>
 		    	<listitem>
