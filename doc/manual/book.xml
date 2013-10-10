@@ -44,6 +44,11 @@
         <firstname>Javier</firstname>
         <surname>Palanca</surname>
       </author>
+      
+      <author>
+        <firstname>Edmon</firstname>
+        <surname>Begoli</surname>
+      </author>
 
     </authorgroup>
 
@@ -62,6 +67,7 @@
       <holder>Javier Palanca</holder>
       <holder>Miguel Escriva</holder>
       <holder>Juan Angel Garcia-Pardo</holder>
+      <holder>Markus Schatten</holder>
     </copyright>
 
     <legalnotice><para>This work is licensed under the Creative
