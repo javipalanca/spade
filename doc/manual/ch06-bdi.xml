@@ -94,7 +94,7 @@
     </screen>
 
     <para>
-    The SpadeKB is a FOL knowledge base, which is the default KB in SPADE. This KB stores believes in the same format as the rest of types of KBs, using <literal>addBelieve, removeBelieve</literal> and <literal>askBelieve</literal>. But the SpadeKB has also the ability of storing <emphasis role='bold'>Facts</emphasis> in the KB. This is useful when you want to store variables with a name and a value. The types of value currently supported are: integer, string, float, list and dictionaries.
+    The SpadeKB is a FOL knowledge base, which is the default KB in SPADE. This KB stores beliefs in the same format as the rest of types of KBs, using <literal>addBelieve, removeBelieve</literal> and <literal>askBelieve</literal> functions. SpadeKB also has the ability of storing <emphasis role='bold'>Facts</emphasis> in the KB. This is useful for storing key-value variables (variables with a name and a value). The types of value currently supported are: integer, string, float, list and dictionaries.
     </para>
 
     <screen>
