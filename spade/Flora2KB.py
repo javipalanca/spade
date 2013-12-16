@@ -39,11 +39,11 @@ class Flora2KB(KB):
             sentence = sentence[:-1]
         return self.flora2.query(type + '{' + sentence + '}')
 
-    def loadModule(self, module):
+    def loadModule(self, module, into=None):
         '''Loads module to KB
         Usage: instance.loadModule( path )
         path - path to module'''
-        self.flora2.load(module)
+        self.flora2.load(module, into)
 
     def _encode(self, key, value):
         '''Encodes a given key value pair to the knowledge base 

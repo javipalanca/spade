@@ -647,13 +647,17 @@ class flora2:
 		except:
 			raise Flora2ExecutableNotFound('Flora-2 executable not found on the specified path. Try using flora2( "/path/to/flora2/runflora" )')
 
-	def load(self, module):
+	def load(self, module, into=None):
 		'''Loads module into self.engine
 		Usage: instance.load( path )
 		path - path to module file
+		into - load into module
 
 		Raises: Flora2CompileError'''
-		self.engine.sendline("['" + module + "'].")
+		if into:
+			self.engine.sendline("['" + module + "'>>'" + into + "'].")
+		else:
+			self.engine.sendline("['" + module + "'].")
 		res = self.engine.get(t=.2)
 		if flora2error.findall(res) != []:
 			raise Flora2CompileError('Error while compiling module "' + module + '". Error from Flora2:\n' + res)

@@ -1497,6 +1497,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
     def getFact(self, name):
         return self.kb.get(name)
 
+    def loadKB(self, module, into=None):
+        return self.kb.loadModule(module, into)
+
 ##################################
 
 

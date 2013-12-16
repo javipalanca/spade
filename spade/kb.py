@@ -224,6 +224,12 @@ class KB:
     def get(self, key):
         return self.kb._decode(key)
 
+    def loadModule(self, module, into=None):
+	if self.type in ['Spade', 'SPARQL']:
+		raise ValueError, '%s does not support loading modules!' % self.type
+	else:
+		self.kb.loadModule(module, into)
+
 
 if __name__ == "__main__":
 
