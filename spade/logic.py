@@ -27,7 +27,7 @@ And a few other functions:
 
 from __future__ import generators
 import re
-
+import sys
 
 def every(predicate, seq):
     """True if every element of seq satisfies predicate.
@@ -1392,6 +1392,19 @@ def ppdict(d):
 
 def ppset(s):
     print pretty_set(s)
+
+
+def get_object_type(classname, modulename):
+    '''Get an object's type
+       Thanks to: http://stackoverflow.com/a/13292940'''
+    __import__(modulename)
+    return getattr(sys.modules[modulename], classname)
+
+def get_object_instance(classname, modulename, param={}):
+    '''Get an object's instance by classname and modulename
+       Thanks to: http://stackoverflow.com/a/13292940'''
+    return get_object_type(classname, modulename)(**param)
+
 
 #________________________________________________________________________
 

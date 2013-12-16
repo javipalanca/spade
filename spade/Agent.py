@@ -1259,7 +1259,6 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
             name = service.getName()
             self.DEBUG("Registering RPC service " + name)
             self.RPC[name.lower()] = (service, methodCall)
-
         return b.result
 
     def deregisterService(self, DAD, otherdf=None):

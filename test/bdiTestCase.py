@@ -194,11 +194,182 @@ class BDITestCase(unittest.TestCase):
         self.assertTrue(self.a.askBelieve("Var(Myoutput4,5,Int)"))
         assert self.a.getFact("Myoutput4") == 5
 
+class BDIPrologTestCase:
+    def set_up(self):
+
+        self.s1 = spade.DF.Service(name="s1", owner=self.a.getAID(), inputs=["Value"], outputs=["Myoutput1"], P=["var('Value',0,int)"], Q=["var('Myoutput1',1,int)"])
+        self.s2 = spade.DF.Service(name="s2", owner=self.a.getAID(), inputs=["Myoutput1"], outputs=["Myoutput2"], P=["var('Myoutput1',1,int)"], Q=["var('Myoutput2',2,int)"])
+        self.s3 = spade.DF.Service(name="s3", owner=self.a.getAID(), inputs=["Value3"], outputs=["Myoutput3"], P=["var('Value3',3,int)"], Q=["var('Myoutput3',4,int)"])
+        self.s4 = spade.DF.Service(name="s4", owner=self.a.getAID(), inputs=["Myoutput3"], outputs=["Myoutput4"], P=["var('Myoutput3',4,int)"], Q=["var('Myoutput4',5,int)"])
+
+        time.sleep(2)
+
+    def tearDown(self):
+        s = spade.DF.Service()
+        s.setOwner(self.a.getAID())
+        self.a.deregisterService(s)
+        self.a.stop()
+        del self.a
+
+    def testAddPlan(self):
+
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
+
+        self.a.bdiBehav.discover()
+        result = self.a.addPlan(inputs=["Value"], outputs=["Myoutput2"], P=["var('Value',0,int)"], Q=["var('Myoutput2',2,int)"], services=["s1", "s2"])
+
+        self.assertTrue(result)
+
+    def goalCompletedCB(self, goal):
+        self.goalCompleted = True
+
+    def testSimpleGoalCompleted(self):
+
+        self.goalCompleted = False
+        self.a.registerService(self.s1, s1_method)
+
+        self.a.saveFact("Value", 0)
+
+        self.a.setGoalCompletedCB(self.goalCompletedCB)
+
+        self.a.addGoal(Goal("var('Myoutput1',1,int)"))
+
+        counter = 0
+        while not self.goalCompleted and counter < 30:
+            time.sleep(1)
+            counter += 1
+
+        self.assertTrue(self.goalCompleted)
+        self.assertTrue(self.a.askBelieve("var('Myoutput1',1,int)"))
+        assert self.a.getFact("Myoutput1") == 1
+
+    def testGoalCompleted_withPlan(self):
+
+        self.goalCompleted = False
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
+
+        self.a.saveFact("Value", 0)
+
+        self.a.setGoalCompletedCB(self.goalCompletedCB)
+
+        self.a.addGoal(Goal("var('Myoutput2',2,int)"))
+
+        counter = 0
+        while not self.goalCompleted and counter < 30:
+            time.sleep(1)
+            counter += 1
+
+        self.assertTrue(self.goalCompleted)
+        self.assertTrue(self.a.askBelieve("var('Myoutput2',2,int)"))
+        assert self.a.getFact("Myoutput2") == 2
+
+    def serviceCompletedCB(self, service):
+        s = service.getName()
+        if s == "s1":
+                self.s1Completed = True
+        if s == "s2":
+                self.s2Completed = True
+        if s == "s3":
+                self.s3Completed = True
+        if s == "s4":
+                self.s4Completed = True
+
+    def testMultiGoalCompleted(self):
+        self.s1Completed = False
+        self.s3Completed = False
+
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s3, s3_method)
+
+        self.a.saveFact("Value", 0)
+        self.a.saveFact("Value3", 3)
+
+        self.a.setServiceCompletedCB(self.serviceCompletedCB)
+
+        self.a.addGoal(Goal("var('Myoutput3',4,int)"))
+        self.a.addGoal(Goal("var('Myoutput1',1,int)"))
+
+        counter = 0
+        while counter < 60 and (self.s1Completed is False or self.s3Completed is False):
+            time.sleep(1)
+            counter += 1
+
+        self.assertTrue(self.s1Completed)
+        self.assertTrue(self.s3Completed)
+        self.assertTrue(self.a.askBelieve("var('Myoutput1',1,int)"))
+        assert self.a.getFact("Myoutput1") == 1
+        self.assertTrue(self.a.askBelieve("var('Myoutput3',4,int)"))
+        assert self.a.getFact("Myoutput3") == 4
+
+    def testMultiGoalCompleted_withMultiServices(self):
+        self.s2Completed = False
+        self.s4Completed = False
+
+        self.a.registerService(self.s1, s1_method)
+        self.a.registerService(self.s2, s2_method)
+        self.a.registerService(self.s3, s3_method)
+        self.a.registerService(self.s4, s4_method)
+
+        self.a.saveFact("Value", 0)
+        self.a.saveFact("Value3", 3)
+
+        self.a.setServiceCompletedCB(self.serviceCompletedCB)
+
+        self.a.addGoal(Goal("var('Myoutput2',2,int)"))
+        self.a.addGoal(Goal("var('Myoutput4',5,int)"))
+
+        counter = 0
+        while counter < 30 and (self.s2Completed is False or self.s4Completed is False):
+            time.sleep(1)
+            counter += 1
+
+        self.assertTrue(self.s2Completed)
+        self.assertTrue(self.s4Completed)
+        self.assertTrue(self.a.askBelieve("var('Myoutput2',2,int)"))
+        assert self.a.getFact("Myoutput2") == 2
+        self.assertTrue(self.a.askBelieve("var('Myoutput4',5,int)"))
+        assert self.a.getFact("Myoutput4") == 5
+
+class BDISWITestCase(BDIPrologTestCase, unittest.TestCase):
+    def setUp(self):
+	self.a = BDIAgent("bdi_swi@" + host, "secret")
+	self.a.kb.configure("SWI")
+        #self.a.setDebugToScreen()
+        self.a.start()
+	self.set_up()
+
+class BDIXSBTestCase(BDIPrologTestCase, unittest.TestCase):
+    def setUp(self):
+	self.a = BDIAgent("bdi_xsb@" + host, "secret")
+	self.a.kb.configure("XSB")
+        #self.a.setDebugToScreen()
+        self.a.start()
+	self.set_up()
+
+
+class BDIECLiPSeTestCase(BDIPrologTestCase, unittest.TestCase):
+    def setUp(self):
+	self.a = BDIAgent("bdi_eclipse@" + host, "secret")
+	self.a.kb.configure("ECLiPSe")
+        #self.a.setDebugToScreen()
+        self.a.start()
+	self.set_up()
+
+class BDIFlora2TestCase(BDIPrologTestCase, unittest.TestCase):
+    def setUp(self):
+	self.a = BDIAgent("bdi_flora2@" + host, "secret")
+	self.a.kb.configure("Flora2")
+        #self.a.setDebugToScreen()
+        self.a.start()
+	self.set_up()
+
 if __name__ == "__main__":
     unittest.main()
     sys.exit()
     '''suite = unittest.TestSuite()
-    suite.addTest(BDITestCase('testMultiGoalCompleted'))
+    suite.addTest(BDITestCase('testAddPlan'))
     result = unittest.TestResult()
 
     suite.run(result)

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from logic import FolKB, fol_bc_ask, expr, is_definite_clause, variables
+from logic import FolKB, fol_bc_ask, expr, is_definite_clause, variables, get_object_type, get_object_instance
 
 import random
 import string
-import types
 
 
 class KBNameNotString(Exception):
@@ -80,9 +79,20 @@ class SpadeKB(FolKB):
                 self._encode(elemID + "Value", v)
                 self.tell("Pair(" + dictID + "," + elemID + ")")
             self.tell("Var(" + key + "," + dictID + ",Dict)")
-
+        elif value is None:
+            self.tell("Var(" + key + ",None,NoneType)")
         else:
-            raise KBValueNotKnown
+            try:
+                typ = str( value.__module__ + "." + value.__class__.__name__ )
+                objID = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for x in range(8))
+                objID = objID.capitalize()
+                if value.__dict__ != {}:
+                    self._encode( objID, value.__dict__ )
+                else:
+                    self.tell( "Pair(" + objID + ", Empty_object)" ) 
+                    self.tell( "Var(" + key + ", " + objID + ", " + typ + ")" )
+            except:
+                raise KBValueNotKnown
 
     def _decode(self, key):
         gen = self._gen_decode(key)
@@ -94,7 +104,7 @@ class SpadeKB(FolKB):
     def _gen_decode(self, key):
         key = key.capitalize()
         results = self.ask("Var(" + key + ", value, type)")
-        if isinstance(results, types.BooleanType):
+        if isinstance(results, bool):
             yield None
         for res in results:
             value = str(res[expr("value")])
@@ -122,10 +132,30 @@ class SpadeKB(FolKB):
                 d = {}
                 for i in self.ask("Pair(" + dictID + ", elemid)"):
                     elemID = str(i[expr("elemid")])
+                    if elemID == "Empty_object":
+                        continue
                     newkey = self._gen_decode(elemID + "Key").next()
                     newvalue = self._gen_decode(elemID + "Value").next()
                     d[newkey] = newvalue
                 yield d
+            elif typ == "NoneType":
+                yield None
+            else:
+                objid = str(key)
+                res = self.ask("Var(" + objid + ", value, type)")[0]
+                classname = str(res[expr("type")])
+                objdict = str(res[expr("value")])
+                try:
+                    module, clas = classname.split(".")
+                    obj = get_object_instance(clas, module)
+                    d = self._gen_decode(objdict).next()
+                    if d == None:
+                        d = {}
+                        obj.__dict__ = d
+                        yield obj
+                except:
+                    raise GeneratorExit, "No such class in namespace: %s" % classname
+                
 
 
 class KB:
@@ -162,14 +192,19 @@ class KB:
             typ = "Spade"
 
         self.type = typ
-        typ += "KB"
 
-        if typ == "SpadeKB":
+        if typ == "Spade":
             self.kb = SpadeKB()
-        elif path is not None:
-            self.kb = eval(typ + "." + typ + "(" + str(sentence) + ", '" + path + "')")
-        else:
-            self.kb = eval(typ + "." + typ + "(" + str(sentence) + ")")
+        elif   typ == "SPARQL":
+            self.kb = SPARQLKB.SPARQLKB( sentence=sentence, path=path )
+        elif typ == "XSB":
+            self.kb = XSBKB.XSBKB( sentence=sentence, path=path )
+        elif typ == "Flora2":
+            self.kb = Flora2KB.Flora2KB( sentence=sentence, path=path )
+        elif typ == "SWI":
+            self.kb = SWIKB.SWIKB( sentence=sentence, path=path )
+        elif typ == "ECLiPSe":
+            self.kb = ECLiPSeKB.ECLiPSeKB( sentence=sentence, path=path )
 
     def tell(self, sentence):
         return self.kb.tell(sentence)
@@ -193,6 +228,7 @@ class KB:
 if __name__ == "__main__":
 
     kb0 = KB()
+    #kb0.configure( "Flora2" )
 
     kb0.set("varname1", 1234)
     a = kb0.get("varname1")
@@ -228,13 +264,26 @@ if __name__ == "__main__":
         print "Test KBNameNotString passed."
 
     class A:
-        pass
-    try:
-        kb0.set("i8", A())
-    except KBValueNotKnown:
-        print "Test KBValueNotKnown passed."
+        x = 1
+        y = 2
+        def test( self ):
+            print "Hello!"
+
+    kb0.set("varname9", A())
 
     a = kb0.get("varname9")
-    print a, a.__class__
+    print a, a.__class__, a.x, a.y
+    a.test()
 
+    class B: pass
+    kb0.set("varname10", B())
+    
+    b = kb0.get("varname10")
+    print b, b.__class__
+
+
+    kb0.set("varname11", None)
+    
+    n = kb0.get("varname11")
+    print n, n.__class__
     #print kb0.kb.clauses

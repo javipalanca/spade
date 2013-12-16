@@ -31,6 +31,13 @@ class SPARQLKB(KB):
         '''Removing triples from RDF store - not implemented'''
         raise NotImplementedError('Removing sentences to RDF knowledge bases is not implemented')
 
+    def _encode( self, key, value ):
+	'''Encoding a value in the triple store - not implemented'''
+	raise NotImplementedError('Encoding values in RDF knowledge bases is not implemented')
+
+    def _decode( self, key ):
+	'''Decoding a value from the triple store - not implemented'''
+	raise NotImplementedError('Decoding values from RDF knowledge bases is not implemented')
 
 if __name__ == '__main__':
     s = SPARQLKB(endpoint='http://lod.openlinksw.com/sparql')

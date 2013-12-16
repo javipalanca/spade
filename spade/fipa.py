@@ -178,7 +178,9 @@ class registerServiceBehaviour(Behaviour.OneShotBehaviour):
 
         self.myAgent.send(self._msg)
 
-        msg = self._receive(True, 20)
+        self.result = True
+        msg = self._receive(True, 30)
+        print msg
         if msg is None or msg.getPerformative() not in ['agree', 'inform']:
             self.myAgent.DEBUG("There was an error registering the service " + str(self.DAD) + "(not agree)", "warn")
             self.result = False
