@@ -2,6 +2,7 @@
 #include "Python.h"
 #define _WIN32_WINNT 0x0400	  /* Needed for CryptoAPI on some systems */
 #include <windows.h>
+#include <wincrypt.h>
 
 
 static PyObject* getRandomBytes(PyObject *self, PyObject *args)

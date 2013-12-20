@@ -658,7 +658,7 @@ class flora2:
 			self.engine.sendline("['" + module + "'>>'" + into + "'].")
 		else:
 			self.engine.sendline("['" + module + "'].")
-		res = self.engine.get(t=.2)
+		res = self.engine.get(t=.5)
 		if flora2error.findall(res) != []:
 			raise Flora2CompileError('Error while compiling module "' + module + '". Error from Flora2:\n' + res)
 
@@ -683,7 +683,7 @@ class flora2:
 		lvars = list(set(lvars))
 		if lvars == []:  # yes/no query (no variables)
 			self.engine.sendline(query)
-			res = self.engine.get(t=.2)
+			res = self.engine.get(t=.2, tr=10)
 			if flora2error.findall(res) != []:
 				raise Flora2QueryError('Error while executing query "' + query + '". Error from Flora2:\n' + res)
 			else:
@@ -693,7 +693,7 @@ class flora2:
 					return False
 		else:  # normal query
 			self.engine.sendline(query)
-			res = self.engine.get(t=.2)
+			res = self.engine.get(t=.2, tr=10)
 			if flora2error.findall(res) != []:
 				raise Flora2QueryError('Error while executing query "' + query + '". Error from Flora2:\n' + res)
 			else:
