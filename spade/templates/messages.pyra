@@ -96,7 +96,7 @@ header.pyra
             </script>
             
 			<!-- Diagrams using a external service. Replaced by sequence-diagram.js--> 
-            <!--><div class=wsd wsd_style="napkin"><pre>
+            <!--<div class=wsd wsd_style="napkin"><pre>
 			@!diagram!@
 			</pre></div><script type="text/javascript" src="http://www.websequencediagrams.com/service.js"></script>
             -->

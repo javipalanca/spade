@@ -5,7 +5,6 @@
 
 SPADE (Smart Python multi-Agent Development Environment) is a Multiagent and Organizations Platform based on the <a href="http://www.xmpp.org">XMPP/Jabber technology</a> and written in the <a href="http://www.python.org">Python</a> programming language. This technology offers by itself many features and facilities that ease the construction of MAS, such as an existing communication channel, the concepts of users (agents) and servers (platforms) and an extensible communication protocol based on XML, just like <a href="http://www.fipa.org">FIPA-ACL</a>. Many other agent platforms exist, but SPADE is the first to base its roots on the XMPP technology.
 
-<img src="http://spade2.googlecode.com/files/spade_overview.png" height=420px/> 
 
 # User Documentation
 

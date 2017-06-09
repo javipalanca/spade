@@ -776,17 +776,14 @@ class FSMBehaviour(Behaviour):
             pass
 
     def _process(self):
-        if (self._actualState is None):
+        if self._actualState is None:
             self._transitionTo(self._firstStateName)
-        #msg = self._receive(False)
         b = self._states[self._actualState]
-        #if msg: buede .postMessage(msg)
         self._lastexitcode = b._process()
-        if (b.done() or b._forceKill.isSet()):
-            if not self._lastexitcode:
-                self._lastexitcode = b.exitCode()
-            self._transitionTo(self._transitions[b._stateName][self._lastexitcode])
-            self._lastexitcode = None
+        if not self._lastexitcode:
+            self._lastexitcode = b.exitCode()
+        self._transitionTo(self._transitions[b._stateName][self._lastexitcode])
+        self._lastexitcode = None
 
     def getCurrentState(self):
         return self._states[self._actualState]

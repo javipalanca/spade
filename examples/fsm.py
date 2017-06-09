@@ -46,13 +46,10 @@ class MyAgent(spade.Agent.Agent):
 		def _process(self):
 			print "This is State Four..."
 			self.myAgent.counter = self.myAgent.counter + 1
-			if self.myAgent.counter > 11:
-				print "Counter ", self.myAgent.counter
-				print "Bye Bye"
-				self.myAgent._kill()
-			else:
-				self._exitcode = self.myAgent.TRANSITION_DEFAULT
- 
+			print "Counter ", self.myAgent.counter
+			print "Bye Bye"
+			self.myAgent._kill()
+
 	def _setup(self):
 		time.sleep(2)
 		print "AdvancedAgent starting . . ."
@@ -81,8 +78,7 @@ class MyAgent(spade.Agent.Agent):
 		b.registerTransition(self.STATE_TWO_CODE, self.STATE_THREE_CODE, self.TRANSITION_TO_THREE)
 		b.registerTransition(self.STATE_THREE_CODE, self.STATE_THREE_CODE, self.TRANSITION_DEFAULT)
 		b.registerTransition(self.STATE_THREE_CODE, self.STATE_FOUR_CODE, self.TRANSITION_TO_FOUR)
-		b.registerTransition(self.STATE_FOUR_CODE, self.STATE_FOUR_CODE, self.TRANSITION_DEFAULT)
-	
+
 		self.addBehaviour(b, None)
 
 if __name__ == "__main__":

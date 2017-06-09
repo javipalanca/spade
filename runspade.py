@@ -19,8 +19,8 @@ except ImportError, e:
 from xmppd.xmppd import Server
 
 __author__ = "Gustavo Aranda <gusarba@gmail.com> and Javier Palanca <jpalanca@gmail.com>"
-__version__ = "2.2"
-__copyright__ = "Copyright (C) 2006-2012"
+__version__ = "2.3"
+__copyright__ = "Copyright (C) 2006-2017"
 __license__ = "LGPL"
 
 
@@ -43,7 +43,7 @@ def print_help():
 
 def print_version():
     print "SPADE " + colors.color_yellow + __version__ + colors.color_none + " by Javier Palanca, Gustavo Aranda, Miguel Escriva and others"
-    print "gusarba@gmail.com - http://spade2.googlecode.com"
+    print "jpalanca@gmail.com - https://github.com/javipalanca/SPADE"
     raise SystemExit
 
 # Actually start the program running.
@@ -90,7 +90,7 @@ def main():
     except:
         pass
 
-    print "SPADE ", colors.color_yellow + __version__ + colors.color_none, " <gusarba@gmail.com> - http://spade2.googlecode.com"
+    print "SPADE ", colors.color_yellow + __version__ + colors.color_none, " <jpalanca@gmail.com> - https://github.com/javipalanca/SPADE"
 
     try:
         import psyco

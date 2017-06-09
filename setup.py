@@ -1,15 +1,10 @@
 #!/usr/bin/env python
-import os
 import sys
 import subprocess
-#from distutils.core import setup, Extension
 from setuptools import setup, Extension
-import glob
 
 from runspade import __version__
 
-#if os.name != "posix":
-#   import py2exe
 try:
     import bdist_mpkg   
 except:
@@ -31,16 +26,16 @@ deps = [
     "SPARQLWrapper",
     "unittest-xml-reporting"]
 if subprocess.mswindows:
-	deps.append( 'pywin32' )
+    deps.append( 'pywin32' )
 
 setup(name='SPADE',
     version=__version__,
     license="LGPL",
     description='Smart Python multi-Agent Development Environment',
     long_description=long_description,
-    author='Javier Palanca, Gustavo Aranda, Miguel Escriva',
+    author='Javier Palanca, Gustavo Aranda, Miguel Escriva and others',
     author_email='jpalanca@gmail.com',
-    url='http://spade2.googlecode.com',
+    url='https://github.com/javipalanca/SPADE',
     package_dir={'spade': 'spade'},
     packages=['spade','spade.mtps', 'xmpp', 'xmppd', 'xmppd.modules', 'xmppd.socker', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
     scripts=['runspade.py','configure.py'],#,"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
@@ -61,5 +56,3 @@ setup(name='SPADE',
     ],
     install_requires = deps
     )
-    
-    
