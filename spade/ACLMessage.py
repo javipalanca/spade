@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import AID
 import random
 import string
-import cPickle as pickle
-import content
-from ACLParser import ACLxmlParser
+import pickle
+
+from .utils import deprecated
+from . import content
+from . import AID
+from .ACLParser import ACLxmlParser
 import xml
 import uuid
 import json
@@ -41,12 +43,13 @@ class ACLMessage:
     PROXY = 'proxy'
     PROPAGATE = 'propagate'
 
-    cid_base = str("".join([string.ascii_letters[int(random.randint(0, len(string.ascii_letters) - 1))] for a in range(4)]))
+    cid_base = str(
+        "".join([string.ascii_letters[int(random.randint(0, len(string.ascii_letters) - 1))] for a in range(4)]))
     cid_autocount = 0
 
     def __init__(self, performative=None, jsonstring=None):
         self._attrs = {}
-        #possible FIPA communicative acts
+        # possible FIPA communicative acts
         self.commacts = ['accept-proposal', 'agree', 'cancel',
                          'cfp', 'call-for-proposal', 'confirm', 'disconfirm',
                          'failure', 'inform', 'not-understood',
@@ -55,16 +58,11 @@ class ACLMessage:
                          'request-when', 'request-whenever', 'subscribe',
                          'inform-if', 'proxy', 'propagate']
 
-        """
-        if performative and (performative.lower() in self.commacts):
-            self.performative = performative.lower()
-        else: self.performative = None
-        """
         if performative:
             self._attrs["performative"] = performative.lower()
-             # we do not check if is a fipa performative
-             # any string is valid...
-             # (performative.lower() in self.commacts):
+            # we do not check if is a fipa performative
+            # any string is valid...
+            # (performative.lower() in self.commacts):
 
         self.sender = None
         self.receivers = []
@@ -72,14 +70,10 @@ class ACLMessage:
 
         self._attrs["acl_representation"] = FIPA_ACL_REP_XML
 
-        #self._attrs['id'] = str(ACLMessage.cid_base + str(ACLMessage.cid_autocount))
-        #ACLMessage.cid_autocount += 1
         self._attrs['id'] = str(uuid.uuid4()).replace("-", "")
 
-        #self.userDefProps = None
-
         if jsonstring:
-            self.loadJSON(jsonstring)
+            self.read_json(jsonstring)
 
     def reset(self):
         """
@@ -88,55 +82,69 @@ class ACLMessage:
         """
         self.__init__()
 
-    def setSender(self, sender):
+    def set_sender(self, sender):
         """
         set the sender (AID class)
         """
         self.sender = sender
 
-    def getSender(self):
+    setSender = deprecated(set_sender, "setSender")
+
+    def get_sender(self):
         """
         returns the sender (AID class)
         """
         return self.sender
 
-    def addReceiver(self, recv):
+    getSender = deprecated(get_sender, "getSender")
+
+    def add_receiver(self, recv):
         """
         adds a receiver to the list (AID class)
         """
         self.receivers.append(recv)
 
-    def removeReceiver(self, recv):
+    addReceiver = deprecated(add_receiver, "addReceiver")
+
+    def remove_receiver(self, recv):
         """
         removes a receiver from the list (AID class)
         """
         if recv in self.receivers:
             self.receivers.remove(recv)
 
-    def resetReceivers(self):
+    removeReceiver = deprecated(remove_receiver, "removeReceiver")
+
+    def reset_receivers(self):
         """
         clears the list of receivers
         """
         self.receivers = []
 
-    def getReceivers(self):
+    resetReceivers = deprecated(reset_receivers, "resetReceivers")
+
+    def get_receivers(self):
         """
         returns the list of reveivers
         """
         return self.receivers
 
-    def addReplyTo(self, re):
+    getReceivers = deprecated(get_receivers, "getReceivers")
+
+    def add_reply_to(self, re):
         """
         adds a 'reply to' to the list (AID class)
         """
         if isinstance(re, AID.aid):
-            #self.reply_to.append(re)
+            # self.reply_to.append(re)
             if 'reply_to' in self._attrs:
                 self._attrs['reply_to'].append(re)
             else:
                 self._attrs['reply_to'] = [re]
 
-    def removeReplyTo(self, re):
+    addReplyTo = deprecated(add_reply_to, "addReplyTo")
+
+    def remove_reply_to(self, re):
         """
         removes a 'reply to' from the list (AID class)
         """
@@ -147,7 +155,9 @@ class ACLMessage:
 
         return True
 
-    def getReplyTo(self):
+    removeReplyTo = deprecated(remove_reply_to, "removeReplyTo")
+
+    def get_reply_to(self):
         """
         returns a 'reply to' from the list (AID class)
         """
@@ -156,17 +166,21 @@ class ACLMessage:
         except:
             return []
 
-    def setPerformative(self, p):
+    getReplyTo = deprecated(get_reply_to, "getReplyTo")
+
+    def set_performative(self, p):
         """
         sets the message performative (string)
         must be in ACLMessage.commacts
         """
         # we do not check if is a fipa performative
         # any string is valid...
-        #if p and (p.lower() in self.commacts):
+        # if p and (p.lower() in self.commacts):
         self._attrs["performative"] = p.lower()
 
-    def getPerformative(self):
+    setPerformative = deprecated(set_performative, "setPerformative")
+
+    def get_performative(self):
         """
         returns the message performative (string)
         """
@@ -175,19 +189,25 @@ class ACLMessage:
         except:
             return None
 
-    def setContent(self, c):
+    getPerformative = deprecated(get_performative, "getPerformative")
+
+    def set_content(self, c):
         """
         sets the message content (string, bytestream, ...)
         """
         self.content = str(c)
 
-    def setContentObject(self, co):
+    setContent = deprecated(set_content, "setContent")
+
+    def set_content_object(self, co):
         """
         sets the message content in ContentObject format
         """
         self.content = co
 
-    def getContent(self):
+    setContentObject = deprecated(set_content_object, "setContentObject")
+
+    def get_content(self):
         """
         returns the message content
         """
@@ -196,7 +216,9 @@ class ACLMessage:
         except:
             return str(self.content)
 
-    def getContentObject(self):
+    getContent = deprecated(get_content, "getContent")
+
+    def get_content_object(self):
         """
         returns the message content in ContentObject format, if possible
         """
@@ -210,89 +232,126 @@ class ACLMessage:
         else:
             return None
 
-    def setReplyWith(self, rw):
-        self._attrs["reply_with"] = str(rw)
-        #self.reply_with = rw
+    getContentObject = deprecated(get_content_object, "getContentObject")
 
-    def getReplyWith(self):
+    def set_reply_with(self, rw):
+        self._attrs["reply_with"] = str(rw)
+
+    setReplyWith = deprecated(set_reply_with, "setReplyWith")
+
+    def get_reply_with(self):
         try:
             return str(self._attrs["reply_with"])
         except:
             return None
 
-    def setInReplyTo(self, reply):
+    getReplyWith = deprecated(get_reply_with, "getReplyWith")
+
+    def set_in_reply_to(self, reply):
         self._attrs["in_reply_to"] = str(reply)
 
-    def getInReplyTo(self):
+    setInReplyTo = deprecated(set_in_reply_to, "setInReplyTo")
+
+    def get_in_reply_to(self):
         try:
             return str(self._attrs["in_reply_to"])
         except:
             return None
 
-    def setEncoding(self, e):
+    getInReplyTo = deprecated(get_in_reply_to, "getInReplyTo")
+
+    def set_encoding(self, e):
         self._attrs["encoding"] = str(e)
 
-    def getEncoding(self):
+    setEncoding = deprecated(set_encoding, "setEncoding")
+
+    def get_encoding(self):
         try:
             return str(self._attrs["encoding"])
         except:
             return None
 
-    def setLanguage(self, e):
+    getEncoding = deprecated(get_encoding, "getEncoding")
+
+    def set_language(self, e):
         self._attrs["language"] = str(e)
 
-    def getLanguage(self):
+    setLanguage = deprecated(set_language, "setLanguage")
+
+    def get_language(self):
         try:
             return str(self._attrs["language"])
         except:
             return None
 
-    def setAclRepresentation(self, e):
+    getLanguage = deprecated(get_language, "getLanguage")
+
+    def set_acl_representation(self, e):
         self._attrs["acl_representation"] = str(e)
 
-    def getAclRepresentation(self):
+    setAclRepresentation = deprecated(set_acl_representation, "setAclRepresentation")
+
+    def get_acl_representation(self):
         try:
             return str(self._attrs["acl_representation"])
         except:
             return None
 
-    def setOntology(self, e):
+    getAclRepresentation = deprecated(get_acl_representation, "getAclRepresentation")
+
+    def set_ontology(self, e):
         self._attrs["ontology"] = str(e)
 
-    def getOntology(self):
+    setOntology = deprecated(set_ontology, "setOntology")
+
+    def get_ontology(self):
         try:
             return str(self._attrs["ontology"])
         except:
             return None
 
-    def setReplyBy(self, e):
+    getOntology = deprecated(get_ontology, "getOntology")
+
+    def set_reply_by(self, e):
         self._attrs["reply_by"] = str(e)
 
-    def getReplyBy(self):
+    setReplyBy = deprecated(set_reply_by, "setReplyBy")
+
+    def get_reply_by(self):
         try:
             return str(self._attrs["reply_by"])
         except:
             return None
 
-    def setProtocol(self, e):
+    getReplyBy = deprecated(get_reply_by, "getReplyBy")
+
+    def set_protocol(self, e):
         self._attrs["protocol"] = str(e)
 
-    def getProtocol(self):
+    setProtocol = deprecated(set_protocol, "setProtocol")
+
+    def get_protocol(self):
         try:
             return str(self._attrs["protocol"])
         except:
             return None
 
-    def setConversationId(self, e):
+    getProtocol = deprecated(get_protocol, "getProtocol")
+
+    def set_conversation_id(self, e):
         self._attrs["id"] = str(e)
 
-    def getConversationId(self):
+    setConversationId = deprecated(set_conversation_id, "setConversationId")
+
+    def get_conversation_id(self):
         try:
             return str(self._attrs["id"])
         except:
             return None
 
-    def createReply(self):
+    getConversationId = deprecated(get_conversation_id, "getConversationId")
+
+    def create_reply(self):
         """
         Creates a reply for the message
         Duplicates all the message structures
@@ -301,58 +360,53 @@ class ACLMessage:
 
         m = ACLMessage()
 
-        m.setPerformative(self.getPerformative())
-        #m.setSender(None)
-        #m.receivers = []
-        #m.reply_to = []
-        #m.setContent(None)
-        #m.setReplyBy(None)
-        #m.setEncoding(None)
-        if self.getLanguage():
-            m.setLanguage(self.getLanguage())
-        if self.getOntology():
-            m.setOntology(self.getOntology())
-        if self.getProtocol():
-            m.setProtocol(self.getProtocol())
-        if self.getConversationId():
-            m.setConversationId(self.getConversationId())
+        m.set_performative(self.get_performative())
+        if self.get_language():
+            m.set_language(self.get_language())
+        if self.get_ontology():
+            m.set_ontology(self.get_ontology())
+        if self.get_protocol():
+            m.set_protocol(self.get_protocol())
+        if self.get_conversation_id():
+            m.set_conversation_id(self.get_conversation_id())
 
-        for i in self.getReplyTo():
-            m.addReceiver(i)
+        for i in self.get_reply_to():
+            m.add_receiver(i)
 
-        if not self.getReplyTo():
-            m.addReceiver(self.sender)
+        if not self.get_reply_to():
+            m.add_receiver(self.sender)
 
-        if self.getReplyWith():
-            m.setInReplyTo(self.getReplyWith())
-
-        #if self.getReplyWith() != None:
-        #	m.setConversationId(str(self.getReplyWith()))
+        if self.get_reply_with():
+            m.set_in_reply_to(self.get_reply_with())
 
         return m
 
+    createReply = deprecated(create_reply, "createReply")
+
     def __str__(self):
-        if self.getAclRepresentation() == FIPA_ACL_REP_JSON:
+        if self.get_acl_representation() == FIPA_ACL_REP_JSON:
             return self.asJSON()
-        elif self.getAclRepresentation() == FIPA_ACL_REP_STRING:
+        elif self.get_acl_representation() == FIPA_ACL_REP_STRING:
             return self.asString()
-        elif self.getAclRepresentation() == FIPA_ACL_REP_XML:
+        elif self.get_acl_representation() == FIPA_ACL_REP_XML:
             return self.asXML()
         else:
             return self.asXML()
 
-    def asXML(self):
+    def to_xml(self):
         p = ACLxmlParser()
-        return p.encodeXML(self)
+        return p.encode_xml(self)
 
-    def asString(self):
+    asXML = deprecated(to_xml, "asXML")
+
+    def to_string(self):
         """
         returns a printable version of the message in ACL string representation
         """
 
         p = '('
 
-        p = p + str(self.getPerformative()) + '\n'
+        p = p + str(self.get_performative()) + '\n'
         if self.sender:
             p = p + ":sender " + str(self.sender) + "\n"
 
@@ -365,39 +419,41 @@ class ACLMessage:
         if self.content:
             p = p + ':content "' + str(self.content) + '"\n'
 
-        if self.getReplyWith():
-            p = p + ":reply-with " + self.getReplyWith() + '\n'
+        if self.get_reply_with():
+            p = p + ":reply-with " + self.get_reply_with() + '\n'
 
-        if self.getReplyBy():
-            p = p + ":reply-by " + self.getReplyBy() + '\n'
+        if self.get_reply_by():
+            p = p + ":reply-by " + self.get_reply_by() + '\n'
 
-        if self.getInReplyTo():
-            p = p + ":in-reply-to " + self.getInReplyTo() + '\n'
+        if self.get_in_reply_to():
+            p = p + ":in-reply-to " + self.get_in_reply_to() + '\n'
 
-        if self.getReplyTo():
+        if self.get_reply_to():
             p = p + ":reply-to \n" + '(set\n'
-            for i in self.getReplyTo():
+            for i in self.get_reply_to():
                 p = p + i + '\n'
             p = p + ")\n"
 
-        if self.getLanguage():
-            p = p + ":language " + self.getLanguage() + '\n'
+        if self.get_language():
+            p = p + ":language " + self.get_language() + '\n'
 
-        if self.getEncoding():
-            p = p + ":encoding " + self.getEncoding() + '\n'
+        if self.get_encoding():
+            p = p + ":encoding " + self.get_encoding() + '\n'
 
-        if self.getOntology():
-            p = p + ":ontology " + self.getOntology() + '\n'
+        if self.get_ontology():
+            p = p + ":ontology " + self.get_ontology() + '\n'
 
-        if self.getProtocol():
-            p = p + ":protocol " + self.getProtocol() + '\n'
+        if self.get_protocol():
+            p = p + ":protocol " + self.get_protocol() + '\n'
 
-        if self.getConversationId():
-            p = p + ":conversation-id " + self.getConversationId() + '\n'
+        if self.get_conversation_id():
+            p = p + ":conversation-id " + self.get_conversation_id() + '\n'
 
         p = p + ")\n"
 
         return p
+
+    asString = deprecated(to_string, "asString")
 
     def serialize(self):
         """
@@ -405,21 +461,21 @@ class ACLMessage:
         """
         return pickle.dumps(self)
 
-    def asHTML(self):
+    def to_html(self):
         """
         returns an HTML version of the message ready to be displayed at the WUI
         """
         s = '<table class="servicesT" cellspacing="0">'
         s += '<tr><td class="servHd">Performative</td><td class="servBodL">' + self.getPerformative() + '</td></tr>'
         if self.sender:
-            sndr = self.sender.asXML()
+            sndr = self.sender.to_xml()
             sndr = sndr.replace(">", "&gt;")
             sndr = sndr.replace("<", "&lt;")
             sndr = sndr.replace('"', "&quot;")
             s += '<tr><td class="servHd">Sender</td><td class="servBodL"><pre>' + sndr + '</pre></td></tr>'
         recvs = ""
         for r in self.receivers:
-            escaped = r.asXML()
+            escaped = r.to_xml()
             escaped = escaped.replace(">", "&gt;")
             escaped = escaped.replace("<", "&lt;")
             escaped = escaped.replace('"', "&quot;")
@@ -437,42 +493,46 @@ class ACLMessage:
             cont = cont.replace("<", "&lt;")
             cont = cont.replace('"', "&quot;")
             s += '<tr><td class="servHd">Content</td><td class="servBodL"><pre>' + cont + '</pre></td></tr>'
-        if self.getReplyWith():
-            s += '<tr><td class="servHd">Reply With</td><td class="servBodL">' + str(self.getReplyWith()) + '</td></tr>'
-        if self.getReplyBy():
-            s += '<tr><td class="servHd">Reply By</td><td class="servBodL">' + str(self.getReplyBy()) + '</td></tr>'
-        if self.getInReplyTo():
-            s += '<tr><td class="servHd">In Reply To</td><td class="servBodL">' + str(self.getInReplyTo()) + '</td></tr>'
-        if self.getReplyTo():
-            s += '<tr><td class="servHd">Reply To</td><td class="servBodL">' + str(self.getReplyTo()) + '</td></tr>'
-        if self.getLanguage():
-            s += '<tr><td class="servHd">Language</td><td class="servBodL">' + str(self.getLanguage()) + '</td></tr>'
-        if self.getEncoding():
-            s += '<tr><td class="servHd">Encoding</td><td class="servBodL">' + str(self.getEncoding()) + '</td></tr>'
-        if self.getOntology():
-            s += '<tr><td class="servHd">Ontology</td><td class="servBodL">' + str(self.getOntology()) + '</td></tr>'
-        if self.getProtocol():
-            s += '<tr><td class="servHd">Protocol</td><td class="servBodL">' + str(self.getProtocol()) + '</td></tr>'
-        if self.getConversationId():
-            s += '<tr><td class="servHd">Conversation ID</td><td class="servBodL">' + str(self.getConversationId()) + '</td></tr>'
+        if self.get_reply_with():
+            s += '<tr><td class="servHd">Reply With</td><td class="servBodL">' + str(self.get_reply_with()) + '</td></tr>'
+        if self.get_reply_by():
+            s += '<tr><td class="servHd">Reply By</td><td class="servBodL">' + str(self.get_reply_by()) + '</td></tr>'
+        if self.get_in_reply_to():
+            s += '<tr><td class="servHd">In Reply To</td><td class="servBodL">' + str(
+                self.get_in_reply_to()) + '</td></tr>'
+        if self.get_reply_to():
+            s += '<tr><td class="servHd">Reply To</td><td class="servBodL">' + str(self.get_reply_to()) + '</td></tr>'
+        if self.get_language():
+            s += '<tr><td class="servHd">Language</td><td class="servBodL">' + str(self.get_language()) + '</td></tr>'
+        if self.get_encoding():
+            s += '<tr><td class="servHd">Encoding</td><td class="servBodL">' + str(self.get_encoding()) + '</td></tr>'
+        if self.get_ontology():
+            s += '<tr><td class="servHd">Ontology</td><td class="servBodL">' + str(self.get_ontology()) + '</td></tr>'
+        if self.get_protocol():
+            s += '<tr><td class="servHd">Protocol</td><td class="servBodL">' + str(self.get_protocol()) + '</td></tr>'
+        if self.get_conversation_id():
+            s += '<tr><td class="servHd">Conversation ID</td><td class="servBodL">' + str(
+                self.get_conversation_id()) + '</td></tr>'
         s += '</table>'
         return s
 
-    def asJSON(self):
+    asHTML = deprecated(to_html, "asHTML")
+
+    def to_json(self):
         """
         returns a JSON version of the message
         """
         p = "{"
 
-        p += '"performative":"' + str(self.getPerformative()) + '",'
+        p += '"performative":"' + str(self.get_performative()) + '",'
 
         if self.sender:
-            p += '"sender":' + self.sender.asJSON() + ","
+            p += '"sender":' + self.sender.to_json() + ","
 
         if self.receivers:
             p += '"receivers":['
             for i in self.receivers:
-                p += i.asJSON() + ","
+                p += i.to_json() + ","
             if p[-1:] == ",":
                 p = p[:-1]
             p += "],"
@@ -480,37 +540,37 @@ class ACLMessage:
         if self.content:
             p = p + '"content":"' + str(self.content) + '",'
 
-        if self.getReplyWith():
-            p = p + '"reply-with":"' + str(self.getReplyWith()) + '",'
+        if self.get_reply_with():
+            p = p + '"reply-with":"' + str(self.get_reply_with()) + '",'
 
-        if self.getReplyBy():
-            p = p + '"reply-by":"' + self.getReplyBy() + '",'
+        if self.get_reply_by():
+            p = p + '"reply-by":"' + self.get_reply_by() + '",'
 
-        if self.getInReplyTo():
-            p = p + '"in-reply-to":"' + self.getInReplyTo() + '",'
+        if self.get_in_reply_to():
+            p = p + '"in-reply-to":"' + self.get_in_reply_to() + '",'
 
-        if self.getReplyTo():
+        if self.get_reply_to():
             p = p + '"reply-to":['
-            for i in self.getReplyTo():
-                p = p + i.asJSON() + ","
+            for i in self.get_reply_to():
+                p = p + i.to_json() + ","
             if p[-1:] == ",":
                 p = p[:-1]
             p += "],"
 
-        if self.getLanguage():
-            p = p + '"language":"' + self.getLanguage() + '",'
+        if self.get_language():
+            p = p + '"language":"' + self.get_language() + '",'
 
-        if self.getEncoding():
-            p = p + '"encoding":"' + self.getEncoding() + '",'
+        if self.get_encoding():
+            p = p + '"encoding":"' + self.get_encoding() + '",'
 
-        if self.getOntology():
-            p = p + '"ontology":"' + self.getOntology() + '",'
+        if self.get_ontology():
+            p = p + '"ontology":"' + self.get_ontology() + '",'
 
-        if self.getProtocol():
-            p = p + '"protocol":"' + self.getProtocol() + '",'
+        if self.get_protocol():
+            p = p + '"protocol":"' + self.get_protocol() + '",'
 
-        if self.getConversationId():
-            p = p + '"conversation-id":"' + self.getConversationId() + '",'
+        if self.get_conversation_id():
+            p = p + '"conversation-id":"' + self.get_conversation_id() + '",'
 
         if p[-1:] == ",":
             p = p[:-1]
@@ -518,55 +578,59 @@ class ACLMessage:
 
         return p
 
-    def loadJSON(self, jsonstring):
+    asJSON = deprecated(to_json, "asJSON")
+
+    def read_json(self, jsonstring):
         """
         loads a JSON string in the message
         """
         p = json.loads(jsonstring)
 
         if "performative" in p:
-            self.setPerformative(p["performative"])
+            self.set_performative(p["performative"])
 
         if "sender" in p:
             s = AID.aid()
-            s.loadJSON(p["sender"])
-            self.setSender(s)
+            s.read_json(p["sender"])
+            self.set_sender(s)
 
         if "receivers" in p:
             for i in p["receivers"]:
                 s = AID.aid()
-                s.loadJSON(i)
-                self.addReceiver(s)
+                s.read_json(i)
+                self.add_receiver(s)
 
         if "content" in p:
-            self.setContent(p["content"])
+            self.set_content(p["content"])
 
         if "reply-with" in p:
-            self.setReplyWith(p["reply-with"])
+            self.set_reply_with(p["reply-with"])
 
         if "reply-by" in p:
-            self.setReplyBy(p["reply-by"])
+            self.set_reply_by(p["reply-by"])
 
         if "in-reply-to" in p:
-            self.setInReplyTo(p["in-reply-to"])
+            self.set_in_reply_to(p["in-reply-to"])
 
         if "reply-to" in p:
             for i in p["reply-to"]:
                 s = AID.aid()
-            s.loadJSON(i)
-            self.addReplyTo(s)
+            s.read_json(i)
+            self.add_reply_to(s)
 
         if "language" in p:
-            self.setLanguage(p["language"])
+            self.set_language(p["language"])
 
         if "encoding" in p:
-            self.setEncoding(p["encoding"])
+            self.set_encoding(p["encoding"])
 
         if "ontology" in p:
-            self.setOntology(p['ontology'])
+            self.set_ontology(p['ontology'])
 
         if "protocol" in p:
-            self.setProtocol(p['protocol'])
+            self.set_protocol(p['protocol'])
 
         if "conversation-id" in p:
-            self.setConversationId(p["conversation-id"])
+            self.set_conversation_id(p["conversation-id"])
+
+    loadJSON = deprecated(read_json, "loadJSON")

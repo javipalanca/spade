@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
-import types
-import AID
+from . import AID
+
 try:
     import json
 except ImportError:
-    import simplejson as json 
+    import simplejson as json
 
 
 class Envelope:
     """
     FIPA envelope
     """
-    def __init__(self, to=None, _from=None, comments=None, aclRepresentation=None, payloadLength=None, payloadEncoding=None, date=None, encrypted=None, intendedReceiver=None, received=None, transportBehaviour=None, userDefinedProperties=None, jsonstring=None):
+
+    def __init__(self, to=None, _from=None, comments=None, acl_representation=None, payload_length=None,
+                 payload_encoding=None, date=None, encrypted=None, intended_receiver=None, received=None,
+                 transport_behaviour=None, user_defined_properties=None, jsonstring=None):
 
         self.to = list()
         if to is not None:
@@ -26,18 +29,18 @@ class Envelope:
             self.comments = comments  # str
         else:
             self.comments = None
-        if aclRepresentation is not None:
-            self.aclRepresentation = aclRepresentation  # str
+        if acl_representation is not None:
+            self.acl_representation = acl_representation  # str
         else:
-            self.aclRepresentation = None
-        if payloadLength is not None:
-            self.payloadLength = payloadLength  # int
+            self.acl_representation = None
+        if payload_length is not None:
+            self.payload_length = payload_length  # int
         else:
-            self.payloadLength = None
-        if payloadEncoding is not None:
-            self.payloadEncoding = payloadEncoding  # str
+            self.payload_length = None
+        if payload_encoding is not None:
+            self.payload_encoding = payload_encoding  # str
         else:
-            self.payloadEncoding = None
+            self.payload_encoding = None
         if date is not None:
             self.date = date  # list(datetime)
         else:
@@ -46,92 +49,92 @@ class Envelope:
             self.encrypted = encrypted  # list(str)
         else:
             self.encrypted = list()
-        if intendedReceiver is not None:
-            self.intendedReceiver = intendedReceiver  # list(aid)
+        if intended_receiver is not None:
+            self.intended_receiver = intended_receiver  # list(aid)
         else:
-            self.intendedReceiver = list()
+            self.intended_receiver = list()
         if received is not None:
             self.received = received  # list(ReceivedObject)
         else:
             self.received = None
-        if transportBehaviour is not None:
-            self.transportBehaviour = transportBehaviour  # list(?)
+        if transport_behaviour is not None:
+            self.transport_behaviour = transport_behaviour  # list(?)
         else:
-            self.transportBehaviour = list()
-        if userDefinedProperties is not None:
-            self.userDefinedProperties = userDefinedProperties  # list(properties)
+            self.transport_behaviour = list()
+        if user_defined_properties is not None:
+            self.user_defined_properties = user_defined_properties  # list(properties)
         else:
-            self.userDefinedProperties = list()
+            self.user_defined_properties = list()
 
         if jsonstring:
-            self.loadJSON(jsonstring)
+            self.read_json(jsonstring)
 
-    def getTo(self):
+    def get_to(self):
         return self.to
 
-    def addTo(self, to):
+    def add_to(self, to):
         self.to.append(to)
-        self.addIntendedReceiver(to)
+        self.add_intended_receiver(to)
 
-    def getFrom(self):
+    def get_from(self):
         return self._from
 
-    def setFrom(self, _from):
+    def set_from(self, _from):
         self._from = _from
 
-    def getComments(self):
+    def get_comments(self):
         return self.comments
 
-    def setComments(self, comments):
+    def set_comments(self, comments):
         self.comments = comments
 
-    def getAclRepresentation(self):
-        return self.aclRepresentation
+    def get_acl_representation(self):
+        return self.acl_representation
 
-    def setAclRepresentation(self, acl):
-        self.aclRepresentation = acl
+    def set_acl_representation(self, acl):
+        self.acl_representation = acl
 
-    def getPayloadLength(self):
-        return self.payloadLength
+    def get_payload_length(self):
+        return self.payload_length
 
-    def setPayloadLength(self, pl):
-        self.payloadLength = pl
+    def set_payload_length(self, pl):
+        self.payload_length = pl
 
-    def getPayloadEncoding(self):
-        return self.payloadEncoding
+    def get_payload_encoding(self):
+        return self.payload_encoding
 
-    def setPayloadEncoding(self, pe):
-        self.payloadEncoding = pe
+    def set_payload_encoding(self, pe):
+        self.payload_encoding = pe
 
-    def getDate(self):
+    def get_date(self):
         return self.date
 
-    def setDate(self, date):
+    def set_date(self, date):
         self.date = date
 
-    def getEncryted(self):
+    def get_encryted(self):
         return self.encrypted
 
-    def setEncryted(self, encrypted):
+    def set_encryted(self, encrypted):
         self.encrypted = encrypted
 
-    def getIntendedReceiver(self):
-        return self.intendedReceiver
+    def get_intended_receiver(self):
+        return self.intended_receiver
 
-    def addIntendedReceiver(self, intended):
-        if not intended in self.intendedReceiver:
-            self.intendedReceiver.append(intended)
+    def add_intended_receiver(self, intended):
+        if intended not in self.intended_receiver:
+            self.intended_receiver.append(intended)
 
-    def getReceived(self):
+    def get_received(self):
         return self.received
 
-    def setReceived(self, received):
+    def set_received(self, received):
         self.received = received
 
     def __str__(self):
-        return self.asXML()
+        return self.to_xml()
 
-    def asXML(self):
+    def to_xml(self):
         """
         returns a printable version of the envelope in XML
         """
@@ -158,17 +161,17 @@ class Envelope:
             r = r + "\t\t\t\t\t\t</addresses> \n"
             r = r + "\t\t\t\t\t</agent-identifier> \n"
             r = r + "\t\t\t\t</from>\n"
-        if self.aclRepresentation:
-            r = r + "\t\t\t\t<acl-representation>" + self.aclRepresentation + "</acl-representation>\n"
-        if self.payloadLength:
-            r = r + "\t\t\t\t<payload-length>" + str(self.payloadLength) + "</payload-length>\n"
-        if self.payloadEncoding:
-            r = r + "\t\t\t\t<payload-encoding>" + self.payloadEncoding + "</payload-encoding>\n"
+        if self.acl_representation:
+            r = r + "\t\t\t\t<acl-representation>" + self.acl_representation + "</acl-representation>\n"
+        if self.payload_length:
+            r = r + "\t\t\t\t<payload-length>" + str(self.payload_length) + "</payload-length>\n"
+        if self.payload_encoding:
+            r = r + "\t\t\t\t<payload-encoding>" + self.payload_encoding + "</payload-encoding>\n"
         if self.date:
             r = r + "\t\t\t\t<date>" + str(self.date) + "</date>\n"
-        if self.intendedReceiver:
+        if self.intended_receiver:
             r = r + "\t\t\t\t<intended-receiver>\n"
-            for aid in self.intendedReceiver:
+            for aid in self.intended_receiver:
                 r = r + "\t\t\t\t\t<agent-identifier> \n"
                 r = r + "\t\t\t\t\t\t<name>" + aid.getName() + "</name> \n"
                 r = r + "\t\t\t\t\t\t<addresses>\n"
@@ -192,7 +195,7 @@ class Envelope:
 
         return r
 
-    def asJSON(self):
+    def to_json(self):
         """
         returns a printable version of the envelope in JSON
         """
@@ -200,62 +203,70 @@ class Envelope:
         r = r + '"to":['
         for aid in self.to:
             r = r + '{'
-            r = r + '"name":"' + aid.getName() + '",'
+            r = r + '"name":"' + aid.get_name() + '",'
             r = r + '"addresses":['
-            for addr in aid.getAddresses():
+            for addr in aid.get_addresses():
                 r = r + '"' + addr + '",'
-            if r[-1:] == ",": r = r[:-1]
+            if r[-1:] == ",":
+                r = r[:-1]
             r = r + "]"
             r = r + "},"
-        if r[-1:] == ",": r = r[:-1]
+        if r[-1:] == ",":
+            r = r[:-1]
         r = r + "],"
         if self._from:
             r = r + '"from":{'
-            r = r + '"name":"' + self._from.getName() + '",'
+            r = r + '"name":"' + self._from.get_name() + '",'
             r = r + '"addresses":['
-            for addr in self._from.getAddresses():
+            for addr in self._from.get_addresses():
                 r = r + '"' + addr + '",'
-            if r[-1:] == ",": r = r[:-1]
+            if r[-1:] == ",":
+                r = r[:-1]
             r = r + "]},"
-        if self.aclRepresentation:
-            r = r + '"acl-representation":"' + self.aclRepresentation + '",'
-        if self.payloadLength:
-            r = r + '"payload-length":"' + str(self.payloadLength) + '",'
-        if self.payloadEncoding:
-            r = r + '"payload-encoding":"' + self.payloadEncoding + '",'
+        if self.acl_representation:
+            r = r + '"acl-representation":"' + self.acl_representation + '",'
+        if self.payload_length:
+            r = r + '"payload-length":"' + str(self.payload_length) + '",'
+        if self.payload_encoding:
+            r = r + '"payload-encoding":"' + self.payload_encoding + '",'
         if self.date:
             r = r + '"date":"' + str(self.date) + '",'
-        if self.intendedReceiver:
+        if self.intended_receiver:
             r = r + '"intended-receiver":['
-            for aid in self.intendedReceiver:
+            for aid in self.intended_receiver:
                 r = r + "{"
-                r = r + '"name":"' + aid.getName() + '",'
+                r = r + '"name":"' + aid.get_name() + '",'
                 r = r + '"addresses":['
-                for addr in aid.getAddresses():
+                for addr in aid.get_addresses():
                     r = r + '"' + addr + '",'
-                if r[-1:] == ",": r = r[:-1]
+                if r[-1:] == ",":
+                    r = r[:-1]
                 r = r + "],"
-                if r[-1:] == ",": r = r[:-1]
+                if r[-1:] == ",":
+                    r = r[:-1]
                 r = r + "},"
-            if r[-1:] == ",": r = r[:-1]
+            if r[-1:] == ",":
+                r = r[:-1]
             r = r + "],"
         if self.received:
             r = r + '"received":{'
             if self.received.getBy():
-                r = r + '"received-by":"' + self.received.getBy() + '",'
+                r = r + '"received-by":"' + self.received.get_by() + '",'
             if self.received.getDate():
-                r = r + '"received-date":"' + str(self.received.getDate()) + '",'
+                r = r + '"received-date":"' + str(self.received.get_date()) + '",'
             if self.received.getId():
-                r = r + '"received-id":"' + self.received.getId() + '"'
-            if r[-1:] == ",": r = r[:-1]
+                r = r + '"received-id":"' + self.received.get_id() + '"'
+            if r[-1:] == ",":
+                r = r[:-1]
             r = r + "}"
 
-        if r[-1:] == ",": r = r[:-1]
+        if r[-1:] == ",":
+            r = r[:-1]
         r = r + "}"
 
         return r
 
-    def loadJSON(self, jsonstring):
+    def read_json(self, jsonstring):
         """
         loads a JSON string in the envelope
         """
@@ -267,26 +278,26 @@ class Envelope:
                 aid.setName(a["name"])
                 for addr in a["addresses"]:
                     aid.addAddress(addr)
-                self.addTo(aid)
+                self.add_to(aid)
         if "from" in r:
             aid = AID.aid()
             aid.setName(r["from"]["name"])
             for addr in r["from"]["addresses"]:
-                aid.addAddress(addr)
-            self.setFrom(aid)
+                aid.add_address(addr)
+            self.set_from(aid)
 
         if "acl-representation" in r:
-            self.setAclRepresentation(r["acl-representation"])
+            self.set_acl_representation(r["acl-representation"])
         if "payload-length" in r:
-            self.setPayloadLength(r["payload-length"])
+            self.set_payload_length(r["payload-length"])
         if "payload-encoding" in r:
-            self.setPayloadEncoding(r["payload-encoding"])
+            self.set_payload_encoding(r["payload-encoding"])
         if "date" in r:
-            self.setDate(r["date"])
+            self.set_date(r["date"])
         if "intended-receiver" in r:
             for ag in r["intended-receiver"]:
                 aid = AID.aid()
                 aid.setName(ag["name"])
                 for addr in ag["addresses"]:
                     aid.addAddress(addr)
-                self.addIntendedReceiver(aid)
+                self.add_intended_receiver(aid)

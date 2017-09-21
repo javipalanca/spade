@@ -12,31 +12,30 @@ class BasicFipaDateTime:
         constructor
         date parameter can be suplied
         """
-        if (date is None):
-            self.fromDateTime(datetime.now())
+        if date is None:
+            self.from_datetime(datetime.now())
         else:
             if isinstance(date, str) is True:
-                self.fromString(date)
+                self.from_string(date)
             elif isinstance(date, datetime) is True:
-                self.fromDateTime(date)
+                self.from_datetime(date)
 
-    def fromDateTime(self, dt):
+        self.calendar = None
+
+    def from_datetime(self, dt):
         """
         inits the object with another BasicFipaDateTime class
         """
         self.calendar = dt
 
-    def fromString(self, string):
+    def from_string(self, string):
         """
         loads the date and time from a string
         """
         if string is not None and string != "":
-            #print "string: " + str(string)
-
             year = int(string[0:4])
             month = int(string[4:6])
             day = int(string[6:8])
-            #tz = str[8]
             hour = int(string[9:11])
             minute = int(string[11:13])
             second = int(string[13:15])
@@ -48,56 +47,63 @@ class BasicFipaDateTime:
         else:
             return False
 
-    def getYear(self):
+    def get_year(self):
         return self.calendar.year
 
-    def setYear(self, year):
-        self.calendar = datetime(year, self.getMonth(), self.getDay(), self.getHour(), self.getMinutes(), self.getSeconds(), self.getMilliseconds(), self.getTypeDesignator())
+    def set_year(self, year):
+        self.calendar = datetime(year, self.get_month(), self.get_day(), self.get_hour(), self.get_minutes(),
+                                 self.get_seconds(), self.get_milliseconds(), self.get_type_designator())
 
-    def getMonth(self):
+    def get_month(self):
         return self.calendar.month
 
-    def setMonth(self, month):
-        self.calendar = datetime(self.calendar.year, month, self.calendar.day, self.calendar.hour, self.calendar.minute, self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
+    def set_month(self, month):
+        self.calendar = datetime(self.calendar.year, month, self.calendar.day, self.calendar.hour, self.calendar.minute,
+                                 self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
 
-    def getDay(self):
+    def get_day(self):
         return self.calendar.day
 
-    def setDay(self, day):
-        self.calendar = datetime(self.calendar.year, self.calendar.month, day, self.calendar.hour, self.calendar.minute, self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
+    def set_day(self, day):
+        self.calendar = datetime(self.calendar.year, self.calendar.month, day, self.calendar.hour, self.calendar.minute,
+                                 self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
 
-    def getHour(self):
+    def get_hour(self):
         return self.calendar.hour
 
-    def setHour(self, hour):
-        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, hour, self.calendar.minute, self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
+    def set_hour(self, hour):
+        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, hour, self.calendar.minute,
+                                 self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
 
-    def getMinutes(self):
+    def get_minutes(self):
         return self.calendar.minute
 
-    def setMinutes(self, minute):
-        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour, minute, self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
+    def set_minutes(self, minute):
+        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour, minute,
+                                 self.calendar.second, self.calendar.microsecond, self.calendar.tzinfo)
 
-    def getSeconds(self):
+    def get_seconds(self):
         return self.calendar.second
 
-    def setSeconds(self, second):
-        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour, self.calendar.minute, second, self.calendar.microsecond, self.calendar.tzinfo)
+    def set_seconds(self, second):
+        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour,
+                                 self.calendar.minute, second, self.calendar.microsecond, self.calendar.tzinfo)
 
-    def getMilliseconds(self):
+    def get_milliseconds(self):
         return self.calendar.microsecond
 
-    def setMilliseconds(self, milli):
-        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour, self.calendar.minute, self.calendat.second, microsecond, self.calendar.tzinfo)
+    def set_milliseconds(self, milli):
+        self.calendar = datetime(self.calendar.year, self.calendar.month, self.calendar.day, self.calendar.hour,
+                                 self.calendar.minute, self.calendar.second, milli, self.calendar.tzinfo)
 
-    def getTypeDesignator(self):
+    def get_type_designator(self):
         return self.calendar.tzinfo
 
-    def setTypeDesignator(self, tzinfo):
-        #self.calendar = datetime(self.calendar.year,self.calendar.month, self.calendar.day,self.calendar.hour,self.calendar.minute,self.calendat.second,self.calendar.microsecond,tzinfo)
+    def set_type_designator(self, tzinfo):
         pass
 
-    def paddedInt(self, size, val):
+    @staticmethod
+    def padded_int(size, val):
         res = str(val)
         while len(res) < size:
             res = '0' + res
@@ -107,19 +113,19 @@ class BasicFipaDateTime:
         """
         returns a printable version of the object
         """
-        str_date = str(self.getYear()) + self.paddedInt(2, self.getMonth()) + self.paddedInt(2, self.getDay()) + "T"
-        str_date = str_date + str(self.paddedInt(2, self.getHour()))
-        str_date = str_date + str(self.paddedInt(2, self.getMinutes())) + str(self.paddedInt(2, self.getSeconds())) + str(self.paddedInt(3, self.getMilliseconds()))
+        str_date = str(self.get_year()) + self.padded_int(2, self.get_month()) + self.padded_int(2, self.get_day()) + "T"
+        str_date = str_date + str(self.padded_int(2, self.get_hour()))
+        str_date = str_date + str(self.padded_int(2, self.get_minutes())) + str(self.padded_int(2, self.get_seconds())) + str(self.padded_int(3, self.get_milliseconds()))
 
         return str_date
 
-    def getTime(self):
+    def get_time(self):
         """
         returns a printable version of the object
         """
         return self.__str__()
 
-    def getDate(self):
+    def get_date(self):
         """
         returns a printable version of the object
         """

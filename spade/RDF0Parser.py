@@ -223,10 +223,10 @@ class RDF0Parser(handler.ContentHandler):
         if self.DESCRIPTION in content:
             sb = sb + self.encodeInitTagAttr(btag(self.RDF_PREF, self.DESCRIPTION), btag(self.RDF_PREF, self.ABOUT), content[self.DESCRIPTION][self.ABOUT])
             if self.DONE in content[self.DESCRIPTION]:
-                sb = sb + self.encodeTag(btag(self.FIPA_PREF, self.DONE), content[self.DESCRIPTION][self.DONE])
+                sb = sb + self.encode_tag(btag(self.FIPA_PREF, self.DONE), content[self.DESCRIPTION][self.DONE])
 
             if self.RESULT in content[self.DESCRIPTION]:
-                sb = sb_action + self.encodeTag(btag(self.FIPA_PREF, self.RESULT), content[self.DESCRIPTION][self.RESULT])
+                sb = sb_action + self.encode_tag(btag(self.FIPA_PREF, self.RESULT), content[self.DESCRIPTION][self.RESULT])
 
             sb = sb + self.encodeEndTag(btag(self.FIPA_PREF, self.ACTION))
 

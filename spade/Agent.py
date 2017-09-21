@@ -232,7 +232,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         agentslist = []
         for ts, m in self._messages:
             if isinstance(m, ACLMessage.ACLMessage):
-                strm = self._aclparser.encodeXML(m)
+                strm = self._aclparser.encode_xml(m)
                 x = xml.dom.minidom.parseString(strm)
                 #strm = x.toprettyxml()
                 strm = m.asHTML()
@@ -866,7 +866,7 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         if generate_envelope:
             envelope.setAclRepresentation(ACLmsg.getAclRepresentation())
             xc = XMLCodec.XMLCodec()
-            envxml = xc.encodeXML(envelope)
+            envxml = xc.encode_xml(envelope)
             xenv['content-type'] = 'fipa.mts.env.rep.xml.std'
             xenv.addChild(node=simplexml.NodeBuilder(envxml).getDom())
 

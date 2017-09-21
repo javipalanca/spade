@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-import ACLMessage
-import Behaviour
-import Envelope
-import MessageReceiver
-import SL0Parser
-import XMLCodec
-import ACLParser
-import AID
-import BasicFipaDateTime
-import DF
-import FIPAMessage
-import Platform
-import Agent
-import AMS
-import spade_backend
-import SpadeConfigParser
-import MTP
-import fipa
-import peer2peer
-import socialnetwork
-import content
-import colors
-import logic
-import bdi
-import RPC
+from . import ACLMessage
+from . import Behaviour
+from . import Envelope
+from . import MessageReceiver
+from . import SL0Parser
+from . import XMLCodec
+from . import ACLParser
+from . import AID
+from . import BasicFipaDateTime
+from . import DF
+from . import FIPAMessage
+from . import Platform
+from . import Agent
+from . import AMS
+from . import spade_backend
+from . import SpadeConfigParser
+from . import MTP
+from . import fipa
+from . import peer2peer
+from . import socialnetwork
+from . import content
+from . import colors
+from . import logic
+from . import bdi
+from . import RPC

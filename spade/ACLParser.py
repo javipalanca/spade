@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from pyparsing import *
 import sys
-import ACLMessage
-import AID
-from BasicFipaDateTime import *
+from .pyparsing import *
+from . import ACLMessage
+from . import AID
+from .BasicFipaDateTime import *
 
 import xml.sax
 from xml.sax import handler
@@ -30,15 +30,16 @@ class ACLParser:
 
         _sglQuote = Literal("'")
         _dblQuote = Literal('"')
-        StringLiteral = Combine(_dblQuote.suppress() + ZeroOrMore(CharsNotIn('\\"\r') | _escapedChar) + _dblQuote.suppress()).streamline()
+        StringLiteral = Combine(
+            _dblQuote.suppress() + ZeroOrMore(CharsNotIn('\\"\r') | _escapedChar) + _dblQuote.suppress()).streamline()
 
-        #Word = [~ "\0x00" – "\0x20", "(", ")", "#", "0" – "9", "-", "@"]
+        # Word = [~ "\0x00" – "\0x20", "(", ")", "#", "0" – "9", "-", "@"]
         #       [~ "\0x00" – "\0x20", "(", ")"]*
         ACLWord = Word(alphanums + "#@.-")
-        #StringLiteral = "\"" ([ ~ "\"" ] | "\\\"")* "\""
-        #StringLiteral = Combine(Literal('"')+OneOrMore(Word(alphanums+"#@ .:-_[]()+?'¿¡!$%&=*,,;<>/\\"))+Literal('"'))
+        # StringLiteral = "\"" ([ ~ "\"" ] | "\\\"")* "\""
+        # StringLiteral = Combine(Literal('"')+OneOrMore(Word(alphanums+"#@ .:-_[]()+?'¿¡!$%&=*,,;<>/\\"))+Literal('"'))
 
-        #ByteLengthEncodedString = "#" Digit+ "\"" <byte sequence>
+        # ByteLengthEncodedString = "#" Digit+ "\"" <byte sequence>
         ByteLengthEncodedString = Literal("TODO")
         String = (StringLiteral | ByteLengthEncodedString)
 
@@ -52,8 +53,10 @@ class ACLParser:
         DateTime = Combine(Optional(sign) + Year + Month + Day + Literal("T") + Hour + Minute + Second + MilliSecond)
 
         FloatExponent = Combine(Exponent + Optional(sign) + OneOrMore(digit))
-        FloatMantissa = Combine((OneOrMore(digit) + dot + ZeroOrMore(digit)) | (ZeroOrMore(digit) + dot + OneOrMore(digit)))
-        Float = Combine((Optional(sign) + FloatMantissa + Optional(FloatExponent)) | (Optional(sign) + OneOrMore(digit) + FloatExponent))
+        FloatMantissa = Combine(
+            (OneOrMore(digit) + dot + ZeroOrMore(digit)) | (ZeroOrMore(digit) + dot + OneOrMore(digit)))
+        Float = Combine((Optional(sign) + FloatMantissa + Optional(FloatExponent)) | (
+        Optional(sign) + OneOrMore(digit) + FloatExponent))
 
         Integer = Combine(Optional(sign) + OneOrMore(digit))
         Number = Group(Integer | Float)
@@ -93,20 +96,21 @@ class ACLParser:
         URL = (httpaddress|ftpaddress|mailtoaddress)
         """
 
-        #URL = Word(alphanums+":/#@.")
+        # URL = Word(alphanums+":/#@.")
         URL = Word(alphanums + ":/#@.-")
 
         URLSequence = (lpar + Literal("sequence").suppress() + OneOrMore(URL) + rpar)  # .setResultsName("URLseq")
 
         AgentIdentifier = Forward()
 
-        AgentIdentifierSequence = Group(lpar + Literal("sequence").suppress() + OneOrMore(AgentIdentifier) + rpar)  # .setResultsName("AIDseq")
+        AgentIdentifierSequence = Group(
+            lpar + Literal("sequence").suppress() + OneOrMore(AgentIdentifier) + rpar)  # .setResultsName("AIDseq")
 
-        #AddressSequence  = Group(lpar + Literal("sequence").suppress() + OneOrMore(URL)+rpar)   #Word(alphanums+"/.:+?")) + rpar)
+        # AddressSequence  = Group(lpar + Literal("sequence").suppress() + OneOrMore(URL)+rpar)   #Word(alphanums+"/.:+?")) + rpar)
 
         AgentIdentifier << Group(
             lpar + Literal("agent-identifier").suppress() +
-            #Literal(":name").suppress() + ACLWord.setResultsName("name") +
+            # Literal(":name").suppress() + ACLWord.setResultsName("name") +
             Literal(":name").suppress() + URL.setResultsName("name") +
             Optional(Literal(":addresses").suppress() + URLSequence.setResultsName("addresses")) +
             Optional(Literal(":resolvers").suppress() + AgentIdentifierSequence.setResultsName("resolvers")) +
@@ -115,19 +119,19 @@ class ACLParser:
             Optional(Literal(":X-JADE-agent-classname").suppress() + URL.suppress()) +
             rpar)  # .setResultsName("AID")
 
-        #AgentIdentifier << Group(lpar + Literal("agent-identifier").suppress() + Literal(":name").suppress() + Word(alphanums+"@.").setResultsName("name") + Optional(Literal(":addresses").suppress() + URLSequence.setResultsName("addresses")) + Optional(Literal(":resolvers").suppress() + AgentIdentifierSequence.setResultsName("resolvers")) + rpar)#.setResultsName("AID")
+        # AgentIdentifier << Group(lpar + Literal("agent-identifier").suppress() + Literal(":name").suppress() + Word(alphanums+"@.").setResultsName("name") + Optional(Literal(":addresses").suppress() + URLSequence.setResultsName("addresses")) + Optional(Literal(":resolvers").suppress() + AgentIdentifierSequence.setResultsName("resolvers")) + rpar)#.setResultsName("AID")
 
         AgentIdentifierSet = Group(lpar + Literal("set").suppress() + OneOrMore(AgentIdentifier) + rpar)
 
         Expression = Forward()
         Expression << (ACLWord | String | Number | DateTime | (lpar + Expression + rpar))
-        #Expression << (Word(alphanums).setResultsName("word") | String.setResultsName("string") | Number.setResultsName("number") | DateTime.setResultsName("datetime") | Combine(lpar + Expression + rpar).setResultsName("expression"))
+        # Expression << (Word(alphanums).setResultsName("word") | String.setResultsName("string") | Number.setResultsName("number") | DateTime.setResultsName("datetime") | Combine(lpar + Expression + rpar).setResultsName("expression"))
 
         MessageParameter = (
             Literal(":sender").suppress() + AgentIdentifier.setResultsName("sender") |
             Literal(":receiver").suppress() + AgentIdentifierSet.setResultsName("receiver") |
             Literal(":content").suppress() + String.setResultsName("content") |
-            #Literal(":reply-with").suppress() + Expression.setResultsName("reply-with") |
+            # Literal(":reply-with").suppress() + Expression.setResultsName("reply-with") |
             Literal(":reply-with").suppress() + URL.setResultsName("reply-with") |
             Literal(":reply-by").suppress() + DateTime.setResultsName("reply-by") |
             Literal(":in-reply-to").suppress() + Expression.setResultsName("in-reply-to") |
@@ -136,7 +140,7 @@ class ACLParser:
             Literal(":encoding").suppress() + Expression.setResultsName("encoding") |
             Literal(":ontology").suppress() + Expression.setResultsName("ontology") |
             Literal(":protocol").suppress() + ACLWord.setResultsName("protocol") |
-            #Literal(":conversation-id").suppress() + Expression.setResultsName("conversation-id")
+            # Literal(":conversation-id").suppress() + Expression.setResultsName("conversation-id")
             Literal(":conversation-id").suppress() + URL.setResultsName("conversation-id")
         )
 
@@ -188,26 +192,21 @@ class ACLParser:
             Literal("SUBSCRIBE")
         )
 
-        Message = (lpar + MessageType.setResultsName("msgtype") + OneOrMore(MessageParameter.setResultsName("msgParameter")) + rpar)  # .setResultsName("message")
+        Message = (lpar + MessageType.setResultsName("msgtype") + OneOrMore(
+            MessageParameter.setResultsName("msgParameter")) + rpar)  # .setResultsName("message")
 
         ACLCommunicativeAct = Message
 
         self.bnf = ACLCommunicativeAct
 
-        #bnf = OneOrMore(line).setResultsName("program")
-
-        #bnf.ignore(comment)
-        #bnf.ignore(directive)
-
         try:
             self.bnf.validate()
 
-        except Exception, err:
-            print err
+        except Exception as err:
+            print(err)
             sys.exit(-1)
 
-        #bnf.setDebug()
-    def processAID(self, _aid):
+    def parse_AID(self, _aid):
         """
         parses an AID.
         returns a pyparsing.ParseResult class
@@ -216,17 +215,17 @@ class ACLParser:
         aid = AID.aid()
 
         if 'name' in _aid:
-            aid.setName(_aid['name'])
+            aid.set_name(_aid['name'])
 
         if 'addresses' in _aid:
             addr = _aid['addresses']
             for i in addr:
-                aid.addAddress(i)
+                aid.add_address(i)
 
         if 'resolvers' in _aid:
             res = _aid['resolvers']
             for i in res:
-                aid.addResolvers(self.processAID(i))
+                aid.add_resolvers(self.parse_AID(i))
 
         return aid
 
@@ -237,101 +236,96 @@ class ACLParser:
         """
 
         try:
-            m = self.bnf.parseString(string)
-        except ParseException, err:
-            print err.line
-            print " " * (err.column - 1) + "^"
-            print err
+            parsed = self.bnf.parseString(string)
+        except ParseException as err:
+            print(err.line)
+            print(" " * (err.column - 1) + "^")
+            print(err)
             sys.exit(-1)
-        except Exception, err:
-            print "Unkwonw Exception"
-            print err
+        except Exception as err:
+            print("Unkwonw Exception")
+            print(err)
             sys.exit(-1)
 
-        return self.buildACL(m)
+        return self.build_acl(parsed)
 
-    def parseFile(self, file):
+    def parse_file(self, file):
         """
         parses a file
         returns an ACLMessage
         """
 
         try:
-            m = self.bnf.parseFile(file)
-        except ParseException, err:
-            print err.line
-            print " " * (err.column - 1) + "^"
-            print err
+            parsed = self.bnf.parseFile(file)
+        except ParseException as err:
+            print(err.line)
+            print(" " * (err.column - 1) + "^")
+            print(err)
             sys.exit(-1)
-        except Exception, err:
-            print "Unkwonw Exception"
-            print err
+        except Exception as err:
+            print("Unkwonw Exception")
+            print(err)
             sys.exit(-1)
 
-        return self.buildACL(m)
+        return self.build_acl(parsed)
 
-    def buildACL(self, m):
+    def build_acl(self, parsed_object):
         """
         returns an ACLMessage object from a pyparsing.ParseResults object
         """
 
-        #print repr(m)
-        #print m.asXML()
-        #print m.asList()
-
         msg = ACLMessage.ACLMessage()
 
-        if 'msgtype' in m:
-            msg.setPerformative(m['msgtype'])
+        if 'msgtype' in parsed_object:
+            msg.set_performative(parsed_object['msgtype'])
 
-        if 'sender' in m:
-            msg.setSender(self.processAID(m['sender']))
+        if 'sender' in parsed_object:
+            msg.set_sender(self.parse_AID(parsed_object['sender']))
 
-        if 'receiver' in m:
-            recv = m['receiver']
+        if 'receiver' in parsed_object:
+            recv = parsed_object['receiver']
             for i in recv:
-                msg.addReceiver(self.processAID(i))
+                msg.add_receiver(self.parse_AID(i))
 
-        if 'content' in m:
-            msg.setContent(m['content'])
+        if 'content' in parsed_object:
+            msg.set_content(parsed_object['content'])
 
-        if 'reply-with' in m:
-            msg.setReplyWith(m['reply-with'])
+        if 'reply-with' in parsed_object:
+            msg.set_reply_with(parsed_object['reply-with'])
 
-        if 'reply-by' in m:
-            msg.setReplyBy(BasicFipaDateTime(m['reply-by']))
+        if 'reply-by' in parsed_object:
+            msg.set_reply_by(BasicFipaDateTime(parsed_object['reply-by']))
 
-        if 'in-reply-to' in m:
-            msg.setInReplyTo(m['in-reply-to'])
+        if 'in-reply-to' in parsed_object:
+            msg.set_in_reply_to(parsed_object['in-reply-to'])
 
-        if 'reply-to' in m:
-            r = m['reply-to']
+        if 'reply-to' in parsed_object:
+            r = parsed_object['reply-to']
             for i in r:
-                msg.AddReplyTo(self.processAID(i))
+                msg.add_reply_to(self.parse_AID(i))
 
-        if 'language' in m:
-            msg.setLanguage(m['language'])
+        if 'language' in parsed_object:
+            msg.set_language(parsed_object['language'])
 
-        if 'encoding' in m:
-            msg.setEncoding(m['encoding'])
+        if 'encoding' in parsed_object:
+            msg.set_encoding(parsed_object['encoding'])
 
-        if 'ontology' in m:
-            msg.setOntology(m['ontology'])
+        if 'ontology' in parsed_object:
+            msg.setOntology(parsed_object['ontology'])
 
-        if 'protocol' in m:
-            msg.setProtocol(m['protocol'])
+        if 'protocol' in parsed_object:
+            msg.set_protocol(parsed_object['protocol'])
 
-        if 'conversation-id' in m:
-            msg.setConversationId(m['conversation-id'])
+        if 'conversation-id' in parsed_object:
+            msg.set_conversation_id(parsed_object['conversation-id'])
 
         return msg
 
 
 class ACLxmlParser(handler.ContentHandler):
-
     def __init__(self):
 
-        #constants
+        # constants
         self.FIPA_MESSAGE_TAG = "fipa-message"
         self.ACT_TAG = "act"
         self.CONVERSATION_ID_TAG = "conversation-id"
@@ -373,7 +367,7 @@ class ACLxmlParser(handler.ContentHandler):
     def endDocument(self):
         pass
 
-    #This method is called when exist characters in the elements
+    # This method is called when exist characters in the elements
     def characters(self, buff):
         self.accumulator = self.accumulator + buff
 
@@ -391,70 +385,70 @@ class ACLxmlParser(handler.ContentHandler):
 
         if self.SENDER_TAG == localName.lower():
             self.aid = AID.aid()
-            self.aidTag = self.SENDER_TAG
+            self.aid_tag = self.SENDER_TAG
 
         if self.RECEIVER_TAG == localName.lower():
             self.aid = AID.aid()
-            self.aidTag = self.RECEIVER_TAG
+            self.aid_tag = self.RECEIVER_TAG
 
         if self.REPLY_TO_TAG == localName.lower():
             self.aid = AID.aid()
-            self.aidTag = self.REPLY_TO_TAG
+            self.aid_tag = self.REPLY_TO_TAG
 
         if self.RESOLVERS_TAG == localName.lower():
             self.aid = AID.aid()
-            self.aidTag = self.RESOLVERS_TAG
+            self.aid_tag = self.RESOLVERS_TAG
 
         if self.REPLY_BY_TAG == localName.lower():
-            self.msg.setReplyBy(BasicFipaDateTime(attributes.getValue(self.TIME_TAG)))
+            self.msg.set_reply_by(BasicFipaDateTime(attributes.getValue(self.TIME_TAG)))
 
         if self.NAME_TAG == localName.lower():
-            self.aid.setName(attributes.getValue(self.ID_TAG))
+            self.aid.set_name(attributes.getValue(self.ID_TAG))
 
         if self.URL_TAG == localName.lower():
-            self.aid.addAddress(attributes.getValue(self.HREF_TAG))
+            self.aid.add_address(attributes.getValue(self.HREF_TAG))
 
-    def endElement(self, localName):
+    def endElement(self, localname):
 
-        if self.CONTENT_TAG == localName.lower():
-            self.msg.setContent(self.accumulator)
+        if self.CONTENT_TAG == localname.lower():
+            self.msg.set_content(self.accumulator)
 
-        if self.LANGUAGE_TAG == localName.lower():
-            self.msg.setLanguage(self.accumulator)
+        if self.LANGUAGE_TAG == localname.lower():
+            self.msg.set_language(self.accumulator)
 
-        if self.ENCODING_TAG == localName.lower():
-            self.msg.setEncoding(self.accumulator)
+        if self.ENCODING_TAG == localname.lower():
+            self.msg.set_encoding(self.accumulator)
 
-        if self.ONTOLOGY_TAG == localName.lower():
-            self.msg.setOntology(self.accumulator)
+        if self.ONTOLOGY_TAG == localname.lower():
+            self.msg.set_ontology(self.accumulator)
 
-        if self.PROTOCOL_TAG == localName.lower():
-            self.msg.setProtocol(self.accumulator)
+        if self.PROTOCOL_TAG == localname.lower():
+            self.msg.set_protocol(self.accumulator)
 
-        if self.REPLY_WITH_TAG == localName.lower():
-            self.msg.setReplyWith(self.accumulator)
+        if self.REPLY_WITH_TAG == localname.lower():
+            self.msg.set_reply_with(self.accumulator)
 
-        if self.IN_REPLY_TO_TAG == localName.lower():
-            self.msg.setInReplyTo(self.accumulator)
+        if self.IN_REPLY_TO_TAG == localname.lower():
+            self.msg.set_in_reply_to(self.accumulator)
 
-        if self.REPLY_TO_TAG == localName.lower() or \
-            self.SENDER_TAG == localName.lower() or \
-            self.RECEIVER_TAG == localName.lower() or \
-                self.RESOLVERS_TAG == localName.lower():
-            self.aidTag = ""
+        if self.REPLY_TO_TAG == localname.lower() or \
+                        self.SENDER_TAG == localname.lower() or \
+                        self.RECEIVER_TAG == localname.lower() or \
+                        self.RESOLVERS_TAG == localname.lower():
+            self.aid_tag = ""
 
-        if self.CONVERSATION_ID_TAG == localName.lower():
-            self.msg.setConversationId(self.accumulator)
+        if self.CONVERSATION_ID_TAG == localname.lower():
+            self.msg.set_conversation_id(self.accumulator)
 
-        if self.AGENT_ID_TAG == localName.lower():
-            if self.aidTag == self.SENDER_TAG:
-                self.msg.setSender(self.aid)
-            elif self.aidTag == self.RECEIVER_TAG:
-                self.msg.addReceiver(self.aid)
-            elif self.aidTag == self.REPLY_TO_TAG:
-                self.msg.addReplyTo(self.aid)
-            elif self.aidTag == self.RESOLVERS_TAG:
-                self.msg.addResolvers(self.aid)
+        if self.AGENT_ID_TAG == localname.lower():
+            if self.aid_tag == self.SENDER_TAG:
+                self.msg.set_sender(self.aid)
+            elif self.aid_tag == self.RECEIVER_TAG:
+                self.msg.add_receiver(self.aid)
+            elif self.aid_tag == self.REPLY_TO_TAG:
+                self.msg.add_reply_to(self.aid)
+            #elif self.aid_tag == self.RESOLVERS_TAG:
+            #    self.msg.addResolvers(self.aid)
 
     """
       This does the following:
@@ -462,7 +456,8 @@ class ACLxmlParser(handler.ContentHandler):
          content
       </ tag >
     """
-    def encodeTag(self, tag, content, proptag=None, propcontent=None):
+
+    def encode_tag(self, tag, content, proptag=None, propcontent=None):
         sb = self.OT + tag
         if proptag is not None:
             sb = sb + " " + proptag + '="' + str(propcontent) + '"'
@@ -477,82 +472,83 @@ class ACLxmlParser(handler.ContentHandler):
         return sb
 
     """ Encode the information of Agent, Tags To and From """
-    def encodeAid(self, aid):
+
+    def encode_aid(self, aid):
 
         sb = self.OT + self.AGENT_ID_TAG + self.CT
-        sb = sb + self.encodeTag(self.NAME_TAG, None, self.ID_TAG, aid.getName())
+        sb = sb + self.encode_tag(self.NAME_TAG, None, self.ID_TAG, aid.getName())
 
         sb = sb + self.OT + self.ADDRESSES_TAG + self.CT
-        addresses = aid.getAddresses()
+        addresses = aid.get_addresses()
         for addr in addresses:
-            sb = sb + self.encodeTag(self.URL_TAG, "", self.HREF_TAG, addr)
+            sb = sb + self.encode_tag(self.URL_TAG, "", self.HREF_TAG, addr)
         sb = sb + self.ET + self.ADDRESSES_TAG + self.CT
 
-        resolvers = aid.getResolvers()
+        resolvers = aid.get_resolvers()
         if len(resolvers) > 0:
             sb = sb + self.OT + self.RESOLVERS_TAG + self.CT
             for res in resolvers:
-                sb = sb + self.encodeAid(res)
+                sb = sb + self.encode_aid(res)
             sb = sb + self.ET + self.RESOLVERS_TAG + self.CT
 
         sb = sb + self.ET + self.AGENT_ID_TAG + self.CT
 
         return sb
 
-    def encodeXML(self, msg):
+    def encode_xml(self, msg):
 
         sb = self.OT + self.FIPA_MESSAGE_TAG
         if msg.getPerformative():
             sb += " " + self.ACT_TAG + '="' + msg.getPerformative() + '"'
         sb += self.CT
 
-        #sender
-        if msg.getSender():
+        # sender
+        if msg.get_sender():
             sb += self.OT + self.SENDER_TAG + self.CT
-            sb += self.encodeAid(msg.getSender())
+            sb += self.encode_aid(msg.get_sender())
             sb += self.ET + self.SENDER_TAG + self.CT
 
-        #receivers
-        if len(msg.getReceivers()) > 0:
+        # receivers
+        if len(msg.get_receivers()) > 0:
             sb += self.OT + self.RECEIVER_TAG + self.CT
-            for r in msg.getReceivers():
-                sb += self.encodeAid(r)
+            for r in msg.get_receivers():
+                sb += self.encode_aid(r)
             sb += self.ET + self.RECEIVER_TAG + self.CT
 
-        if msg.getContent():
-            sb += self.encodeTag(self.CONTENT_TAG, str(msg.getContent()))
+        if msg.get_content():
+            sb += self.encode_tag(self.CONTENT_TAG, str(msg.get_content()))
 
-        if msg.getLanguage():
-            sb += self.encodeTag(self.LANGUAGE_TAG, msg.getLanguage())
+        if msg.get_language():
+            sb += self.encode_tag(self.LANGUAGE_TAG, msg.get_language())
 
-        if msg.getEncoding():
-            sb += self.encodeTag(self.ENCODING_TAG, msg.getEncoding())
+        if msg.get_encoding():
+            sb += self.encode_tag(self.ENCODING_TAG, msg.get_encoding())
 
-        if msg.getOntology():
-            sb += self.encodeTag(self.ONTOLOGY_TAG, msg.getOntology())
+        if msg.get_ontology():
+            sb += self.encode_tag(self.ONTOLOGY_TAG, msg.get_ontology())
 
-        if msg.getProtocol():
-            sb += self.encodeTag(self.PROTOCOL_TAG, msg.getProtocol())
+        if msg.get_protocol():
+            sb += self.encode_tag(self.PROTOCOL_TAG, msg.get_protocol())
 
-        if msg.getReplyWith():
-            sb += self.encodeTag(self.REPLY_WITH_TAG, msg.getReplyWith())
+        if msg.get_reply_with():
+            sb += self.encode_tag(self.REPLY_WITH_TAG, msg.get_reply_with())
 
-        if msg.getInReplyTo():
-            sb += self.encodeTag(self.IN_REPLY_TO_TAG, msg.getInReplyTo())
+        if msg.get_in_reply_to():
+            sb += self.encode_tag(self.IN_REPLY_TO_TAG, msg.get_in_reply_to())
 
-        if msg.getReplyBy():
+        if msg.get_reply_by():
             date = BasicFipaDateTime()
-            date.fromString(str(msg.getReplyBy()))
-            sb += self.encodeTag(self.REPLY_BY_TAG, str(date))
+            date.from_string(str(msg.get_reply_by()))
+            sb += self.encode_tag(self.REPLY_BY_TAG, str(date))
 
-        if len(msg.getReplyTo()) > 0:
+        if len(msg.get_reply_to()) > 0:
             sb += self.OT + self.REPLY_TO_TAG + self.CT
-            for e in msg.getReplyTo():
-                sb += self.encodeAid(e)
+            for e in msg.get_reply_to():
+                sb += self.encode_aid(e)
             sb += self.ET + self.REPLY_TO_TAG + self.CT
 
-        if msg.getConversationId():
-            sb += self.encodeTag(self.CONVERSATION_ID_TAG, msg.getConversationId())
+        if msg.get_conversation_id():
+            sb += self.encode_tag(self.CONVERSATION_ID_TAG, msg.get_conversation_id())
 
         sb += self.ET + self.FIPA_MESSAGE_TAG + self.CT
 
@@ -565,38 +561,13 @@ class ACLxmlParser(handler.ContentHandler):
         xml.sax.parseString(_in, self)
         return self.msg
 
-    def parseFile(self, file):
+    def parse_file(self, file):
         xml.sax.parse(file, self)
         return self.msg
 
 
-#p = ACLParser()
-#msg = p.parse("message3.acl")
-#print msg
 if __name__ == "__main__":
-
-    p = ACLxmlParser()
-    m = p.parseFile("m.xml")
-    print m
-    print p.encodeXML(m)
-
-
-
-#Debug print
-#print program.asXML("instruction")
-#for line in program:
-#	print line
-#	for k in line.keys():
-#		print k + ':' + str(line[k])
-#	print
-
-
-#exception control
-#	except ParseException,err:
-#		print err.line
-#		print " "*(err.column-1)+"^"
-#		print err
-#
-#	except RecursiveGrammarException, err:
-#		print err.line
-#		print err
+    parser = ACLxmlParser()
+    msg = parser.parse_file("m.xml")
+    print(msg)
+    print(parser.encode_xml(msg))
