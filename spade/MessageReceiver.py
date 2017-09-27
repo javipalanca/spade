@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import threading
-import sys
-from Queue import *
 import time
+from queue import Queue, Empty
 
 
 class MessageReceiver(threading.Thread):
@@ -18,26 +17,9 @@ class MessageReceiver(threading.Thread):
         self.not_empty = threading.Condition(self.mutex)
         self.not_full = threading.Condition(self.mutex)
         self.setDaemon(False)
-        #self.__messages = MessageList(0)
         self.__messages = Queue(0)
 
-    '''def __getMessage(self, block, tout):
-        try:
-            message = self.__messages.get(block, tout)
-        except Empty:
-            message = None
-            #print "MESSAGE = None - Empty "+str(tout)
-            #print ">>> __getMessage: EMPTY"
-        except:
-            message = None
-            #time.sleep(1)
-            #print "MESSAGE = None - otra.", sys.exc_info()[0]
-            #print ">>> __getMessage: FUCKING EXCEPTION"
-
-        return message
-    '''
-
-    def __getMessage(self, block, tout):
+    def __get_message(self, block, tout):
         t_sleep = 0.01
         message = None
         if not block:
@@ -69,12 +51,6 @@ class MessageReceiver(threading.Thread):
 
         return message
 
-    """
-    def receive(self):
-        #returns a message if available
-        #else returns None
-        return self.__getMessage(False, None)
-    """
     def _receive(self, block=False, timeout=None, template=None):
         """
         waits for a message during timeout
@@ -82,7 +58,7 @@ class MessageReceiver(threading.Thread):
         if no message is received returns None
         """
         if not template:
-            return self.__getMessage(block, timeout)
+            return self.__get_message(block, timeout)
         else:
             self.not_empty.acquire()
             for msg in self.__messages.queue:
@@ -108,10 +84,9 @@ class MessageReceiver(threading.Thread):
                         return None
                     self.not_empty.wait(remaining)
 
-    def postMessage(self, message):
-        if (message is not None):
+    def post_message(self, message):
+        if message is not None:
             self.post_mutex.acquire()
-            #self.__messages.put_commit(self.__messages.put(message,block=True))
             self.not_full.acquire()
             self.__messages.put(message, block=True)
             self.not_empty.notify()

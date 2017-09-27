@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from spade.utils import deprecated
+
 
 class FipaMessage:
     """
@@ -10,8 +12,12 @@ class FipaMessage:
         self.__messageBody = messageBody
         self.__messageEnvelopes.setPayloadLength(str(len(str(self.__messageBody))))
 
-    def getEnvelope(self):
+    def get_envelope(self):
         return self.__messageEnvelopes
 
-    def getBody(self):
+    getEnvelope = deprecated(get_envelope, "getEnvelope")
+
+    def get_body(self):
         return self.__messageBody
+
+    getBody = deprecated(get_body, "getBody")

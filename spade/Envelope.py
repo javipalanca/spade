@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import AID
+import json
 
-try:
-    import json
-except ImportError:
-    import simplejson as json
+from . import AID
 
 
 class Envelope:

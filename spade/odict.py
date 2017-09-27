@@ -106,7 +106,7 @@
     :copyright: (c) 2008 by Armin Ronacher and PEP 273 authors.
     :license: modified BSD license.
 """
-from itertools import izip, imap
+
 from copy import deepcopy
 
 missing = object()
@@ -211,7 +211,7 @@ class odict(dict):
         if d is not missing:
             return d
         memo[id(self)] = d = self.__class__()
-        dict.__init__(d, deepcopy(self.items(), memo))
+        dict.__init__(d, deepcopy(list(self.items()), memo))
         d._keys = self._keys[:]
         return d
 
@@ -229,7 +229,7 @@ class odict(dict):
         if isinstance(other, odict):
             if not dict.__eq__(self, other):
                 return False
-            return self.items() == other.items()
+            return list(self.items()) == list(other.items())
         return dict.__eq__(self, other)
 
     def __ne__(self, other):
@@ -237,7 +237,7 @@ class odict(dict):
 
     def __cmp__(self, other):
         if isinstance(other, odict):
-            return cmp(self.items(), other.items())
+            return cmp(list(self.items()), list(other.items()))
         elif isinstance(other, dict):
             return dict.__cmp__(self, other)
         return NotImplemented
@@ -254,10 +254,10 @@ class odict(dict):
         return self.__class__(self)
 
     def items(self):
-        return zip(self._keys, self.values())
+        return list(zip(self._keys, list(self.values())))
 
     def iteritems(self):
-        return izip(self._keys, self.itervalues())
+        return zip(self._keys, iter(self.values()))
 
     def keys(self):
         return self._keys[:]
@@ -286,22 +286,22 @@ class odict(dict):
         sources = []
         if len(args) == 1:
             if hasattr(args[0], 'iteritems'):
-                sources.append(args[0].iteritems())
+                sources.append(iter(args[0].items()))
             else:
                 sources.append(iter(args[0]))
         elif args:
             raise TypeError('expected at most one positional argument')
         if kwargs:
-            sources.append(kwargs.iteritems())
+            sources.append(iter(kwargs.items()))
         for iterable in sources:
             for key, val in iterable:
                 self[key] = val
 
     def values(self):
-        return map(self.get, self._keys)
+        return list(map(self.get, self._keys))
 
     def itervalues(self):
-        return imap(self.get, self._keys)
+        return map(self.get, self._keys)
 
     def index(self, item):
         return self._keys.index(item)
@@ -317,7 +317,7 @@ class odict(dict):
         self._keys.sort(*args, **kwargs)
 
     def __repr__(self):
-        return 'odict.odict(%r)' % self.items()
+        return 'odict.odict(%r)' % list(self.items())
 
     __copy__ = copy
     __iter__ = iterkeys
@@ -325,4 +325,5 @@ class odict(dict):
 
 if __name__ == '__main__':
     import doctest
+
     doctest.testmod()

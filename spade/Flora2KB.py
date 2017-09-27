@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-from logic import KB, get_object_type, get_object_instance
-from pyxf import flora2
-import random, string
+import random
+import string
+
+from .logic import KB, get_object_instance
+from .pyxf import flora2
+from .utils import deprecated
 
 
 class Flora2KB(KB):
-    '''Flora2 knowledge base'''
+    """Flora2 knowledge base"""
+
     def __init__(self, sentence=None, path='runflora'):
         '''Constructor method
         Usage: Flora2KB( sentence, path )
@@ -16,41 +20,43 @@ class Flora2KB(KB):
             self.tell(sentence)
 
     def tell(self, sentence, type='insert'):
-        '''Adds sentence to KB
+        """Adds sentence to KB
         Usage: instance.tell( sentence, type )
         sentence - frame logic sentence to be added to KB
-        type - insertion type (one of insert, insertall, t_insert, t_insertall, insertrule, newmodule; default: 'insert')'''
+        type - insertion type (one of insert, insertall, t_insert, t_insertall, insertrule, newmodule; default: 'insert')"""
         sentence = sentence.strip()
         if sentence[-1] == '.':
             sentence = sentence[:-1]
         return self.flora2.query(type + '{' + sentence + '}')
 
     def ask(self, query):
-        '''Queries the KB'''
+        """Queries the KB"""
         return self.flora2.query(query)
 
     def retract(self, sentence, type='delete'):
-        '''Deletes sentence from KB
+        """Deletes sentence from KB
         Usage: instance.retract( sentence, type )
         sentence - frame logic sentence to be deleted from KB
-        type - deletion type (one of delete, deleteall, erase, eraseall, t_delete, t_deleteall, t_erase, t_eraseall, deletetrule, erasemodule; default: 'delete')'''
+        type - deletion type (one of delete, deleteall, erase, eraseall, t_delete, t_deleteall, t_erase, t_eraseall, deletetrule, erasemodule; default: 'delete')"""
         sentence = sentence.strip()
         if sentence[-1] == '.':
             sentence = sentence[:-1]
         return self.flora2.query(type + '{' + sentence + '}')
 
-    def loadModule(self, module, into=None):
-        '''Loads module to KB
+    def load_module(self, module, into=None):
+        """Loads module to KB
         Usage: instance.loadModule( path )
-        path - path to module'''
+        path - path to module"""
         self.flora2.load(module, into)
 
+    loadModule = deprecated(load_module, "loadModule")
+
     def _encode(self, key, value):
-        '''Encodes a given key value pair to the knowledge base 
+        """Encodes a given key value pair to the knowledge base
         (internal, for use by kb.KB only)
         Usage: instance._encode( key, value )
         key - the key (variable name) to be encoded
-        value - the (Python) value to be encoded'''
+        value - the (Python) value to be encoded"""
         if issubclass(value.__class__, str):
             self.tell("var('" + key + "','" + value + "', str)")
 
@@ -68,7 +74,7 @@ class Flora2KB(KB):
 
         elif issubclass(value.__class__, dict):
             dictID = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for x in range(8))
-            for k, v in value.items():
+            for k, v in list(value.items()):
                 elemID = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for x in range(8))
                 self._encode(elemID + "Key", k)
                 self._encode(elemID + "Value", v)
@@ -77,36 +83,36 @@ class Flora2KB(KB):
         elif value is None:
             self.tell("var('" + key + "',none,noneType)")
         else:
-            typ = str( value.__module__ + "." + value.__class__.__name__ )
+            typ = str(value.__module__ + "." + value.__class__.__name__)
             objID = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for x in range(8))
             if value.__dict__ != {}:
-                self._encode( objID, value.__dict__ )
+                self._encode(objID, value.__dict__)
             else:
-                self.tell( "pair('" + objID + "', empty_object)" ) 
-            self.tell( "var('" + key + "', '" + objID + "', '" + typ + "')" )
+                self.tell("pair('" + objID + "', empty_object)")
+            self.tell("var('" + key + "', '" + objID + "', '" + typ + "')")
 
     def _decode(self, key):
-        '''Decodes a given key and return its value from the knowledge base 
+        """Decodes a given key and return its value from the knowledge base
         (internal, for use by kb.KB only)
         Usage: instance._decode( key )
-        key - the key (variable name) to be decoded'''
+        key - the key (variable name) to be decoded"""
         gen = self._gen_decode(key)
         try:
-            return gen.next()
+            return next(gen)
         except StopIteration:
             return None
 
     def _gen_decode(self, key):
-        '''Decoding generator
+        """Decoding generator
         (internal, for use by kb.KB only)
         Usage: instance._gen_decode( key )
-        key - the key (variable name) to be decoded'''
+        key - the key (variable name) to be decoded"""
         results = self.ask("var('" + key + "', ?Value, ?Type)")
         if isinstance(results, bool) or results == []:
             yield None
         for res in results:
-            value = str( res["Value"] )
-            typ = str( res["Type"] )
+            value = str(res["Value"])
+            typ = str(res["Type"])
 
             if typ == "int":
                 yield int(value)
@@ -121,7 +127,7 @@ class Flora2KB(KB):
                 hasElements = True
                 while hasElements:
                     try:
-                        l.append(gen.next())
+                        l.append(next(gen))
                     except:
                         hasElements = False
                 yield l
@@ -132,8 +138,8 @@ class Flora2KB(KB):
                     elemID = str(i["ElemID"])
                     if elemID == 'empty_object':
                         continue
-                    newkey = self._gen_decode(elemID + "Key").next()
-                    newvalue = self._gen_decode(elemID + "Value").next()
+                    newkey = next(self._gen_decode(elemID + "Key"))
+                    newvalue = next(self._gen_decode(elemID + "Value"))
                     d[newkey] = newvalue
                 yield d
             elif typ == "noneType":
@@ -146,14 +152,13 @@ class Flora2KB(KB):
                 try:
                     module, clas = classname.split(".")
                     obj = get_object_instance(clas, module)
-                    d = self._gen_decode(objdict).next()
+                    d = next(self._gen_decode(objdict))
                     if d == None:
                         d = {}
                         obj.__dict__ = d
                     yield obj
                 except:
-                    raise GeneratorExit, "No such class in namespace: %s" % classname
-                
+                    raise GeneratorExit("No such class in namespace: %s" % classname)
 
 
 if __name__ == '__main__':
@@ -161,5 +166,5 @@ if __name__ == '__main__':
     kb.tell('a[ b->c ]')
     kb.tell('( ?x[ c->?y ] :- ?x[ b->?y ] )', 'insertrule')
     for result in kb.ask('?x[ ?y->?z ]'):
-        print result
+        print(result)
     kb.retract('a[ b->c ]')
