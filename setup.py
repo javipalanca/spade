@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""The setup script."""
+from pip.req import parse_requirements
+from setuptools import setup, find_packages
+
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+install_reqs = parse_requirements("requirements.txt", session=False)
+requirements = [str(ir.req) for ir in install_reqs]
+
+setup_requirements = [
+    'pytest-runner',
+    # put setup requirements (distutils extensions, etc.) here
+]
+
+install_reqs = parse_requirements("requirements_dev.txt", session=False)
+test_requirements = [str(ir.req) for ir in install_reqs]
+
+setup(
+    name='spade',
+    version='3.0.0',
+    description="Smart Python Agent Development Environment",
+    long_description=readme + '\n\n' + history,
+    author="Javi Palanca",
+    author_email='jpalanca@gmail.com',
+    url='https://github.com/javipalanca/spade',
+    packages=find_packages(include=['spade']),
+    entry_points={
+        'console_scripts': [
+            'spade=spade.cli:main'
+        ]
+    },
+    include_package_data=True,
+    install_requires=requirements,
+    license="MIT license",
+    zip_safe=False,
+    keywords='spade',
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+    ],
+    test_suite='tests',
+    tests_require=test_requirements,
+    setup_requires=setup_requirements,
+)
