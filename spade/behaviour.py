@@ -23,7 +23,7 @@ class Behaviour(object):
         return self.agent.get(name)
 
     def start(self):
-        self._aiothread.add_task(self._step())
+        self._aiothread.submit(self._step())
 
     def kill(self):
         """
@@ -45,7 +45,7 @@ class Behaviour(object):
     async def _step(self):
         if not self.done() and not self.is_killed():
             await self.run()
-            self._aiothread.add_task(self._step())
+            self._aiothread.submit(self._step())
 
     async def run(self):
         raise NotImplementedError
