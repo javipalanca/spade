@@ -21,10 +21,7 @@ class Agent(object):
         self.aiothread.start()
         self.aiothread.event.wait()
 
-        def message_received(msg):
-            logger.debug(f"got message: {msg} with content: {msg.body}")
-
-        # obtain an instance of the service (we’ll discuss services later)
+        # obtain an instance of the service
         message_dispatcher = self.client.summon(
             aioxmpp.dispatcher.SimpleMessageDispatcher
         )
@@ -33,7 +30,7 @@ class Agent(object):
         message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT,
             None,
-            message_received,
+            self.message_received,
         )
 
     @property
@@ -66,6 +63,9 @@ class Agent(object):
 
     def send(self, msg):
         return self.submit(self.stream.send(msg))
+
+    def message_received(self, msg):
+        logger.debug(f"got message: {msg} with content: {msg.body}")
 
 
 class AioThread(Thread):

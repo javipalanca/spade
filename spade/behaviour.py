@@ -1,10 +1,11 @@
 import logging
+from abc import ABCMeta, abstractmethod
 from threading import Event
 
 logger = logging.getLogger('spade.Behaviour')
 
 
-class Behaviour(object):
+class Behaviour(object, metaclass=ABCMeta):
     def __init__(self):
         self._aiothread = None
         self.agent = None
@@ -47,11 +48,12 @@ class Behaviour(object):
             await self.run()
             self._aiothread.submit(self._step())
 
+    @abstractmethod
     async def run(self):
         raise NotImplementedError
 
 
-class OneShotBehaviour(Behaviour):
+class OneShotBehaviour(Behaviour, metaclass=ABCMeta):
     """
     this behaviour is only executed once
     """
@@ -62,6 +64,6 @@ class OneShotBehaviour(Behaviour):
 
     def done(self):
         if not self._already_executed:
-            self._already_executed = not self._already_executed
-            return not self._already_executed
-        return self._already_executed
+            self._already_executed = True
+            return False
+        return True
