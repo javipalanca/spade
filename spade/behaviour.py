@@ -1,7 +1,7 @@
 import logging
 from threading import Event
 
-logger = logging.getLogger('behaviour')
+logger = logging.getLogger('spade.Behaviour')
 
 
 class Behaviour(object):

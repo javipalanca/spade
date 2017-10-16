@@ -1,8 +1,11 @@
+import logging
 import sys
 import asyncio
 from threading import Thread, Event
 
 import aioxmpp
+
+logger = logging.getLogger('spade.Agent')
 
 
 class Agent(object):
@@ -19,8 +22,7 @@ class Agent(object):
         self.aiothread.event.wait()
 
         def message_received(msg):
-            print(msg)
-            print(msg.body)
+            logger.debug(f"got message: {msg} with content: {msg.body}")
 
         # obtain an instance of the service (we’ll discuss services later)
         message_dispatcher = self.client.summon(
