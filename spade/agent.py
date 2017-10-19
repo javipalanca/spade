@@ -5,6 +5,8 @@ from threading import Thread, Event
 
 import aioxmpp
 
+from spade.message import Message
+
 logger = logging.getLogger('spade.Agent')
 
 
@@ -62,10 +64,13 @@ class Agent(object):
         return self._values[name]
 
     def send(self, msg):
-        return self.submit(self.stream.send(msg))
+        return self.submit(self.stream.send(msg.prepare()))
 
     def message_received(self, msg):
-        logger.debug(f"got message: {msg} with content: {msg.body}")
+        logger.debug(f"got message: {msg}")
+
+        msg = Message.from_node(msg)
+        # TODO: compare msg with behaviour templates and enqueue when match occurs
 
 
 class AioThread(Thread):
