@@ -22,7 +22,7 @@ Smart Python Agent Development Environment
 
 
 * Free software: MIT license
-* Documentation: https://spade.readthedocs.io.
+* Documentation: http://spade-mas.readthedocs.io/en/feature-3.0/.
 
 
 Features

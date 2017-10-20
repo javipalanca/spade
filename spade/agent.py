@@ -46,11 +46,19 @@ class Agent(object):
     def submit(self, coro):
         return self.aiothread.submit(coro)
 
-    def add_behaviour(self, behav):
-        behav.set_aiothread(self.aiothread)
-        behav.set_agent(self)
-        self.behaviours.append(behav)
-        behav.start()
+    def add_behaviour(self, behaviour, template=None):
+        behaviour.set_aiothread(self.aiothread)
+        behaviour.set_agent(self)
+        behaviour.set_template = template
+        self.behaviours.append(behaviour)
+        behaviour.start()
+
+    def remove_behaviour(self, behaviour):
+        if behaviour not in self.behaviours:
+            raise ValueError("This behaviour is not registered")
+        index = self.behaviours.index(behaviour)
+        self.behaviours[index].kill()
+        self.behaviours.pop(index)
 
     def stop(self):
         for behav in self.behaviours:
@@ -64,13 +72,18 @@ class Agent(object):
         return self._values[name]
 
     def send(self, msg):
+        if not msg.sender:
+            msg.sender = self.jid
+            logger.debug(f"Adding agent's jid as sender to message: {msg}")
         return self.submit(self.stream.send(msg.prepare()))
 
     def message_received(self, msg):
-        logger.debug(f"got message: {msg}")
+        logger.debug(f"Got message: {msg}")
 
         msg = Message.from_node(msg)
-        # TODO: compare msg with behaviour templates and enqueue when match occurs
+        for behaviour in (x for x in self.behaviours if x.match(msg)):
+            self.submit(behaviour.enqueue(msg))
+            logger.debug(f"Message enqueued to behaviour: {behaviour}")
 
 
 class AioThread(Thread):

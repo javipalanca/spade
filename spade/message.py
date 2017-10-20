@@ -41,7 +41,7 @@ class Message(object):
 
     @to.setter
     def to(self, jid):
-        self._to = aioxmpp.JID.fromstr(jid)
+        self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     @property
     def sender(self):
@@ -49,7 +49,7 @@ class Message(object):
 
     @sender.setter
     def sender(self, jid):
-        self._sender = aioxmpp.JID.fromstr(jid)
+        self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     def set_metadata(self, key, value):
         self.metadata[key] = value

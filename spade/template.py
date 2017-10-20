@@ -84,20 +84,36 @@ class Template(BaseTemplate):
     Template for message matching
     """
 
-    def __init__(self, to=None, from_=None, body=None, thread=None, metadata=None):
+    def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
         if metadata is None:
             metadata = {}
-        self.to = aioxmpp.JID.fromstr(to) if to is not None else to
-        self.from_ = aioxmpp.JID.fromstr(from_) if from_ is not None else from_
+        self._to = aioxmpp.JID.fromstr(to) if to is not None else to
+        self._sender = aioxmpp.JID.fromstr(sender) if sender is not None else sender
         self.body = body
         self.thread = thread
         self.metadata = metadata
+
+    @property
+    def to(self):
+        return self._to
+
+    @to.setter
+    def to(self, jid):
+        self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
+
+    @property
+    def sender(self):
+        return self._sender
+
+    @sender.setter
+    def sender(self, jid):
+        self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     def match(self, message):
         if self.to and message.to != self.to:
             return False
 
-        if self.from_ and message.from_ != self.from_:
+        if self.sender and message.sender != self.sender:
             return False
 
         if self.body and message.body != self.body:
@@ -106,7 +122,7 @@ class Template(BaseTemplate):
         if self.thread and message.thread != self.thread:
             return False
 
-        for key, value in self.metadata:
+        for key, value in self.metadata.items():
             if message.get_metadata(key) != value:
                 return False
 
@@ -114,7 +130,7 @@ class Template(BaseTemplate):
         return True
 
     def __str__(self):
-        s = f'<template to="{self.to}" from="{self.from_}" thread="{self.thread}" metadata={self.metadata}>'
+        s = f'<template to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:
             s += self.body
         s += "</template>"
