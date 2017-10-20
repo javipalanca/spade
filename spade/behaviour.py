@@ -38,6 +38,7 @@ class Behaviour(object, metaclass=ABCMeta):
         return self.agent.get(name)
 
     def start(self):
+        self.on_start()
         self._aiothread.submit(self._step())
 
     def kill(self):
@@ -57,10 +58,18 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         return False
 
+    def on_start(self):
+        pass
+
+    def on_end(self):
+        pass
+
     async def _step(self):
         if not self.done() and not self.is_killed():
             await self.run()
             self._aiothread.submit(self._step())
+        else:
+            self.on_end()
 
     @abstractmethod
     async def run(self):
