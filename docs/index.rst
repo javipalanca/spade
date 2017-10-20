@@ -7,6 +7,8 @@ Contents:
    :maxdepth: 2
 
    readme
+   foreword
+   model
    installation
    usage
    modules

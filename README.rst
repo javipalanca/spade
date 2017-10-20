@@ -28,18 +28,20 @@ Smart Python Agent Development Environment
 Features
 --------
 
-* Multi-agent platform based on XMPP (www.xmpp.org)
+* Multi-agent platform based on XMPP_
 * Presence notification allows the system to determine the current state of the agents in real-time
 * Python >=3.6
 * Asyncio-based
 * Agent model based on behaviours
-* Supports FIPA metadata using XMPP Data Forms (XEP-0004: Data Forms https://xmpp.org/extensions/xep-0004.html)
+* Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
 
 Credits
 ---------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
+.. _XMPP: http://www.xmpp.org
+.. _`XEP-0004` : https://xmpp.org/extensions/xep-0004.html
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 

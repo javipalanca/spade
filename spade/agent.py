@@ -4,6 +4,7 @@ import asyncio
 from threading import Thread, Event
 
 import aioxmpp
+from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
 
@@ -20,12 +21,14 @@ class Agent(object):
 
         self.aiothread = AioThread(self.jid, password, verify_security)
 
+        self.setup()
+
         self.aiothread.start()
         self.aiothread.event.wait()
 
         # obtain an instance of the service
         message_dispatcher = self.client.summon(
-            aioxmpp.dispatcher.SimpleMessageDispatcher
+            SimpleMessageDispatcher
         )
 
         # register a message callback here
@@ -34,6 +37,12 @@ class Agent(object):
             None,
             self.message_received,
         )
+
+    def setup(self):
+        """
+        setup agent before startup.
+        """
+        pass
 
     @property
     def client(self):
@@ -89,6 +98,7 @@ class Agent(object):
 class AioThread(Thread):
     def __init__(self, jid, password, verify_security, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.jid = jid
         self.event = Event()
         self.conn_coro = None
         self.stream = None
@@ -110,6 +120,7 @@ class AioThread(Thread):
         self.conn_coro = self.client.connected()
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)
+        logger.info(f"Agent {str(self.jid)} connected and authenticated.")
 
     def submit(self, coro):
         fut = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
