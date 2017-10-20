@@ -1,6 +1,6 @@
-=====
-Usage
-=====
+===========
+Quick Start
+===========
 
 Creating your first dummy agent
 -------------------------------
@@ -45,7 +45,7 @@ Let's build a more functional agent, one that uses an actual behaviour to perfor
 programming of the SPADE agents is done mostly in the behaviours. Let's see how.
 
 Let's create a cyclic behaviour that performs a task. In this case, a simple counter. We can modify our existing
-`dummyagent.py` script::
+``dummyagent.py`` script::
 
     import time
     import asyncio
@@ -84,23 +84,24 @@ As you can see, we have defined a custom behaviour called MyBehav that inherits 
 the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is, a
 loop-like behaviour.
 
-You can see that there is a method called `on_start()` in the behaviour. This method is similar to the `setup()` method
-of the agent class. It is executed just before the main iteration of the behaviour begins and it is used for
+You can see that there is a method called ``on_start()`` in the behaviour. This method is similar to the ``setup()``
+ method of the agent class. It is executed just before the main iteration of the behaviour begins and it is used for
 initialization code. In this case, we print a line and initialize the variable for the counter. There is also an
-`on_end()` that is executed when a behaviour is done or killed.
+``on_end()`` that is executed when a behaviour is done or killed.
 
-Also, there is the `run()` method, which is very important. In all behaviours, this is the method in which the core of
+Also, there is the ``run()`` method, which is very important. In all behaviours, this is the method in which the core of
 the programming is done, because this method is called on each iteration of the behaviour loop. It acts as the body of
-the loop, sort of. In our example, the `run()` method prints the current value of the counter, increases it and then
+the loop, sort of. In our example, the ``run()`` method prints the current value of the counter, increases it and then
 waits for a second (to iterate again).
 
 **Note that the `run()` method is an async method!**. This is very important since SPADE is an **async library** based
 on python's `asyncio <https://docs.python.org/3/library/asyncio.html>`_. That's why we can call async methods inside the
-`run()` method, like the `await asyncio.sleep(1)`, which sleeps during one second without blocking the event loop.
+``run()`` method, like the ``await asyncio.sleep(1)``, which sleeps during one second without blocking the event loop.
 
-Now look at the `setup()` method of the agent. There, we make an instance of MyBehav and add it to the current agent by
-means of the `add_behaviour()` method. The first parameter of this method is the behaviour we want to add, and there is
-also a second optional parameter which is the template associated to that behaviour, but we will talk later about templates.
+Now look at the ``setup()`` method of the agent. There, we make an instance of MyBehav and add it to the current agent
+by means of the ``add_behaviour()`` method. The first parameter of this method is the behaviour we want to add, and
+there is also a second optional parameter which is the template associated to that behaviour, but we will talk later
+about templates.
 
 Let's test our new agent::
 

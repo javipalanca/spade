@@ -10,7 +10,7 @@ SPADE
         :target: https://travis-ci.org/javipalanca/spade
 
 .. image:: https://readthedocs.org/projects/spade/badge/?version=latest
-        :target: https://spade.readthedocs.io/en/latest/?badge=latest
+        :target: https://spade-mas.readthedocs.io/en/feature-3.0/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/javipalanca/spade/shield.svg

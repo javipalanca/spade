@@ -21,6 +21,9 @@ class Agent(object):
 
         self.aiothread = AioThread(self.jid, password, verify_security)
 
+        self._alive = Event()
+        self._alive.set()
+
         self.setup()
 
         self.aiothread.start()
@@ -73,6 +76,10 @@ class Agent(object):
         for behav in self.behaviours:
             behav.kill()
         self.aiothread.finalize()
+        self._alive.clear()
+
+    def is_alive(self):
+        return self._alive.is_set()
 
     def set(self, name, value):
         self._values[name] = value
@@ -82,9 +89,10 @@ class Agent(object):
 
     def send(self, msg):
         if not msg.sender:
-            msg.sender = self.jid
+            msg.sender = str(self.jid)
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
-        return self.submit(self.stream.send(msg.prepare()))
+        aioxmpp_msg = msg.prepare()
+        return self.submit(self.stream.send(aioxmpp_msg))
 
     def message_received(self, msg):
         logger.debug(f"Got message: {msg}")
@@ -131,4 +139,3 @@ class AioThread(Thread):
         asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
         # asyncio.gather(*asyncio.Task.all_tasks()).cancel()
         self.loop.call_soon_threadsafe(self.loop.stop)
-        self.join()

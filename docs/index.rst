@@ -11,6 +11,7 @@ Contents:
    model
    installation
    usage
+   agents
    modules
    contributing
    authors
