@@ -28,7 +28,12 @@ Smart Python Agent Development Environment
 Features
 --------
 
-* TODO
+* Multi-agent platform based on XMPP (www.xmpp.org)
+* Presence notification allows the system to determine the current state of the agents in real-time
+* Python >=3.6
+* Asyncio-based
+* Agent model based on behaviours
+* Supports FIPA metadata using XMPP Data Forms (XEP-0004: Data Forms https://xmpp.org/extensions/xep-0004.html)
 
 Credits
 ---------

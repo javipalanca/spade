@@ -78,7 +78,7 @@ class Behaviour(object, metaclass=ABCMeta):
         else:
             try:
                 msg = await self.queue.get_nowait()
-            except asyncio.QueueEmpty as e:
+            except asyncio.QueueEmpty:
                 msg = None
         return msg
 
