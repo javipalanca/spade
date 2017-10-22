@@ -24,7 +24,7 @@ destination. Here is a self-explaining example::
     class SenderAgent(Agent):
         class InformBehav(OneShotBehaviour):
             async def run(self):
-                print("Behaviour running")
+                print("InformBehav running")
                 msg = Message(to="receiver@jabber.org")     # Instantiate the message
                 msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
                 msg.set_metadata("ontology", "myOntology")  # Set the ontology of the message content
@@ -38,7 +38,7 @@ destination. Here is a self-explaining example::
                 self.agent.stop()
 
         def setup(self):
-            print("Agent started")
+            print("SenderAgent started")
             b = self.InformBehav()
             self.add_behaviour(b)
 
@@ -54,3 +54,67 @@ destination. Here is a self-explaining example::
                 break
         print("Agent finished")
 
+
+
+Ok, we have sent a message but now we need someone to receive that message. Show me the code::
+
+    import time
+    from spade.agent import Agent
+    from spade.behaviour import OneShotBehaviour
+    from spade.message import Message
+    from spade.template import Template
+
+
+    class SenderAgent(Agent):
+        class InformBehav(OneShotBehaviour):
+            async def run(self):
+                print("Behaviour running")
+                msg = Message(to="receiver@jabber.org")     # Instantiate the message
+                msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
+                msg.body = "Hello World"                    # Set the message content
+
+                self.send(msg)
+                print("Message sent!")
+
+                # stop agent from behaviour
+                self.agent.stop()
+
+        def setup(self):
+            print("SenderAgent started")
+            b = self.InformBehav()
+            self.add_behaviour(b)
+
+    class ReceiverAgent(Agent):
+        class RecvBehav(OneShotBehaviour):
+            async def run(self):
+                print("RecvBehav running")
+
+                msg = await self.receive(timeout=10) # wait for a message for 10 seconds
+                if msg:
+                    print("Message received with content: {}".format(msg.body))
+                else:
+                    print("Did not received any message after 10 seconds")
+
+                # stop agent from behaviour
+                self.agent.stop()
+
+        def setup(self):
+            print("ReceiverAgent started")
+            b = self.RecvBehav()
+            template = Template()
+            template.metadata = {"performative": "inform"}
+            self.add_behaviour(b, template)
+
+
+
+    if __name__ == "__main__":
+        senderagent = SenderAgent("sender@jabber.org", "sender_password")
+        receiveragent = ReceiverAgent("receiver@jabber.org", "receiver_password")
+
+        while receiveragent.is_alive():
+            try:
+                time.sleep(1)
+            except KeyboardInterrupt:
+                agent.stop()
+                break
+        print("Agents finished")
