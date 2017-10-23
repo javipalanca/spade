@@ -281,3 +281,46 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
 
     def done(self):
         return self._timeout_triggered
+
+
+class State(OneShotBehaviour):
+    def __init__(self):
+        super().__init__()
+        self.next_state = None
+
+    def set_next_state(self, state_name):
+        self.next_state = state_name
+
+
+class FSMBehaviour(Behaviour):
+    def __init__(self):
+        super().__init__()
+        self._states = {}
+        self._transitions = {}
+        self.current_state = None
+
+    def add_state(self, name, state, initial=False):
+        self._states[name] = state
+        self._transitions[name] = {}
+        if initial:
+            self.current_state = name
+
+    def add_transition(self, source, dest, trigger):
+        self._transitions[source][trigger] = dest
+
+    async def run(self):
+        behaviour = self._states[self.current_state]
+        behaviour.set_aiothread(self._aiothread)
+        behaviour.set_agent(self.agent)
+        behaviour.receive = self.receive
+        logger.info(f"FSM running state {self.current_state}")
+        await behaviour.on_start()
+        await behaviour.run()
+        await behaviour.on_end()
+        dest = behaviour.next_state
+        if dest and dest in self._states:
+            logger.info(f"FSM transiting from {self.current_state} to {dest}.")
+            self.current_state = dest
+        else:
+            logger.info("FSM arrived to a final state (no transitions found). Killing FSM.")
+            self.kill()
