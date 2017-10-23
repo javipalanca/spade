@@ -10,12 +10,11 @@ Periodic Behaviour
 This behaviour runs its ``run()`` body at a scheduled ``period``. This period is set in seconds.
 You can also delay the startup of the periodic behaviour by setting a datetime in the ``start_at`` parameter.
 
-Let's see an example:
-
 .. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
     and are only for demonstration purposes.
 
-::
+Let's see an example::
+
     import datetime
     import time
     from spade.agent import Agent
@@ -28,7 +27,7 @@ Let's see an example:
         class InformBehav(PeriodicBehaviour):
             async def run(self):
                 print(f"PeriodicSenderBehaviour running at {datetime.datetime.now().time()}: {self.counter}")
-                msg = Message(to="receiver@jabber.org")  # Instantiate the message
+                msg = Message(to="receiver@your_xmpp_server")  # Instantiate the message
                 msg.body = "Hello World"  # Set the message content
 
                 await self.send(msg)
@@ -73,9 +72,9 @@ Let's see an example:
 
 
     if __name__ == "__main__":
-        receiveragent = ReceiverAgent("receiver@jabber.org", "receiver_password")
+        receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
-        senderagent = PeriodicSenderAgent("sender@jabber.org", "sender_password")
+        senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
 
         while receiveragent.is_alive():
             try:

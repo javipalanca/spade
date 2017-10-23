@@ -13,6 +13,9 @@ Internet. In this example we will assume that our jid is *your_jid@your_xmpp_ser
 A basic SPADE agent is really a python script that imports the spade module and that uses the constructs defined therein.
 For starters, fire up you favorite Python editor and create a file called ``dummyagent.py``.
 
+.. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
+    and are only for demonstration purposes.
+
 To create an agent in a project you just need to: ::
 
     import spade
@@ -45,7 +48,12 @@ Let's build a more functional agent, one that uses an actual behaviour to perfor
 programming of the SPADE agents is done mostly in the behaviours. Let's see how.
 
 Let's create a cyclic behaviour that performs a task. In this case, a simple counter. We can modify our existing
-``dummyagent.py`` script::
+``dummyagent.py`` script.
+
+.. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
+    and are only for demonstration purposes.
+
+Example::
 
     import time
     import asyncio

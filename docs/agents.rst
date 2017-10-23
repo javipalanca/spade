@@ -14,6 +14,10 @@ create new messages to work with. The class provides a method to introduce metad
 using the fields present in standard FIPA-ACL Messages. When a message is ready to be sent, it can be passed on to the
 send() method of the behaviour, which will trigger the internal communication process to actually send it to its
 destination. Note that the send function is an async coroutine, so it needs to be called with an ``await`` statement.
+
+.. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
+    and are only for demonstration purposes.
+
 Here is a self-explaining example::
 
     import time
@@ -26,7 +30,7 @@ Here is a self-explaining example::
         class InformBehav(OneShotBehaviour):
             async def run(self):
                 print("InformBehav running")
-                msg = Message(to="receiver@jabber.org")     # Instantiate the message
+                msg = Message(to="receiver@your_xmpp_server")     # Instantiate the message
                 msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
                 msg.set_metadata("ontology", "myOntology")  # Set the ontology of the message content
                 msg.set_metadata("language", "OWL-S")       # Set the language of the message content
@@ -45,7 +49,7 @@ Here is a self-explaining example::
 
 
     if __name__ == "__main__":
-        agent = SenderAgent("sender@jabber.org", "sender_password")
+        agent = SenderAgent("sender@your_xmpp_server", "sender_password")
 
         while agent.is_alive():
             try:
@@ -70,7 +74,7 @@ Ok, we have sent a message but now we need someone to receive that message. Show
         class InformBehav(OneShotBehaviour):
             async def run(self):
                 print("InformBehav running")
-                msg = Message(to="receiver@jabber.org")     # Instantiate the message
+                msg = Message(to="receiver@your_xmpp_server")     # Instantiate the message
                 msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
                 msg.body = "Hello World"                    # Set the message content
 
@@ -109,9 +113,9 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
 
     if __name__ == "__main__":
-        receiveragent = ReceiverAgent("receiver@jabber.org", "receiver_password")
+        receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         time.sleep(2) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
-        senderagent = SenderAgent("sender@jabber.org", "sender_password")
+        senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
 
         while receiveragent.is_alive():
             try:
