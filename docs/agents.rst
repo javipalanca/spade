@@ -2,6 +2,72 @@
 Agent communications
 ====================
 
+Using templates
+---------------
+
+Templates is the method used by SPADE to dispatch received messages to the behaviour that is waiting for that message.
+When adding a behaviour you can set a template for that behaviour, which allows the agent to deliver a message received
+by the agent to that registered behaviour. A ``Template`` instance has the same attributes of a ``Message`` and all the
+attributes defined in the template must be equal in the message for this to match.
+
+The attributes that can be set in a template are:
+
+* **to**: the jid string of the receiver of the message.
+* **from** the jid string of the sender of the message.
+* **body**: the body of the message.
+* **thread**: the thread id of the conversation.
+* **metadata**: a (key, value) dictionary of strings to define metadata of the message. This is useful, for example, to include `FIPA <http://www.fipa.org>`_ attributes like *ontology*, *performative*, *language*, etc.
+
+An example of template matching::
+
+    template = Template()
+    template.sender = "sender1@host"
+    template.to = "recv1@host"
+    template.body = "Hello World"
+    template.thread = "thread-id"
+    template.metadata = {"performative": "query"}
+
+    message = Message()
+    message.sender = "sender1@host"
+    message.to = "recv1@host"
+    message.body = "Hello World"
+    message.thread = "thread-id"
+    message.set_metadata("performative", "query")
+
+    assert template.match(message)
+
+Templates also support boolean operators to create more complex templates. Bitwise operators (&, |, ^ and ~) may be used
+to combine simpler templates.
+
+* **&**: Does a boolean AND between templates.
+* **|**: Does a boolean OR between templates.
+* **^**: Does a boolean XOR between templates.
+* **~**: Returns the complement of the template.
+
+Some examples of these operators::
+
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.to = "recv1@host"
+    t2.metadata = {"performative": "query"}
+
+
+    m = Message()
+    m.sender = "sender1@host"
+    m.to = "recv1@host"
+    m.metadata = {"performative": "query"}
+
+    # And AND operator
+    assert (t1 & t2).match(m)
+
+    t3 = Template()
+    t3.sender = "not_valid_sender@host"
+
+    # A NOT complement operator
+    assert (~t3).match(m)
+
+
 Sending and Receiving Messages
 ------------------------------
 
@@ -107,7 +173,7 @@ Ok, we have sent a message but now we need someone to receive that message. Show
             print("ReceiverAgent started")
             b = self.RecvBehav()
             template = Template()
-            template.metadata = {"performative": "inform"}
+            template.set_metadata("performative", "inform")
             self.add_behaviour(b, template)
 
 
@@ -125,8 +191,6 @@ Ok, we have sent a message but now we need someone to receive that message. Show
                 receiveragent.stop()
                 break
         print("Agents finished")
-
-
 
 
 .. note:: It's important to remember that the send and receive functions are **coroutines**, so they **always**

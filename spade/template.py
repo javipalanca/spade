@@ -2,6 +2,8 @@ import logging
 
 import aioxmpp
 
+from spade.message import MessageBase
+
 logger = logging.getLogger('spade.Template')
 
 
@@ -79,36 +81,10 @@ class XORTemplate(BaseTemplate):
         return self.expr1.match(message) ^ self.expr2.match(message)
 
 
-class Template(BaseTemplate):
+class Template(BaseTemplate, MessageBase):
     """
     Template for message matching
     """
-
-    def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
-        if metadata is None:
-            metadata = {}
-        self._to = aioxmpp.JID.fromstr(to) if to is not None else to
-        self._sender = aioxmpp.JID.fromstr(sender) if sender is not None else sender
-        self.body = body
-        self.thread = thread
-        self.metadata = metadata
-
-    @property
-    def to(self):
-        return self._to
-
-    @to.setter
-    def to(self, jid):
-        self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
-
-    @property
-    def sender(self):
-        return self._sender
-
-    @sender.setter
-    def sender(self, jid):
-        self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
-
     def match(self, message):
         if self.to and message.to != self.to:
             return False

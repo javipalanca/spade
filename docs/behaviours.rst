@@ -1,6 +1,6 @@
-========================
-Behaviours and Templates
-========================
+===================
+Advanced Behaviours
+===================
 
 There are more complex types of behaviours that you can use in SPADE. Let's see some of them.
 
@@ -193,4 +193,118 @@ This would produce the following output::
     Message received with content: Hello World
     Did not received any message after 10 seconds
     Agents finished
+
+
+Finite State Machine Behaviour
+------------------------------
+
+SPADE agents can also have more complex behaviours which are a finite state machine (FSM) which has registered states and
+transitions between states. This kind of behaviour allow SPADE agents to build much more complex and interesting
+behaviours in our agent model.
+
+The ``FSMBehaviour`` class is a container behaviour (subclass of ``Behaviour``) that implements the methods
+``add_state(name, state, initial)`` and ``add_transition(source, dest)``. Every state of the FSM must be registered in
+the behaviour with a string name and an instance of the ``State`` class. This ``State`` class represents a node of the
+FSM and (since it's a subclass of ``OneShotBehaviour``) you must override the ``run`` coroutine just as in a regular
+behaviour. Since a ``State`` is a regular behaviour, you can also override the ``on_start`` and ``on_end`` coroutines,
+and, of course, use the ``send`` and ``receive`` coroutines to be able to interact with other agents via SPADE messaging.
+
+.. note:: To mark a ``State`` as initial state of the FSM set **initial** parameter to *True* when calling *add_state*
+    (``add_state(name, state, initial=True)``).
+    **A FSM can only have ONE initial state, so the initial state will be the last one registered.**
+
+Transitions in a ``FSMBehaviour`` define from which state to which state it is allowed to transit. A ``State`` defines
+its transit to another state by using the ``set_next_state`` method in its ``run`` coroutine.
+By using the ``set_next_state`` method a state dinamically expresses to which state it transits when it finishes. After
+running a state, the FSM reads this *next_state* value and, if the transition is valid, it transits to that state.
+
+.. warning:: If the transition is not registered it raises a ``NotValidTransition`` exception and the FSM behaviour is
+    finished.
+
+.. warning:: ``set_next_state`` must be called with the same string name with which that state was registered. If the
+    state is not registered a ``NotValidState`` exception is raised and the FSM behaviour is finished.
+
+A ``FSMBehaviour`` has a unique template, which is shared with all the states of the FSM. You must take this into account
+when you describe your FSM states, because they will share the same message queue.
+
+Next, we are going to see an example where a very simple FSM is defined, with three states, which transitate from one
+state to the next one in order. It also sends a message to itself at the first initial state, which is received at the
+third (and final) state. Also note that the third state is a final state because it does not set a *next_state* to
+transit to::
+
+    import time
+
+    from spade.agent import Agent
+    from spade.message import Message
+    from spade.behaviour import FSMBehaviour, State
+
+    STATE_ONE = "STATE_ONE"
+    STATE_TWO = "STATE_TWO"
+    STATE_THREE = "STATE_THREE"
+
+
+    class ExampleFSMBehaviour(FSMBehaviour):
+        async def on_start(self):
+            print(f"FSM starting at initial state {self.current_state}")
+
+        async def on_end(self):
+            print(f"FSM finished at state {self.current_state}")
+            self.agent.stop()
+
+
+    class StateOne(State):
+        async def run(self):
+            print("I'm at state one (initial state)")
+            msg = Message(to="jpalanca@localhost")
+            msg.body = "msg_from_state_one_to_state_three"
+            await self.send(msg)
+            self.set_next_state(STATE_TWO)
+
+
+    class StateTwo(State):
+        async def run(self):
+            print("I'm at state two")
+            self.set_next_state(STATE_THREE)
+
+
+    class StateThree(State):
+        async def run(self):
+            print("I'm at state three (final state)")
+            msg = await self.receive(timeout=5)
+            print(f"State Three received message {msg.body}")
+            # no final state is setted, since this is a final state
+
+
+    class FSMAgent(Agent):
+        def setup(self):
+            fsm = ExampleFSMBehaviour()
+            fsm.add_state(STATE_ONE, StateOne(), initial=True)
+            fsm.add_state(STATE_TWO, StateTwo())
+            fsm.add_state(STATE_THREE, StateThree())
+            fsm.add_transition(STATE_ONE, STATE_TWO)
+            fsm.add_transition(STATE_TWO, STATE_THREE)
+            self.add_behaviour(fsm)
+
+
+    if __name__ == "__main__":
+        fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
+
+        while fsmagent.is_alive():
+            try:
+                time.sleep(1)
+            except KeyboardInterrupt:
+                fsmagent.stop()
+                break
+        print("Agent finished")
+
+The output of this example is::
+
+    $python fsm.py
+    FSM starting at initial state STATE_ONE
+    I'm at state one (initial state)
+    I'm at state two
+    I'm at state three (final state)
+    State Three received message msg_from_state_one_to_state_three
+    FSM finished at state STATE_THREE
+    Agent finished
 

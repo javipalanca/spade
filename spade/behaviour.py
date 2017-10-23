@@ -309,7 +309,7 @@ class FSMBehaviour(Behaviour):
         self.current_state = None
 
     def add_state(self, name, state, initial=False):
-        if not issubclass(State, state.__class__):
+        if not issubclass(state.__class__, State):
             raise AttributeError("state must be subclass of spade.behaviour.State")
         self._states[name] = state
         if initial:
@@ -325,7 +325,7 @@ class FSMBehaviour(Behaviour):
             raise NotValidTransition
         return True
 
-    async def run(self):
+    async def _run(self):
         behaviour = self._states[self.current_state]
         behaviour.set_aiothread(self._aiothread)
         behaviour.set_agent(self.agent)
@@ -343,8 +343,13 @@ class FSMBehaviour(Behaviour):
                     self.current_state = dest
             except NotValidState:
                 logger.error(f"FSM could not transitate to state {dest}. That state does not exist.")
+                self.kill()
             except NotValidTransition:
                 logger.error(f"FSM could not transitate to state {dest}. That transition is not registered.")
+                self.kill()
         else:
             logger.info("FSM arrived to a final state (no transitions found). Killing FSM.")
             self.kill()
+
+    async def run(self):
+        raise RuntimeError
