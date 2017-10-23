@@ -15,12 +15,11 @@ You can also delay the startup of the periodic behaviour by setting a datetime i
 
 Let's see an example::
 
-    import datetime
     import time
+    import datetime
     from spade.agent import Agent
     from spade.behaviour import Behaviour, PeriodicBehaviour
     from spade.message import Message
-    from spade.template import Template
 
 
     class PeriodicSenderAgent(Agent):
@@ -115,6 +114,83 @@ The output of this code would be similar to::
     Message sent!
     Message received with content: Hello World
     RecvBehav running
+    Did not received any message after 10 seconds
+    Agents finished
+
+
+
+TimeoutBehaviour
+----------------
+
+You can also create a ``TimeoutBehaviour`` which is run once (like OneShotBehaviours) but its activation is triggered at
+a specified ``datetime`` just as in ``PeriodicBehaviours``.
+
+Let's see an example::
+
+    import time
+    import datetime
+    from spade.agent import Agent
+    from spade.behaviour import Behaviour, TimeoutBehaviour
+    from spade.message import Message
+
+
+    class PeriodicSenderAgent(Agent):
+        class InformBehav(TimeoutBehaviour):
+            async def run(self):
+                print(f"TimeoutSenderBehaviour running at {datetime.datetime.now().time()}")
+                msg = Message(to="receiver@your_xmpp_server")  # Instantiate the message
+                msg.body = "Hello World"  # Set the message content
+
+                await self.send(msg)
+
+            async def on_end(self):
+                self.agent.stop()
+
+        def setup(self):
+            print(f"TimeoutSenderAgent started at {datetime.datetime.now().time()}")
+            start_at = datetime.datetime.now() + datetime.timedelta(seconds=5)
+            b = self.InformBehav(start_at=start_at)
+            self.add_behaviour(b)
+
+
+    class ReceiverAgent(Agent):
+        class RecvBehav(Behaviour):
+            async def run(self):
+                msg = await self.receive(timeout=10)  # wait for a message for 10 seconds
+                if msg:
+                    print("Message received with content: {}".format(msg.body))
+                else:
+                    print("Did not received any message after 10 seconds")
+                    self.kill()
+
+            async def on_end(self):
+                self.agent.stop()
+
+        def setup(self):
+            b = self.RecvBehav()
+            self.add_behaviour(b)
+
+
+    if __name__ == "__main__":
+        receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
+        time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+        senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
+
+        while receiveragent.is_alive():
+            try:
+                time.sleep(1)
+            except KeyboardInterrupt:
+                senderagent.stop()
+                receiveragent.stop()
+                break
+        print("Agents finished")
+
+This would produce the following output::
+
+    $python timeout.py
+    TimeoutSenderAgent started at 18:12:09.620316
+    TimeoutSenderBehaviour running at 18:12:14.625403
+    Message received with content: Hello World
     Did not received any message after 10 seconds
     Agents finished
 

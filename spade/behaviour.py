@@ -250,3 +250,34 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
             if seconds > 0:
                 logger.debug(f"Periodic behaviour going to sleep for {seconds} seconds: {self}")
                 await asyncio.sleep(seconds)
+
+
+class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
+    """
+    this behaviour is executed once at after specified datetime
+    """
+
+    def __init__(self, start_at):
+        """
+        Creates a timeout behaviour, which is run at start_at
+        :param start_at: when to start the behaviour
+        :type start_at: datetime.datetime
+        """
+        super().__init__()
+
+        self._timeout = start_at
+        self._timeout_triggered = False
+
+    async def _run(self):
+        if now() >= self._timeout:
+            logger.debug(f"Timeout behaviour activated: {self}")
+            await self.run()
+            self._timeout_triggered = True
+        else:
+            seconds = (self._timeout - now()).total_seconds()
+            if seconds > 0:
+                logger.debug(f"Timeout behaviour going to sleep for {seconds} seconds: {self}")
+                await asyncio.sleep(seconds)
+
+    def done(self):
+        return self._timeout_triggered
