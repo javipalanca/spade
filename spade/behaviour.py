@@ -1,3 +1,4 @@
+import collections
 import logging
 from abc import ABCMeta, abstractmethod
 from threading import Event
@@ -283,7 +284,7 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
         return self._timeout_triggered
 
 
-class State(OneShotBehaviour):
+class State(OneShotBehaviour, metaclass=ABCMeta):
     def __init__(self):
         super().__init__()
         self.next_state = None
@@ -292,21 +293,37 @@ class State(OneShotBehaviour):
         self.next_state = state_name
 
 
+class NotValidState(Exception):
+    pass
+
+
+class NotValidTransition(Exception):
+    pass
+
+
 class FSMBehaviour(Behaviour):
     def __init__(self):
         super().__init__()
         self._states = {}
-        self._transitions = {}
+        self._transitions = collections.defaultdict(list)
         self.current_state = None
 
     def add_state(self, name, state, initial=False):
+        if not issubclass(State, state.__class__):
+            raise AttributeError("state must be subclass of spade.behaviour.State")
         self._states[name] = state
-        self._transitions[name] = {}
         if initial:
             self.current_state = name
 
-    def add_transition(self, source, dest, trigger):
-        self._transitions[source][trigger] = dest
+    def add_transition(self, source, dest):
+        self._transitions[source].append(dest)
+
+    def is_valid_transition(self, source, dest):
+        if dest not in self._states:
+            raise NotValidState
+        elif dest not in self._transitions[source]:
+            raise NotValidTransition
+        return True
 
     async def run(self):
         behaviour = self._states[self.current_state]
@@ -318,9 +335,16 @@ class FSMBehaviour(Behaviour):
         await behaviour.run()
         await behaviour.on_end()
         dest = behaviour.next_state
-        if dest and dest in self._states:
-            logger.info(f"FSM transiting from {self.current_state} to {dest}.")
-            self.current_state = dest
+
+        if dest:
+            try:
+                if self.is_valid_transition(self.current_state, dest):
+                    logger.info(f"FSM transiting from {self.current_state} to {dest}.")
+                    self.current_state = dest
+            except NotValidState:
+                logger.error(f"FSM could not transitate to state {dest}. That state does not exist.")
+            except NotValidTransition:
+                logger.error(f"FSM could not transitate to state {dest}. That transition is not registered.")
         else:
             logger.info("FSM arrived to a final state (no transitions found). Killing FSM.")
             self.kill()
