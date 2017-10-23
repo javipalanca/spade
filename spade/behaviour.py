@@ -1,8 +1,12 @@
 import logging
 from abc import ABCMeta, abstractmethod
 from threading import Event
+from datetime import timedelta
+from datetime import datetime
 
 import asyncio
+
+now = datetime.now
 
 logger = logging.getLogger('spade.Behaviour')
 
@@ -204,3 +208,45 @@ class OneShotBehaviour(Behaviour, metaclass=ABCMeta):
             self._already_executed = True
             return False
         return True
+
+
+class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
+    """
+    this behaviour is executed periodically with an interval
+    """
+
+    def __init__(self, period, start_at=None):
+        """
+        Creates a periodic behaviour
+        :param period: interval of the behaviour in seconds
+        :type period: int
+        :param start_at: whether to start the behaviour with an offset
+        :type start_at: datetime.datetime
+        """
+        super().__init__()
+        self._period = timedelta(seconds=period)
+
+        if start_at:
+            self._next_activation = start_at
+        else:
+            self._next_activation = now()
+
+    @property
+    def period(self):
+        return self._period
+
+    @period.setter
+    def period(self, value):
+        self._period = value
+
+    async def _run(self):
+        if now() >= self._next_activation:
+            logger.debug(f"Periodic behaviour activated: {self}")
+            await self.run()
+            while self._next_activation <= now():
+                self._next_activation += self._period
+        else:
+            seconds = (self._next_activation - now()).total_seconds()
+            if seconds > 0:
+                logger.debug(f"Periodic behaviour going to sleep for {seconds} seconds: {self}")
+                await asyncio.sleep(seconds)

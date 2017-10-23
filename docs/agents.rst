@@ -1,5 +1,5 @@
 ====================
-Agent communitcation
+Agent communications
 ====================
 
 Sending and Receiving Messages
@@ -128,6 +128,10 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 .. note:: It's important to remember that the send and receive functions are **coroutines**, so they **always**
     must be called with the ``await`` statement.
 
+In this example you can see how the ``RecvBehav`` behaviour receives the message because the template includes a
+*performative* with the value **inform** in the metadata and the sent message does also include that metadata, so the
+message and the template match.
+
 You can also note that we are using an *ugly* ``time.sleep`` to introduce an explicit wait to avoid sending the message
 before the receiver agent is up and ready since in another case the message would never be received (remember that spade
 is a **real-time** messaging platform. In future sections we'll show you how to use *presence notification* to wait for
@@ -135,6 +139,7 @@ an agent to be *available*.
 
 The code below would output::
 
+    $ python send_and_recv.py
     ReceiverAgent started
     RecvBehav running
     SenderAgent started

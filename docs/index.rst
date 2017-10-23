@@ -12,6 +12,7 @@ Contents:
    installation
    usage
    agents
+   behaviours
    modules
    contributing
    authors
