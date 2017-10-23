@@ -94,10 +94,10 @@ the programming is done, because this method is called on each iteration of the 
 the loop, sort of. In our example, the ``run()`` method prints the current value of the counter, increases it and then
 waits for a second (to iterate again).
 
-.. warning::
-**Note that the `run()` method is an async coroutine!**. This is very important since SPADE is an **async library** based
-on python's `asyncio <https://docs.python.org/3/library/asyncio.html>`_. That's why we can call async methods inside the
-``run()`` method, like the ``await asyncio.sleep(1)``, which sleeps during one second without blocking the event loop.
+.. warning:: **Note that the `run()` method is an async coroutine!**. This is very important since SPADE is an
+    **async library** based on python's `asyncio <https://docs.python.org/3/library/asyncio.html>`_. That's why we can
+    call async methods inside the ``run()`` method, like the ``await asyncio.sleep(1)``, which sleeps during one second
+    without blocking the event loop.
 
 Now look at the ``setup()`` method of the agent. There, we make an instance of MyBehav and add it to the current agent
 by means of the ``add_behaviour()`` method. The first parameter of this method is the behaviour we want to add, and

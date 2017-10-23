@@ -125,9 +125,8 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
 
 
-.. note::
-It's important to remember that the send and receive functions are **coroutines**, so they **always** must be called
-with the ``await`` statement.
+.. note:: It's important to remember that the send and receive functions are **coroutines**, so they **always**
+    must be called with the ``await`` statement.
 
 You can also note that we are using an *ugly* ``time.sleep`` to introduce an explicit wait to avoid sending the message
 before the receiver agent is up and ready since in another case the message would never be received (remember that spade

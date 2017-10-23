@@ -44,6 +44,7 @@ class Agent(object):
     def setup(self):
         """
         setup agent before startup.
+        this method may be overloaded.
         """
         pass
 
@@ -56,9 +57,24 @@ class Agent(object):
         return self.aiothread.stream
 
     def submit(self, coro):
+        """
+        runs a coroutine in the event loop of the agent.
+        this call is not blocking.
+        :param coro: the coroutine to be run
+        :param coro: coroutine
+        """
         return self.aiothread.submit(coro)
 
     def add_behaviour(self, behaviour, template=None):
+        """
+        Adds and starts a behaviour to the agent.
+        If template is not None it is used to match
+        new messages and deliver them to the behaviour.
+        :param behaviour: the behaviour to be started
+        :type behaviour: spade.behaviour.Behaviour
+        :param template: the template to match messages with
+        :type template: spade.template.Template
+        """
         behaviour.set_aiothread(self.aiothread)
         behaviour.set_agent(self)
         behaviour.set_template = template
@@ -66,6 +82,12 @@ class Agent(object):
         behaviour.start()
 
     def remove_behaviour(self, behaviour):
+        """
+        Removes a behaviour from the agent.
+        The behaviour is first killed.
+        :param behaviour: the behaviour instance to be removed
+        :type behaviour: spade.behaviour.Behaviour
+        """
         if behaviour not in self.behaviours:
             raise ValueError("This behaviour is not registered")
         index = self.behaviours.index(behaviour)
@@ -73,21 +95,54 @@ class Agent(object):
         self.behaviours.pop(index)
 
     def stop(self):
+        """
+        Stops an agent and kills all its behaviours.
+        """
         for behav in self.behaviours:
             behav.kill()
         self.aiothread.finalize()
         self._alive.clear()
 
     def is_alive(self):
+        """
+        checks if the agent is alive
+        :return: wheter the agent is alive or not
+        :rtype: bool
+        """
         return self._alive.is_set()
 
     def set(self, name, value):
+        """
+        Stores a knowledge item in the agent knowledge base.
+        :param name: name of the item
+        :type name: str
+        :param value: value of the item
+        :type value: object
+        """
         self._values[name] = value
 
     def get(self, name):
-        return self._values[name]
+        """
+        Recovers a knowledge item from the agent's knowledge base.
+        :param name: name of the item
+        :type name: str
+        :return: the object retrieved or None
+        :rtype: object
+        """
+        if name in self._values:
+            return self._values[name]
+        else:
+            return None
 
     def message_received(self, msg):
+        """
+        Callback run when an XMPP Message is reveived.
+        This callback delivers the message to every behaviour
+        that is waiting for it using their templates match.
+        the aioxmpp.Message is converted to spade.message.Message
+        :param msg: the message just received.
+        :type msg: aioxmpp.Messagge
+        """
         logger.debug(f"Got message: {msg}")
 
         msg = Message.from_node(msg)
