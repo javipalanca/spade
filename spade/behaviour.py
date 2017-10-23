@@ -38,8 +38,11 @@ class Behaviour(object, metaclass=ABCMeta):
         return self.agent.get(name)
 
     def start(self):
-        self.on_start()
-        self._aiothread.submit(self._step())
+        self._aiothread.submit(self._start())
+
+    async def _start(self):
+        await self.on_start()
+        await self._step()
 
     def kill(self):
         """
@@ -58,18 +61,16 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         return False
 
-    def on_start(self):
+    async def on_start(self):
         pass
 
-    def on_end(self):
+    async def on_end(self):
         pass
 
     async def _step(self):
-        if not self.done() and not self.is_killed():
+        while not self.done() and not self.is_killed():
             await self.run()
-            self._aiothread.submit(self._step())
-        else:
-            self.on_end()
+        await self.on_end()
 
     @abstractmethod
     async def run(self):
@@ -87,7 +88,11 @@ class Behaviour(object, metaclass=ABCMeta):
 
     async def receive(self, timeout=None):
         if timeout:
-            msg = await asyncio.wait_for(self.queue.get(), timeout=timeout)
+            coro = self.queue.get()
+            try:
+                msg = await asyncio.wait_for(coro, timeout=timeout)
+            except asyncio.TimeoutError:
+                msg = None
         else:
             try:
                 msg = await self.queue.get_nowait()

@@ -69,7 +69,7 @@ Ok, we have sent a message but now we need someone to receive that message. Show
     class SenderAgent(Agent):
         class InformBehav(OneShotBehaviour):
             async def run(self):
-                print("Behaviour running")
+                print("InformBehav running")
                 msg = Message(to="receiver@jabber.org")     # Instantiate the message
                 msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
                 msg.body = "Hello World"                    # Set the message content
@@ -123,10 +123,24 @@ Ok, we have sent a message but now we need someone to receive that message. Show
         print("Agents finished")
 
 
-It's important to remember that the send and receive functions are **coroutines**, so they
-**always** must be called with the ``await`` statement.
+
+
+.. note::
+It's important to remember that the send and receive functions are **coroutines**, so they **always** must be called
+with the ``await`` statement.
+
 You can also note that we are using an *ugly* ``time.sleep`` to introduce an explicit wait to avoid sending the message
 before the receiver agent is up and ready since in another case the message would never be received (remember that spade
 is a **real-time** messaging platform. In future sections we'll show you how to use *presence notification* to wait for
 an agent to be *available*.
+
+The code below would output::
+
+    ReceiverAgent started
+    RecvBehav running
+    SenderAgent started
+    InformBehav running
+    Message sent!
+    Message received with content: Hello World
+    Agents finished
 
