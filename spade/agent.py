@@ -87,13 +87,6 @@ class Agent(object):
     def get(self, name):
         return self._values[name]
 
-    def send(self, msg):
-        if not msg.sender:
-            msg.sender = str(self.jid)
-            logger.debug(f"Adding agent's jid as sender to message: {msg}")
-        aioxmpp_msg = msg.prepare()
-        return self.submit(self.stream.send(aioxmpp_msg))
-
     def message_received(self, msg):
         logger.debug(f"Got message: {msg}")
 

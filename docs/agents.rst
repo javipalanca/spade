@@ -13,7 +13,8 @@ First and foremost, threre is a ``Message`` class. This class is ``spade.message
 create new messages to work with. The class provides a method to introduce metadata into messages, this is useful for
 using the fields present in standard FIPA-ACL Messages. When a message is ready to be sent, it can be passed on to the
 send() method of the behaviour, which will trigger the internal communication process to actually send it to its
-destination. Here is a self-explaining example::
+destination. Note that the send function is an async coroutine, so it needs to be called with an ``await`` statement.
+Here is a self-explaining example::
 
     import time
     from spade.agent import Agent
@@ -31,7 +32,7 @@ destination. Here is a self-explaining example::
                 msg.set_metadata("language", "OWL-S")       # Set the language of the message content
                 msg.body = "Hello World"                    # Set the message content
 
-                self.send(msg)
+                await self.send(msg)
                 print("Message sent!")
 
                 # stop agent from behaviour
@@ -73,7 +74,7 @@ Ok, we have sent a message but now we need someone to receive that message. Show
                 msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
                 msg.body = "Hello World"                    # Set the message content
 
-                self.send(msg)
+                await self.send(msg)
                 print("Message sent!")
 
                 # stop agent from behaviour
@@ -108,13 +109,24 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
 
     if __name__ == "__main__":
-        senderagent = SenderAgent("sender@jabber.org", "sender_password")
         receiveragent = ReceiverAgent("receiver@jabber.org", "receiver_password")
+        time.sleep(2) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+        senderagent = SenderAgent("sender@jabber.org", "sender_password")
 
         while receiveragent.is_alive():
             try:
                 time.sleep(1)
             except KeyboardInterrupt:
-                agent.stop()
+                senderagent.stop()
+                receiveragent.stop()
                 break
         print("Agents finished")
+
+
+It's important to remember that the send and receive functions are **coroutines**, so they
+**always** must be called with the ``await`` statement.
+You can also note that we are using an *ugly* ``time.sleep`` to introduce an explicit wait to avoid sending the message
+before the receiver agent is up and ready since in another case the message would never be received (remember that spade
+is a **real-time** messaging platform. In future sections we'll show you how to use *presence notification* to wait for
+an agent to be *available*.
+

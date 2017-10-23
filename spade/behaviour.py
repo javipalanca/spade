@@ -78,8 +78,12 @@ class Behaviour(object, metaclass=ABCMeta):
     async def enqueue(self, message):
         await self.queue.put(message)
 
-    def send(self, msg):
-        self.agent.send(msg=msg)
+    async def send(self, msg):
+        if not msg.sender:
+            msg.sender = str(self.agent.jid)
+            logger.debug(f"Adding agent's jid as sender to message: {msg}")
+        aioxmpp_msg = msg.prepare()
+        return await self.agent.stream.send(aioxmpp_msg)
 
     async def receive(self, timeout=None):
         if timeout:
