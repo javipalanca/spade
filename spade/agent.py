@@ -1,12 +1,14 @@
 import logging
 import sys
 import asyncio
+from hashlib import md5
 from threading import Thread, Event
 
 import aioxmpp
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
+from spade.web import WebApp
 
 logger = logging.getLogger('spade.Agent')
 
@@ -41,6 +43,9 @@ class Agent(object):
             self.message_received,
         )
 
+        # Load plugins
+        self.web = WebApp(agent=self)
+
     def setup(self):
         """
         setup agent before startup.
@@ -56,12 +61,23 @@ class Agent(object):
     def stream(self):
         return self.aiothread.stream
 
+    @property
+    def avatar(self):
+        """
+        Generates a unique avatar for the agent based on its JID.
+        Uses Gravatar service with MonsterID option.
+        :return: the url of the agent's avatar
+        :rtype: str
+        """
+        digest = md5(str(self.jid).encode("utf-8")).hexdigest()
+        return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
+
     def submit(self, coro):
         """
         runs a coroutine in the event loop of the agent.
         this call is not blocking.
         :param coro: the coroutine to be run
-        :param coro: coroutine
+        :type coro: coroutine
         """
         return self.aiothread.submit(coro)
 
