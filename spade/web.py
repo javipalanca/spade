@@ -15,11 +15,17 @@ def unused_port(hostname):
         return s.getsockname()[1]
 
 
+async def start_server_in_aiothread(handler, hostname, port, agent):
+    loop = agent.aiothread.loop
+    agent.web.server = await loop.create_server(handler, hostname, port)
+    logger.info(f"Serving on http://{hostname}:{port}/")
+
+
 class WebApp(object):
     def __init__(self, agent):
         self.agent = agent
-        self.loop = self.agent.aiothread.loop
         self.app = None
+        self.handler = None
         self.server = None
         self.hostname = None
         self.port = None
@@ -38,14 +44,13 @@ class WebApp(object):
             loader = internal_loader
         aiohttp_jinja2.setup(self.app, loader=loader)
         self.app.router.add_route("GET", "/", self.agent_index)
-        fut = self.loop.create_server(self.app.make_handler(), self.hostname, self.port)
-        # self.server = self.loop.run_until_complete(future=fut)
-        self.agent.submit(fut)
-        logger.info(f"Serving on http://{self.hostname}:{self.port}/")
+        self.handler = self.app.make_handler()
+        self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
 
     @aiohttp_jinja2.template('agent.html')
     async def agent_index(self, request):
         return {
             "jid": self.agent.jid,
-            "avatar": self.agent.avatar
+            "avatar": self.agent.avatar,
+            "behaviours": self.agent.behaviours
         }

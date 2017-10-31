@@ -18,6 +18,8 @@ class Behaviour(object, metaclass=ABCMeta):
         self.agent = None
         self.template = None
         self._force_kill = Event()
+        self.presence = None
+        self.web = None
 
         self.queue = None
 
@@ -26,7 +28,7 @@ class Behaviour(object, metaclass=ABCMeta):
         Links the behaviour with the event loop.
         Also creates the incoming messages queue.
         :param aiothread: the thread with the event loop
-        :type aiothread: spade.agent.AioThread
+        :type aiothread: :class:`spade.agent.AioThread`
         """
         self._aiothread = aiothread
         self.queue = asyncio.Queue(loop=self._aiothread.loop)
@@ -35,16 +37,18 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         links behaviour with its owner agent
         :param agent: the agent who owns the behaviour
-        :type agent: spade.agent.Agent
+        :type agent: :class:`spade.agent.Agent`
         """
         self.agent = agent
+        self.presence = agent.presence
+        self.web = agent.web
 
     def set_template(self, template):
         """
         Sets the template that is used to match incoming
         messages with this behaviour.
         :param template: the template to match with
-        :type template: spade.template.Template
+        :type template: :class:`spade.template.Template`
         """
         self.template = template
 
@@ -52,9 +56,9 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         Matches a message with the behaviour's template
         :param message: the message to match with
-        :type message: spade.messafe.Message
+        :type message: :class:`spade.messafe.Message`
         :return: wheter the messaged matches or not
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         if self.template:
             return self.template.match(message)
@@ -64,9 +68,9 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         Stores a knowledge item in the agent knowledge base.
         :param name: name of the item
-        :type name: str
+        :type name: :class:`str`
         :param value: value of the item
-        :type value: object
+        :type value: :class:`object`
         """
         self.agent.set(name, value)
 
@@ -74,9 +78,9 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         Recovers a knowledge item from the agent's knowledge base.
         :param name: name of the item
-        :type name: str
+        :type name: :class:`str`
         :return: the object retrieved or None
-        :rtype: object
+        :rtype: :class:`object`
         """
         return self.agent.get(name)
 
@@ -106,7 +110,7 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         Checks if the behaviour was killed by means of the kill() method.
         :return: whether the behaviour is killed or not
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         return self._force_kill.is_set()
 
@@ -115,7 +119,7 @@ class Behaviour(object, metaclass=ABCMeta):
         returns True if the behaviour has finished
         else returns False
         :return: whether the behaviour is finished or not
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         return False
 
@@ -163,7 +167,7 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         Sends a message.
         :param msg: the message to be sent.
-        :type msg: spade.message.Message
+        :type msg: :class:`spade.message.Message`
         """
         if not msg.sender:
             msg.sender = str(self.agent.jid)
@@ -177,9 +181,9 @@ class Behaviour(object, metaclass=ABCMeta):
         if timeout is not None it returns the message or "None"
         after timeout is done.
         :param timeout: number of seconds until return
-        :type timeout: int
+        :type timeout: :class:`int`
         :return: a Message or None
-        :rtype: spade.message.Message
+        :rtype: :class:`spade.message.Message`
         """
         if timeout:
             coro = self.queue.get()
@@ -220,9 +224,9 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
         """
         Creates a periodic behaviour
         :param period: interval of the behaviour in seconds
-        :type period: int
+        :type period: :class:`int`
         :param start_at: whether to start the behaviour with an offset
-        :type start_at: datetime.datetime
+        :type start_at: :class:`datetime.datetime`
         """
         super().__init__()
         self._period = timedelta(seconds=period)
@@ -262,7 +266,7 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
         """
         Creates a timeout behaviour, which is run at start_at
         :param start_at: when to start the behaviour
-        :type start_at: datetime.datetime
+        :type start_at: :class:`datetime.datetime`
         """
         super().__init__()
 

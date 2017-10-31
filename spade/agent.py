@@ -8,6 +8,7 @@ import aioxmpp
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
+from spade.presence import PresenceManager
 from spade.web import WebApp
 
 logger = logging.getLogger('spade.Agent')
@@ -26,8 +27,6 @@ class Agent(object):
         self._alive = Event()
         self._alive.set()
 
-        self.setup()
-
         self.aiothread.start()
         self.aiothread.event.wait()
 
@@ -40,11 +39,15 @@ class Agent(object):
         message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT,
             None,
-            self.message_received,
+            self._message_received,
         )
 
-        # Load plugins
+        # Presence service
+        self.presence = PresenceManager(self)
+        # Web service
         self.web = WebApp(agent=self)
+
+        self.setup()
 
     def setup(self):
         """
@@ -67,7 +70,7 @@ class Agent(object):
         Generates a unique avatar for the agent based on its JID.
         Uses Gravatar service with MonsterID option.
         :return: the url of the agent's avatar
-        :rtype: str
+        :rtype: :class:`str`
         """
         digest = md5(str(self.jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
@@ -87,9 +90,9 @@ class Agent(object):
         If template is not None it is used to match
         new messages and deliver them to the behaviour.
         :param behaviour: the behaviour to be started
-        :type behaviour: spade.behaviour.Behaviour
+        :type behaviour: :class:`spade.behaviour.Behaviour`
         :param template: the template to match messages with
-        :type template: spade.template.Template
+        :type template: :class:`spade.template.Template`
         """
         behaviour.set_aiothread(self.aiothread)
         behaviour.set_agent(self)
@@ -102,7 +105,7 @@ class Agent(object):
         Removes a behaviour from the agent.
         The behaviour is first killed.
         :param behaviour: the behaviour instance to be removed
-        :type behaviour: spade.behaviour.Behaviour
+        :type behaviour: :class:`spade.behaviour.Behaviour`
         """
         if behaviour not in self.behaviours:
             raise ValueError("This behaviour is not registered")
@@ -116,6 +119,11 @@ class Agent(object):
         """
         for behav in self.behaviours:
             behav.kill()
+        if self.web.server:
+            self.web.server.close()
+            self.submit(self.web.app.shutdown())
+            self.submit(self.web.handler.shutdown(60.0))
+            self.submit(self.web.app.cleanup())
         self.aiothread.finalize()
         self._alive.clear()
 
@@ -123,7 +131,7 @@ class Agent(object):
         """
         checks if the agent is alive
         :return: wheter the agent is alive or not
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         return self._alive.is_set()
 
@@ -131,9 +139,9 @@ class Agent(object):
         """
         Stores a knowledge item in the agent knowledge base.
         :param name: name of the item
-        :type name: str
+        :type name: :class:`str`
         :param value: value of the item
-        :type value: object
+        :type value: :class:`object`
         """
         self._values[name] = value
 
@@ -141,16 +149,16 @@ class Agent(object):
         """
         Recovers a knowledge item from the agent's knowledge base.
         :param name: name of the item
-        :type name: str
+        :type name: :class:`str`
         :return: the object retrieved or None
-        :rtype: object
+        :rtype: :class:`object`
         """
         if name in self._values:
             return self._values[name]
         else:
             return None
 
-    def message_received(self, msg):
+    def _message_received(self, msg):
         """
         Callback run when an XMPP Message is reveived.
         This callback delivers the message to every behaviour
