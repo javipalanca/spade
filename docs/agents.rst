@@ -7,7 +7,7 @@ Using templates
 
 Templates is the method used by SPADE to dispatch received messages to the behaviour that is waiting for that message.
 When adding a behaviour you can set a template for that behaviour, which allows the agent to deliver a message received
-by the agent to that registered behaviour. A ``Template`` instance has the same attributes of a ``Message`` and all the
+by the agent to that registered behaviour. A :class:`Template` instance has the same attributes of a :class:`Message` and all the
 attributes defined in the template must be equal in the message for this to match.
 
 The attributes that can be set in a template are:
