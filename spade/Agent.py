@@ -45,7 +45,7 @@ import uuid
 try:
     import json
 except ImportError:
-    import simplejson as json 
+    import simplejson as json
 
 
 import DF
@@ -135,7 +135,9 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         self.wui.registerController("logout", self.WUIController_logout)
         self.wui.registerController("admin", self.WUIController_admin)
         self.wui.registerController("log", self.WUIController_log)
+        self.wui.registerController("log_json", self.WUIController_log_json)
         self.wui.registerController("messages", self.WUIController_messages)
+        self.wui.registerController("messages_json", self.WUIController_messages_json)
         self.wui.registerController("search", self.WUIController_search)
         self.wui.registerController("send", self.WUIController_sendmsg)
         self.wui.registerController("sent", self.WUIController_sent)
@@ -216,6 +218,10 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
         return "log.pyra", {"name": self.getName(), "log": self.getLog()}
 
     @require_login
+    def WUIController_log_json(self):
+        return None, {"name": self.getName(), "log": self.getLog()}
+
+    @require_login
     def WUIController_roster(self):
         roster = {}
         for friend in self.roster.getContacts():
@@ -223,6 +229,11 @@ class AbstractAgent(MessageReceiver.MessageReceiver):
                 continue
             roster[friend] = self.roster.getContact(friend)
         return "agent_roster.pyra", {"name": self.getName(), "roster": roster}
+
+    @require_login
+    def WUIController_messages_json(self, agents=None):
+        _, data = self.WUIController_messages(agents=agents)
+        return None, data
 
     @require_login
     def WUIController_messages(self, agents=None):
