@@ -2,12 +2,13 @@
 import SocketServer
 import SimpleHTTPServer
 import BaseHTTPServer
+import json
+
 import pyratemp
 import os
 import sys
 import traceback
 import urllib
-import time
 import random
 import socket
 import Cookie
@@ -318,44 +319,54 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 if sess.user_authenticated is True:
                     authenticated = True
             ret['authenticated'] = authenticated
-            try:
-                if os.path.exists(self.server.owner.template_path + os.sep + template):
-                    t = pyratemp.Template(filename=self.server.owner.template_path + os.sep + template, data=ret)
-                else:
-                    #olddir = os.path.curdir
-                    #os.chdir(self.server.spade_path)
-                    t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + template, data=ret)
-                    #print template, ret
-                    #os.chdir(olddir)
-            except pyratemp.TemplateSyntaxError, e:
-                _exception = sys.exc_info()
-                if _exception[0]:
-                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
-                code = 501
-            except Exception, e:
-                #No template
-                _exception = sys.exc_info()
-                if _exception[0]:
-                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                #print "###", _err, "###"
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "503.pyra", data={"page": template, "name": self.server.owner.owner.getName(), "authenticated":authenticated})
-                code = 503
-            try:
-                result = t()
-            except Exception, e:
-                #Error in template
-                _exception = sys.exc_info()
-                if _exception[0]:
-                    _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
-                t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
-                result = t()
-                code = 501
+            if template:
+                try:
+                    if os.path.exists(self.server.owner.template_path + os.sep + template):
+                        t = pyratemp.Template(filename=self.server.owner.template_path + os.sep + template, data=ret)
+                    else:
+                        #olddir = os.path.curdir
+                        #os.chdir(self.server.spade_path)
+                        t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + template, data=ret)
+                        #print template, ret
+                        #os.chdir(olddir)
+                except pyratemp.TemplateSyntaxError, e:
+                    _exception = sys.exc_info()
+                    if _exception[0]:
+                        _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                    t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
+                    code = 501
+                except Exception, e:
+                    #No template
+                    _exception = sys.exc_info()
+                    if _exception[0]:
+                        _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                    #print "###", _err, "###"
+                    t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "503.pyra", data={"page": template, "name": self.server.owner.owner.getName(), "authenticated":authenticated})
+                    code = 503
+                try:
+                    result = t()
+                except Exception, e:
+                    #Error in template
+                    _exception = sys.exc_info()
+                    if _exception[0]:
+                        _err = ''.join(traceback.format_exception(_exception[0], _exception[1], _exception[2])).rstrip()
+                    t = pyratemp.Template(filename=self.server.owner.spade_path + os.sep + "templates" + os.sep + "501.pyra", data={"template": template, "error": str(_err), "name": self.server.owner.owner.getName(), "authenticated":authenticated})
+                    result = t()
+                    code = 501
 
-            r = result.encode("ascii", 'xmlcharrefreplace')
+                r = result.encode("ascii", 'xmlcharrefreplace')
 
-            self.send_response(code)
-            for morsel in self.cookie.values():
-                self.send_header('Set-Cookie', morsel.output(header='').lstrip())
-            self.end_headers()
-            self.wfile.write(r)
+                self.send_response(code)
+                for morsel in self.cookie.values():
+                    self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+                self.end_headers()
+                self.wfile.write(r)
+
+            elif code == 200 and isinstance(ret, dict):
+                # template is None, so this is an AJAX request
+                self.send_response(code)
+                for morsel in self.cookie.values():
+                    self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(ret))

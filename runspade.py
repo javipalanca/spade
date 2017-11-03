@@ -19,7 +19,7 @@ except ImportError, e:
 from xmppd.xmppd import Server
 
 __author__ = "Gustavo Aranda <gusarba@gmail.com> and Javier Palanca <jpalanca@gmail.com>"
-__version__ = "2.3"
+__version__ = "2.3.1"
 __copyright__ = "Copyright (C) 2006-2017"
 __license__ = "LGPL"
 
