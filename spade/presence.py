@@ -9,7 +9,7 @@ class PresenceManager(object):
         self.presenceclient = self.client.summon(aioxmpp.PresenceClient)
         self.presenceserver = self.client.summon(aioxmpp.PresenceServer)
 
-        self.aprove_all = False
+        self.approve_all = False
 
         self.presenceclient.on_bare_available.connect(self._on_available)
         self.presenceclient.on_bare_unavailable.connect(self._on_unavailable)
@@ -92,7 +92,7 @@ class PresenceManager(object):
         :param jid: the JID you ask for subscriptiion
         :type jid: :class:`str`
         """
-        self.roster.subscribe(aioxmpp.JID.fromstr(jid))
+        self.roster.subscribe(aioxmpp.JID.fromstr(jid).bare())
 
     def unsubscribe(self, jid):
         """
@@ -100,7 +100,7 @@ class PresenceManager(object):
         :param jid: the JID you ask for unsubscriptiion
         :type jid: :class:`str`
         """
-        self.roster.unsubscribe(aioxmpp.JID.fromstr(jid))
+        self.roster.unsubscribe(aioxmpp.JID.fromstr(jid).bare())
 
     def approve(self, jid):
         """
@@ -108,7 +108,7 @@ class PresenceManager(object):
         :param jid: the JID to approve
         :type jid: :class:`str`
         """
-        self.roster.approve(aioxmpp.JID.fromstr(jid))
+        self.roster.approve(aioxmpp.JID.fromstr(jid).bare())
 
     def _on_available(self, stanza):
         self.on_available(str(stanza.from_), stanza)
@@ -117,8 +117,8 @@ class PresenceManager(object):
         self.on_unavailable(str(stanza.from_), stanza)
 
     def _on_subscribe(self, stanza):
-        if self.aprove_all:
-            self.roster.aprove(str(stanza.from_))
+        if self.approve_all:
+            self.roster.approve(stanza.from_.bare())
         else:
             self.on_subscribe(str(stanza.from_))
 
@@ -126,8 +126,11 @@ class PresenceManager(object):
         self.on_subscribed(str(stanza.from_))
 
     def _on_unsubscribe(self, stanza):
-        if self.aprove_all:
-            self.roster.aprove(str(stanza.from_))
+        if self.approve_all:
+            self.client.stream.enqueue(
+                aioxmpp.Presence(type_=aioxmpp.structs.PresenceType.UNSUBSCRIBED,
+                                 to=stanza.from_.bare())
+            )
         else:
             self.on_unsubscribe(str(stanza.from_))
 

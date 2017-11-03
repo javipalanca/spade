@@ -18,22 +18,23 @@ class Agent(object):
     def __init__(self, jid, password, verify_security=False):
         self.jid = aioxmpp.JID.fromstr(jid)
         self.password = password
+        self.verify_security = verify_security
 
         self.behaviours = []
         self._values = {}
 
-        self.aiothread = AioThread(self.jid, password, verify_security)
+        self.aiothread = AioThread(self)
+
+        # obtain an instance of the service
+        message_dispatcher = self.client.summon(SimpleMessageDispatcher)
+
+        self.aiothread.connect()
 
         self._alive = Event()
         self._alive.set()
 
         self.aiothread.start()
         self.aiothread.event.wait()
-
-        # obtain an instance of the service
-        message_dispatcher = self.client.summon(
-            SimpleMessageDispatcher
-        )
 
         # register a message callback here
         message_dispatcher.register_callback(
@@ -176,9 +177,10 @@ class Agent(object):
 
 
 class AioThread(Thread):
-    def __init__(self, jid, password, verify_security, *args, **kwargs):
+    def __init__(self, agent, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.jid = jid
+        self.agent = agent
+        self.jid = agent.jid
         self.event = Event()
         self.conn_coro = None
         self.stream = None
@@ -186,17 +188,20 @@ class AioThread(Thread):
         self.loop = asyncio.new_event_loop()
         self.loop.set_debug(True)
         asyncio.set_event_loop(self.loop)
-        self.client = aioxmpp.PresenceManagedClient(jid,
-                                                    aioxmpp.make_security_layer(password,
-                                                                                no_verify=not verify_security),
-                                                    loop=self.loop)
-        self.connect()
+        self.client = aioxmpp.PresenceManagedClient(agent.jid,
+                                                    aioxmpp.make_security_layer(agent.password,
+                                                                                no_verify=not agent.verify_security),
+                                                    loop=self.loop,
+                                                    logger=logging.getLogger(agent.jid.localpart))
+
+    def connect(self):
+        self._connect()
 
     def run(self):
         self.loop.call_soon(self.event.set)
         self.loop.run_forever()
 
-    def connect(self):
+    def _connect(self):
         self.conn_coro = self.client.connected()
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)
