@@ -93,9 +93,9 @@ the default class for all behaviours. This class represents a cyclic behaviour w
 loop-like behaviour.
 
 You can see that there is a coroutine called ``on_start()`` in the behaviour. This method is similar to the ``setup()``
- method of the agent class but it is run in the async loop. It is executed just before the main iteration of the
- behaviour begins and it is used for initialization code. In this case, we print a line and initialize the variable for
- the counter. There is also an ``on_end()`` coroutine that is executed when a behaviour is done or killed.
+method of the agent class but it is run in the async loop. It is executed just before the main iteration of the
+behaviour begins and it is used for initialization code. In this case, we print a line and initialize the variable for
+the counter. There is also an ``on_end()`` coroutine that is executed when a behaviour is done or killed.
 
 Also, there is the ``run()`` method, which is very important. In all behaviours, this is the method in which the core of
 the programming is done, because this method is called on each iteration of the behaviour loop. It acts as the body of
