@@ -368,5 +368,6 @@ class WUIHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 for morsel in self.cookie.values():
                     self.send_header('Set-Cookie', morsel.output(header='').lstrip())
                 self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
                 self.wfile.write(json.dumps(ret))
