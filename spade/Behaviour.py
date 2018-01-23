@@ -534,11 +534,11 @@ class Behaviour(MessageReceiver.MessageReceiver):
         return self._exitcode
 
     def run(self):
+        # Get condition and wait for the other behaviours
+        self.myAgent.behavioursGo.acquire()
         if not self.myAgent._running:
-            # Get condition and wait for the other behaviours
-            self.myAgent.behavioursGo.acquire()
             self.myAgent.behavioursGo.wait()
-            self.myAgent.behavioursGo.release()
+        self.myAgent.behavioursGo.release()
 
         """
         # Check wether this behaviour has already started
