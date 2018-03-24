@@ -12,10 +12,10 @@ except:
     pass
 
 if sys.platform == "win32":
-    ext = Extension("tlslite.utils.win32prng",
-                    sources=["tlslite/utils/win32prng.c"],
-                    libraries=["advapi32"])
-    exts = [ext]
+    #ext = Extension("tlslite.utils.win32prng",
+    #               sources=["tlslite/utils/win32prng.c"],
+    #                libraries=["advapi32"])
+    exts = []#[ext]
 else:
     exts = []
 

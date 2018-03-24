@@ -92,8 +92,10 @@ except:
             #Else get Win32 CryptoAPI PRNG
             try:
                 import win32prng
+                #can this import be dropped now too?  Since this now uses os.urandom?
                 def getRandomBytes(howMany):
-                    s = win32prng.getRandomBytes(howMany)
+                    #s = win32prng.getRandomBytes(howMany)
+                    s = os.urandom(howMany)
                     if len(s) != howMany:
                         raise AssertionError()
                     return stringToBytes(s)
