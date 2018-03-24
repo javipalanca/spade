@@ -148,6 +148,8 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                         s = s + str(self.server.behav.myAgent.auctions[key]["current_bidder"]) + ";;"
                     else:
                         s = s + "-;;"
+		self.send_response(200)
+                self.end_headers()
                 self.wfile.write(s)
                 return
             except:
@@ -261,12 +263,10 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
         else:
             self._content = self.header() + self.body() + self.footer()
+	self.send_response(200)
+        self.end_headers()
         self.wfile.write(self._content)
-
-
-
-
-
+	
 
 class Bidder(Agent.Agent):
 
