@@ -128,6 +128,8 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 					else:
 						s = s + "-;;"
 				print s
+				self.send_response(200)
+                		self.end_headers()
 				self.wfile.write(s)
 				return
 			except Exception,e:
@@ -201,6 +203,9 @@ class WebAdminHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
 		else:
 			self._content = self.header() + self.body() + self.footer()
+			
+		self.send_response(200)
+                self.end_headers()
 		self.wfile.write(self._content)
 
 
