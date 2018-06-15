@@ -2,8 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-from pip.req import parse_requirements
 from setuptools import setup, find_packages
+
+
+def parse_requirements(filename):
+    """ load requirements from a pip requirements file """
+    lineiter = (line.strip() for line in open(filename))
+    return [line for line in lineiter if line and not line.startswith("#")]
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -11,16 +17,14 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-install_reqs = parse_requirements("requirements.txt", session=False)
-requirements = [str(ir.req) for ir in install_reqs]
+requirements = parse_requirements("requirements.txt")
 
 setup_requirements = [
     'pytest-runner',
     # put setup requirements (distutils extensions, etc.) here
 ]
 
-install_reqs = parse_requirements("requirements_dev.txt", session=False)
-test_requirements = [str(ir.req) for ir in install_reqs]
+test_requirements = parse_requirements("requirements_dev.txt")
 
 setup(
     name='spade',

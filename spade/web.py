@@ -1,7 +1,7 @@
 import logging
 import socket
 
-from aiohttp import web
+from aiohttp import web as aioweb
 import aiohttp_jinja2
 import jinja2
 
@@ -33,7 +33,7 @@ class WebApp(object):
     def start(self, hostname=None, port=None, templates_path=None):
         self.hostname = hostname if hostname else "localhost"
         self.port = port if port else unused_port(self.hostname)
-        self.app = web.Application()
+        self.app = aioweb.Application()
         internal_loader = jinja2.PackageLoader("spade", package_path='templates', encoding='utf-8')
         if templates_path:
             loader = jinja2.ChoiceLoader([

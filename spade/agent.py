@@ -24,29 +24,31 @@ class Agent(object):
         self._values = {}
 
         self.aiothread = AioThread(self)
+        self._alive = asyncio.Event()
 
         # obtain an instance of the service
-        message_dispatcher = self.client.summon(SimpleMessageDispatcher)
+        self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
 
+        # Presence service
+        self.presence = PresenceManager(self)
+
+        # Web service
+        self.web = WebApp(agent=self)
+
+    def start(self):
         self.aiothread.connect()
 
-        self._alive = Event()
         self._alive.set()
 
         self.aiothread.start()
         self.aiothread.event.wait()
 
         # register a message callback here
-        message_dispatcher.register_callback(
+        self.message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT,
             None,
             self._message_received,
         )
-
-        # Presence service
-        self.presence = PresenceManager(self)
-        # Web service
-        self.web = WebApp(agent=self)
 
         self.setup()
 
@@ -108,11 +110,21 @@ class Agent(object):
         :param behaviour: the behaviour instance to be removed
         :type behaviour: :class:`spade.behaviour.Behaviour`
         """
-        if behaviour not in self.behaviours:
+        if not self.has_behaviour(behaviour):
             raise ValueError("This behaviour is not registered")
         index = self.behaviours.index(behaviour)
         self.behaviours[index].kill()
         self.behaviours.pop(index)
+
+    def has_behaviour(self, behaviour):
+        """
+        Checks if a behaviour is added to an agent.
+        :param behaviour: the behaviour instance to check
+        :type behaviour: :class:`spade.behaviour.Behaviour`
+        :return: a boolean that indicates wether the behaviour is inside the agent.
+        :rtype: bool
+        """
+        return behaviour in self.behaviours
 
     def stop(self):
         """
@@ -194,14 +206,14 @@ class AioThread(Thread):
                                                     loop=self.loop,
                                                     logger=logging.getLogger(agent.jid.localpart))
 
-    def connect(self):
+    def connect(self): # pragma: no cover
         self._connect()
 
     def run(self):
         self.loop.call_soon(self.event.set)
         self.loop.run_forever()
 
-    def _connect(self):
+    def _connect(self): # pragma: no cover
         self.conn_coro = self.client.connected()
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)

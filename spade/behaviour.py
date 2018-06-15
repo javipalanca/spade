@@ -96,6 +96,7 @@ class Behaviour(object, metaclass=ABCMeta):
         runs the _step coroutine where the body of the behaviour
         is called.
         """
+        await self.agent._alive.wait()
         await self.on_start()
         await self._step()
 
