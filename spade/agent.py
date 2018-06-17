@@ -99,7 +99,7 @@ class Agent(object):
         """
         behaviour.set_aiothread(self.aiothread)
         behaviour.set_agent(self)
-        behaviour.set_template = template
+        behaviour.set_template(template)
         self.behaviours.append(behaviour)
         behaviour.start()
 
@@ -206,14 +206,14 @@ class AioThread(Thread):
                                                     loop=self.loop,
                                                     logger=logging.getLogger(agent.jid.localpart))
 
-    def connect(self): # pragma: no cover
+    def connect(self):  # pragma: no cover
         self._connect()
 
     def run(self):
         self.loop.call_soon(self.event.set)
         self.loop.run_forever()
 
-    def _connect(self): # pragma: no cover
+    def _connect(self):  # pragma: no cover
         self.conn_coro = self.client.connected()
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)

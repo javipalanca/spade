@@ -7,6 +7,7 @@ from asynctest import CoroutineMock, MagicMock
 
 from spade.behaviour import OneShotBehaviour, Behaviour
 from spade.message import Message
+from spade.template import Template
 from tests.utils import make_connected_agent
 
 
@@ -139,14 +140,58 @@ def test_send_message(message):
     agent.add_behaviour(SendBehaviour())
     agent.wait_behaviour.wait()
 
-    aiomsg = message.prepare()
-
     assert agent.stream.send.await_count == 1
     msg_arg = agent.stream.send.await_args[0][0]
     assert msg_arg.body[None] == "message body"
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
     assert msg_arg.thread == "thread-id"
 
+    agent.stop()
+
+
+def test_multiple_templates():
+    class Template1Behaviour(OneShotBehaviour):
+        async def run(self):
+            self.agent.msg1 = await self.receive(timeout=2)
+
+    class Template2Behaviour(OneShotBehaviour):
+        async def run(self):
+            self.agent.msg2 = await self.receive(timeout=2)
+
+    class Template3Behaviour(OneShotBehaviour):
+        async def run(self):
+            self.agent.msg3 = await self.receive(timeout=2)
+            self.agent.wait_behaviour.set()
+
+    agent = make_connected_agent()
+    agent.wait_behaviour = Event()
+
+    template1 = Template()
+    template1.set_metadata("performative", "template1")
+    agent.add_behaviour(Template1Behaviour(), template1)
+
+    template2 = Template()
+    template2.set_metadata("performative", "template2")
+    agent.add_behaviour(Template2Behaviour(), template2)
+
+    template3 = Template()
+    template3.set_metadata("performative", "template3")
+    agent.add_behaviour(Template3Behaviour(), template3)
+
+    msg1 = Message(metadata={"performative": "template1"}).prepare()
+    msg2 = Message(metadata={"performative": "template2"}).prepare()
+    msg3 = Message(metadata={"performative": "template3"}).prepare()
+
+    agent.start()
+    agent._message_received(msg1)
+    agent._message_received(msg2)
+    agent._message_received(msg3)
+
+    agent.wait_behaviour.wait()
+
+    assert agent.msg1.get_metadata("performative") == "template1"
+    assert agent.msg2.get_metadata("performative") == "template2"
+    assert agent.msg3.get_metadata("performative") == "template3"
     agent.stop()
 
 

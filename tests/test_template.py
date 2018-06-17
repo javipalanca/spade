@@ -89,6 +89,16 @@ def test_template_match_false_metadata():
     assert not template.match(message)
 
 
+def test_template_match_false_metadata_with_different_key():
+    template = Template()
+    template.metadata = {"performative": "query"}
+
+    message = Message()
+    message.set_metadata("language", "query")
+
+    assert not template.match(message)
+
+
 def test_template_match_and():
     t1 = Template()
     t1.sender = "sender1@host"
