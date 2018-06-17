@@ -1,6 +1,5 @@
 import logging
-
-import aioxmpp
+from abc import ABCMeta, abstractmethod
 
 from spade.message import MessageBase
 
@@ -9,13 +8,14 @@ logger = logging.getLogger('spade.Template')
 
 # TODO: Include regex in templates
 
-class BaseTemplate:
+class BaseTemplate(metaclass=ABCMeta):
     """
     Template operators
     """
 
+    @abstractmethod
     def match(self, message):
-        return False
+        raise NotImplementedError
 
     def __and__(self, other):
         """Implementation of & operator"""

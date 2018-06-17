@@ -3,6 +3,8 @@
 
 """Tests for `message` package."""
 import aioxmpp
+import pytest
+
 from spade.message import Message, SPADE_X_METADATA
 
 
@@ -49,3 +51,8 @@ def test_make_reply():
     assert reply.thread == "thread-id"
     assert reply.get_metadata("metadata1") == "value1"
     assert reply.get_metadata("metadata2") == "value2"
+
+
+def test_message_from_node_attribute_error():
+    with pytest.raises(AttributeError) as e:
+        Message.from_node(Message())
