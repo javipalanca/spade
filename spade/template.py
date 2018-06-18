@@ -1,5 +1,5 @@
 import logging
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 from spade.message import MessageBase
 
@@ -12,11 +12,6 @@ class BaseTemplate(metaclass=ABCMeta):
     """
     Template operators
     """
-
-    @abstractmethod
-    def match(self, message):
-        raise NotImplementedError
-
     def __and__(self, other):
         """Implementation of & operator"""
         return ANDTemplate(self, other)
@@ -85,26 +80,6 @@ class Template(BaseTemplate, MessageBase):
     """
     Template for message matching
     """
-    def match(self, message):
-        if self.to and message.to != self.to:
-            return False
-
-        if self.sender and message.sender != self.sender:
-            return False
-
-        if self.body and message.body != self.body:
-            return False
-
-        if self.thread and message.thread != self.thread:
-            return False
-
-        for key, value in self.metadata.items():
-            if message.get_metadata(key) != value:
-                return False
-
-        logger.debug(f"message matched {self} == {message}")
-        return True
-
     def __str__(self):
         s = f'<template to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:

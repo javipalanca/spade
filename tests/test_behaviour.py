@@ -1,3 +1,4 @@
+import asyncio
 from threading import Event
 
 import aioxmpp
@@ -43,11 +44,10 @@ def test_on_start_on_end():
     agent.wait_behaviour = Event()
     agent.add_behaviour(TestOneShotBehaviour())
 
-    agent.start()
-
     assert agent.on_start_flag is False
     assert agent.on_end_flag is False
 
+    agent.start()
     agent.wait_behaviour.wait()
 
     assert agent.on_start_flag is True
@@ -125,6 +125,48 @@ def test_wait_for_agent_start():
     agent.stop()
 
 
+def test_behaviour_match():
+    class TestBehaviour(OneShotBehaviour):
+        async def run(self):
+            pass
+
+    template = Template()
+    template.sender = "sender1@host"
+    template.to = "recv1@host"
+    template.body = "Hello World"
+    template.thread = "thread-id"
+    template.metadata = {"performative": "query"}
+
+    behaviour = TestBehaviour()
+    behaviour.set_template(template)
+
+    msg = Message()
+    msg.sender = "sender1@host"
+    msg.to = "recv1@host"
+    msg.body = "Hello World"
+    msg.thread = "thread-id"
+    msg.set_metadata("performative", "query")
+
+    assert behaviour.match(msg)
+
+
+def test_behaviour_match_without_template():
+    class TestBehaviour(OneShotBehaviour):
+        async def run(self):
+            pass
+
+    behaviour = TestBehaviour()
+
+    msg = Message()
+    msg.sender = "sender1@host"
+    msg.to = "recv1@host"
+    msg.body = "Hello World"
+    msg.thread = "thread-id"
+    msg.set_metadata("performative", "query")
+
+    assert behaviour.match(msg)
+
+
 def test_send_message(message):
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
@@ -145,6 +187,74 @@ def test_send_message(message):
     assert msg_arg.body[None] == "message body"
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
     assert msg_arg.thread == "thread-id"
+
+    agent.stop()
+
+
+def test_send_message_without_sender():
+    class SendBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = Message()
+            await self.send(msg)
+            self.agent.wait_behaviour.set()
+
+    agent = make_connected_agent()
+    agent.wait_behaviour = Event()
+    agent.start()
+
+    agent.aiothread.stream = MagicMock()
+    agent.stream.send = CoroutineMock()
+    agent.add_behaviour(SendBehaviour())
+    agent.wait_behaviour.wait()
+
+    msg_arg = agent.stream.send.await_args[0][0]
+    assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
+
+    agent.stop()
+
+
+def test_receive():
+    class RecvBehaviour(OneShotBehaviour):
+        async def run(self):
+            self.agent.wait1_behaviour.wait()
+            msg = Message(body="received body")
+            await asyncio.wait_for(self.queue.put(msg), 0.01)
+            self.agent.recv_msg = await self.receive()
+            self.agent.wait2_behaviour.set()
+
+    agent = make_connected_agent()
+    agent.wait1_behaviour = Event()
+    agent.wait2_behaviour = Event()
+
+    behaviour = RecvBehaviour()
+    agent.add_behaviour(behaviour)
+    agent.start()
+
+    assert behaviour.mailbox_size() == 0
+
+    agent.wait1_behaviour.set()
+    agent.wait2_behaviour.wait()
+
+    assert agent.recv_msg.body == "received body"
+
+    agent.stop()
+
+
+def test_set_get():
+    class SendBehaviour(OneShotBehaviour):
+        async def run(self):
+            self.set("key", "value")
+            assert self.get("key") == "value"
+            self.agent.wait_behaviour.set()
+
+    agent = make_connected_agent()
+    agent.wait_behaviour = Event()
+    agent.start()
+
+    agent.add_behaviour(SendBehaviour())
+    agent.wait_behaviour.wait()
+
+    assert agent.get("key") == "value"
 
     agent.stop()
 

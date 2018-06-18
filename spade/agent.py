@@ -15,7 +15,7 @@ logger = logging.getLogger('spade.Agent')
 
 
 class Agent(object):
-    def __init__(self, jid, password, verify_security=False):
+    def __init__(self, jid, password, verify_security=False, loop=None):
         self.jid = aioxmpp.JID.fromstr(jid)
         self.password = password
         self.verify_security = verify_security
@@ -23,7 +23,7 @@ class Agent(object):
         self.behaviours = []
         self._values = {}
 
-        self.aiothread = AioThread(self)
+        self.aiothread = AioThread(self, loop)
         self._alive = asyncio.Event()
 
         # obtain an instance of the service
@@ -37,10 +37,8 @@ class Agent(object):
 
     def start(self):
         self.aiothread.connect()
-
-        self._alive.set()
-
         self.aiothread.start()
+        self._alive.set()
         self.aiothread.event.wait()
 
         # register a message callback here
@@ -183,13 +181,15 @@ class Agent(object):
         logger.debug(f"Got message: {msg}")
 
         msg = Message.from_node(msg)
+        futures = []
         for behaviour in (x for x in self.behaviours if x.match(msg)):
-            self.submit(behaviour.enqueue(msg))
+            futures.append(self.submit(behaviour.enqueue(msg)))
             logger.debug(f"Message enqueued to behaviour: {behaviour}")
+        return futures
 
 
 class AioThread(Thread):
-    def __init__(self, agent, *args, **kwargs):
+    def __init__(self, agent, loop, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.agent = agent
         self.jid = agent.jid
@@ -197,7 +197,10 @@ class AioThread(Thread):
         self.conn_coro = None
         self.stream = None
 
-        self.loop = asyncio.new_event_loop()
+        if loop:
+            self.loop = loop
+        else:
+            self.loop = asyncio.new_event_loop()
         self.loop.set_debug(True)
         asyncio.set_event_loop(self.loop)
         self.client = aioxmpp.PresenceManagedClient(agent.jid,

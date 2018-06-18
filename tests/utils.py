@@ -11,5 +11,5 @@ class MockedConnectedAgent(Agent):
         self.aiothread.conn_coro.__aexit__ = CoroutineMock()
 
 
-def make_connected_agent(jid="fake@jid", password="fake_password"):
-    return MockedConnectedAgent(jid, password)
+def make_connected_agent(jid="fake@jid", password="fake_password", loop=None):
+    return MockedConnectedAgent(jid, password, loop=loop)

@@ -142,7 +142,7 @@ class Behaviour(object, metaclass=ABCMeta):
         body of the behaviour.
         to be implemented by user
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     async def _run(self):
         """
@@ -164,6 +164,9 @@ class Behaviour(object, metaclass=ABCMeta):
     async def enqueue(self, message):
         await self.queue.put(message)
 
+    def mailbox_size(self):
+        return self.queue.qsize()
+
     async def send(self, msg):
         """
         Sends a message.
@@ -182,7 +185,7 @@ class Behaviour(object, metaclass=ABCMeta):
         if timeout is not None it returns the message or "None"
         after timeout is done.
         :param timeout: number of seconds until return
-        :type timeout: :class:`int`
+        :type timeout: :class:`float`
         :return: a Message or None
         :rtype: :class:`spade.message.Message`
         """
@@ -194,7 +197,7 @@ class Behaviour(object, metaclass=ABCMeta):
                 msg = None
         else:
             try:
-                msg = await self.queue.get_nowait()
+                msg = self.queue.get_nowait()
             except asyncio.QueueEmpty:
                 msg = None
         return msg
@@ -284,6 +287,8 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
             if seconds > 0:
                 logger.debug(f"Timeout behaviour going to sleep for {seconds} seconds: {self}")
                 await asyncio.sleep(seconds)
+                await self.run()
+                self._timeout_triggered = True
 
     def done(self):
         return self._timeout_triggered

@@ -101,6 +101,29 @@ class MessageBase(object):
         """
         return self.metadata[key] if key in self.metadata else None
 
+    def match(self, message):
+        if self.to and message.to != self.to:
+            return False
+
+        if self.sender and message.sender != self.sender:
+            return False
+
+        if self.body and message.body != self.body:
+            return False
+
+        if self.thread and message.thread != self.thread:
+            return False
+
+        for key, value in self.metadata.items():
+            if message.get_metadata(key) != value:
+                return False
+
+        logger.debug(f"message matched {self} == {message}")
+        return True
+
+    def __eq__(self, other):
+        return self.match(other)
+
 
 class Message(MessageBase):
     def make_reply(self):
