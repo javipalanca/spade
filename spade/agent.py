@@ -229,5 +229,4 @@ class AioThread(Thread):
     def finalize(self):
         aexit = self.conn_coro.__aexit__(*sys.exc_info())
         asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
-        # asyncio.gather(*asyncio.Task.all_tasks()).cancel()
         self.loop.call_soon_threadsafe(self.loop.stop)

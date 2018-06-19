@@ -105,17 +105,21 @@ Here is a self-explaining example::
                 await self.send(msg)
                 print("Message sent!")
 
+                # set exit_code for the behaviour
+                self.exit_code = "Job Finished!"
+
                 # stop agent from behaviour
                 self.agent.stop()
 
         def setup(self):
             print("SenderAgent started")
-            b = self.InformBehav()
-            self.add_behaviour(b)
+            self.b = self.InformBehav()
+            self.add_behaviour(self.b)
 
 
     if __name__ == "__main__":
         agent = SenderAgent("sender@your_xmpp_server", "sender_password")
+        agent.start()
 
         while agent.is_alive():
             try:
@@ -123,7 +127,17 @@ Here is a self-explaining example::
             except KeyboardInterrupt:
                 agent.stop()
                 break
-        print("Agent finished")
+        print("Agent finished with exit code: {}".format(self.b.exit_code))
+
+
+
+This code would output::
+
+    $ python sender.py
+    SenderAgent started
+    InformBehav running
+    Message sent!
+    Agent finished with exit code: Job Finished!
 
 
 
@@ -180,8 +194,10 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
+        receiveragent.start()
         time.sleep(2) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
         senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
+        senderagent.start()
 
         while receiveragent.is_alive():
             try:

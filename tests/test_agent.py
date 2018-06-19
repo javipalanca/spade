@@ -1,3 +1,5 @@
+import asyncio
+
 from aioxmpp import PresenceManagedClient
 from asynctest import CoroutineMock, Mock
 
@@ -30,6 +32,18 @@ def test_create_agent(mocker):
 
 def test_connected_agent():
     agent = make_connected_agent()
+    assert agent.is_alive() is False
+
+    agent.start()
+    assert agent.is_alive() is True
+
+    agent.stop()
+    assert agent.is_alive() is False
+
+
+def test_connected_agent_with_loop():
+    loop = asyncio.new_event_loop()
+    agent = make_connected_agent(loop=loop)
     assert agent.is_alive() is False
 
     agent.start()

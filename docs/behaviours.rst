@@ -72,8 +72,10 @@ Let's see an example::
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
+        receiveragent.start()
         time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
         senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
+        senderagent.start()
 
         while receiveragent.is_alive():
             try:
@@ -173,8 +175,10 @@ Let's see an example::
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
+        receiveragent.start()
         time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
         senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
+        senderagent.start()
 
         while receiveragent.is_alive():
             try:
@@ -288,6 +292,7 @@ transit to::
 
     if __name__ == "__main__":
         fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
+        fsmagent.start()
 
         while fsmagent.is_alive():
             try:

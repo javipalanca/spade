@@ -12,12 +12,17 @@ now = datetime.now
 logger = logging.getLogger('spade.Behaviour')
 
 
+class BehaviourNotFinishedException(Exception):
+    pass
+
+
 class Behaviour(object, metaclass=ABCMeta):
     def __init__(self):
         self._aiothread = None
         self.agent = None
         self.template = None
         self._force_kill = Event()
+        self._exit_code = 0
         self.presence = None
         self.web = None
 
@@ -100,12 +105,15 @@ class Behaviour(object, metaclass=ABCMeta):
         await self.on_start()
         await self._step()
 
-    def kill(self):
+    def kill(self, exit_code=0):
         """
         stops the behaviour
+        :param exit_code: the exit code of the behaviour
+        :type exit_code: :class:`object`
         """
         self._force_kill.set()
-        logger.info("Killing behavior {}".format(self))
+        self._exit_code = exit_code
+        logger.info("Killing behavior {0} with exit code: {1}".format(self, exit_code))
 
     def is_killed(self):
         """
@@ -114,6 +122,30 @@ class Behaviour(object, metaclass=ABCMeta):
         :rtype: :class:`bool`
         """
         return self._force_kill.is_set()
+
+    @property
+    def exit_code(self):
+        """
+        Returns the exit_code of the behaviour.
+        It only works when the behaviour is done or killed,
+        otherwise it raises an exception.
+        :return: the exit code of the behaviour
+        :rtype: :class:`object`
+        :raises: BehaviourNotFinishedException
+        """
+        if self.done() or self.is_killed():
+            return self._exit_code
+        else:
+            raise BehaviourNotFinishedException
+
+    @exit_code.setter
+    def exit_code(self, value):
+        """
+        Sets a new exit code to the behaviour.
+        :param value: the new exit code
+        :type value: :class:`object`
+        """
+        self._exit_code = value
 
     def done(self):
         """
@@ -228,7 +260,7 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
         """
         Creates a periodic behaviour
         :param period: interval of the behaviour in seconds
-        :type period: :class:`int`
+        :type period: :class:`float`
         :param start_at: whether to start the behaviour with an offset
         :type start_at: :class:`datetime.datetime`
         """
@@ -246,7 +278,7 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
 
     @period.setter
     def period(self, value):
-        self._period = value
+        self._period = timedelta(seconds=value)
 
     async def _run(self):
         if now() >= self._next_activation:
@@ -329,7 +361,7 @@ class FSMBehaviour(Behaviour):
         self._transitions[source].append(dest)
 
     def is_valid_transition(self, source, dest):
-        if dest not in self._states:
+        if dest not in self._states or source not in self._states:
             raise NotValidState
         elif dest not in self._transitions[source]:
             raise NotValidTransition
@@ -351,15 +383,15 @@ class FSMBehaviour(Behaviour):
                 if self.is_valid_transition(self.current_state, dest):
                     logger.info(f"FSM transiting from {self.current_state} to {dest}.")
                     self.current_state = dest
-            except NotValidState:
+            except NotValidState as e:
                 logger.error(f"FSM could not transitate to state {dest}. That state does not exist.")
-                self.kill()
-            except NotValidTransition:
+                self.kill(exit_code=e)
+            except NotValidTransition as e:
                 logger.error(f"FSM could not transitate to state {dest}. That transition is not registered.")
-                self.kill()
+                self.kill(exit_code=e)
         else:
             logger.info("FSM arrived to a final state (no transitions found). Killing FSM.")
             self.kill()
 
     async def run(self):
-        raise RuntimeError
+        raise RuntimeError  # pragma: no cover

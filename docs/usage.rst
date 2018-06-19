@@ -25,6 +25,7 @@ To create an agent in a project you just need to: ::
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+    dummy.start()
 
     dummy.stop()
 
@@ -78,6 +79,7 @@ Example::
 
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+        dummy.start()
 
         # wait until user interrupts with ctrl+C
         while True:
