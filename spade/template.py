@@ -14,25 +14,31 @@ class BaseTemplate(metaclass=ABCMeta):
     """
     def __and__(self, other):
         """Implementation of & operator"""
+        if not issubclass(other.__class__, BaseTemplate):
+            raise TypeError("Expressions must be of class Template")
         return ANDTemplate(self, other)
 
-    def __rand__(self, other):
+    def __iand__(self, other):
         """Implementation of &= operator"""
         return self & other
 
     def __or__(self, other):
         """Implementation of | operator"""
+        if not issubclass(other.__class__, BaseTemplate):
+            raise TypeError("Expressions must be of class Template")
         return ORTemplate(self, other)
 
-    def __ror__(self, other):
+    def __ior__(self, other):
         """Implementation of |= operator"""
         return self | other
 
     def __xor__(self, other):
         """Implementation of ^ operator"""
+        if not issubclass(other.__class__, BaseTemplate):
+            raise TypeError("Expressions must be of class Template")
         return XORTemplate(self, other)
 
-    def __rxor__(self, other):
+    def __ixor__(self, other):
         """Implementation of ^= operator"""
         return self ^ other
 

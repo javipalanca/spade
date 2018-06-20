@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `template` package."""
+import pytest
+
 from spade.message import Message
 from spade.template import Template
 
 
-def test_template_match():
+def test_match():
     template = Template()
     template.sender = "sender1@host"
     template.to = "recv1@host"
@@ -24,7 +26,7 @@ def test_template_match():
     assert template.match(message)
 
 
-def test_template_match_false_sender():
+def test_match_false_sender():
     template = Template()
     template.sender = "sender2@host"
 
@@ -37,7 +39,7 @@ def test_template_match_false_sender():
     assert not template.match(message)
 
 
-def test_template_match_false_to():
+def test_match_false_to():
     template = Template()
     template.to = "recv1@host"
 
@@ -50,7 +52,7 @@ def test_template_match_false_to():
     assert not template.match(message)
 
 
-def test_template_match_false_body():
+def test_match_false_body():
     template = Template()
     template.body = "Hello World"
 
@@ -63,7 +65,7 @@ def test_template_match_false_body():
     assert not template.match(message)
 
 
-def test_template_match_false_thread():
+def test_match_false_thread():
     template = Template()
     template.thread = "thread-id"
 
@@ -76,7 +78,7 @@ def test_template_match_false_thread():
     assert not template.match(message)
 
 
-def test_template_match_false_metadata():
+def test_match_false_metadata():
     template = Template()
     template.metadata = {"performative": "query"}
 
@@ -89,7 +91,7 @@ def test_template_match_false_metadata():
     assert not template.match(message)
 
 
-def test_template_match_false_metadata_with_different_key():
+def test_match_false_metadata_with_different_key():
     template = Template()
     template.metadata = {"performative": "query"}
 
@@ -99,7 +101,7 @@ def test_template_match_false_metadata_with_different_key():
     assert not template.match(message)
 
 
-def test_template_match_and():
+def test_match_and():
     t1 = Template()
     t1.sender = "sender1@host"
     t2 = Template()
@@ -125,7 +127,34 @@ def test_template_match_and():
     assert (t1 & t2).match(m3)
 
 
-def test_template_match_or():
+def test_match_iand():
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.to = "recv1@host"
+    t2.metadata = {"performative": "query"}
+
+    m1 = Message()
+    m1.sender = "sender1@host"
+
+    t1 &= t2
+    assert not t1.match(m1)
+
+    m2 = Message()
+    m2.to = "recv1@host"
+    m2.metadata = {"performative": "query"}
+
+    assert not t1.match(m2)
+
+    m3 = Message()
+    m3.sender = "sender1@host"
+    m3.to = "recv1@host"
+    m3.metadata = {"performative": "query"}
+
+    assert t1.match(m3)
+
+
+def test_match_or():
     t1 = Template()
     t1.sender = "sender1@host"
     t2 = Template()
@@ -151,7 +180,109 @@ def test_template_match_or():
     assert not (t1 | t2).match(m3)
 
 
-def test_template_match_not():
+def test_match_ior():
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.to = "recv1@host"
+    t2.metadata = {"performative": "query"}
+
+    m1 = Message()
+    m1.sender = "sender1@host"
+
+    t1 |= t2
+
+    assert t1.match(m1)
+
+    m2 = Message()
+    m2.to = "recv1@host"
+    m2.metadata = {"performative": "query"}
+
+    assert t1.match(m2)
+
+    m3 = Message()
+    m3.sender = "sender2@host"
+    m3.to = "recv1@host"
+    m3.metadata = {"performative": "inform"}
+
+    assert not t1.match(m3)
+
+
+def test_match_xor():
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.to = "recv1@host"
+    t2.metadata = {"performative": "query"}
+
+    m1 = Message()
+    m1.sender = "sender1@host"
+
+    assert (t1 ^ t2).match(m1)
+
+    m2 = Message()
+    m2.to = "recv1@host"
+    m2.metadata = {"performative": "query"}
+
+    assert (t1 ^ t2).match(m2)
+
+    m3 = Message()
+    m3.sender = "sender2@host"
+    m3.to = "recv1@host"
+    m3.metadata = {"performative": "inform"}
+
+    assert not (t1 ^ t2).match(m3)
+
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.sender = "sender1@host"
+    m4 = Message()
+    m4.sender = "sender1@host"
+
+    assert not (t1 ^ t2).match(m4)
+
+
+def test_match_ixor():
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.to = "recv1@host"
+    t2.metadata = {"performative": "query"}
+
+    m1 = Message()
+    m1.sender = "sender1@host"
+
+    t1 ^= t2
+
+    assert t1.match(m1)
+
+    m2 = Message()
+    m2.to = "recv1@host"
+    m2.metadata = {"performative": "query"}
+
+    assert t1.match(m2)
+
+    m3 = Message()
+    m3.sender = "sender2@host"
+    m3.to = "recv1@host"
+    m3.metadata = {"performative": "inform"}
+
+    assert not t1.match(m3)
+
+    t1 = Template()
+    t1.sender = "sender1@host"
+    t2 = Template()
+    t2.sender = "sender1@host"
+    m4 = Message()
+    m4.sender = "sender1@host"
+
+    t1 ^= t2
+
+    assert not t1.match(m4)
+
+
+def test_match_not():
     t1 = Template()
     t1.sender = "sender1@host"
     t1.to = "recv1@host"
@@ -174,3 +305,45 @@ def test_template_match_not():
     m3.metadata = {"performative": "query"}
 
     assert not (~t1).match(m3)
+
+
+def test_and_value_error():
+    with pytest.raises(TypeError):
+        assert Template() & None
+
+    with pytest.raises(TypeError):
+        assert Template() & 3
+
+    with pytest.raises(TypeError):
+        assert Template() & "string"
+
+    with pytest.raises(TypeError):
+        assert Template() & object()
+
+
+def test_or_value_error():
+    with pytest.raises(TypeError):
+        assert Template() | None
+
+    with pytest.raises(TypeError):
+        assert Template() | 3
+
+    with pytest.raises(TypeError):
+        assert Template() | "string"
+
+    with pytest.raises(TypeError):
+        assert Template() | object()
+
+
+def test_xor_value_error():
+    with pytest.raises(TypeError):
+        assert Template() ^ None
+
+    with pytest.raises(TypeError):
+        assert Template() ^ 3
+
+    with pytest.raises(TypeError):
+        assert Template() ^ "string"
+
+    with pytest.raises(TypeError):
+        assert Template() ^ object()
