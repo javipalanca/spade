@@ -1,8 +1,6 @@
 Click>=6.0
 asn1crypto>=0.24.0
-cryptography==2.2.2
 aioxmpp>=0.9.1
 aiohttp>=2.3.1
 aiohttp_jinja2>=0.14.0
 jinja2>=2.9.6
-
