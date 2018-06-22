@@ -16,7 +16,7 @@ addons:
     - libxml2-dev
 
 after_success:
-  - codecov
+  - coveralls
 
 # command to run tests, e.g. python setup.py test
 script: tox

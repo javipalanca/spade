@@ -6,8 +6,13 @@ SPADE
 .. image:: https://img.shields.io/pypi/v/spade.svg
         :target: https://pypi.python.org/pypi/spade
 
-.. image:: https://img.shields.io/travis/javipalanca/spade.svg
+.. image:: https://travis-ci.org/javipalanca/spade.svg?branch=feature%2F3.0
         :target: https://travis-ci.org/javipalanca/spade
+        :alt: Continuous Integration Status
+
+.. image:: https://coveralls.io/repos/github/javipalanca/spade/badge.svg?branch=feature%2F3.0
+        :target: https://coveralls.io/github/javipalanca/spade?branch=feature%2F3.0
+        :alt: Code Coverage Status
 
 .. image:: https://readthedocs.org/projects/spade/badge/?version=latest
         :target: https://spade-mas.readthedocs.io/en/feature-3.0/?badge=latest
