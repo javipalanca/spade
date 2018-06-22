@@ -161,7 +161,8 @@ def test_wait_for_agent_start():
 
     assert not agent.wait_behaviour.is_set()
     agent.start()
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
     agent.stop()
 
 
@@ -220,7 +221,8 @@ def test_send_message(message):
     agent.aiothread.stream = MagicMock()
     agent.stream.send = CoroutineMock()
     agent.add_behaviour(SendBehaviour())
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.stream.send.await_count == 1
     msg_arg = agent.stream.send.await_args[0][0]
@@ -245,7 +247,8 @@ def test_send_message_without_sender():
     agent.aiothread.stream = MagicMock()
     agent.stream.send = CoroutineMock()
     agent.add_behaviour(SendBehaviour())
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     msg_arg = agent.stream.send.await_args[0][0]
     assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
@@ -273,7 +276,8 @@ def test_receive():
     assert behaviour.mailbox_size() == 0
 
     agent.wait1_behaviour.set()
-    agent.wait2_behaviour.wait()
+    while not agent.wait2_behaviour.is_set():
+        agent.wait2_behaviour.wait(0.01)
 
     assert agent.recv_msg.body == "received body"
 
@@ -302,7 +306,8 @@ def test_receive_with_timeout():
     agent._message_received(msg.prepare())
 
     agent.wait1_behaviour.set()
-    agent.wait2_behaviour.wait()
+    while not agent.wait2_behaviour.is_set():
+        agent.wait2_behaviour.wait(0.01)
 
     assert agent.recv_msg.body == "received body"
     assert agent.recv_msg == msg
@@ -324,7 +329,8 @@ def test_receive_with_timeout_error():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
     agent.stop()
@@ -344,7 +350,8 @@ def test_receive_with_empty_queue():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
     agent.stop()
@@ -362,7 +369,8 @@ def test_set_get():
     agent.start()
 
     agent.add_behaviour(SendBehaviour())
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.get("key") == "value"
 
@@ -407,7 +415,8 @@ def test_multiple_templates():
     agent._message_received(msg2)
     agent._message_received(msg3)
 
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.msg1.get_metadata("performative") == "template1"
     assert agent.msg2.get_metadata("performative") == "template2"
@@ -427,7 +436,8 @@ def test_kill_behaviour():
     agent.start()
 
     agent.add_behaviour(behav)
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert behav.is_killed()
     assert behav.exit_code == 0
@@ -447,7 +457,8 @@ def test_exit_code_from_kill_behaviour():
     agent.start()
 
     agent.add_behaviour(behav)
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert behav.is_killed()
     assert behav.exit_code == ValueError
@@ -471,7 +482,8 @@ def test_set_exit_code_behaviour():
     with pytest.raises(BehaviourNotFinishedException):
         assert behav.exit_code
 
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert not behav.is_killed()
     agent.stop()
@@ -517,7 +529,8 @@ def test_cyclic_behaviour():
     assert agent.cycles == 0
 
     agent.add_behaviour(behav)
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.cycles == 3
     assert behav.is_killed()
@@ -539,7 +552,8 @@ def test_oneshot_behaviour():
     assert agent.one_shot_behaviour_executed is False
 
     agent.start()
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.one_shot_behaviour_executed is True
     agent.stop()
@@ -560,7 +574,8 @@ def test_periodic_behaviour():
     assert agent.periodic_behaviour_execution_counter == 0
 
     agent.start()
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.periodic_behaviour_execution_counter == 1
     agent.stop()
@@ -595,7 +610,8 @@ def test_periodic_start_at():
 
     agent.add_behaviour(behaviour)
 
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
     assert agent.delay >= start_at
 
     agent.stop()
@@ -619,7 +635,8 @@ def test_timeout_behaviour():
     assert not behaviour._timeout_triggered
 
     agent.add_behaviour(behaviour)
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.delay >= start_at
     assert behaviour._timeout_triggered
@@ -646,7 +663,8 @@ def test_timeout_behaviour_zero():
     assert not behaviour._timeout_triggered
 
     agent.add_behaviour(behaviour)
-    agent.wait_behaviour.wait()
+    while not agent.wait_behaviour.is_set():
+        agent.wait_behaviour.wait(0.01)
 
     assert agent.delay >= start_at
     assert behaviour._timeout_triggered
@@ -733,10 +751,12 @@ def test_fsm_bad_state():
     assert fsm_.current_state == STATE_ONE
 
     agent.add_behaviour(fsm_)
-    agent.wait1_behaviour.wait()
+    while not agent.wait1_behaviour.is_set():
+        agent.wait1_behaviour.wait(0.01)
     assert fsm_.current_state == STATE_ONE
 
-    agent.wait2_behaviour.wait()
+    while not agent.wait2_behaviour.is_set():
+        agent.wait2_behaviour.wait(0.01)
     assert fsm_.is_killed()
 
     agent.stop()
@@ -778,10 +798,12 @@ def test_fsm_bad_transition():
     assert fsm_.current_state == STATE_ONE
 
     agent.add_behaviour(fsm_)
-    agent.wait1_behaviour.wait()
+    while not agent.wait1_behaviour.is_set():
+        agent.wait1_behaviour.wait(0.01)
     assert fsm_.current_state == STATE_ONE
 
-    agent.wait2_behaviour.wait()
+    while not agent.wait2_behaviour.is_set():
+        agent.wait2_behaviour.wait(0.01)
     assert fsm_.is_killed()
 
     agent.stop()
