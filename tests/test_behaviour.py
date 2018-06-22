@@ -39,12 +39,14 @@ def fsm():
             self.agent.state = STATE_ONE
             self.set_next_state(STATE_TWO)
             self.agent.wait1_behaviour.set()
+            await asyncio.sleep(0.01)
 
     class StateTwo(State):
         async def run(self):
             self.agent.state = STATE_TWO
             self.set_next_state(STATE_THREE)
             self.agent.wait2_behaviour.set()
+            await asyncio.sleep(0.01)
 
     class StateThree(State):
         async def run(self):
