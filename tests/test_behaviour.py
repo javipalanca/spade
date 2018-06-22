@@ -666,13 +666,16 @@ def test_fsm_behaviour(fsm):
     assert fsm.current_state == STATE_ONE
 
     agent.add_behaviour(fsm)
-    agent.wait1_behaviour.wait()
+    while not agent.wait1_behaviour.is_set():
+        agent.wait1_behaviour.wait(0.01)
     assert fsm.current_state == STATE_ONE
     assert agent.state == STATE_ONE
-    agent.wait2_behaviour.wait()
+    while not agent.wait2_behaviour.is_set():
+        agent.wait2_behaviour.wait(0.01)
     assert fsm.current_state == STATE_TWO
     assert agent.state == STATE_TWO
-    agent.wait3_behaviour.wait()
+    while not agent.wait3_behaviour.is_set():
+        agent.wait3_behaviour.wait(0.01)
     assert fsm.current_state == STATE_THREE
     assert agent.state == STATE_THREE
 
