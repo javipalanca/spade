@@ -1,4 +1,5 @@
 import aioxmpp
+from aioxmpp import PresenceState, PresenceShow
 
 
 class PresenceManager(object):
@@ -59,6 +60,30 @@ class PresenceManager(object):
         """
         return self.presenceserver.priority
 
+    def is_available(self):
+        """
+        Returns the available flag from the state
+        :return: wether the agent is available or not
+        :rtype: bool
+        """
+        return self.state.available
+
+    def set_available(self, show=None):
+        """
+        Sets the agent availability to True.
+        :param show: the show state of the presence (optional)
+        :type show: :class:`aioxmpp.PresenceShow`
+        """
+        show = self.state.show if show is None else show
+        self.set_presence(PresenceState(available=True, show=show))
+
+    def set_unavailable(self):
+        """
+        Sets the agent availability to False.
+        """
+        show = PresenceShow.NONE
+        self.set_presence(PresenceState(available=False, show=show))
+
     def set_presence(self, state=None, status=None, priority=None):
         """
         Change the presence broadcast by the client.
@@ -86,29 +111,29 @@ class PresenceManager(object):
         """
         return self.roster.items
 
-    def subscribe(self, jid):
+    def subscribe(self, peer_jid):
         """
         Asks for subscription
-        :param jid: the JID you ask for subscriptiion
-        :type jid: :class:`str`
+        :param peer_jid: the JID you ask for subscriptiion
+        :type peer_jid: :class:`str`
         """
-        self.roster.subscribe(aioxmpp.JID.fromstr(jid).bare())
+        self.roster.subscribe(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def unsubscribe(self, jid):
+    def unsubscribe(self, peer_jid):
         """
         Asks for unsubscription
-        :param jid: the JID you ask for unsubscriptiion
-        :type jid: :class:`str`
+        :param peer_jid: the JID you ask for unsubscriptiion
+        :type peer_jid: :class:`str`
         """
-        self.roster.unsubscribe(aioxmpp.JID.fromstr(jid).bare())
+        self.roster.unsubscribe(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def approve(self, jid):
+    def approve(self, peer_jid):
         """
         Approve a subscription request from jid
-        :param jid: the JID to approve
-        :type jid: :class:`str`
+        :param peer_jid: the JID to approve
+        :type peer_jid: :class:`str`
         """
-        self.roster.approve(aioxmpp.JID.fromstr(jid).bare())
+        self.roster.approve(aioxmpp.JID.fromstr(peer_jid).bare())
 
     def _on_available(self, stanza):
         self.on_available(str(stanza.from_), stanza)
@@ -137,60 +162,60 @@ class PresenceManager(object):
     def _on_unsubscribed(self, stanza):
         self.on_unsubscribed(str(stanza.from_))
 
-    def on_subscribe(self, jid):
+    def on_subscribe(self, peer_jid):
         """
         Callback called when a subscribe query is received.
         To ve overloaded by user.
-        :param jid: the JID of the agent asking for subscription
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent asking for subscription
+        :type peer_jid: :class:`str`
         """
         pass
 
-    def on_subscribed(self, jid):
+    def on_subscribed(self, peer_jid):
         """
         Callback called when a subscribed message is received.
         To ve overloaded by user.
-        :param jid: the JID of the agent that accepted subscription
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent that accepted subscription
+        :type peer_jid: :class:`str`
         """
-        pass
+        pass  # pragma: no cover
 
-    def on_unsubscribe(self, jid):
+    def on_unsubscribe(self, peer_jid):
         """
         Callback called when an unsubscribe query is received.
         To ve overloaded by user.
-        :param jid: the JID of the agent asking for unsubscription
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent asking for unsubscription
+        :type peer_jid: :class:`str`
         """
-        pass
+        pass  # pragma: no cover
 
-    def on_unsubscribed(self, jid):
+    def on_unsubscribed(self, peer_jid):
         """
         Callback called when an unsubscribed message is received.
         To ve overloaded by user.
-        :param jid: the JID of the agent that unsubscribed
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent that unsubscribed
+        :type peer_jid: :class:`str`
         """
-        pass
+        pass  # pragma: no cover
 
-    def on_available(self, jid, stanza):
+    def on_available(self, peer_jid, stanza):
         """
         Callback called when a contact becomes available.
         To ve overloaded by user.
-        :param jid: the JID of the agent that is available
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent that is available
+        :type peer_jid: :class:`str`
         :param stanza: The presence message containing type, show, priority and status values.
         :type stanza: :class:`aioxmpp.Presence`
         """
-        pass
+        pass  # pragma: no cover
 
-    def on_unavailable(self, jid, stanza):
+    def on_unavailable(self, peer_jid, stanza):
         """
         Callback called when a contact becomes unavailable.
         To ve overloaded by user.
-        :param jid: the JID of the agent that is unavailable
-        :type jid: :class:`str`
+        :param peer_jid: the JID of the agent that is unavailable
+        :type peer_jid: :class:`str`
         :param stanza: The presence message containing type, show, priority and status values.
         :type stanza: :class:`aioxmpp.Presence`
         """
-        pass
+        pass  # pragma: no cover
