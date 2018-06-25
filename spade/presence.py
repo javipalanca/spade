@@ -169,7 +169,7 @@ class PresenceManager(object):
         :param peer_jid: the JID of the agent asking for subscription
         :type peer_jid: :class:`str`
         """
-        pass
+        pass  # pragma: no cover
 
     def on_subscribed(self, peer_jid):
         """
