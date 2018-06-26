@@ -1,4 +1,5 @@
-Click>=6.0
+multidict<5.0,>=2.0
+pyasn1>=0.4.3
 asn1crypto>=0.24.0
 aioxmpp>=0.9.1
 aiohttp>=2.3.1
