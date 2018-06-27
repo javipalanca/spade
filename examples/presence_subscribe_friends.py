@@ -5,7 +5,7 @@ import getpass
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 
-    
+
 class Agent1(Agent):
     def setup(self):
         print("Agent {} running".format(self.name))
@@ -13,13 +13,13 @@ class Agent1(Agent):
 
     class Behav1(OneShotBehaviour):
         def on_available(self, jid, stanza):
-            print("[{}] Agent {} is available.".format(self.agent.name, jid))
+            print("[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0]))
 
         def on_subscribed(self, jid):
-            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid))
+            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
 
         def on_subscribe(self, jid):
-            print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid))
+            print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))
             self.presence.approve(jid)
 
         async def run(self):
@@ -38,15 +38,15 @@ class Agent2(Agent):
 
     class Behav2(OneShotBehaviour):
         def on_available(self, jid, stanza):
-            print("[{}] Agent {} is available.".format(self.agent.name, jid))
+            print("[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0]))
 
         def on_subscribed(self, jid):
-            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid))
+            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
 
         def on_subscribe(self, jid):
-            print("Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid))
+            print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))
             self.presence.approve(jid)
-            self.presence.subscribe(jid)        
+            self.presence.subscribe(jid)
 
         async def run(self):
             self.presence.set_available()
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     jid1 = input("Agent1 JID> ")
     passwd1 = getpass.getpass()
-    
+
     jid2 = input("Agent2 JID> ")
     passwd2 = getpass.getpass()
 
