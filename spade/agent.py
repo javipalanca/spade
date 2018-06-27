@@ -58,6 +58,10 @@ class Agent(object):
         pass
 
     @property
+    def name(self):
+        return self.jid.localpart
+
+    @property
     def client(self):
         return self.aiothread.client
 
