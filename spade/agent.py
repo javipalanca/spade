@@ -24,7 +24,7 @@ class Agent(object):
         self._values = {}
 
         self.aiothread = AioThread(self, loop)
-        self._alive = asyncio.Event()
+        self._alive = asyncio.Event(loop=self.aiothread.loop)
 
         # obtain an instance of the service
         self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
