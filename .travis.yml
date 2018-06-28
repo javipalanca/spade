@@ -7,7 +7,9 @@ python:
   - 3.6
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
+install:
+  - pip install -r requirements_dev.txt
+  - pip install tox-travis
 
 addons:
   apt:
@@ -19,7 +21,10 @@ after_success:
   - coveralls
 
 # command to run tests, e.g. python setup.py test
-script: tox
+script:
+    - tox
+    - coverage run --source=spade -m py.test
+    - coverage report -m
 
 # After you create the Github repo and add it to Travis, run the
 # travis_pypi_setup.py script to finish PyPI deployment setup

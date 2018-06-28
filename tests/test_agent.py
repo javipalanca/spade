@@ -53,6 +53,11 @@ def test_connected_agent_with_loop():
     assert agent.is_alive() is False
 
 
+def test_name():
+    agent = make_connected_agent(jid="john@fake_server")
+    assert agent.name == "john"
+
+
 def test_avatar():
     agent = make_connected_agent(jid="test_avatar@fake_server")
     assert agent.avatar == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
@@ -80,5 +85,3 @@ def test_get__none():
 def test_client():
     agent = make_connected_agent()
     assert type(agent.client) == PresenceManagedClient
-
-
