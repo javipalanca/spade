@@ -19,7 +19,7 @@ addons:
     - libxml2-dev
 
 after_success:
-  - coveralls
+  - coveralls --ignore-errors
 
 # command to run tests, e.g. python setup.py test
 script:

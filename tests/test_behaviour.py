@@ -18,7 +18,7 @@ STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
 
 
-def wait_for_event(event, tries=1000, sleep=0.1):
+def wait_for_event(event, tries=100, sleep=0.1):
     counter = 0
     while not event.is_set() and counter < tries:
         event.wait(sleep)

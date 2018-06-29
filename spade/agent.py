@@ -103,7 +103,6 @@ class Agent(object):
         :param template: the template to match messages with
         :type template: :class:`spade.template.Template`
         """
-        behaviour.set_aiothread(self.aiothread)
         behaviour.set_agent(self)
         behaviour.set_template(template)
         self.behaviours.append(behaviour)
@@ -226,10 +225,6 @@ class AioThread(Thread):
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)
         logger.info(f"Agent {str(self.jid)} connected and authenticated.")
-
-    def submit(self, coro):
-        fut = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-        return fut
 
     def finalize(self):
         aexit = self.conn_coro.__aexit__(*sys.exc_info())

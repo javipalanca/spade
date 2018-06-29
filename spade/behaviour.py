@@ -18,7 +18,6 @@ class BehaviourNotFinishedException(Exception):
 
 class Behaviour(object, metaclass=ABCMeta):
     def __init__(self):
-        self._aiothread = None
         self.agent = None
         self.template = None
         self._force_kill = Event()
@@ -28,16 +27,6 @@ class Behaviour(object, metaclass=ABCMeta):
 
         self.queue = None
 
-    def set_aiothread(self, aiothread):
-        """
-        Links the behaviour with the event loop.
-        Also creates the incoming messages queue.
-        :param aiothread: the thread with the event loop
-        :type aiothread: :class:`spade.agent.AioThread`
-        """
-        self._aiothread = aiothread
-        self.queue = asyncio.Queue(loop=self._aiothread.loop)
-
     def set_agent(self, agent):
         """
         links behaviour with its owner agent
@@ -45,6 +34,7 @@ class Behaviour(object, metaclass=ABCMeta):
         :type agent: :class:`spade.agent.Agent`
         """
         self.agent = agent
+        self.queue = asyncio.Queue(loop=self.agent.loop)
         self.presence = agent.presence
         self.web = agent.web
 
@@ -93,7 +83,7 @@ class Behaviour(object, metaclass=ABCMeta):
         """
         starts behaviour in the event loop
         """
-        self._aiothread.submit(self._start())
+        self.agent.submit(self._start())
 
     async def _start(self):
         """
@@ -369,7 +359,6 @@ class FSMBehaviour(Behaviour):
 
     async def _run(self):
         behaviour = self._states[self.current_state]
-        behaviour.set_aiothread(self._aiothread)
         behaviour.set_agent(self.agent)
         behaviour.receive = self.receive
         logger.info(f"FSM running state {self.current_state}")
