@@ -268,7 +268,7 @@ def test_receive():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             msg = Message(body="received body")
-            await asyncio.wait_for(self.queue.put(msg), 0.01)
+            await asyncio.wait_for(self.queue.put(msg), 0.1)
             self.agent.recv_msg = await self.receive()
             self.agent.wait_behaviour.set()
 
@@ -280,6 +280,9 @@ def test_receive():
     assert behaviour.mailbox_size() == 0
 
     agent.start()
+    assert agent.is_alive()
+    assert agent.has_behaviour(behaviour)
+
     wait_for_event(agent.wait_behaviour)
 
     assert agent.recv_msg.body == "received body"
@@ -304,6 +307,8 @@ def test_receive_with_timeout():
 
     agent.start()
     agent._message_received(msg.prepare())
+    assert agent.is_alive()
+    assert agent.has_behaviour(behaviour)
 
     wait_for_event(agent.wait_behaviour)
 
@@ -443,7 +448,7 @@ def test_kill_behaviour():
 def test_exit_code_from_kill_behaviour():
     class TestCyclicBehaviour(Behaviour):
         async def run(self):
-            self.kill(ValueError)
+            self.kill(42)
             self.agent.wait_behaviour.set()
 
     agent = make_connected_agent()
@@ -455,7 +460,7 @@ def test_exit_code_from_kill_behaviour():
     wait_for_event(agent.wait_behaviour)
 
     assert behav.is_killed()
-    assert behav.exit_code == ValueError
+    assert behav.exit_code == 42
 
     agent.stop()
 

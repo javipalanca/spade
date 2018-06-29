@@ -95,14 +95,15 @@ class Behaviour(object, metaclass=ABCMeta):
         await self.on_start()
         await self._step()
 
-    def kill(self, exit_code=0):
+    def kill(self, exit_code=None):
         """
         stops the behaviour
         :param exit_code: the exit code of the behaviour
         :type exit_code: :class:`object`
         """
         self._force_kill.set()
-        self._exit_code = exit_code
+        if exit_code is not None:
+            self._exit_code = exit_code
         logger.info("Killing behavior {0} with exit code: {1}".format(self, exit_code))
 
     def is_killed(self):
