@@ -18,11 +18,13 @@ STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
 
 
-def wait_for_event(event, tries=10, sleep=0.01):
+def wait_for_event(event, tries=10, sleep=0.1):
     counter = 0
     while not event.is_set() and counter < tries:
         event.wait(sleep)
         counter += 1
+    if not event.is_set():
+        raise Exception("Event was not set")
 
 
 @fixture
@@ -289,7 +291,7 @@ def test_receive_with_timeout():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             self.agent.recv_msg = await self.receive(1)
-            self.agent.wait2_behaviour.set()
+            self.agent.wait_behaviour.set()
 
     agent = make_connected_agent()
     agent.wait_behaviour = Event()
