@@ -23,7 +23,11 @@ class Agent(object):
         self.behaviours = []
         self._values = {}
 
-        self.aiothread = AioThread(self, loop)
+        if loop:
+            self.loop = loop
+        else:
+            self.loop = asyncio.new_event_loop()
+        self.aiothread = AioThread(self, self.loop)
         self._alive = asyncio.Event(loop=self.aiothread.loop)
 
         # obtain an instance of the service
@@ -87,7 +91,7 @@ class Agent(object):
         :param coro: the coroutine to be run
         :type coro: coroutine
         """
-        return self.aiothread.submit(coro)
+        return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
     def add_behaviour(self, behaviour, template=None):
         """
@@ -200,11 +204,8 @@ class AioThread(Thread):
         self.event = Event()
         self.conn_coro = None
         self.stream = None
+        self.loop = loop
 
-        if loop:
-            self.loop = loop
-        else:
-            self.loop = asyncio.new_event_loop()
         self.loop.set_debug(True)
         asyncio.set_event_loop(self.loop)
         self.client = aioxmpp.PresenceManagedClient(agent.jid,
