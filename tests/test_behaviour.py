@@ -283,7 +283,7 @@ def test_receive():
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
-    wait_for_event(agent.wait_behaviour)
+    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
 
     assert agent.recv_msg.body == "received body"
 
@@ -310,7 +310,7 @@ def test_receive_with_timeout():
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
-    wait_for_event(agent.wait_behaviour)
+    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
 
     assert agent.recv_msg.body == "received body"
     assert agent.recv_msg == msg
@@ -332,7 +332,7 @@ def test_receive_with_timeout_error():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    wait_for_event(agent.wait_behaviour)
+    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
@@ -353,7 +353,7 @@ def test_receive_with_empty_queue():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    wait_for_event(agent.wait_behaviour)
+    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
