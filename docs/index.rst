@@ -13,6 +13,7 @@ Contents:
    usage
    agents
    behaviours
+   presence
    modules
    contributing
    authors
