@@ -19,7 +19,7 @@ STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
 
 
-def wait_for_event(event, tries=500, sleep=0.001):
+def wait_for_event(event, tries=5000, sleep=0.001):
     counter = 0
     while not event.is_set() and counter < tries:
         time.sleep(sleep)
@@ -284,7 +284,7 @@ def test_receive():
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
-    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
+    wait_for_event(agent.wait_behaviour)
 
     assert agent.recv_msg.body == "received body"
 
@@ -311,7 +311,7 @@ def test_receive_with_timeout():
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
-    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
+    wait_for_event(agent.wait_behaviour)
 
     assert agent.recv_msg.body == "received body"
     assert agent.recv_msg == msg
@@ -333,7 +333,7 @@ def test_receive_with_timeout_error():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
+    wait_for_event(agent.wait_behaviour)
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
@@ -354,7 +354,7 @@ def test_receive_with_empty_queue():
     agent.add_behaviour(behaviour, template)
 
     agent.start()
-    wait_for_event(agent.wait_behaviour, tries=200, sleep=0.1)
+    wait_for_event(agent.wait_behaviour)
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
