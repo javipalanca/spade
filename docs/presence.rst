@@ -104,3 +104,70 @@ of the attribute values with every call::
 
 
 
+Availability handlers
+---------------------
+To get notified when a contact gets available or unavailable you can override the ``on_available`` and ``on_unavailable``
+handlers. As you can see in the next example, these handlers receive the peer jid of the contact and the stanza of the
+XMPP Presence message (class ``aioxmpp.Presence``) which contains all its presence information (availability, show,
+state, priority, ...)::
+
+    def my_on_available_handler(peer_jid, stanza):
+        print(f"My friend {peer_jid} is now available with show {stanza.show}")
+
+    agent.presence.on_available =  my_on_available_handler
+
+
+Contact List
+------------
+
+Every contact to whom you are subscribed to appears in your *contact list*. You can use the ``get_contacts()`` method to
+get the full list of your contacts. This method returns a ``dict`` where the keys are the ``JID`` of your contacts and the
+values are an ``Item`` class that show the information you have about each of your contacts (name, approved,
+groups, ask, subscription, ...). To print an ``Item`` you can use its ``export_as_json()`` method.
+
+Example::
+
+    >>> contacts = agent.presence.get_contacts()
+    >>> contacts[myfriend_jid].export_as_json()
+    {'subscription': 'both', 'name': 'My Friend', 'approved': True}
+
+
+
+
+.. warning:: An empty contact list will return an empty dictionary.
+
+Subscribing and unsubscribing to contacts
+-----------------------------------------
+
+To subscribe and unsubscribe to/from a contact you have to send a special presence message asking for that subscription.
+SPADE helps you by providing some methods that send these special messages::
+
+
+    # Send a subscription request to a peer_jid
+    agent.presence.subscribe(peer_jid)
+
+    # Send an unsubscribe request to a peer_jid
+    agent.presence.unsubscribe(peer_jid)
+
+
+Subscription handlers
+^^^^^^^^^^^^^^^^^^^^^
+
+The way you have to get notified when someone wants to subscribe/unsubscribe to you or when you want to get notified if
+a subscription/unsubscription process has succeed is by means of handlers.
+There are four handlers that you can override to manage these kind of messages: ``on_subscribe``, ``on_unsubscribe``,
+``on_subscribed`` and ``on_unsubscribed``::
+
+
+    def my_on_subscribe_callback(peer_jid):
+        if i_want_to_approve_request:
+            self.approve(peer_jid)
+
+    agent.presence.on_subscribe = my_on_subscribe_callback
+
+
+.. note:: In the previous example you can see also how to approve a subscription request by using the ``approve`` method.
+
+.. tip:: If you want to automatically approve all subscription requests you can set the ``approve_all`` flag to ``True``.
+
+
