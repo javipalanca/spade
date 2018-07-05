@@ -18,10 +18,10 @@ STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
 
 
-def wait_for_event(event, loop, tries=5000, sleep=0.001):
+def wait_for_event(event, loop, tries=5000, sleep=0.01):
     counter = 0
     future = asyncio.run_coroutine_threadsafe(event.wait(), loop=loop)
-    while not event.is_set() and not future.done() and counter < tries:
+    while (not event.is_set()) and (not future.done()) and (counter < tries):
         try:
             future.result(sleep)
         except asyncio.TimeoutError:
@@ -271,7 +271,7 @@ def test_receive():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             msg = Message(body="received body")
-            await asyncio.wait_for(self.queue.put(msg), 0.1)
+            await asyncio.wait_for(self.queue.put(msg), 5.0)
             self.agent.recv_msg = await self.receive()
             self.agent.wait_behaviour.set()
 
@@ -296,7 +296,7 @@ def test_receive():
 def test_receive_with_timeout():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.recv_msg = await self.receive(1)
+            self.agent.recv_msg = await self.receive(5.0)
             self.agent.wait_behaviour.set()
 
     agent = make_connected_agent()
