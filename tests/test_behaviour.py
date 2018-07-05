@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import time
 from threading import Event
 
 import aioxmpp
@@ -18,10 +19,10 @@ STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
 
 
-def wait_for_event(event, tries=200, sleep=0.1):
+def wait_for_event(event, tries=500, sleep=0.001):
     counter = 0
     while not event.is_set() and counter < tries:
-        event.wait(sleep)
+        time.sleep(sleep)
         counter += 1
     if not event.is_set():
         raise Exception("Event was not set")
@@ -48,14 +49,14 @@ def fsm():
             self.agent.state = STATE_ONE
             self.set_next_state(STATE_TWO)
             self.agent.wait1_behaviour.set()
-            await asyncio.sleep(0.01)
+            await self.agent.sync1_behaviour.wait()
 
     class StateTwo(State):
         async def run(self):
             self.agent.state = STATE_TWO
             self.set_next_state(STATE_THREE)
             self.agent.wait2_behaviour.set()
-            await asyncio.sleep(0.01)
+            await self.agent.sync2_behaviour.wait()
 
     class StateThree(State):
         async def run(self):
@@ -153,7 +154,7 @@ def test_remove_behaviour_not_added():
     agent = make_connected_agent()
     behaviour = EmptyBehaviour()
 
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(ValueError):
         agent.remove_behaviour(behaviour)
 
 
@@ -559,6 +560,7 @@ def test_periodic_behaviour():
     class TestPeriodicBehaviour(PeriodicBehaviour):
         async def run(self):
             self.agent.periodic_behaviour_execution_counter += 1
+            self.kill()
             self.agent.wait_behaviour.set()
 
     agent = make_connected_agent()
@@ -574,6 +576,37 @@ def test_periodic_behaviour():
 
     assert agent.periodic_behaviour_execution_counter == 1
     agent.stop()
+
+
+def test_periodic_behaviour_period_zero():
+    class TestPeriodicBehaviour(PeriodicBehaviour):
+        async def run(self):
+            self.agent.periodic_behaviour_execution_counter += 1
+            self.kill()
+            self.agent.wait_behaviour.set()
+
+    agent = make_connected_agent()
+    agent.wait_behaviour = Event()
+    agent.periodic_behaviour_execution_counter = 0
+    behaviour = TestPeriodicBehaviour(0)
+    agent.add_behaviour(behaviour)
+
+    assert agent.periodic_behaviour_execution_counter == 0
+
+    agent.start()
+    wait_for_event(agent.wait_behaviour)
+
+    assert agent.periodic_behaviour_execution_counter == 1
+    agent.stop()
+
+
+def test_periodic_behaviour_negative_period():
+    class TestPeriodicBehaviour(PeriodicBehaviour):
+        async def run(self):
+            pass
+
+    with pytest.raises(ValueError):
+        TestPeriodicBehaviour(-1)
 
 
 def test_set_period():
@@ -670,6 +703,8 @@ def test_fsm_behaviour(fsm):
     agent.wait1_behaviour = Event()
     agent.wait2_behaviour = Event()
     agent.wait3_behaviour = Event()
+    agent.sync1_behaviour = asyncio.Event(loop=agent.loop)
+    agent.sync2_behaviour = asyncio.Event(loop=agent.loop)
     agent.start()
 
     assert len(fsm._transitions) == 2
@@ -679,10 +714,12 @@ def test_fsm_behaviour(fsm):
     wait_for_event(agent.wait1_behaviour)
     assert fsm.current_state == STATE_ONE
     assert agent.state == STATE_ONE
+    agent.loop.call_soon_threadsafe(agent.sync1_behaviour.set)
 
     wait_for_event(agent.wait2_behaviour)
     assert fsm.current_state == STATE_TWO
     assert agent.state == STATE_TWO
+    agent.loop.call_soon_threadsafe(agent.sync2_behaviour.set)
 
     wait_for_event(agent.wait3_behaviour)
     assert fsm.current_state == STATE_THREE

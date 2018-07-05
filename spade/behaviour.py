@@ -256,7 +256,8 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
         :type start_at: :class:`datetime.datetime`
         """
         super().__init__()
-        self._period = timedelta(seconds=period)
+        self._period = None
+        self.period = period
 
         if start_at:
             self._next_activation = start_at
@@ -269,14 +270,19 @@ class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
 
     @period.setter
     def period(self, value):
+        if value < 0:
+            raise ValueError("Period must be greater or equal than zero.")
         self._period = timedelta(seconds=value)
 
     async def _run(self):
         if now() >= self._next_activation:
             logger.debug(f"Periodic behaviour activated: {self}")
             await self.run()
-            while self._next_activation <= now():
-                self._next_activation += self._period
+            if self.period <= timedelta(seconds=0):
+                self._next_activation = now()
+            else:
+                while self._next_activation <= now():
+                    self._next_activation += self._period
         else:
             seconds = (self._next_activation - now()).total_seconds()
             if seconds > 0:

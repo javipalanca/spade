@@ -9,10 +9,10 @@ messaging technology and that, thanks to XMPP, SPADE powers to the maximum for i
 Presence Manager
 ----------------
 
-Every SPADE agent has a property to manage its presence. This manager is called ``presence`` and has all the methods and
-attributes to manage an agent's presence notification.
+Every SPADE agent has a property to manage its presence. This manager is called ``presence`` and implements all the
+methods and attributes to manage an agent's presence notification.
 
-A presence object has three attributes: the state, the status and the priority. Let's see each one of them:
+A presence object has three attributes: the **state**, the **status** and the **priority**. Let's see every one of them:
 
 State
 ^^^^^
@@ -74,6 +74,7 @@ An agent can get its status as follows::
     different languages. If you set the status as a string it is set as the default status (and stored with the key
     ``None``. If you want to set the status in different languages you can specify it using the keys::
 
+        >> agent.presence.status
         {
           None: "Working...",
           "es": "Trabajando...",
@@ -95,7 +96,11 @@ Setting the Presence
 There is a method that can be used to set the three presence attributes. Since they are all optional, you can change any
 of the attribute values with every call::
 
-    agent.presence.set_presence(state=PresenceState(True, PresenceShow.CHAT), status="Lunch", priority=2)
+    agent.presence.set_presence(
+                                 state=PresenceState(True, PresenceShow.CHAT),  # available and interested in chatting
+                                 status="Lunch",
+                                 priority=2
+                                )
 
 
 
