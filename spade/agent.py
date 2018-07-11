@@ -5,6 +5,7 @@ from hashlib import md5
 from threading import Thread, Event
 
 import aioxmpp
+import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
@@ -39,7 +40,14 @@ class Agent(object):
         # Web service
         self.web = WebApp(agent=self)
 
-    def start(self):
+    def start(self, auto_register=True):
+        if auto_register:
+            metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
+            _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
+            query = ibr.Query(self.jid.localpart, self.password)
+            self.loop.run_until_complete(ibr.register(stream, query))
+
+
         self.aiothread.connect()
         self.aiothread.start()
         self._alive.set()
