@@ -42,6 +42,7 @@ setup(
     },
     include_package_data=True,
     install_requires=requirements,
+    dependency_links=["git+https://github.com/horazont/aioxmpp.git#egg=aioxmpp"],
     license="MIT license",
     zip_safe=False,
     keywords='spade',

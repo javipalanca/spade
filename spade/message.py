@@ -35,7 +35,12 @@ class MessageBase(object):
         msg = cls()
         msg._to = node.to
         msg._sender = node.from_
-        msg.body = node.body[None]
+        if None in node.body:
+            msg.body = node.body[None]
+        else:
+            for key in node.body.keys():
+                msg.body = node.body[key]
+                break
         msg.thread = node.thread
 
         for data in node.xep0004_data:

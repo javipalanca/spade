@@ -40,13 +40,9 @@ class Agent(object):
         # Web service
         self.web = WebApp(agent=self)
 
-    def start(self, auto_register=True):
+    def start(self, auto_register=False):
         if auto_register:
-            metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-            _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
-            query = ibr.Query(self.jid.localpart, self.password)
-            self.loop.run_until_complete(ibr.register(stream, query))
-
+            self.register()
 
         self.aiothread.connect()
         self.aiothread.start()
@@ -61,6 +57,12 @@ class Agent(object):
         )
 
         self.setup()
+
+    def register(self):
+        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
+        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
+        query = ibr.Query(self.jid.localpart, self.password)
+        self.loop.run_until_complete(ibr.register(stream, query))
 
     def setup(self):
         """
