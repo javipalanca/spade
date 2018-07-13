@@ -5,7 +5,7 @@ from hashlib import md5
 from threading import Thread, Event
 
 import aioxmpp
-import aioxmpp.ibr as ibr
+# import aioxmpp.ibr as ibr  # TODO: will be activated with aioxmpp 0.10
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
@@ -59,10 +59,12 @@ class Agent(object):
         self.setup()
 
     def register(self):
-        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
-        query = ibr.Query(self.jid.localpart, self.password)
-        self.loop.run_until_complete(ibr.register(stream, query))
+        # TODO: will be activated with aioxmpp 0.10
+        pass
+        # metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
+        # _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
+        # query = ibr.Query(self.jid.localpart, self.password)
+        # self.loop.run_until_complete(ibr.register(stream, query))
 
     def setup(self):
         """
@@ -215,7 +217,6 @@ class AioThread(Thread):
         self.stream = None
         self.loop = loop
 
-        self.loop.set_debug(True)
         asyncio.set_event_loop(self.loop)
         self.client = aioxmpp.PresenceManagedClient(agent.jid,
                                                     aioxmpp.make_security_layer(agent.password,

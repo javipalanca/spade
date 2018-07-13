@@ -62,6 +62,15 @@ def test_message_from_node_attribute_error():
         Message.from_node(Message())
 
 
+def test_body_with_languages():
+    msg = aioxmpp.Message(type_=aioxmpp.MessageType.CHAT)
+    msg.body["en"] = "Hello World"
+    msg.body["es"] = "Hola Mundo"
+
+    new_msg = Message.from_node(msg)
+    assert new_msg.body == "Hello World"
+
+
 def test_equal(message):
     assert message == copy.copy(message)
 
