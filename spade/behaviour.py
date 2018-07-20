@@ -9,14 +9,14 @@ import asyncio
 
 now = datetime.now
 
-logger = logging.getLogger('spade.Behaviour')
+logger = logging.getLogger('spade.behaviour')
 
 
 class BehaviourNotFinishedException(Exception):
     pass
 
 
-class Behaviour(object, metaclass=ABCMeta):
+class CyclicBehaviour(object, metaclass=ABCMeta):
     def __init__(self):
         self.agent = None
         self.template = None
@@ -231,7 +231,7 @@ class Behaviour(object, metaclass=ABCMeta):
         return msg
 
 
-class OneShotBehaviour(Behaviour, metaclass=ABCMeta):
+class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """
     this behaviour is only executed once
     """
@@ -247,7 +247,7 @@ class OneShotBehaviour(Behaviour, metaclass=ABCMeta):
         return True
 
 
-class PeriodicBehaviour(Behaviour, metaclass=ABCMeta):
+class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """
     this behaviour is executed periodically with an interval
     """
@@ -345,7 +345,7 @@ class NotValidTransition(Exception):
     pass
 
 
-class FSMBehaviour(Behaviour):
+class FSMBehaviour(CyclicBehaviour):
     def __init__(self):
         super().__init__()
         self._states = {}

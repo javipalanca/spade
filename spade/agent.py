@@ -111,7 +111,7 @@ class Agent(object):
         If template is not None it is used to match
         new messages and deliver them to the behaviour.
         :param behaviour: the behaviour to be started
-        :type behaviour: :class:`spade.behaviour.Behaviour`
+        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
         :param template: the template to match messages with
         :type template: :class:`spade.template.Template`
         """
@@ -125,7 +125,7 @@ class Agent(object):
         Removes a behaviour from the agent.
         The behaviour is first killed.
         :param behaviour: the behaviour instance to be removed
-        :type behaviour: :class:`spade.behaviour.Behaviour`
+        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
         """
         if not self.has_behaviour(behaviour):
             raise ValueError("This behaviour is not registered")
@@ -137,7 +137,7 @@ class Agent(object):
         """
         Checks if a behaviour is added to an agent.
         :param behaviour: the behaviour instance to check
-        :type behaviour: :class:`spade.behaviour.Behaviour`
+        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
         :return: a boolean that indicates wether the behaviour is inside the agent.
         :rtype: bool
         """

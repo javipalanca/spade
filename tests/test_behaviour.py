@@ -7,7 +7,7 @@ import pytest
 from pytest import fixture
 from asynctest import CoroutineMock, MagicMock
 
-from spade.behaviour import OneShotBehaviour, Behaviour, PeriodicBehaviour, TimeoutBehaviour, FSMBehaviour, State, \
+from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour, TimeoutBehaviour, FSMBehaviour, State, \
     NotValidState, NotValidTransition, BehaviourNotFinishedException
 from spade.message import Message
 from spade.template import Template
@@ -135,7 +135,7 @@ def test_add_behaviour():
 
 
 def test_remove_behaviour():
-    class EmptyBehaviour(Behaviour):
+    class EmptyBehaviour(CyclicBehaviour):
         async def run(self):
             pass
 
@@ -150,7 +150,7 @@ def test_remove_behaviour():
 
 
 def test_remove_behaviour_not_added():
-    class EmptyBehaviour(Behaviour):
+    class EmptyBehaviour(CyclicBehaviour):
         async def run(self):
             pass
 
@@ -431,7 +431,7 @@ def test_multiple_templates():
 
 
 def test_kill_behaviour():
-    class TestCyclicBehaviour(Behaviour):
+    class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.kill()
 
@@ -449,7 +449,7 @@ def test_kill_behaviour():
 
 
 def test_exit_code_from_kill_behaviour():
-    class TestCyclicBehaviour(Behaviour):
+    class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.kill(42)
 
@@ -467,7 +467,7 @@ def test_exit_code_from_kill_behaviour():
 
 
 def test_set_exit_code_behaviour():
-    class TestCyclicBehaviour(Behaviour):
+    class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.exit_code = 1024
             self.kill()
@@ -511,7 +511,7 @@ def test_notfinishedexception_behaviour():
 
 
 def test_cyclic_behaviour():
-    class TestCyclicBehaviour(Behaviour):
+    class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.agent.cycles += 1
             if self.agent.cycles > 2:
