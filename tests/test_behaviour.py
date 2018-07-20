@@ -815,3 +815,25 @@ def test_fsm_bad_transition():
     assert fsm_.is_killed()
 
     agent.stop()
+
+
+def test_fsm_two_initials():
+    class StateOne(State):
+        async def run(self):
+            self.set_next_state(STATE_THREE)
+            self.kill()
+
+    class StateTwo(State):
+        async def run(self):
+            pass
+    class TestFSMBehaviour(FSMBehaviour):
+        async def on_end(self):
+            self.kill()
+
+    fsm_ = TestFSMBehaviour()
+    state_one = StateOne()
+    state_two = StateTwo()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+    fsm_.add_state(STATE_TWO, state_two, initial=True)
+
+    assert fsm_.current_state == STATE_TWO
