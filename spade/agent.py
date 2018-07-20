@@ -29,7 +29,7 @@ class Agent(object):
         else:
             self.loop = asyncio.new_event_loop()
         self.aiothread = AioThread(self, self.loop)
-        self._alive = asyncio.Event(loop=self.aiothread.loop)
+        self._alive = Event()
 
         # obtain an instance of the service
         self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
@@ -225,19 +225,17 @@ class AioThread(Thread):
                                                     logger=logging.getLogger(agent.jid.localpart))
 
     def connect(self):  # pragma: no cover
-        self._connect()
-
-    def run(self):
-        self.loop.call_soon(self.event.set)
-        self.loop.run_forever()
-
-    def _connect(self):  # pragma: no cover
         self.conn_coro = self.client.connected()
         aenter = type(self.conn_coro).__aenter__(self.conn_coro)
         self.stream = self.loop.run_until_complete(aenter)
         logger.info(f"Agent {str(self.jid)} connected and authenticated.")
 
+    def run(self):
+        self.loop.call_soon(self.event.set)
+        self.loop.run_forever()
+
     def finalize(self):
         aexit = self.conn_coro.__aexit__(*sys.exc_info())
-        asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
+        future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
+        future.result()
         self.loop.call_soon_threadsafe(self.loop.stop)

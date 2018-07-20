@@ -91,7 +91,7 @@ class Behaviour(object, metaclass=ABCMeta):
         runs the _step coroutine where the body of the behaviour
         is called.
         """
-        await self.agent._alive.wait()
+        self.agent._alive.wait()
         await self.on_start()
         await self._step()
 
@@ -188,6 +188,11 @@ class Behaviour(object, metaclass=ABCMeta):
         await self.queue.put(message)
 
     def mailbox_size(self):
+        """
+        checks if there is a message in the mailbox
+        :return: the number of messages in the mailbox
+        :rtype: int
+        """
         return self.queue.qsize()
 
     async def send(self, msg):
