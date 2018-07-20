@@ -18,10 +18,11 @@ State
 ^^^^^
 
 The state of a presence message shows if the agent is **Available** or **Unavailable**. This means that the agent is
-connected to the network or not. This is very useful to know, before contacting an agent if it is available to receive
-the message in real time or not. This is a boolean attribute.
+connected to an XMPP server or not. This is very useful to know, before contacting an agent, if it is available to
+receive a message in real time or not. The availability state is a boolean attribute.
+
 Besides, the *State* has also an attribute to give additional information about *how available* the contact is. This is
-the **Show** attribute. It is used to report information about the availability. The *Show* attribute belongs to the
+the **Show** attribute. The *Show* attribute belongs to the
 class ``aioxmpp.PresenceShow`` and can take the following values:
 
     - ``PresenceShow.CHAT``: The entity or resource is actively interested in chatting (i.e. receiving messages).
@@ -107,8 +108,8 @@ of the attribute values with every call::
 Availability handlers
 ---------------------
 To get notified when a contact gets available or unavailable you can override the ``on_available`` and ``on_unavailable``
-handlers. As you can see in the next example, these handlers receive the peer jid of the contact and the stanza of the
-XMPP Presence message (class ``aioxmpp.Presence``) which contains all its presence information (availability, show,
+handlers. As you can see in the next example, these handlers receive the peer jid of the contact and the *stanza* of
+the XMPP Presence message (class ``aioxmpp.Presence``) which contains all its presence information (availability, show,
 state, priority, ...)::
 
     def my_on_available_handler(peer_jid, stanza):

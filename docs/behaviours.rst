@@ -18,7 +18,7 @@ Let's see an example::
     import time
     import datetime
     from spade.agent import Agent
-    from spade.behaviour import Behaviour, PeriodicBehaviour
+    from spade.behaviour import CyclicBehaviour, PeriodicBehaviour
     from spade.message import Message
 
 
@@ -51,7 +51,7 @@ Let's see an example::
 
 
     class ReceiverAgent(Agent):
-        class RecvBehav(Behaviour):
+        class RecvBehav(CyclicBehaviour):
             async def run(self):
                 print("RecvBehav running")
                 msg = await self.receive(timeout=10)  # wait for a message for 10 seconds
@@ -132,7 +132,7 @@ Let's see an example::
     import time
     import datetime
     from spade.agent import Agent
-    from spade.behaviour import Behaviour, TimeoutBehaviour
+    from spade.behaviour import CyclicBehaviour, TimeoutBehaviour
     from spade.message import Message
 
 
@@ -156,7 +156,7 @@ Let's see an example::
 
 
     class ReceiverAgent(Agent):
-        class RecvBehav(Behaviour):
+        class RecvBehav(CyclicBehaviour):
             async def run(self):
                 msg = await self.receive(timeout=10)  # wait for a message for 10 seconds
                 if msg:
@@ -203,10 +203,10 @@ Finite State Machine Behaviour
 ------------------------------
 
 SPADE agents can also have more complex behaviours which are a finite state machine (FSM) which has registered states and
-transitions between states. This kind of behaviour allow SPADE agents to build much more complex and interesting
+transitions between states. This kind of behaviour allows SPADE agents to build much more complex and interesting
 behaviours in our agent model.
 
-The ``FSMBehaviour`` class is a container behaviour (subclass of ``Behaviour``) that implements the methods
+The ``FSMBehaviour`` class is a container behaviour (subclass of ``CyclicBehaviour``) that implements the methods
 ``add_state(name, state, initial)`` and ``add_transition(source, dest)``. Every state of the FSM must be registered in
 the behaviour with a string name and an instance of the ``State`` class. This ``State`` class represents a node of the
 FSM and (since it's a subclass of ``OneShotBehaviour``) you must override the ``run`` coroutine just as in a regular
@@ -259,7 +259,7 @@ transit to::
     class StateOne(State):
         async def run(self):
             print("I'm at state one (initial state)")
-            msg = Message(to="jpalanca@localhost")
+            msg = Message(to="fsmagent@your_xmpp_server")
             msg.body = "msg_from_state_one_to_state_three"
             await self.send(msg)
             self.set_next_state(STATE_TWO)
@@ -282,11 +282,11 @@ transit to::
     class FSMAgent(Agent):
         def setup(self):
             fsm = ExampleFSMBehaviour()
-            fsm.add_state(STATE_ONE, StateOne(), initial=True)
-            fsm.add_state(STATE_TWO, StateTwo())
-            fsm.add_state(STATE_THREE, StateThree())
-            fsm.add_transition(STATE_ONE, STATE_TWO)
-            fsm.add_transition(STATE_TWO, STATE_THREE)
+            fsm.add_state(name=STATE_ONE, state=StateOne(), initial=True)
+            fsm.add_state(name=STATE_TWO, state=StateTwo())
+            fsm.add_state(name=STATE_THREE, state=StateThree())
+            fsm.add_transition(source=STATE_ONE, dest=STATE_TWO)
+            fsm.add_transition(source=STATE_TWO, dest=STATE_THREE)
             self.add_behaviour(fsm)
 
 

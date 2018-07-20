@@ -10,9 +10,9 @@ class SenderAgent(Agent):
     class InformBehav(OneShotBehaviour):
         async def run(self):
             print("InformBehav running")
-            msg = Message(to=self.agent.recv_jid)       # Instantiate the message
+            msg = Message(to=self.agent.recv_jid)  # Instantiate the message
             msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
-            msg.body = "Hello World {}".format(self.agent.recv_jid) # Set the message content
+            msg.body = "Hello World {}".format(self.agent.recv_jid)  # Set the message content
 
             await self.send(msg)
             print("Message sent!")
@@ -24,17 +24,18 @@ class SenderAgent(Agent):
         print("SenderAgent started")
         b = self.InformBehav()
         self.add_behaviour(b)
-        
+
     def __init__(self, recv_jid, *args, **kwargs):
         self.recv_jid = recv_jid
         super().__init__(*args, **kwargs)
+
 
 class ReceiverAgent(Agent):
     class RecvBehav(OneShotBehaviour):
         async def run(self):
             print("RecvBehav running")
 
-            msg = await self.receive(timeout=10) # wait for a message for 10 seconds
+            msg = await self.receive(timeout=10)  # wait for a message for 10 seconds
             if msg:
                 print("Message received with content: {}".format(msg.body))
             else:
@@ -51,17 +52,16 @@ class ReceiverAgent(Agent):
         self.add_behaviour(b, template)
 
 
-
 if __name__ == "__main__":
     sender_jid = input("SenderAgent JID> ")
     sender_passwd = getpass.getpass()
-    
+
     recv_jid = input("ReceiverAgent JID> ")
     recv_passwd = getpass.getpass()
-    
+
     receiveragent = ReceiverAgent(recv_jid, recv_passwd)
     receiveragent.start()
-    time.sleep(2) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+    time.sleep(2)  # wait for receiver agent to be prepared. In next sections we'll use presence notification.
     senderagent = SenderAgent(recv_jid, sender_jid, sender_passwd)
     senderagent.start()
 

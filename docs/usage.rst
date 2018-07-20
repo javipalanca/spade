@@ -10,6 +10,8 @@ jid and a password. The jid contains the agent's name (before the @) and the DNS
 But **remember**! You should have your own jid and password in an XMPP server running in your own computer or in the
 Internet. In this example we will assume that our jid is *your_jid@your_xmpp_server* and the password is *your_password*.
 
+.. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
+
 A basic SPADE agent is really a python script that imports the spade module and that uses the constructs defined therein.
 For starters, fire up you favorite Python editor and create a file called ``dummyagent.py``.
 
@@ -59,10 +61,10 @@ Example::
     import time
     import asyncio
     from spade.agent import Agent
-    from spade.behaviour import Behaviour
+    from spade.behaviour import CyclicBehaviour
 
     class DummyAgent(Agent):
-        class MyBehav(Behaviour):
+        class MyBehav(CyclicBehaviour):
             async def on_start(self):
                 print("Starting behaviour . . .")
                 self.counter = 0
@@ -90,9 +92,9 @@ Example::
         dummy.stop()
 
 
-As you can see, we have defined a custom behaviour called MyBehav that inherits from the spade.Behaviour.Behaviour class,
-the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is, a
-loop-like behaviour.
+As you can see, we have defined a custom behaviour called MyBehav that inherits from the spade.behaviour.CyclicBehaviour
+class, the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is,
+a loop-like behaviour.
 
 You can see that there is a coroutine called ``on_start()`` in the behaviour. This method is similar to the ``setup()``
 method of the agent class but it is run in the async loop. It is executed just before the main iteration of the
