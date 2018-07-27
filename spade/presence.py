@@ -10,6 +10,8 @@ class PresenceManager(object):
         self.presenceclient = self.client.summon(aioxmpp.PresenceClient)
         self.presenceserver = self.client.summon(aioxmpp.PresenceServer)
 
+        self._contacts = {}
+
         self.approve_all = False
 
         self.presenceclient.on_bare_available.connect(self._on_available)
@@ -109,7 +111,19 @@ class PresenceManager(object):
         :return: the roster of contacts
         :rtype: :class:`dict`
         """
-        return self.roster.items
+        for jid, item in self.roster.items.items():
+            try:
+                self._contacts[jid].update(item.export_as_json())
+            except KeyError:
+                self._contacts[jid] = item.export_as_json()
+
+        return self._contacts
+
+    def _update_roster_with_presence(self, stanza):
+        try:
+            self._contacts[stanza.from_].update({"presence": stanza})
+        except KeyError:
+            self._contacts[stanza.from_] = {"presence": stanza}
 
     def subscribe(self, peer_jid):
         """
@@ -136,9 +150,11 @@ class PresenceManager(object):
         self.roster.approve(aioxmpp.JID.fromstr(peer_jid).bare())
 
     def _on_available(self, stanza):
+        self._update_roster_with_presence(stanza)
         self.on_available(str(stanza.from_), stanza)
 
     def _on_unavailable(self, stanza):
+        self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
 
     def _on_subscribe(self, stanza):

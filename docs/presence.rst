@@ -123,15 +123,20 @@ Contact List
 
 Every contact to whom you are subscribed to appears in your *contact list*. You can use the ``get_contacts()`` method to
 get the full list of your contacts. This method returns a ``dict`` where the keys are the ``JID`` of your contacts and the
-values are an ``Item`` class that show the information you have about each of your contacts (name, approved,
-groups, ask, subscription, ...). To print an ``Item`` you can use its ``export_as_json()`` method.
+values are an dict that show the information you have about each of your contacts (presence, name, approved,
+groups, ask, subscription, ...). Note that the "presence" value is an ``aioxmpp.Presence`` object with the latest updated
+information about the contact's presence.
 
 Example::
 
     >>> contacts = agent.presence.get_contacts()
-    >>> contacts[myfriend_jid].export_as_json()
-    {'subscription': 'both', 'name': 'My Friend', 'approved': True}
-
+    >>> contacts[myfriend_jid]
+          {
+            'presence': Presence(type_=PresenceType.AVAILABLE),
+            'subscription': 'both',
+            'name': 'My Friend',
+            'approved': True
+          }
 
 
 

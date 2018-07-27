@@ -160,13 +160,74 @@ def test_get_contacts(jid):
     contacts = agent.presence.get_contacts()
 
     assert jid in contacts
-    assert type(contacts[jid]) == Item
-    assert contacts[jid].approved
-    assert contacts[jid].name == "My Friend"
-    assert contacts[jid].ask is None
-    assert contacts[jid].jid == jid
-    assert contacts[jid].subscription == 'none'
-    assert len(contacts[jid].groups) == 0
+    assert type(contacts[jid]) == dict
+    assert contacts[jid]["approved"]
+    assert contacts[jid]["name"] == "My Friend"
+    assert contacts[jid]["subscription"] == 'none'
+    assert "ask" not in contacts[jid]
+    assert "groups" not in contacts[jid]
+
+
+def test_get_contacts_with_presence(jid):
+    agent = make_presence_connected_agent()
+
+    item = XSOItem(jid=jid)
+    item.approved = True
+    item.name = "My Available Friend"
+
+    agent.presence.roster._update_entry(item)
+
+    stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    contacts = agent.presence.get_contacts()
+
+    assert jid in contacts
+    assert contacts[jid]["name"] == "My Available Friend"
+
+    assert contacts[jid]["presence"].type_ == PresenceType.AVAILABLE
+
+
+def test_get_contacts_with_presence_on_and_off(jid):
+    agent = make_presence_connected_agent()
+
+    item = XSOItem(jid=jid)
+    item.approved = True
+    item.name = "My Friend"
+
+    agent.presence.roster._update_entry(item)
+
+    stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE)
+    agent.presence.presenceclient.handle_presence(stanza)
+    stanza = Presence(from_=jid, type_=PresenceType.UNAVAILABLE)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    contacts = agent.presence.get_contacts()
+
+    assert jid in contacts
+    assert contacts[jid]["name"] == "My Friend"
+
+    assert contacts[jid]["presence"].type_ == PresenceType.UNAVAILABLE
+
+
+def test_get_contacts_with_presence_unavailable(jid):
+    agent = make_presence_connected_agent()
+
+    item = XSOItem(jid=jid)
+    item.approved = True
+    item.name = "My UnAvailable Friend"
+
+    agent.presence.roster._update_entry(item)
+
+    stanza = Presence(from_=jid, type_=PresenceType.UNAVAILABLE)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    contacts = agent.presence.get_contacts()
+
+    assert jid in contacts
+    assert contacts[jid]["name"] == "My UnAvailable Friend"
+
+    assert "presence" not in contacts[jid]
 
 
 def test_subscribe(jid):
