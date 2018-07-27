@@ -131,3 +131,74 @@ Let's test our new agent::
     Counter: 7
 
 . . . and so on. As we have not set any end condition, this agent would go on counting forever until we press ctrl+C.
+
+
+Finishing a behaviour
+---------------------
+
+If you want to finish a behaviour you can kill it by using the ``self.kill(exit_code)`` method. This method **marks**
+the behaviour to be killed at the next loop iteration and stores the exit_code to be queried later.
+
+An example of how to kill a behaviour::
+
+    import time
+    import asyncio
+    from spade.agent import Agent
+    from spade.behaviour import CyclicBehaviour
+
+    class DummyAgent(Agent):
+        class MyBehav(CyclicBehaviour):
+            async def on_start(self):
+                print("Starting behaviour . . .")
+                self.counter = 0
+
+            async def run(self):
+                print("Counter: {}".format(self.counter))
+                self.counter += 1
+                if self.counter >= 3:
+                    self.kill(exit_code=10)
+                    return
+                await asyncio.sleep(1)
+
+            async def on_end(self):
+                print("Behaviour finished with exit code {}.".format(self.exit_code))
+
+        def setup(self):
+            print("Agent starting . . .")
+            b = self.MyBehav()
+            self.add_behaviour(b)
+
+    if __name__ == "__main__":
+        dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+        dummy.start()
+
+        # wait until user interrupts with ctrl+C
+        while True:
+            try:
+                time.sleep(1)
+            except KeyboardInterrupt:
+                break
+        dummy.stop()
+
+
+And the output of this example would be::
+
+    $ python killbehav.py
+    Agent starting . . .
+    Starting behaviour . . .
+    Counter: 0
+    Counter: 1
+    Counter: 2
+    Counter: 3
+    Behaviour finished with exit code 10.
+
+
+.. note:: An exit code may be of any type you need: int, dict, string, exception, etc.
+
+.. warning::
+    Remember that killing a behaviour does not cancel its current run loop, if you need to finish the current
+    iteration you'll have to call return.
+
+.. hint::
+    If a exception occurs inside an ``on_start``, ``run`` or ``on_end`` coroutines, the behaviour will be
+    automatically killed and the exception will be stored as its ``exit_code``.

@@ -109,6 +109,72 @@ def test_on_start_on_end():
     agent.stop()
 
 
+def test_on_start_exception():
+    class TestOneShotBehaviour(OneShotBehaviour):
+        async def on_start(self):
+            result = 1 / 0
+            self.agent.flag = True
+
+        async def run(self):
+            pass
+
+    agent = make_connected_agent()
+    agent.flag = False
+    behaviour = TestOneShotBehaviour()
+    agent.add_behaviour(behaviour)
+
+    agent.start()
+
+    wait_for_behaviour_is_killed(behaviour)
+
+    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert not agent.flag
+    agent.stop()
+
+
+def test_on_run_exception():
+    class TestOneShotBehaviour(OneShotBehaviour):
+        async def run(self):
+            result = 1 / 0
+            self.agent.flag = True
+
+    agent = make_connected_agent()
+    agent.flag = False
+    behaviour = TestOneShotBehaviour()
+    agent.add_behaviour(behaviour)
+
+    agent.start()
+
+    wait_for_behaviour_is_killed(behaviour)
+
+    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert not agent.flag
+    agent.stop()
+
+
+def test_on_end_exception():
+    class TestOneShotBehaviour(OneShotBehaviour):
+        async def run(self):
+            pass
+
+        async def on_end(self):
+            result = 1 / 0
+            self.agent.flag = True
+
+    agent = make_connected_agent()
+    agent.flag = False
+    behaviour = TestOneShotBehaviour()
+    agent.add_behaviour(behaviour)
+
+    agent.start()
+
+    wait_for_behaviour_is_killed(behaviour)
+
+    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert not agent.flag
+    agent.stop()
+
+
 def test_add_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
@@ -826,6 +892,7 @@ def test_fsm_two_initials():
     class StateTwo(State):
         async def run(self):
             pass
+
     class TestFSMBehaviour(FSMBehaviour):
         async def on_end(self):
             self.kill()

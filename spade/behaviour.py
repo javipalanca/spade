@@ -92,7 +92,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         is called.
         """
         self.agent._alive.wait()
-        await self.on_start()
+        try:
+            await self.on_start()
+        except Exception as e:
+            logger.error("Exception running on_start in behaviour {}: {}".format(self, e))
+            self.kill(exit_code=e)
         await self._step()
 
     def kill(self, exit_code=None):
@@ -181,8 +185,16 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         ortherwise it calls run() coroutine.
         """
         while not self.done() and not self.is_killed():
-            await self._run()
-        await self.on_end()
+            try:
+                await self._run()
+            except Exception as e:
+                logger.error("Exception running behaviour {}: {}".format(self, e))
+                self.kill(exit_code=e)
+        try:
+            await self.on_end()
+        except Exception as e:
+            logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
+            self.kill(exit_code=e)
 
     async def enqueue(self, message):
         await self.queue.put(message)
