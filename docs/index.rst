@@ -14,6 +14,7 @@ Contents:
    agents
    behaviours
    presence
+   extending
    modules
    contributing
    authors

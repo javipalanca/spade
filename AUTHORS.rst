@@ -5,9 +5,10 @@ Credits
 Development Lead
 ----------------
 
-* Javi Palanca <jpalanca@gmail.com>
+* Javi Palanca <https://github.com/javipalanca>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Sergio Alemany <https://github.com/Gersiete>
+

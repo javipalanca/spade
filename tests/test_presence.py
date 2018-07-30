@@ -234,11 +234,11 @@ def test_subscribe(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.stream.enqueue = Mock()
+    agent.aiothread.client.enqueue = Mock()
     agent.presence.subscribe(peer_jid)
 
-    assert agent.aiothread.client.stream.enqueue.mock_calls
-    arg = agent.aiothread.client.stream.enqueue.call_args[0][0]
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBE
@@ -248,11 +248,11 @@ def test_unsubscribe(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.stream.enqueue = Mock()
+    agent.aiothread.client.enqueue = Mock()
     agent.presence.unsubscribe(peer_jid)
 
-    assert agent.aiothread.client.stream.enqueue.mock_calls
-    arg = agent.aiothread.client.stream.enqueue.call_args[0][0]
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
@@ -262,11 +262,11 @@ def test_approve(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.stream.enqueue = Mock()
+    agent.aiothread.client.enqueue = Mock()
     agent.presence.approve(peer_jid)
 
-    assert agent.aiothread.client.stream.enqueue.mock_calls
-    arg = agent.aiothread.client.stream.enqueue.call_args[0][0]
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBED
@@ -316,13 +316,13 @@ def test_on_subscribe(jid):
 def test_on_subscribe_approve_all(jid):
     agent = make_presence_connected_agent()
     agent.presence.approve_all = True
-    agent.aiothread.client.stream.enqueue = Mock()
+    agent.aiothread.client.enqueue = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.SUBSCRIBE)
     agent.presence.roster.handle_subscribe(stanza)
 
-    assert agent.aiothread.client.stream.enqueue.mock_calls
-    arg = agent.aiothread.client.stream.enqueue.call_args[0][0]
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBED
@@ -355,13 +355,13 @@ def test_on_unsubscribe(jid):
 def test_on_unsubscribe_approve_all(jid):
     agent = make_presence_connected_agent()
     agent.presence.approve_all = True
-    agent.aiothread.client.stream.enqueue = Mock()
+    agent.aiothread.client.enqueue = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.UNSUBSCRIBE)
     agent.presence.roster.handle_unsubscribe(stanza)
 
-    assert agent.aiothread.client.stream.enqueue.mock_calls
-    arg = agent.aiothread.client.stream.enqueue.call_args[0][0]
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBED

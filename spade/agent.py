@@ -5,7 +5,7 @@ from hashlib import md5
 from threading import Thread, Event
 
 import aioxmpp
-# import aioxmpp.ibr as ibr  # TODO: will be activated with aioxmpp 0.10
+import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
@@ -58,13 +58,11 @@ class Agent(object):
 
         self.setup()
 
-    def register(self):
-        # TODO: will be activated with aioxmpp 0.10
-        pass
-        # metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-        # _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
-        # query = ibr.Query(self.jid.localpart, self.password)
-        # self.loop.run_until_complete(ibr.register(stream, query))
+    def register(self):  # pragma: no cover
+        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
+        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
+        query = ibr.Query(self.jid.localpart, self.password)
+        self.loop.run_until_complete(ibr.register(stream, query))
 
     def setup(self):
         """
@@ -237,5 +235,8 @@ class AioThread(Thread):
     def finalize(self):
         aexit = self.conn_coro.__aexit__(*sys.exc_info())
         future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
-        future.result()
+        try:
+            future.result(timeout=5)
+        except TimeoutError:
+            logger.error("Could not disconnect from server.")
         self.loop.call_soon_threadsafe(self.loop.stop)

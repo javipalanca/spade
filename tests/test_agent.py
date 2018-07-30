@@ -85,3 +85,14 @@ def test_get__none():
 def test_client():
     agent = make_connected_agent()
     assert type(agent.client) == PresenceManagedClient
+
+
+def test_register():
+    agent = make_connected_agent()
+    agent.register = Mock()
+
+    agent.start(auto_register=True)
+
+    assert len(agent.register.mock_calls) == 1
+
+    agent.stop()

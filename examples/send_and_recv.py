@@ -60,10 +60,10 @@ if __name__ == "__main__":
     recv_passwd = getpass.getpass()
 
     receiveragent = ReceiverAgent(recv_jid, recv_passwd)
-    receiveragent.start()
+    receiveragent.start(auto_register=True)
     time.sleep(2)  # wait for receiver agent to be prepared. In next sections we'll use presence notification.
     senderagent = SenderAgent(recv_jid, sender_jid, sender_passwd)
-    senderagent.start()
+    senderagent.start(auto_register=True)
 
     while receiveragent.is_alive():
         try:

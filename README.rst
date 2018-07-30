@@ -40,6 +40,11 @@ Features
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
 
+Plugins
+-------
+
+None yet.
+
 Credits
 ---------
 

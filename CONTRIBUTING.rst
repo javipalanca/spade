@@ -12,6 +12,11 @@ You can contribute in many ways:
 Types of Contributions
 ----------------------
 
+Implement Plugins
+~~~~~~~~~~~~~~~~~
+
+SPADE can be extended by means of plugins. See how to develop one at :ref:`Extending SPADE with plugins`.
+
 Report Bugs
 ~~~~~~~~~~~
 
@@ -110,5 +115,5 @@ Tips
 
 To run a subset of tests::
 
-$ py.test tests.test_spade
+$ py.test tests.test_agent
 
