@@ -237,6 +237,6 @@ class AioThread(Thread):
         future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
         try:
             future.result(timeout=5)
-        except Exception as e:
-            logger.error("Could not disconnect from server: {}.".format(e))  # pragma: no cover
+        except Exception as e:  # pragma: no cover
+            logger.error("Could not disconnect from server: {}.".format(e))
         self.loop.call_soon_threadsafe(self.loop.stop)
