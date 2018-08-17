@@ -1,3 +1,0 @@
-SPARQLWrapper
-unittest-xml-reporting
-simplejson
