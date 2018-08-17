@@ -21,6 +21,10 @@ SPADE
 
 Smart Python Agent Development Environment
 
+A multi-agent systems platform written in Python and based on instant messaging (XMPP).
+
+Develop agents that can chat both with other agents and humans.
+
 
 * Free software: MIT license
 * Documentation: http://spade-mas.readthedocs.io/
@@ -30,7 +34,7 @@ Features
 --------
 
 * Multi-agent platform based on XMPP_
-* Presence notification allows the system to determine the current state of the agents in real-time
+* Presence notification allows the system to know the current state of the agents in real-time
 * Python >=3.6
 * Asyncio-based
 * Agent model based on behaviours

@@ -1,7 +1,6 @@
 from unittest.mock import Mock
 
 from aioxmpp import PresenceState, PresenceShow, JID, PresenceType, Presence
-from aioxmpp.roster import Item
 from aioxmpp.roster.xso import Item as XSOItem
 from pytest import fixture
 

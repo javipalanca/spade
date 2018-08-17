@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import time
+from threading import Event
 
 import aioxmpp
 import pytest
@@ -536,10 +537,12 @@ def test_set_exit_code_behaviour():
     class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.exit_code = 1024
+            agent.event.wait()
             self.kill()
 
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
+    agent.event = Event()
     agent.start()
 
     agent.add_behaviour(behaviour)
@@ -547,6 +550,7 @@ def test_set_exit_code_behaviour():
     with pytest.raises(BehaviourNotFinishedException):
         assert behaviour.exit_code
 
+    agent.event.set()
     wait_for_behaviour_is_killed(behaviour)
 
     agent.stop()
@@ -557,10 +561,10 @@ def test_set_exit_code_behaviour():
 def test_notfinishedexception_behaviour():
     class TestBehaviour(OneShotBehaviour):
         async def run(self):
-            await self.agent.wait_behaviour.wait()
+            self.agent.event.wait()
 
     agent = make_connected_agent()
-    agent.wait_behaviour = asyncio.Event()
+    agent.event = Event()
     behaviour = TestBehaviour()
     agent.start()
 
@@ -569,7 +573,7 @@ def test_notfinishedexception_behaviour():
     with pytest.raises(BehaviourNotFinishedException):
         assert behaviour.exit_code
 
-    agent.wait_behaviour.set()
+    agent.event.set()
 
     assert behaviour.exit_code == 0
 
