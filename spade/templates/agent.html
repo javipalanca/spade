@@ -1,155 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{{ jid.localpart }} agent</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/AdminLTE.css"
-          integrity="sha256-PVK9gAcsGOtzyQNV7pVrI3EiYYauwzOsXC/VjtwMXI4=" crossorigin="anonymous"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/adminlte.css.map">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/skins/skin-green-light.min.css"
-          integrity="sha256-6CNe4Hl3WoqM3dCUMXvveXj/GVpgp+Y+pOPrwj928eo=" crossorigin="anonymous"/>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/alt/AdminLTE-bootstrap-social.min.css"
-          integrity="sha256-i0jvUu6F0mZkrmoxDnIbXMHzXk16eHsTwPcTxB2ua/Q=" crossorigin="anonymous"/>
-</head>
+{% extends "base.html" %}
 
-<body class="sidebar-mini skin-green-light" style="height: auto; min-height: 100%;">
-<div class="wrapper" style="height: auto; min-height: 100%;">
-
-    <header class="main-header">
-
-        <!-- Logo -->
-        <a href="#" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>SPD</b></span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>SPADE</b></span>
-        </a>
-
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-                    <li class="dropdown messages-menu">
-                        <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
-                            <li>
-                                <!-- inner menu: contains the messages -->
-                                <ul class="menu">
-                                    <li>
-                                        <!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <!-- User Image -->
-                                                <img src="{{ avatar }}" class="img-circle" alt="User Image">
-                                            </div>
-                                            <!-- Message title and timestamp -->
-                                            <h4>
-                                                Example subject
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <!-- The message -->
-                                            <p>Example message body</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                </ul>
-                                <!-- /.menu -->
-                            </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
-                        </ul>
-                    </li>
-                    <!-- /.messages-menu -->
-
-                    <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- The user image in the navbar-->
-                            <img src="{{ avatar }}" class="user-image" alt="User Image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">{{ jid.localpart }}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- The user image in the menu -->
-                            <li class="user-header">
-                                <img src="{{ avatar }}" class="img-circle" alt="User Image">
-
-                                <p>
-                                    {{ jid }}
-                                </p>
-                            </li>
-
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Stop</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
-
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="{{ avatar }}" class="img-circle" alt="User Image">
-                </div>
-                <div class="pull-left info">
-                    <p>{{ jid.localpart }}</p>
-                    <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-            </div>
-
-
-            <!-- Sidebar Menu -->
-            <ul class="sidebar-menu" data-widget="tree">
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-            </ul>
-            <!-- /.sidebar-menu -->
-        </section>
-        <!-- /.sidebar -->
-    </aside>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="min-height: 960px;">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                Dashboard
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
-            </ol>
-        </section>
-
+        {% block content %}
         <!-- Main content -->
         <section class="content">
             <!-- Info boxes -->
@@ -172,13 +23,24 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <ul class="products-list product-list-in-box">
-                                {% for behaviour in behaviours %}
+                                {% for behaviour in agent.behaviours %}
                                     <li class="item">
+                                        <div class="product-img">
+                                            {% if behaviour.is_killed() %}
+                                            <i class="fa fa-circle text-danger"></i>
+                                            {% else %}
+                                            <i class="fa fa-circle text-success"></i>
+                                            {% endif %}
+                                        </div>
                                         <div class="product-info">
-                                            <a href="javascript:void(0)" class="product-title">{{ behaviour }}
-                                                <button type="button" class="btn btn-danger pull-right">Stop</button>
+                                            <a href="/behaviour/{{behaviour}}/" class="product-title">{{ behaviour }}
                                             </a>
-                                            <span class="product-description">{{ behaviour.template }}</span>
+                                            {% if not behaviour.is_killed() %}
+                                            <a href="/behaviour/{{behaviour}}/kill/">
+                                                <button type="button" class="btn btn-danger pull-right">Kill</button>
+                                            </a>
+                                            {% endif %}
+                                            <span class="product-description">Template: {{ behaviour.template }}</span>
                                         </div>
                                     </li>
                                 {% endfor %}
@@ -204,46 +66,20 @@
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
                   <ul class="users-list clearfix">
+                    {% for contact in contacts %}
                     <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b1?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">Today</span>
+                      <img src="{{ contact.avatar }}" alt="User Image">
+                      <a class="users-list-name" href="#">{{ contact.jid }}</a>
+                      {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
+                        <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
+                      {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT" or contact.show == "FREE_FOR_CHAT" %}
+                        <i class="fa fa-circle text-green"></i> ONLINE
+                      {% else %}
+                        <i class="fa fa-circle text-red"></i> OFFLINE
+                      {% endif %}
+
                     </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b2?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Norman</a>
-                      <span class="users-list-date">Yesterday</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b4?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Jane</a>
-                      <span class="users-list-date">12 Jan</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b5?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">John</a>
-                      <span class="users-list-date">12 Jan</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b6?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander</a>
-                      <span class="users-list-date">13 Jan</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b7?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Sarah</a>
-                      <span class="users-list-date">14 Jan</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b8?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Nora</a>
-                      <span class="users-list-date">15 Jan</span>
-                    </li>
-                    <li>
-                      <img src="http://www.gravatar.com/avatar/f1e36eae186f3313740ef11f6f3051b9?d=monsterid" alt="User Image">
-                      <a class="users-list-name" href="#">Nadia</a>
-                      <span class="users-list-date">15 Jan</span>
-                    </li>
+                    {% endfor %}
                   </ul>
                   <!-- /.users-list -->
                 </div>
@@ -259,25 +95,5 @@
             <!-- /.row -->
         </section>
         <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
+        {% endblock %}
 
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 3.0.0
-        </div>
-        <strong>Copyright © 2017 <a href="http://github.com/javipalanca/spade">SPADE</a>.</strong>
-    </footer>
-
-
-</div>
-<!-- ./wrapper -->
-
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/js/adminlte.min.js"
-        integrity="sha256-M/+/xbAPBtc0W7JWnReOYF+oPZq4OiOUrlP9qbv7w64=" crossorigin="anonymous"></script>
-</body>
-</html>

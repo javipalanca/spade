@@ -242,6 +242,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 msg = None
         return msg
 
+    def __str__(self):
+        return "{}/{}".format("/".join(base.__name__ for base in self.__class__.__bases__), self.__class__.__name__)
+
 
 class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """

@@ -16,6 +16,7 @@ class PresenceManager(object):
 
         self.presenceclient.on_bare_available.connect(self._on_available)
         self.presenceclient.on_bare_unavailable.connect(self._on_unavailable)
+        self.presenceclient.on_changed.connect(self._on_changed)
 
         self.roster.on_subscribe.connect(self._on_subscribe)
         self.roster.on_subscribed.connect(self._on_subscribed)
@@ -156,6 +157,9 @@ class PresenceManager(object):
     def _on_unavailable(self, stanza):
         self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
+
+    def _on_changed(self, stanza):
+        self._update_roster_with_presence(stanza)
 
     def _on_subscribe(self, stanza):
         if self.approve_all:

@@ -91,7 +91,11 @@ class Agent(object):
         :return: the url of the agent's avatar
         :rtype: :class:`str`
         """
-        digest = md5(str(self.jid).encode("utf-8")).hexdigest()
+        return self.build_avatar_url(self.jid.bare())
+
+    @staticmethod
+    def build_avatar_url(jid):
+        digest = md5(str(jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
     def submit(self, coro):
