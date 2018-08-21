@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/AdminLTE.css"
           integrity="sha256-PVK9gAcsGOtzyQNV7pVrI3EiYYauwzOsXC/VjtwMXI4=" crossorigin="anonymous"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/adminlte.css.map">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/skins/skin-green-light.min.css"
           integrity="sha256-6CNe4Hl3WoqM3dCUMXvveXj/GVpgp+Y+pOPrwj928eo=" crossorigin="anonymous"/>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/alt/AdminLTE-bootstrap-social.min.css"
           integrity="sha256-i0jvUu6F0mZkrmoxDnIbXMHzXk16eHsTwPcTxB2ua/Q=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.3.0/collection/icon/icon.css" />
 </head>
 
 <body class="sidebar-mini skin-green-light" style="height: auto; min-height: 100%;">
@@ -142,7 +145,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Dashboard
+                {% block content_title %}Dashboard{% endblock %}
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -281,6 +284,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.3.0/collection/icon/icon.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/js/adminlte.min.js"
         integrity="sha256-M/+/xbAPBtc0W7JWnReOYF+oPZq4OiOUrlP9qbv7w64=" crossorigin="anonymous"></script>
 </body>

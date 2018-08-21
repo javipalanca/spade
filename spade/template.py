@@ -89,6 +89,6 @@ class Template(BaseTemplate, MessageBase):
     def __str__(self):
         s = f'<template to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:
-            s += self.body
+            s += "\n" + self.body + "\n"
         s += "</template>"
         return s

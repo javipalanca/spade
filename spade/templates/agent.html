@@ -40,7 +40,7 @@
                                                 <button type="button" class="btn btn-danger pull-right">Kill</button>
                                             </a>
                                             {% endif %}
-                                            <span class="product-description">Template: {{ behaviour.template }}</span>
+                                            <span class="product-description">Template: {% filter escape %}{{ behaviour.template  }}{% endfilter %}</span>
                                         </div>
                                     </li>
                                 {% endfor %}

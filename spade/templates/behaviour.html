@@ -1,51 +1,68 @@
 {% extends "base.html" %}
 
-        {% block content %}
-        <!-- Main content -->
-        <section class="content">
-            <!-- Info boxes -->
-            <!-- Main row -->
-            <div class="row">
+{% block content_title %}{{ behaviour }}{% endblock %}
+{% block content %}
+<!-- Main content -->
+<section class="content">
+    <!-- Info boxes -->
 
-                <div class="col-md-4">
-
-                    <!-- BEHAVIOURS LIST -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Active Behaviours</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <ul class="products-list product-list-in-box">
-                                {% for behaviour in behaviours %}
-                                    <li class="item">
-                                        <div class="product-info">
-                                            <a href="/behaviour/{{behaviour}}/" class="product-title">{{ behaviour }}
-                                            </a>
-                                            <a href="/behaviour/{{behaviour}}/kill/">
-                                                <button type="button" class="btn btn-danger pull-right">Kill</button>
-                                            </a>
-                                            <span class="product-description">{{ behaviour.template }}</span>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                                <!-- /.item -->
-                            </ul>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ behaviour.mailbox_size() }}</h3>
+                    <p>Mailbox size</p>
                 </div>
-                <!-- /.col -->
+                <div class="icon">
+                    <i class="fa fa-envelope"></i>
+                </div>
             </div>
-            <!-- /.row -->
-        </section>
-        <!-- /.content -->
-        {% endblock %}
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>Template</h3>
+                    <p>{% filter escape %}{{ behaviour.template }}{% endfilter %}</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-file-code-o"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ behaviour.is_killed() }}</h3>
+                    <p>Is killed?</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-skull"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ behaviour._exit_code }}</h3>
+                    <p>Exit Code</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-sign-out-alt"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
 
