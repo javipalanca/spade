@@ -366,6 +366,10 @@ class FSMBehaviour(CyclicBehaviour):
         self._states = {}
         self._transitions = collections.defaultdict(list)
         self.current_state = None
+        self.setup()
+
+    def setup(self):
+        pass
 
     def add_state(self, name, state, initial=False):
         if not issubclass(state.__class__, State):
@@ -411,3 +415,13 @@ class FSMBehaviour(CyclicBehaviour):
 
     async def run(self):
         raise RuntimeError  # pragma: no cover
+
+    def to_graphviz(self):
+        graph = "digraph finite_state_machine { rankdir=LR; node [width=1, height=1, fixedsize=true];"
+        for origin, dest in self._transitions.items():
+            origin = origin.replace(" ", "_")
+            for d in dest:
+                d = d.replace(" ", "_")
+                graph += "{0} -> {1};".format(origin, d)
+        graph += "}"
+        return graph

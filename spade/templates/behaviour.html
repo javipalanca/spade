@@ -12,7 +12,7 @@
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3>{{ behaviour.mailbox_size() }}</h3>
-                    <p>Mailbox size</p>
+                    <p>Mailbox</p>
                 </div>
                 <div class="icon">
                     <i class="fa fa-envelope"></i>
@@ -61,6 +61,65 @@
         <!-- ./col -->
     </div>
 
+    <div class="row">
+        {% if "Periodic" in behaviour.__str__() %}
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>{{ behaviour.period.total_seconds() }}</h3>
+                    <p>Period</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-clock"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- ./col -->
+        {% if "Timeout" in behaviour.__str__() %}
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>Timeout</h3>
+                    <p>{{ behaviour._timeout }}</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-calendar-alt"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- ./col -->
+        {% if "FSM" in behaviour.__str__() %}
+        <script src="https://cdn.bootcss.com/viz.js/2.0.0/viz.js"></script>
+        <script src="https://cdn.bootcss.com/viz.js/2.0.0/full.render.js"></script>
+        <div class="col-md-12">
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Finite State Machine</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id="fsm"></div>
+            <!-- /.box-body -->
+        </div>
+        </div>
+        <!-- /.box -->
+        <script>
+            var viz = new Viz();
+            viz.renderSVGElement("{{ behaviour.to_graphviz() }}")
+            .then(function(element) {
+              document.getElementById("fsm").appendChild(element);
+            });
+        </script>
+        {% endif %}
+    </div>
     <!-- /.row -->
 </section>
 <!-- /.content -->
