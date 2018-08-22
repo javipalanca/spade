@@ -1,207 +1,158 @@
 {% extends "base.html" %}
 
-{% block content_title %}{{ behaviour }}{% endblock %}
+{% block content_title %}
+<!--div class="image">
+    <img src="{{ agent.build_avatar_url(ajid) }}" class="img-circle" alt="User Image">
+    {{ ajid }}
+</div-->
+{% endblock %}
+
 {% block content %}
 <!-- Main content -->
 <section class="content">
     <!-- Info boxes -->
 
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3>{{ behaviour.mailbox_size() }}</h3>
-                    <p>Mailbox</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-envelope"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-aqua">
-                <div class="inner">
-                    <h3>Template</h3>
-                    <p>{% filter escape %}{{ behaviour.template }}{% endfilter %}</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-file-code-o"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <h3>{{ behaviour.is_killed() }}</h3>
-                    <p>Is killed?</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-skull"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <h3>{{ behaviour._exit_code }}</h3>
-                    <p>Exit Code</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-sign-out-alt"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-    </div>
-
-    <div class="row">
-        {% if "Periodic" in behaviour.__str__() %}
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-blue">
-                <div class="inner">
-                    <h3>{{ behaviour.period.total_seconds() }}</h3>
-                    <p>Period</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-clock"></i>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <!-- ./col -->
-        {% if "Timeout" in behaviour.__str__() %}
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-blue">
-                <div class="inner">
-                    <h3>Timeout</h3>
-                    <p>{{ behaviour._timeout }}</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-calendar-alt"></i>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <!-- ./col -->
         <div class="col-md-4">
-          <!-- DIRECT CHAT PRIMARY -->
-          <div class="box box-primary direct-chat direct-chat-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Chat</h3>
-              <div class="box-tools pull-right">
-                <span data-toggle="tooltip" title="" class="badge bg-light-blue"
-                      data-original-title="{{ bmessages.__len__() }} New Messages">{{ bmessages.__len__() }}</span>
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <!--button type="button" class="btn btn-box-tool" data-toggle="tooltip" title=""
-                        data-widget="chat-pane-toggle" data-original-title="Contacts">
-                  <i class="fa fa-comments"></i></button-->
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
+    <div class="box box-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-aqua-active">
+              <h3 class="widget-user-username">{{ ajid }}</h3>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <!-- Conversations are loaded here -->
-              <div class="direct-chat-messages">
-                <!-- Message. Default to the left -->
-              {% for date, msg in bmessages %}
-                  {% if msg.sent %}
-                  <div class="direct-chat-msg right">
-                  {% else %}
-                  <div class="direct-chat-msg">
-                  {% endif %}
-                  <div class="direct-chat-info clearfix">
-                    <span class="direct-chat-name pull-left">{{ msg.sender.localpart }}</span>
-                    <span class="direct-chat-timestamp pull-right">{{ date }}</span>
+            <div class="widget-user-image">
+              <img class="img-circle" src="{{ agent.build_avatar_url(ajid) }}" alt="User Avatar">
+            </div>
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-4 border-right">
+                  <div class="description-block">
+                      <span class="description-header">STATUS</span>
+                    {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
+                    contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
+                      <h5 class="description-text"><i class="fa fa-circle text-yellow"></i> {{ contact.show }}</h5>
+                    {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT" or
+                    contact.show == "FREE_FOR_CHAT" %}
+                      <h5 class="description-text"><i class="fa fa-circle text-green"></i> ONLINE</h5>
+                    {% else %}
+                      <h5 class="description-text"><i class="fa fa-circle text-red"></i> OFFLINE</h5>
+                    {% endif %}
                   </div>
-                  <!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="{{ agent.build_avatar_url(msg.sender) }}" alt="Message User Image">
-                    <!-- /.direct-chat-img -->
-                  <div class="direct-chat-text">
-                    {{ msg.body }}
-                  </div>
-                  <!-- /.direct-chat-text -->
+                  <!-- /.description-block -->
                 </div>
-                <!-- /.direct-chat-msg -->
-              {% endfor %}
+                <!-- /.col -->
+                <div class="col-sm-4 border-right">
+                  <div class="description-block">
+                      <span class="description-header">ACTION</span>
+                      <a href="/agent/{{ ajid }}/unsubscribe/">
+                            <button type="button" class="btn btn-block btn-warning btn-xs">Unsubscribe</button>
+                      </a>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4">
+                  <div class="description-block">
+                    <h5 class="description-header">{{ amessages.__len__() }}</h5>
+                    <span class="description-text">MESSAGES</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+          </div>
+</div>
 
-              <!-- Contacts are loaded here -->
-              <div class="direct-chat-contacts">
-                <ul class="contacts-list">
-                  <li>
-                    <a href="#">
-                      <img class="contacts-list-img" src="../dist/img/user1-128x128.jpg" alt="User Image">
+        <div class="col-md-4">
+            <!-- DIRECT CHAT PRIMARY -->
+            <div class="box box-primary direct-chat direct-chat-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Chat</h3>
+                    <div class="box-tools pull-right">
+                <span data-toggle="tooltip" title="" class="badge bg-light-blue"
+                      data-original-title="{{ amessages.__len__() }} New Messages">{{ amessages.__len__() }}</span>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                        </button>
+                        <!--button type="button" class="btn btn-box-tool" data-toggle="tooltip" title=""
+                                data-widget="chat-pane-toggle" data-original-title="Contacts">
+                          <i class="fa fa-comments"></i></button-->
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages">
+                        <!-- Message. Default to the left -->
+                        {% for date, msg in amessages %}
+                        {% if msg.sent %}
+                        <div class="direct-chat-msg right">
+                            {% else %}
+                            <div class="direct-chat-msg">
+                                {% endif %}
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left">{{ msg.sender.localpart }}</span>
+                                    <span class="direct-chat-timestamp pull-right">{{ date }}</span>
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" src="{{ agent.build_avatar_url(msg.sender) }}"
+                                     alt="Message User Image">
+                                <!-- /.direct-chat-img -->
+                                <div class="direct-chat-text">
+                                    {{ msg.body }}
+                                </div>
+                                <!-- /.direct-chat-text -->
+                            </div>
+                            <!-- /.direct-chat-msg -->
+                            {% endfor %}
 
-                      <div class="contacts-list-info">
+                            <!-- Contacts are loaded here -->
+                            <div class="direct-chat-contacts">
+                                <ul class="contacts-list">
+                                    <li>
+                                        <a href="#">
+                                            <img class="contacts-list-img" src="../dist/img/user1-128x128.jpg"
+                                                 alt="User Image">
+
+                                            <div class="contacts-list-info">
                             <span class="contacts-list-name">
                               Count Dracula
                               <small class="contacts-list-date pull-right">2/28/2015</small>
                             </span>
-                        <span class="contacts-list-msg">How have you been? I was...</span>
-                      </div>
-                      <!-- /.contacts-list-info -->
-                    </a>
-                  </li>
-                  <!-- End Contact Item -->
-                </ul>
-                <!-- /.contatcts-list -->
-              </div>
-              <!-- /.direct-chat-pane -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <form action="#" method="post">
-                <div class="input-group">
-                  <input type="text" name="message" placeholder="Type Message ..." class="form-control">
-                      <span class="input-group-btn">
-                        <button type="submit" class="btn btn-primary btn-flat">Send</button>
-                      </span>
-                </div>
-              </form>
-            </div>
-            <!-- /.box-footer-->
-          </div>
-          <!--/.direct-chat -->
-        </div>
-          </div>
-        {% if "FSM" in behaviour.__str__() %}
-        <script src="https://cdn.bootcss.com/viz.js/2.0.0/viz.js"></script>
-        <script src="https://cdn.bootcss.com/viz.js/2.0.0/full.render.js"></script>
-        <div class="col-md-7">
-        <div class="box box-primary box-solid">
-            <div class="box-header with-border">
-                <h3 class="box-title">Finite State Machine</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                            class="fa fa-minus"></i>
-                    </button>
+                                                <span class="contacts-list-msg">How have you been? I was...</span>
+                                            </div>
+                                            <!-- /.contacts-list-info -->
+                                        </a>
+                                    </li>
+                                    <!-- End Contact Item -->
+                                </ul>
+                                <!-- /.contatcts-list -->
+                            </div>
+                            <!-- /.direct-chat-pane -->
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <form action="/agent/{{ ajid }}/send/" method="post">
+                                <div class="input-group">
+                                    <input type="text" name="message" placeholder="Type Message ..."
+                                           class="form-control">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.box-footer-->
+                    </div>
+                    <!--/.direct-chat -->
                 </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body" id="fsm"></div>
-            <!-- /.box-body -->
         </div>
-        </div>
-        <!-- /.box -->
-        <script>
-            var viz = new Viz();
-            viz.renderSVGElement("{{ behaviour.to_graphviz() }}")
-            .then(function(element) {
-              document.getElementById("fsm").appendChild(element);
-            });
-        </script>
-        {% endif %}
+        <!-- /.row -->
     </div>
-    <!-- /.row -->
 </section>
 <!-- /.content -->
 {% endblock %}

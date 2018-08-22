@@ -120,6 +120,22 @@ class PresenceManager(object):
 
         return self._contacts
 
+    def get_contact(self, jid):
+        """
+        Returns a contact
+        :param jid: jid of the contact
+        :type jid: :class:`aioxmpp.JID`
+        :return: the roster of contacts
+        :rtype: :class:`dict`
+        """
+        item = self.roster.items[jid]
+        try:
+            self._contacts[jid].update(item.export_as_json())
+        except KeyError:
+            self._contacts[jid] = item.export_as_json()
+
+        return self._contacts[jid]
+
     def _update_roster_with_presence(self, stanza):
         try:
             self._contacts[stanza.from_].update({"presence": stanza})

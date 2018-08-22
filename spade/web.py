@@ -6,7 +6,8 @@ import timeago
 from aiohttp import web as aioweb
 import aiohttp_jinja2
 import jinja2
-from aioxmpp import PresenceType
+from aioxmpp import PresenceType, JID
+from spade.message import Message
 
 logger = logging.getLogger("spade.Web")
 
@@ -58,9 +59,12 @@ class WebApp(object):
         self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
 
     def setup_routes(self):
-        self.app.router.add_get("/", self.agent_index)
+        self.app.router.add_get("/", self.index)
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
+        self.app.router.add_get("/agent/{agentjid}/", self.get_agent)
+        self.app.router.add_get("/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent)
+        self.app.router.add_post("/agent/{agentjid}/send/", self.send_agent)
 
     @staticmethod
     def timeago(date):
@@ -71,7 +75,7 @@ class WebApp(object):
         return {"agent": self.agent, "messages": messages}
 
     @aiohttp_jinja2.template('index.html')
-    async def agent_index(self, request):
+    async def index(self, request):
         contacts = [{"jid": jid,
                      "avatar": self.agent.build_avatar_url(jid.bare()),
                      "available": c["presence"].type_ == PresenceType.AVAILABLE if "presence" in c.keys() else False,
@@ -91,6 +95,33 @@ class WebApp(object):
         behaviour = self.find_behaviour(behaviour_str)
         behaviour.kill()
         raise aioweb.HTTPFound('/')
+
+    @aiohttp_jinja2.template("agent.html")
+    async def get_agent(self, request):
+        agent_jid = request.match_info['agentjid']
+        agent_messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)]
+        c = self.agent.presence.get_contact(JID.fromstr(agent_jid))
+        contact = {
+            "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None
+        }
+        return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
+
+    async def unsubscribe_agent(self, request):
+        agent_jid = request.match_info['agentjid']
+        self.agent.presence.unsubscribe(agent_jid)
+        raise aioweb.HTTPFound("/agent/{agentjid}/".format(agentjid=agent_jid))
+
+    async def send_agent(self, request):
+        agent_jid = request.match_info['agentjid']
+        form = await request.post()
+        body = form["message"]
+        logger.info("Sending message to {}: {}".format(agent_jid, body))
+        msg = Message(to=agent_jid, sender=str(self.agent.jid), body=body)
+        aioxmpp_msg = msg.prepare()
+        await self.agent.stream.send(aioxmpp_msg)
+        msg.sent = True
+        self.agent.traces.append(msg)
+        raise aioweb.HTTPFound("/agent/{agentjid}/".format(agentjid=agent_jid))
 
     def find_behaviour(self, behaviour_str):
         behav = None
