@@ -12,16 +12,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/adminlte.css.map">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/skins/skin-green-light.min.css"
-          integrity="sha256-6CNe4Hl3WoqM3dCUMXvveXj/GVpgp+Y+pOPrwj928eo=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.css" />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/alt/AdminLTE-bootstrap-social.min.css"
           integrity="sha256-i0jvUu6F0mZkrmoxDnIbXMHzXk16eHsTwPcTxB2ua/Q=" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.3.0/collection/icon/icon.css" />
 </head>
 
-<body class="sidebar-mini skin-green-light" style="height: auto; min-height: 100%;">
+<body class="sidebar-mini skin-blue" style="height: auto; min-height: 100%;">
 <div class="wrapper" style="height: auto; min-height: 100%;">
 
     <header class="main-header">
@@ -43,30 +40,35 @@
                     <li class="dropdown messages-menu">
                         <!-- Menu toggle button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
+                            <i class="fa fa-envelope"></i>
+                            <span class="label label-success">{{ agent.traces.received().__len__() }}</span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
+                            <li class="header">You have {{ agent.traces.received().__len__() }} messages</li>
                             <li>
                                 <!-- inner menu: contains the messages -->
                                 <ul class="menu">
+                                    {% for date, msg in messages %}
                                     <li>
                                         <!-- start message -->
                                         <a href="#">
+                                            <!-- Message title -->
+                                            <h4>
+                                                <p>{{ msg.sender }}</p>
+                                            </h4>
                                             <div class="pull-left">
                                                 <!-- User Image -->
-                                                <img src="{{ agent.avatar }}" class="img-circle" alt="User Image">
+                                                <img src="{{ agent.build_avatar_url(msg.sender) }}" class="img-circle" alt="User Image">
                                             </div>
-                                            <!-- Message title and timestamp -->
-                                            <h4>
-                                                Example subject
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
                                             <!-- The message -->
-                                            <p>Example message body</p>
+                                            <p>{% filter escape %}{{ msg.body }}{% endfilter %}</p>
+                                            <p><small class="pull-right">
+                                                <i class="fa fa-clock-o"></i> {{ date }}
+                                                </small>
+                                            </p>
                                         </a>
                                     </li>
+                                    {% endfor %}
                                     <!-- end message -->
                                 </ul>
                                 <!-- /.menu -->
@@ -284,7 +286,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.3.0/collection/icon/icon.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/js/adminlte.min.js"
         integrity="sha256-M/+/xbAPBtc0W7JWnReOYF+oPZq4OiOUrlP9qbv7w64=" crossorigin="anonymous"></script>
 </body>

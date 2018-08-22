@@ -15,6 +15,7 @@ class MessageBase(object):
         self.sender = sender
         self.body = body
         self.thread = thread
+        self.sent = False
 
         if metadata is None:
             self.metadata = {}

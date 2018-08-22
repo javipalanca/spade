@@ -1,6 +1,8 @@
+import datetime
 import logging
 import socket
 
+import timeago
 from aiohttp import web as aioweb
 import aiohttp_jinja2
 import jinja2
@@ -46,7 +48,11 @@ class WebApp(object):
             ])
         else:
             loader = internal_loader
-        aiohttp_jinja2.setup(self.app, loader=loader, extensions=['jinja2_time.TimeExtension'])
+        aiohttp_jinja2.setup(self.app, loader=loader,
+                             extensions=['jinja2_time.TimeExtension'],
+                             context_processors=[self.agent_processor,
+                                                 aiohttp_jinja2.request_processor]
+                             )
         self.setup_routes()
         self.handler = self.app.make_handler()
         self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
@@ -56,26 +62,29 @@ class WebApp(object):
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
 
-    @aiohttp_jinja2.template('agent.html')
+    @staticmethod
+    def timeago(date):
+        return timeago.format(date, datetime.datetime.now())
+
+    async def agent_processor(self, request):
+        messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)]
+        return {"agent": self.agent, "messages": messages}
+
+    @aiohttp_jinja2.template('index.html')
     async def agent_index(self, request):
         contacts = [{"jid": jid,
                      "avatar": self.agent.build_avatar_url(jid.bare()),
                      "available": c["presence"].type_ == PresenceType.AVAILABLE if "presence" in c.keys() else False,
                      "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None,
                      } for jid, c in self.agent.presence.get_contacts().items() if jid.bare() != self.agent.jid.bare()]
-        return {
-            "agent": self.agent,
-            "contacts": contacts
-        }
+        return {"contacts": contacts}
 
     @aiohttp_jinja2.template('behaviour.html')
     async def get_behaviour(self, request):
         behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']
         behaviour = self.find_behaviour(behaviour_str)
-        return {
-            "agent": self.agent,
-            "behaviour": behaviour,
-        }
+        messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(category=behaviour_str)]
+        return {"behaviour": behaviour, "bmessages": messages}
 
     async def kill_behaviour(self, request):
         behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']

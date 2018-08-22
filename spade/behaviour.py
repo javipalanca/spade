@@ -218,6 +218,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
         aioxmpp_msg = msg.prepare()
         await self.agent.stream.send(aioxmpp_msg)
+        msg.sent = True
+        self.agent.traces.append(msg, category=str(self))
 
     async def receive(self, timeout=None):
         """
@@ -417,7 +419,7 @@ class FSMBehaviour(CyclicBehaviour):
         raise RuntimeError  # pragma: no cover
 
     def to_graphviz(self):
-        graph = "digraph finite_state_machine { rankdir=LR; node [width=1, height=1, fixedsize=true];"
+        graph = "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];"
         for origin, dest in self._transitions.items():
             origin = origin.replace(" ", "_")
             for d in dest:

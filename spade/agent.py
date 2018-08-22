@@ -10,6 +10,7 @@ from aioxmpp.dispatcher import SimpleMessageDispatcher
 
 from spade.message import Message
 from spade.presence import PresenceManager
+from spade.trace import TraceStore
 from spade.web import WebApp
 
 logger = logging.getLogger('spade.Agent')
@@ -23,6 +24,8 @@ class Agent(object):
 
         self.behaviours = []
         self._values = {}
+
+        self.traces = TraceStore(size=1000)
 
         if loop:
             self.loop = loop
@@ -203,9 +206,15 @@ class Agent(object):
 
         msg = Message.from_node(msg)
         futures = []
+        matched = False
         for behaviour in (x for x in self.behaviours if x.match(msg)):
             futures.append(self.submit(behaviour.enqueue(msg)))
             logger.debug(f"Message enqueued to behaviour: {behaviour}")
+            self.traces.append(msg, category=str(behaviour))
+            matched = True
+        if not matched:
+            logger.warning(f"No behaviour matched for message: {msg}")
+            self.traces.append(msg)
         return futures
 
 
