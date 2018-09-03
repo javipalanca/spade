@@ -7,6 +7,8 @@ include README.rst
 include requirements.txt
 include requirements_dev.txt
 
+recursive-include spade/templates *
+
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

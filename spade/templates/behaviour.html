@@ -7,7 +7,7 @@
     <!-- Info boxes -->
 
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
@@ -33,7 +33,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
@@ -59,11 +59,9 @@
             </div>
         </div>
         <!-- ./col -->
-    </div>
 
-    <div class="row">
         {% if "Periodic" in behaviour.__str__() %}
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-blue">
                 <div class="inner">
@@ -78,7 +76,7 @@
         {% endif %}
         <!-- ./col -->
         {% if "Timeout" in behaviour.__str__() %}
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-2 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-blue">
                 <div class="inner">
@@ -91,7 +89,23 @@
             </div>
         </div>
         {% endif %}
+        {% if "FSM" in behaviour.__str__() %}
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3>{{ behaviour.current_state}}</h3>
+                    <p>Current State</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+            </div>
+        </div>
+        {%  endif %}
         <!-- ./col -->
+    </div>
+    <div class="row">
         <div class="col-md-4">
           <!-- DIRECT CHAT PRIMARY -->
           <div class="box box-primary direct-chat direct-chat-primary">

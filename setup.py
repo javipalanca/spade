@@ -41,6 +41,7 @@ setup(
         ]
     },
     include_package_data=True,
+    package_data={"spade": ["templates"]},
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,

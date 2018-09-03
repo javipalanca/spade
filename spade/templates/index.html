@@ -71,7 +71,7 @@
                         <li>
                             <a href="/agent/{{ contact.jid }}/">
                                 <img src="{{ contact.avatar }}" alt="User Image">
-                                <a class="users-list-name" href="#">{{ contact.jid }}</a>
+                                <span class="users-list-name">{{ contact.jid }}</span>
                                 {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
                                 contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
                                 <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
@@ -88,9 +88,9 @@
                     <!-- /.users-list -->
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer text-center">
+                <!--div class="box-footer text-center">
                     <a href="javascript:void(0)" class="uppercase">View All Users</a>
-                </div>
+                </div-->
                 <!-- /.box-footer -->
             </div>
             <!--/.box -->
