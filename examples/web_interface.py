@@ -83,6 +83,9 @@ class WebAgent(agent.Agent):
             from_ = JID.fromstr("agent{}@fake_server".format(number))
             msg = aioxmpp.Message(from_=from_, to=self.jid, type_=MessageType.CHAT)
             msg.body[None] = "Hello from {}! This is a long message.".format(from_.localpart)
+            msg = Message.from_node(msg)
+            msg.metadata = {"performative": "inform", "acl-representation": "xml"}
+            msg = msg.prepare()
             self._message_received(msg=msg)
             msg = Message(sender=str(self.jid), to=str(from_), body="This is my answer.")
             msg.sent = True

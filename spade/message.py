@@ -127,6 +127,10 @@ class MessageBase(object):
         logger.debug(f"message matched {self} == {message}")
         return True
 
+    @property
+    def id(self):
+        return id(self)
+
     def __eq__(self, other):
         return self.match(other)
 
