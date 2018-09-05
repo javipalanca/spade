@@ -51,7 +51,7 @@ class WebAgent(agent.Agent):
             self.add_transition("S 4", "S 5")
 
     def setup(self):
-        self.web.start()
+        self.web.start(templates_path="examples")
         template1 = Template(sender="agent0@fake_server")
         template2 = Template(sender="agent1@fake_server")
         template3 = Template(sender="agent2@fake_server")
@@ -110,6 +110,13 @@ agent_passwd = getpass.getpass()
 
 a = WebAgent(agent_jid, agent_passwd)
 a.web.port = 10000
+
+
+async def hello(request):
+    return {"number": 42}
+
+
+a.web.add_get("/hello", hello, "hello.html")
 a.start(auto_register=True)
 
 print("Agent web at {}:{}".format(a.web.hostname, a.web.port))

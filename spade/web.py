@@ -33,6 +33,7 @@ class WebApp(object):
         self.server = None
         self.hostname = None
         self.port = None
+        self.app = aioweb.Application()
 
     def start(self, hostname=None, port=None, templates_path=None):
         self.hostname = hostname if hostname else "localhost"
@@ -40,15 +41,12 @@ class WebApp(object):
             self.port = port
         elif not self.port:
             self.port = unused_port(self.hostname)
-        self.app = aioweb.Application()
         internal_loader = jinja2.PackageLoader("spade", package_path='templates', encoding='utf-8')
+        cwd_loader = jinja2.FileSystemLoader(".")
+        loaders = [internal_loader, cwd_loader]
         if templates_path:
-            loader = jinja2.ChoiceLoader([
-                jinja2.FileSystemLoader(templates_path),
-                internal_loader
-            ])
-        else:
-            loader = internal_loader
+            loaders.insert(0, jinja2.FileSystemLoader(templates_path))
+        loader = jinja2.ChoiceLoader(loaders)
         aiohttp_jinja2.setup(self.app, loader=loader,
                              extensions=['jinja2_time.TimeExtension'],
                              context_processors=[self.agent_processor,
@@ -66,6 +64,14 @@ class WebApp(object):
         self.app.router.add_get("/agent/{agentjid}/", self.get_agent)
         self.app.router.add_get("/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent)
         self.app.router.add_post("/agent/{agentjid}/send/", self.send_agent)
+
+    def add_get(self, path, controller, template):
+        fn = aiohttp_jinja2.template(template_name=template)(controller)
+        self.app.router.add_get(path, fn)
+
+    def add_post(self, path, controller, template):
+        fn = aiohttp_jinja2.template(template_name=template)(controller)
+        self.app.router.add_post(path, fn)
 
     @staticmethod
     def timeago(date):
