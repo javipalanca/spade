@@ -60,6 +60,7 @@ class WebApp(object):
 
     def setup_routes(self):
         self.app.router.add_get("/", self.index)
+        self.app.router.add_get("/messages/", self.get_messages)
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
         self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
         self.app.router.add_get("/agent/{agentjid}/", self.get_agent)
@@ -82,6 +83,11 @@ class WebApp(object):
                      "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None,
                      } for jid, c in self.agent.presence.get_contacts().items() if jid.bare() != self.agent.jid.bare()]
         return {"contacts": contacts}
+
+    @aiohttp_jinja2.template("messages.html")
+    async def get_messages(self, request):
+        messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received()]
+        return {"messages": messages}
 
     @aiohttp_jinja2.template('behaviour.html')
     async def get_behaviour(self, request):
