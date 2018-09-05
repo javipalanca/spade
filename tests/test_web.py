@@ -26,7 +26,28 @@ def test_web():
     agent.stop()
 
 
-def test_template_path():
+def test_default_template_path():
+    agent = make_connected_agent()
+
+    agent.web.start()
+
+    env = get_env(agent.web.app)
+    loader = env.loader
+
+    package_loader = loader.loaders[0]
+    filesystem_loader = loader.loaders[1]
+
+    assert type(loader) == ChoiceLoader
+    assert len(loader.loaders) == 2
+    assert type(package_loader) == PackageLoader
+    assert type(filesystem_loader) == FileSystemLoader
+
+    assert "agent.html" in package_loader.list_templates()
+    assert "agent.html" not in filesystem_loader.list_templates()
+    assert filesystem_loader.searchpath == ["."]
+
+
+def test_add_template_path():
     agent = make_connected_agent()
 
     agent.web.start(templates_path="/tmp/spade")
@@ -35,9 +56,10 @@ def test_template_path():
     loader = env.loader
 
     assert type(loader) == ChoiceLoader
-    assert len(loader.loaders) == 2
+    assert len(loader.loaders) == 3
     assert type(loader.loaders[0]) == FileSystemLoader
     assert type(loader.loaders[1]) == PackageLoader
+    assert type(loader.loaders[2]) == FileSystemLoader
 
     filesystem_loader = loader.loaders[0]
 
