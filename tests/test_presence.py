@@ -1,9 +1,11 @@
 from unittest.mock import Mock
 
+import pytest
 from aioxmpp import PresenceState, PresenceShow, JID, PresenceType, Presence
 from aioxmpp.roster.xso import Item as XSOItem
 from pytest import fixture
 
+from spade.presence import ContactNotFound
 from tests.utils import make_presence_connected_agent
 
 
@@ -229,6 +231,39 @@ def test_get_contacts_with_presence_unavailable(jid):
     assert "presence" not in contacts[jid]
 
 
+def test_get_contact(jid):
+    agent = make_presence_connected_agent()
+
+    item = XSOItem(jid=jid)
+    item.approved = True
+    item.name = "My Friend"
+
+    agent.presence.roster._update_entry(item)
+
+    contact = agent.presence.get_contact(jid)
+
+    assert type(contact) == dict
+    assert contact["approved"]
+    assert contact["name"] == "My Friend"
+    assert contact["subscription"] == 'none'
+    assert "ask" not in contact
+    assert "groups" not in contact
+
+
+def test_get_invalid_jid_contact():
+    agent = make_presence_connected_agent()
+
+    with pytest.raises(ContactNotFound):
+        agent.presence.get_contact(JID.fromstr("invalid@contact"))
+
+
+def test_get_invalid_str_contact():
+    agent = make_presence_connected_agent()
+
+    with pytest.raises(ContactNotFound):
+        agent.presence.get_contact("invalid@contact")
+
+
 def test_subscribe(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
@@ -376,3 +411,28 @@ def test_on_unsubscribed(jid):
     jid_arg = agent.presence.on_unsubscribed.call_args[0][0]
 
     assert jid_arg == str(jid)
+
+
+def test_on_changed(jid):
+    agent = make_presence_connected_agent()
+
+    item = XSOItem(jid=jid)
+    item.approved = True
+    item.name = "My Friend"
+
+    agent.presence.roster._update_entry(item)
+
+    stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE, show=PresenceShow.CHAT)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    contact = agent.presence.get_contact(jid)
+    assert contact["name"] == "My Friend"
+    assert contact["presence"].show == PresenceShow.CHAT
+
+    stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE, show=PresenceShow.AWAY)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    contact = agent.presence.get_contact(jid)
+
+    assert contact["name"] == "My Friend"
+    assert contact["presence"].show == PresenceShow.AWAY

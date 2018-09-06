@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 {% from 'macros.html' import chat_box, modal_msg %}
 
-{% block content_title %}
-<!--div class="image">
-    <img src="{{ agent.build_avatar_url(ajid) }}" class="img-circle" alt="User Image">
-    {{ ajid }}
-</div-->
-{% endblock %}
+{% block content_title -%}{{ ajid }}{%- endblock %}
 
 {% block content %}
 <!-- Main content -->

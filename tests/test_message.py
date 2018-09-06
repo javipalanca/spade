@@ -77,3 +77,7 @@ def test_equal(message):
 
 def test_not_equal(message, message2):
     assert message != message2
+
+
+def test_id(message):
+    assert type(message.id) == int

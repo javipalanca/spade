@@ -1,11 +1,12 @@
 import asyncio
 
-from aioxmpp import PresenceManagedClient
+import aioxmpp
+from aioxmpp import PresenceManagedClient, Message
 from asynctest import CoroutineMock, Mock
 
 from spade.agent import Agent
 from tests.utils import make_connected_agent
-
+from testfixtures import LogCapture
 
 def test_create_agent(mocker):
     mocker.patch("spade.agent.AioThread.connect")
@@ -94,5 +95,23 @@ def test_register():
     agent.start(auto_register=True)
 
     assert len(agent.register.mock_calls) == 1
+
+    agent.stop()
+
+
+def test_receive_without_behaviours():
+
+    agent = make_connected_agent()
+    msg = Message(type_=aioxmpp.MessageType.CHAT)
+
+    assert agent.traces.len() == 0
+    agent.start()
+
+    with LogCapture() as log:
+        agent._message_received(msg)
+        log.check_present(('spade.Agent', 'WARNING', f"No behaviour matched for message: {msg}"))
+
+    assert agent.traces.len() == 1
+    assert msg in agent.traces.store[0]
 
     agent.stop()

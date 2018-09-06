@@ -2,6 +2,10 @@ import aioxmpp
 from aioxmpp import PresenceState, PresenceShow
 
 
+class ContactNotFound(Exception):
+    pass
+
+
 class PresenceManager(object):
     def __init__(self, agent):
         self.agent = agent
@@ -128,7 +132,10 @@ class PresenceManager(object):
         :return: the roster of contacts
         :rtype: :class:`dict`
         """
-        item = self.roster.items[jid]
+        try:
+            item = self.roster.items[jid]
+        except KeyError:
+            raise ContactNotFound
         try:
             self._contacts[jid].update(item.export_as_json())
         except KeyError:
@@ -174,7 +181,7 @@ class PresenceManager(object):
         self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
 
-    def _on_changed(self, stanza):
+    def _on_changed(self, from_, stanza):
         self._update_roster_with_presence(stanza)
 
     def _on_subscribe(self, stanza):

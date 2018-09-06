@@ -1,11 +1,20 @@
+import asyncio
 import random
 import time
+
+import asynctest
 import requests
+from aioxmpp import JID, PresenceType
+from aioxmpp.roster import Item
+from asynctest import Mock
 from parsel import Selector
 
 from aiohttp_jinja2 import get_env
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
+from testfixtures import LogCapture
 
+from spade.behaviour import OneShotBehaviour, CyclicBehaviour
+from spade.message import Message
 from tests.utils import make_connected_agent
 
 
@@ -92,3 +101,279 @@ def test_request_home():
     assert sel.css("ul.products-list > li").getall() == []
 
     agent.stop()
+
+
+def test_get_messages():
+    agent = make_connected_agent()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # add messages to trace
+    for i in range(5):
+        msg = Message(body=str(i), sender="{}@server".format(i), to="receiver@server")
+        agent.traces.append(msg)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    response = requests.get(f"http://localhost:{port}/messages/")
+
+    sel = Selector(text=response.text)
+
+    assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
+
+    agent.stop()
+
+
+def test_get_behaviour():
+    class EmptyOneShotBehaviour(OneShotBehaviour):
+        async def run(self):
+            self.kill()
+
+    agent = make_connected_agent()
+    behaviour = EmptyOneShotBehaviour()
+    agent.add_behaviour(behaviour)
+
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    response = requests.get(f"http://localhost:{port}/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
+
+    sel = Selector(text=response.text)
+
+    assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
+    agent.stop()
+
+
+def test_kill_behaviour():
+    class EmptyCyclicBehaviour(CyclicBehaviour):
+        async def run(self):
+            await asyncio.sleep(0.1)
+
+    agent = make_connected_agent()
+    behaviour = EmptyCyclicBehaviour()
+    agent.add_behaviour(behaviour)
+
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    requests.get(f"http://localhost:{port}/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
+
+    assert behaviour.is_killed()
+
+    agent.stop()
+
+
+def test_get_agent():
+    agent = make_connected_agent()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    jid = "friend@server"
+    item = Item(jid=JID.fromstr(jid))
+
+    agent.presence.roster._update_entry(item)
+
+    response = requests.get(f"http://localhost:{port}/agent/{jid}/")
+
+    sel = Selector(text=response.text)
+
+    assert sel.css("section.content-header > h1::text").get().strip() == jid
+
+    agent.stop()
+
+
+def test_unsubscribe_agent():
+    agent = make_connected_agent()
+    agent.aiothread.client.enqueue = Mock()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    jid = "friend@server"
+    jid_ = JID.fromstr(jid)
+    item = Item(jid=jid_)
+
+    agent.presence.roster._update_entry(item)
+
+    response = requests.get(f"http://localhost:{port}/agent/{jid}/unsubscribe/")
+
+    assert response.url == f"http://localhost:{port}/agent/{jid}/"
+
+    assert agent.aiothread.client.enqueue.mock_calls
+    arg = agent.aiothread.client.enqueue.call_args[0][0]
+
+    assert arg.to == jid_.bare()
+    assert arg.type_ == PresenceType.UNSUBSCRIBE
+
+    agent.stop()
+
+
+def test_send_agent():
+    agent = make_connected_agent()
+    agent.aiothread.client.enqueue = Mock()
+    agent.stream.send = asynctest.mock.CoroutineMock()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    # wait for web server to be up
+    counter = 0
+    while counter < 4:
+        if agent.web.server is not None:
+            break
+        counter += 1
+        time.sleep(0.1)
+    assert agent.web.server is not None
+
+    jid = "friend@server"
+    item = Item(jid=JID.fromstr(jid))
+    agent.presence.roster._update_entry(item)
+
+    msg = "Hello World"
+
+    response = requests.post(f"http://localhost:{port}/agent/{jid}/send/", {"message": msg})
+
+    assert response.url == f"http://localhost:{port}/agent/{jid}/"
+
+    sent = agent.traces.all()[0]
+
+    assert sent[1].sent
+    assert sent[1].body == "Hello World"
+
+    agent.stop()
+
+
+def test_find_behaviour():
+    class EmptyOneShotBehaviour(OneShotBehaviour):
+        async def run(self):
+            pass
+
+    agent = make_connected_agent()
+    behaviour = EmptyOneShotBehaviour()
+    agent.add_behaviour(behaviour)
+
+    found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
+
+    assert found_behaviour == behaviour
+
+
+def test_find_behaviour_fail():
+    agent = make_connected_agent()
+    found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
+
+    assert found_behaviour is None
+
+
+def test_add_get():
+    agent = make_connected_agent()
+    agent.web.add_get("/test", lambda request: {"number": 42}, "examples/hello.html")
+
+    agent.aiothread.client.enqueue = Mock()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    response = requests.get(f"http://localhost:{port}/test")
+
+    sel = Selector(text=response.text)
+    assert sel.css("h1::text").get().strip() == "42"
+
+    agent.stop()
+
+
+def test_add_post():
+    agent = make_connected_agent()
+
+    async def handle_post(request):
+        form = await request.post()
+        number = form["number"]
+        return {"number": number}
+
+    agent.web.add_post("/test", handle_post, "examples/hello.html")
+
+    agent.aiothread.client.enqueue = Mock()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    response = requests.post(f"http://localhost:{port}/test", {"number": 1024})
+
+    sel = Selector(text=response.text)
+    assert sel.css("h1::text").get() == "1024"
+
+    agent.stop()
+
+
+def test_stop():
+    agent = make_connected_agent()
+    agent.aiothread.client.enqueue = Mock()
+    agent.start()
+    port = random.randint(5000, 9999)
+    agent.web.start(hostname="0.0.0.0", port=port)
+
+    response = requests.get(f"http://localhost:{port}/stop")
+
+    sel = Selector(text=response.text)
+    assert sel.css("div.alert-warning > span::text").get().strip() == "Agent is stopping now."
+
+    with LogCapture() as log:
+        try:
+            requests.get(f"http://localhost:{port}/stop/now/", timeout=0.0001)
+        except requests.exceptions.ReadTimeout:
+            pass
+
+        log.check_present(('spade.Web', 'WARNING', "Stopping agent from web interface."))
+
+    counter = 5
+    while agent.is_alive() and counter > 0:
+        counter -= 0.5
+        time.sleep(0.5)
+
+    assert not agent.is_alive()

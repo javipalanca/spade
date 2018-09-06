@@ -100,11 +100,11 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Stop</a>
+                                    <a href="/stop" class="btn btn-default btn-flat">Stop</a>
                                 </div>
-                                <div class="pull-right">
+                                {# <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat">Logout</a>
-                                </div>
+                                </div>#}
                             </li>
                         </ul>
                     </li>
@@ -154,6 +154,22 @@
                 <li class="active">Dashboard</li>
             </ol>
         </section>
+        {% if stopping %}
+        <div class="col-md-12">
+            <div class="box-body">
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                    <span>Agent is stopping now.</span>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript">
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/stop/now/", true);
+            xhr.send(null);
+        </script>
+        {% endif %}
 
         <!-- Main content -->
         {% block content %}

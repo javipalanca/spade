@@ -908,3 +908,7 @@ def test_fsm_two_initials():
     fsm_.add_state(STATE_TWO, state_two, initial=True)
 
     assert fsm_.current_state == STATE_TWO
+
+
+def test_to_graphviz(fsm):
+    assert fsm.to_graphviz() == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
