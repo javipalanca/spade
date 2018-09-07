@@ -34,6 +34,10 @@ class WebApp(object):
         self.hostname = None
         self.port = None
         self.app = aioweb.Application()
+        internal_loader = jinja2.PackageLoader("spade", package_path='templates', encoding='utf-8')
+        cwd_loader = jinja2.FileSystemLoader(".")
+        self.loaders = [internal_loader, cwd_loader]
+        self._set_loaders()
 
     def start(self, hostname=None, port=None, templates_path=None):
         self.hostname = hostname if hostname else "localhost"
@@ -41,20 +45,20 @@ class WebApp(object):
             self.port = port
         elif not self.port:
             self.port = unused_port(self.hostname)
-        internal_loader = jinja2.PackageLoader("spade", package_path='templates', encoding='utf-8')
-        cwd_loader = jinja2.FileSystemLoader(".")
-        loaders = [internal_loader, cwd_loader]
         if templates_path:
-            loaders.insert(0, jinja2.FileSystemLoader(templates_path))
-        loader = jinja2.ChoiceLoader(loaders)
+            self.loaders.insert(0, jinja2.FileSystemLoader(templates_path))
+            self._set_loaders()
+        self.setup_routes()
+        self.handler = self.app.make_handler()
+        self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
+
+    def _set_loaders(self):
+        loader = jinja2.ChoiceLoader(self.loaders)
         aiohttp_jinja2.setup(self.app, loader=loader,
                              extensions=['jinja2_time.TimeExtension'],
                              context_processors=[self.agent_processor,
                                                  aiohttp_jinja2.request_processor]
                              )
-        self.setup_routes()
-        self.handler = self.app.make_handler()
-        self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
 
     def setup_routes(self):
         self.app.router.add_get("/", self.index)

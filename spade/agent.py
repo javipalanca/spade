@@ -246,10 +246,11 @@ class AioThread(Thread):
         self.loop.run_forever()
 
     def finalize(self):
-        aexit = self.conn_coro.__aexit__(*sys.exc_info())
-        future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
-        try:
-            future.result(timeout=5)
-        except Exception as e:  # pragma: no cover
-            logger.error("Could not disconnect from server: {}.".format(e))
+        if self.agent.is_alive():
+            aexit = self.conn_coro.__aexit__(*sys.exc_info())
+            future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
+            try:
+                future.result(timeout=5)
+            except Exception as e:  # pragma: no cover
+                logger.error("Could not disconnect from server: {}.".format(e))
         self.loop.call_soon_threadsafe(self.loop.stop)

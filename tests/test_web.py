@@ -2,17 +2,17 @@ import asyncio
 import random
 import time
 
-import asynctest
+from asynctest import Mock, CoroutineMock
 import requests
 from aioxmpp import JID, PresenceType
 from aioxmpp.roster import Item
-from asynctest import Mock
 from parsel import Selector
 
 from aiohttp_jinja2 import get_env
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from testfixtures import LogCapture
 
+from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
 from tests.utils import make_connected_agent
@@ -36,9 +36,7 @@ def test_web():
 
 
 def test_default_template_path():
-    agent = make_connected_agent()
-
-    agent.web.start()
+    agent = Agent("jid@server", "password")
 
     env = get_env(agent.web.app)
     loader = env.loader
@@ -57,7 +55,7 @@ def test_default_template_path():
 
 
 def test_add_template_path():
-    agent = make_connected_agent()
+    agent = Agent("jid@server", "password")
 
     agent.web.start(templates_path="/tmp/spade")
 
@@ -76,7 +74,7 @@ def test_add_template_path():
     assert filesystem_loader.searchpath == ["/tmp/spade"]
 
 
-def test_request_home():
+def test_check_server():
     agent = make_connected_agent()
     agent.start()
     port = random.randint(5000, 9999)
@@ -103,138 +101,110 @@ def test_request_home():
     agent.stop()
 
 
-def test_get_messages():
-    agent = make_connected_agent()
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+async def test_request_home(test_client, loop):
+    agent = Agent("jid@server", "password")
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
+
+    response = await client.get("/")
+    response = await response.text()
+
+    sel = Selector(text=response)
+
+    assert sel.css("title::text").get() == "jid agent"
+    assert sel.css("img::attr(src)").get() == agent.avatar
+
+    assert sel.css("ul.products-list > li").getall() == []
+
+    agent.stop()
+
+
+async def test_get_messages(test_client, loop):
+    agent = Agent("jid@server", "password")
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
     # add messages to trace
     for i in range(5):
         msg = Message(body=str(i), sender="{}@server".format(i), to="receiver@server")
         agent.traces.append(msg)
 
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    response = await client.get("/messages/")
+    response = await response.text()
 
-    response = requests.get(f"http://localhost:{port}/messages/")
-
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
 
     assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
 
     agent.stop()
 
 
-def test_get_behaviour():
+async def test_get_behaviour(test_client, loop):
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             self.kill()
 
-    agent = make_connected_agent()
+    agent = Agent("jid@server", "password")
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
+    agent.web.setup_routes()
 
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+    client = await test_client(agent.web.app)
 
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    response = await client.get("/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
+    response = await response.text()
 
-    response = requests.get(f"http://localhost:{port}/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
-
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
 
     assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
     agent.stop()
 
 
-def test_kill_behaviour():
+async def test_kill_behaviour(test_client, loop):
     class EmptyCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             await asyncio.sleep(0.1)
 
-    agent = make_connected_agent()
+    agent = Agent("jid@server", "password")
     behaviour = EmptyCyclicBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
-
-    requests.get(f"http://localhost:{port}/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
+    await client.get("/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
 
     assert behaviour.is_killed()
 
     agent.stop()
 
 
-def test_get_agent():
-    agent = make_connected_agent()
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
-
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+async def test_get_agent(test_client, loop):
+    agent = Agent("jid@server", "password")
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
     jid = "friend@server"
     item = Item(jid=JID.fromstr(jid))
 
     agent.presence.roster._update_entry(item)
 
-    response = requests.get(f"http://localhost:{port}/agent/{jid}/")
+    response = await client.get(f"/agent/{jid}/")
+    response = await response.text()
 
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
 
     assert sel.css("section.content-header > h1::text").get().strip() == jid
 
     agent.stop()
 
 
-def test_unsubscribe_agent():
+async def test_unsubscribe_agent(test_client, loop):
     agent = make_connected_agent()
     agent.aiothread.client.enqueue = Mock()
     agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
-
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
     jid = "friend@server"
     jid_ = JID.fromstr(jid)
@@ -242,9 +212,9 @@ def test_unsubscribe_agent():
 
     agent.presence.roster._update_entry(item)
 
-    response = requests.get(f"http://localhost:{port}/agent/{jid}/unsubscribe/")
+    response = await client.get(f"/agent/{jid}/unsubscribe/")
 
-    assert response.url == f"http://localhost:{port}/agent/{jid}/"
+    assert str(response.url.relative()) == f"/agent/{jid}/"
 
     assert agent.aiothread.client.enqueue.mock_calls
     arg = agent.aiothread.client.enqueue.call_args[0][0]
@@ -255,22 +225,12 @@ def test_unsubscribe_agent():
     agent.stop()
 
 
-def test_send_agent():
+async def test_send_agent(test_client, loop):
     agent = make_connected_agent()
-    agent.aiothread.client.enqueue = Mock()
-    agent.stream.send = asynctest.mock.CoroutineMock()
+    agent.stream.send = CoroutineMock()
     agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
-
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
     jid = "friend@server"
     item = Item(jid=JID.fromstr(jid))
@@ -278,9 +238,9 @@ def test_send_agent():
 
     msg = "Hello World"
 
-    response = requests.post(f"http://localhost:{port}/agent/{jid}/send/", {"message": msg})
+    response = await client.post(f"/agent/{jid}/send/", data={"message": msg})
 
-    assert response.url == f"http://localhost:{port}/agent/{jid}/"
+    assert str(response.url.relative()) == f"/agent/{jid}/"
 
     sent = agent.traces.all()[0]
 
@@ -295,7 +255,7 @@ def test_find_behaviour():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = Agent("jid@server", "password")
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -303,33 +263,36 @@ def test_find_behaviour():
 
     assert found_behaviour == behaviour
 
+    agent.stop()
+
 
 def test_find_behaviour_fail():
-    agent = make_connected_agent()
+    agent = Agent("jid@server", "password")
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
 
     assert found_behaviour is None
 
+    agent.stop()
 
-def test_add_get():
-    agent = make_connected_agent()
+
+async def test_add_get(test_client, loop):
+    agent = Agent("jid@server", "password")
     agent.web.add_get("/test", lambda request: {"number": 42}, "examples/hello.html")
 
-    agent.aiothread.client.enqueue = Mock()
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
-    response = requests.get(f"http://localhost:{port}/test")
+    response = await client.get("/test")
+    response = await response.text()
 
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
     assert sel.css("h1::text").get().strip() == "42"
 
     agent.stop()
 
 
-def test_add_post():
-    agent = make_connected_agent()
+async def test_add_post(test_client, loop):
+    agent = Agent("jid@server", "password")
 
     async def handle_post(request):
         form = await request.post()
@@ -337,35 +300,32 @@ def test_add_post():
         return {"number": number}
 
     agent.web.add_post("/test", handle_post, "examples/hello.html")
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
-    agent.aiothread.client.enqueue = Mock()
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+    response = await client.post("/test", data={"number": 1024})
+    response = await response.text()
 
-    response = requests.post(f"http://localhost:{port}/test", {"number": 1024})
-
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
     assert sel.css("h1::text").get() == "1024"
 
     agent.stop()
 
 
-def test_stop():
-    agent = make_connected_agent()
-    agent.aiothread.client.enqueue = Mock()
-    agent.start()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+async def test_stop(test_client, loop):
+    agent = Agent("jid@server", "password")
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
 
-    response = requests.get(f"http://localhost:{port}/stop")
+    response = await client.get("/stop")
+    response = await response.text()
 
-    sel = Selector(text=response.text)
+    sel = Selector(text=response)
     assert sel.css("div.alert-warning > span::text").get().strip() == "Agent is stopping now."
 
     with LogCapture() as log:
         try:
-            requests.get(f"http://localhost:{port}/stop/now/", timeout=0.0001)
+            await client.get("/stop/now/", timeout=0.0001)
         except requests.exceptions.ReadTimeout:
             pass
 
