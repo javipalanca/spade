@@ -1,26 +1,7 @@
 # -*- coding: utf-8 -*-
-import ACLMessage
-import Behaviour
-import Envelope
-import MessageReceiver
-import SL0Parser
-import XMLCodec
-import ACLParser
-import AID
-import BasicFipaDateTime
-import DF
-import FIPAMessage
-import Platform
-import Agent
-import AMS
-import spade_backend
-import SpadeConfigParser
-import MTP
-import fipa
-import peer2peer
-import socialnetwork
-import content
-import colors
-import logic
-import bdi
-import RPC
+
+"""Top-level package for SPADE."""
+
+__author__ = """Javi Palanca"""
+__email__ = 'jpalanca@gmail.com'
+__version__ = '3.0.0'

@@ -1,58 +1,59 @@
-#!/usr/bin/env python
-import sys
-import subprocess
-from setuptools import setup, Extension
+# -*- coding: utf-8 -*-
 
-from runspade import __version__
+"""The setup script."""
+from setuptools import setup, find_packages
 
-try:
-    import bdist_mpkg   
-except:
-    # This is not a mac
-    pass
 
-if sys.platform == "win32":
-    #ext = Extension("tlslite.utils.win32prng",
-    #               sources=["tlslite/utils/win32prng.c"],
-    #                libraries=["advapi32"])
-    exts = []#[ext]
-else:
-    exts = []
+def parse_requirements(filename):
+    """ load requirements from a pip requirements file """
+    lineiter = (line.strip() for line in open(filename))
+    return [line for line in lineiter if line and not line.startswith("#")]
 
-with open('README') as file:
-    long_description = file.read()
 
-deps = [
-    "SPARQLWrapper",
-    "unittest-xml-reporting"]
-if subprocess.mswindows:
-    deps.append( 'pywin32' )
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
 
-setup(name='SPADE',
-    version=__version__,
-    license="LGPL",
-    description='Smart Python multi-Agent Development Environment',
-    long_description=long_description,
-    author='Javier Palanca, Gustavo Aranda, Miguel Escriva and others',
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+requirements = parse_requirements("requirements.txt")
+
+setup_requirements = [
+    'pytest-runner',
+    # put setup requirements (distutils extensions, etc.) here
+]
+
+test_requirements = parse_requirements("requirements_dev.txt")
+
+setup(
+    name='spade',
+    version='3.0.0',
+    description="Smart Python Agent Development Environment",
+    long_description=readme + '\n\n' + history,
+    author="Javi Palanca",
     author_email='jpalanca@gmail.com',
-    url='https://github.com/javipalanca/SPADE',
-    package_dir={'spade': 'spade'},
-    packages=['spade','spade.mtps', 'xmpp', 'xmppd', 'xmppd.modules', 'xmppd.socker', 'tlslite', 'tlslite.utils', 'tlslite.integration'],
-    scripts=['runspade.py','configure.py'],#,"tlslite/scripts/tls.py", "tlslite/scripts/tlsdb.py"],
-    package_data={'spade':['templates/*.*', 'templates/images/*.*'],},
+    url='https://github.com/javipalanca/spade',
+    packages=find_packages(include=['spade']),
+    entry_points={
+        'console_scripts': [
+            'spade=spade.cli:main'
+        ]
+    },
     include_package_data=True,
-    ext_modules=exts,
+    package_data={"spade": ["templates"]},
+    install_requires=requirements,
+    license="MIT license",
+    zip_safe=False,
+    keywords='spade',
     classifiers=[
-    'Development Status :: 5 - Production/Stable',
-    'Environment :: Console',
-    'Environment :: Web Environment',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
-    'Natural Language :: English',
-    'Operating System :: OS Independent',
-    'Programming Language :: Python :: 2.7',
-    'Topic :: Adaptive Technologies',
-    'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
     ],
-    install_requires = deps
-    )
+    test_suite='tests',
+    tests_require=test_requirements,
+    setup_requires=setup_requirements,
+)
