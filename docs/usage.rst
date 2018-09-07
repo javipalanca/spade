@@ -12,6 +12,8 @@ Internet. In this example we will assume that our jid is *your_jid@your_xmpp_ser
 
 .. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
 
+.. hint:: To install an XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
+
 A basic SPADE agent is really a python script that imports the spade module and that uses the constructs defined therein.
 For starters, fire up you favorite Python editor and create a file called ``dummyagent.py``.
 
