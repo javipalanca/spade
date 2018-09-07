@@ -14,6 +14,7 @@ Contents:
    agents
    behaviours
    presence
+   web
    extending
    modules
    contributing
