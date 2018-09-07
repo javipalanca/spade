@@ -39,11 +39,13 @@ Features
 * Asyncio-based
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
+* Web-based interface
 
 Plugins
 -------
 
 None yet.
+Create your own: :ref:`extending`
 
 Credits
 ---------

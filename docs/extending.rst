@@ -1,3 +1,5 @@
+.. _extending:
+
 ============================
 Extending SPADE with plugins
 ============================
