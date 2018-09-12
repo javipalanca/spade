@@ -126,7 +126,7 @@ class WebApp(object):
 
     # Default controllers for agent
 
-    @aiohttp_jinja2.template('index.html')
+    @aiohttp_jinja2.template('internal_tpl_index.html')
     async def index(self, request):
         contacts = [{"jid": jid,
                      "avatar": self.agent.build_avatar_url(jid.bare()),
@@ -135,7 +135,7 @@ class WebApp(object):
                      } for jid, c in self.agent.presence.get_contacts().items()]
         return {"contacts": contacts}
 
-    @aiohttp_jinja2.template("index.html")
+    @aiohttp_jinja2.template("internal_tpl_index.html")
     async def stop_agent(self, request):
         return {"stopping": True}
 
@@ -144,12 +144,12 @@ class WebApp(object):
         self.agent.stop()
         return aioweb.json_response({})
 
-    @aiohttp_jinja2.template("messages.html")
+    @aiohttp_jinja2.template("internal_tpl_messages.html")
     async def get_messages(self, request):
         messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received()]
         return {"messages": messages}
 
-    @aiohttp_jinja2.template('behaviour.html')
+    @aiohttp_jinja2.template('internal_tpl_behaviour.html')
     async def get_behaviour(self, request):
         behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']
         behaviour = self.find_behaviour(behaviour_str)
@@ -162,7 +162,7 @@ class WebApp(object):
         behaviour.kill()
         raise aioweb.HTTPFound('/')
 
-    @aiohttp_jinja2.template("agent.html")
+    @aiohttp_jinja2.template("internal_tpl_agent.html")
     async def get_agent(self, request):
         agent_jid = request.match_info['agentjid']
         agent_messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)]

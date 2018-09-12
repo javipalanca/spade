@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SPADE'
-copyright = u"2017, Javi Palanca"
+copyright = u"2018, Javi Palanca"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -257,8 +257,8 @@ texinfo_documents = [
      u'SPADE Documentation',
      u'Javi Palanca',
      'spade',
-     'One line description of project.',
-     'Miscellaneous'),
+     'Smart Python multi-Agent Development Environment.',
+     'Artificial Intelligence'),
 ]
 
 # Documents to append as an appendix to all manuals.

@@ -49,8 +49,8 @@ def test_default_template_path():
     assert type(package_loader) == PackageLoader
     assert type(filesystem_loader) == FileSystemLoader
 
-    assert "agent.html" in package_loader.list_templates()
-    assert "agent.html" not in filesystem_loader.list_templates()
+    assert "internal_tpl_agent.html" in package_loader.list_templates()
+    assert "internal_tpl_agent.html" not in filesystem_loader.list_templates()
     assert filesystem_loader.searchpath == ["."]
 
 
