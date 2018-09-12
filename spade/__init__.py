@@ -7,6 +7,6 @@ from . import template
 
 __author__ = """Javi Palanca"""
 __email__ = 'jpalanca@gmail.com'
-__version__ = '3.0.2'
+__version__ = '3.0.3'
 
 __all__ = ["agent", "behaviour", "message", "template"]
