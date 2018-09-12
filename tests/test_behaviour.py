@@ -101,7 +101,7 @@ def test_on_start_on_end():
     assert agent.on_start_flag is False
     assert agent.on_end_flag is False
 
-    agent.start()
+    agent.start(auto_register=False)
 
     wait_for_behaviour_is_killed(behaviour)
 
@@ -124,7 +124,7 @@ def test_on_start_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start()
+    agent.start(auto_register=False)
 
     wait_for_behaviour_is_killed(behaviour)
 
@@ -144,7 +144,7 @@ def test_on_run_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start()
+    agent.start(auto_register=False)
 
     wait_for_behaviour_is_killed(behaviour)
 
@@ -167,7 +167,7 @@ def test_on_end_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start()
+    agent.start(auto_register=False)
 
     wait_for_behaviour_is_killed(behaviour)
 
@@ -187,7 +187,7 @@ def test_add_behaviour():
 
     assert agent.has_behaviour(behaviour)
 
-    agent.start()
+    agent.start(auto_register=False)
 
     assert behaviour.agent == agent
     assert behaviour.template is None
@@ -241,7 +241,7 @@ def test_wait_for_agent_start():
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start()
+    agent.start(auto_register=False)
 
     wait_for_behaviour_is_killed(behaviour)
 
@@ -299,7 +299,7 @@ def test_send_message(message):
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.aiothread.stream = MagicMock()
     agent.stream.send = CoroutineMock()
@@ -325,7 +325,7 @@ def test_send_message_without_sender():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.aiothread.stream = MagicMock()
     agent.stream.send = CoroutineMock()
@@ -354,7 +354,7 @@ def test_receive():
     agent.add_behaviour(behaviour)
     assert behaviour.mailbox_size() == 0
 
-    agent.start()
+    agent.start(auto_register=False)
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
@@ -379,7 +379,7 @@ def test_receive_with_timeout():
     agent.add_behaviour(behaviour, template)
     assert behaviour.mailbox_size() == 0
 
-    agent.start()
+    agent.start(auto_register=False)
     agent._message_received(msg.prepare())
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
@@ -404,7 +404,7 @@ def test_receive_with_timeout_error():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    agent.start()
+    agent.start(auto_register=False)
     wait_for_behaviour_is_killed(behaviour)
 
     assert behaviour.mailbox_size() == 0
@@ -424,7 +424,7 @@ def test_receive_with_empty_queue():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    agent.start()
+    agent.start(auto_register=False)
     wait_for_behaviour_is_killed(behaviour)
 
     assert behaviour.mailbox_size() == 0
@@ -440,7 +440,7 @@ def test_set_get():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -484,7 +484,7 @@ def test_multiple_templates():
     msg2 = Message(metadata={"performative": "template2"}).prepare()
     msg3 = Message(metadata={"performative": "template3"}).prepare()
 
-    agent.start()
+    agent.start(auto_register=False)
     agent._message_received(msg1)
     agent._message_received(msg2)
     agent._message_received(msg3)
@@ -504,7 +504,7 @@ def test_kill_behaviour():
 
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
     wait_for_behaviour_is_killed(behaviour)
@@ -522,7 +522,7 @@ def test_exit_code_from_kill_behaviour():
 
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
     wait_for_behaviour_is_killed(behaviour)
@@ -543,7 +543,7 @@ def test_set_exit_code_behaviour():
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
     agent.event = Event()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
 
@@ -566,7 +566,7 @@ def test_notfinishedexception_behaviour():
     agent = make_connected_agent()
     agent.event = Event()
     behaviour = TestBehaviour()
-    agent.start()
+    agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
 
@@ -590,7 +590,7 @@ def test_cyclic_behaviour():
     agent = make_connected_agent()
     agent.cycles = 0
     behaviour = TestCyclicBehaviour()
-    agent.start()
+    agent.start(auto_register=False)
     assert agent.cycles == 0
 
     agent.add_behaviour(behaviour)
@@ -615,7 +615,7 @@ def test_oneshot_behaviour():
 
     assert agent.one_shot_behaviour_executed is False
 
-    agent.start()
+    agent.start(auto_register=False)
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.one_shot_behaviour_executed is True
@@ -635,7 +635,7 @@ def test_periodic_behaviour():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    agent.start()
+    agent.start(auto_register=False)
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.periodic_behaviour_execution_counter == 1
@@ -655,7 +655,7 @@ def test_periodic_behaviour_period_zero():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    agent.start()
+    agent.start(auto_register=False)
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.periodic_behaviour_execution_counter == 1
@@ -690,7 +690,7 @@ def test_periodic_start_at():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestPeriodicBehaviour(period=0.01, start_at=start_at)
@@ -713,7 +713,7 @@ def test_timeout_behaviour():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -738,7 +738,7 @@ def test_timeout_behaviour_zero():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -761,7 +761,7 @@ def test_fsm_behaviour(fsm):
     agent = make_connected_agent()
     agent.sync1_behaviour = asyncio.Event()
     agent.sync2_behaviour = asyncio.Event()
-    agent.start()
+    agent.start(auto_register=False)
 
     assert len(fsm._transitions) == 2
     assert fsm.current_state == STATE_ONE
@@ -828,7 +828,7 @@ def test_fsm_bad_state():
     fsm_.add_transition(STATE_ONE, STATE_TWO)
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     assert fsm_.current_state == STATE_ONE
 
@@ -872,7 +872,7 @@ def test_fsm_bad_transition():
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
 
     assert fsm_.current_state == STATE_ONE
 

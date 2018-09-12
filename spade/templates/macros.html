@@ -97,7 +97,7 @@
                                  alt="Message User Image">
                             <!-- /.direct-chat-img -->
                             <div class="direct-chat-text" data-toggle="modal" data-target="#modal{{ msg.id }}">
-                                {{ msg.body }}
+                                {% filter escape %}{{ msg.body }}{% endfilter %}
                             </div>
                             <!-- /.direct-chat-text -->
                         </div>

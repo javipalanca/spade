@@ -16,7 +16,19 @@ class BehaviourNotFinishedException(Exception):
     pass
 
 
+class NotValidState(Exception):
+    pass
+
+
+class NotValidTransition(Exception):
+    pass
+
+
 class CyclicBehaviour(object, metaclass=ABCMeta):
+    """
+    this behaviour is executed cyclically until it is stopped.
+    """
+
     def __init__(self):
         self.agent = None
         self.template = None
@@ -197,6 +209,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             self.kill(exit_code=e)
 
     async def enqueue(self, message):
+        """
+        Enqueues a message in the behaviour's mailbox
+        :param message: the message to be enqueued
+        :type message: spade.message.Message
+        """
         await self.queue.put(message)
 
     def mailbox_size(self):
@@ -346,23 +363,30 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
 
 
 class State(OneShotBehaviour, metaclass=ABCMeta):
+    """
+    A state of a FSMBehaviour is a OneShotBehaviour
+    """
+
     def __init__(self):
         super().__init__()
         self.next_state = None
 
     def set_next_state(self, state_name):
+        """
+        Set the state to transition to when this state is finished.
+        state_name must be a valid state and the transition must be registered.
+        If set_next_state is not called then current state is a final state.
+        :param state_name: the name of the state to transition to
+        :type state_name: str
+        """
         self.next_state = state_name
 
 
-class NotValidState(Exception):
-    pass
-
-
-class NotValidTransition(Exception):
-    pass
-
-
 class FSMBehaviour(CyclicBehaviour):
+    """
+    A behaviour composed of states (oneshotbehaviours) that may transition from one state to another.
+    """
+
     def __init__(self):
         super().__init__()
         self._states = {}
@@ -374,6 +398,15 @@ class FSMBehaviour(CyclicBehaviour):
         pass
 
     def add_state(self, name, state, initial=False):
+        """
+        Adds a new state to the FSM.
+        :param name: the name of the state, which is used as its identifier.
+        :type name: str
+        :param state: The state class
+        :type state: spade.behaviour.State
+        :param initial: wether the state is the initial state or not. (Only one initial state is allowed)
+        :type initial: bool
+        """
         if not issubclass(state.__class__, State):
             raise AttributeError("state must be subclass of spade.behaviour.State")
         self._states[name] = state
@@ -381,9 +414,25 @@ class FSMBehaviour(CyclicBehaviour):
             self.current_state = name
 
     def add_transition(self, source, dest):
+        """
+        Adds a transition from one state to another.
+        :param source: the name of the state from where the transition starts
+        :type source: str
+        :param dest: the name of the state where the transition ends
+        :type dest: str
+        """
         self._transitions[source].append(dest)
 
     def is_valid_transition(self, source, dest):
+        """
+        Checks if a transitions is registered in the FSM
+        :param source: the source state name
+        :type source: str
+        :param dest: the destination state name
+        :type dest: str
+        :return: wether the transition is valid or not
+        :rtype: bool
+        """
         if dest not in self._states or source not in self._states:
             raise NotValidState
         elif dest not in self._transitions[source]:
@@ -416,9 +465,18 @@ class FSMBehaviour(CyclicBehaviour):
             self.kill()
 
     async def run(self):
+        """
+        In this kind of behaviour there is no need to overload run.
+        The run methods to be overloaded are in the State class.
+        """
         raise RuntimeError  # pragma: no cover
 
     def to_graphviz(self):
+        """
+        Converts the FSM behaviour structure to Graphviz syntax
+        :return: the graph in Graphviz syntax
+        :rtype: str
+        """
         graph = "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];"
         for origin, dest in self._transitions.items():
             origin = origin.replace(" ", "_")

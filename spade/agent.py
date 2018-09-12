@@ -1,4 +1,6 @@
 import logging
+
+import aiosasl
 import sys
 import asyncio
 from hashlib import md5
@@ -16,8 +18,23 @@ from spade.web import WebApp
 logger = logging.getLogger('spade.Agent')
 
 
+class AuthenticationFailure(Exception):
+    pass
+
+
 class Agent(object):
     def __init__(self, jid, password, verify_security=False, loop=None):
+        """
+        Creates an agent
+        :param jid: The identifier of the agent in the form username@server
+        :type jid: str
+        :param password: The password to connect to the server
+        :type password: str
+        :param verify_security: Wether to verify or not the SSL certificates
+        :type verify_security: bool
+        :param loop: the event loop if it was already created (optional)
+        :type loop: an asyncio event loop
+        """
         self.jid = aioxmpp.JID.fromstr(jid)
         self.password = password
         self.verify_security = verify_security
@@ -43,7 +60,16 @@ class Agent(object):
         # Web service
         self.web = WebApp(agent=self)
 
-    def start(self, auto_register=False):
+    def start(self, auto_register=True):
+        """
+        Starts the agent. This fires some actions:
+            - if auto_register: register the agent in the server
+            - runs the event loop
+            - connects the agent to the server
+            - runs the registered behaviours
+        :param auto_register: register the agent in the server
+        :type auto_register: bool
+        """
         if auto_register:
             self.register()
 
@@ -62,6 +88,9 @@ class Agent(object):
         self.setup()
 
     def register(self):  # pragma: no cover
+        """
+        Register the agent in the XMPP server.
+        """
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
         query = ibr.Query(self.jid.localpart, self.password)
@@ -98,6 +127,13 @@ class Agent(object):
 
     @staticmethod
     def build_avatar_url(jid):
+        """
+        Static method to build a gravatar url with the agent's JID
+        :param jid: an XMPP identifier
+        :type jid: aioxmpp.JID
+        :return: an URL for the gravatar
+        :rtype: str
+        """
         digest = md5(str(jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
@@ -152,6 +188,7 @@ class Agent(object):
         """
         Stops an agent and kills all its behaviours.
         """
+        self.presence.set_unavailable()
         for behav in self.behaviours:
             behav.kill()
         if self.web.server:
@@ -229,6 +266,7 @@ class AioThread(Thread):
         self.loop = loop
 
         asyncio.set_event_loop(self.loop)
+
         self.client = aioxmpp.PresenceManagedClient(agent.jid,
                                                     aioxmpp.make_security_layer(agent.password,
                                                                                 no_verify=not agent.verify_security),
@@ -236,10 +274,14 @@ class AioThread(Thread):
                                                     logger=logging.getLogger(agent.jid.localpart))
 
     def connect(self):  # pragma: no cover
-        self.conn_coro = self.client.connected()
-        aenter = type(self.conn_coro).__aenter__(self.conn_coro)
-        self.stream = self.loop.run_until_complete(aenter)
-        logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+        try:
+            self.conn_coro = self.client.connected()
+            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
+            self.stream = self.loop.run_until_complete(aenter)
+            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+        except aiosasl.AuthenticationFailure:
+            raise AuthenticationFailure(
+                "Could not authenticate the agent. Check user and password or use auto_register=True")
 
     def run(self):
         self.loop.call_soon(self.event.set)
@@ -247,10 +289,16 @@ class AioThread(Thread):
 
     def finalize(self):
         if self.agent.is_alive():
+            self.client.stop()
             aexit = self.conn_coro.__aexit__(*sys.exc_info())
             future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
             try:
-                future.result(timeout=5)
+                asyncio.wait_for(future, timeout=5)
+            except asyncio.TimeoutError:  # pragma: no cover
+                print('The client took too long to disconnect, cancelling the task...')
+                future.cancel()
             except Exception as e:  # pragma: no cover
-                logger.error("Could not disconnect from server: {}.".format(e))
+                logger.error("Could not disconnect from server: {!r}.".format(e))
+            else:
+                logger.info("Client disconnected.")
         self.loop.call_soon_threadsafe(self.loop.stop)

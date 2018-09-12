@@ -6,6 +6,9 @@ SPADE
 .. image:: https://img.shields.io/pypi/v/spade.svg
         :target: https://pypi.python.org/pypi/spade
 
+.. image:: https://img.shields.io/pypi/pyversions/spade.svg
+    :target: https://pypi.python.org/pypi/spade
+
 .. image:: https://travis-ci.org/javipalanca/spade.svg?branch=master
         :target: https://travis-ci.org/javipalanca/spade
         :alt: Continuous Integration Status
@@ -17,6 +20,9 @@ SPADE
 .. image:: https://readthedocs.org/projects/spade/badge/?version=latest
         :target: https://spade-mas.readthedocs.io?badge=latest
         :alt: Documentation Status
+
+.. image:: https://img.shields.io/pypi/format/spade.svg
+    :target: https://pypi.python.org/pypi/spade
 
 
 Smart Python Agent Development Environment

@@ -1,8 +1,8 @@
 # coding=utf-8
 import asyncio
 import datetime
-import getpass
 import random
+import click
 
 import aioxmpp
 from aioxmpp import PresenceType, Presence, JID, PresenceShow, MessageType
@@ -105,24 +105,28 @@ class WebAgent(agent.Agent):
         self.presence.presenceclient.handle_presence(stanza)
 
 
-agent_jid = input("Agent JID> ")
-agent_passwd = getpass.getpass()
+@click.command()
+@click.option('--jid', prompt="Agent JID> ")
+@click.option('--pwd', prompt="Password>", hide_input=True)
+@click.option('--port', default=10000)
+def run(jid, pwd, port):
+    a = WebAgent(jid, pwd)
+    a.web.port = port
 
-a = WebAgent(agent_jid, agent_passwd)
-a.web.port = 10000
+    async def hello(request):
+        return {"number": 42}
+
+    a.web.add_get("/hello", hello, "hello.html")
+    a.start(auto_register=True)
+
+    print("Agent web at {}:{}".format(a.web.hostname, a.web.port))
+    print(a.jid)
+    while a.is_alive():
+        try:
+            time.sleep(3)
+        except KeyboardInterrupt:
+            a.stop()
 
 
-async def hello(request):
-    return {"number": 42}
-
-
-a.web.add_get("/hello", hello, "hello.html")
-a.start(auto_register=True)
-
-print("Agent web at {}:{}".format(a.web.hostname, a.web.port))
-print(a.jid)
-while a.is_alive():
-    try:
-        time.sleep(1)
-    except KeyboardInterrupt:
-        a.stop()
+if __name__ == "__main__":
+    run()

@@ -16,6 +16,7 @@ class Agent1(Agent):
 
         def on_subscribed(self, jid):
             print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
+            print("[{}] Contacts List: {}".format(self.agent.name, self.agent.presence.get_contacts()))
 
         def on_subscribe(self, jid):
             print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))
@@ -41,6 +42,7 @@ class Agent2(Agent):
 
         def on_subscribed(self, jid):
             print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
+            print("[{}] Contacts List: {}".format(self.agent.name, self.agent.presence.get_contacts()))
 
         def on_subscribe(self, jid):
             print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))

@@ -18,8 +18,10 @@ class PresenceManager(object):
 
         self.approve_all = False
 
-        self.presenceclient.on_bare_available.connect(self._on_available)
-        self.presenceclient.on_bare_unavailable.connect(self._on_unavailable)
+        self.presenceclient.on_bare_available.connect(self._on_bare_available)
+        self.presenceclient.on_available.connect(self._on_available)
+        self.presenceclient.on_bare_unavailable.connect(self._on_bare_unavailable)
+        self.presenceclient.on_unavailable.connect(self._on_unavailable)
         self.presenceclient.on_changed.connect(self._on_changed)
 
         self.roster.on_subscribe.connect(self._on_subscribe)
@@ -118,9 +120,9 @@ class PresenceManager(object):
         """
         for jid, item in self.roster.items.items():
             try:
-                self._contacts[jid].update(item.export_as_json())
+                self._contacts[jid.bare()].update(item.export_as_json())
             except KeyError:
-                self._contacts[jid] = item.export_as_json()
+                self._contacts[jid.bare()] = item.export_as_json()
 
         return self._contacts
 
@@ -133,21 +135,19 @@ class PresenceManager(object):
         :rtype: :class:`dict`
         """
         try:
-            item = self.roster.items[jid]
+            return self.get_contacts()[jid.bare()]
         except KeyError:
             raise ContactNotFound
-        try:
-            self._contacts[jid].update(item.export_as_json())
-        except KeyError:
-            self._contacts[jid] = item.export_as_json()
-
-        return self._contacts[jid]
+        except AttributeError:
+            raise AttributeError("jid must be an aioxmpp.JID object")
 
     def _update_roster_with_presence(self, stanza):
+        if stanza.from_.bare() == self.agent.jid.bare():
+            return
         try:
-            self._contacts[stanza.from_].update({"presence": stanza})
+            self._contacts[stanza.from_.bare()].update({"presence": stanza})
         except KeyError:
-            self._contacts[stanza.from_] = {"presence": stanza}
+            self._contacts[stanza.from_.bare()] = {"presence": stanza}
 
     def subscribe(self, peer_jid):
         """
@@ -173,11 +173,19 @@ class PresenceManager(object):
         """
         self.roster.approve(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def _on_available(self, stanza):
+    def _on_bare_available(self, stanza):
         self._update_roster_with_presence(stanza)
         self.on_available(str(stanza.from_), stanza)
 
-    def _on_unavailable(self, stanza):
+    def _on_available(self, full_jid, stanza):
+        self._update_roster_with_presence(stanza)
+        self.on_available(str(stanza.from_), stanza)
+
+    def _on_unavailable(self, full_jid, stanza):
+        self._update_roster_with_presence(stanza)
+        self.on_unavailable(str(stanza.from_), stanza)
+
+    def _on_bare_unavailable(self, stanza):
         self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
 

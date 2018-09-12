@@ -72,14 +72,16 @@
                             <a href="/agent/{{ contact.jid }}/">
                                 <img src="{{ contact.avatar }}" alt="User Image">
                                 <span class="users-list-name">{{ contact.jid }}</span>
-                                {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
-                                contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
-                                <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
-                                {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT" or
-                                contact.show == "FREE_FOR_CHAT" %}
-                                <i class="fa fa-circle text-green"></i> ONLINE
-                                {% else %}
-                                <i class="fa fa-circle text-red"></i> OFFLINE
+                                {%if not contact.available %}
+                                    <i class="fa fa-circle text-red"></i> OFFLINE
+                                {%  else %}
+                                    {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
+                                    contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
+                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
+                                    {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT"
+                                    or contact.show == "FREE_FOR_CHAT" %}
+                                    <i class="fa fa-circle text-green"></i> ONLINE
+                                    {% endif %}
                                 {% endif %}
                             </a>
                         </li>

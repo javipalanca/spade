@@ -139,7 +139,7 @@
 
         <script>
             var viz = new Viz();
-            viz.renderSVGElement("{{ behaviour.to_graphviz() }}")
+            viz.renderSVGElement("{{ behaviour.to_graphviz()|safe }}")
             .then(function(element) {
               document.getElementById("fsm").appendChild(element);
             });

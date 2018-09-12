@@ -136,7 +136,7 @@ Let's see an example::
     from spade.message import Message
 
 
-    class PeriodicSenderAgent(Agent):
+    class TimeoutSenderAgent(Agent):
         class InformBehav(TimeoutBehaviour):
             async def run(self):
                 print(f"TimeoutSenderBehaviour running at {datetime.datetime.now().time()}")
@@ -177,7 +177,7 @@ Let's see an example::
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         receiveragent.start()
         time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
-        senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
+        senderagent = TimeoutSenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
         while receiveragent.is_alive():

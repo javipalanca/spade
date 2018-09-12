@@ -8,13 +8,14 @@ from spade.agent import Agent
 from tests.utils import make_connected_agent
 from testfixtures import LogCapture
 
+
 def test_create_agent(mocker):
     mocker.patch("spade.agent.AioThread.connect")
     agent = Agent("jid@server", "fake_password")
 
     assert agent.is_alive() is False
 
-    agent.start()
+    agent.start(auto_register=False)
 
     assert agent.is_alive() is True
 
@@ -35,7 +36,7 @@ def test_connected_agent():
     agent = make_connected_agent()
     assert agent.is_alive() is False
 
-    agent.start()
+    agent.start(auto_register=False)
     assert agent.is_alive() is True
 
     agent.stop()
@@ -47,7 +48,7 @@ def test_connected_agent_with_loop():
     agent = make_connected_agent(loop=loop)
     assert agent.is_alive() is False
 
-    agent.start()
+    agent.start(auto_register=False)
     assert agent.is_alive() is True
 
     agent.stop()
@@ -67,7 +68,7 @@ def test_avatar():
 def test_setup():
     agent = make_connected_agent()
     agent.setup = Mock()
-    agent.start()
+    agent.start(auto_register=False)
     agent.setup.assert_called_once()
     agent.stop()
 
@@ -100,12 +101,11 @@ def test_register():
 
 
 def test_receive_without_behaviours():
-
     agent = make_connected_agent()
     msg = Message(type_=aioxmpp.MessageType.CHAT)
 
     assert agent.traces.len() == 0
-    agent.start()
+    agent.start(auto_register=False)
 
     with LogCapture() as log:
         agent._message_received(msg)
