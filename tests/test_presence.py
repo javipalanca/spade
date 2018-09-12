@@ -160,13 +160,14 @@ def test_get_contacts(jid):
 
     contacts = agent.presence.get_contacts()
 
-    assert jid in contacts
-    assert type(contacts[jid]) == dict
-    assert contacts[jid]["approved"]
-    assert contacts[jid]["name"] == "My Friend"
-    assert contacts[jid]["subscription"] == 'none'
-    assert "ask" not in contacts[jid]
-    assert "groups" not in contacts[jid]
+    bare_jid = jid.bare()
+    assert bare_jid in contacts
+    assert type(contacts[bare_jid]) == dict
+    assert contacts[bare_jid]["approved"]
+    assert contacts[bare_jid]["name"] == "My Friend"
+    assert contacts[bare_jid]["subscription"] == 'none'
+    assert "ask" not in contacts[bare_jid]
+    assert "groups" not in contacts[bare_jid]
 
 
 def test_get_contacts_with_presence(jid):
@@ -183,10 +184,11 @@ def test_get_contacts_with_presence(jid):
 
     contacts = agent.presence.get_contacts()
 
-    assert jid in contacts
-    assert contacts[jid]["name"] == "My Available Friend"
+    bare_jid = jid.bare()
+    assert bare_jid in contacts
+    assert contacts[bare_jid]["name"] == "My Available Friend"
 
-    assert contacts[jid]["presence"].type_ == PresenceType.AVAILABLE
+    assert contacts[bare_jid]["presence"].type_ == PresenceType.AVAILABLE
 
 
 def test_get_contacts_with_presence_on_and_off(jid):
@@ -205,10 +207,11 @@ def test_get_contacts_with_presence_on_and_off(jid):
 
     contacts = agent.presence.get_contacts()
 
-    assert jid in contacts
-    assert contacts[jid]["name"] == "My Friend"
+    bare_jid = jid.bare()
+    assert bare_jid in contacts
+    assert contacts[bare_jid]["name"] == "My Friend"
 
-    assert contacts[jid]["presence"].type_ == PresenceType.UNAVAILABLE
+    assert contacts[bare_jid]["presence"].type_ == PresenceType.UNAVAILABLE
 
 
 def test_get_contacts_with_presence_unavailable(jid):
@@ -225,10 +228,11 @@ def test_get_contacts_with_presence_unavailable(jid):
 
     contacts = agent.presence.get_contacts()
 
-    assert jid in contacts
-    assert contacts[jid]["name"] == "My UnAvailable Friend"
+    bare_jid = jid.bare()
+    assert bare_jid in contacts
+    assert contacts[bare_jid]["name"] == "My UnAvailable Friend"
 
-    assert "presence" not in contacts[jid]
+    assert "presence" not in contacts[bare_jid]
 
 
 def test_get_contact(jid):
@@ -260,7 +264,7 @@ def test_get_invalid_jid_contact():
 def test_get_invalid_str_contact():
     agent = make_presence_connected_agent()
 
-    with pytest.raises(ContactNotFound):
+    with pytest.raises(AttributeError):
         agent.presence.get_contact("invalid@contact")
 
 
@@ -436,3 +440,16 @@ def test_on_changed(jid):
 
     assert contact["name"] == "My Friend"
     assert contact["presence"].show == PresenceShow.AWAY
+
+
+def test_ignore_self_presence():
+    agent = make_presence_connected_agent()
+    jid = agent.jid
+
+    stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE, show=PresenceShow.CHAT)
+    agent.presence.presenceclient.handle_presence(stanza)
+
+    with pytest.raises(ContactNotFound):
+        agent.presence.get_contact(jid)
+
+    assert len(agent.presence.get_contacts()) == 0

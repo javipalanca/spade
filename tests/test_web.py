@@ -20,7 +20,7 @@ from tests.utils import make_connected_agent
 
 def test_web():
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
     agent.web.start()
 
     assert agent.web.app is not None
@@ -76,7 +76,7 @@ def test_add_template_path():
 
 def test_check_server():
     agent = make_connected_agent()
-    agent.start()
+    agent.start(auto_register=False)
     port = random.randint(5000, 9999)
     agent.web.start(hostname="0.0.0.0", port=port)
 
@@ -202,7 +202,7 @@ async def test_get_agent(test_client, loop):
 async def test_unsubscribe_agent(test_client, loop):
     agent = make_connected_agent()
     agent.aiothread.client.enqueue = Mock()
-    agent.start()
+    agent.start(auto_register=False)
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -228,7 +228,7 @@ async def test_unsubscribe_agent(test_client, loop):
 async def test_send_agent(test_client, loop):
     agent = make_connected_agent()
     agent.stream.send = CoroutineMock()
-    agent.start()
+    agent.start(auto_register=False)
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 

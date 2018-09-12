@@ -22,9 +22,9 @@ For starters, fire up you favorite Python editor and create a file called ``dumm
 
 To create an agent in a project you just need to: ::
 
-    import spade
+    from spade import agent
 
-    class DummyAgent(spade.agent.Agent):
+    class DummyAgent(agent.Agent):
         def setup(self):
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
@@ -85,7 +85,7 @@ Example::
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
         dummy.start()
 
-        # wait until user interrupts with ctrl+C
+        print("Wait until user interrupts with ctrl+C")
         while True:
             try:
                 time.sleep(1)
@@ -167,15 +167,15 @@ An example of how to kill a behaviour::
 
         def setup(self):
             print("Agent starting . . .")
-            b = self.MyBehav()
-            self.add_behaviour(b)
+            self.my_behav = self.MyBehav()
+            self.add_behaviour(self.my_behav)
 
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
         dummy.start()
 
         # wait until user interrupts with ctrl+C
-        while True:
+        while not dummy.my_behav.is_killed():
             try:
                 time.sleep(1)
             except KeyboardInterrupt:

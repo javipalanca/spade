@@ -20,12 +20,22 @@ def unused_port(hostname):
 
 
 async def start_server_in_aiothread(handler, hostname, port, agent):
+    """
+    Listens to http requests and sends them to the webapp.
+    :param handler: handler to process the http requests
+    :param hostname: host name to listen from.
+    :param port: port to listen from.
+    :param agent: agent that owns the web app.
+    """
     loop = agent.aiothread.loop
     agent.web.server = await loop.create_server(handler, hostname, port)
     logger.info(f"Serving on http://{hostname}:{port}/")
 
 
 class WebApp(object):
+    """
+    Module to handle agent's web interface
+    """
     def __init__(self, agent):
         self.agent = agent
         self.app = None
@@ -40,6 +50,15 @@ class WebApp(object):
         self._set_loaders()
 
     def start(self, hostname=None, port=None, templates_path=None):
+        """
+        Starts the web interface.
+        :param hostname: host name to listen from.
+        :type hostname: str
+        :param port: port to listen from.
+        :type port: int
+        :param templates_path: path to look for templates.
+        :type templates_path: str
+        """
         self.hostname = hostname if hostname else "localhost"
         if port:
             self.port = port
@@ -72,10 +91,28 @@ class WebApp(object):
         self.app.router.add_post("/agent/{agentjid}/send/", self.send_agent)
 
     def add_get(self, path, controller, template):
+        """
+        Setup a route of type GET
+        :param path: URL to listen to
+        :type path: str
+        :param controller: the coroutine to handle the request
+        :type controller: coroutine
+        :param template: the template to render the response
+        :type template: str
+        """
         fn = aiohttp_jinja2.template(template_name=template)(controller)
         self.app.router.add_get(path, fn)
 
     def add_post(self, path, controller, template):
+        """
+        Setup a route of type POST
+        :param path: URL to listen to
+        :type path: str
+        :param controller: the coroutine to handle the request
+        :type controller: coroutine
+        :param template: the template to render the response
+        :type template: str
+        """
         fn = aiohttp_jinja2.template(template_name=template)(controller)
         self.app.router.add_post(path, fn)
 
@@ -87,13 +124,15 @@ class WebApp(object):
         messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)]
         return {"agent": self.agent, "messages": messages}
 
+    # Default controllers for agent
+
     @aiohttp_jinja2.template('index.html')
     async def index(self, request):
         contacts = [{"jid": jid,
                      "avatar": self.agent.build_avatar_url(jid.bare()),
                      "available": c["presence"].type_ == PresenceType.AVAILABLE if "presence" in c.keys() else False,
                      "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None,
-                     } for jid, c in self.agent.presence.get_contacts().items() if jid.bare() != self.agent.jid.bare()]
+                     } for jid, c in self.agent.presence.get_contacts().items()]
         return {"contacts": contacts}
 
     @aiohttp_jinja2.template("index.html")
