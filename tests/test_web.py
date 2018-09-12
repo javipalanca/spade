@@ -73,6 +73,8 @@ def test_add_template_path():
     assert filesystem_loader.list_templates() == []
     assert filesystem_loader.searchpath == ["/tmp/spade"]
 
+    agent.stop()
+
 
 def test_check_server():
     agent = make_connected_agent()
