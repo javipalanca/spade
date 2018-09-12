@@ -16,7 +16,7 @@ Contents:
    presence
    web
    extending
-   modules
+   api
    contributing
    authors
    history
