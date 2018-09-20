@@ -9,6 +9,7 @@ class ContactNotFound(Exception):
 
 class PresenceManager(object):
     """ """
+
     def __init__(self, agent):
         self.agent = agent
         self.client = agent.client
@@ -37,7 +38,7 @@ class PresenceManager(object):
         The currently set presence state (as aioxmpp.PresenceState)
         which is broadcast when the client connects and when the presence is
         re-emitted.
-        
+
         This attribute cannot be written. It does not reflect the actual
         presence seen by others. For example when the client is in fact
         offline, others will see unavailable presence no matter what is set
@@ -53,7 +54,7 @@ class PresenceManager(object):
         """
         The currently set textual presence status which is broadcast when the
         client connects and when the presence is re-emitted.
-        
+
         This attribute cannot be written. It does not reflect the actual
         presence seen by others. For example when the client is in fact
         offline, others will see unavailable presence no matter what is set
@@ -69,7 +70,7 @@ class PresenceManager(object):
         """
         The currently set priority which is broadcast when the client connects
         and when the presence is re-emitted.
-        
+
         This attribute cannot be written. It does not reflect the actual
         presence seen by others. For example when the client is in fact
         offline, others will see unavailable presence no matter what is set

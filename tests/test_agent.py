@@ -129,7 +129,7 @@ def test_create_agent_from_another_agent():
             self.agent.agent2 = make_connected_agent(loop=self.agent.loop)
             self.agent.agent2.done = False
             self.agent.agent2.add_behaviour(DummyBehav())
-            await self.agent.agent2.async_start(auto_register=False)
+            await self.agent.agent2.async_start(auto_register=True)
 
     agent1 = make_connected_agent()
     agent1.agent2 = None
