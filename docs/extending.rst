@@ -92,7 +92,7 @@ To develop this example mixin you should do the following::
                 await super().send(msg)
 
 
-        async def senf_p2p(self, msg):
+        async def send_p2p(self, msg):
             ...
 
 

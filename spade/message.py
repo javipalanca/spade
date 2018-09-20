@@ -9,6 +9,7 @@ logger = logging.getLogger('spade.Message')
 
 
 class MessageBase(object):
+    """ """
     def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
         self._to, self._sender = None, None
         self.to = to
@@ -26,10 +27,13 @@ class MessageBase(object):
     def from_node(cls, node):
         """
         Creates a new spade.message.Message from an aixoxmpp.stanza.Message
-        :param node: an aioxmpp Message
-        :type node: aioxmpp.stanza.Message
-        :return: a new spade Message
-        :rtype: spade.message.Message
+
+        Args:
+          node (aioxmpp.stanza.Message): an aioxmpp Message
+
+        Returns:
+          spade.message.Message: a new spade Message
+
         """
         if not isinstance(node, aioxmpp.stanza.Message):
             raise AttributeError("node must be a aioxmpp.stanza.Message instance")
@@ -55,59 +59,82 @@ class MessageBase(object):
     def to(self):
         """
         Gets the jid of the receiver.
-        :return: jid of the receiver
-        :rtype: aioxmpp.JID
+
+        Returns:
+          aioxmpp.JID: jid of the receiver
+
         """
         return self._to
 
     @to.setter
     def to(self, jid):
         """
-        set jid of the receiver.
-        :param jid: the jid of the receiver.
-        :type jid: str
+        Set jid of the receiver.
+
+        Args:
+          jid (str): the jid of the receiver.
+
         """
         self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     @property
     def sender(self):
         """
-        get jid of the sender
-        :return: jid of the sender
-        :rtype: aioxmpp.JID
+        Get jid of the sender
+
+        Returns:
+          aioxmpp.JID: jid of the sender
+
         """
         return self._sender
 
     @sender.setter
     def sender(self, jid):
         """
-        set jid of the sender
-        :param jid: jid of the sender
-        :type jid: str
+        Set jid of the sender
+
+        Args:
+          jid (str): jid of the sender
+
         """
         self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     def set_metadata(self, key, value):
         """
         Add a new metadata to the message
-        :param key: name of the metadata
-        :type key: str
-        :param value: value of the metadata
-        :type value: str
+
+        Args:
+          key (str): name of the metadata
+          value (str): value of the metadata
+
         """
         self.metadata[key] = value
 
     def get_metadata(self, key):
         """
         Get the value of a metadata. Returns None if metadata does not exist.
-        :param key: name of the metadata
-        :type key: str
-        :return: the value of the metadata (or None)
-        :rtype: str, None
+
+        Args:
+          key (str): name of the metadata
+
+        Returns:
+          str: the value of the metadata (or None)
+
         """
         return self.metadata[key] if key in self.metadata else None
 
     def match(self, message):
+        """
+        Returns wether a message matches with this message or not.
+        The message can be a Message object or a Template object.
+
+        Args:
+          message (spade.message.Message): the message to match to
+
+        Returns:
+          bool: wether the message matches or not
+
+        """
         if self.to and message.to != self.to:
             return False
 
@@ -129,6 +156,7 @@ class MessageBase(object):
 
     @property
     def id(self):
+        """ """
         return id(self)
 
     def __eq__(self, other):
@@ -136,11 +164,14 @@ class MessageBase(object):
 
 
 class Message(MessageBase):
+    """ """
     def make_reply(self):
         """
-        creates a copy of the message, exchanging sender and receiver
-        :return: a new message with exchanged sender and receiver
-        :rtype: spade.message.Message
+        Creates a copy of the message, exchanging sender and receiver
+
+        Returns:
+          spade.message.Message: a new message with exchanged sender and receiver
+
         """
         return Message(
             to=str(self.sender),
@@ -153,8 +184,10 @@ class Message(MessageBase):
     def prepare(self):
         """
         Returns an aioxmpp.stanza.Message built from the Message and prepared to be sent.
-        :return: the message prepared to be sent
-        :rtype: aioxmpp.stanza.Message
+
+        Returns:
+          aioxmpp.stanza.Message: the message prepared to be sent
+
         """
 
         msg = aioxmpp.stanza.Message(

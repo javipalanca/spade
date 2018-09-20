@@ -13,21 +13,22 @@ logger = logging.getLogger('spade.behaviour')
 
 
 class BehaviourNotFinishedException(Exception):
+    """ """
     pass
 
 
 class NotValidState(Exception):
+    """ """
     pass
 
 
 class NotValidTransition(Exception):
+    """ """
     pass
 
 
 class CyclicBehaviour(object, metaclass=ABCMeta):
-    """
-    this behaviour is executed cyclically until it is stopped.
-    """
+    """ This behaviour is executed cyclically until it is stopped. """
 
     def __init__(self):
         self.agent = None
@@ -41,9 +42,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
     def set_agent(self, agent):
         """
-        links behaviour with its owner agent
-        :param agent: the agent who owns the behaviour
-        :type agent: :class:`spade.agent.Agent`
+        Links behaviour with its owner agent
+
+        Args:
+          agent (spade.agent.Agent): the agent who owns the behaviour
+
         """
         self.agent = agent
         self.queue = asyncio.Queue(loop=self.agent.loop)
@@ -54,18 +57,23 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         Sets the template that is used to match incoming
         messages with this behaviour.
-        :param template: the template to match with
-        :type template: :class:`spade.template.Template`
+
+        Args:
+          template (spade.template.Template): the template to match with
+
         """
         self.template = template
 
     def match(self, message):
         """
         Matches a message with the behaviour's template
-        :param message: the message to match with
-        :type message: :class:`spade.messafe.Message`
-        :return: wheter the messaged matches or not
-        :rtype: :class:`bool`
+
+        Args:
+          message(spade.message.Message): the message to match with
+
+        Returns:
+          bool: wheter the messaged matches or not
+
         """
         if self.template:
             return self.template.match(message)
@@ -74,32 +82,34 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
     def set(self, name, value):
         """
         Stores a knowledge item in the agent knowledge base.
-        :param name: name of the item
-        :type name: :class:`str`
-        :param value: value of the item
-        :type value: :class:`object`
+
+        Args:
+          name (str): name of the item
+          value (object): value of the item
+
         """
         self.agent.set(name, value)
 
     def get(self, name):
         """
         Recovers a knowledge item from the agent's knowledge base.
-        :param name: name of the item
-        :type name: :class:`str`
-        :return: the object retrieved or None
-        :rtype: :class:`object`
+
+        Args:
+          name (str): name of the item
+
+        Returns:
+          object: the object retrieved or None
+
         """
         return self.agent.get(name)
 
     def start(self):
-        """
-        starts behaviour in the event loop
-        """
+        """starts behaviour in the event loop"""
         self.agent.submit(self._start())
 
     async def _start(self):
         """
-        start coroutine. runs on_start coroutine and then
+        Start coroutine. runs on_start coroutine and then
         runs the _step coroutine where the body of the behaviour
         is called.
         """
@@ -113,9 +123,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
     def kill(self, exit_code=None):
         """
-        stops the behaviour
-        :param exit_code: the exit code of the behaviour
-        :type exit_code: :class:`object`
+        Stops the behaviour
+
+        Args:
+          exit_code (object, optional): the exit code of the behaviour (Default value = None)
+
         """
         self._force_kill.set()
         if exit_code is not None:
@@ -125,8 +137,10 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
     def is_killed(self):
         """
         Checks if the behaviour was killed by means of the kill() method.
-        :return: whether the behaviour is killed or not
-        :rtype: :class:`bool`
+
+        Returns:
+          bool: whether the behaviour is killed or not
+
         """
         return self._force_kill.is_set()
 
@@ -136,9 +150,10 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Returns the exit_code of the behaviour.
         It only works when the behaviour is done or killed,
         otherwise it raises an exception.
-        :return: the exit code of the behaviour
-        :rtype: :class:`object`
-        :raises: BehaviourNotFinishedException
+
+        Returns:
+          object: the exit code of the behaviour
+
         """
         if self.done() or self.is_killed():
             return self._exit_code
@@ -149,50 +164,54 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
     def exit_code(self, value):
         """
         Sets a new exit code to the behaviour.
-        :param value: the new exit code
-        :type value: :class:`object`
+
+        Args:
+          value (object): the new exit code
+
         """
         self._exit_code = value
 
     def done(self):
         """
-        returns True if the behaviour has finished
+        Returns True if the behaviour has finished
         else returns False
-        :return: whether the behaviour is finished or not
-        :rtype: :class:`bool`
+
+        Returns:
+          bool: whether the behaviour is finished or not
+
         """
         return False
 
     async def on_start(self):
         """
-        coroutine called before the behaviour is started.
+        Coroutine called before the behaviour is started.
         """
         pass
 
     async def on_end(self):
         """
-        coroutine called after the behaviour is done or killed.
+        Coroutine called after the behaviour is done or killed.
         """
         pass
 
     @abstractmethod
     async def run(self):
         """
-        body of the behaviour.
-        to be implemented by user
+        Body of the behaviour.
+        To be implemented by user.
         """
         raise NotImplementedError  # pragma: no cover
 
     async def _run(self):
         """
-        function to be overload by more complex behaviours.
-        in other case it just calls run() coroutine.
+        Function to be overload by more complex behaviours.
+        In other case it just calls run() coroutine.
         """
         await self.run()
 
     async def _step(self):
         """
-        main loop of the behaviour.
+        Main loop of the behaviour.
         checks whether behaviour is done or killed,
         ortherwise it calls run() coroutine.
         """
@@ -211,24 +230,28 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
     async def enqueue(self, message):
         """
         Enqueues a message in the behaviour's mailbox
-        :param message: the message to be enqueued
-        :type message: spade.message.Message
+
+        Args:
+            message (spade.message.Message): the message to be enqueued
         """
         await self.queue.put(message)
 
     def mailbox_size(self):
         """
-        checks if there is a message in the mailbox
-        :return: the number of messages in the mailbox
-        :rtype: int
+        Checks if there is a message in the mailbox
+
+        Returns:
+          int: the number of messages in the mailbox
+
         """
         return self.queue.qsize()
 
     async def send(self, msg):
         """
         Sends a message.
-        :param msg: the message to be sent.
-        :type msg: :class:`spade.message.Message`
+
+        Args:
+            msg (spade.message.Message): the message to be sent.
         """
         if not msg.sender:
             msg.sender = str(self.agent.jid)
@@ -240,13 +263,15 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
     async def receive(self, timeout=None):
         """
-        receives a message for this behaviour.
-        if timeout is not None it returns the message or "None"
+        Receives a message for this behaviour.
+        If timeout is not None it returns the message or "None"
         after timeout is done.
-        :param timeout: number of seconds until return
-        :type timeout: :class:`float`
-        :return: a Message or None
-        :rtype: :class:`spade.message.Message`
+
+        Args:
+            timeout (float): number of seconds until return
+
+        Returns:
+            spade.message.Message: a Message or None
         """
         if timeout:
             coro = self.queue.get()
@@ -266,15 +291,14 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
 
 class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
-    """
-    this behaviour is only executed once
-    """
+    """This behaviour is only executed once"""
 
     def __init__(self):
         super().__init__()
         self._already_executed = False
 
     def done(self):
+        """ """
         if not self._already_executed:
             self._already_executed = True
             return False
@@ -282,17 +306,15 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
 
 class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
-    """
-    this behaviour is executed periodically with an interval
-    """
+    """This behaviour is executed periodically with an interval"""
 
     def __init__(self, period, start_at=None):
         """
-        Creates a periodic behaviour
-        :param period: interval of the behaviour in seconds
-        :type period: :class:`float`
-        :param start_at: whether to start the behaviour with an offset
-        :type start_at: :class:`datetime.datetime`
+        Creates a periodic behaviour.
+
+        Args:
+            period (float): interval of the behaviour in seconds
+            start_at (datetime.datetime): whether to start the behaviour with an offset
         """
         super().__init__()
         self._period = None
@@ -305,10 +327,17 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
     @property
     def period(self):
+        """ Get the period. """
         return self._period
 
     @period.setter
     def period(self, value):
+        """
+        Set the period.
+
+        Args:
+          value (float): seconds
+        """
         if value < 0:
             raise ValueError("Period must be greater or equal than zero.")
         self._period = timedelta(seconds=value)
@@ -330,15 +359,14 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
 
 class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
-    """
-    this behaviour is executed once at after specified datetime
-    """
+    """This behaviour is executed once at after specified datetime"""
 
     def __init__(self, start_at):
         """
         Creates a timeout behaviour, which is run at start_at
-        :param start_at: when to start the behaviour
-        :type start_at: :class:`datetime.datetime`
+
+        Args:
+            start_at (datetime.datetime): when to start the behaviour
         """
         super().__init__()
 
@@ -359,13 +387,12 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
                 self._timeout_triggered = True
 
     def done(self):
+        """ """
         return self._timeout_triggered
 
 
 class State(OneShotBehaviour, metaclass=ABCMeta):
-    """
-    A state of a FSMBehaviour is a OneShotBehaviour
-    """
+    """A state of a FSMBehaviour is a OneShotBehaviour"""
 
     def __init__(self):
         super().__init__()
@@ -376,16 +403,16 @@ class State(OneShotBehaviour, metaclass=ABCMeta):
         Set the state to transition to when this state is finished.
         state_name must be a valid state and the transition must be registered.
         If set_next_state is not called then current state is a final state.
-        :param state_name: the name of the state to transition to
-        :type state_name: str
+
+        Args:
+          state_name (str): the name of the state to transition to
+
         """
         self.next_state = state_name
 
 
 class FSMBehaviour(CyclicBehaviour):
-    """
-    A behaviour composed of states (oneshotbehaviours) that may transition from one state to another.
-    """
+    """A behaviour composed of states (oneshotbehaviours) that may transition from one state to another."""
 
     def __init__(self):
         super().__init__()
@@ -395,17 +422,17 @@ class FSMBehaviour(CyclicBehaviour):
         self.setup()
 
     def setup(self):
+        """ """
         pass
 
     def add_state(self, name, state, initial=False):
-        """
-        Adds a new state to the FSM.
-        :param name: the name of the state, which is used as its identifier.
-        :type name: str
-        :param state: The state class
-        :type state: spade.behaviour.State
-        :param initial: wether the state is the initial state or not. (Only one initial state is allowed)
-        :type initial: bool
+        """ Adds a new state to the FSM.
+
+        Args:
+          name (str): the name of the state, which is used as its identifier.
+          state (spade.behaviour.State): The state class
+          initial (bool, optional): wether the state is the initial state or not. (Only one initial state is allowed) (Default value = False)
+
         """
         if not issubclass(state.__class__, State):
             raise AttributeError("state must be subclass of spade.behaviour.State")
@@ -414,24 +441,26 @@ class FSMBehaviour(CyclicBehaviour):
             self.current_state = name
 
     def add_transition(self, source, dest):
-        """
-        Adds a transition from one state to another.
-        :param source: the name of the state from where the transition starts
-        :type source: str
-        :param dest: the name of the state where the transition ends
-        :type dest: str
+        """ Adds a transition from one state to another.
+
+        Args:
+          source (str): the name of the state from where the transition starts
+          dest (str): the name of the state where the transition ends
+
         """
         self._transitions[source].append(dest)
 
     def is_valid_transition(self, source, dest):
         """
         Checks if a transitions is registered in the FSM
-        :param source: the source state name
-        :type source: str
-        :param dest: the destination state name
-        :type dest: str
-        :return: wether the transition is valid or not
-        :rtype: bool
+
+        Args:
+          source (str): the source state name
+          dest (str): the destination state name
+
+        Returns:
+          bool: wether the transition is valid or not
+
         """
         if dest not in self._states or source not in self._states:
             raise NotValidState
@@ -474,8 +503,10 @@ class FSMBehaviour(CyclicBehaviour):
     def to_graphviz(self):
         """
         Converts the FSM behaviour structure to Graphviz syntax
-        :return: the graph in Graphviz syntax
-        :rtype: str
+
+        Returns:
+          str: the graph in Graphviz syntax
+
         """
         graph = "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];"
         for origin, dest in self._transitions.items():

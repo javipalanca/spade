@@ -8,6 +8,8 @@ class MockedConnectedAgent(Agent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.aiothread.connect = Mock()
+        self.aiothread.async_connect = CoroutineMock()
+        self.async_register = CoroutineMock()
         self.aiothread.conn_coro = Mock()
         self.aiothread.conn_coro.__aexit__ = CoroutineMock()
         self.aiothread.stream = Mock()
@@ -26,6 +28,7 @@ class MockedPresenceConnectedAgent(Agent):
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.aiothread.connect = Mock()
+        self.aiothread.async_connect = CoroutineMock()
         self.aiothread.conn_coro = Mock()
         self.aiothread.conn_coro.__aexit__ = CoroutineMock()
 

@@ -13,7 +13,7 @@ attributes defined in the template must be equal in the message for this to matc
 The attributes that can be set in a template are:
 
 * **to**: the jid string of the receiver of the message.
-* **from** the jid string of the sender of the message.
+* **sender** the jid string of the sender of the message.
 * **body**: the body of the message.
 * **thread**: the thread id of the conversation.
 * **metadata**: a (key, value) dictionary of strings to define metadata of the message. This is useful, for example, to include `FIPA <http://www.fipa.org>`_ attributes like *ontology*, *performative*, *language*, etc.
