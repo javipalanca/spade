@@ -204,3 +204,27 @@ And the output of this example would be::
 .. hint::
     If a exception occurs inside an ``on_start``, ``run`` or ``on_end`` coroutines, the behaviour will be
     automatically killed and the exception will be stored as its ``exit_code``.
+
+
+
+Creating an agent from within another agent
+-------------------------------------------
+
+There is a common use case where you may need to create an agent from within another agent, that is, from within another
+agent's behaviour. This is a *special* case because you can't create a new event loop when you have a loop already
+running. For this special case you can use the ``loop`` argument in the ``Agent`` constructor to share an event loop
+between more than one agent. There is also a coroutine that allows you to start the agent from a behaviour. This is the
+``async_start`` coroutine, which accepts the same arguments as the ``start`` method. Example::
+
+        class CreateBehav(OneShotBehaviour):
+            async def run(self):
+                agent2 = Agent("agent2@fake_server", "fake_password", loop=self.agent.loop)
+                await agent2.async_start(auto_register=False)
+
+        agent1 = Agent("agent1@fake_server", "fake_password")
+        agent1.add_behaviour(CreateBehav())
+        agent1.start(auto_register=False)
+
+
+.. warning:: If you call the ``start`` method (instead of the ``async_start`` coroutine) from within a behaviour, you'll
+             get an error.

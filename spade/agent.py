@@ -19,6 +19,7 @@ logger = logging.getLogger('spade.Agent')
 
 
 class AuthenticationFailure(Exception):
+    """ """
     pass
 
 
@@ -26,14 +27,12 @@ class Agent(object):
     def __init__(self, jid, password, verify_security=False, loop=None):
         """
         Creates an agent
-        :param jid: The identifier of the agent in the form username@server
-        :type jid: str
-        :param password: The password to connect to the server
-        :type password: str
-        :param verify_security: Wether to verify or not the SSL certificates
-        :type verify_security: bool
-        :param loop: the event loop if it was already created (optional)
-        :type loop: an asyncio event loop
+
+        Args:
+          jid (str): The identifier of the agent in the form username@server
+          password (str): The password to connect to the server
+          verify_security (bool): Wether to verify or not the SSL certificates
+          loop (an asyncio event loop): the event loop if it was already created (optional)
         """
         self.jid = aioxmpp.JID.fromstr(jid)
         self.password = password
@@ -46,8 +45,11 @@ class Agent(object):
 
         if loop:
             self.loop = loop
+            self.external_loop = True
         else:
             self.loop = asyncio.new_event_loop()
+            self.external_loop = False
+
         self.aiothread = AioThread(self, self.loop)
         self._alive = Event()
 
@@ -63,20 +65,46 @@ class Agent(object):
     def start(self, auto_register=True):
         """
         Starts the agent. This fires some actions:
-            - if auto_register: register the agent in the server
-            - runs the event loop
-            - connects the agent to the server
-            - runs the registered behaviours
-        :param auto_register: register the agent in the server
-        :type auto_register: bool
+
+            * if auto_register: register the agent in the server
+            * runs the event loop
+            * connects the agent to the server
+            * runs the registered behaviours
+
+        Args:
+          auto_register (bool, optional): register the agent in the server (Default value = True)
+
         """
         if auto_register:
             self.register()
 
         self.aiothread.connect()
+
+        self._start()
+
+    async def async_start(self, auto_register=True):
+        """
+        Starts the agent from a coroutine. This fires some actions:
+
+            * if auto_register: register the agent in the server
+            * runs the event loop
+            * connects the agent to the server
+            * runs the registered behaviours
+
+        Args:
+          auto_register (bool, optional): register the agent in the server (Default value = True)
+
+        """
+        if auto_register:
+            await self.async_register()
+
+        await self.aiothread.async_connect()
+
+        self._start()
+
+    def _start(self):
         self.aiothread.start()
         self._alive.set()
-        self.aiothread.event.wait()
 
         # register a message callback here
         self.message_dispatcher.register_callback(
@@ -84,35 +112,43 @@ class Agent(object):
             None,
             self._message_received,
         )
-
         self.setup()
 
     def register(self):  # pragma: no cover
-        """
-        Register the agent in the XMPP server.
-        """
+        """ Register the agent in the XMPP server. """
+
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
         query = ibr.Query(self.jid.localpart, self.password)
+        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
         self.loop.run_until_complete(ibr.register(stream, query))
+
+    async def async_register(self):  # pragma: no cover
+        """ Register the agent in the XMPP server from a coroutine. """
+        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
+        query = ibr.Query(self.jid.localpart, self.password)
+        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata)
+        await ibr.register(stream, query)
 
     def setup(self):
         """
-        setup agent before startup.
-        this method may be overloaded.
+        Setup agent before startup.
+        This method may be overloaded.
         """
         pass
 
     @property
     def name(self):
+        """ Returns the name of the agent (the string before the '@') """
         return self.jid.localpart
 
     @property
     def client(self):
+        """ Returns the client that is connected to the xmpp server """
         return self.aiothread.client
 
     @property
     def stream(self):
+        """ Returns the stream of the connection """
         return self.aiothread.stream
 
     @property
@@ -120,8 +156,10 @@ class Agent(object):
         """
         Generates a unique avatar for the agent based on its JID.
         Uses Gravatar service with MonsterID option.
-        :return: the url of the agent's avatar
-        :rtype: :class:`str`
+
+        Returns:
+          str: the url of the agent's avatar
+
         """
         return self.build_avatar_url(self.jid.bare())
 
@@ -129,20 +167,28 @@ class Agent(object):
     def build_avatar_url(jid):
         """
         Static method to build a gravatar url with the agent's JID
-        :param jid: an XMPP identifier
-        :type jid: aioxmpp.JID
-        :return: an URL for the gravatar
-        :rtype: str
+
+        Args:
+          jid (aioxmpp.JID): an XMPP identifier
+
+        Returns:
+          str: an URL for the gravatar
+
         """
         digest = md5(str(jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
     def submit(self, coro):
         """
-        runs a coroutine in the event loop of the agent.
+        Runs a coroutine in the event loop of the agent.
         this call is not blocking.
-        :param coro: the coroutine to be run
-        :type coro: coroutine
+
+        Args:
+          coro (coroutine): the coroutine to be run
+
+        Returns:
+            asyncio.Future: the future of the coroutine execution
+
         """
         return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
@@ -151,10 +197,11 @@ class Agent(object):
         Adds and starts a behaviour to the agent.
         If template is not None it is used to match
         new messages and deliver them to the behaviour.
-        :param behaviour: the behaviour to be started
-        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
-        :param template: the template to match messages with
-        :type template: :class:`spade.template.Template`
+
+        Args:
+          behaviour (spade.behaviour.CyclicBehaviour): the behaviour to be started
+          template (spade.template.Template, optional): the template to match messages with (Default value = None)
+
         """
         behaviour.set_agent(self)
         behaviour.set_template(template)
@@ -165,8 +212,10 @@ class Agent(object):
         """
         Removes a behaviour from the agent.
         The behaviour is first killed.
-        :param behaviour: the behaviour instance to be removed
-        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
+
+        Args:
+          behaviour (spade.behaviour.CyclicBehaviour): the behaviour instance to be removed
+
         """
         if not self.has_behaviour(behaviour):
             raise ValueError("This behaviour is not registered")
@@ -177,17 +226,18 @@ class Agent(object):
     def has_behaviour(self, behaviour):
         """
         Checks if a behaviour is added to an agent.
-        :param behaviour: the behaviour instance to check
-        :type behaviour: :class:`spade.behaviour.CyclicBehaviour`
-        :return: a boolean that indicates wether the behaviour is inside the agent.
-        :rtype: bool
+
+        Args:
+          behaviour (spade.behaviour.CyclicBehaviour): the behaviour instance to check
+
+        Returns:
+          bool: a boolean that indicates wether the behaviour is inside the agent.
+
         """
         return behaviour in self.behaviours
 
     def stop(self):
-        """
-        Stops an agent and kills all its behaviours.
-        """
+        """ Stops an agent and kills all its behaviours. """
         self.presence.set_unavailable()
         for behav in self.behaviours:
             behav.kill()
@@ -201,29 +251,35 @@ class Agent(object):
 
     def is_alive(self):
         """
-        checks if the agent is alive
-        :return: wheter the agent is alive or not
-        :rtype: :class:`bool`
+        Checks if the agent is alive.
+
+        Returns:
+          bool: wheter the agent is alive or not
+
         """
         return self._alive.is_set()
 
     def set(self, name, value):
         """
         Stores a knowledge item in the agent knowledge base.
-        :param name: name of the item
-        :type name: :class:`str`
-        :param value: value of the item
-        :type value: :class:`object`
+
+        Args:
+          name (str): name of the item
+          value (object): value of the item
+
         """
         self._values[name] = value
 
     def get(self, name):
         """
         Recovers a knowledge item from the agent's knowledge base.
-        :param name: name of the item
-        :type name: :class:`str`
-        :return: the object retrieved or None
-        :rtype: :class:`object`
+
+        Args:
+          name(str): name of the item
+
+        Returns:
+          object: the object retrieved or None
+
         """
         if name in self._values:
             return self._values[name]
@@ -236,8 +292,13 @@ class Agent(object):
         This callback delivers the message to every behaviour
         that is waiting for it using their templates match.
         the aioxmpp.Message is converted to spade.message.Message
-        :param msg: the message just received.
-        :type msg: aioxmpp.Messagge
+
+        Args:
+          msg (aioxmpp.Messagge): the message just received.
+
+        Returns:
+            list(asyncio.Future): a list of futures of the append of the message at each matched behaviour.
+
         """
         logger.debug(f"Got message: {msg}")
 
@@ -256,11 +317,12 @@ class Agent(object):
 
 
 class AioThread(Thread):
+    """ The thread that manages the asyncio loop """
+
     def __init__(self, agent, loop, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.agent = agent
         self.jid = agent.jid
-        self.event = Event()
         self.conn_coro = None
         self.stream = None
         self.loop = loop
@@ -274,6 +336,7 @@ class AioThread(Thread):
                                                     logger=logging.getLogger(agent.jid.localpart))
 
     def connect(self):  # pragma: no cover
+        """ """
         try:
             self.conn_coro = self.client.connected()
             aenter = type(self.conn_coro).__aenter__(self.conn_coro)
@@ -283,11 +346,24 @@ class AioThread(Thread):
             raise AuthenticationFailure(
                 "Could not authenticate the agent. Check user and password or use auto_register=True")
 
+    async def async_connect(self):  # pragma: no cover
+        """ """
+        try:
+            self.conn_coro = self.client.connected()
+            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
+            self.stream = await aenter
+            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+        except aiosasl.AuthenticationFailure:
+            raise AuthenticationFailure(
+                "Could not authenticate the agent. Check user and password or use auto_register=True")
+
     def run(self):
-        self.loop.call_soon(self.event.set)
-        self.loop.run_forever()
+        """ """
+        if not self.agent.external_loop:
+            self.loop.run_forever()
 
     def finalize(self):
+        """ """
         if self.agent.is_alive():
             self.client.stop()
             aexit = self.conn_coro.__aexit__(*sys.exc_info())

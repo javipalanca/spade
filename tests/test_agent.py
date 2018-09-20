@@ -1,10 +1,12 @@
 import asyncio
+import time
 
 import aioxmpp
 from aioxmpp import PresenceManagedClient, Message
 from asynctest import CoroutineMock, Mock
 
 from spade.agent import Agent
+from spade.behaviour import OneShotBehaviour
 from tests.utils import make_connected_agent
 from testfixtures import LogCapture
 
@@ -115,3 +117,30 @@ def test_receive_without_behaviours():
     assert msg in agent.traces.store[0]
 
     agent.stop()
+
+
+def test_create_agent_from_another_agent():
+    class DummyBehav(OneShotBehaviour):
+        async def run(self):
+            self.agent.done = True
+
+    class CreateBehav(OneShotBehaviour):
+        async def run(self):
+            self.agent.agent2 = make_connected_agent(loop=self.agent.loop)
+            self.agent.agent2.done = False
+            self.agent.agent2.add_behaviour(DummyBehav())
+            await self.agent.agent2.async_start(auto_register=False)
+
+    agent1 = make_connected_agent()
+    agent1.agent2 = None
+    agent1.add_behaviour(CreateBehav())
+    agent1.start(auto_register=False)
+
+    while not agent1.agent2:
+        time.sleep(0.01)
+
+    assert agent1.agent2.is_alive()
+    assert agent1.agent2.done
+
+    agent1.agent2.stop()
+    agent1.stop()

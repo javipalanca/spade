@@ -22,10 +22,12 @@ def unused_port(hostname):
 async def start_server_in_aiothread(handler, hostname, port, agent):
     """
     Listens to http requests and sends them to the webapp.
-    :param handler: handler to process the http requests
-    :param hostname: host name to listen from.
-    :param port: port to listen from.
-    :param agent: agent that owns the web app.
+
+    Args:
+        handler: handler to process the http requests
+        hostname: host name to listen from.
+        port: port to listen from.
+        agent: agent that owns the web app.
     """
     loop = agent.aiothread.loop
     agent.web.server = await loop.create_server(handler, hostname, port)
@@ -33,9 +35,7 @@ async def start_server_in_aiothread(handler, hostname, port, agent):
 
 
 class WebApp(object):
-    """
-    Module to handle agent's web interface
-    """
+    """Module to handle agent's web interface"""
     def __init__(self, agent):
         self.agent = agent
         self.app = None
@@ -52,12 +52,12 @@ class WebApp(object):
     def start(self, hostname=None, port=None, templates_path=None):
         """
         Starts the web interface.
-        :param hostname: host name to listen from.
-        :type hostname: str
-        :param port: port to listen from.
-        :type port: int
-        :param templates_path: path to look for templates.
-        :type templates_path: str
+
+        Args:
+          hostname (str, optional): host name to listen from. (Default value = None)
+          port (int, optional): port to listen from. (Default value = None)
+          templates_path (str, optional): path to look for templates. (Default value = None)
+
         """
         self.hostname = hostname if hostname else "localhost"
         if port:
@@ -93,12 +93,12 @@ class WebApp(object):
     def add_get(self, path, controller, template):
         """
         Setup a route of type GET
-        :param path: URL to listen to
-        :type path: str
-        :param controller: the coroutine to handle the request
-        :type controller: coroutine
-        :param template: the template to render the response
-        :type template: str
+
+        Args:
+          path (str): URL to listen to
+          controller (coroutine): the coroutine to handle the request
+          template (str): the template to render the response
+
         """
         fn = aiohttp_jinja2.template(template_name=template)(controller)
         self.app.router.add_get(path, fn)
@@ -106,12 +106,12 @@ class WebApp(object):
     def add_post(self, path, controller, template):
         """
         Setup a route of type POST
-        :param path: URL to listen to
-        :type path: str
-        :param controller: the coroutine to handle the request
-        :type controller: coroutine
-        :param template: the template to render the response
-        :type template: str
+
+        Args:
+          path (str): URL to listen to
+          controller (coroutine): the coroutine to handle the request
+          template (str): the template to render the response
+
         """
         fn = aiohttp_jinja2.template(template_name=template)(controller)
         self.app.router.add_post(path, fn)

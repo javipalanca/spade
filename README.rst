@@ -51,7 +51,9 @@ Features
 Plugins
 -------
 
-None yet.
+- **spade_bokeh** (bokeh plots for agents):
+        - Code: https://github.com/javipalanca/spade_bokeh
+        - Documentation: https://spade-bokeh.readthedocs.io/
 
 Credits
 ---------
