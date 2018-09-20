@@ -2,6 +2,13 @@
 History
 =======
 
+3.0.4 (2018-09-20)
+------------------
+
+* Added coroutines to start agents from within other agents.
+* Improved API doc format.
+
+
 3.0.3 (2018-09-12)
 ------------------
 
