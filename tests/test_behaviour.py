@@ -557,6 +557,8 @@ def test_set_exit_code_behaviour():
 
     assert behaviour.exit_code == 1024
 
+    assert not agent.is_alive()
+
 
 def test_notfinishedexception_behaviour():
     class TestBehaviour(OneShotBehaviour):
@@ -578,6 +580,8 @@ def test_notfinishedexception_behaviour():
     assert behaviour.exit_code == 0
 
     agent.stop()
+
+    assert not agent.is_alive()
 
 
 def test_cyclic_behaviour():
