@@ -53,6 +53,8 @@ def test_default_template_path():
     assert "internal_tpl_agent.html" not in filesystem_loader.list_templates()
     assert filesystem_loader.searchpath == ["."]
 
+    agent.stop()
+
 
 def test_add_template_path():
     agent = Agent("jid@server", "password")
@@ -327,7 +329,7 @@ async def test_stop(test_client, loop):
 
     with LogCapture() as log:
         try:
-            await client.get("/stop/now/", timeout=0.0001)
+            await client.get("/stop/now/", timeout=0.0005)
         except requests.exceptions.ReadTimeout:
             pass
 
@@ -339,3 +341,45 @@ async def test_stop(test_client, loop):
         time.sleep(0.5)
 
     assert not agent.is_alive()
+
+
+async def test_add_get_json(test_client, loop):
+
+    async def controller(request):
+        return {"number": 42}
+
+    agent = Agent("jid@server", "password")
+    agent.web.add_get("/test", controller, None)
+
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
+
+    response = await client.get("/test")
+    assert response.status == 200
+
+    data = await response.json()
+    assert data["number"] == 42
+
+    agent.stop()
+
+
+async def test_add_post_json(test_client, loop):
+
+    async def handle_post(request):
+        form = await request.post()
+        number = form["number"]
+        return {"number": int(number)}
+
+    agent = Agent("jid@server", "password")
+    agent.web.add_post("/test", handle_post, None)
+
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
+
+    response = await client.post("/test", data={"number": 1024})
+    assert response.status == 200
+
+    data = await response.json()
+    assert data["number"] == 1024
+
+    agent.stop()

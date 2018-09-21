@@ -36,6 +36,7 @@ async def start_server_in_aiothread(handler, hostname, port, agent):
 
 class WebApp(object):
     """Module to handle agent's web interface"""
+
     def __init__(self, agent):
         self.agent = agent
         self.app = None
@@ -97,10 +98,10 @@ class WebApp(object):
         Args:
           path (str): URL to listen to
           controller (coroutine): the coroutine to handle the request
-          template (str): the template to render the response
+          template (str): the template to render the response or None if it is a JSON response
 
         """
-        fn = aiohttp_jinja2.template(template_name=template)(controller)
+        fn = self._prepare_controller(controller, template)
         self.app.router.add_get(path, fn)
 
     def add_post(self, path, controller, template):
@@ -110,11 +111,34 @@ class WebApp(object):
         Args:
           path (str): URL to listen to
           controller (coroutine): the coroutine to handle the request
-          template (str): the template to render the response
+          template (str): the template to render the response or None if it is a JSON response
 
         """
-        fn = aiohttp_jinja2.template(template_name=template)(controller)
+        fn = self._prepare_controller(controller, template)
         self.app.router.add_post(path, fn)
+
+    def _prepare_controller(self, controller, template):
+        """
+        Wraps the controller wether to render a jinja template or to return a json response (if template is None)
+        Args:
+            controller (coroutine): the coroutine to be wrapped
+            template (str): the name of the template or None
+
+        Returns:
+            coroutine: a wrapped coroutine of the controller
+        """
+        if template:
+            fn = aiohttp_jinja2.template(template_name=template)(controller)
+        else:
+            fn = self._parse_json_response(controller)
+        return fn
+
+    @staticmethod
+    def _parse_json_response(func):
+        async def wrapper(*args, **kwargs):
+            result = await func(*args, **kwargs)
+            return aioweb.json_response(data=result, content_type='application/json')
+        return wrapper
 
     @staticmethod
     def timeago(date):

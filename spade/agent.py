@@ -49,6 +49,7 @@ class Agent(object):
         else:
             self.loop = asyncio.new_event_loop()
             self.external_loop = False
+        asyncio.set_event_loop(self.loop)
 
         self.aiothread = AioThread(self, self.loop)
         self._alive = Event()
@@ -243,10 +244,12 @@ class Agent(object):
             behav.kill()
         if self.web.server:
             self.web.server.close()
-            self.submit(self.web.app.shutdown())
             self.submit(self.web.handler.shutdown(60.0))
-            self.submit(self.web.app.cleanup())
+        self.submit(self.web.app.shutdown())
+        self.submit(self.web.app.cleanup())
         self.aiothread.finalize()
+        if self.aiothread.is_alive() and not self.external_loop:
+            self.aiothread.loop_exited.wait()
         self._alive.clear()
 
     def is_alive(self):
@@ -326,6 +329,8 @@ class AioThread(Thread):
         self.conn_coro = None
         self.stream = None
         self.loop = loop
+        self.loop_exited = Event()
+        self.loop_exited.clear()
 
         asyncio.set_event_loop(self.loop)
 
@@ -360,21 +365,35 @@ class AioThread(Thread):
     def run(self):
         """ """
         if not self.agent.external_loop:
+            self.loop_exited.set()
             self.loop.run_forever()
+            logger.debug("Loop stopped.")
+            self.loop_exited.clear()
 
     def finalize(self):
         """ """
         if self.agent.is_alive():
+            # Disconnect from XMPP server
             self.client.stop()
             aexit = self.conn_coro.__aexit__(*sys.exc_info())
             future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
             try:
                 asyncio.wait_for(future, timeout=5)
             except asyncio.TimeoutError:  # pragma: no cover
-                print('The client took too long to disconnect, cancelling the task...')
+                logger.error('The client took too long to disconnect, cancelling the task...')
                 future.cancel()
             except Exception as e:  # pragma: no cover
                 logger.error("Could not disconnect from server: {!r}.".format(e))
             else:
                 logger.info("Client disconnected.")
-        self.loop.call_soon_threadsafe(self.loop.stop)
+        if not self.agent.external_loop:
+            future = self.loop.call_soon_threadsafe(self.loop.stop)
+            try:
+                asyncio.wait_for(future, timeout=5)
+            except asyncio.TimeoutError:  # pragma: no cover
+                logger.error('The loop took too long to close...')
+                future.cancel()
+            except Exception as e:
+                logger.error("Exception closing loop: {}".format(e))
+            else:
+                logger.debug("Loop closed")
