@@ -2,6 +2,12 @@
 History
 =======
 
+3.0.5 (2018-09-21)
+------------------
+
+* Added JSON responses in web module.
+* Some improvements in aiothread management.
+
 3.0.4 (2018-09-20)
 ------------------
 
