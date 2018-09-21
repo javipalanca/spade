@@ -106,7 +106,6 @@ class Agent(object):
     def _start(self):
         self.aiothread.start()
         self._alive.set()
-
         # register a message callback here
         self.message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT,
@@ -393,7 +392,7 @@ class AioThread(Thread):
             except asyncio.TimeoutError:  # pragma: no cover
                 logger.error('The loop took too long to close...')
                 future.cancel()
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 logger.error("Exception closing loop: {}".format(e))
             else:
                 logger.debug("Loop closed")
