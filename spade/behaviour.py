@@ -473,9 +473,7 @@ class FSMBehaviour(CyclicBehaviour):
         behaviour.set_agent(self.agent)
         behaviour.receive = self.receive
         logger.info(f"FSM running state {self.current_state}")
-        await behaviour.on_start()
-        await behaviour.run()
-        await behaviour.on_end()
+        await behaviour._start()
         dest = behaviour.next_state
 
         if dest:
