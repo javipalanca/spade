@@ -127,6 +127,21 @@ you can create forms in your web applications to be sent to your agents.
               async def my_redirect_controller(request):
                   raise web.HTTPFound("/")
 
+
+JSON Responses
+^^^^^^^^^^^^^^
+
+In the case that you need to return a JSON Response instead of an HTML page, is as simple as follows: call the
+``add_get`` or ``add_post`` method passing ``None`` as the template argument. Thus, the dictionary that you are
+returning in your controller coroutine will be built into a JSON Response instead of rendering a jinja2 template.
+
+Example::
+
+    async def json_controller(self, request):
+        return {"my_data": {'a': 0, 'b': 1, 'c': 2}}
+
+    self.web.add_get("/home", self.json_controller, template=None)
+
 Path
 ----
 The path will define where your application will respond to requests. You can use any allowed character for defining
