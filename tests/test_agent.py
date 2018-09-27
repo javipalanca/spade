@@ -2,11 +2,12 @@ import asyncio
 import time
 
 import aioxmpp
-from aioxmpp import PresenceManagedClient, Message
+from aioxmpp import PresenceManagedClient
 from asynctest import CoroutineMock, Mock
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
+from spade.message import Message
 from tests.utils import make_connected_agent
 from testfixtures import LogCapture
 
@@ -104,13 +105,14 @@ def test_register():
 
 def test_receive_without_behaviours():
     agent = make_connected_agent()
-    msg = Message(type_=aioxmpp.MessageType.CHAT)
+    aiomsg = aioxmpp.Message(type_=aioxmpp.MessageType.CHAT)
+    msg = Message.from_node(aiomsg)
 
     assert agent.traces.len() == 0
     agent.start(auto_register=False)
 
     with LogCapture() as log:
-        agent._message_received(msg)
+        agent._message_received(aiomsg)
         log.check_present(('spade.Agent', 'WARNING', f"No behaviour matched for message: {msg}"))
 
     assert agent.traces.len() == 1

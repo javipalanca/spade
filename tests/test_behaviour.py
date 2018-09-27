@@ -301,15 +301,15 @@ def test_send_message(message):
     agent = make_connected_agent()
     agent.start(auto_register=False)
 
-    agent.aiothread.stream = MagicMock()
-    agent.stream.send = CoroutineMock()
+    agent.aiothread.client = MagicMock()
+    agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     wait_for_behaviour_is_killed(behaviour)
 
-    assert agent.stream.send.await_count == 1
-    msg_arg = agent.stream.send.await_args[0][0]
+    assert agent.client.send.await_count == 1
+    msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.body[None] == "message body"
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
     thread_found = False
@@ -334,14 +334,14 @@ def test_send_message_without_sender():
     agent = make_connected_agent()
     agent.start(auto_register=False)
 
-    agent.aiothread.stream = MagicMock()
-    agent.stream.send = CoroutineMock()
+    agent.aiothread.client = MagicMock()
+    agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     wait_for_behaviour_is_killed(behaviour)
 
-    msg_arg = agent.stream.send.await_args[0][0]
+    msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
 
     agent.stop()
@@ -919,6 +919,81 @@ def test_fsm_two_initials():
     fsm_.add_state(STATE_TWO, state_two, initial=True)
 
     assert fsm_.current_state == STATE_TWO
+
+
+def test_fsm_fail_on_start():
+    class StateOne(State):
+        async def on_start(self):
+            raise Exception
+
+        async def run(self):
+            pass
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
+
+
+def test_fsm_fail_on_run():
+    class StateOne(State):
+        async def run(self):
+            raise Exception
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
+
+
+def test_fsm_fail_on_end():
+    class StateOne(State):
+        async def run(self):
+            pass
+
+        async def on_end(self):
+            raise Exception
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
 
 
 def test_to_graphviz(fsm):

@@ -2,6 +2,14 @@
 History
 =======
 
+3.0.7 (2018-09-27)
+------------------
+
+* Fixed bug when running FSM states.
+* Improved Message __str__.
+* Fixed bug when thread is not defined in a message.
+* aioxmpp send method is now in client instead of stream.
+
 3.0.6 (2018-09-27)
 ------------------
 
