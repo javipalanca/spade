@@ -41,6 +41,8 @@ class Agent(object):
         self.behaviours = []
         self._values = {}
 
+        self.container = None
+
         self.traces = TraceStore(size=1000)
 
         if loop:
@@ -62,6 +64,9 @@ class Agent(object):
 
         # Web service
         self.web = WebApp(agent=self)
+
+    def set_container(self, container):
+        self.container = container
 
     def start(self, auto_register=True):
         """
@@ -302,9 +307,12 @@ class Agent(object):
             list(asyncio.Future): a list of futures of the append of the message at each matched behaviour.
 
         """
-        logger.debug(f"Got message: {msg}")
 
         msg = Message.from_node(msg)
+        return self.dispatch(msg)
+
+    def dispatch(self, msg):
+        logger.debug(f"Got message: {msg}")
         futures = []
         matched = False
         for behaviour in (x for x in self.behaviours if x.match(msg)):
