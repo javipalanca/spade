@@ -2,6 +2,12 @@
 History
 =======
 
+3.0.6 (2018-09-27)
+------------------
+
+* Added statement to relinquish the cpu at each behaviour loop.
+* Message Thread is now stored as metadata for simplicity.
+
 3.0.5 (2018-09-21)
 ------------------
 
