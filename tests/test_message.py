@@ -73,6 +73,19 @@ def test_body_with_languages():
     assert new_msg.body == "Hello World"
 
 
+def test_thread_empty():
+    msg = Message(thread=None)
+
+    assert msg.thread is None
+    assert msg.metadata == {}
+
+    aiomsg = msg.prepare()
+    for data in aiomsg.xep0004_data:
+        if data.title == SPADE_X_METADATA:
+            for field in data.fields:
+                assert field.var != "_thread_node"
+
+
 def test_equal(message):
     assert message == copy.copy(message)
 

@@ -234,9 +234,10 @@ class Message(MessageBase):
                     )
                 )
 
-            data.fields.append(forms_xso.Field(var="_thread_node",
-                                               type_=forms_xso.FieldType.TEXT_SINGLE,
-                                               values=[self.thread]))
+            if self.thread:
+                data.fields.append(forms_xso.Field(var="_thread_node",
+                                                   type_=forms_xso.FieldType.TEXT_SINGLE,
+                                                   values=[self.thread]))
 
             data.title = SPADE_X_METADATA
             msg.xep0004_data = [data]
