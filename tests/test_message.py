@@ -39,12 +39,14 @@ def test_prepare(message):
     assert aiomsg.to == aioxmpp.JID.fromstr("to@localhost")
     assert aiomsg.from_ == aioxmpp.JID.fromstr("sender@localhost")
     assert aiomsg.body[None] == "message body"
-    assert aiomsg.thread == "thread-id"
 
     for data in aiomsg.xep0004_data:
         if data.title == SPADE_X_METADATA:
             for field in data.fields:
-                assert message.get_metadata(field.var) == field.values[0]
+                if field.var == "_thread_node":
+                    assert field.values[0] == "thread-id"
+                else:
+                    assert message.get_metadata(field.var) == field.values[0]
 
 
 def test_make_reply(message):
