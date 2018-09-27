@@ -5,6 +5,7 @@
 import copy
 
 import aioxmpp
+import aioxmpp.forms.xso as forms_xso
 import pytest
 
 from spade.message import Message, SPADE_X_METADATA
@@ -71,6 +72,31 @@ def test_body_with_languages():
 
     new_msg = Message.from_node(msg)
     assert new_msg.body == "Hello World"
+
+
+def test_message_from_node():
+    aiomsg = aioxmpp.Message(type_=aioxmpp.MessageType.CHAT)
+    data = forms_xso.Data(type_=forms_xso.DataType.FORM)
+
+    data.fields.append(
+        forms_xso.Field(
+            var="performative",
+            type_=forms_xso.FieldType.TEXT_SINGLE,
+            values=["request"],
+        )
+    )
+
+    data.fields.append(forms_xso.Field(var="_thread_node",
+                                       type_=forms_xso.FieldType.TEXT_SINGLE,
+                                       values=["thread-id"]))
+    data.title = SPADE_X_METADATA
+    aiomsg.xep0004_data = [data]
+
+    msg = Message.from_node(aiomsg)
+
+    assert msg.thread == "thread-id"
+    assert msg.get_metadata("performative") == "request"
+    assert msg.metadata == {"performative": "request"}
 
 
 def test_thread_empty():
