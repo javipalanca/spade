@@ -474,7 +474,22 @@ class FSMBehaviour(CyclicBehaviour):
         behaviour.set_agent(self.agent)
         behaviour.receive = self.receive
         logger.info(f"FSM running state {self.current_state}")
-        await behaviour._start()
+        try:
+            await behaviour.on_start()
+        except Exception as e:
+            logger.error("Exception running on_start in state {}: {}".format(self, e))
+            self.kill(exit_code=e)
+        try:
+            await behaviour.run()
+        except Exception as e:
+            logger.error("Exception running state {}: {}".format(self, e))
+            self.kill(exit_code=e)
+        try:
+            await behaviour.on_end()
+        except Exception as e:
+            logger.error("Exception running on_start in state {}: {}".format(self, e))
+            self.kill(exit_code=e)
+
         dest = behaviour.next_state
 
         if dest:

@@ -921,5 +921,80 @@ def test_fsm_two_initials():
     assert fsm_.current_state == STATE_TWO
 
 
+def test_fsm_fail_on_start():
+    class StateOne(State):
+        async def on_start(self):
+            raise Exception
+
+        async def run(self):
+            pass
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
+
+
+def test_fsm_fail_on_run():
+    class StateOne(State):
+        async def run(self):
+            raise Exception
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
+
+
+def test_fsm_fail_on_end():
+    class StateOne(State):
+        async def run(self):
+            pass
+
+        async def on_end(self):
+            raise Exception
+
+    fsm_ = FSMBehaviour()
+    state_one = StateOne()
+    fsm_.add_state(STATE_ONE, state_one, initial=True)
+
+    agent = make_connected_agent()
+    agent.start(auto_register=False)
+
+    agent.add_behaviour(fsm_)
+
+    wait_for_behaviour_is_killed(fsm_)
+
+    assert fsm_.is_killed()
+
+    assert type(fsm_.exit_code) == Exception
+
+    agent.stop()
+
+
 def test_to_graphviz(fsm):
     assert fsm.to_graphviz() == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"

@@ -245,4 +245,8 @@ class Message(MessageBase):
         return msg
 
     def __str__(self):
-        return self.prepare().__str__()
+        s = f'<message to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
+        if self.body:
+            s += "\n" + self.body + "\n"
+        s += "</message>"
+        return s
