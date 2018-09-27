@@ -301,15 +301,15 @@ def test_send_message(message):
     agent = make_connected_agent()
     agent.start(auto_register=False)
 
-    agent.aiothread.stream = MagicMock()
-    agent.stream.send = CoroutineMock()
+    agent.aiothread.client = MagicMock()
+    agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     wait_for_behaviour_is_killed(behaviour)
 
-    assert agent.stream.send.await_count == 1
-    msg_arg = agent.stream.send.await_args[0][0]
+    assert agent.client.send.await_count == 1
+    msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.body[None] == "message body"
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
     thread_found = False
@@ -334,14 +334,14 @@ def test_send_message_without_sender():
     agent = make_connected_agent()
     agent.start(auto_register=False)
 
-    agent.aiothread.stream = MagicMock()
-    agent.stream.send = CoroutineMock()
+    agent.aiothread.client = MagicMock()
+    agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     wait_for_behaviour_is_killed(behaviour)
 
-    msg_arg = agent.stream.send.await_args[0][0]
+    msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
 
     agent.stop()
