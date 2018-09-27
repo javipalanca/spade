@@ -10,7 +10,7 @@ from asynctest import CoroutineMock, MagicMock
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour, TimeoutBehaviour, FSMBehaviour, State, \
     NotValidState, NotValidTransition, BehaviourNotFinishedException
-from spade.message import Message
+from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
 from tests.utils import make_connected_agent
 
@@ -312,7 +312,14 @@ def test_send_message(message):
     msg_arg = agent.stream.send.await_args[0][0]
     assert msg_arg.body[None] == "message body"
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
-    assert msg_arg.thread == "thread-id"
+    thread_found = False
+    for data in msg_arg.xep0004_data:
+        if data.title == SPADE_X_METADATA:
+            for field in data.fields:
+                if field.var == "_thread_node":
+                    assert field.values[0] == "thread-id"
+                    thread_found = True
+    assert thread_found
 
     agent.stop()
 

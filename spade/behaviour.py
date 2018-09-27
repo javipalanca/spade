@@ -218,6 +218,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         while not self.done() and not self.is_killed():
             try:
                 await self._run()
+                await asyncio.sleep(0)  # relinquish cpu
             except Exception as e:
                 logger.error("Exception running behaviour {}: {}".format(self, e))
                 self.kill(exit_code=e)

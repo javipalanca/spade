@@ -10,13 +10,14 @@ logger = logging.getLogger('spade.Message')
 
 class MessageBase(object):
     """ """
+
     def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
         self._to, self._sender = None, None
         self.to = to
         self.sender = sender
         self.body = body
-        self.thread = thread
         self.sent = False
+        self._thread = thread
 
         if metadata is None:
             self.metadata = {}
@@ -46,12 +47,14 @@ class MessageBase(object):
             for key in node.body.keys():
                 msg.body = node.body[key]
                 break
-        msg.thread = node.thread
 
         for data in node.xep0004_data:
             if data.title == SPADE_X_METADATA:
                 for field in data.fields:
-                    msg.set_metadata(field.var, field.values[0])
+                    if field.var != "_thread_node":
+                        msg.set_metadata(field.var, field.values[0])
+                    else:
+                        msg.thread = field.values[0]
 
         return msg
 
@@ -98,6 +101,25 @@ class MessageBase(object):
 
         """
         self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
+
+    @property
+    def thread(self):
+        """
+        Get Thread of the message
+        Returns:
+            str: thread id
+        """
+        return self._thread
+
+    @thread.setter
+    def thread(self, value):
+        """
+        Set thread id of the message
+        Args:
+            value (str): the thread id
+
+        """
+        self._thread = value
 
     def set_metadata(self, key, value):
         """
@@ -165,6 +187,7 @@ class MessageBase(object):
 
 class Message(MessageBase):
     """ """
+
     def make_reply(self):
         """
         Creates a copy of the message, exchanging sender and receiver
@@ -197,7 +220,6 @@ class Message(MessageBase):
         )
 
         msg.body[None] = self.body
-        msg.thread = self.thread
 
         # Send metadata using xep-0004: Data Forms (https://xmpp.org/extensions/xep-0004.html)
         if len(self.metadata):
@@ -211,6 +233,10 @@ class Message(MessageBase):
                         values=[value],
                     )
                 )
+
+            data.fields.append(forms_xso.Field(var="_thread_node",
+                                               type_=forms_xso.FieldType.TEXT_SINGLE,
+                                               values=[self.thread]))
 
             data.title = SPADE_X_METADATA
             msg.xep0004_data = [data]
