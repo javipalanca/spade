@@ -15,8 +15,8 @@ class MockedConnectedAgent(Agent):
         self.aiothread.stream = Mock()
 
 
-def make_connected_agent(jid="fake@jid", password="fake_password", loop=None):
-    return MockedConnectedAgent(jid, password, loop=loop)
+def make_connected_agent(jid="fake@jid", password="fake_password", use_container=True, loop=None):
+    return MockedConnectedAgent(jid, password, use_container=use_container, loop=loop)
 
 
 class MockedPresenceConnectedAgent(Agent):
@@ -43,6 +43,7 @@ def make_presence_connected_agent(jid="fake@jid", password="fake_password",
                                   show=None,
                                   status=None,
                                   priority=0,
+                                  use_container=True,
                                   loop=None):
     status = {} if status is None else status
     return MockedPresenceConnectedAgent(jid=jid, password=password,
@@ -50,4 +51,5 @@ def make_presence_connected_agent(jid="fake@jid", password="fake_password",
                                         show=show,
                                         status=status,
                                         priority=priority,
+                                        use_container=use_container,
                                         loop=loop)

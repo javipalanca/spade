@@ -258,7 +258,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             msg.sender = str(self.agent.jid)
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
         if self.agent.container:
-            self.agent.container.send(msg, self)
+            await self.agent.container.send(msg, self)
         else:
             await self._xmpp_send(msg)
         msg.sent = True
