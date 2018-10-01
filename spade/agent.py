@@ -10,6 +10,7 @@ import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
+from spade.container import Container
 from spade.message import Message
 from spade.presence import PresenceManager
 from spade.trace import TraceStore
@@ -24,7 +25,7 @@ class AuthenticationFailure(Exception):
 
 
 class Agent(object):
-    def __init__(self, jid, password, verify_security=False, loop=None):
+    def __init__(self, jid, password, verify_security=False, use_container=True, loop=None):
         """
         Creates an agent
 
@@ -41,7 +42,11 @@ class Agent(object):
         self.behaviours = []
         self._values = {}
 
-        self.container = None
+        if use_container:
+            self.container = Container()
+            self.container.register(self)
+        else:
+            self.container = None
 
         self.traces = TraceStore(size=1000)
 

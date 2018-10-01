@@ -1,4 +1,7 @@
+from singletonify import singleton
 
+
+@singleton()
 class Container(object):
     def __init__(self):
         self.__agents = {}
