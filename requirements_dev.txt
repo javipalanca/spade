@@ -23,3 +23,4 @@ docutils==0.12
 sphinx_rtd_theme==0.4.0
 testfixtures==6.3.0
 pytest-aiohttp==0.3.0
+docutils==0.12
