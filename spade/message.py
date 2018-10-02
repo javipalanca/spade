@@ -106,6 +106,7 @@ class MessageBase(object):
     def thread(self):
         """
         Get Thread of the message
+
         Returns:
             str: thread id
         """
@@ -115,6 +116,7 @@ class MessageBase(object):
     def thread(self, value):
         """
         Set thread id of the message
+
         Args:
             value (str): the thread id
 

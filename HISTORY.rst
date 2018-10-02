@@ -2,6 +2,14 @@
 History
 =======
 
+3.0.8 (2018-10-02)
+------------------
+
+* Added a container mechanism to speedup local sends.
+* Added performance example.
+* Improved API doc.
+* Added container tests.
+
 3.0.7 (2018-09-27)
 ------------------
 

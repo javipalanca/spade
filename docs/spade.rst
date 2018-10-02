@@ -20,6 +20,14 @@ spade.behaviour module
     :undoc-members:
     :show-inheritance:
 
+spade.container module
+----------------------
+
+.. automodule:: spade.container
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 spade.message module
 --------------------
 
@@ -59,3 +67,4 @@ spade.web module
     :members:
     :undoc-members:
     :show-inheritance:
+

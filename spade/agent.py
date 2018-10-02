@@ -73,6 +73,7 @@ class Agent(object):
     def set_container(self, container):
         """
         Sets the container to which the agent is attached
+
         Args:
             container (spade.container.Container): the container to be attached to
         """
