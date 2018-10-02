@@ -298,7 +298,7 @@ def test_send_message(message):
             await self.send(message)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = make_connected_agent(use_container=False)
     agent.start(auto_register=False)
 
     agent.aiothread.client = MagicMock()
@@ -331,7 +331,7 @@ def test_send_message_without_sender():
             await self.send(msg)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = make_connected_agent(use_container=False)
     agent.start(auto_register=False)
 
     agent.aiothread.client = MagicMock()
