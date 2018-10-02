@@ -71,6 +71,11 @@ class Agent(object):
         self.web = WebApp(agent=self)
 
     def set_container(self, container):
+        """
+        Sets the container to which the agent is attached
+        Args:
+            container (spade.container.Container): the container to be attached to
+        """
         self.container = container
 
     def start(self, auto_register=True):
@@ -114,6 +119,7 @@ class Agent(object):
         self._start()
 
     def _start(self):
+        """ Finish the start process."""
         self.aiothread.start()
         self._alive.set()
         # register a message callback here
@@ -302,8 +308,8 @@ class Agent(object):
         """
         Callback run when an XMPP Message is reveived.
         This callback delivers the message to every behaviour
-        that is waiting for it using their templates match.
-        the aioxmpp.Message is converted to spade.message.Message
+        that is waiting for it. First, the aioxmpp.Message is
+        converted to spade.message.Message
 
         Args:
           msg (aioxmpp.Messagge): the message just received.
@@ -317,6 +323,17 @@ class Agent(object):
         return self.dispatch(msg)
 
     def dispatch(self, msg):
+        """
+        Dispatch the message to every behaviour that is waiting for
+        it using their templates match.
+
+        Args:
+          msg (spade.message.Messagge): the message to dispatch.
+
+        Returns:
+            list(asyncio.Future): a list of futures of the append of the message at each matched behaviour.
+
+        """
         logger.debug(f"Got message: {msg}")
         futures = []
         matched = False
@@ -353,7 +370,7 @@ class AioThread(Thread):
                                                     logger=logging.getLogger(agent.jid.localpart))
 
     def connect(self):  # pragma: no cover
-        """ """
+        """ connect and authenticate to the XMPP server. Sync mode. """
         try:
             self.conn_coro = self.client.connected()
             aenter = type(self.conn_coro).__aenter__(self.conn_coro)
@@ -364,7 +381,7 @@ class AioThread(Thread):
                 "Could not authenticate the agent. Check user and password or use auto_register=True")
 
     async def async_connect(self):  # pragma: no cover
-        """ """
+        """ connect and authenticate to the XMPP server. Async mode. """
         try:
             self.conn_coro = self.client.connected()
             aenter = type(self.conn_coro).__aenter__(self.conn_coro)
@@ -375,7 +392,7 @@ class AioThread(Thread):
                 "Could not authenticate the agent. Check user and password or use auto_register=True")
 
     def run(self):
-        """ """
+        """ run event loop """
         if not self.agent.external_loop:
             self.loop_exited.set()
             self.loop.run_forever()
@@ -383,7 +400,7 @@ class AioThread(Thread):
             self.loop_exited.clear()
 
     def finalize(self):
-        """ """
+        """ Discconnect from XMPP server and close the event loop. """
         if self.agent.is_alive():
             # Disconnect from XMPP server
             self.client.stop()
