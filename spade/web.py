@@ -81,17 +81,17 @@ class WebApp(object):
                              )
 
     def setup_routes(self):
-        self.app.router.add_get("/", self.index)
-        self.app.router.add_get("/stop", self.stop_agent)
-        self.app.router.add_get("/stop/now/", self.stop_now)
-        self.app.router.add_get("/messages/", self.get_messages)
-        self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
-        self.app.router.add_get("/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
-        self.app.router.add_get("/agent/{agentjid}/", self.get_agent)
-        self.app.router.add_get("/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent)
-        self.app.router.add_post("/agent/{agentjid}/send/", self.send_agent)
+        self.app.router.add_get("/spade", self.index)
+        self.app.router.add_get("/spade/stop", self.stop_agent)
+        self.app.router.add_get("/spade/stop/now/", self.stop_now)
+        self.app.router.add_get("/spade/messages/", self.get_messages)
+        self.app.router.add_get("/spade/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
+        self.app.router.add_get("/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
+        self.app.router.add_get("/spade/agent/{agentjid}/", self.get_agent)
+        self.app.router.add_get("/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent)
+        self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
 
-    def add_get(self, path, controller, template):
+    def add_get(self, path, controller, template, raw=False):
         """
         Setup a route of type GET
 
@@ -99,12 +99,16 @@ class WebApp(object):
           path (str): URL to listen to
           controller (coroutine): the coroutine to handle the request
           template (str): the template to render the response or None if it is a JSON response
+          raw (bool): indicates if post-processing (jinja, json, etc) is needed or not
 
         """
-        fn = self._prepare_controller(controller, template)
+        if raw:
+            fn = controller
+        else:
+            fn = self._prepare_controller(controller, template)
         self.app.router.add_get(path, fn)
 
-    def add_post(self, path, controller, template):
+    def add_post(self, path, controller, template, raw=False):
         """
         Setup a route of type POST
 
@@ -112,9 +116,13 @@ class WebApp(object):
           path (str): URL to listen to
           controller (coroutine): the coroutine to handle the request
           template (str): the template to render the response or None if it is a JSON response
+          raw (bool): indicates if post-processing (jinja, json, etc) is needed or not
 
         """
-        fn = self._prepare_controller(controller, template)
+        if raw:
+            fn = controller
+        else:
+            fn = self._prepare_controller(controller, template)
         self.app.router.add_post(path, fn)
 
     def _prepare_controller(self, controller, template):
@@ -184,7 +192,7 @@ class WebApp(object):
         behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']
         behaviour = self.find_behaviour(behaviour_str)
         behaviour.kill()
-        raise aioweb.HTTPFound('/')
+        raise aioweb.HTTPFound('/spade')
 
     @aiohttp_jinja2.template("internal_tpl_agent.html")
     async def get_agent(self, request):
@@ -199,7 +207,7 @@ class WebApp(object):
     async def unsubscribe_agent(self, request):
         agent_jid = request.match_info['agentjid']
         self.agent.presence.unsubscribe(agent_jid)
-        raise aioweb.HTTPFound("/agent/{agentjid}/".format(agentjid=agent_jid))
+        raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
     async def send_agent(self, request):
         agent_jid = request.match_info['agentjid']
@@ -211,7 +219,7 @@ class WebApp(object):
         await self.agent.stream.send(aioxmpp_msg)
         msg.sent = True
         self.agent.traces.append(msg)
-        raise aioweb.HTTPFound("/agent/{agentjid}/".format(agentjid=agent_jid))
+        raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
     def find_behaviour(self, behaviour_str):
         behav = None

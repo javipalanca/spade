@@ -67,4 +67,3 @@ spade.web module
     :members:
     :undoc-members:
     :show-inheritance:
-

@@ -2,6 +2,12 @@
 History
 =======
 
+3.0.9 (2018-10-24)
+------------------
+
+* Added raw parameter to allow raw web responses.
+* Changed default agent urls to the "/spade" namespace to avoid conflicts.
+
 3.0.8 (2018-10-02)
 ------------------
 

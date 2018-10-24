@@ -24,7 +24,7 @@
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="/" class="logo">
+        <a href="/spade" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>SPD</b></span>
             <!-- logo for regular state and mobile devices -->
@@ -73,7 +73,7 @@
                                 </ul>
                                 <!-- /.menu -->
                             </li>
-                            <li class="footer"><a href="/messages/">See All Messages</a></li>
+                            <li class="footer"><a href="/spade/messages/">See All Messages</a></li>
                         </ul>
                     </li>
                     <!-- /.messages-menu -->
@@ -81,7 +81,7 @@
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="/spade" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
                             <img src="{{ agent.avatar }}" class="user-image" alt="User Image">
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
@@ -100,7 +100,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="/stop" class="btn btn-default btn-flat">Stop</a>
+                                    <a href="/spade/stop" class="btn btn-default btn-flat">Stop</a>
                                 </div>
                                 {# <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat">Logout</a>
@@ -127,7 +127,7 @@
                 <div class="pull-left info">
                     <p>{{ agent.jid.localpart }}</p>
                     <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <a href="/spade"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
 
@@ -135,7 +135,7 @@
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                <li class="active"><a href="/spade"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             </ul>
             <!-- /.sidebar-menu -->
         </section>
@@ -150,7 +150,7 @@
                 {% block content_title %}Dashboard{% endblock %}
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="/spade"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Dashboard</li>
             </ol>
         </section>
@@ -166,7 +166,7 @@
         </div>
         <script type="application/javascript">
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/stop/now/", true);
+            xhr.open("GET", "/spade/stop/now/", true);
             xhr.send(null);
         </script>
         {% endif %}
@@ -197,9 +197,9 @@
                                 {% for behaviour in behaviours %}
                                     <li class="item">
                                         <div class="product-info">
-                                            <a href="/behaviour/{{behaviour}}/" class="product-title">{{ behaviour }}
+                                            <a href="/spade/behaviour/{{behaviour}}/" class="product-title">{{ behaviour }}
                                             </a>
-                                            <a href="/behaviour/{{behaviour}}/kill/">
+                                            <a href="/spade/behaviour/{{behaviour}}/kill/">
                                                 <button type="button" class="btn btn-danger pull-right">Kill</button>
                                             </a>
                                             <span class="product-description">{{ behaviour.template }}</span>
@@ -289,7 +289,7 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 3.0.0
+            <b>Version</b> 3.0.9
         </div>
         <strong>Copyright © {% now 'local', '%Y' %} <a href="http://github.com/javipalanca/spade">SPADE</a>.</strong>
     </footer>

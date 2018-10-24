@@ -93,7 +93,7 @@ def test_check_server():
         time.sleep(0.1)
     assert agent.web.server is not None
 
-    response = requests.get(f"http://localhost:{port}/")
+    response = requests.get(f"http://localhost:{port}/spade")
 
     sel = Selector(text=response.text)
 
@@ -110,7 +110,7 @@ async def test_request_home(test_client, loop):
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
-    response = await client.get("/")
+    response = await client.get("/spade")
     response = await response.text()
 
     sel = Selector(text=response)
@@ -133,7 +133,7 @@ async def test_get_messages(test_client, loop):
         msg = Message(body=str(i), sender="{}@server".format(i), to="receiver@server")
         agent.traces.append(msg)
 
-    response = await client.get("/messages/")
+    response = await client.get("/spade/messages/")
     response = await response.text()
 
     sel = Selector(text=response)
@@ -155,7 +155,7 @@ async def test_get_behaviour(test_client, loop):
 
     client = await test_client(agent.web.app)
 
-    response = await client.get("/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
+    response = await client.get("/spade/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
     response = await response.text()
 
     sel = Selector(text=response)
@@ -176,7 +176,7 @@ async def test_kill_behaviour(test_client, loop):
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
-    await client.get("/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
+    await client.get("/spade/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
 
     assert behaviour.is_killed()
 
@@ -193,7 +193,7 @@ async def test_get_agent(test_client, loop):
 
     agent.presence.roster._update_entry(item)
 
-    response = await client.get(f"/agent/{jid}/")
+    response = await client.get(f"/spade/agent/{jid}/")
     response = await response.text()
 
     sel = Selector(text=response)
@@ -216,9 +216,9 @@ async def test_unsubscribe_agent(test_client, loop):
 
     agent.presence.roster._update_entry(item)
 
-    response = await client.get(f"/agent/{jid}/unsubscribe/")
+    response = await client.get(f"/spade/agent/{jid}/unsubscribe/")
 
-    assert str(response.url.relative()) == f"/agent/{jid}/"
+    assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
     assert agent.aiothread.client.enqueue.mock_calls
     arg = agent.aiothread.client.enqueue.call_args[0][0]
@@ -242,9 +242,9 @@ async def test_send_agent(test_client, loop):
 
     msg = "Hello World"
 
-    response = await client.post(f"/agent/{jid}/send/", data={"message": msg})
+    response = await client.post(f"/spade/agent/{jid}/send/", data={"message": msg})
 
-    assert str(response.url.relative()) == f"/agent/{jid}/"
+    assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
     sent = agent.traces.all()[0]
 
@@ -321,7 +321,7 @@ async def test_stop(test_client, loop):
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
-    response = await client.get("/stop")
+    response = await client.get("/spade/stop")
     response = await response.text()
 
     sel = Selector(text=response)
@@ -329,7 +329,7 @@ async def test_stop(test_client, loop):
 
     with LogCapture() as log:
         try:
-            await client.get("/stop/now/", timeout=0.0005)
+            await client.get("/spade/stop/now/", timeout=0.0005)
         except requests.exceptions.ReadTimeout:
             pass
 
