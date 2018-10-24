@@ -19,7 +19,6 @@ pluggy<0.7,>=0.5
 python-coveralls==2.9.1
 requests==2.19.1
 parsel==1.4.0
-docutils==0.12
 sphinx_rtd_theme==0.4.0
 testfixtures==6.3.0
 pytest-aiohttp==0.3.0

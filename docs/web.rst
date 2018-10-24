@@ -2,7 +2,7 @@
 Web Graphical Interface
 =======================
 
-Each agent is SPADE provides a graphical interface *by default* that is accesible via web.
+Each agent is SPADE provides a graphical interface *by default* that is accesible via web under the ``/spade`` path.
 To activate the web interface you just have to start the web module of the agent just as follows::
 
     agent = MyAgent("your_jid@your_xmpp_server", "your_password")
@@ -10,7 +10,7 @@ To activate the web interface you just have to start the web module of the agent
     agent.web.start(hostname="127.0.0.1", port="10000")
 
 
-Then you can open a web browser and go to the url ``http://127.0.0.1:10000`` and you'll see the
+Then you can open a web browser and go to the url ``http://127.0.0.1:10000/spade`` and you'll see the
 main page of your agent:
 
 .. image:: images/spade_index.png
@@ -84,6 +84,8 @@ In this example there are some elements that must be explained:
 
 Next we are going to explain a little more about the controller, the path and the template.
 
+.. note:: Please, do not use the ``/spade`` path o avoid conflicts with the default agent pages (unless you want to modify them).
+
 Controller
 ----------
 The controller is the asyncronous method (or coroutine) that prepares the data to render the web page. It is an ``async``
@@ -141,6 +143,10 @@ Example::
         return {"my_data": {'a': 0, 'b': 1, 'c': 2}}
 
     self.web.add_get("/home", self.json_controller, template=None)
+
+
+.. hint:: You may also use the ``raw=True`` parameter in the ``add_get`` and ``add_post`` methods to indicate that the
+    returned result should not be processed neither by jinja2 nor json parsing.
 
 Path
 ----

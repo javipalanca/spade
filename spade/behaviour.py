@@ -6,6 +6,10 @@ from datetime import timedelta
 from datetime import datetime
 
 import asyncio
+from typing import Any, Union
+
+from .message import Message
+from .template import Template
 
 now = datetime.now
 
@@ -53,7 +57,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.presence = agent.presence
         self.web = agent.web
 
-    def set_template(self, template):
+    def set_template(self, template: Template):
         """
         Sets the template that is used to match incoming
         messages with this behaviour.
@@ -64,7 +68,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         self.template = template
 
-    def match(self, message):
+    def match(self, message: Message) -> bool:
         """
         Matches a message with the behaviour's template
 
@@ -79,18 +83,18 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             return self.template.match(message)
         return True
 
-    def set(self, name, value):
+    def set(self, name: str, value: Any) -> None:
         """
         Stores a knowledge item in the agent knowledge base.
 
         Args:
           name (str): name of the item
-          value (object): value of the item
+          value (Any): value of the item
 
         """
         self.agent.set(name, value)
 
-    def get(self, name):
+    def get(self, name: str) -> Any:
         """
         Recovers a knowledge item from the agent's knowledge base.
 
@@ -98,7 +102,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
           name (str): name of the item
 
         Returns:
-          object: the object retrieved or None
+          Any: the object retrieved or None
 
         """
         return self.agent.get(name)
@@ -121,7 +125,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             self.kill(exit_code=e)
         await self._step()
 
-    def kill(self, exit_code=None):
+    def kill(self, exit_code: Any = None):
         """
         Stops the behaviour
 
@@ -134,7 +138,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             self._exit_code = exit_code
         logger.info("Killing behavior {0} with exit code: {1}".format(self, exit_code))
 
-    def is_killed(self):
+    def is_killed(self) -> bool:
         """
         Checks if the behaviour was killed by means of the kill() method.
 
@@ -145,7 +149,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         return self._force_kill.is_set()
 
     @property
-    def exit_code(self):
+    def exit_code(self) -> Any:
         """
         Returns the exit_code of the behaviour.
         It only works when the behaviour is done or killed,
@@ -161,7 +165,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             raise BehaviourNotFinishedException
 
     @exit_code.setter
-    def exit_code(self, value):
+    def exit_code(self, value: Any):
         """
         Sets a new exit code to the behaviour.
 
@@ -171,7 +175,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         self._exit_code = value
 
-    def done(self):
+    def done(self) -> bool:
         """
         Returns True if the behaviour has finished
         else returns False
@@ -228,7 +232,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
 
-    async def enqueue(self, message):
+    async def enqueue(self, message: Message):
         """
         Enqueues a message in the behaviour's mailbox
 
@@ -237,7 +241,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         await self.queue.put(message)
 
-    def mailbox_size(self):
+    def mailbox_size(self) -> int:
         """
         Checks if there is a message in the mailbox
 
@@ -247,7 +251,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return self.queue.qsize()
 
-    async def send(self, msg):
+    async def send(self, msg: Message):
         """
         Sends a message.
 
@@ -264,11 +268,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         msg.sent = True
         self.agent.traces.append(msg, category=str(self))
 
-    async def _xmpp_send(self, msg):
+    async def _xmpp_send(self, msg: Message):
         aioxmpp_msg = msg.prepare()
         await self.agent.client.send(aioxmpp_msg)
 
-    async def receive(self, timeout=None):
+    async def receive(self, timeout: float = None) -> Union[Message, None]:
         """
         Receives a message for this behaviour.
         If timeout is not None it returns the message or "None"
@@ -304,7 +308,7 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
         super().__init__()
         self._already_executed = False
 
-    def done(self):
+    def done(self) -> bool:
         """ """
         if not self._already_executed:
             self._already_executed = True
@@ -333,12 +337,12 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
             self._next_activation = now()
 
     @property
-    def period(self):
+    def period(self) -> timedelta:
         """ Get the period. """
         return self._period
 
     @period.setter
-    def period(self, value):
+    def period(self, value: float):
         """
         Set the period.
 
@@ -393,7 +397,7 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
                 await self.run()
                 self._timeout_triggered = True
 
-    def done(self):
+    def done(self) -> bool:
         """ """
         return self._timeout_triggered
 
@@ -432,7 +436,7 @@ class FSMBehaviour(CyclicBehaviour):
         """ """
         pass
 
-    def add_state(self, name, state, initial=False):
+    def add_state(self, name: str, state: str, initial: bool = False):
         """ Adds a new state to the FSM.
 
         Args:
@@ -447,7 +451,7 @@ class FSMBehaviour(CyclicBehaviour):
         if initial:
             self.current_state = name
 
-    def add_transition(self, source, dest):
+    def add_transition(self, source: str, dest: str):
         """ Adds a transition from one state to another.
 
         Args:
@@ -457,7 +461,7 @@ class FSMBehaviour(CyclicBehaviour):
         """
         self._transitions[source].append(dest)
 
-    def is_valid_transition(self, source, dest):
+    def is_valid_transition(self, source: str, dest: str) -> bool:
         """
         Checks if a transitions is registered in the FSM
 
@@ -520,7 +524,7 @@ class FSMBehaviour(CyclicBehaviour):
         """
         raise RuntimeError  # pragma: no cover
 
-    def to_graphviz(self):
+    def to_graphviz(self) -> str:
         """
         Converts the FSM behaviour structure to Graphviz syntax
 
