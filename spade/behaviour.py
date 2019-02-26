@@ -41,6 +41,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self._exit_code = 0
         self.presence = None
         self.web = None
+        self.is_running = False
 
         self.queue = None
 
@@ -110,6 +111,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
     def start(self):
         """starts behaviour in the event loop"""
         self.agent.submit(self._start())
+        self.is_running = True
 
     async def _start(self):
         """
@@ -261,10 +263,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         if not msg.sender:
             msg.sender = str(self.agent.jid)
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
-        if self.agent.container:
-            await self.agent.container.send(msg, self)
-        else:
-            await self._xmpp_send(msg)
+        await self.agent.container.send(msg, self)
         msg.sent = True
         self.agent.traces.append(msg, category=str(self))
 
@@ -436,7 +435,7 @@ class FSMBehaviour(CyclicBehaviour):
         """ """
         pass
 
-    def add_state(self, name: str, state: str, initial: bool = False):
+    def add_state(self, name: str, state: State, initial: bool = False):
         """ Adds a new state to the FSM.
 
         Args:

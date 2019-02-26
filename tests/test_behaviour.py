@@ -13,6 +13,7 @@ from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
 from tests.utils import make_connected_agent
+from tests.utils import run_around_tests
 
 STATE_ONE = "STATE_ONE"
 STATE_TWO = "STATE_TWO"
@@ -298,10 +299,11 @@ def test_send_message(message):
             await self.send(message)
             self.kill()
 
-    agent = make_connected_agent(use_container=False)
-    agent.start(auto_register=False)
+    agent = make_connected_agent()
+    future = agent.start(auto_register=False)
+    future.result()
 
-    agent.aiothread.client = MagicMock()
+    agent.client = MagicMock()
     agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -331,10 +333,11 @@ def test_send_message_without_sender():
             await self.send(msg)
             self.kill()
 
-    agent = make_connected_agent(use_container=False)
-    agent.start(auto_register=False)
+    agent = make_connected_agent()
+    future = agent.start(auto_register=False)
+    future.result()
 
-    agent.aiothread.client = MagicMock()
+    agent.client = MagicMock()
     agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -361,7 +364,8 @@ def test_receive():
     agent.add_behaviour(behaviour)
     assert behaviour.mailbox_size() == 0
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
 
@@ -386,7 +390,8 @@ def test_receive_with_timeout():
     agent.add_behaviour(behaviour, template)
     assert behaviour.mailbox_size() == 0
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     agent._message_received(msg.prepare())
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
@@ -411,7 +416,8 @@ def test_receive_with_timeout_error():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     wait_for_behaviour_is_killed(behaviour)
 
     assert behaviour.mailbox_size() == 0
@@ -431,7 +437,8 @@ def test_receive_with_empty_queue():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     wait_for_behaviour_is_killed(behaviour)
 
     assert behaviour.mailbox_size() == 0
@@ -447,7 +454,8 @@ def test_set_get():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -491,7 +499,8 @@ def test_multiple_templates():
     msg2 = Message(metadata={"performative": "template2"}).prepare()
     msg3 = Message(metadata={"performative": "template3"}).prepare()
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     agent._message_received(msg1)
     agent._message_received(msg2)
     agent._message_received(msg3)
@@ -529,7 +538,8 @@ def test_exit_code_from_kill_behaviour():
 
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(behaviour)
     wait_for_behaviour_is_killed(behaviour)
@@ -550,7 +560,8 @@ def test_set_exit_code_behaviour():
     agent = make_connected_agent()
     behaviour = TestCyclicBehaviour()
     agent.event = Event()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(behaviour)
 
@@ -575,7 +586,8 @@ def test_notfinishedexception_behaviour():
     agent = make_connected_agent()
     agent.event = Event()
     behaviour = TestBehaviour()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(behaviour)
 
@@ -601,7 +613,9 @@ def test_cyclic_behaviour():
     agent = make_connected_agent()
     agent.cycles = 0
     behaviour = TestCyclicBehaviour()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
+
     assert agent.cycles == 0
 
     agent.add_behaviour(behaviour)
@@ -626,7 +640,8 @@ def test_oneshot_behaviour():
 
     assert agent.one_shot_behaviour_executed is False
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.one_shot_behaviour_executed is True
@@ -646,7 +661,8 @@ def test_periodic_behaviour():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.periodic_behaviour_execution_counter == 1
@@ -666,7 +682,8 @@ def test_periodic_behaviour_period_zero():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     wait_for_behaviour_is_killed(behaviour)
 
     assert agent.periodic_behaviour_execution_counter == 1
@@ -701,7 +718,8 @@ def test_periodic_start_at():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestPeriodicBehaviour(period=0.01, start_at=start_at)
@@ -724,7 +742,8 @@ def test_timeout_behaviour():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -749,7 +768,8 @@ def test_timeout_behaviour_zero():
             self.kill()
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -770,9 +790,10 @@ def test_timeout_behaviour_zero():
 
 def test_fsm_behaviour(fsm):
     agent = make_connected_agent()
-    agent.sync1_behaviour = asyncio.Event()
-    agent.sync2_behaviour = asyncio.Event()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.sync1_behaviour = asyncio.Event(loop=agent.loop)
+    agent.sync2_behaviour = asyncio.Event(loop=agent.loop)
 
     assert len(fsm._transitions) == 2
     assert fsm.current_state == STATE_ONE
@@ -883,7 +904,8 @@ def test_fsm_bad_transition():
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     assert fsm_.current_state == STATE_ONE
 
@@ -934,7 +956,8 @@ def test_fsm_fail_on_start():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(fsm_)
 
@@ -957,7 +980,8 @@ def test_fsm_fail_on_run():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(fsm_)
 
@@ -983,7 +1007,8 @@ def test_fsm_fail_on_end():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.add_behaviour(fsm_)
 

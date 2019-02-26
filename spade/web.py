@@ -19,7 +19,7 @@ def unused_port(hostname):
         return s.getsockname()[1]
 
 
-async def start_server_in_aiothread(handler, hostname, port, agent):
+async def start_server_in_loop(handler, hostname, port, agent):
     """
     Listens to http requests and sends them to the webapp.
 
@@ -29,7 +29,7 @@ async def start_server_in_aiothread(handler, hostname, port, agent):
         port: port to listen from.
         agent: agent that owns the web app.
     """
-    loop = agent.aiothread.loop
+    loop = agent.loop
     agent.web.server = await loop.create_server(handler, hostname, port)
     logger.info(f"Serving on http://{hostname}:{port}/")
 
@@ -70,7 +70,7 @@ class WebApp(object):
             self._set_loaders()
         self.setup_routes()
         self.handler = self.app.make_handler()
-        self.agent.submit(start_server_in_aiothread(self.handler, self.hostname, self.port, self.agent))
+        self.agent.submit(start_server_in_loop(self.handler, self.hostname, self.port, self.agent))
 
     def _set_loaders(self):
         loader = jinja2.ChoiceLoader(self.loaders)

@@ -3,7 +3,7 @@ import getpass
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
-
+from spade import quit_spade
 
 class Agent1(Agent):
     def setup(self):
@@ -78,3 +78,4 @@ if __name__ == "__main__":
             break
     agent1.stop()
     agent2.stop()
+    quit_spade()

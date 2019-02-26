@@ -8,33 +8,19 @@ from spade.message import Message
 from tests.test_behaviour import wait_for_behaviour_is_killed
 from tests.utils import make_connected_agent
 
+from tests.utils import run_around_tests
+
 
 def test_use_container():
     container = Container()
     container.reset()
 
-    agent = make_connected_agent(use_container=True)
+    agent = make_connected_agent()
 
     assert agent.container == Container()
 
     assert container.has_agent(str(agent.jid))
     assert container.get_agent(str(agent.jid)) == agent
-
-    agent.stop()
-
-
-def test_use_container_false():
-    container = Container()
-    container.reset()
-
-    agent = make_connected_agent(use_container=False)
-
-    assert agent.container is None
-
-    assert not container.has_agent(str(agent.jid))
-
-    with pytest.raises(KeyError):
-        container.get_agent(str(agent.jid))
 
     agent.stop()
 
@@ -45,6 +31,10 @@ def test_send_message_with_container():
             self.jid = "fake_receiver_agent@server"
 
         def set_container(self, c): pass
+
+        def set_loop(self, loop): pass
+
+        def stop(self): pass
 
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
@@ -59,10 +49,11 @@ def test_send_message_with_container():
 
     fake_receiver_agent.dispatch = MagicMock()
 
-    agent = make_connected_agent(use_container=True)
-    agent.start(auto_register=False)
+    agent = make_connected_agent()
+    future = agent.start(auto_register=False)
+    future.result()
 
-    agent.aiothread.client = MagicMock()
+    agent.client = MagicMock()
     agent.client.send = CoroutineMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -87,7 +78,7 @@ def test_send_message_to_outer_with_container():
     container = Container()
     container.reset()
 
-    agent = make_connected_agent(use_container=True)
+    agent = make_connected_agent()
     agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
@@ -104,3 +95,19 @@ def test_send_message_to_outer_with_container():
     assert msg_arg.to == aioxmpp.JID.fromstr("to@outerhost")
 
     agent.stop()
+
+
+def test_unregister():
+    container = Container()
+    container.reset()
+
+    agent = make_connected_agent()
+    agent2 = make_connected_agent(jid="agent2@server")
+
+    assert container.has_agent(str(agent.jid))
+    assert container.has_agent(str(agent2.jid))
+
+    container.unregister(agent.jid)
+
+    assert not container.has_agent(str(agent.jid))
+    assert container.has_agent(str(agent2.jid))

@@ -4,6 +4,7 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
+from spade import quit_spade
 
 
 class SenderAgent(Agent):
@@ -20,7 +21,7 @@ class SenderAgent(Agent):
             # stop agent from behaviour
             self.agent.stop()
 
-    def setup(self):
+    async def setup(self):
         print("SenderAgent started")
         b = self.InformBehav()
         self.add_behaviour(b)
@@ -44,7 +45,7 @@ class ReceiverAgent(Agent):
             # stop agent from behaviour
             self.agent.stop()
 
-    def setup(self):
+    async def setup(self):
         print("ReceiverAgent started")
         b = self.RecvBehav()
         template = Template()
@@ -60,16 +61,22 @@ if __name__ == "__main__":
     recv_passwd = getpass.getpass()
 
     receiveragent = ReceiverAgent(recv_jid, recv_passwd)
-    receiveragent.start(auto_register=True)
-    time.sleep(2)  # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+    future = receiveragent.start(auto_register=True)
+    future.result()
+    print("Receiver started")
+
     senderagent = SenderAgent(recv_jid, sender_jid, sender_passwd)
-    senderagent.start(auto_register=True)
+    future = senderagent.start(auto_register=True)
+    future.result()
+    print("Sender started")
 
     while receiveragent.is_alive():
         try:
             time.sleep(1)
+            print(".", end="")
         except KeyboardInterrupt:
             senderagent.stop()
             receiveragent.stop()
             break
     print("Agents finished")
+    quit_spade()
