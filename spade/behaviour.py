@@ -198,7 +198,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         try:
             in_coroutine = asyncio.get_event_loop() == self.agent.loop
-        except RuntimeError:
+        except RuntimeError:  # pragma: no cover
             in_coroutine = False
 
         if not in_coroutine:

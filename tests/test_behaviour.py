@@ -33,27 +33,30 @@ def message():
     )
 
 
+class StateOne(State):
+    async def run(self):
+        self.agent.state = STATE_ONE
+        self.set_next_state(STATE_TWO)
+        self.kill()
+        await self.agent.sync1_behaviour.wait()
+
+
+class StateTwo(State):
+    async def run(self):
+        self.agent.state = STATE_TWO
+        self.set_next_state(STATE_THREE)
+        self.kill()
+        await self.agent.sync2_behaviour.wait()
+
+
+class StateThree(State):
+    async def run(self):
+        self.agent.state = STATE_THREE
+        self.kill()
+
+
 @fixture
 def fsm():
-    class StateOne(State):
-        async def run(self):
-            self.agent.state = STATE_ONE
-            self.set_next_state(STATE_TWO)
-            self.kill()
-            await self.agent.sync1_behaviour.wait()
-
-    class StateTwo(State):
-        async def run(self):
-            self.agent.state = STATE_TWO
-            self.set_next_state(STATE_THREE)
-            self.kill()
-            await self.agent.sync2_behaviour.wait()
-
-    class StateThree(State):
-        async def run(self):
-            self.agent.state = STATE_THREE
-            self.kill()
-
     fsm_ = FSMBehaviour()
     state_one = StateOne()
     state_two = StateTwo()
@@ -1115,8 +1118,36 @@ def test_join_inside_behaviour():
     agent.stop()
 
 
-def test_behaviour_at_end():
+def test_join_inside_behaviour_with_timeout():
+    class Behav1(OneShotBehaviour):
+        async def run(self):
+            class Behav2(OneShotBehaviour):
+                async def run(self):
+                    await asyncio.sleep(1)
 
+            behav2 = Behav2()
+            self.agent.add_behaviour(behav2)
+            with pytest.raises(TimeoutError):
+                await behav2.join(timeout=0.001)
+            self.agent.behav1 = True
+
+    agent = make_connected_agent()
+    agent.behav1 = False
+
+    behav1 = Behav1()
+    agent.add_behaviour(behav1)
+
+    future = agent.start(auto_register=False)
+    future.result()
+
+    behav1.join()
+
+    assert agent.behav1
+
+    agent.stop()
+
+
+def test_behaviour_at_end():
     class FinalBehav(OneShotBehaviour):
         async def run(self):
             self.agent.value = 2000
@@ -1149,7 +1180,6 @@ def test_behaviour_at_end():
 
 
 def test_two_behaviours_at_end():
-
     class FinalBehav2(OneShotBehaviour):
         async def run(self):
             self.agent.value = 2000
@@ -1185,3 +1215,9 @@ def test_two_behaviours_at_end():
     future = agent.stop()
     future.result()
     assert agent.value == 2000
+
+
+def test_get_state(fsm):
+    assert isinstance(fsm.get_state(STATE_ONE), StateOne)
+    assert isinstance(fsm.get_state(STATE_TWO), StateTwo)
+    assert isinstance(fsm.get_state(STATE_THREE), StateThree)

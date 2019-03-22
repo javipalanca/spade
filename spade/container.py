@@ -29,7 +29,7 @@ class Container(object):
 
         try:
             in_coroutine = asyncio.get_event_loop() == self.loop
-        except RuntimeError:
+        except RuntimeError:  # pragma: no cover
             in_coroutine = False
 
         if in_coroutine:
@@ -42,7 +42,7 @@ class Container(object):
 
         try:
             in_coroutine = asyncio.get_event_loop() == self.loop
-        except RuntimeError:
+        except RuntimeError:  # pragma: no cover
             in_coroutine = False
 
         if in_coroutine:
@@ -127,7 +127,7 @@ class AioThread(Thread):
     def run(self):
         try:
             self.loop.run_forever()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.error("Exception in the event loop: {}".format(e))
 
     def finalize(self):

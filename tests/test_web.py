@@ -1,5 +1,4 @@
 import asyncio
-import random
 import time
 from aiohttp import web
 
@@ -25,7 +24,7 @@ def test_web():
     agent = make_connected_agent()
     future = agent.start(auto_register=False)
     future.result()
-    agent.web.start()
+    agent.web.start(port=10000)
 
     assert agent.web.app is not None
 
