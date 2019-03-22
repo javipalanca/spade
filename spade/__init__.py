@@ -8,6 +8,6 @@ from .container import stop_container as quit_spade
 
 __author__ = """Javi Palanca"""
 __email__ = 'jpalanca@gmail.com'
-__version__ = '3.1'
+__version__ = '3.0.9'
 
 __all__ = ["agent", "behaviour", "message", "template"]
