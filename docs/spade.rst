@@ -1,4 +1,4 @@
-SPADE package
+spade package
 =============
 
 Submodules
@@ -64,6 +64,15 @@ spade.web module
 ----------------
 
 .. automodule:: spade.web
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: spade
     :members:
     :undoc-members:
     :show-inheritance:

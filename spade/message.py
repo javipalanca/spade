@@ -12,16 +12,19 @@ class MessageBase(object):
     """ """
 
     def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
-        self._to, self._sender = None, None
+        self.sent = False
+        self._to, self._sender, self._body, self._thread = None, None, None, None
         self.to = to
         self.sender = sender
         self.body = body
-        self.sent = False
-        self._thread = thread
+        self.thread = thread
 
         if metadata is None:
             self.metadata = {}
         else:
+            for key, value in metadata.items():
+                if not isinstance(key, str) or not isinstance(value, str):
+                    raise TypeError("Key and Value of metadata MUST be strings")
             self.metadata = metadata
 
     @classmethod
@@ -59,7 +62,7 @@ class MessageBase(object):
         return msg
 
     @property
-    def to(self):
+    def to(self) -> aioxmpp.JID:
         """
         Gets the jid of the receiver.
 
@@ -70,7 +73,7 @@ class MessageBase(object):
         return self._to
 
     @to.setter
-    def to(self, jid):
+    def to(self, jid: str):
         """
         Set jid of the receiver.
 
@@ -78,10 +81,12 @@ class MessageBase(object):
           jid (str): the jid of the receiver.
 
         """
+        if jid is not None and not isinstance(jid, str):
+            raise TypeError("'to' MUST be a string")
         self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     @property
-    def sender(self):
+    def sender(self) -> aioxmpp.JID:
         """
         Get jid of the sender
 
@@ -92,7 +97,7 @@ class MessageBase(object):
         return self._sender
 
     @sender.setter
-    def sender(self, jid):
+    def sender(self, jid: str):
         """
         Set jid of the sender
 
@@ -100,10 +105,32 @@ class MessageBase(object):
           jid (str): jid of the sender
 
         """
+        if jid is not None and not isinstance(jid, str):
+            raise TypeError("'sender' MUST be a string")
         self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
 
     @property
-    def thread(self):
+    def body(self) -> str:
+        """
+        Get body of the message
+        Returns:
+            str: the body of the message
+        """
+        return self._body
+
+    @body.setter
+    def body(self, body: str):
+        """
+        Set body of the message
+        Args:
+            body (str): The body of the message
+        """
+        if body is not None and not isinstance(body, str):
+            raise TypeError("'body' MUST be a string")
+        self._body = body
+
+    @property
+    def thread(self) -> str:
         """
         Get Thread of the message
 
@@ -113,7 +140,7 @@ class MessageBase(object):
         return self._thread
 
     @thread.setter
-    def thread(self, value):
+    def thread(self, value: str):
         """
         Set thread id of the message
 
@@ -121,9 +148,11 @@ class MessageBase(object):
             value (str): the thread id
 
         """
+        if value is not None and not isinstance(value, str):
+            raise TypeError("'thread' MUST be a string")
         self._thread = value
 
-    def set_metadata(self, key, value):
+    def set_metadata(self, key: str, value: str):
         """
         Add a new metadata to the message
 
@@ -132,9 +161,11 @@ class MessageBase(object):
           value (str): value of the metadata
 
         """
+        if not isinstance(key, str) or not isinstance(value, str):
+            raise TypeError("'key' and 'value' of metadata MUST be strings")
         self.metadata[key] = value
 
-    def get_metadata(self, key):
+    def get_metadata(self, key) -> str:
         """
         Get the value of a metadata. Returns None if metadata does not exist.
 
@@ -147,7 +178,7 @@ class MessageBase(object):
         """
         return self.metadata[key] if key in self.metadata else None
 
-    def match(self, message):
+    def match(self, message) -> bool:
         """
         Returns wether a message matches with this message or not.
         The message can be a Message object or a Template object.

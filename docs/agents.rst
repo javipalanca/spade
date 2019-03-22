@@ -7,7 +7,7 @@ Using templates
 
 Templates is the method used by SPADE to dispatch received messages to the behaviour that is waiting for that message.
 When adding a behaviour you can set a template for that behaviour, which allows the agent to deliver a message received
-by the agent to that registered behaviour. A :class:`Template` instance has the same attributes of a :class:`Message` and all the
+by the agent to that registered behaviour. A ``Template`` instance has the same attributes of a ``Message`` and all the
 attributes defined in the template must be equal in the message for this to match.
 
 The attributes that can be set in a template are:
@@ -109,9 +109,9 @@ Here is a self-explaining example::
                 self.exit_code = "Job Finished!"
 
                 # stop agent from behaviour
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             print("SenderAgent started")
             self.b = self.InformBehav()
             self.add_behaviour(self.b)
@@ -127,7 +127,7 @@ Here is a self-explaining example::
             except KeyboardInterrupt:
                 agent.stop()
                 break
-        print("Agent finished with exit code: {}".format(self.b.exit_code))
+        print("Agent finished with exit code: {}".format(agent.b.exit_code))
 
 
 
@@ -162,9 +162,9 @@ Ok, we have sent a message but now we need someone to receive that message. Show
                 print("Message sent!")
 
                 # stop agent from behaviour
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             print("SenderAgent started")
             b = self.InformBehav()
             self.add_behaviour(b)
@@ -181,9 +181,9 @@ Ok, we have sent a message but now we need someone to receive that message. Show
                     print("Did not received any message after 10 seconds")
 
                 # stop agent from behaviour
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             print("ReceiverAgent started")
             b = self.RecvBehav()
             template = Template()
@@ -194,8 +194,8 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        receiveragent.start()
-        time.sleep(2) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+        future = receiveragent.start()
+        future.result() # wait for receiver agent to be prepared.
         senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 

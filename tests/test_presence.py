@@ -8,6 +8,8 @@ from pytest import fixture
 from spade.presence import ContactNotFound
 from tests.utils import make_presence_connected_agent
 
+from tests.utils import run_around_tests
+
 
 @fixture
 def jid():
@@ -16,6 +18,9 @@ def jid():
 
 def test_get_state_not_available():
     agent = make_presence_connected_agent(available=False, show=PresenceShow.NONE)
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     assert type(agent.presence.state) == PresenceState
     assert agent.presence.state.available is False
@@ -26,12 +31,20 @@ def test_get_state_not_available():
 def test_get_state_available():
     agent = make_presence_connected_agent(available=True)
 
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
+
     assert agent.presence.state.available
     assert agent.presence.is_available()
 
 
 def test_set_available():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_available()
 
     assert agent.presence.is_available()
@@ -39,6 +52,10 @@ def test_set_available():
 
 def test_set_available_with_show():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_available(show=PresenceShow.CHAT)
 
     assert agent.presence.is_available()
@@ -47,6 +64,10 @@ def test_set_available_with_show():
 
 def test_set_unavailable():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_unavailable()
 
     assert not agent.presence.is_available()
@@ -55,11 +76,19 @@ def test_set_unavailable():
 def test_get_state_show():
     agent = make_presence_connected_agent(available=True, show=PresenceShow.AWAY)
 
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
+
     assert agent.presence.state.show == PresenceShow.AWAY
 
 
 def test_get_status_empty():
     agent = make_presence_connected_agent(status={})
+
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
 
     assert agent.presence.status == {}
 
@@ -67,11 +96,19 @@ def test_get_status_empty():
 def test_get_status_string():
     agent = make_presence_connected_agent(status="Working")
 
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
+
     assert agent.presence.status == {None: "Working"}
 
 
 def test_get_status_dict():
     agent = make_presence_connected_agent(status={"en": "Working"})
+
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
 
     assert agent.presence.status == {"en": "Working"}
 
@@ -79,17 +116,28 @@ def test_get_status_dict():
 def test_get_priority_default():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
+
     assert agent.presence.priority == 0
 
 
 def test_get_priority():
     agent = make_presence_connected_agent(priority=10)
 
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.mock_presence()
+
     assert agent.presence.priority == 10
 
 
 def test_set_presence_available():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.presence.set_presence(state=PresenceState(available=True))
 
@@ -99,6 +147,9 @@ def test_set_presence_available():
 def test_set_presence_unavailable():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_presence(state=PresenceState(available=False))
 
     assert not agent.presence.is_available()
@@ -106,6 +157,9 @@ def test_set_presence_unavailable():
 
 def test_set_presence_status():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.presence.set_presence(status="Lunch")
 
@@ -115,6 +169,9 @@ def test_set_presence_status():
 def test_set_presence_status_dict():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_presence(status={"en": "Lunch"})
 
     assert agent.presence.status == {"en": "Lunch"}
@@ -123,6 +180,9 @@ def test_set_presence_status_dict():
 def test_set_presence_priority():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.set_presence(priority=5)
 
     assert agent.presence.priority == 5
@@ -130,6 +190,9 @@ def test_set_presence_priority():
 
 def test_set_presence():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     agent.presence.set_presence(
         state=PresenceState(True, PresenceShow.PLAIN),
@@ -146,11 +209,17 @@ def test_set_presence():
 def test_get_contacts_empty():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     assert agent.presence.get_contacts() == {}
 
 
 def test_get_contacts(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     item = XSOItem(jid=jid)
     item.approved = True
@@ -173,6 +242,9 @@ def test_get_contacts(jid):
 def test_get_contacts_with_presence(jid):
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     item = XSOItem(jid=jid)
     item.approved = True
     item.name = "My Available Friend"
@@ -193,6 +265,9 @@ def test_get_contacts_with_presence(jid):
 
 def test_get_contacts_with_presence_on_and_off(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     item = XSOItem(jid=jid)
     item.approved = True
@@ -217,6 +292,9 @@ def test_get_contacts_with_presence_on_and_off(jid):
 def test_get_contacts_with_presence_unavailable(jid):
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     item = XSOItem(jid=jid)
     item.approved = True
     item.name = "My UnAvailable Friend"
@@ -238,6 +316,9 @@ def test_get_contacts_with_presence_unavailable(jid):
 def test_get_contact(jid):
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     item = XSOItem(jid=jid)
     item.approved = True
     item.name = "My Friend"
@@ -257,12 +338,18 @@ def test_get_contact(jid):
 def test_get_invalid_jid_contact():
     agent = make_presence_connected_agent()
 
+    future = agent.start(auto_register=False)
+    future.result()
+
     with pytest.raises(ContactNotFound):
         agent.presence.get_contact(JID.fromstr("invalid@contact"))
 
 
 def test_get_invalid_str_contact():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     with pytest.raises(AttributeError):
         agent.presence.get_contact("invalid@contact")
@@ -272,11 +359,14 @@ def test_subscribe(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.enqueue = Mock()
+    future = agent.start(auto_register=False)
+    future.result()
+
+    agent.client.enqueue = Mock()
     agent.presence.subscribe(peer_jid)
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBE
@@ -286,11 +376,14 @@ def test_unsubscribe(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.enqueue = Mock()
+    future = agent.start(auto_register=False)
+    future.result()
+
+    agent.client.enqueue = Mock()
     agent.presence.unsubscribe(peer_jid)
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
@@ -300,11 +393,14 @@ def test_approve(jid):
     peer_jid = str(jid)
     agent = make_presence_connected_agent()
 
-    agent.aiothread.client.enqueue = Mock()
+    future = agent.start(auto_register=False)
+    future.result()
+
+    agent.client.enqueue = Mock()
     agent.presence.approve(peer_jid)
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBED
@@ -312,6 +408,10 @@ def test_approve(jid):
 
 def test_on_available(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_available = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE)
@@ -326,6 +426,10 @@ def test_on_available(jid):
 
 def test_on_unavailable(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_unavailable = Mock()
     agent.presence.presenceclient._presences[jid.bare()] = {"home": None}
 
@@ -341,6 +445,10 @@ def test_on_unavailable(jid):
 
 def test_on_subscribe(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_subscribe = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.SUBSCRIBE)
@@ -353,14 +461,18 @@ def test_on_subscribe(jid):
 
 def test_on_subscribe_approve_all(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.approve_all = True
-    agent.aiothread.client.enqueue = Mock()
+    agent.client.enqueue = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.SUBSCRIBE)
     agent.presence.roster.handle_subscribe(stanza)
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.SUBSCRIBED
@@ -368,6 +480,10 @@ def test_on_subscribe_approve_all(jid):
 
 def test_on_subscribed(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_subscribed = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.SUBSCRIBED)
@@ -380,6 +496,10 @@ def test_on_subscribed(jid):
 
 def test_on_unsubscribe(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_unsubscribe = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.UNSUBSCRIBE)
@@ -392,14 +512,18 @@ def test_on_unsubscribe(jid):
 
 def test_on_unsubscribe_approve_all(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.approve_all = True
-    agent.aiothread.client.enqueue = Mock()
+    agent.client.enqueue = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.UNSUBSCRIBE)
     agent.presence.roster.handle_unsubscribe(stanza)
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBED
@@ -407,6 +531,10 @@ def test_on_unsubscribe_approve_all(jid):
 
 def test_on_unsubscribed(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.presence.on_unsubscribed = Mock()
 
     stanza = Presence(from_=jid, type_=PresenceType.UNSUBSCRIBED)
@@ -419,6 +547,9 @@ def test_on_unsubscribed(jid):
 
 def test_on_changed(jid):
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
 
     item = XSOItem(jid=jid)
     item.approved = True
@@ -444,6 +575,10 @@ def test_on_changed(jid):
 
 def test_ignore_self_presence():
     agent = make_presence_connected_agent()
+
+    future = agent.start(auto_register=False)
+    future.result()
+
     jid = agent.jid
 
     stanza = Presence(from_=jid, type_=PresenceType.AVAILABLE, show=PresenceShow.CHAT)

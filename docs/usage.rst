@@ -25,7 +25,7 @@ To create an agent in a project you just need to: ::
     from spade import agent
 
     class DummyAgent(agent.Agent):
-        def setup(self):
+        async def setup(self):
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
@@ -76,7 +76,7 @@ Example::
                 self.counter += 1
                 await asyncio.sleep(1)
 
-        def setup(self):
+        async def setup(self):
             print("Agent starting . . .")
             b = self.MyBehav()
             self.add_behaviour(b)
@@ -113,7 +113,7 @@ waits for a second (to iterate again).
     call async methods inside the ``run()`` method, like the ``await asyncio.sleep(1)``, which sleeps during one second
     without blocking the event loop.
 
-Now look at the ``setup()`` method of the agent. There, we make an instance of MyBehav and add it to the current agent
+Now look at the ``setup()`` coroutine of the agent. There, we make an instance of MyBehav and add it to the current agent
 by means of the ``add_behaviour()`` method. The first parameter of this method is the behaviour we want to add, and
 there is also a second optional parameter which is the template associated to that behaviour, but we will talk later
 about templates.
@@ -165,7 +165,7 @@ An example of how to kill a behaviour::
             async def on_end(self):
                 print("Behaviour finished with exit code {}.".format(self.exit_code))
 
-        def setup(self):
+        async def setup(self):
             print("Agent starting . . .")
             self.my_behav = self.MyBehav()
             self.add_behaviour(self.my_behav)
@@ -212,19 +212,24 @@ Creating an agent from within another agent
 
 There is a common use case where you may need to create an agent from within another agent, that is, from within another
 agent's behaviour. This is a *special* case because you can't create a new event loop when you have a loop already
-running. For this special case you can use the ``loop`` argument in the ``Agent`` constructor to share an event loop
-between more than one agent. There is also a coroutine that allows you to start the agent from a behaviour. This is the
-``async_start`` coroutine, which accepts the same arguments as the ``start`` method. Example::
+running. For this special case you can use the ``start`` method as usual. But in this case ```start`` behaves as a
+coroutine, so it MUST be called with an ``await`` statement in order to work properly. Example::
 
         class CreateBehav(OneShotBehaviour):
             async def run(self):
-                agent2 = Agent("agent2@fake_server", "fake_password", loop=self.agent.loop)
-                await agent2.async_start(auto_register=False)
+                agent2 = Agent("agent2@fake_server", "fake_password")
+                # This start is inside an async def, so it must be awaited
+                await agent2.start(auto_register=False)
 
         agent1 = Agent("agent1@fake_server", "fake_password")
         agent1.add_behaviour(CreateBehav())
+        # This start is in a synchronous piece of code, so it must NOT be awaited
         agent1.start(auto_register=False)
 
 
-.. warning:: If you call the ``start`` method (instead of the ``async_start`` coroutine) from within a behaviour, you'll
-             get an error.
+.. warning:: Remember to call ``start`` with an ``await`` whenever you are inside an asyncronous method (another coroutine).
+             Otherwise, call ``start`` as usual (without the ``await`` statement).
+
+
+.. note:: The ``stop`` method behaves just like ``start``. They change depending on the context.
+          They return a coroutine or a future depending on whether they are called from a coroutine or a synchronous method.

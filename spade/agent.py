@@ -4,12 +4,13 @@ import aiosasl
 import sys
 import asyncio
 from hashlib import md5
-from threading import Thread, Event
+from threading import Event
 
 import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
+from spade.behaviour import FSMBehaviour
 from spade.container import Container
 from spade.message import Message
 from spade.presence import PresenceManager
@@ -25,7 +26,7 @@ class AuthenticationFailure(Exception):
 
 
 class Agent(object):
-    def __init__(self, jid, password, verify_security=False, use_container=True, loop=None):
+    def __init__(self, jid, password, verify_security=False):
         """
         Creates an agent
 
@@ -33,7 +34,6 @@ class Agent(object):
           jid (str): The identifier of the agent in the form username@server
           password (str): The password to connect to the server
           verify_security (bool): Wether to verify or not the SSL certificates
-          loop (an asyncio event loop): the event loop if it was already created (optional)
         """
         self.jid = aioxmpp.JID.fromstr(jid)
         self.password = password
@@ -42,33 +42,27 @@ class Agent(object):
         self.behaviours = []
         self._values = {}
 
-        if use_container:
-            self.container = Container()
-            self.container.register(self)
-        else:
-            self.container = None
+        self.conn_coro = None
+        self.stream = None
+        self.client = None
+        self.message_dispatcher = None
+        self.presence = None
+        self.loop = None
 
-        self.traces = TraceStore(size=1000)
+        self.container = Container()
+        self.container.register(self)
 
-        if loop:
-            self.loop = loop
-            self.external_loop = True
-        else:
-            self.loop = asyncio.new_event_loop()
-            self.external_loop = False
-        asyncio.set_event_loop(self.loop)
-
-        self.aiothread = AioThread(self, self.loop)
-        self._alive = Event()
-
-        # obtain an instance of the service
-        self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
-
-        # Presence service
-        self.presence = PresenceManager(self)
+        self.loop = self.container.loop
 
         # Web service
         self.web = WebApp(agent=self)
+
+        self.traces = TraceStore(size=1000)
+
+        self._alive = Event()
+
+    def set_loop(self, loop):
+        self.loop = loop
 
     def set_container(self, container):
         """
@@ -81,25 +75,15 @@ class Agent(object):
 
     def start(self, auto_register=True):
         """
-        Starts the agent. This fires some actions:
-
-            * if auto_register: register the agent in the server
-            * runs the event loop
-            * connects the agent to the server
-            * runs the registered behaviours
+        Tells the container to start this agent.
+        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
 
         Args:
-          auto_register (bool, optional): register the agent in the server (Default value = True)
-
+            auto_register (bool): register the agent in the server (Default value = True)
         """
-        if auto_register:
-            self.register()
+        return self.container.start_agent(agent=self, auto_register=auto_register)
 
-        self.aiothread.connect()
-
-        self._start()
-
-    async def async_start(self, auto_register=True):
+    async def _async_start(self, auto_register=True):
         """
         Starts the agent from a coroutine. This fires some actions:
 
@@ -112,61 +96,64 @@ class Agent(object):
           auto_register (bool, optional): register the agent in the server (Default value = True)
 
         """
+
         if auto_register:
-            await self.async_register()
+            await self._async_register()
+        self.client = aioxmpp.PresenceManagedClient(self.jid,
+                                                    aioxmpp.make_security_layer(self.password,
+                                                                                no_verify=not self.verify_security),
+                                                    loop=self.loop,
+                                                    logger=logging.getLogger(self.jid.localpart))
 
-        await self.aiothread.async_connect()
+        # obtain an instance of the service
+        self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
 
-        self._start()
+        # Presence service
+        self.presence = PresenceManager(self)
 
-    def _start(self):
-        """ Finish the start process."""
-        self.aiothread.start()
-        self._alive.set()
+        await self._async_connect()
+
         # register a message callback here
         self.message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT,
             None,
             self._message_received,
         )
-        self.setup()
+        await self.setup()
+        self._alive.set()
+        for behaviour in self.behaviours:
+            if not behaviour.is_running:
+                behaviour.start()
 
-    def register(self):  # pragma: no cover
-        """ Register the agent in the XMPP server. """
+    async def _async_connect(self):  # pragma: no cover
+        """ connect and authenticate to the XMPP server. Async mode. """
+        try:
+            self.conn_coro = self.client.connected()
+            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
+            self.stream = await aenter
+            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+        except aiosasl.AuthenticationFailure:
+            raise AuthenticationFailure(
+                "Could not authenticate the agent. Check user and password or use auto_register=True")
 
-        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-        query = ibr.Query(self.jid.localpart, self.password)
-        _, stream, features = self.loop.run_until_complete(aioxmpp.node.connect_xmlstream(self.jid, metadata))
-        self.loop.run_until_complete(ibr.register(stream, query))
-
-    async def async_register(self):  # pragma: no cover
+    async def _async_register(self):  # pragma: no cover
         """ Register the agent in the XMPP server from a coroutine. """
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
-        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata)
+        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata, loop=self.loop)
         await ibr.register(stream, query)
 
-    def setup(self):
+    async def setup(self):
         """
         Setup agent before startup.
-        This method may be overloaded.
+        This coroutine may be overloaded.
         """
-        pass
+        await asyncio.sleep(0)
 
     @property
     def name(self):
         """ Returns the name of the agent (the string before the '@') """
         return self.jid.localpart
-
-    @property
-    def client(self):
-        """ Returns the client that is connected to the xmpp server """
-        return self.aiothread.client
-
-    @property
-    def stream(self):
-        """ Returns the stream of the connection """
-        return self.aiothread.stream
 
     @property
     def avatar(self):
@@ -221,9 +208,13 @@ class Agent(object):
 
         """
         behaviour.set_agent(self)
+        if issubclass(type(behaviour), FSMBehaviour):
+            for _, state in behaviour.get_states().items():
+                state.set_agent(self)
         behaviour.set_template(template)
         self.behaviours.append(behaviour)
-        behaviour.start()
+        if self.is_alive():
+            behaviour.start()
 
     def remove_behaviour(self, behaviour):
         """
@@ -254,18 +245,29 @@ class Agent(object):
         return behaviour in self.behaviours
 
     def stop(self):
+        """
+        Tells the container to start this agent.
+        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
+        """
+        return self.container.stop_agent(self)
+
+    async def _async_stop(self):
         """ Stops an agent and kills all its behaviours. """
-        self.presence.set_unavailable()
+        if self.presence:
+            self.presence.set_unavailable()
         for behav in self.behaviours:
             behav.kill()
-        if self.web.server:
-            self.web.server.close()
-            self.submit(self.web.handler.shutdown(60.0))
-        self.submit(self.web.app.shutdown())
-        self.submit(self.web.app.cleanup())
-        self.aiothread.finalize()
-        if self.aiothread.is_alive() and not self.external_loop:
-            self.aiothread.loop_exited.wait()
+        if self.web.is_started():
+            await self.web.runner.cleanup()
+
+        """ Discconnect from XMPP server. """
+        if self.is_alive():
+            # Disconnect from XMPP server
+            self.client.stop()
+            aexit = self.conn_coro.__aexit__(*sys.exc_info())
+            await aexit
+            logger.info("Client disconnected.")
+
         self._alive.clear()
 
     def is_alive(self):
@@ -347,83 +349,3 @@ class Agent(object):
             logger.warning(f"No behaviour matched for message: {msg}")
             self.traces.append(msg)
         return futures
-
-
-class AioThread(Thread):
-    """ The thread that manages the asyncio loop """
-
-    def __init__(self, agent, loop, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.agent = agent
-        self.jid = agent.jid
-        self.conn_coro = None
-        self.stream = None
-        self.loop = loop
-        self.loop_exited = Event()
-        self.loop_exited.clear()
-
-        asyncio.set_event_loop(self.loop)
-
-        self.client = aioxmpp.PresenceManagedClient(agent.jid,
-                                                    aioxmpp.make_security_layer(agent.password,
-                                                                                no_verify=not agent.verify_security),
-                                                    loop=self.loop,
-                                                    logger=logging.getLogger(agent.jid.localpart))
-
-    def connect(self):  # pragma: no cover
-        """ connect and authenticate to the XMPP server. Sync mode. """
-        try:
-            self.conn_coro = self.client.connected()
-            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
-            self.stream = self.loop.run_until_complete(aenter)
-            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
-        except aiosasl.AuthenticationFailure:
-            raise AuthenticationFailure(
-                "Could not authenticate the agent. Check user and password or use auto_register=True")
-
-    async def async_connect(self):  # pragma: no cover
-        """ connect and authenticate to the XMPP server. Async mode. """
-        try:
-            self.conn_coro = self.client.connected()
-            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
-            self.stream = await aenter
-            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
-        except aiosasl.AuthenticationFailure:
-            raise AuthenticationFailure(
-                "Could not authenticate the agent. Check user and password or use auto_register=True")
-
-    def run(self):
-        """ run event loop """
-        if not self.agent.external_loop:
-            self.loop_exited.set()
-            self.loop.run_forever()
-            logger.debug("Loop stopped.")
-            self.loop_exited.clear()
-
-    def finalize(self):
-        """ Discconnect from XMPP server and close the event loop. """
-        if self.agent.is_alive():
-            # Disconnect from XMPP server
-            self.client.stop()
-            aexit = self.conn_coro.__aexit__(*sys.exc_info())
-            future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
-            try:
-                asyncio.wait_for(future, timeout=5)
-            except asyncio.TimeoutError:  # pragma: no cover
-                logger.error('The client took too long to disconnect, cancelling the task...')
-                future.cancel()
-            except Exception as e:  # pragma: no cover
-                logger.error("Could not disconnect from server: {!r}.".format(e))
-            else:
-                logger.info("Client disconnected.")
-        if not self.agent.external_loop:
-            future = self.loop.call_soon_threadsafe(self.loop.stop)
-            try:
-                asyncio.wait_for(future, timeout=5)
-            except asyncio.TimeoutError:  # pragma: no cover
-                logger.error('The loop took too long to close...')
-                future.cancel()
-            except Exception as e:  # pragma: no cover
-                logger.error("Exception closing loop: {}".format(e))
-            else:
-                logger.debug("Loop closed")

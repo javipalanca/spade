@@ -8,7 +8,7 @@ tox>2.3.1
 coverage==4.0.3
 Sphinx==1.4.8
 cryptography==2.2.2
-PyYAML==3.12
+pyyaml>=4.2b1
 pytest==3.6.1
 pytest-runner==2.11.1
 asynctest==0.12.1
@@ -17,7 +17,7 @@ pytest-cov==2.5.1
 pytest-mock==1.10.0
 pluggy<0.7,>=0.5
 python-coveralls==2.9.1
-requests==2.19.1
+requests>=2.20.0
 parsel==1.4.0
 sphinx_rtd_theme==0.4.0
 testfixtures==6.3.0
