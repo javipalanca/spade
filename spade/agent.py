@@ -4,12 +4,13 @@ import aiosasl
 import sys
 import asyncio
 from hashlib import md5
-from threading import Thread, Event
+from threading import Event
 
 import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
+from spade.behaviour import FSMBehaviour
 from spade.container import Container
 from spade.message import Message
 from spade.presence import PresenceManager
@@ -73,9 +74,16 @@ class Agent(object):
         self.container = container
 
     def start(self, auto_register=True):
+        """
+        Tells the container to start this agent.
+        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
+
+        Args:
+            auto_register (bool): register the agent in the server (Default value = True)
+        """
         return self.container.start_agent(agent=self, auto_register=auto_register)
 
-    async def async_start(self, auto_register=True):
+    async def _async_start(self, auto_register=True):
         """
         Starts the agent from a coroutine. This fires some actions:
 
@@ -90,7 +98,7 @@ class Agent(object):
         """
 
         if auto_register:
-            await self.async_register()
+            await self._async_register()
         self.client = aioxmpp.PresenceManagedClient(self.jid,
                                                     aioxmpp.make_security_layer(self.password,
                                                                                 no_verify=not self.verify_security),
@@ -103,7 +111,7 @@ class Agent(object):
         # Presence service
         self.presence = PresenceManager(self)
 
-        await self.async_connect()
+        await self._async_connect()
 
         # register a message callback here
         self.message_dispatcher.register_callback(
@@ -117,7 +125,7 @@ class Agent(object):
             if not behaviour.is_running:
                 behaviour.start()
 
-    async def async_connect(self):  # pragma: no cover
+    async def _async_connect(self):  # pragma: no cover
         """ connect and authenticate to the XMPP server. Async mode. """
         try:
             self.conn_coro = self.client.connected()
@@ -128,7 +136,7 @@ class Agent(object):
             raise AuthenticationFailure(
                 "Could not authenticate the agent. Check user and password or use auto_register=True")
 
-    async def async_register(self):  # pragma: no cover
+    async def _async_register(self):  # pragma: no cover
         """ Register the agent in the XMPP server from a coroutine. """
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
@@ -138,7 +146,7 @@ class Agent(object):
     async def setup(self):
         """
         Setup agent before startup.
-        This method may be overloaded.
+        This coroutine may be overloaded.
         """
         await asyncio.sleep(0)
 
@@ -200,6 +208,9 @@ class Agent(object):
 
         """
         behaviour.set_agent(self)
+        if issubclass(type(behaviour), FSMBehaviour):
+            for _, state in behaviour.get_states().items():
+                state.set_agent(self)
         behaviour.set_template(template)
         self.behaviours.append(behaviour)
         if self.is_alive():
@@ -233,34 +244,29 @@ class Agent(object):
         """
         return behaviour in self.behaviours
 
-    def stop(self, timeout=5):
+    def stop(self):
+        """
+        Tells the container to start this agent.
+        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
+        """
+        return self.container.stop_agent(self)
+
+    async def _async_stop(self):
         """ Stops an agent and kills all its behaviours. """
         if self.presence:
             self.presence.set_unavailable()
         for behav in self.behaviours:
             behav.kill()
-        if self.web:
-            if self.web.server:
-                self.web.server.close()
-                self.submit(self.web.handler.shutdown(60.0))
-            self.submit(self.web.app.shutdown())
-            self.submit(self.web.app.cleanup())
+        if self.web.is_started():
+            await self.web.runner.cleanup()
 
         """ Discconnect from XMPP server. """
         if self.is_alive():
             # Disconnect from XMPP server
             self.client.stop()
             aexit = self.conn_coro.__aexit__(*sys.exc_info())
-            future = asyncio.run_coroutine_threadsafe(aexit, loop=self.loop)
-            try:
-                asyncio.wait_for(future, timeout=timeout)
-            except asyncio.TimeoutError:  # pragma: no cover
-                logger.error('The client took too long to disconnect, cancelling the task...')
-                future.cancel()
-            except Exception as e:  # pragma: no cover
-                logger.error("Could not disconnect from server: {!r}.".format(e))
-            else:
-                logger.info("Client disconnected.")
+            await aexit
+            logger.info("Client disconnected.")
 
         self._alive.clear()
 

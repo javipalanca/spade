@@ -1,3 +1,4 @@
+import time
 import pytest
 from aioxmpp import PresenceShow, PresenceState
 from asynctest import Mock, CoroutineMock
@@ -22,8 +23,8 @@ def run_around_tests():
 class MockedConnectedAgent(Agent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.async_connect = CoroutineMock()
-        self.async_register = CoroutineMock()
+        self._async_connect = CoroutineMock()
+        self._async_register = CoroutineMock()
         self.conn_coro = Mock()
         self.conn_coro.__aexit__ = CoroutineMock()
         self.stream = Mock()
@@ -37,11 +38,13 @@ class MockedPresenceConnectedAgent(Agent):
     def __init__(self,
                  available=None,
                  show=None,
-                 status={},
+                 status=None,
                  priority=0,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.async_connect = CoroutineMock()
+        if status is None:
+            status = {}
+        self._async_connect = CoroutineMock()
         self.conn_coro = Mock()
         self.conn_coro.__aexit__ = CoroutineMock()
 
@@ -68,3 +71,12 @@ def make_presence_connected_agent(jid="fake@jid", password="fake_password",
                                         show=show,
                                         status=status,
                                         priority=priority)
+
+
+def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
+    counter = 0
+    while not behaviour.is_killed() and counter < tries:
+        time.sleep(sleep)
+        counter += 1
+    if not behaviour.is_killed():
+        raise Exception("Behaviour not finished")

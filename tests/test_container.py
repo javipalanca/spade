@@ -5,7 +5,6 @@ from asynctest import MagicMock, CoroutineMock
 from spade.behaviour import OneShotBehaviour
 from spade.container import Container
 from spade.message import Message
-from tests.test_behaviour import wait_for_behaviour_is_killed
 from tests.utils import make_connected_agent
 
 from tests.utils import run_around_tests
@@ -36,6 +35,9 @@ def test_send_message_with_container():
 
         def stop(self): pass
 
+        def is_alive(self):
+            return False
+
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
             message = Message(to="fake_receiver_agent@server")
@@ -58,7 +60,7 @@ def test_send_message_with_container():
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
-    wait_for_behaviour_is_killed(behaviour)
+    behaviour.join()
 
     assert agent.client.send.await_count == 0
 
@@ -85,7 +87,7 @@ def test_send_message_to_outer_with_container():
     behaviour._xmpp_send = CoroutineMock()
     agent.add_behaviour(behaviour)
 
-    wait_for_behaviour_is_killed(behaviour)
+    behaviour.join()
 
     assert container.has_agent(str(agent.jid))
     assert not container.has_agent("to@outerhost")

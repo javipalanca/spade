@@ -86,17 +86,8 @@ async def test_check_server(test_client):
     agent = make_connected_agent()
     future = agent.start(auto_register=False)
     future.result()
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
 
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    agent.web.setup_routes()
 
     client = await test_client(agent.web.app)
     response = await client.get("/spade")

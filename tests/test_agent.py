@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 import aioxmpp
 from aioxmpp import PresenceManagedClient
@@ -10,28 +9,27 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
-from tests.test_behaviour import wait_for_behaviour_is_killed
-from tests.utils import make_connected_agent
-from tests.utils import run_around_tests
+from tests.utils import make_connected_agent, run_around_tests
 
 
 def test_create_agent(mocker):
     agent = Agent("jid@server", "fake_password")
-    agent.async_connect = CoroutineMock()
+    agent._async_connect = CoroutineMock()
 
     assert agent.is_alive() is False
 
     future = agent.start(auto_register=False)
     assert future.result() is None
 
-    agent.async_connect.assert_called_once()
+    agent._async_connect.assert_called_once()
     assert agent.stream is None
 
     agent.conn_coro = mocker.Mock()
     agent.conn_coro.__aexit__ = CoroutineMock()
 
     assert agent.is_alive() is True
-    agent.stop()
+    future = agent.stop()
+    future.result()
 
     agent.conn_coro.__aexit__.assert_called_once()
 
@@ -46,7 +44,8 @@ def test_connected_agent():
     assert future.result() is None
     assert agent.is_alive() is True
 
-    agent.stop()
+    future = agent.stop()
+    future.result()
     assert agent.is_alive() is False
 
 
@@ -76,7 +75,7 @@ def test_set_get():
     assert agent.get("KB_name") == "KB_value"
 
 
-def test_get__none():
+def test_get_none():
     agent = make_connected_agent()
     assert agent.get("KB_name_unknown") is None
 
@@ -97,7 +96,7 @@ def test_register():
     future = agent.start(auto_register=True)
     assert future.result() is None
 
-    assert len(agent.async_register.mock_calls) == 1
+    assert len(agent._async_register.mock_calls) == 1
 
     agent.stop()
 
@@ -124,13 +123,13 @@ def test_receive_without_behaviours():
 def test_create_agent_from_another_agent():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
-            self.agent.done = True
+            self.agent._done = True
             self.kill()
 
     class CreateBehav(OneShotBehaviour):
         async def run(self):
             self.agent.agent2 = make_connected_agent()
-            self.agent.agent2.done = False
+            self.agent.agent2._done = False
             self.agent.agent2.add_behaviour(DummyBehav())
             await self.agent.agent2.start(auto_register=False)
             self.kill()
@@ -142,11 +141,11 @@ def test_create_agent_from_another_agent():
     assert future.result() is None
     assert agent1.is_alive()
 
-    wait_for_behaviour_is_killed(agent1.behaviours[0], tries=300)
-    wait_for_behaviour_is_killed(agent1.agent2.behaviours[0], tries=300)
+    agent1.behaviours[0].join()
+    agent1.agent2.behaviours[0].join()
 
     assert agent1.agent2.is_alive()
-    assert agent1.agent2.done
+    assert agent1.agent2._done
 
     agent1.agent2.stop()
     agent1.stop()
@@ -155,19 +154,19 @@ def test_create_agent_from_another_agent():
 def test_create_agent_from_another_agent_from_setup():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
-            self.agent.done = True
+            self.agent._done = True
             self.kill()
 
     class SetupAgent(Agent):
         async def setup(self):
             self.agent2 = make_connected_agent()
-            self.agent2.done = False
+            self.agent2._done = False
             self.agent2.add_behaviour(DummyBehav())
             await self.agent2.start(auto_register=False)
 
     agent1 = SetupAgent("fake@host", "secret")
-    agent1.async_connect = CoroutineMock()
-    agent1.async_register = CoroutineMock()
+    agent1._async_connect = CoroutineMock()
+    agent1._async_register = CoroutineMock()
     agent1.conn_coro = Mock()
     agent1.conn_coro.__aexit__ = CoroutineMock()
     agent1.stream = Mock()
@@ -178,10 +177,10 @@ def test_create_agent_from_another_agent_from_setup():
     assert future.result() is None
     assert agent1.is_alive()
 
-    wait_for_behaviour_is_killed(agent1.agent2.behaviours[0], tries=300)
+    agent1.agent2.behaviours[0].join()
 
     assert agent1.agent2.is_alive()
-    assert agent1.agent2.done
+    assert agent1.agent2._done
 
     agent1.agent2.stop()
     agent1.stop()
@@ -204,7 +203,7 @@ def test_submit_send():
     future = agent.start(auto_register=False)
     future.result()
 
-    wait_for_behaviour_is_killed(behah, tries=300)
+    behah.join()
 
     assert behah.queue.qsize() == 1
     msg = behah.queue.get_nowait()
@@ -220,7 +219,7 @@ def test_stop_agent_with_blocking_await():
     class StopBehav(OneShotBehaviour):
         async def run(self):
             await asyncio.sleep(0.5)
-            self.agent.stop()
+            await self.agent.stop()
 
     class DummyBehav(OneShotBehaviour):
         async def run(self):
@@ -236,8 +235,7 @@ def test_stop_agent_with_blocking_await():
     future1 = agent1.start(auto_register=False)
     future1.result()
 
-    wait_for_behaviour_is_killed(stopbehah, tries=300)
-    wait_for_behaviour_is_killed(dummybehav, tries=300)
+    stopbehah.join()
 
     assert not agent1.is_alive()
     assert agent1.value == 1000

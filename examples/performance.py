@@ -5,6 +5,7 @@ from sys import getsizeof
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
+from spade import quit_spade
 
 
 class RecvBehav(OneShotBehaviour):
@@ -23,23 +24,23 @@ class SendBehav(OneShotBehaviour):
 
 
 class Receiver(Agent):
-    def setup(self):
+    async def setup(self):
         self.add_behaviour(RecvBehav())
 
 
 class Sender(Agent):
-    def setup(self):
+    async def setup(self):
         self.add_behaviour(SendBehav())
 
 
-def run_experiment(credentials, use_container=True, num_msg=1000, body="0"):
+def run_experiment(credentials, num_msg=1000, body="0"):
     sender_jid = credentials["sender_jid"]
     sender_passwd = credentials["sender_passwd"]
     recv_jid = credentials["recv_jid"]
     recv_passwd = credentials["recv_passwd"]
 
-    receiver = Receiver(recv_jid, recv_passwd, use_container=use_container)
-    sender = Sender(sender_jid, sender_passwd, use_container=use_container)
+    receiver = Receiver(recv_jid, recv_passwd)
+    sender = Sender(sender_jid, sender_passwd)
     sender.receiver_jid = recv_jid
     receiver.n = 0
 
@@ -47,8 +48,10 @@ def run_experiment(credentials, use_container=True, num_msg=1000, body="0"):
     sender.nmax = num_msg
     sender.body = body
 
-    receiver.start(auto_register=True)
-    sender.start()
+    future = receiver.start(auto_register=True)
+    future.result()
+    future = sender.start(auto_register=True)
+    future.result()
     print("Go")
     t1 = time.time()
     while receiver.n < num_msg:
@@ -57,10 +60,7 @@ def run_experiment(credentials, use_container=True, num_msg=1000, body="0"):
 
     size = getsizeof(body)
 
-    if use_container:
-        print("{} Messages of size {} bytes received w/container: {}".format(receiver.n, size, t2 - t1))
-    else:
-        print("{} Messages of size {} bytes received wo/container: {}".format(receiver.n, size, t2 - t1))
+    print("{} Messages of size {} bytes received w/container: {}".format(receiver.n, size, t2 - t1))
 
     sender.stop()
     receiver.stop()
@@ -74,18 +74,16 @@ if __name__ == "__main__":
         "recv_passwd": getpass.getpass()
     }
 
-    run_experiment(agent_credentials, use_container=True)
-    run_experiment(agent_credentials, use_container=False)
+    run_experiment(agent_credentials)
 
-    run_experiment(agent_credentials, use_container=True, num_msg=10000)
-    run_experiment(agent_credentials, use_container=False, num_msg=10000)
+    run_experiment(agent_credentials, num_msg=10000)
 
-    run_experiment(agent_credentials, use_container=True, body="0" * 1000)
-    run_experiment(agent_credentials, use_container=False, body="0" * 1000)
+    run_experiment(agent_credentials, body="0" * 1000)
 
-    run_experiment(agent_credentials, use_container=True, num_msg=10000, body="0" * 1000)
-    run_experiment(agent_credentials, use_container=False, num_msg=10000, body="0" * 1000)
+    run_experiment(agent_credentials, num_msg=10000, body="0" * 1000)
 
-    run_experiment(agent_credentials, use_container=True, num_msg=10000, body="0" * 100000)
+    run_experiment(agent_credentials, num_msg=10000, body="0" * 100000)
 
-    run_experiment(agent_credentials, use_container=True, num_msg=100000, body="0" * 100000)
+    run_experiment(agent_credentials, num_msg=100000, body="0" * 100000)
+
+    quit_spade()

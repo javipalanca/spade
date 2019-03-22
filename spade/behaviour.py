@@ -2,8 +2,8 @@ import collections
 import logging
 from abc import ABCMeta, abstractmethod
 from threading import Event
-from datetime import timedelta
-from datetime import datetime
+from datetime import timedelta, datetime
+import time
 
 import asyncio
 from typing import Any, Union
@@ -38,6 +38,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.agent = None
         self.template = None
         self._force_kill = Event()
+        self._is_done = asyncio.Event()
+        self._is_done.set()
         self._exit_code = 0
         self.presence = None
         self.web = None
@@ -126,6 +128,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             logger.error("Exception running on_start in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
         await self._step()
+        self._is_done.clear()
 
     def kill(self, exit_code: Any = None):
         """
@@ -161,7 +164,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
           object: the exit code of the behaviour
 
         """
-        if self.done() or self.is_killed():
+        if self._done() or self.is_killed():
             return self._exit_code
         else:
             raise BehaviourNotFinishedException
@@ -177,7 +180,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         self._exit_code = value
 
-    def done(self) -> bool:
+    def _done(self) -> bool:
         """
         Returns True if the behaviour has finished
         else returns False
@@ -187,6 +190,34 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         """
         return False
+
+    def is_done(self):
+        return not self._is_done.is_set()
+
+    def join(self, timeout=None):
+
+        try:
+            in_coroutine = asyncio.get_event_loop() == self.agent.loop
+        except RuntimeError:
+            in_coroutine = False
+
+        if not in_coroutine:
+            t_start = time.time()
+            while not self.is_done():
+                time.sleep(0.001)
+                t = time.time()
+                if timeout is not None and t - t_start > timeout:
+                    raise TimeoutError
+        else:
+            return self._async_join(timeout=timeout)
+
+    async def _async_join(self, timeout):
+        t_start = time.time()
+        while not self.is_done():
+            await asyncio.sleep(0.001)
+            t = time.time()
+            if timeout is not None and t - t_start > timeout:
+                raise TimeoutError
 
     async def on_start(self):
         """
@@ -221,7 +252,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         checks whether behaviour is done or killed,
         ortherwise it calls run() coroutine.
         """
-        while not self.done() and not self.is_killed():
+        while not self._done() and not self.is_killed():
             try:
                 await self._run()
                 await asyncio.sleep(0)  # relinquish cpu
@@ -307,7 +338,7 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
         super().__init__()
         self._already_executed = False
 
-    def done(self) -> bool:
+    def _done(self) -> bool:
         """ """
         if not self._already_executed:
             self._already_executed = True
@@ -396,7 +427,7 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
                 await self.run()
                 self._timeout_triggered = True
 
-    def done(self) -> bool:
+    def _done(self) -> bool:
         """ """
         return self._timeout_triggered
 
@@ -450,6 +481,12 @@ class FSMBehaviour(CyclicBehaviour):
         if initial:
             self.current_state = name
 
+    def get_state(self, name):
+        return self._states[name]
+
+    def get_states(self):
+        return self._states
+
     def add_transition(self, source: str, dest: str):
         """ Adds a transition from one state to another.
 
@@ -500,6 +537,7 @@ class FSMBehaviour(CyclicBehaviour):
             self.kill(exit_code=e)
 
         dest = behaviour.next_state
+        behaviour._is_done.clear()
 
         if dest:
             try:

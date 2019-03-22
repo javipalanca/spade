@@ -19,7 +19,7 @@ class SenderAgent(Agent):
             print("Message sent!")
 
             # stop agent from behaviour
-            self.agent.stop()
+            await self.agent.stop()
 
     async def setup(self):
         print("SenderAgent started")
@@ -43,7 +43,7 @@ class ReceiverAgent(Agent):
                 print("Did not received any message after 10 seconds")
 
             # stop agent from behaviour
-            self.agent.stop()
+            await self.agent.stop()
 
     async def setup(self):
         print("ReceiverAgent started")

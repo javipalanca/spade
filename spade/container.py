@@ -21,11 +21,24 @@ class Container(object):
         self.aiothread = AioThread()
         self.aiothread.start()
         self.loop = self.aiothread.loop
-        self.loop.set_debug(True)
+        self.loop.set_debug(False)
         self.is_running = True
 
     def start_agent(self, agent, auto_register=True):
-        coro = agent.async_start(auto_register=auto_register)
+        coro = agent._async_start(auto_register=auto_register)
+
+        try:
+            in_coroutine = asyncio.get_event_loop() == self.loop
+        except RuntimeError:
+            in_coroutine = False
+
+        if in_coroutine:
+            return coro
+        else:
+            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+
+    def stop_agent(self, agent):
+        coro = agent._async_stop()
 
         try:
             in_coroutine = asyncio.get_event_loop() == self.loop
@@ -98,7 +111,8 @@ class Container(object):
 
     def stop(self):
         for agent in self.__agents.values():
-            agent.stop()
+            if agent.is_alive():
+                agent.stop()
 
         self.aiothread.finalize()
         self.reset()
