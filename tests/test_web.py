@@ -1,8 +1,9 @@
 import asyncio
 import random
 import time
+from aiohttp import web
 
-from asynctest import Mock, CoroutineMock
+from asynctest import Mock, CoroutineMock, MagicMock
 import requests
 from aioxmpp import JID, PresenceType
 from aioxmpp.roster import Item
@@ -15,12 +16,15 @@ from testfixtures import LogCapture
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
-from tests.utils import make_connected_agent
+from tests.utils import make_connected_agent, make_presence_connected_agent
+
+from tests.utils import run_around_tests
 
 
 def test_web():
     agent = make_connected_agent()
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
     agent.web.start()
 
     assert agent.web.app is not None
@@ -78,24 +82,19 @@ def test_add_template_path():
     agent.stop()
 
 
-def test_check_server():
+async def test_check_server(test_client):
     agent = make_connected_agent()
-    agent.start(auto_register=False)
-    port = random.randint(5000, 9999)
-    agent.web.start(hostname="0.0.0.0", port=port)
+    future = agent.start(auto_register=False)
+    future.result()
 
-    # wait for web server to be up
-    counter = 0
-    while counter < 4:
-        if agent.web.server is not None:
-            break
-        counter += 1
-        time.sleep(0.1)
-    assert agent.web.server is not None
+    agent.web.setup_routes()
 
-    response = requests.get(f"http://localhost:{port}/spade")
+    client = await test_client(agent.web.app)
+    response = await client.get("/spade")
 
-    sel = Selector(text=response.text)
+    text = await response.text()
+
+    sel = Selector(text=text)
 
     assert sel.css("title::text").get() == "fake agent"
     assert sel.css("img::attr(src)").get() == agent.avatar
@@ -105,8 +104,10 @@ def test_check_server():
     agent.stop()
 
 
-async def test_request_home(test_client, loop):
-    agent = Agent("jid@server", "password")
+async def test_request_home(test_client):
+    agent = make_connected_agent("jid@server", "password")
+    future = agent.start(auto_register=False)
+    future.result()
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -123,7 +124,7 @@ async def test_request_home(test_client, loop):
     agent.stop()
 
 
-async def test_get_messages(test_client, loop):
+async def test_get_messages(test_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
@@ -143,7 +144,7 @@ async def test_get_messages(test_client, loop):
     agent.stop()
 
 
-async def test_get_behaviour(test_client, loop):
+async def test_get_behaviour(test_client):
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             self.kill()
@@ -164,7 +165,7 @@ async def test_get_behaviour(test_client, loop):
     agent.stop()
 
 
-async def test_kill_behaviour(test_client, loop):
+async def test_kill_behaviour(test_client):
     class EmptyCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             await asyncio.sleep(0.1)
@@ -183,8 +184,11 @@ async def test_kill_behaviour(test_client, loop):
     agent.stop()
 
 
-async def test_get_agent(test_client, loop):
-    agent = Agent("jid@server", "password")
+async def test_get_agent(test_client):
+    agent = make_presence_connected_agent("jid@server", "password")
+    future = agent.start(auto_register=False)
+    future.result()
+
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -203,10 +207,12 @@ async def test_get_agent(test_client, loop):
     agent.stop()
 
 
-async def test_unsubscribe_agent(test_client, loop):
-    agent = make_connected_agent()
-    agent.aiothread.client.enqueue = Mock()
-    agent.start(auto_register=False)
+async def test_unsubscribe_agent(test_client):
+    agent = make_presence_connected_agent()
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.client.enqueue = Mock()
+
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -220,8 +226,8 @@ async def test_unsubscribe_agent(test_client, loop):
 
     assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
-    assert agent.aiothread.client.enqueue.mock_calls
-    arg = agent.aiothread.client.enqueue.call_args[0][0]
+    assert agent.client.enqueue.mock_calls
+    arg = agent.client.enqueue.call_args[0][0]
 
     assert arg.to == jid_.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
@@ -229,10 +235,12 @@ async def test_unsubscribe_agent(test_client, loop):
     agent.stop()
 
 
-async def test_send_agent(test_client, loop):
-    agent = make_connected_agent()
+async def test_send_agent(test_client):
+    agent = make_presence_connected_agent()
+    future = agent.start(auto_register=False)
+    future.result()
+    agent.stream = MagicMock()
     agent.stream.send = CoroutineMock()
-    agent.start(auto_register=False)
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -254,15 +262,14 @@ async def test_send_agent(test_client, loop):
     agent.stop()
 
 
-def test_find_behaviour():
+async def test_find_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             pass
 
-    agent = Agent("jid@server", "password")
+    agent = make_connected_agent()
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
-
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
 
     assert found_behaviour == behaviour
@@ -270,7 +277,7 @@ def test_find_behaviour():
     agent.stop()
 
 
-def test_find_behaviour_fail():
+async def test_find_behaviour_fail():
     agent = Agent("jid@server", "password")
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
 
@@ -279,7 +286,7 @@ def test_find_behaviour_fail():
     agent.stop()
 
 
-async def test_add_get(test_client, loop):
+async def test_add_get(test_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get("/test", lambda request: {"number": 42}, "examples/hello.html")
 
@@ -295,7 +302,25 @@ async def test_add_get(test_client, loop):
     agent.stop()
 
 
-async def test_add_post(test_client, loop):
+async def test_add_get_raw(test_client):
+    agent = Agent("jid@server", "password")
+    agent.web.add_get("/test", lambda request: web.Response(text="Hello Raw Get"), template=None, raw=True)
+
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
+
+    response = await client.get("/test")
+    response = await response.text()
+
+    assert response == "Hello Raw Get"
+
+    # sel = Selector(text=response)
+    # assert sel.css("h1::text").get().strip() == "42"
+
+    agent.stop()
+
+
+async def test_add_post(test_client):
     agent = Agent("jid@server", "password")
 
     async def handle_post(request):
@@ -316,7 +341,27 @@ async def test_add_post(test_client, loop):
     agent.stop()
 
 
-async def test_stop(test_client, loop):
+async def test_add_post_raw(test_client):
+    agent = Agent("jid@server", "password")
+
+    async def handle_post(request):
+        form = await request.post()
+        number = form["number"]
+        return web.Response(text="Hello Raw Post Number={}".format(number))
+
+    agent.web.add_post("/test", handle_post, template=None, raw=True)
+    agent.web.setup_routes()
+    client = await test_client(agent.web.app)
+
+    response = await client.post("/test", data={"number": 1024})
+    response = await response.text()
+
+    assert response == "Hello Raw Post Number=1024"
+
+    agent.stop()
+
+
+async def test_stop(test_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
@@ -343,8 +388,7 @@ async def test_stop(test_client, loop):
     assert not agent.is_alive()
 
 
-async def test_add_get_json(test_client, loop):
-
+async def test_add_get_json(test_client):
     async def controller(request):
         return {"number": 42}
 
@@ -363,8 +407,7 @@ async def test_add_get_json(test_client, loop):
     agent.stop()
 
 
-async def test_add_post_json(test_client, loop):
-
+async def test_add_post_json(test_client):
     async def handle_post(request):
         form = await request.post()
         number = form["number"]

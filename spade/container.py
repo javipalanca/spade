@@ -1,4 +1,10 @@
+import asyncio
+import logging
+from threading import Thread
+
 from singletonify import singleton
+
+logger = logging.getLogger("SPADE")
 
 
 @singleton()
@@ -9,8 +15,40 @@ class Container(object):
      process.
      The container is a singleton.
     """
+
     def __init__(self):
         self.__agents = {}
+        self.aiothread = AioThread()
+        self.aiothread.start()
+        self.loop = self.aiothread.loop
+        self.loop.set_debug(False)
+        self.is_running = True
+
+    def start_agent(self, agent, auto_register=True):
+        coro = agent._async_start(auto_register=auto_register)
+
+        try:
+            in_coroutine = asyncio.get_event_loop() == self.loop
+        except RuntimeError:
+            in_coroutine = False
+
+        if in_coroutine:
+            return coro
+        else:
+            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+
+    def stop_agent(self, agent):
+        coro = agent._async_stop()
+
+        try:
+            in_coroutine = asyncio.get_event_loop() == self.loop
+        except RuntimeError:
+            in_coroutine = False
+
+        if in_coroutine:
+            return coro
+        else:
+            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
     def reset(self):
         """ Empty the container by unregistering all the agents. """
@@ -25,6 +63,11 @@ class Container(object):
         """
         self.__agents[str(agent.jid)] = agent
         agent.set_container(self)
+        agent.set_loop(self.loop)
+
+    def unregister(self, jid):
+        if str(jid) in self.__agents:
+            del self.__agents[str(jid)]
 
     def has_agent(self, jid):
         """
@@ -65,3 +108,41 @@ class Container(object):
             self.__agents[to].dispatch(msg)
         else:
             await behaviour._xmpp_send(msg)
+
+    def stop(self):
+        for agent in self.__agents.values():
+            if agent.is_alive():
+                agent.stop()
+
+        self.aiothread.finalize()
+        self.reset()
+        self.is_running = False
+
+
+class AioThread(Thread):
+    def __init__(self, *args, **kwargs):
+        self.loop = asyncio.new_event_loop()
+        super().__init__(*args, **kwargs)
+
+    def run(self):
+        try:
+            self.loop.run_forever()
+        except Exception as e:
+            logger.error("Exception in the event loop: {}".format(e))
+
+    def finalize(self):
+        future = self.loop.call_soon_threadsafe(self.loop.stop)
+        try:
+            asyncio.wait_for(future, timeout=5)
+        except asyncio.TimeoutError:  # pragma: no cover
+            logger.error('The loop took too long to close...')
+            future.cancel()
+        except Exception as e:  # pragma: no cover
+            logger.error("Exception closing loop: {}".format(e))
+        else:
+            logger.debug("Loop closed")
+
+
+def stop_container():
+    container = Container()
+    container.stop()

@@ -2,6 +2,17 @@
 History
 =======
 
+3.1.0 (2019-03-22)
+------------------
+
+* Agents now run in a single event loop managed by the container.
+* Behaviors can be waited for using the "join" method.
+* To check if a behaviours is done you can now use the "is_done" method.
+* The "setup" method is now a coroutine.
+* New "quit_spade" helper to stop the whole process.
+* The "start" and "stop" methods change depending on the context, since it is the container who will properly start or stop the agent.
+  They return a coroutine or a future depending on whether they are called from a coroutine or a synchronous method.
+
 3.0.9 (2018-10-24)
 ------------------
 

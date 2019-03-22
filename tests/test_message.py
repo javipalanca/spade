@@ -10,6 +10,7 @@ import pytest
 
 from spade.message import Message, SPADE_X_METADATA
 
+from tests.utils import run_around_tests
 
 @pytest.fixture
 def message():

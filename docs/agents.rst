@@ -127,7 +127,7 @@ Here is a self-explaining example::
             except KeyboardInterrupt:
                 agent.stop()
                 break
-        print("Agent finished with exit code: {}".format(self.b.exit_code))
+        print("Agent finished with exit code: {}".format(agent.b.exit_code))
 
 
 
