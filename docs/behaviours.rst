@@ -38,12 +38,12 @@ Let's see an example::
 
             async def on_end(self):
                 # stop agent from behaviour
-                self.agent.stop()
+                await self.agent.stop()
 
             async def on_start(self):
                 self.counter = 0
 
-        def setup(self):
+        async def setup(self):
             print(f"PeriodicSenderAgent started at {datetime.datetime.now().time()}")
             start_at = datetime.datetime.now() + datetime.timedelta(seconds=5)
             b = self.InformBehav(period=2, start_at=start_at)
@@ -62,9 +62,9 @@ Let's see an example::
                     self.kill()
 
             async def on_end(self):
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             print("ReceiverAgent started")
             b = self.RecvBehav()
             self.add_behaviour(b)
@@ -72,8 +72,8 @@ Let's see an example::
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        receiveragent.start()
-        time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+        future = receiveragent.start()
+        future.result() # wait for receiver agent to be prepared.
         senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
@@ -146,9 +146,9 @@ Let's see an example::
                 await self.send(msg)
 
             async def on_end(self):
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             print(f"TimeoutSenderAgent started at {datetime.datetime.now().time()}")
             start_at = datetime.datetime.now() + datetime.timedelta(seconds=5)
             b = self.InformBehav(start_at=start_at)
@@ -166,17 +166,17 @@ Let's see an example::
                     self.kill()
 
             async def on_end(self):
-                self.agent.stop()
+                await self.agent.stop()
 
-        def setup(self):
+        async def setup(self):
             b = self.RecvBehav()
             self.add_behaviour(b)
 
 
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        receiveragent.start()
-        time.sleep(1) # wait for receiver agent to be prepared. In next sections we'll use presence notification.
+        future = receiveragent.start()
+        future.result() # wait for receiver agent to be prepared.
         senderagent = TimeoutSenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
@@ -253,7 +253,7 @@ transit to::
 
         async def on_end(self):
             print(f"FSM finished at state {self.current_state}")
-            self.agent.stop()
+            await self.agent.stop()
 
 
     class StateOne(State):
@@ -280,7 +280,7 @@ transit to::
 
 
     class FSMAgent(Agent):
-        def setup(self):
+        async def setup(self):
             fsm = ExampleFSMBehaviour()
             fsm.add_state(name=STATE_ONE, state=StateOne(), initial=True)
             fsm.add_state(name=STATE_TWO, state=StateTwo())
@@ -313,3 +313,49 @@ The output of this example is::
     FSM finished at state STATE_THREE
     Agent finished
 
+
+Waiting a Behaviour
+-------------------
+
+Sometimes you may need to wait for a behaviour to finish. In order to make this easy, behaviours provide a method called
+``join``. Using this method you can wait for a behaviour to be finished. Be careful, since this is a blocking operation.
+In order to make it usable inside and outside coroutines, this is also a morphing method (like ``start`` and ``stop``)
+which behaves different depending on the context. It returns a coroutine or a future depending on whether it is called
+from a coroutine or a synchronous method. Example::
+
+    import asyncio
+    from spade.agent import Agent
+    from spade.behaviour import OneShotBehaviour
+    from spade import quit_spade
+
+
+    class DummyAgent(Agent):
+        class LongBehav(OneShotBehaviour):
+            async def run(self):
+                await asyncio.sleep(5)
+                print("Long Behaviour has finished")
+
+        class WaitingBehav(OneShotBehaviour):
+            async def run(self):
+                await self.agent.behav.join()  # this join must be awaited
+                print("Waiting Behaviour has finished")
+
+        async def setup(self):
+            print("Agent starting . . .")
+            self.behav = self.LongBehav()
+            self.add_behaviour(self.behav)
+            self.behav2 = self.WaitingBehav()
+            self.add_behaviour(self.behav2)
+
+
+    if __name__ == "__main__":
+        dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+        future = dummy.start()
+        future.result()
+
+        dummy.behav2.join()  # this join must not be awaited
+
+        print("Stopping agent.")
+        dummy.stop()
+
+        quit_spade()

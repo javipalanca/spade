@@ -190,7 +190,7 @@ This is an example that shows in a practical way the presence module::
 
 
     class Agent1(Agent):
-        def setup(self):
+        async def setup(self):
             print("Agent {} running".format(self.name))
             self.add_behaviour(self.Behav1())
 
@@ -216,7 +216,7 @@ This is an example that shows in a practical way the presence module::
 
 
     class Agent2(Agent):
-        def setup(self):
+        async def setup(self):
             print("Agent {} running".format(self.name))
             self.add_behaviour(self.Behav2())
 

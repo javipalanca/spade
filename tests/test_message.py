@@ -12,6 +12,7 @@ from spade.message import Message, SPADE_X_METADATA
 
 from tests.utils import run_around_tests
 
+
 @pytest.fixture
 def message():
     return Message(
@@ -123,3 +124,123 @@ def test_not_equal(message, message2):
 
 def test_id(message):
     assert type(message.id) == int
+
+
+def test_metadata_is_string():
+    Message(metadata={"key": "value"})
+
+
+def test_metadata_is_not_string():
+    with pytest.raises(TypeError):
+        Message(metadata={"key": 1000})
+
+
+def test_metadata_set_string():
+    msg = Message()
+    msg.set_metadata("key", "value")
+
+
+def test_metadata_set_not_string():
+    msg = Message()
+    with pytest.raises(TypeError):
+        msg.set_metadata(1000, "value")
+
+
+def test_body_is_string():
+    Message(body="body")
+
+
+def test_body_is_not_string():
+    with pytest.raises(TypeError):
+        Message(body={})
+
+
+def test_body_set_string():
+    msg = Message()
+    msg.body = "body"
+
+
+def test_body_set_not_string():
+    msg = Message()
+    with pytest.raises(TypeError):
+        msg.body = 1000
+
+
+def test_body_set_none():
+    msg = Message()
+    msg.body = None
+
+
+def test_to_is_string():
+    Message(to="agent@fakeserver")
+
+
+def test_to_is_not_string():
+    with pytest.raises(TypeError):
+        Message(to=aioxmpp.JID.fromstr("agent@fakeserver"))
+
+
+def test_to_set_string():
+    msg = Message()
+    msg.to = "agent@fakeserver"
+
+
+def test_to_set_not_string():
+    msg = Message()
+    with pytest.raises(TypeError):
+        msg.to = 1000
+
+
+def test_to_set_none():
+    msg = Message()
+    msg.to = None
+
+
+def test_sender_is_string():
+    Message(sender="agent@fakeserver")
+
+
+def test_sender_is_not_string():
+    with pytest.raises(TypeError):
+        Message(sender=aioxmpp.JID.fromstr("agent@fakeserver"))
+
+
+def test_sender_set_string():
+    msg = Message()
+    msg.sender = "agent@fakeserver"
+
+
+def test_sender_set_not_string():
+    msg = Message()
+    with pytest.raises(TypeError):
+        msg.sender = 1000
+
+
+def test_sender_set_none():
+    msg = Message()
+    msg.sender = None
+
+
+def test_thread_is_string():
+    Message(thread="thread_id_001")
+
+
+def test_thread_is_not_string():
+    with pytest.raises(TypeError):
+        Message(thread=1000)
+
+
+def test_thread_set_string():
+    msg = Message()
+    msg.thread = "thread_id_001"
+
+
+def test_thread_set_not_string():
+    msg = Message()
+    with pytest.raises(TypeError):
+        msg.thread = 1000
+
+
+def test_thread_set_none():
+    msg = Message()
+    msg.thread = None
