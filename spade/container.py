@@ -131,16 +131,8 @@ class AioThread(Thread):
             logger.error("Exception in the event loop: {}".format(e))
 
     def finalize(self):
-        future = self.loop.call_soon_threadsafe(self.loop.stop)
-        try:
-            asyncio.wait_for(future, timeout=5)
-        except asyncio.TimeoutError:  # pragma: no cover
-            logger.error('The loop took too long to close...')
-            future.cancel()
-        except Exception as e:  # pragma: no cover
-            logger.error("Exception closing loop: {}".format(e))
-        else:
-            logger.debug("Loop closed")
+        self.loop.call_soon_threadsafe(self.loop.stop)
+        logger.debug("Loop closed")
 
 
 def stop_container():
