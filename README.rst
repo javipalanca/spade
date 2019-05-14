@@ -55,6 +55,10 @@ Plugins
         - Code: https://github.com/javipalanca/spade_bokeh
         - Documentation: https://spade-bokeh.readthedocs.io/
 
+Our Code of Conduct
+-------------------
+See our :ref:`Code of Conduct`.
+
 Credits
 ---------
 
