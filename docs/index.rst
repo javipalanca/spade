@@ -18,6 +18,7 @@ Contents:
    extending
    api
    contributing
+   conduct
    authors
    history
 

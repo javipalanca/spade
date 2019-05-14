@@ -2,7 +2,7 @@
 Web Graphical Interface
 =======================
 
-Each agent is SPADE provides a graphical interface *by default* that is accesible via web under the ``/spade`` path.
+Each agent in SPADE provides a graphical interface *by default* that is accesible via web under the ``/spade`` path.
 To activate the web interface you just have to start the web module of the agent just as follows::
 
     agent = MyAgent("your_jid@your_xmpp_server", "your_password")
