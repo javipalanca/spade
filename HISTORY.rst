@@ -2,6 +2,13 @@
 History
 =======
 
+3.1.1 (2019-05-14)
+------------------
+
+* Added Python 3.7 support.
+* Added Code of Conduct.
+* Minor bugs fixed.
+
 3.1.0 (2019-03-22)
 ------------------
 
