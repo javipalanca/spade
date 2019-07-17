@@ -1,8 +1,10 @@
+import asyncio
+
 import aioxmpp
 import pytest
 from asynctest import MagicMock, CoroutineMock
 
-from spade.behaviour import OneShotBehaviour
+from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.container import Container
 from spade.message import Message
 from tests.utils import make_connected_agent
@@ -113,3 +115,26 @@ def test_unregister():
 
     assert not container.has_agent(str(agent.jid))
     assert container.has_agent(str(agent2.jid))
+
+
+def test_cancel_tasks():
+    agent = make_connected_agent()
+
+    class Behav(CyclicBehaviour):
+        async def run(self):
+            await asyncio.sleep(100)
+            self.has_finished = True
+
+    behav = Behav()
+    behav.has_finished = False
+    agent.add_behaviour(behaviour=behav)
+    future = agent.start()
+    future.result()
+
+    assert not behav.has_finished
+
+    container = Container()
+    container.stop()
+
+    assert not behav.has_finished
+
