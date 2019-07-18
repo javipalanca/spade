@@ -2,6 +2,13 @@
 History
 =======
 
+3.1.3 (2019-07-18)
+------------------
+
+* Added BDI plugin (https://github.com/javipalanca/spade_bdi).
+* Improved the platform stop (quit_spade).
+* Minor bug fixing.
+
 3.1.2 (2019-05-14)
 ------------------
 
