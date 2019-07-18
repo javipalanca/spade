@@ -51,6 +51,8 @@ Features
 Plugins
 -------
 
+- **spade_bdi** (BDI agents with AgentSpeak):
+        - Code: https://github.com/javipalanca/spade_bdi
 - **spade_bokeh** (bokeh plots for agents):
         - Code: https://github.com/javipalanca/spade_bokeh
         - Documentation: https://spade-bokeh.readthedocs.io/

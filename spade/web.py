@@ -176,8 +176,8 @@ class WebApp(object):
 
     async def stop_now(self, request):
         logger.warning("Stopping agent from web interface.")
-        self.agent.stop()
-        return aioweb.json_response({})
+        await self.agent.stop()
+        return aioweb.json_response({})  # pragma: no cover
 
     @aiohttp_jinja2.template("internal_tpl_messages.html")
     async def get_messages(self, request):
