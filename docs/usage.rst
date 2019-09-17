@@ -157,7 +157,7 @@ An example of how to kill a behaviour::
             async def run(self):
                 print("Counter: {}".format(self.counter))
                 self.counter += 1
-                if self.counter >= 3:
+                if self.counter > 3:
                     self.kill(exit_code=10)
                     return
                 await asyncio.sleep(1)
@@ -172,7 +172,8 @@ An example of how to kill a behaviour::
 
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
-        dummy.start()
+        future = dummy.start()
+        future.result()  # Wait until the start method is finished
 
         # wait until user interrupts with ctrl+C
         while not dummy.my_behav.is_killed():
