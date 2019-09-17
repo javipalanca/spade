@@ -6,7 +6,7 @@ from aioxmpp import JID
 
 
 def _agent_in_msg(agent, msg):
-    return msg.to == agent or msg.sender == agent
+    return msg.to.bare() == agent or msg.sender.bare() == agent
 
 
 class TraceStore(object):
