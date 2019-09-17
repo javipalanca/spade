@@ -100,7 +100,7 @@ async def test_check_server(test_client):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_request_home(test_client):
@@ -120,7 +120,7 @@ async def test_request_home(test_client):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_messages(test_client):
@@ -140,7 +140,7 @@ async def test_get_messages(test_client):
 
     assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_behaviour(test_client):
@@ -161,7 +161,7 @@ async def test_get_behaviour(test_client):
     sel = Selector(text=response)
 
     assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_kill_behaviour(test_client):
@@ -180,7 +180,7 @@ async def test_kill_behaviour(test_client):
 
     assert behaviour.is_killed()
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_agent(test_client):
@@ -203,7 +203,7 @@ async def test_get_agent(test_client):
 
     assert sel.css("section.content-header > h1::text").get().strip() == jid
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_unsubscribe_agent(test_client):
@@ -231,7 +231,7 @@ async def test_unsubscribe_agent(test_client):
     assert arg.to == jid_.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_send_agent(test_client):
@@ -258,7 +258,7 @@ async def test_send_agent(test_client):
     assert sent[1].sent
     assert sent[1].body == "Hello World"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_find_behaviour():
@@ -273,7 +273,7 @@ async def test_find_behaviour():
 
     assert found_behaviour == behaviour
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_find_behaviour_fail():
@@ -282,7 +282,7 @@ async def test_find_behaviour_fail():
 
     assert found_behaviour is None
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_get(test_client):
@@ -298,7 +298,7 @@ async def test_add_get(test_client):
     sel = Selector(text=response)
     assert sel.css("h1::text").get().strip() == "42"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_get_raw(test_client):
@@ -316,7 +316,7 @@ async def test_add_get_raw(test_client):
     # sel = Selector(text=response)
     # assert sel.css("h1::text").get().strip() == "42"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post(test_client):
@@ -337,7 +337,7 @@ async def test_add_post(test_client):
     sel = Selector(text=response)
     assert sel.css("h1::text").get() == "1024"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post_raw(test_client):
@@ -357,7 +357,7 @@ async def test_add_post_raw(test_client):
 
     assert response == "Hello Raw Post Number=1024"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_stop(test_client):
@@ -403,7 +403,7 @@ async def test_add_get_json(test_client):
     data = await response.json()
     assert data["number"] == 42
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post_json(test_client):
@@ -424,4 +424,4 @@ async def test_add_post_json(test_client):
     data = await response.json()
     assert data["number"] == 1024
 
-    agent.stop()
+    agent.stop().result()
