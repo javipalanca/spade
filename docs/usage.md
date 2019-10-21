@@ -1,18 +1,17 @@
-===========
-Quick Start
-===========
+# Quick Start
 
-Creating your first dummy agent
--------------------------------
+
+## Creating your first dummy agent
 
 It's time for us to build our first SPADE agent. We'll assume that we have a registered user in an XMPP server with a
 jid and a password. The jid contains the agent's name (before the @) and the DNS or IP of the XMPP server (after the @).
 But **remember**! You should have your own jid and password in an XMPP server running in your own computer or in the
 Internet. In this example we will assume that our jid is *your_jid@your_xmpp_server* and the password is *your_password*.
 
-.. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
+### Hints
+- To create a new XMPP account you can follow the steps of [Getting Started With XMPP](https://xmpp.org/getting-started/)
 
-.. hint:: To install an XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
+- To install an XMPP server visit [XMPP Software](https://xmpp.org/software/servers.html)(we recommend `Prosody IM <https://prosody.im>`_)
 
 A basic SPADE agent is really a python script that imports the spade module and that uses the constructs defined therein.
 For starters, fire up you favorite Python editor and create a file called ``dummyagent.py``.
@@ -21,7 +20,7 @@ For starters, fire up you favorite Python editor and create a file called ``dumm
     and are only for demonstration purposes.
 
 To create an agent in a project you just need to: ::
-
+```py
     from spade import agent
 
     class DummyAgent(agent.Agent):
@@ -32,14 +31,16 @@ To create an agent in a project you just need to: ::
     dummy.start()
 
     dummy.stop()
-
+```
 
 This agent is only printing on screen a message during its setup and stopping. If you run this script you get
 the following output::
 
+```py
     $ python dummyagent.py
     Hello World! I'm agent your_jid@your_xmpp_server
     $
+```
 
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
 dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.
@@ -58,7 +59,7 @@ Let's create a cyclic behaviour that performs a task. In this case, a simple cou
 .. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
     and are only for demonstration purposes.
 
-Example::
+```py
 
     import time
     import asyncio
@@ -92,7 +93,7 @@ Example::
             except KeyboardInterrupt:
                 break
         dummy.stop()
-
+```
 
 As you can see, we have defined a custom behaviour called MyBehav that inherits from the spade.behaviour.CyclicBehaviour
 class, the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is,
@@ -119,7 +120,7 @@ there is also a second optional parameter which is the template associated to th
 about templates.
 
 Let's test our new agent::
-
+```sh
     $ python dummyagent.py
     Agent starting . . .
     Starting behaviour . . .
@@ -131,8 +132,8 @@ Let's test our new agent::
     Counter: 5
     Counter: 6
     Counter: 7
-
-. . . and so on. As we have not set any end condition, this agent would go on counting forever until we press ctrl+C.
+    . . . and so on. As we have not set any end condition, this agent would go on counting forever until we press ctrl+C.
+```
 
 
 Finishing a behaviour
@@ -142,7 +143,7 @@ If you want to finish a behaviour you can kill it by using the ``self.kill(exit_
 the behaviour to be killed at the next loop iteration and stores the exit_code to be queried later.
 
 An example of how to kill a behaviour::
-
+```py
     import time
     import asyncio
     from spade.agent import Agent
@@ -182,9 +183,9 @@ An example of how to kill a behaviour::
                 break
         dummy.stop()
 
-
+```
 And the output of this example would be::
-
+```sh
     $ python killbehav.py
     Agent starting . . .
     Starting behaviour . . .
@@ -193,7 +194,7 @@ And the output of this example would be::
     Counter: 2
     Counter: 3
     Behaviour finished with exit code 10.
-
+```
 
 .. note:: An exit code may be of any type you need: int, dict, string, exception, etc.
 
@@ -214,7 +215,7 @@ There is a common use case where you may need to create an agent from within ano
 agent's behaviour. This is a *special* case because you can't create a new event loop when you have a loop already
 running. For this special case you can use the ``start`` method as usual. But in this case ```start`` behaves as a
 coroutine, so it MUST be called with an ``await`` statement in order to work properly. Example::
-
+```py
         class CreateBehav(OneShotBehaviour):
             async def run(self):
                 agent2 = Agent("agent2@fake_server", "fake_password")
@@ -226,7 +227,7 @@ coroutine, so it MUST be called with an ``await`` statement in order to work pro
         # This start is in a synchronous piece of code, so it must NOT be awaited
         agent1.start(auto_register=False)
 
-
+```
 .. warning:: Remember to call ``start`` with an ``await`` whenever you are inside an asyncronous method (another coroutine).
              Otherwise, call ``start`` as usual (without the ``await`` statement).
 
