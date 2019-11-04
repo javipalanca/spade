@@ -2,6 +2,15 @@
 History
 =======
 
+3.1.4 (2019-11-04)
+------------------
+
+* Fixed issue with third party versions.
+* Use factories in tests.
+* Updated documentation and examples.
+* Minor bug fixing.
+
+
 3.1.3 (2019-07-18)
 ------------------
 
