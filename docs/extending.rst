@@ -16,7 +16,7 @@ This way it is very easy to add new features to SPADE without disturbing the cor
 We have planned three different ways to design plugins for the SPADE platform, but of course we are open to suggestions.
 
 .. warning::
-    A plugin needs to complain with some requirements to be accepted as a SPADE plugin and be listed as an official
+    A plugin needs to comply with some requirements to be accepted as a SPADE plugin and be listed as an official
     plugin on the main page:
         #. It must be open source (of course!) and published in PyPi.
         #. The package must be called spade-* (e.g.: spade-bdi, spade-owl, etc.) and be imported as ``import spade_*``.
