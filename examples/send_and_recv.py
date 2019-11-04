@@ -1,10 +1,11 @@
-import time
 import getpass
+import time
+
+from spade import quit_spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
-from spade import quit_spade
 
 
 class SenderAgent(Agent):

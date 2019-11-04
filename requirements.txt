@@ -1,6 +1,8 @@
-multidict==4.4.0
+multidict==4.5.2
+pyasn1-modules==0.2.7
+pyasn1==0.4.7
 aioxmpp>=0.10
-aiohttp>=3.4.4
+aiohttp==3.5.4
 aiohttp_jinja2>=0.14.0
 jinja2>=2.9.6
 jinja2-time==0.2.0

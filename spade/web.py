@@ -2,11 +2,12 @@ import datetime
 import logging
 import socket
 
-import timeago
-from aiohttp import web as aioweb
 import aiohttp_jinja2
 import jinja2
+import timeago
+from aiohttp import web as aioweb
 from aioxmpp import PresenceType, JID
+
 from spade.message import Message
 
 logger = logging.getLogger("spade.Web")

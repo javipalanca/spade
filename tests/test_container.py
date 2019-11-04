@@ -1,22 +1,19 @@
 import asyncio
 
 import aioxmpp
-import pytest
 from asynctest import MagicMock, CoroutineMock
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.container import Container
 from spade.message import Message
-from tests.utils import make_connected_agent
-
-from tests.utils import run_around_tests
+from .factories import MockedAgentFactory
 
 
 def test_use_container():
     container = Container()
     container.reset()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     assert agent.container == Container()
 
@@ -53,7 +50,7 @@ def test_send_message_with_container():
 
     fake_receiver_agent.dispatch = MagicMock()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -82,7 +79,7 @@ def test_send_message_to_outer_with_container():
     container = Container()
     container.reset()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
@@ -105,8 +102,8 @@ def test_unregister():
     container = Container()
     container.reset()
 
-    agent = make_connected_agent()
-    agent2 = make_connected_agent(jid="agent2@server")
+    agent = MockedAgentFactory()
+    agent2 = MockedAgentFactory(jid="agent2@server")
 
     assert container.has_agent(str(agent.jid))
     assert container.has_agent(str(agent2.jid))
@@ -118,7 +115,7 @@ def test_unregister():
 
 
 def test_cancel_tasks():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     class Behav(CyclicBehaviour):
         async def run(self):
@@ -137,4 +134,3 @@ def test_cancel_tasks():
     container.stop()
 
     assert not behav.has_finished
-

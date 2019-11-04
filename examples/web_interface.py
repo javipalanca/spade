@@ -2,17 +2,16 @@
 import asyncio
 import datetime
 import random
-import click
+import time
 
 import aioxmpp
+import click
 from aioxmpp import PresenceType, Presence, JID, PresenceShow, MessageType
 from aioxmpp.roster.xso import Item
-import time
-from spade.message import Message
-
-from spade.behaviour import State
 
 from spade import agent, behaviour
+from spade.behaviour import State
+from spade.message import Message
 from spade.template import Template
 
 

@@ -15,13 +15,11 @@ from testfixtures import LogCapture
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
-from tests.utils import make_connected_agent, make_presence_connected_agent
-
-from tests.utils import run_around_tests
+from .factories import MockedAgentFactory, MockedPresenceAgentFactory
 
 
 def test_web():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.web.start(port=10000)
@@ -82,7 +80,7 @@ def test_add_template_path():
 
 
 async def test_check_server(test_client):
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -100,11 +98,11 @@ async def test_check_server(test_client):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_request_home(test_client):
-    agent = make_connected_agent("jid@server", "password")
+    agent = MockedAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
     agent.web.setup_routes()
@@ -120,7 +118,7 @@ async def test_request_home(test_client):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_messages(test_client):
@@ -140,7 +138,7 @@ async def test_get_messages(test_client):
 
     assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_behaviour(test_client):
@@ -161,7 +159,7 @@ async def test_get_behaviour(test_client):
     sel = Selector(text=response)
 
     assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_kill_behaviour(test_client):
@@ -180,11 +178,11 @@ async def test_kill_behaviour(test_client):
 
     assert behaviour.is_killed()
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_get_agent(test_client):
-    agent = make_presence_connected_agent("jid@server", "password")
+    agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
 
@@ -203,11 +201,11 @@ async def test_get_agent(test_client):
 
     assert sel.css("section.content-header > h1::text").get().strip() == jid
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_unsubscribe_agent(test_client):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.client.enqueue = Mock()
@@ -231,11 +229,11 @@ async def test_unsubscribe_agent(test_client):
     assert arg.to == jid_.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_send_agent(test_client):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.stream = MagicMock()
@@ -258,7 +256,7 @@ async def test_send_agent(test_client):
     assert sent[1].sent
     assert sent[1].body == "Hello World"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_find_behaviour():
@@ -266,14 +264,14 @@ async def test_find_behaviour():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
 
     assert found_behaviour == behaviour
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_find_behaviour_fail():
@@ -282,7 +280,7 @@ async def test_find_behaviour_fail():
 
     assert found_behaviour is None
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_get(test_client):
@@ -298,7 +296,7 @@ async def test_add_get(test_client):
     sel = Selector(text=response)
     assert sel.css("h1::text").get().strip() == "42"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_get_raw(test_client):
@@ -316,7 +314,7 @@ async def test_add_get_raw(test_client):
     # sel = Selector(text=response)
     # assert sel.css("h1::text").get().strip() == "42"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post(test_client):
@@ -337,7 +335,7 @@ async def test_add_post(test_client):
     sel = Selector(text=response)
     assert sel.css("h1::text").get() == "1024"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post_raw(test_client):
@@ -357,7 +355,7 @@ async def test_add_post_raw(test_client):
 
     assert response == "Hello Raw Post Number=1024"
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_stop(test_client):
@@ -403,7 +401,7 @@ async def test_add_get_json(test_client):
     data = await response.json()
     assert data["number"] == 42
 
-    agent.stop()
+    agent.stop().result()
 
 
 async def test_add_post_json(test_client):
@@ -424,4 +422,4 @@ async def test_add_post_json(test_client):
     data = await response.json()
     assert data["number"] == 1024
 
-    agent.stop()
+    agent.stop().result()

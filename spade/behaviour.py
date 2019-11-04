@@ -1,13 +1,12 @@
+import asyncio
 import collections
 import logging
+import time
 import traceback
 from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
-from threading import Event
 from datetime import timedelta, datetime
-import time
-
-import asyncio
+from threading import Event
 from typing import Any, Union
 
 from .message import Message

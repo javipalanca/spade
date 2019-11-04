@@ -10,32 +10,6 @@ import pytest
 
 from spade.message import Message, SPADE_X_METADATA
 
-from tests.utils import run_around_tests
-
-
-@pytest.fixture
-def message():
-    return Message(
-        to="to@localhost",
-        sender="sender@localhost",
-        body="message body",
-        thread="thread-id",
-        metadata={
-            "metadata1": "value1",
-            "metadata2": "value2"
-        }
-    )
-
-
-@pytest.fixture
-def message2():
-    return Message(
-        to="to2@localhost",
-        sender="sender2@localhost",
-        body="message body",
-        thread="thread-id",
-    )
-
 
 def test_prepare(message):
     aiomsg = message.prepare()
