@@ -15,13 +15,11 @@ from testfixtures import LogCapture
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
-from tests.utils import make_connected_agent, make_presence_connected_agent
-
-from tests.utils import run_around_tests
+from .factories import MockedAgentFactory, MockedPresenceAgentFactory
 
 
 def test_web():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.web.start(port=10000)
@@ -82,7 +80,7 @@ def test_add_template_path():
 
 
 async def test_check_server(test_client):
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -104,7 +102,7 @@ async def test_check_server(test_client):
 
 
 async def test_request_home(test_client):
-    agent = make_connected_agent("jid@server", "password")
+    agent = MockedAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
     agent.web.setup_routes()
@@ -184,7 +182,7 @@ async def test_kill_behaviour(test_client):
 
 
 async def test_get_agent(test_client):
-    agent = make_presence_connected_agent("jid@server", "password")
+    agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
 
@@ -207,7 +205,7 @@ async def test_get_agent(test_client):
 
 
 async def test_unsubscribe_agent(test_client):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.client.enqueue = Mock()
@@ -235,7 +233,7 @@ async def test_unsubscribe_agent(test_client):
 
 
 async def test_send_agent(test_client):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.stream = MagicMock()
@@ -266,7 +264,7 @@ async def test_find_behaviour():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
