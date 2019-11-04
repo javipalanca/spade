@@ -207,6 +207,32 @@ And the output of this example would be::
     automatically killed and the exception will be stored as its ``exit_code``.
 
 
+Finishing SPADE
+---------------
+
+There is a helper to quickly finish all the agents and behaviors running in your process. This helper function is
+``quit_spade``::
+
+    from spade import quit_spade
+
+    from spade import agent
+
+    class DummyAgent(agent.Agent):
+        async def setup(self):
+            print("Hello World! I'm agent {}".format(str(self.jid)))
+
+    dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+    dummy.start()
+
+    dummy.stop()
+
+    quit_spade()
+
+
+
+.. hint::
+    The ``quit_spade`` helper is not mandatory, but it helps to terminate all agents of the active container along with
+    their behaviors, as well as free all pending resources (threads, etc...).
 
 Creating an agent from within another agent
 -------------------------------------------
