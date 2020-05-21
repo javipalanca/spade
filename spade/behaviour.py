@@ -264,6 +264,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except Exception as e:
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
+        self.agent.remove_behaviour(self)
 
     async def enqueue(self, message: Message):
         """

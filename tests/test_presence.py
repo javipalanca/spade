@@ -195,9 +195,7 @@ def test_set_presence():
     future.result()
 
     agent.presence.set_presence(
-        state=PresenceState(True, PresenceShow.PLAIN),
-        status="Lunch",
-        priority=2
+        state=PresenceState(True, PresenceShow.PLAIN), status="Lunch", priority=2
     )
 
     assert agent.presence.is_available()
@@ -234,7 +232,7 @@ def test_get_contacts(jid):
     assert type(contacts[bare_jid]) == dict
     assert contacts[bare_jid]["approved"]
     assert contacts[bare_jid]["name"] == "My Friend"
-    assert contacts[bare_jid]["subscription"] == 'none'
+    assert contacts[bare_jid]["subscription"] == "none"
     assert "ask" not in contacts[bare_jid]
     assert "groups" not in contacts[bare_jid]
 
@@ -330,7 +328,7 @@ def test_get_contact(jid):
     assert type(contact) == dict
     assert contact["approved"]
     assert contact["name"] == "My Friend"
-    assert contact["subscription"] == 'none'
+    assert contact["subscription"] == "none"
     assert "ask" not in contact
     assert "groups" not in contact
 

@@ -8,11 +8,24 @@ from pytest import fixture
 from asynctest import CoroutineMock, MagicMock, Mock
 
 from spade.agent import Agent
-from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour, TimeoutBehaviour, FSMBehaviour, State, \
-    NotValidState, NotValidTransition, BehaviourNotFinishedException
+from spade.behaviour import (
+    OneShotBehaviour,
+    CyclicBehaviour,
+    PeriodicBehaviour,
+    TimeoutBehaviour,
+    FSMBehaviour,
+    State,
+    NotValidState,
+    NotValidTransition,
+    BehaviourNotFinishedException,
+)
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
-from tests.utils import make_connected_agent, run_around_tests, wait_for_behaviour_is_killed
+from tests.utils import (
+    make_connected_agent,
+    run_around_tests,
+    wait_for_behaviour_is_killed,
+)
 
 STATE_ONE = "STATE_ONE"
 STATE_TWO = "STATE_TWO"
@@ -26,10 +39,7 @@ def message():
         sender="sender@localhost",
         body="message body",
         thread="thread-id",
-        metadata={
-            "metadata1": "value1",
-            "metadata2": "value2"
-        }
+        metadata={"metadata1": "value1", "metadata2": "value2"},
     )
 
 
@@ -1024,7 +1034,10 @@ def test_fsm_fail_on_end():
 
 
 def test_to_graphviz(fsm):
-    assert fsm.to_graphviz() == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+    assert (
+        fsm.to_graphviz()
+        == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+    )
 
 
 def test_join():

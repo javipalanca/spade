@@ -20,10 +20,7 @@ def message():
         sender="sender@localhost",
         body="message body",
         thread="thread-id",
-        metadata={
-            "metadata1": "value1",
-            "metadata2": "value2"
-        }
+        metadata={"metadata1": "value1", "metadata2": "value2"},
     )
 
 
@@ -88,9 +85,13 @@ def test_message_from_node():
         )
     )
 
-    data.fields.append(forms_xso.Field(var="_thread_node",
-                                       type_=forms_xso.FieldType.TEXT_SINGLE,
-                                       values=["thread-id"]))
+    data.fields.append(
+        forms_xso.Field(
+            var="_thread_node",
+            type_=forms_xso.FieldType.TEXT_SINGLE,
+            values=["thread-id"],
+        )
+    )
     data.title = SPADE_X_METADATA
     aiomsg.xep0004_data = [data]
 

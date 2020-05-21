@@ -35,12 +35,9 @@ def make_connected_agent(jid="fake@jid", password="fake_password"):
 
 
 class MockedPresenceConnectedAgent(Agent):
-    def __init__(self,
-                 available=None,
-                 show=None,
-                 status=None,
-                 priority=0,
-                 *args, **kwargs):
+    def __init__(
+        self, available=None, show=None, status=None, priority=0, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         if status is None:
             status = {}
@@ -60,17 +57,23 @@ class MockedPresenceConnectedAgent(Agent):
         self.presence.presenceserver.set_presence(state, self.status, self.priority)
 
 
-def make_presence_connected_agent(jid="fake@jid", password="fake_password",
-                                  available=None,
-                                  show=None,
-                                  status=None,
-                                  priority=0):
+def make_presence_connected_agent(
+    jid="fake@jid",
+    password="fake_password",
+    available=None,
+    show=None,
+    status=None,
+    priority=0,
+):
     status = {} if status is None else status
-    return MockedPresenceConnectedAgent(jid=jid, password=password,
-                                        available=available,
-                                        show=show,
-                                        status=status,
-                                        priority=priority)
+    return MockedPresenceConnectedAgent(
+        jid=jid,
+        password=password,
+        available=available,
+        show=show,
+        status=status,
+        priority=priority,
+    )
 
 
 def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):

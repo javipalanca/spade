@@ -29,11 +29,14 @@ def test_send_message_with_container():
         def __init__(self):
             self.jid = "fake_receiver_agent@server"
 
-        def set_container(self, c): pass
+        def set_container(self, c):
+            pass
 
-        def set_loop(self, loop): pass
+        def set_loop(self, loop):
+            pass
 
-        def stop(self): pass
+        def stop(self):
+            pass
 
         def is_alive(self):
             return False
@@ -65,7 +68,10 @@ def test_send_message_with_container():
     assert agent.client.send.await_count == 0
 
     assert fake_receiver_agent.dispatch.call_count == 1
-    assert str(fake_receiver_agent.dispatch.call_args[0][0].to) == "fake_receiver_agent@server"
+    assert (
+        str(fake_receiver_agent.dispatch.call_args[0][0].to)
+        == "fake_receiver_agent@server"
+    )
 
     agent.stop()
 
