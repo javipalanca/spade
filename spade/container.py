@@ -131,7 +131,7 @@ class AioThread(Thread):
         try:
             asyncio.wait_for(future, timeout=5)
         except asyncio.TimeoutError:  # pragma: no cover
-            logger.error('The loop took too long to close...')
+            logger.error("The loop took too long to close...")
             future.cancel()
         except Exception as e:  # pragma: no cover
             logger.error("Exception closing loop: {}".format(e))

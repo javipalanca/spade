@@ -3,13 +3,15 @@ from abc import ABCMeta
 
 from spade.message import MessageBase
 
-logger = logging.getLogger('spade.Template')
+logger = logging.getLogger("spade.Template")
 
 
 # TODO: Include regex in templates
 
+
 class BaseTemplate(metaclass=ABCMeta):
     """Template operators"""
+
     def __and__(self, other):
         """Implementation of & operator"""
         if not issubclass(other.__class__, BaseTemplate):
@@ -47,6 +49,7 @@ class BaseTemplate(metaclass=ABCMeta):
 
 class NOTTemplate(BaseTemplate):
     """ """
+
     def __init__(self, expr):
         self.expr = expr
 
@@ -57,6 +60,7 @@ class NOTTemplate(BaseTemplate):
 
 class ORTemplate(BaseTemplate):
     """ """
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2
@@ -68,6 +72,7 @@ class ORTemplate(BaseTemplate):
 
 class ANDTemplate(BaseTemplate):
     """ """
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2
@@ -79,6 +84,7 @@ class ANDTemplate(BaseTemplate):
 
 class XORTemplate(BaseTemplate):
     """ """
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2
@@ -90,6 +96,7 @@ class XORTemplate(BaseTemplate):
 
 class Template(BaseTemplate, MessageBase):
     """Template for message matching"""
+
     def __str__(self):
         s = f'<template to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:

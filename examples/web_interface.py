@@ -70,10 +70,18 @@ class WebAgent(agent.Agent):
 
         # Create some fake contacts
         self.add_fake_contact("agent0@fake_server", PresenceType.AVAILABLE)
-        self.add_fake_contact("agent1@fake_server", PresenceType.AVAILABLE, show=PresenceShow.AWAY)
-        self.add_fake_contact("agent2@fake_server", PresenceType.AVAILABLE, show=PresenceShow.DO_NOT_DISTURB)
+        self.add_fake_contact(
+            "agent1@fake_server", PresenceType.AVAILABLE, show=PresenceShow.AWAY
+        )
+        self.add_fake_contact(
+            "agent2@fake_server",
+            PresenceType.AVAILABLE,
+            show=PresenceShow.DO_NOT_DISTURB,
+        )
         self.add_fake_contact("agent3@fake_server", PresenceType.UNAVAILABLE)
-        self.add_fake_contact("agent4@fake_server", PresenceType.AVAILABLE, show=PresenceShow.CHAT)
+        self.add_fake_contact(
+            "agent4@fake_server", PresenceType.AVAILABLE, show=PresenceShow.CHAT
+        )
         self.add_fake_contact("agent5@fake_server", PresenceType.UNAVAILABLE)
 
         # Send and Receive some fake messages
@@ -82,12 +90,16 @@ class WebAgent(agent.Agent):
             number = random.randint(0, 3)
             from_ = JID.fromstr("agent{}@fake_server".format(number))
             msg = aioxmpp.Message(from_=from_, to=self.jid, type_=MessageType.CHAT)
-            msg.body[None] = "Hello from {}! This is a long message.".format(from_.localpart)
+            msg.body[None] = "Hello from {}! This is a long message.".format(
+                from_.localpart
+            )
             msg = Message.from_node(msg)
             msg.metadata = {"performative": "inform", "acl-representation": "xml"}
             msg = msg.prepare()
             self._message_received(msg=msg)
-            msg = Message(sender=str(self.jid), to=str(from_), body="This is my answer.")
+            msg = Message(
+                sender=str(self.jid), to=str(from_), body="This is my answer."
+            )
             msg.sent = True
             self.traces.append(msg, category=str(behavs[number]))
 
@@ -106,9 +118,9 @@ class WebAgent(agent.Agent):
 
 
 @click.command()
-@click.option('--jid', prompt="Agent JID> ")
-@click.option('--pwd', prompt="Password>", hide_input=True)
-@click.option('--port', default=10000)
+@click.option("--jid", prompt="Agent JID> ")
+@click.option("--pwd", prompt="Password>", hide_input=True)
+@click.option("--port", default=10000)
 def run(jid, pwd, port):
     a = WebAgent(jid, pwd)
     a.web.port = port

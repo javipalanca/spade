@@ -60,7 +60,11 @@ def run_experiment(credentials, num_msg=1000, body="0"):
 
     size = getsizeof(body)
 
-    print("{} Messages of size {} bytes received w/container: {}".format(receiver.n, size, t2 - t1))
+    print(
+        "{} Messages of size {} bytes received w/container: {}".format(
+            receiver.n, size, t2 - t1
+        )
+    )
 
     sender.stop()
     receiver.stop()
@@ -71,7 +75,7 @@ if __name__ == "__main__":
         "sender_jid": input("SenderAgent JID> "),
         "sender_passwd": getpass.getpass(),
         "recv_jid": input("ReceiverAgent JID> "),
-        "recv_passwd": getpass.getpass()
+        "recv_passwd": getpass.getpass(),
     }
 
     run_experiment(agent_credentials)

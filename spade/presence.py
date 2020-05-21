@@ -4,6 +4,7 @@ from aioxmpp import PresenceState, PresenceShow
 
 class ContactNotFound(Exception):
     """ """
+
     pass
 
 
@@ -235,8 +236,10 @@ class PresenceManager(object):
         """ """
         if self.approve_all:
             self.client.stream.enqueue(
-                aioxmpp.Presence(type_=aioxmpp.structs.PresenceType.UNSUBSCRIBED,
-                                 to=stanza.from_.bare())
+                aioxmpp.Presence(
+                    type_=aioxmpp.structs.PresenceType.UNSUBSCRIBED,
+                    to=stanza.from_.bare(),
+                )
             )
         else:
             self.on_unsubscribe(str(stanza.from_))

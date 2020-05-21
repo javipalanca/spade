@@ -5,7 +5,7 @@ import aioxmpp.forms.xso as forms_xso
 
 SPADE_X_METADATA = "spade:x:metadata"
 
-logger = logging.getLogger('spade.Message')
+logger = logging.getLogger("spade.Message")
 
 
 class MessageBase(object):
@@ -234,7 +234,7 @@ class Message(MessageBase):
             sender=str(self.to),
             body=self.body,
             thread=self.thread,
-            metadata=self.metadata
+            metadata=self.metadata,
         )
 
     def prepare(self):
@@ -247,9 +247,7 @@ class Message(MessageBase):
         """
 
         msg = aioxmpp.stanza.Message(
-            to=self.to,
-            from_=self.sender,
-            type_=aioxmpp.MessageType.CHAT,
+            to=self.to, from_=self.sender, type_=aioxmpp.MessageType.CHAT,
         )
 
         msg.body[None] = self.body
@@ -261,16 +259,18 @@ class Message(MessageBase):
             for name, value in self.metadata.items():
                 data.fields.append(
                     forms_xso.Field(
-                        var=name,
-                        type_=forms_xso.FieldType.TEXT_SINGLE,
-                        values=[value],
+                        var=name, type_=forms_xso.FieldType.TEXT_SINGLE, values=[value],
                     )
                 )
 
             if self.thread:
-                data.fields.append(forms_xso.Field(var="_thread_node",
-                                                   type_=forms_xso.FieldType.TEXT_SINGLE,
-                                                   values=[self.thread]))
+                data.fields.append(
+                    forms_xso.Field(
+                        var="_thread_node",
+                        type_=forms_xso.FieldType.TEXT_SINGLE,
+                        values=[self.thread],
+                    )
+                )
 
             data.title = SPADE_X_METADATA
             msg.xep0004_data = [data]

@@ -17,11 +17,12 @@ from spade.presence import PresenceManager
 from spade.trace import TraceStore
 from spade.web import WebApp
 
-logger = logging.getLogger('spade.Agent')
+logger = logging.getLogger("spade.Agent")
 
 
 class AuthenticationFailure(Exception):
     """ """
+
     pass
 
 
@@ -99,11 +100,14 @@ class Agent(object):
 
         if auto_register:
             await self._async_register()
-        self.client = aioxmpp.PresenceManagedClient(self.jid,
-                                                    aioxmpp.make_security_layer(self.password,
-                                                                                no_verify=not self.verify_security),
-                                                    loop=self.loop,
-                                                    logger=logging.getLogger(self.jid.localpart))
+        self.client = aioxmpp.PresenceManagedClient(
+            self.jid,
+            aioxmpp.make_security_layer(
+                self.password, no_verify=not self.verify_security
+            ),
+            loop=self.loop,
+            logger=logging.getLogger(self.jid.localpart),
+        )
 
         # obtain an instance of the service
         self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
@@ -115,9 +119,7 @@ class Agent(object):
 
         # register a message callback here
         self.message_dispatcher.register_callback(
-            aioxmpp.MessageType.CHAT,
-            None,
-            self._message_received,
+            aioxmpp.MessageType.CHAT, None, self._message_received,
         )
         await self.setup()
         self._alive.set()
@@ -134,13 +136,16 @@ class Agent(object):
             logger.info(f"Agent {str(self.jid)} connected and authenticated.")
         except aiosasl.AuthenticationFailure:
             raise AuthenticationFailure(
-                "Could not authenticate the agent. Check user and password or use auto_register=True")
+                "Could not authenticate the agent. Check user and password or use auto_register=True"
+            )
 
     async def _async_register(self):  # pragma: no cover
         """ Register the agent in the XMPP server from a coroutine. """
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
-        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata, loop=self.loop)
+        _, stream, features = await aioxmpp.node.connect_xmlstream(
+            self.jid, metadata, loop=self.loop
+        )
         await ibr.register(stream, query)
 
     async def setup(self):
