@@ -1,0 +1,105 @@
+{% extends "internal_tpl_base.html" %}
+
+{% block content %}
+<!-- Main content -->
+<section class="content">
+    <!-- Info boxes -->
+    <!-- Main row -->
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <!-- BEHAVIOURS LIST -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Behaviours</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <ul class="products-list product-list-in-box">
+                        {% for behaviour in agent.behaviours %}
+                        <li class="item">
+                            <div class="product-img">
+                                {% if behaviour.is_killed() %}
+                                <i class="fa fa-circle text-danger"></i>
+                                {% else %}
+                                <i class="fa fa-circle text-success"></i>
+                                {% endif %}
+                            </div>
+                            <div class="product-info">
+                                <a href="/spade/behaviour/{{behaviour}}/" class="product-title">{{ behaviour }}
+                                </a>
+                                {% if not behaviour.is_killed() %}
+                                <a href="/spade/behaviour/{{behaviour}}/kill/">
+                                    <button type="button" class="btn btn-danger pull-right">Kill</button>
+                                </a>
+                                {% endif %}
+                                <span class="product-description">Template: {% filter escape %}{{ behaviour.template  }}{% endfilter %}</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                        <!-- /.item -->
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6">
+            <!-- USERS LIST -->
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Contacts</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                            class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <ul class="users-list clearfix">
+                        {% for contact in contacts %}
+                        <li>
+                            <a href="/spade/agent/{{ contact.jid }}/">
+                                <img src="{{ contact.avatar }}" alt="User Image">
+                                <span class="users-list-name">{{ contact.jid }}</span>
+                                {%if not contact.available %}
+                                    <i class="fa fa-circle text-red"></i> OFFLINE
+                                {%  else %}
+                                    {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
+                                    contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
+                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
+                                    {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT"
+                                    or contact.show == "FREE_FOR_CHAT" %}
+                                    <i class="fa fa-circle text-green"></i> ONLINE
+                                    {% endif %}
+                                {% endif %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.box-body -->
+                <!--div class="box-footer text-center">
+                    <a href="javascript:void(0)" class="uppercase">View All Users</a>
+                </div-->
+                <!-- /.box-footer -->
+            </div>
+            <!--/.box -->
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
+

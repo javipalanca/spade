@@ -1,0 +1,77 @@
+{% extends "internal_tpl_base.html" %}
+{% from 'internal_tpl_macros.html' import chat_box, modal_msg %}
+
+{% block content_title -%}{{ ajid }}{%- endblock %}
+
+{% block content %}
+<!-- Main content -->
+<section class="content">
+    <!-- Info boxes -->
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-aqua-active">
+                  <h3 class="widget-user-username">{{ ajid }}</h3>
+                </div>
+                <div class="widget-user-image">
+                  <img class="img-circle" src="{{ agent.build_avatar_url(ajid) }}" alt="User Avatar">
+                </div>
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                          <span class="description-header">STATUS</span>
+                        {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
+                        contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
+                          <h5 class="description-text"><i class="fa fa-circle text-yellow"></i> {{ contact.show }}</h5>
+                        {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT" or
+                        contact.show == "FREE_FOR_CHAT" %}
+                          <h5 class="description-text"><i class="fa fa-circle text-green"></i> ONLINE</h5>
+                        {% else %}
+                          <h5 class="description-text"><i class="fa fa-circle text-red"></i> OFFLINE</h5>
+                        {% endif %}
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 border-right">
+                      <div class="description-block">
+                          <span class="description-header">ACTION</span>
+                          <a href="/spade/agent/{{ ajid }}/unsubscribe/">
+                                <button type="button" class="btn btn-block btn-warning btn-xs">Unsubscribe</button>
+                          </a>
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4">
+                      <div class="description-block">
+                        <h5 class="description-header">{{ amessages.__len__() }}</h5>
+                        <span class="description-text">MESSAGES</span>
+                      </div>
+                      <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                <!-- /.row -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- DIRECT CHAT PRIMARY -->
+            {{ chat_box(amessages, agent, allow_send=True, agent_jid=ajid) }}
+            <!-- modals -->
+            {% for date, msg in amessages %}
+                {{ modal_msg(msg, date) }}
+            {% endfor %}
+            <!-- / modals -->
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
+

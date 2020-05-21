@@ -1,0 +1,125 @@
+{% macro modal_msg(msg, date) -%}
+    <div class="modal modal-info fade" id="modal{{ msg.id }}" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Message {{ msg.id }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box box-primary">
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <div class="mailbox-read-info">
+                                <h5 class="text-muted">From: {{ msg.sender }}</h5>
+                                <h5 class="text-muted">To: {{ msg.to }}
+                                    <span class="mailbox-read-time pull-right">{{ date }}</span>
+                                </h5>
+                            </div>
+                            <!-- /.mailbox-read-info -->
+                            <div class="mailbox-read-message text-black">
+                                {% filter escape %}{{ msg.body }}{% endfilter %}
+                            </div>
+                            <!-- /.mailbox-read-message -->
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <ul class="mailbox-attachments clearfix">
+                                    <li>
+                                        <div class="mailbox-attachment-info text-primary">
+                                            <span class="mailbox-attachment-name">Thread_Id</span>
+                                            <span class="mailbox-attachment-size">
+                                              {{ msg.thread }}
+                                            </span>
+                                        </div>
+                                    </li>
+                            {% if msg.metadata %}
+                                    {% for key, value in msg.metadata.items() %}
+                                        <li>
+                                            <div class="mailbox-attachment-info text-primary">
+                                                <span class="mailbox-attachment-name">{{ key }}</span>
+                                                <span class="mailbox-attachment-size">
+                                                  {{ value }}
+                                                </span>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                            {% endif %}
+                            </ul>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{%- endmacro %}
+
+
+{% macro chat_box(msg_list, agent, allow_send=True, agent_jid=None) -%}
+    <!-- DIRECT CHAT PRIMARY -->
+    <div class="box box-primary direct-chat direct-chat-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Chat</h3>
+            <div class="box-tools pull-right">
+                        <span data-toggle="tooltip" title="" class="badge bg-light-blue"
+                              data-original-title="{{ msg_list.__len__() }} New Messages">{{ msg_list.__len__() }}</span>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                    class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- Conversations are loaded here -->
+            <div class="direct-chat-messages">
+                <!-- Message. Default to the left -->
+                {% for date, msg in msg_list %}
+                    {% if msg.sent %}
+                        <div class="direct-chat-msg right">
+                    {% else %}
+                        <div class="direct-chat-msg">
+                    {% endif %}
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-left">{{ msg.sender.localpart }}</span>
+                                <span class="direct-chat-timestamp pull-right"> {{ date }}</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <img class="direct-chat-img" src="{{ agent.build_avatar_url(msg.sender) }}"
+                                 alt="Message User Image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text" data-toggle="modal" data-target="#modal{{ msg.id }}">
+                                {% filter escape %}{{ msg.body }}{% endfilter %}
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                        <!-- /.direct-chat-msg -->
+                {% endfor %}
+            </div>
+            <!-- /.direct-chat-pane -->
+        </div>
+        <!-- /.box-body -->
+        {% if allow_send %}
+        <div class="box-footer">
+            <form action="/spade/agent/{{ agent_jid }}/send/" method="post">
+                <div class="input-group">
+                    <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <!-- /.box-footer-->
+        {% endif %}
+    <!--/.direct-chat -->
+    </div>
+{%- endmacro %}

@@ -1,7 +1,41 @@
+# Config file for automatic testing at travis-ci.org
+# This file will be regenerated if you run travis_pypi_setup.py
+os:
+  - linux
 language: python
 python:
-  - "2.7"
+  - 3.6
+
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements.txt --use-mirrors 
+install:
+  - pip install -r requirements_dev.txt
+  - pip install -r requirements.txt
+  - pip install tox-travis
+
+addons:
+  apt:
+    packages:
+    - python-dev
+    - libxml2-dev
+
+after_success:
+  - coveralls --ignore-errors
+
 # command to run tests, e.g. python setup.py test
-script:  python test.py
+script:
+    - tox
+    - coverage run --source=spade -m py.test
+    - coverage report -m
+
+# After you create the Github repo and add it to Travis, run the
+# travis_pypi_setup.py script to finish PyPI deployment setup
+#deploy:
+#  provider: pypi
+#  distributions: sdist bdist_wheel
+#  user: jpalanca
+#  password:
+#    secure: PLEASE_REPLACE_ME
+#  on:
+#    tags: true
+#    repo: javipalanca/spade
+#    python: 3.6

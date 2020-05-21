@@ -1,0 +1,154 @@
+{% extends "internal_tpl_base.html" %}
+{% from 'internal_tpl_macros.html' import chat_box, modal_msg %}
+
+{% block content_title %}{{ behaviour }}{% endblock %}
+{% block content %}
+<!-- Main content -->
+<section class="content">
+    <!-- Info boxes -->
+
+    <div class="row">
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ behaviour.mailbox_size() }}</h3>
+                    <p>Mailbox</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-envelope"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>Template</h3>
+                    <p>{% filter escape %}{{ behaviour.template }}{% endfilter %}</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-file-code-o"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ behaviour.is_killed() }}</h3>
+                    <p>Is killed?</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-skull"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ behaviour._exit_code }}</h3>
+                    <p>Exit Code</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-sign-out-alt"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+
+        {% if "Periodic" in behaviour.__str__() %}
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>{{ behaviour.period.total_seconds() }}</h3>
+                    <p>Period</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-clock"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- ./col -->
+        {% if "Timeout" in behaviour.__str__() %}
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>Timeout</h3>
+                    <p>{{ behaviour._timeout }}</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-calendar-alt"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if "FSM" in behaviour.__str__() %}
+        <div class="col-lg-2 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3>{{ behaviour.current_state}}</h3>
+                    <p>Current State</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+            </div>
+        </div>
+        {%  endif %}
+        <!-- ./col -->
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+          <!-- DIRECT CHAT PRIMARY -->
+            {{ chat_box(bmessages, agent, allow_send=False) }}
+            <!-- modals -->
+            {% for date, msg in bmessages %}
+                {{ modal_msg(msg, date) }}
+            {% endfor %}
+            <!-- / modals -->
+        </div>
+
+        {% if "FSM" in behaviour.__str__() %}
+        <script src="https://cdn.bootcss.com/viz.js/2.0.0/viz.js"></script>
+        <script src="https://cdn.bootcss.com/viz.js/2.0.0/full.render.js"></script>
+        <div class="col-md-7">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Finite State Machine</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" id="fsm"></div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <!-- /.box -->
+
+        <script>
+            var viz = new Viz();
+            viz.renderSVGElement("{{ behaviour.to_graphviz()|safe }}")
+            .then(function(element) {
+              document.getElementById("fsm").appendChild(element);
+            });
+        </script>
+        {% endif %}
+
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
+

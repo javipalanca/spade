@@ -1,0 +1,69 @@
+{% extends "internal_tpl_base.html" %}
+{% from 'internal_tpl_macros.html' import modal_msg %}
+
+{% block content_title -%}Messages{%- endblock %}
+
+{% block content %}
+    <!-- Main content -->
+    <section class="content">
+        <!-- Info boxes -->
+
+        <div class="row">
+            <div class="col-md-7">
+                <ul class="timeline timeline-inverse">
+                    {% for date, msg in messages %}
+                    <!-- timeline item -->
+                    <li>
+                        <img class="fa direct-chat-img" src="{{ agent.build_avatar_url(msg.sender) }}"
+                             alt="Message User Image">
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> {{ date }}</span>
+
+                            <h3 class="timeline-header">
+                                From: {{ msg.sender }}
+                            </h3>
+
+                            <div class="timeline-body">
+                                {% filter escape %}{{ msg.body }}{% endfilter %}
+                            </div>
+                            <div class="timeline-footer">
+                                <ul class="mailbox-attachments clearfix">
+                                    <li>
+                                        <div class="mailbox-attachment-info text-primary">
+                                            <span class="mailbox-attachment-name">Thread_Id</span>
+                                            <span class="mailbox-attachment-size">
+                                               {{ msg.thread }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                    {% if msg.metadata %}
+                                        {% for key, value in msg.metadata.items() %}
+                                        <li>
+                                            <div class="mailbox-attachment-info text-primary">
+                                                <span class="mailbox-attachment-name">{{ key }}</span>
+                                                <span class="mailbox-attachment-size">
+                                                  {{ value }}
+                                                </span>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    {% endfor %}
+                    <li>
+                        <i class="fa fa-clock-o bg-gray"></i>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
