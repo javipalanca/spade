@@ -2,11 +2,38 @@
 History
 =======
 
-3.1.1 (2020-05-21)
+3.1.5 (2020-05-21)
 ------------------
 * Fixed how to stop behaviours.
 * Fixed some tests.
 * Blackstyled code.
+
+3.1.4 (2019-11-04)
+------------------
+
+* Fixed issue with third party versions.
+* Use factories in tests.
+* Updated documentation and examples.
+* Minor bug fixing.
+
+3.1.3 (2019-07-18)
+------------------
+
+* Added BDI plugin (https://github.com/javipalanca/spade_bdi).
+* Improved the platform stop (quit_spade).
+* Minor bug fixing.
+
+3.1.2 (2019-05-14)
+------------------
+
+* Hotfix docs.
+
+3.1.1 (2019-05-14)
+------------------
+
+* Added Python 3.7 support.
+* Added Code of Conduct.
+* Minor bugs fixed.
 
 3.1.0 (2019-03-22)
 ------------------

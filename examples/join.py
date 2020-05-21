@@ -1,9 +1,9 @@
 import asyncio
 import getpass
 
+from spade import quit_spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
-from spade import quit_spade
 
 
 class DummyAgent(Agent):

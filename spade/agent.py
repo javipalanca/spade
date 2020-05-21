@@ -1,11 +1,10 @@
-import logging
-
-import aiosasl
-import sys
 import asyncio
+import logging
+import sys
 from hashlib import md5
 from threading import Event
 
+import aiosasl
 import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
