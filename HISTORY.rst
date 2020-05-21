@@ -2,6 +2,12 @@
 History
 =======
 
+3.1.5 (2020-05-21)
+------------------
+* Fixed how to stop behaviours.
+* Fixed some tests.
+* Blackstyled code.
+
 3.1.4 (2019-11-04)
 ------------------
 
@@ -9,7 +15,6 @@ History
 * Use factories in tests.
 * Updated documentation and examples.
 * Minor bug fixing.
-
 
 3.1.3 (2019-07-18)
 ------------------
