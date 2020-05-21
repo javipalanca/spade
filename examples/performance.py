@@ -2,10 +2,10 @@ import getpass
 import time
 from sys import getsizeof
 
+from spade import quit_spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
-from spade import quit_spade
 
 
 class RecvBehav(OneShotBehaviour):

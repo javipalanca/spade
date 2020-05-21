@@ -3,21 +3,13 @@ from unittest.mock import Mock
 import pytest
 from aioxmpp import PresenceState, PresenceShow, JID, PresenceType, Presence
 from aioxmpp.roster.xso import Item as XSOItem
-from pytest import fixture
 
 from spade.presence import ContactNotFound
-from tests.utils import make_presence_connected_agent
-
-from tests.utils import run_around_tests
-
-
-@fixture
-def jid():
-    return JID.fromstr("friend@localhost/home")
+from .factories import MockedPresenceAgentFactory
 
 
 def test_get_state_not_available():
-    agent = make_presence_connected_agent(available=False, show=PresenceShow.NONE)
+    agent = MockedPresenceAgentFactory(available=False, show=PresenceShow.NONE)
 
     future = agent.start(auto_register=False)
     future.result()
@@ -29,7 +21,7 @@ def test_get_state_not_available():
 
 
 def test_get_state_available():
-    agent = make_presence_connected_agent(available=True)
+    agent = MockedPresenceAgentFactory(available=True)
 
     future = agent.start(auto_register=False)
     future.result()
@@ -40,7 +32,7 @@ def test_get_state_available():
 
 
 def test_set_available():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -51,7 +43,7 @@ def test_set_available():
 
 
 def test_set_available_with_show():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -63,7 +55,7 @@ def test_set_available_with_show():
 
 
 def test_set_unavailable():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -74,7 +66,7 @@ def test_set_unavailable():
 
 
 def test_get_state_show():
-    agent = make_presence_connected_agent(available=True, show=PresenceShow.AWAY)
+    agent = MockedPresenceAgentFactory(available=True, show=PresenceShow.AWAY)
 
     future = agent.start(auto_register=False)
     future.result()
@@ -84,7 +76,7 @@ def test_get_state_show():
 
 
 def test_get_status_empty():
-    agent = make_presence_connected_agent(status={})
+    agent = MockedPresenceAgentFactory(status={})
 
     future = agent.start(auto_register=False)
     future.result()
@@ -94,7 +86,7 @@ def test_get_status_empty():
 
 
 def test_get_status_string():
-    agent = make_presence_connected_agent(status="Working")
+    agent = MockedPresenceAgentFactory(status="Working")
 
     future = agent.start(auto_register=False)
     future.result()
@@ -104,7 +96,7 @@ def test_get_status_string():
 
 
 def test_get_status_dict():
-    agent = make_presence_connected_agent(status={"en": "Working"})
+    agent = MockedPresenceAgentFactory(status={"en": "Working"})
 
     future = agent.start(auto_register=False)
     future.result()
@@ -114,7 +106,7 @@ def test_get_status_dict():
 
 
 def test_get_priority_default():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -124,7 +116,7 @@ def test_get_priority_default():
 
 
 def test_get_priority():
-    agent = make_presence_connected_agent(priority=10)
+    agent = MockedPresenceAgentFactory(priority=10)
 
     future = agent.start(auto_register=False)
     future.result()
@@ -134,7 +126,7 @@ def test_get_priority():
 
 
 def test_set_presence_available():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -145,7 +137,7 @@ def test_set_presence_available():
 
 
 def test_set_presence_unavailable():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -156,7 +148,7 @@ def test_set_presence_unavailable():
 
 
 def test_set_presence_status():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -167,7 +159,7 @@ def test_set_presence_status():
 
 
 def test_set_presence_status_dict():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -178,7 +170,7 @@ def test_set_presence_status_dict():
 
 
 def test_set_presence_priority():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -189,7 +181,7 @@ def test_set_presence_priority():
 
 
 def test_set_presence():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -205,7 +197,7 @@ def test_set_presence():
 
 
 def test_get_contacts_empty():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -214,7 +206,7 @@ def test_get_contacts_empty():
 
 
 def test_get_contacts(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -238,7 +230,7 @@ def test_get_contacts(jid):
 
 
 def test_get_contacts_with_presence(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -262,7 +254,7 @@ def test_get_contacts_with_presence(jid):
 
 
 def test_get_contacts_with_presence_on_and_off(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -288,7 +280,7 @@ def test_get_contacts_with_presence_on_and_off(jid):
 
 
 def test_get_contacts_with_presence_unavailable(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -312,7 +304,7 @@ def test_get_contacts_with_presence_unavailable(jid):
 
 
 def test_get_contact(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -334,7 +326,7 @@ def test_get_contact(jid):
 
 
 def test_get_invalid_jid_contact():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -344,7 +336,7 @@ def test_get_invalid_jid_contact():
 
 
 def test_get_invalid_str_contact():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -355,7 +347,7 @@ def test_get_invalid_str_contact():
 
 def test_subscribe(jid):
     peer_jid = str(jid)
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -372,7 +364,7 @@ def test_subscribe(jid):
 
 def test_unsubscribe(jid):
     peer_jid = str(jid)
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -389,7 +381,7 @@ def test_unsubscribe(jid):
 
 def test_approve(jid):
     peer_jid = str(jid)
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -405,7 +397,7 @@ def test_approve(jid):
 
 
 def test_on_available(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -423,7 +415,7 @@ def test_on_available(jid):
 
 
 def test_on_unavailable(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -442,7 +434,7 @@ def test_on_unavailable(jid):
 
 
 def test_on_subscribe(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -458,7 +450,7 @@ def test_on_subscribe(jid):
 
 
 def test_on_subscribe_approve_all(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -477,7 +469,7 @@ def test_on_subscribe_approve_all(jid):
 
 
 def test_on_subscribed(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -493,7 +485,7 @@ def test_on_subscribed(jid):
 
 
 def test_on_unsubscribe(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -509,7 +501,7 @@ def test_on_unsubscribe(jid):
 
 
 def test_on_unsubscribe_approve_all(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -528,7 +520,7 @@ def test_on_unsubscribe_approve_all(jid):
 
 
 def test_on_unsubscribed(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -544,7 +536,7 @@ def test_on_unsubscribed(jid):
 
 
 def test_on_changed(jid):
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()
@@ -572,7 +564,7 @@ def test_on_changed(jid):
 
 
 def test_ignore_self_presence():
-    agent = make_presence_connected_agent()
+    agent = MockedPresenceAgentFactory()
 
     future = agent.start(auto_register=False)
     future.result()

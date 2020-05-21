@@ -4,7 +4,6 @@ from threading import Event
 
 import aioxmpp
 import pytest
-from pytest import fixture
 from asynctest import CoroutineMock, MagicMock, Mock
 
 from spade.agent import Agent
@@ -21,26 +20,12 @@ from spade.behaviour import (
 )
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
-from tests.utils import (
-    make_connected_agent,
-    run_around_tests,
-    wait_for_behaviour_is_killed,
-)
+from .conftest import wait_for_behaviour_is_killed
+from .factories import MockedAgentFactory
 
 STATE_ONE = "STATE_ONE"
 STATE_TWO = "STATE_TWO"
 STATE_THREE = "STATE_THREE"
-
-
-@fixture
-def message():
-    return Message(
-        to="to@localhost",
-        sender="sender@localhost",
-        body="message body",
-        thread="thread-id",
-        metadata={"metadata1": "value1", "metadata2": "value2"},
-    )
 
 
 class StateOne(State):
@@ -65,7 +50,7 @@ class StateThree(State):
         self.kill()
 
 
-@fixture
+@pytest.fixture
 def fsm():
     fsm_ = FSMBehaviour()
     state_one = StateOne()
@@ -96,7 +81,7 @@ def test_on_start_on_end():
             self.agent.on_end_flag = True
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.on_start_flag = False
     agent.on_end_flag = False
     behaviour = TestOneShotBehaviour()
@@ -123,7 +108,7 @@ def test_on_start_exception():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.flag = False
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
@@ -143,7 +128,7 @@ def test_on_run_exception():
             result = 1 / 0
             self.agent.flag = True
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.flag = False
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
@@ -166,7 +151,7 @@ def test_on_end_exception():
             result = 1 / 0
             self.agent.flag = True
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.flag = False
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
@@ -185,7 +170,7 @@ def test_add_behaviour():
         async def run(self):
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -210,7 +195,7 @@ def test_remove_behaviour():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyBehaviour()
     agent.add_behaviour(behaviour)
     assert agent.has_behaviour(behaviour)
@@ -225,7 +210,7 @@ def test_remove_behaviour_not_added():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyBehaviour()
 
     with pytest.raises(ValueError):
@@ -241,7 +226,7 @@ def test_wait_for_agent_start():
         async def run(self):
             pass
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -302,7 +287,7 @@ def test_send_message(message):
             await self.send(message)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -336,7 +321,7 @@ def test_send_message_without_sender():
             await self.send(msg)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -361,7 +346,7 @@ def test_receive():
             self.agent.recv_msg = await self.receive()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour)
@@ -385,7 +370,7 @@ def test_receive_with_timeout():
             self.agent.recv_msg = await self.receive(5.0)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     msg = Message(body="received body")
     template = Template(body="received body")
@@ -413,7 +398,7 @@ def test_receive_with_timeout_error():
             self.agent.recv_msg = await self.receive(0.01)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     template = Template(body="received body")
     behaviour = RecvBehaviour()
@@ -434,7 +419,7 @@ def test_receive_with_empty_queue():
             self.agent.recv_msg = await self.receive()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     template = Template(body="received body")
     behaviour = RecvBehaviour()
@@ -456,7 +441,7 @@ def test_set_get():
             assert self.get("key") == "value"
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -483,7 +468,7 @@ def test_multiple_templates():
             self.agent.msg3 = await self.receive(timeout=2)
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     template1 = Template()
     template1.set_metadata("performative", "template1")
@@ -521,7 +506,7 @@ def test_kill_behaviour():
         async def run(self):
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
     agent.start(auto_register=False)
 
@@ -539,7 +524,7 @@ def test_exit_code_from_kill_behaviour():
         async def run(self):
             self.kill(42)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
     future = agent.start(auto_register=False)
     future.result()
@@ -560,7 +545,7 @@ def test_set_exit_code_behaviour():
             agent.event.wait()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
     agent.event = Event()
     future = agent.start(auto_register=False)
@@ -587,7 +572,7 @@ def test_notfinishedexception_behaviour():
         async def run(self):
             self.agent.event.wait()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.event = Event()
     behaviour = TestBehaviour()
     future = agent.start(auto_register=False)
@@ -615,7 +600,7 @@ def test_cyclic_behaviour():
             if self.agent.cycles > 2:
                 self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.cycles = 0
     behaviour = TestCyclicBehaviour()
     future = agent.start(auto_register=False)
@@ -638,7 +623,7 @@ def test_oneshot_behaviour():
             self.agent.one_shot_behaviour_executed = True
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.one_shot_behaviour_executed = False
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
@@ -659,7 +644,7 @@ def test_periodic_behaviour():
             self.agent.periodic_behaviour_execution_counter += 1
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.periodic_behaviour_execution_counter = 0
     behaviour = TestPeriodicBehaviour(0.01)
     agent.add_behaviour(behaviour)
@@ -680,7 +665,7 @@ def test_periodic_behaviour_period_zero():
             self.agent.periodic_behaviour_execution_counter += 1
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.periodic_behaviour_execution_counter = 0
     behaviour = TestPeriodicBehaviour(0)
     agent.add_behaviour(behaviour)
@@ -722,7 +707,7 @@ def test_periodic_start_at():
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -746,7 +731,7 @@ def test_timeout_behaviour():
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -772,7 +757,7 @@ def test_timeout_behaviour_zero():
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -794,7 +779,7 @@ def test_timeout_behaviour_zero():
 
 
 def test_fsm_behaviour(fsm):
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.sync1_behaviour = asyncio.Event(loop=agent.loop)
@@ -871,7 +856,7 @@ def test_fsm_bad_state():
     fsm_.add_state(STATE_TWO, state_two)
     fsm_.add_transition(STATE_ONE, STATE_TWO)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.start(auto_register=False)
 
     assert fsm_.current_state == STATE_ONE
@@ -915,7 +900,7 @@ def test_fsm_bad_transition():
     fsm_.add_transition(STATE_ONE, STATE_TWO)
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -967,7 +952,7 @@ def test_fsm_fail_on_start():
     state_one = StateOne()
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -991,7 +976,7 @@ def test_fsm_fail_on_run():
     state_one = StateOne()
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -1018,7 +1003,7 @@ def test_fsm_fail_on_end():
     state_one = StateOne()
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
@@ -1047,7 +1032,7 @@ def test_join():
                 self.agent.i = i
                 await asyncio.sleep(0)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.i = None
     behaviour = WaitBehav()
 
@@ -1067,7 +1052,7 @@ def test_join_with_timeout():
         async def run(self):
             await asyncio.sleep(100)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.i = None
     behaviour = WaitBehav()
 
@@ -1087,7 +1072,7 @@ def test_join_with_long_timeout():
         async def run(self):
             await asyncio.sleep(0)
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.i = None
     behaviour = WaitBehav()
 
@@ -1113,7 +1098,7 @@ def test_join_inside_behaviour():
             await behav2.join()
             self.agent.behav1 = True
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.behav1 = False
     agent.behav2 = False
 
@@ -1144,7 +1129,7 @@ def test_join_inside_behaviour_with_timeout():
                 await behav2.join(timeout=0.001)
             self.agent.behav1 = True
 
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.behav1 = False
 
     behav1 = Behav1()

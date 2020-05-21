@@ -2,11 +2,12 @@ import datetime
 import logging
 import socket
 
-import timeago
-from aiohttp import web as aioweb
 import aiohttp_jinja2
 import jinja2
+import timeago
+from aiohttp import web as aioweb
 from aioxmpp import PresenceType, JID
+
 from spade.message import Message
 
 logger = logging.getLogger("spade.Web")
@@ -199,8 +200,8 @@ class WebApp(object):
 
     async def stop_now(self, request):
         logger.warning("Stopping agent from web interface.")
-        self.agent.stop()
-        return aioweb.json_response({})
+        await self.agent.stop()
+        return aioweb.json_response({})  # pragma: no cover
 
     @aiohttp_jinja2.template("internal_tpl_messages.html")
     async def get_messages(self, request):

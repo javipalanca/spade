@@ -1,9 +1,10 @@
-import time
 import getpass
+import time
 
+from spade import quit_spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
-from spade import quit_spade
+
 
 
 class Agent1(Agent):

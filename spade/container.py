@@ -1,5 +1,7 @@
 import asyncio
 import logging
+import sys
+from contextlib import suppress
 from threading import Thread
 
 from singletonify import singleton
@@ -118,25 +120,29 @@ class Container(object):
 class AioThread(Thread):
     def __init__(self, *args, **kwargs):
         self.loop = asyncio.new_event_loop()
+        self.running = True
         super().__init__(*args, **kwargs)
 
     def run(self):
         try:
             self.loop.run_forever()
+            if sys.version_info >= (3, 7):
+                tasks = asyncio.all_tasks(loop=self.loop)
+            else:
+                tasks = asyncio.Task.all_tasks(loop=self.loop)  # pragma: no cover
+            for task in tasks:
+                task.cancel()
+                with suppress(asyncio.CancelledError):
+                    self.loop.run_until_complete(task)
+            self.loop.close()
+            logger.debug("Loop closed")
         except Exception as e:  # pragma: no cover
             logger.error("Exception in the event loop: {}".format(e))
 
     def finalize(self):
-        future = self.loop.call_soon_threadsafe(self.loop.stop)
-        try:
-            asyncio.wait_for(future, timeout=5)
-        except asyncio.TimeoutError:  # pragma: no cover
-            logger.error("The loop took too long to close...")
-            future.cancel()
-        except Exception as e:  # pragma: no cover
-            logger.error("Exception closing loop: {}".format(e))
-        else:
-            logger.debug("Loop closed")
+        if self.running:
+            self.loop.call_soon_threadsafe(self.loop.stop)
+            self.running = False
 
 
 def stop_container():

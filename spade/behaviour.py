@@ -1,11 +1,12 @@
+import asyncio
 import collections
 import logging
-from abc import ABCMeta, abstractmethod
-from threading import Event
-from datetime import timedelta, datetime
 import time
-
-import asyncio
+import traceback
+from abc import ABCMeta, abstractmethod
+from asyncio import CancelledError
+from datetime import timedelta, datetime
+from threading import Event
 from typing import Any, Union
 
 from .message import Message
@@ -257,15 +258,21 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         checks whether behaviour is done or killed,
         ortherwise it calls run() coroutine.
         """
+        cancelled = False
         while not self._done() and not self.is_killed():
             try:
                 await self._run()
                 await asyncio.sleep(0)  # relinquish cpu
+            except CancelledError:
+                logger.info("Behaviour {} cancelled".format(self))
+                cancelled = True
             except Exception as e:
-                logger.error("Exception running behaviour {}: {}".format(self, e))
+                logger.error("Exception running behaviour {behav}: {exc}".format(behav=self, exc=e))
+                logger.error(traceback.format_exc())
                 self.kill(exit_code=e)
         try:
-            await self.on_end()
+            if not cancelled:
+                await self.on_end()
         except Exception as e:
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)

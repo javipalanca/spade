@@ -9,7 +9,7 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
-from tests.utils import make_connected_agent, run_around_tests
+from .factories import MockedAgentFactory
 
 
 def test_create_agent(mocker):
@@ -37,7 +37,7 @@ def test_create_agent(mocker):
 
 
 def test_connected_agent():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     assert agent.is_alive() is False
 
     future = agent.start(auto_register=False)
@@ -50,20 +50,17 @@ def test_connected_agent():
 
 
 def test_name():
-    agent = make_connected_agent(jid="john@fake_server")
+    agent = MockedAgentFactory(jid="john@fake_server")
     assert agent.name == "john"
 
 
 def test_avatar():
-    agent = make_connected_agent(jid="test_avatar@fake_server")
-    assert (
-        agent.avatar
-        == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
-    )
+    agent = MockedAgentFactory(jid="test_avatar@fake_server")
+    assert agent.avatar == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
 
 
 def test_setup():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.setup = CoroutineMock()
     future = agent.start(auto_register=False)
     assert future.result() is None
@@ -73,18 +70,18 @@ def test_setup():
 
 
 def test_set_get():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.set("KB_name", "KB_value")
     assert agent.get("KB_name") == "KB_value"
 
 
 def test_get_none():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     assert agent.get("KB_name_unknown") is None
 
 
 def test_client():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     assert agent.client is None
 
     future = agent.start()
@@ -93,7 +90,7 @@ def test_client():
 
 
 def test_register():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     agent.register = Mock()
 
     future = agent.start(auto_register=True)
@@ -105,7 +102,7 @@ def test_register():
 
 
 def test_receive_without_behaviours():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
     aiomsg = aioxmpp.Message(type_=aioxmpp.MessageType.CHAT)
     msg = Message.from_node(aiomsg)
 
@@ -133,14 +130,14 @@ def test_create_agent_from_another_agent():
 
     class CreateBehav(OneShotBehaviour):
         async def run(self):
-            self.agent.agent2 = make_connected_agent()
+            self.agent.agent2 = MockedAgentFactory()
             self.agent.agent2._done = False
             self.agent.dummy_behav = DummyBehav()
             self.agent.agent2.add_behaviour(self.agent.dummy_behav)
             await self.agent.agent2.start(auto_register=False)
             self.kill()
 
-    agent1 = make_connected_agent()
+    agent1 = MockedAgentFactory()
     agent1.agent2 = None
     create_behav = CreateBehav()
     agent1.add_behaviour(create_behav)
@@ -166,7 +163,7 @@ def test_create_agent_from_another_agent_from_setup():
 
     class SetupAgent(Agent):
         async def setup(self):
-            self.agent2 = make_connected_agent()
+            self.agent2 = MockedAgentFactory()
             self.agent2._done = False
             self.agent2.dummy_behav = DummyBehav()
             self.agent2.add_behaviour(self.agent2.dummy_behav)
@@ -195,7 +192,7 @@ def test_create_agent_from_another_agent_from_setup():
 
 
 def test_submit_send():
-    agent = make_connected_agent()
+    agent = MockedAgentFactory()
 
     class DummyBehav(OneShotBehaviour):
         async def run(self):
@@ -218,7 +215,7 @@ def test_submit_send():
 
 
 def test_stop_agent_with_blocking_await():
-    agent1 = make_connected_agent()
+    agent1 = MockedAgentFactory()
     agent1.value = 1000
 
     class StopBehav(OneShotBehaviour):
