@@ -6,7 +6,6 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 
 
-
 class Agent1(Agent):
     async def setup(self):
         print("Agent {} running".format(self.name))

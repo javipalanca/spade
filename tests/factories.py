@@ -24,12 +24,9 @@ class MockedAgentFactory(factory.Factory):
 
 
 class MockedPresenceConnectedAgent(Agent):
-    def __init__(self,
-                 available=None,
-                 show=None,
-                 status=None,
-                 priority=0,
-                 *args, **kwargs):
+    def __init__(
+        self, available=None, show=None, status=None, priority=0, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         if status is None:
             status = {}
@@ -52,6 +49,7 @@ class MockedPresenceConnectedAgent(Agent):
 class MockedPresenceAgentFactory(factory.Factory):
     class Meta:
         model = MockedPresenceConnectedAgent
+
     jid = "fake@jid"
     password = "fake_password"
     available = None
