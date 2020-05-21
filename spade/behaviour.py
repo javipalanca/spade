@@ -267,7 +267,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 logger.info("Behaviour {} cancelled".format(self))
                 cancelled = True
             except Exception as e:
-                logger.error("Exception running behaviour {behav}: {exc}".format(behav=self, exc=e))
+                logger.error(
+                    "Exception running behaviour {behav}: {exc}".format(
+                        behav=self, exc=e
+                    )
+                )
                 logger.error(traceback.format_exc())
                 self.kill(exit_code=e)
         try:

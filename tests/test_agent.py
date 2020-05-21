@@ -56,7 +56,10 @@ def test_name():
 
 def test_avatar():
     agent = MockedAgentFactory(jid="test_avatar@fake_server")
-    assert agent.avatar == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
+    assert (
+        agent.avatar
+        == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
+    )
 
 
 def test_setup():

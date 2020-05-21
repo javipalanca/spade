@@ -160,7 +160,10 @@ async def test_get_behaviour(test_client):
 
     sel = Selector(text=response)
 
-    assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
+    assert (
+        sel.css("section.content-header > h1::text").get().strip()
+        == "OneShotBehaviour/EmptyOneShotBehaviour"
+    )
     agent.stop().result()
 
 

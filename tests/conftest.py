@@ -20,10 +20,7 @@ def message():
         sender="sender@localhost",
         body="message body",
         thread="thread-id",
-        metadata={
-            "metadata1": "value1",
-            "metadata2": "value2"
-        }
+        metadata={"metadata1": "value1", "metadata2": "value2"},
     )
 
 
