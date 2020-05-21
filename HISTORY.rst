@@ -2,6 +2,12 @@
 History
 =======
 
+3.1.1 (2020-05-21)
+------------------
+* Fixed how to stop behaviours.
+* Fixed some tests.
+* Blackstyled code.
+
 3.1.0 (2019-03-22)
 ------------------
 
