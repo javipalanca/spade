@@ -1,15 +1,24 @@
 # Config file for automatic testing at travis-ci.org
 # This file will be regenerated if you run travis_pypi_setup.py
+
+language: python
+
 jobs:
   include:
     - os: linux
       python: 3.6
       env: TOXENV=py36
-    - os: osx
-      python: 3.7
-      env: TOXENV=py37
-
-language: python
+    - name: "Python 3.7.4 on macOS"
+      os: osx
+      osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.8.0 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version 3.8.0
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
