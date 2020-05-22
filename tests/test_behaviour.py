@@ -355,7 +355,6 @@ def test_receive():
     future = agent.start(auto_register=False)
     future.result()
     assert agent.is_alive()
-    assert agent.has_behaviour(behaviour)
 
     behaviour.join()
 

@@ -2,8 +2,14 @@
 History
 =======
 
+3.1.6 (2020-05-22)
+------------------
+
+* Fixed coverage and ci.
+
 3.1.5 (2020-05-21)
 ------------------
+
 * Fixed how to stop behaviours.
 * Fixed some tests.
 * Blackstyled code.

@@ -46,6 +46,11 @@ def run_around_tests():
     quit_spade()
 
 
+@pytest.fixture(scope="module", autouse=True)
+def cleanup(request):
+    quit_spade()
+
+
 def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
     counter = 0
     while not behaviour.is_killed() and counter < tries:

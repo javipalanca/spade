@@ -119,15 +119,16 @@ class Container(object):
 
 class AioThread(Thread):
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.loop = asyncio.new_event_loop()
         self.running = True
-        super().__init__(*args, **kwargs)
+        self.daemon = True
 
     def run(self):
         try:
             self.loop.run_forever()
             if sys.version_info >= (3, 7):
-                tasks = asyncio.all_tasks(loop=self.loop)
+                tasks = asyncio.all_tasks(loop=self.loop)  # pragma: no cover
             else:
                 tasks = asyncio.Task.all_tasks(loop=self.loop)  # pragma: no cover
             for task in tasks:
