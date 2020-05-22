@@ -2,6 +2,8 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 os:
   - linux
+  - osx
+  - windows
 language: python
 python:
   - 3.6
@@ -15,17 +17,17 @@ install:
 addons:
   apt:
     packages:
-    - python-dev
-    - libxml2-dev
+      - python-dev
+      - libxml2-dev
 
 after_success:
   - coveralls --ignore-errors
 
 # command to run tests, e.g. python setup.py test
 script:
-    - tox
-    - coverage run --source=spade -m py.test
-    - coverage report -m
+  - tox
+  - coverage run --source=spade -m py.test
+  - coverage report -m
 
 # After you create the Github repo and add it to Travis, run the
 # travis_pypi_setup.py script to finish PyPI deployment setup

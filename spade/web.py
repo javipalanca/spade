@@ -210,11 +210,7 @@ class WebApp(object):
 
     @aiohttp_jinja2.template("internal_tpl_behaviour.html")
     async def get_behaviour(self, request):
-        behaviour_str = (
-            request.match_info["behaviour_type"]
-            + "/"
-            + request.match_info["behaviour_class"]
-        )
+        behaviour_str = f"{request.match_info['behaviour_type']}/{request.match_info['behaviour_class']}"
         behaviour = self.find_behaviour(behaviour_str)
         messages = [
             (self.timeago(m[0]), m[1])
@@ -223,11 +219,7 @@ class WebApp(object):
         return {"behaviour": behaviour, "bmessages": messages}
 
     async def kill_behaviour(self, request):
-        behaviour_str = (
-            request.match_info["behaviour_type"]
-            + "/"
-            + request.match_info["behaviour_class"]
-        )
+        behaviour_str = f"{request.match_info['behaviour_type']}/{request.match_info['behaviour_class']}"
         behaviour = self.find_behaviour(behaviour_str)
         behaviour.kill()
         raise aioweb.HTTPFound("/spade")

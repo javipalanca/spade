@@ -1,15 +1,14 @@
 import asyncio
 import time
-from aiohttp import web
 
-from asynctest import Mock, CoroutineMock, MagicMock
 import requests
+from aiohttp import web
+from aiohttp_jinja2 import get_env
 from aioxmpp import JID, PresenceType
 from aioxmpp.roster import Item
-from parsel import Selector
-
-from aiohttp_jinja2 import get_env
+from asynctest import Mock, CoroutineMock, MagicMock
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
+from parsel import Selector
 from testfixtures import LogCapture
 
 from spade.agent import Agent
@@ -290,7 +289,7 @@ async def test_find_behaviour_fail():
 
 async def test_add_get(test_client):
     agent = Agent("jid@server", "password")
-    agent.web.add_get("/test", lambda request: {"number": 42}, "hello.html")
+    agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
 
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
@@ -332,7 +331,7 @@ async def test_add_post(test_client):
         number = form["number"]
         return {"number": number}
 
-    agent.web.add_post("/test", handle_post, "hello.html")
+    agent.web.add_post("/test", handle_post, "tests/hello.html")
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 

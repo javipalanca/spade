@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 import aioxmpp
 from asynctest import MagicMock, CoroutineMock
@@ -140,3 +141,24 @@ def test_cancel_tasks():
     container.stop()
 
     assert not behav.has_finished
+
+
+def test_stop_container():
+    agent = MockedAgentFactory()
+
+    class Behav(OneShotBehaviour):
+        async def run(self):
+            container = Container()
+            container.stop()
+
+    behav = Behav()
+    agent.add_behaviour(behav)
+    future = agent.start(auto_register=False)
+    future.result()
+    behav.join()
+
+    counter = 0
+    while agent.is_alive() and counter < 5:
+        time.sleep(0.05)
+        counter += 1
+    assert not agent.is_alive()
