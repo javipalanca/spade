@@ -2,10 +2,12 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 
 language: python
+os:
+  - linux
 
-jobs:
-  include:
-    - os: linux
+#jobs:
+#  include:
+#    - os: linux
     #- name: "Python 3.7.4 on macOS"
     #  os: osx
     #  osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
