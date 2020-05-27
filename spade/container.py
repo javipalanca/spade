@@ -38,7 +38,9 @@ class Container(object):
         if self.__in_coroutine():
             return coro
         else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            future = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            future.wait = future.result
+            return future
 
     def stop_agent(self, agent):
         coro = agent._async_stop()
@@ -46,7 +48,9 @@ class Container(object):
         if self.__in_coroutine():
             return coro
         else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            future = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            future.wait = future.result
+            return future
 
     def reset(self):
         """ Empty the container by unregistering all the agents. """

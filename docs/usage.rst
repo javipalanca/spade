@@ -29,7 +29,7 @@ To create an agent in a project you just need to: ::
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
-    dummy.start()
+    dummy.start().wait()
 
     dummy.stop()
 
@@ -173,7 +173,7 @@ An example of how to kill a behaviour::
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
         future = dummy.start()
-        future.result()  # Wait until the start method is finished
+        future.wait()  # Wait until the start method is finished
 
         # wait until user interrupts with ctrl+C
         while not dummy.my_behav.is_killed():

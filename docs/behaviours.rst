@@ -73,7 +73,7 @@ Let's see an example::
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         future = receiveragent.start()
-        future.result() # wait for receiver agent to be prepared.
+        future.wait() # wait for receiver agent to be prepared.
         senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
@@ -176,7 +176,7 @@ Let's see an example::
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         future = receiveragent.start()
-        future.result() # wait for receiver agent to be prepared.
+        future.wait() # wait for receiver agent to be prepared.
         senderagent = TimeoutSenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
@@ -351,7 +351,7 @@ from a coroutine or a synchronous method. Example::
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
         future = dummy.start()
-        future.result()
+        future.wait()
 
         dummy.behav2.join()  # this join must not be awaited
 
