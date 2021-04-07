@@ -14,21 +14,24 @@ from .template import Template
 
 now = datetime.now
 
-logger = logging.getLogger('spade.behaviour')
+logger = logging.getLogger("spade.behaviour")
 
 
 class BehaviourNotFinishedException(Exception):
     """ """
+
     pass
 
 
 class NotValidState(Exception):
     """ """
+
     pass
 
 
 class NotValidTransition(Exception):
     """ """
+
     pass
 
 
@@ -126,7 +129,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         try:
             await self.on_start()
         except Exception as e:
-            logger.error("Exception running on_start in behaviour {}: {}".format(self, e))
+            logger.error(
+                "Exception running on_start in behaviour {}: {}".format(self, e)
+            )
             self.kill(exit_code=e)
         await self._step()
         self._is_done.clear()
@@ -262,7 +267,11 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 logger.info("Behaviour {} cancelled".format(self))
                 cancelled = True
             except Exception as e:
-                logger.error("Exception running behaviour {behav}: {exc}".format(behav=self, exc=e))
+                logger.error(
+                    "Exception running behaviour {behav}: {exc}".format(
+                        behav=self, exc=e
+                    )
+                )
                 logger.error(traceback.format_exc())
                 self.kill(exit_code=e)
         try:
@@ -271,6 +280,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except Exception as e:
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
+        self.agent.remove_behaviour(self)
 
     async def enqueue(self, message: Message):
         """
@@ -335,7 +345,10 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         return msg
 
     def __str__(self):
-        return "{}/{}".format("/".join(base.__name__ for base in self.__class__.__bases__), self.__class__.__name__)
+        return "{}/{}".format(
+            "/".join(base.__name__ for base in self.__class__.__bases__),
+            self.__class__.__name__,
+        )
 
 
 class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
@@ -402,7 +415,9 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
         else:
             seconds = (self._next_activation - now()).total_seconds()
             if seconds > 0:
-                logger.debug(f"Periodic behaviour going to sleep for {seconds} seconds: {self}")
+                logger.debug(
+                    f"Periodic behaviour going to sleep for {seconds} seconds: {self}"
+                )
                 await asyncio.sleep(seconds)
 
 
@@ -429,7 +444,9 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
         else:
             seconds = (self._timeout - now()).total_seconds()
             if seconds > 0:
-                logger.debug(f"Timeout behaviour going to sleep for {seconds} seconds: {self}")
+                logger.debug(
+                    f"Timeout behaviour going to sleep for {seconds} seconds: {self}"
+                )
                 await asyncio.sleep(seconds)
                 await self.run()
                 self._timeout_triggered = True
@@ -552,13 +569,19 @@ class FSMBehaviour(CyclicBehaviour):
                     logger.info(f"FSM transiting from {self.current_state} to {dest}.")
                     self.current_state = dest
             except NotValidState as e:
-                logger.error(f"FSM could not transitate to state {dest}. That state does not exist.")
+                logger.error(
+                    f"FSM could not transitate to state {dest}. That state does not exist."
+                )
                 self.kill(exit_code=e)
             except NotValidTransition as e:
-                logger.error(f"FSM could not transitate to state {dest}. That transition is not registered.")
+                logger.error(
+                    f"FSM could not transitate to state {dest}. That transition is not registered."
+                )
                 self.kill(exit_code=e)
         else:
-            logger.info("FSM arrived to a final state (no transitions found). Killing FSM.")
+            logger.info(
+                "FSM arrived to a final state (no transitions found). Killing FSM."
+            )
             self.kill()
 
     async def run(self):

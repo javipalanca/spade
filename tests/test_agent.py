@@ -56,7 +56,10 @@ def test_name():
 
 def test_avatar():
     agent = MockedAgentFactory(jid="test_avatar@fake_server")
-    assert agent.avatar == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
+    assert (
+        agent.avatar
+        == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
+    )
 
 
 def test_setup():
@@ -112,7 +115,9 @@ def test_receive_without_behaviours():
 
     with LogCapture() as log:
         agent._message_received(aiomsg)
-        log.check_present(('spade.Agent', 'WARNING', f"No behaviour matched for message: {msg}"))
+        log.check_present(
+            ("spade.Agent", "WARNING", f"No behaviour matched for message: {msg}")
+        )
 
     assert agent.traces.len() == 1
     assert msg in agent.traces.store[0]
@@ -130,19 +135,21 @@ def test_create_agent_from_another_agent():
         async def run(self):
             self.agent.agent2 = MockedAgentFactory()
             self.agent.agent2._done = False
-            self.agent.agent2.add_behaviour(DummyBehav())
+            self.agent.dummy_behav = DummyBehav()
+            self.agent.agent2.add_behaviour(self.agent.dummy_behav)
             await self.agent.agent2.start(auto_register=False)
             self.kill()
 
     agent1 = MockedAgentFactory()
     agent1.agent2 = None
-    agent1.add_behaviour(CreateBehav())
+    create_behav = CreateBehav()
+    agent1.add_behaviour(create_behav)
     future = agent1.start(auto_register=False)
     assert future.result() is None
     assert agent1.is_alive()
 
-    agent1.behaviours[0].join()
-    agent1.agent2.behaviours[0].join()
+    create_behav.join()
+    agent1.dummy_behav.join()
 
     assert agent1.agent2.is_alive()
     assert agent1.agent2._done
@@ -161,7 +168,8 @@ def test_create_agent_from_another_agent_from_setup():
         async def setup(self):
             self.agent2 = MockedAgentFactory()
             self.agent2._done = False
-            self.agent2.add_behaviour(DummyBehav())
+            self.agent2.dummy_behav = DummyBehav()
+            self.agent2.add_behaviour(self.agent2.dummy_behav)
             await self.agent2.start(auto_register=False)
 
     agent1 = SetupAgent("fake@host", "secret")
@@ -177,7 +185,7 @@ def test_create_agent_from_another_agent_from_setup():
     assert future.result() is None
     assert agent1.is_alive()
 
-    agent1.agent2.behaviours[0].join()
+    agent1.agent2.dummy_behav.join()
 
     assert agent1.agent2.is_alive()
     assert agent1.agent2._done
@@ -191,25 +199,22 @@ def test_submit_send():
 
     class DummyBehav(OneShotBehaviour):
         async def run(self):
-            msg_to_send = Message(to="fake@jid", body="BODY", metadata={"performative": "TEST"})
-            coro = self.send(msg_to_send)
-            self.agent.submit(coro)
-            self.kill()
+            self.agent.recv_msg = await self.receive(10)
 
     template = Template(to="fake@jid")
-    behah = DummyBehav()
-    agent.add_behaviour(behah, template=template)
+    behav = DummyBehav()
+    agent.add_behaviour(behav, template=template)
 
     future = agent.start(auto_register=False)
     future.result()
 
-    behah.join()
+    msg_to_send = Message(to="fake@jid", body="BODY", metadata={"performative": "TEST"})
+    agent.submit(behav.send(msg_to_send))
+    behav.join()
 
-    assert behah.queue.qsize() == 1
-    msg = behah.queue.get_nowait()
-    assert str(msg.to) == "fake@jid"
-    assert msg.body == "BODY"
-    assert msg.metadata == {"performative": "TEST"}
+    assert str(agent.recv_msg.to) == "fake@jid"
+    assert agent.recv_msg.body == "BODY"
+    assert agent.recv_msg.metadata == {"performative": "TEST"}
 
 
 def test_stop_agent_with_blocking_await():

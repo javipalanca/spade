@@ -62,9 +62,13 @@ def test_message_from_node():
         )
     )
 
-    data.fields.append(forms_xso.Field(var="_thread_node",
-                                       type_=forms_xso.FieldType.TEXT_SINGLE,
-                                       values=["thread-id"]))
+    data.fields.append(
+        forms_xso.Field(
+            var="_thread_node",
+            type_=forms_xso.FieldType.TEXT_SINGLE,
+            values=["thread-id"],
+        )
+    )
     data.title = SPADE_X_METADATA
     aiomsg.xep0004_data = [data]
 

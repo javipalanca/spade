@@ -7,8 +7,17 @@ import pytest
 from asynctest import CoroutineMock, MagicMock, Mock
 
 from spade.agent import Agent
-from spade.behaviour import OneShotBehaviour, CyclicBehaviour, PeriodicBehaviour, TimeoutBehaviour, FSMBehaviour, State, \
-    NotValidState, NotValidTransition, BehaviourNotFinishedException
+from spade.behaviour import (
+    OneShotBehaviour,
+    CyclicBehaviour,
+    PeriodicBehaviour,
+    TimeoutBehaviour,
+    FSMBehaviour,
+    State,
+    NotValidState,
+    NotValidTransition,
+    BehaviourNotFinishedException,
+)
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
 from .conftest import wait_for_behaviour_is_killed
@@ -346,7 +355,6 @@ def test_receive():
     future = agent.start(auto_register=False)
     future.result()
     assert agent.is_alive()
-    assert agent.has_behaviour(behaviour)
 
     behaviour.join()
 
@@ -1010,7 +1018,10 @@ def test_fsm_fail_on_end():
 
 
 def test_to_graphviz(fsm):
-    assert fsm.to_graphviz() == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+    assert (
+        fsm.to_graphviz()
+        == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+    )
 
 
 def test_join():

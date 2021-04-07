@@ -1,15 +1,14 @@
 import asyncio
 import time
-from aiohttp import web
 
-from asynctest import Mock, CoroutineMock, MagicMock
 import requests
+from aiohttp import web
+from aiohttp_jinja2 import get_env
 from aioxmpp import JID, PresenceType
 from aioxmpp.roster import Item
-from parsel import Selector
-
-from aiohttp_jinja2 import get_env
+from asynctest import Mock, CoroutineMock, MagicMock
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
+from parsel import Selector
 from testfixtures import LogCapture
 
 from spade.agent import Agent
@@ -153,12 +152,17 @@ async def test_get_behaviour(test_client):
 
     client = await test_client(agent.web.app)
 
-    response = await client.get("/spade/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/")
+    response = await client.get(
+        "/spade/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/"
+    )
     response = await response.text()
 
     sel = Selector(text=response)
 
-    assert sel.css("section.content-header > h1::text").get().strip() == "OneShotBehaviour/EmptyOneShotBehaviour"
+    assert (
+        sel.css("section.content-header > h1::text").get().strip()
+        == "OneShotBehaviour/EmptyOneShotBehaviour"
+    )
     agent.stop().result()
 
 
@@ -285,7 +289,7 @@ async def test_find_behaviour_fail():
 
 async def test_add_get(test_client):
     agent = Agent("jid@server", "password")
-    agent.web.add_get("/test", lambda request: {"number": 42}, "examples/hello.html")
+    agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
 
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
@@ -301,7 +305,12 @@ async def test_add_get(test_client):
 
 async def test_add_get_raw(test_client):
     agent = Agent("jid@server", "password")
-    agent.web.add_get("/test", lambda request: web.Response(text="Hello Raw Get"), template=None, raw=True)
+    agent.web.add_get(
+        "/test",
+        lambda request: web.Response(text="Hello Raw Get"),
+        template=None,
+        raw=True,
+    )
 
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
@@ -310,9 +319,6 @@ async def test_add_get_raw(test_client):
     response = await response.text()
 
     assert response == "Hello Raw Get"
-
-    # sel = Selector(text=response)
-    # assert sel.css("h1::text").get().strip() == "42"
 
     agent.stop().result()
 
@@ -325,7 +331,7 @@ async def test_add_post(test_client):
         number = form["number"]
         return {"number": number}
 
-    agent.web.add_post("/test", handle_post, "examples/hello.html")
+    agent.web.add_post("/test", handle_post, "tests/hello.html")
     agent.web.setup_routes()
     client = await test_client(agent.web.app)
 
@@ -367,7 +373,10 @@ async def test_stop(test_client):
     response = await response.text()
 
     sel = Selector(text=response)
-    assert sel.css("div.alert-warning > span::text").get().strip() == "Agent is stopping now."
+    assert (
+        sel.css("div.alert-warning > span::text").get().strip()
+        == "Agent is stopping now."
+    )
 
     with LogCapture() as log:
         try:
@@ -375,7 +384,9 @@ async def test_stop(test_client):
         except requests.exceptions.ReadTimeout:
             pass
 
-        log.check_present(('spade.Web', 'WARNING', "Stopping agent from web interface."))
+        log.check_present(
+            ("spade.Web", "WARNING", "Stopping agent from web interface.")
+        )
 
     counter = 5
     while agent.is_alive() and counter > 0:

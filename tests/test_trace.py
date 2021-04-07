@@ -105,7 +105,7 @@ def test_all_limit():
 
 
 def test_received():
-    Event = namedtuple('Event', ['value', 'sent'])
+    Event = namedtuple("Event", ["value", "sent"])
     trace = TraceStore(10)
     for i in range(5):
         trace.append(Event(i, True))
@@ -147,7 +147,9 @@ def test_filter_to():
     cycle = itertools.cycle(range(3))
     trace = TraceStore(10)
     for i in range(5):
-        msg = Message(body=str(i), to="{}@server".format(next(cycle)), sender="sender@server")
+        msg = Message(
+            body=str(i), to="{}@server".format(next(cycle)), sender="sender@server"
+        )
         trace.append(msg)
 
     result = [x[1].body for x in trace.filter(to="0@server")]
@@ -158,7 +160,9 @@ def test_filter_to_limit():
     cycle = itertools.cycle(range(3))
     trace = TraceStore(10)
     for i in range(5):
-        msg = Message(body=str(i), to="{}@server".format(next(cycle)), sender="sender@server")
+        msg = Message(
+            body=str(i), to="{}@server".format(next(cycle)), sender="sender@server"
+        )
         trace.append(msg)
 
     result = [x[1].body for x in trace.filter(to="0@server", limit=1)]
@@ -205,5 +209,7 @@ def test_filter_to_and_category_limit():
         msg = Message(body=str(c), to="{}@server".format(c), sender="sender@server")
         trace.append(msg, c)
 
-    result = [(x[1].body, x[2]) for x in trace.filter(to="1@server", category="1", limit=1)]
+    result = [
+        (x[1].body, x[2]) for x in trace.filter(to="1@server", category="1", limit=1)
+    ]
     assert result == [("1", "1")]

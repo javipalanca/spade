@@ -26,15 +26,16 @@ class Container(object):
         self.loop.set_debug(False)
         self.is_running = True
 
+    def __in_coroutine(self):
+        try:
+            return asyncio.get_event_loop() == self.loop
+        except RuntimeError:  # pragma: no cover
+            return False
+
     def start_agent(self, agent, auto_register=True):
         coro = agent._async_start(auto_register=auto_register)
 
-        try:
-            in_coroutine = asyncio.get_event_loop() == self.loop
-        except RuntimeError:  # pragma: no cover
-            in_coroutine = False
-
-        if in_coroutine:
+        if self.__in_coroutine():
             return coro
         else:
             return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
@@ -42,12 +43,7 @@ class Container(object):
     def stop_agent(self, agent):
         coro = agent._async_stop()
 
-        try:
-            in_coroutine = asyncio.get_event_loop() == self.loop
-        except RuntimeError:  # pragma: no cover
-            in_coroutine = False
-
-        if in_coroutine:
+        if self.__in_coroutine():
             return coro
         else:
             return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
@@ -112,10 +108,10 @@ class Container(object):
             await behaviour._xmpp_send(msg)
 
     def stop(self):
-        for agent in self.__agents.values():
-            if agent.is_alive():
-                agent.stop()
-
+        agents = [agent.stop() for agent in self.__agents.values() if agent.is_alive()]
+        if self.__in_coroutine():
+            coro = asyncio.gather(*agents)
+            asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
         self.aiothread.finalize()
         self.reset()
         self.is_running = False
@@ -123,15 +119,16 @@ class Container(object):
 
 class AioThread(Thread):
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.loop = asyncio.new_event_loop()
         self.running = True
-        super().__init__(*args, **kwargs)
+        self.daemon = True
 
     def run(self):
         try:
             self.loop.run_forever()
             if sys.version_info >= (3, 7):
-                tasks = asyncio.all_tasks(loop=self.loop)
+                tasks = asyncio.all_tasks(loop=self.loop)  # pragma: no cover
             else:
                 tasks = asyncio.Task.all_tasks(loop=self.loop)  # pragma: no cover
             for task in tasks:

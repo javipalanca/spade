@@ -20,10 +20,7 @@ def message():
         sender="sender@localhost",
         body="message body",
         thread="thread-id",
-        metadata={
-            "metadata1": "value1",
-            "metadata2": "value2"
-        }
+        metadata={"metadata1": "value1", "metadata2": "value2"},
     )
 
 
@@ -46,6 +43,11 @@ def run_around_tests():
         container.__init__()
     yield
     # Code that will run after your test, for example:
+    quit_spade()
+
+
+@pytest.fixture(scope="module", autouse=True)
+def cleanup(request):
     quit_spade()
 
 

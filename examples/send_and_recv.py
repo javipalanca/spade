@@ -13,8 +13,12 @@ class SenderAgent(Agent):
         async def run(self):
             print("InformBehav running")
             msg = Message(to=self.agent.recv_jid)  # Instantiate the message
-            msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
-            msg.body = "Hello World {}".format(self.agent.recv_jid)  # Set the message content
+            msg.set_metadata(
+                "performative", "inform"
+            )  # Set the "inform" FIPA performative
+            msg.body = "Hello World {}".format(
+                self.agent.recv_jid
+            )  # Set the message content
 
             await self.send(msg)
             print("Message sent!")

@@ -46,7 +46,9 @@ class WebApp(object):
         self.port = None
         self.runner = None
         self.app = aioweb.Application()
-        internal_loader = jinja2.PackageLoader("spade", package_path='templates', encoding='utf-8')
+        internal_loader = jinja2.PackageLoader(
+            "spade", package_path="templates", encoding="utf-8"
+        )
         cwd_loader = jinja2.FileSystemLoader(".")
         self.loaders = [internal_loader, cwd_loader]
         self._set_loaders()
@@ -71,28 +73,38 @@ class WebApp(object):
             self._set_loaders()
         self.setup_routes()
         self.runner = aioweb.AppRunner(self.app)
-        return self.agent.submit(start_server_in_loop(self.runner, self.hostname, self.port, self.agent))
+        return self.agent.submit(
+            start_server_in_loop(self.runner, self.hostname, self.port, self.agent)
+        )
 
     def is_started(self):
         return self.runner is not None
 
     def _set_loaders(self):
         loader = jinja2.ChoiceLoader(self.loaders)
-        aiohttp_jinja2.setup(self.app, loader=loader,
-                             extensions=['jinja2_time.TimeExtension'],
-                             context_processors=[self.agent_processor,
-                                                 aiohttp_jinja2.request_processor]
-                             )
+        aiohttp_jinja2.setup(
+            self.app,
+            loader=loader,
+            extensions=["jinja2_time.TimeExtension"],
+            context_processors=[self.agent_processor, aiohttp_jinja2.request_processor],
+        )
 
     def setup_routes(self):
         self.app.router.add_get("/spade", self.index)
         self.app.router.add_get("/spade/stop", self.stop_agent)
         self.app.router.add_get("/spade/stop/now/", self.stop_now)
         self.app.router.add_get("/spade/messages/", self.get_messages)
-        self.app.router.add_get("/spade/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour)
-        self.app.router.add_get("/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/", self.kill_behaviour)
+        self.app.router.add_get(
+            "/spade/behaviour/{behaviour_type}/{behaviour_class}/", self.get_behaviour
+        )
+        self.app.router.add_get(
+            "/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/",
+            self.kill_behaviour,
+        )
         self.app.router.add_get("/spade/agent/{agentjid}/", self.get_agent)
-        self.app.router.add_get("/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent)
+        self.app.router.add_get(
+            "/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent
+        )
         self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
 
     def add_get(self, path, controller, template, raw=False):
@@ -149,7 +161,8 @@ class WebApp(object):
     def _parse_json_response(func):
         async def wrapper(*args, **kwargs):
             result = await func(*args, **kwargs)
-            return aioweb.json_response(data=result, content_type='application/json')
+            return aioweb.json_response(data=result, content_type="application/json")
+
         return wrapper
 
     @staticmethod
@@ -157,18 +170,28 @@ class WebApp(object):
         return timeago.format(date, datetime.datetime.now())
 
     async def agent_processor(self, request):
-        messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)]
+        messages = [
+            (self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)
+        ]
         return {"agent": self.agent, "messages": messages}
 
     # Default controllers for agent
 
-    @aiohttp_jinja2.template('internal_tpl_index.html')
+    @aiohttp_jinja2.template("internal_tpl_index.html")
     async def index(self, request):
-        contacts = [{"jid": jid,
-                     "avatar": self.agent.build_avatar_url(jid.bare()),
-                     "available": c["presence"].type_ == PresenceType.AVAILABLE if "presence" in c.keys() else False,
-                     "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None,
-                     } for jid, c in self.agent.presence.get_contacts().items()]
+        contacts = [
+            {
+                "jid": jid,
+                "avatar": self.agent.build_avatar_url(jid.bare()),
+                "available": c["presence"].type_ == PresenceType.AVAILABLE
+                if "presence" in c.keys()
+                else False,
+                "show": str(c["presence"].show).split(".")[1]
+                if "presence" in c.keys()
+                else None,
+            }
+            for jid, c in self.agent.presence.get_contacts().items()
+        ]
         return {"contacts": contacts}
 
     @aiohttp_jinja2.template("internal_tpl_index.html")
@@ -185,36 +208,43 @@ class WebApp(object):
         messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.received()]
         return {"messages": messages}
 
-    @aiohttp_jinja2.template('internal_tpl_behaviour.html')
+    @aiohttp_jinja2.template("internal_tpl_behaviour.html")
     async def get_behaviour(self, request):
-        behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']
+        behaviour_str = f"{request.match_info['behaviour_type']}/{request.match_info['behaviour_class']}"
         behaviour = self.find_behaviour(behaviour_str)
-        messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(category=behaviour_str)]
+        messages = [
+            (self.timeago(m[0]), m[1])
+            for m in self.agent.traces.filter(category=behaviour_str)
+        ]
         return {"behaviour": behaviour, "bmessages": messages}
 
     async def kill_behaviour(self, request):
-        behaviour_str = request.match_info['behaviour_type'] + "/" + request.match_info['behaviour_class']
+        behaviour_str = f"{request.match_info['behaviour_type']}/{request.match_info['behaviour_class']}"
         behaviour = self.find_behaviour(behaviour_str)
         behaviour.kill()
-        raise aioweb.HTTPFound('/spade')
+        raise aioweb.HTTPFound("/spade")
 
     @aiohttp_jinja2.template("internal_tpl_agent.html")
     async def get_agent(self, request):
-        agent_jid = request.match_info['agentjid']
-        agent_messages = [(self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)]
+        agent_jid = request.match_info["agentjid"]
+        agent_messages = [
+            (self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)
+        ]
         c = self.agent.presence.get_contact(JID.fromstr(agent_jid))
         contact = {
-            "show": str(c["presence"].show).split(".")[1] if "presence" in c.keys() else None
+            "show": str(c["presence"].show).split(".")[1]
+            if "presence" in c.keys()
+            else None
         }
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
 
     async def unsubscribe_agent(self, request):
-        agent_jid = request.match_info['agentjid']
+        agent_jid = request.match_info["agentjid"]
         self.agent.presence.unsubscribe(agent_jid)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
     async def send_agent(self, request):
-        agent_jid = request.match_info['agentjid']
+        agent_jid = request.match_info["agentjid"]
         form = await request.post()
         body = form["message"]
         logger.info("Sending message to {}: {}".format(agent_jid, body))

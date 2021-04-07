@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 import aioxmpp
 from asynctest import MagicMock, CoroutineMock
@@ -28,11 +29,14 @@ def test_send_message_with_container():
         def __init__(self):
             self.jid = "fake_receiver_agent@server"
 
-        def set_container(self, c): pass
+        def set_container(self, c):
+            pass
 
-        def set_loop(self, loop): pass
+        def set_loop(self, loop):
+            pass
 
-        def stop(self): pass
+        def stop(self):
+            pass
 
         def is_alive(self):
             return False
@@ -64,7 +68,10 @@ def test_send_message_with_container():
     assert agent.client.send.await_count == 0
 
     assert fake_receiver_agent.dispatch.call_count == 1
-    assert str(fake_receiver_agent.dispatch.call_args[0][0].to) == "fake_receiver_agent@server"
+    assert (
+        str(fake_receiver_agent.dispatch.call_args[0][0].to)
+        == "fake_receiver_agent@server"
+    )
 
     agent.stop()
 
@@ -134,3 +141,24 @@ def test_cancel_tasks():
     container.stop()
 
     assert not behav.has_finished
+
+
+def test_stop_container():
+    agent = MockedAgentFactory()
+
+    class Behav(OneShotBehaviour):
+        async def run(self):
+            container = Container()
+            container.stop()
+
+    behav = Behav()
+    agent.add_behaviour(behav)
+    future = agent.start(auto_register=False)
+    future.result()
+    behav.join()
+
+    counter = 0
+    while agent.is_alive() and counter < 5:
+        time.sleep(0.05)
+        counter += 1
+    assert not agent.is_alive()

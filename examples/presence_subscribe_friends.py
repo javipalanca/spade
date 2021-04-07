@@ -13,14 +13,28 @@ class Agent1(Agent):
 
     class Behav1(OneShotBehaviour):
         def on_available(self, jid, stanza):
-            print("[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0]))
+            print(
+                "[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0])
+            )
 
         def on_subscribed(self, jid):
-            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
-            print("[{}] Contacts List: {}".format(self.agent.name, self.agent.presence.get_contacts()))
+            print(
+                "[{}] Agent {} has accepted the subscription.".format(
+                    self.agent.name, jid.split("@")[0]
+                )
+            )
+            print(
+                "[{}] Contacts List: {}".format(
+                    self.agent.name, self.agent.presence.get_contacts()
+                )
+            )
 
         def on_subscribe(self, jid):
-            print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))
+            print(
+                "[{}] Agent {} asked for subscription. Let's aprove it.".format(
+                    self.agent.name, jid.split("@")[0]
+                )
+            )
             self.presence.approve(jid)
 
         async def run(self):
@@ -39,14 +53,28 @@ class Agent2(Agent):
 
     class Behav2(OneShotBehaviour):
         def on_available(self, jid, stanza):
-            print("[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0]))
+            print(
+                "[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0])
+            )
 
         def on_subscribed(self, jid):
-            print("[{}] Agent {} has accepted the subscription.".format(self.agent.name, jid.split("@")[0]))
-            print("[{}] Contacts List: {}".format(self.agent.name, self.agent.presence.get_contacts()))
+            print(
+                "[{}] Agent {} has accepted the subscription.".format(
+                    self.agent.name, jid.split("@")[0]
+                )
+            )
+            print(
+                "[{}] Contacts List: {}".format(
+                    self.agent.name, self.agent.presence.get_contacts()
+                )
+            )
 
         def on_subscribe(self, jid):
-            print("[{}] Agent {} asked for subscription. Let's aprove it.".format(self.agent.name, jid.split("@")[0]))
+            print(
+                "[{}] Agent {} asked for subscription. Let's aprove it.".format(
+                    self.agent.name, jid.split("@")[0]
+                )
+            )
             self.presence.approve(jid)
             self.presence.subscribe(jid)
 
