@@ -97,6 +97,8 @@ class Agent(object):
 
         """
 
+        await self._hook_plugin_before_connection()
+
         if auto_register:
             await self._async_register()
         self.client = aioxmpp.PresenceManagedClient(
@@ -120,11 +122,26 @@ class Agent(object):
         self.message_dispatcher.register_callback(
             aioxmpp.MessageType.CHAT, None, self._message_received,
         )
+
+        await self._hook_plugin_after_connection()
+
         await self.setup()
         self._alive.set()
         for behaviour in self.behaviours:
             if not behaviour.is_running:
                 behaviour.start()
+
+    async def _hook_plugin_before_connection(self):
+        """
+        Overload this method to hook a plugin before connetion is done
+        """
+        pass
+
+    async def _hook_plugin_after_connection(self):
+        """
+        Overload this method to hook a plugin after connetion is done
+        """
+        pass
 
     async def _async_connect(self):  # pragma: no cover
         """ connect and authenticate to the XMPP server. Async mode. """

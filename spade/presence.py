@@ -92,15 +92,15 @@ class PresenceManager(object):
         """
         return self.state.available
 
-    def set_available(self, show=None):
+    def set_available(self, show=PresenceShow.NONE):
         """
         Sets the agent availability to True.
 
         Args:
-          show (aioxmpp.PresenceShow, optional): the show state of the presence (Default value = None)
+          show (aioxmpp.PresenceShow, optional): the show state of the presence (Default value = PresenceShow.NONE)
 
         """
-        show = self.state.show if show is None else show
+        show = self.state.show if show is PresenceShow.NONE else show
         self.set_presence(PresenceState(available=True, show=show))
 
     def set_unavailable(self):
