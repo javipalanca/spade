@@ -57,8 +57,8 @@ Example::
 New Mixins
 ----------
 
-Some cases you don't want to add a new behaviour, but to add new features to current behaviours. This can be done by
-means of *mixins*. A mixin is a class that a behaviour can inherit from, in addition to the original parent class,
+Some cases you don't want to add a new behaviour, but to add new features to current behaviours or agents. This can be done by
+means of *mixins*. A mixin is a class that a behaviour or an agent can inherit from, in addition to the original parent class,
 making use of the multiple inheritance of python. This way, when we are creating our agent and we implement its
 behaviour which is (for example) a cyclic behaviour and we want to add this behaviour a feature that is provided by a
 plugin called ``spade-p2p`` that allows the agent to send P2P messages (by modifying the send and receive methods of the
@@ -96,7 +96,23 @@ To develop this example mixin you should do the following::
             ...
 
 
+In case you need to apply the mixin to the ``Agent`` class there are two hook coroutines that are prepared to be overriden
+if needed. These coroutines are ``_hook_plugin_before_connection`` and ``_hook_plugin_after_connection``. They will be called
+before and after the connection to the server is done respectively.
+In order to support multiple mixins it is **important** to call always to the parent method. Next, an example of how to
+build a simple mixin is shown::
 
+    class MyMixin:
+        async def _hook_plugin_before_connection(self, *args, **kwargs):
+            super()._hook_plugin_before_connection(*args, **kwargs)
+            # do my plugin stuff before the connection is done
+
+        async def _hook_plugin_after_connection(self, *args, **kwargs):
+            super()._hook_plugin_after_connection(*args, **kwargs)
+            # do my plugin stuff after the connection is done
+
+    class MyAgent(MyMixin, Agent):
+        # Inherit always from mixins first. Last class to inherit from is Agent.
 
 
 New Libraries
