@@ -104,11 +104,11 @@ build a simple mixin is shown::
 
     class MyMixin:
         async def _hook_plugin_before_connection(self, *args, **kwargs):
-            super()._hook_plugin_before_connection(*args, **kwargs)
+            await super()._hook_plugin_before_connection(*args, **kwargs)
             # do my plugin stuff before the connection is done
 
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             # do my plugin stuff after the connection is done
 
     class MyAgent(MyMixin, Agent):

@@ -4,11 +4,11 @@ from tests.factories import MockedConnectedAgent
 def test_add_plugin():
     class PluginMixin:
         async def _hook_plugin_before_connection(self, *args, **kwargs):
-            super()._hook_plugin_before_connection(*args, **kwargs)
+            await super()._hook_plugin_before_connection(*args, **kwargs)
             self.before_hook = True
 
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             self.after_hook = True
 
     class AgentWithPlugin(PluginMixin, MockedConnectedAgent):
@@ -26,7 +26,7 @@ def test_add_plugin():
 def test_plugin_override():
     class PluginMixin:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = None
 
     class AgentWithPlugin(PluginMixin, MockedConnectedAgent):
@@ -46,17 +46,17 @@ def test_plugin_multiple_override():
     """
     class PluginMixin1:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = 1
 
     class PluginMixin2:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = 2
 
     class PluginMixin3:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
-            super()._hook_plugin_after_connection(*args, **kwargs)
+            await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = 3
 
     class AgentWithPlugin(PluginMixin1, PluginMixin2, PluginMixin3, MockedConnectedAgent):
