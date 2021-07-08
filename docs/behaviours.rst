@@ -292,7 +292,8 @@ transit to::
 
     if __name__ == "__main__":
         fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
-        fsmagent.start()
+        future = fsmagent.start()
+        future.result() 
 
         while fsmagent.is_alive():
             try:
