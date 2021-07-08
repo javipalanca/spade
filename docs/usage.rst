@@ -46,8 +46,8 @@ the following output::
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
 dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.
 
-..note:: Note how the ``start`` function returns a future (or promise) which you can wait for with the result method
-         (``future.result()``) to make sure that the ``start`` coroutine has finished before invoking the ``stop`` coroutine.
+.. note:: Note how the ``start`` function returns a future (or promise) which you can wait for with the result method
+          (``future.result()``) to make sure that the ``start`` coroutine has finished before invoking the ``stop`` coroutine.
 
 An agent with a behaviour
 -------------------------
@@ -259,13 +259,13 @@ coroutine, so it MUST be called with an ``await`` statement in order to work pro
 
     class CreateBehav(OneShotBehaviour):
         async def run(self):
-            agent2 = AgentExample("agent2_example@gtirouter.dsic.upv.es", "fake_password")
+            agent2 = AgentExample("agent2_example@your_xmpp_server", "fake_password")
             # This start is inside an async def, so it must be awaited
             await agent2.start(auto_register=True)
 
 
     if __name__ == "__main__":
-        agent1 = AgentExample("agent1_example@gtirouter.dsic.upv.es", "fake_password")
+        agent1 = AgentExample("agent1_example@your_xmpp_server", "fake_password")
         behav = CreateBehav()
         agent1.add_behaviour(behav)
         # This start is in a synchronous piece of code, so it must NOT be awaited
