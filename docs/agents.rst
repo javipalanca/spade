@@ -119,7 +119,8 @@ Here is a self-explaining example::
 
     if __name__ == "__main__":
         agent = SenderAgent("sender@your_xmpp_server", "sender_password")
-        agent.start()
+        future = agent.start()
+        future.result()
 
         while agent.is_alive():
             try:

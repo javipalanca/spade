@@ -9,8 +9,8 @@ SPADE
 .. image:: https://img.shields.io/pypi/pyversions/spade.svg
     :target: https://pypi.python.org/pypi/spade
 
-.. image:: https://travis-ci.org/javipalanca/spade.svg?branch=master
-        :target: https://travis-ci.org/javipalanca/spade
+.. image:: https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg
+        :target: https://github.com/javipalanca/spade/actions/workflows/python-package.yml
         :alt: Continuous Integration Status
 
 .. image:: https://coveralls.io/repos/github/javipalanca/spade/badge.svg?branch=master
@@ -53,9 +53,15 @@ Plugins
 
 - **spade_bdi** (BDI agents with AgentSpeak):
         - Code: https://github.com/javipalanca/spade_bdi
+- **spade_pubsub** (PubSub protocol for agents):
+        - Code: https://github.com/javipalanca/spade_pubsub
+        - documentation: https://spade-pubsub.readthedocs.io
+- **spade_artifact** (Artifacts for SPADE):
+        - Code: https://github.com/javipalanca/spade_artifact
+        - Documentation: https://spade-artifact.readthedocs.io
 - **spade_bokeh** (bokeh plots for agents):
         - Code: https://github.com/javipalanca/spade_bokeh
-        - Documentation: https://spade-bokeh.readthedocs.io/
+        - Documentation: https://spade-bokeh.readthedocs.io
 
 Credits
 ---------
