@@ -9,7 +9,7 @@ SPADE
 .. image:: https://img.shields.io/pypi/pyversions/spade.svg
     :target: https://pypi.python.org/pypi/spade
 
-.. image:: https://github.com/javipalanca/spade/.github/workflows/python-package.yml/badge.svg?branch=master
+.. image:: https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg
         :alt: Continuous Integration Status
 
 .. image:: https://coveralls.io/repos/github/javipalanca/spade/badge.svg?branch=master
