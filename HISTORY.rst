@@ -2,6 +2,13 @@
 History
 =======
 
+3.1.8 (2021-07-08)
+------------------
+
+* Added examples.
+* Fixed documentation examples.
+* Added Github CI support.
+
 3.1.7 (2021-06-25)
 ------------------
 
