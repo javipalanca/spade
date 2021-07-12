@@ -41,4 +41,7 @@ jobs:
     - name: Run coverage
       run: |
         coverage run --source=spade -m py.test
-        coveralls --ignore-errors
+    - name: Coveralls
+      uses: coverallsapp/github-action
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
