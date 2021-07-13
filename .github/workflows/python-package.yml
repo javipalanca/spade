@@ -28,7 +28,7 @@ jobs:
       - name: Lint
         run: "tox -e flake8"
 
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -120,8 +120,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        python -m pip install -r requirements_dev.txt
+        python -m pip install -r requirements.txt
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -131,6 +131,24 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    
+  coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements_dev.txt
+        python -m pip install -r requirements.txt
     - name: Run coverage
       run: |
         coverage erase
@@ -142,12 +160,9 @@ jobs:
         flag-name: Unit Test
     - name: Send coverage report to codecov
       uses: codecov/codecov-action@v1
-      with:
-        env_vars: OS=${{ matrix.os }},PYTHON=${{ matrix.python }}
-        file: ./coverage
 
   coveralls_finish:
-    needs: build
+    needs: coverage
     runs-on: ubuntu-latest
     steps:
     - name: Coveralls Finished
