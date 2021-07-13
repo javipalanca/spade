@@ -37,7 +37,10 @@ jobs:
         flake8 spade --count --exit-zero --max-complexity=10 --ignore=E501 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=spade
+        pytest
+    - name: Run coverage
+      run: |
+        coverage run --source=spade
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:
