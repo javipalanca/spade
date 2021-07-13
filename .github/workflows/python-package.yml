@@ -38,13 +38,11 @@ jobs:
           - "ubuntu-py37"
           - "ubuntu-py38"
           - "ubuntu-py39"
-          - "ubuntu-pypy3"
 
           - "macos-py36"
           - "macos-py37"
           - "macos-py38"
           - "macos-py39"
-          - "macos-pypy3"
 
           - "windows-py36"
           - "windows-py37"
@@ -68,10 +66,6 @@ jobs:
             python: "3.9"
             os: ubuntu-latest
             tox_env: "py39"
-          - name: "ubuntu-pypy3"
-            python: "pypy3"
-            os: ubuntu-latest
-            tox_env: "pypy3"
 
           - name: "macos-py36"
             python: "3.6"
@@ -89,10 +83,6 @@ jobs:
             python: "3.9"
             os: macos-latest
             tox_env: "py39"
-          - name: "macos-pypy3"
-            python: "pypy3"
-            os: macos-latest
-            tox_env: "pypy3"
 
           - name: "windows-py36"
             python: "3.6"
