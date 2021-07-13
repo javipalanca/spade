@@ -40,9 +40,18 @@ jobs:
         pytest --cov=spade
     - name: Run coverage
       run: |
-        coverage run --source=spade -m py.test
+        coverage run --source=spade -m py.test 
     - name: Coveralls
-      uses: coverallsapp/github-action@master
+      uses: AndreMiras/coveralls-python-action@develop
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ${{ github.workspace }}/coverage
+        parallel: true
+        flag-name: Unit Test
+
+  coveralls_finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel-finished: true
