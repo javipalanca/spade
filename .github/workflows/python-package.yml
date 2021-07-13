@@ -40,6 +40,7 @@ jobs:
         pytest
     - name: Run coverage
       run: |
+        coverage erase
         coverage run --source=spade -m py.test
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
