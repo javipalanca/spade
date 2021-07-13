@@ -9,4 +9,4 @@ jinja2-time==0.2.0
 timeago==1.0.8
 singletonify==0.2.3
 
-cryptography==2.8  #3.2
+#cryptography==2.8  #3.2
