@@ -9,6 +9,12 @@ SPADE
 .. image:: https://img.shields.io/pypi/pyversions/spade.svg
     :target: https://pypi.python.org/pypi/spade
 
+.. image:: https://img.shields.io/apm/l/atomic-design-ui.svg?
+    :alt: MIT License
+
+.. image:: https://pepy.tech/badge/spade
+    :alt: Downloads
+
 .. image:: https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg
         :target: https://github.com/javipalanca/spade/actions/workflows/python-package.yml
         :alt: Continuous Integration Status
