@@ -2,6 +2,12 @@
 History
 =======
 
+3.2.0 (2021-07-13)
+------------------
+
+* Added support for Python 3.8 and 3.9
+* Fixed support for Linux, Windows and macOS
+
 3.1.9 (2021-07-08)
 ------------------
 

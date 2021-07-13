@@ -176,7 +176,8 @@ def test_add_behaviour():
 
     assert agent.has_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     assert behaviour.agent == agent
     assert behaviour.template is None

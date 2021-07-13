@@ -129,6 +129,10 @@ class Agent(object):
         self._alive.set()
         for behaviour in self.behaviours:
             if not behaviour.is_running:
+                behaviour.set_agent(self)
+                if issubclass(type(behaviour), FSMBehaviour):
+                    for _, state in behaviour.get_states().items():
+                        state.set_agent(self)
                 behaviour.start()
 
     async def _hook_plugin_before_connection(self):
