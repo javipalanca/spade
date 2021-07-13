@@ -38,9 +38,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov=spade
-    - name: Run coverage
-      run: |
-        coverage run --source=spade -m py.test 
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:
