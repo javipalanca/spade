@@ -1,7 +1,7 @@
 import datetime
 import logging
 import socket
-from typing import Optional, Coroutine, Type, TYPE_CHECKING
+from typing import Optional, Coroutine, Type
 
 import aiohttp_jinja2
 import jinja2
@@ -12,9 +12,6 @@ from aioxmpp import PresenceType, JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
-
-if TYPE_CHECKING:
-    from .agent import Agent
 
 logger = logging.getLogger("spade.Web")
 
@@ -27,7 +24,7 @@ def unused_port(hostname: str) -> None:
 
 
 async def start_server_in_loop(
-    runner: AppRunner, hostname: str, port: int, agent: "Agent"
+    runner: AppRunner, hostname: str, port: int, agent
 ):
     """
     Listens to http requests and sends them to the webapp.

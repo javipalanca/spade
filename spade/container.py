@@ -4,15 +4,12 @@ import sys
 from asyncio import Future
 from contextlib import suppress
 from threading import Thread
-from typing import Type, Dict, Union, Coroutine, TYPE_CHECKING
+from typing import Type, Dict, Union, Coroutine
 
 from singletonify import singleton
 
 from .behaviour import CyclicBehaviour
 from .message import Message
-
-if TYPE_CHECKING:
-    from .agent import Agent
 
 logger = logging.getLogger("SPADE")
 
@@ -62,7 +59,7 @@ class Container(object):
         """ Empty the container by unregistering all the agents. """
         self.__agents = {}
 
-    def register(self, agent: Type["Agent"]) -> None:
+    def register(self, agent) -> None:
         """
         Register a new agent.
 
@@ -70,8 +67,8 @@ class Container(object):
             agent (spade.agent.Agent): the agent to be registered
         """
         self.__agents[str(agent.jid)] = agent
-        agent.set_container(container=self)
-        agent.set_loop(loop=self.loop)
+        agent.set_container(self)
+        agent.set_loop(self.loop)
 
     def unregister(self, jid: str) -> None:
         if str(jid) in self.__agents:
