@@ -24,7 +24,7 @@ class Container(object):
     """
 
     def __init__(self):
-        self.__agents: Dict[str, Type["Agent"]] = {}
+        self.__agents = {}
         self.aiothread = AioThread()
         self.aiothread.start()
         self.loop = self.aiothread.loop
@@ -38,7 +38,7 @@ class Container(object):
             return False
 
     def start_agent(
-        self, agent: Type["Agent"], auto_register: bool = True
+        self, agent, auto_register: bool = True
     ) -> Union[Coroutine, Future]:
         coro = agent._async_start(auto_register=auto_register)
 
@@ -47,7 +47,7 @@ class Container(object):
         else:
             return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
-    def stop_agent(self, agent: Type["Agent"]) -> Union[Coroutine, Future]:
+    def stop_agent(self, agent) -> Union[Coroutine, Future]:
         coro = agent._async_stop()
 
         if self.__in_coroutine():
@@ -85,7 +85,7 @@ class Container(object):
         """
         return jid in self.__agents
 
-    def get_agent(self, jid: str) -> Type["Agent"]:
+    def get_agent(self, jid: str):
         """
         Returns a registered agent
         Args:
