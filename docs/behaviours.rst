@@ -15,8 +15,11 @@ You can also delay the startup of the periodic behaviour by setting a datetime i
 
 Let's see an example::
 
-    import time
     import datetime
+    import getpass
+    import time
+
+    from spade import quit_spade
     from spade.agent import Agent
     from spade.behaviour import CyclicBehaviour, PeriodicBehaviour
     from spade.message import Message
@@ -26,7 +29,7 @@ Let's see an example::
         class InformBehav(PeriodicBehaviour):
             async def run(self):
                 print(f"PeriodicSenderBehaviour running at {datetime.datetime.now().time()}: {self.counter}")
-                msg = Message(to="receiver@your_xmpp_server")  # Instantiate the message
+                msg = Message(to=self.get("receiver_jid"))  # Instantiate the message
                 msg.body = "Hello World"  # Set the message content
 
                 await self.send(msg)
@@ -71,11 +74,19 @@ Let's see an example::
 
 
     if __name__ == "__main__":
-        receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        future = receiveragent.start()
-        future.result() # wait for receiver agent to be prepared.
-        senderagent = PeriodicSenderAgent("sender@your_xmpp_server", "sender_password")
-        senderagent.start()
+        receiver_jid = input("Receiver JID> ")
+        passwd = getpass.getpass()
+        receiveragent = ReceiverAgent(receiver_jid, passwd)
+
+        sender_jid = input("Sender JID> ")
+        passwd = getpass.getpass()
+        senderagent = PeriodicSenderAgent(sender_jid, passwd)
+
+        future = receiveragent.start(auto_register=True)
+        future.result()  # wait for receiver agent to be prepared.
+
+        senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
+        senderagent.start(auto_register=True)
 
         while receiveragent.is_alive():
             try:
@@ -85,6 +96,7 @@ Let's see an example::
                 receiveragent.stop()
                 break
         print("Agents finished")
+        quit_spade()
 
 The output of this code would be similar to::
 
@@ -129,6 +141,7 @@ a specified ``datetime`` just as in ``PeriodicBehaviours``.
 
 Let's see an example::
 
+    import getpass
     import time
     import datetime
     from spade.agent import Agent
@@ -140,7 +153,7 @@ Let's see an example::
         class InformBehav(TimeoutBehaviour):
             async def run(self):
                 print(f"TimeoutSenderBehaviour running at {datetime.datetime.now().time()}")
-                msg = Message(to="receiver@your_xmpp_server")  # Instantiate the message
+                msg = Message(to=self.get("receiver_jid"))  # Instantiate the message
                 msg.body = "Hello World"  # Set the message content
 
                 await self.send(msg)
@@ -174,11 +187,19 @@ Let's see an example::
 
 
     if __name__ == "__main__":
-        receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        future = receiveragent.start()
-        future.result() # wait for receiver agent to be prepared.
-        senderagent = TimeoutSenderAgent("sender@your_xmpp_server", "sender_password")
-        senderagent.start()
+        receiver_jid = input("Receiver JID> ")
+        passwd = getpass.getpass()
+        receiveragent = ReceiverAgent(receiver_jid, passwd)
+
+        sender_jid = input("Sender JID> ")
+        passwd = getpass.getpass()
+        senderagent = TimeoutSenderAgent(sender_jid, passwd)
+
+        future = receiveragent.start(auto_register=True)
+        future.result()  # wait for receiver agent to be prepared.
+
+        senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
+        senderagent.start(auto_register=True)
 
         while receiveragent.is_alive():
             try:
@@ -239,8 +260,8 @@ transit to::
     import time
 
     from spade.agent import Agent
-    from spade.message import Message
     from spade.behaviour import FSMBehaviour, State
+    from spade.message import Message
 
     STATE_ONE = "STATE_ONE"
     STATE_TWO = "STATE_TWO"
@@ -259,7 +280,7 @@ transit to::
     class StateOne(State):
         async def run(self):
             print("I'm at state one (initial state)")
-            msg = Message(to="fsmagent@your_xmpp_server")
+            msg = Message(to=str(self.agent.jid))
             msg.body = "msg_from_state_one_to_state_three"
             await self.send(msg)
             self.set_next_state(STATE_TWO)
@@ -292,7 +313,8 @@ transit to::
 
     if __name__ == "__main__":
         fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
-        fsmagent.start()
+        future = fsmagent.start()
+        future.result()
 
         while fsmagent.is_alive():
             try:
@@ -302,16 +324,7 @@ transit to::
                 break
         print("Agent finished")
 
-The output of this example is::
 
-    $python fsm.py
-    FSM starting at initial state STATE_ONE
-    I'm at state one (initial state)
-    I'm at state two
-    I'm at state three (final state)
-    State Three received message msg_from_state_one_to_state_three
-    FSM finished at state STATE_THREE
-    Agent finished
 
 
 Waiting a Behaviour
@@ -324,9 +337,11 @@ which behaves different depending on the context. It returns a coroutine or a fu
 from a coroutine or a synchronous method. Example::
 
     import asyncio
+    import getpass
+
+    from spade import quit_spade
     from spade.agent import Agent
     from spade.behaviour import OneShotBehaviour
-    from spade import quit_spade
 
 
     class DummyAgent(Agent):
@@ -349,7 +364,11 @@ from a coroutine or a synchronous method. Example::
 
 
     if __name__ == "__main__":
-        dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+
+        jid = input("JID> ")
+        passwd = getpass.getpass()
+
+        dummy = DummyAgent(jid, passwd)
         future = dummy.start()
         future.result()
 

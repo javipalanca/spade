@@ -2,6 +2,30 @@
 History
 =======
 
+3.2.0 (2021-07-13)
+------------------
+
+* Added support for Python 3.8 and 3.9
+* Fixed support for Linux, Windows and macOS
+
+3.1.9 (2021-07-08)
+------------------
+
+* Minor fix in docs.
+
+3.1.8 (2021-07-08)
+------------------
+
+* Added examples.
+* Fixed documentation examples.
+* Added Github CI support.
+
+3.1.7 (2021-06-25)
+------------------
+
+* Added hooks for plugins.
+* Minor bug fixings.
+
 3.1.6 (2020-05-22)
 ------------------
 

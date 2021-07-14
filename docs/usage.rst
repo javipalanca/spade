@@ -22,16 +22,18 @@ For starters, fire up you favorite Python editor and create a file called ``dumm
 
 To create an agent in a project you just need to: ::
 
-    from spade import agent
+    from spade import agent, quit_spade
 
     class DummyAgent(agent.Agent):
         async def setup(self):
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
-    dummy.start()
+    future = dummy.start()
+    future.result()
 
     dummy.stop()
+    quit_spade()
 
 
 This agent is only printing on screen a message during its setup and stopping. If you run this script you get
@@ -44,7 +46,8 @@ the following output::
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
 dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.
 
-
+.. note:: Note how the ``start`` function returns a future (or promise) which you can wait for with the result method
+          (``future.result()``) to make sure that the ``start`` coroutine has finished before invoking the ``stop`` coroutine.
 
 An agent with a behaviour
 -------------------------
@@ -83,14 +86,15 @@ Example::
 
     if __name__ == "__main__":
         dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
-        dummy.start()
+        future = dummy.start()
+        future.result()
 
         print("Wait until user interrupts with ctrl+C")
-        while True:
-            try:
+        try:
+            while True:
                 time.sleep(1)
-            except KeyboardInterrupt:
-                break
+        except KeyboardInterrupt:
+            print("Stopping...")
         dummy.stop()
 
 
@@ -222,7 +226,8 @@ There is a helper to quickly finish all the agents and behaviors running in your
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
-    dummy.start()
+    future = dummy.start()
+    future.result()
 
     dummy.stop()
 
@@ -242,16 +247,35 @@ agent's behaviour. This is a *special* case because you can't create a new event
 running. For this special case you can use the ``start`` method as usual. But in this case ```start`` behaves as a
 coroutine, so it MUST be called with an ``await`` statement in order to work properly. Example::
 
-        class CreateBehav(OneShotBehaviour):
-            async def run(self):
-                agent2 = Agent("agent2@fake_server", "fake_password")
-                # This start is inside an async def, so it must be awaited
-                await agent2.start(auto_register=False)
+    from spade import quit_spade
+    from spade.agent import Agent
+    from spade.behaviour import OneShotBehaviour
 
-        agent1 = Agent("agent1@fake_server", "fake_password")
-        agent1.add_behaviour(CreateBehav())
+
+    class AgentExample(Agent):
+        async def setup(self):
+            print(f"{self.jid} created.")
+
+
+    class CreateBehav(OneShotBehaviour):
+        async def run(self):
+            agent2 = AgentExample("agent2_example@your_xmpp_server", "fake_password")
+            # This start is inside an async def, so it must be awaited
+            await agent2.start(auto_register=True)
+
+
+    if __name__ == "__main__":
+        agent1 = AgentExample("agent1_example@your_xmpp_server", "fake_password")
+        behav = CreateBehav()
+        agent1.add_behaviour(behav)
         # This start is in a synchronous piece of code, so it must NOT be awaited
-        agent1.start(auto_register=False)
+        future = agent1.start(auto_register=True)
+        future.result()
+
+        # wait until the behaviour is finished to quit spade.
+        behav.join()
+        quit_spade()
+
 
 
 .. warning:: Remember to call ``start`` with an ``await`` whenever you are inside an asyncronous method (another coroutine).

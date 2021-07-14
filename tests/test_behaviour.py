@@ -176,7 +176,8 @@ def test_add_behaviour():
 
     assert agent.has_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    future = agent.start(auto_register=False)
+    future.result()
 
     assert behaviour.agent == agent
     assert behaviour.template is None
@@ -287,6 +288,45 @@ def test_send_message(message):
             await self.send(message)
             self.kill()
 
+    agent = MockedAgentFactory(jid="sender@localhost")
+    future = agent.start(auto_register=False)
+    future.result()
+
+    agent2 = MockedAgentFactory(jid="to@localhost")
+    future = agent2.start(auto_register=False)
+    future.result()
+
+    agent2.dispatch = Mock()
+
+    behaviour = SendBehaviour()
+    agent.add_behaviour(behaviour)
+
+    behaviour.join()
+
+    assert agent2.dispatch.assert_called
+    msg_arg = agent2.dispatch.call_args[0][0]
+    assert msg_arg.body == "message body"
+    assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
+    assert msg_arg.thread == "thread-id"
+
+    agent.stop()
+    agent2.stop()
+
+
+def test_send_message_to_external_agent():
+    message = Message(
+        to="to@external_xmpp.com",
+        sender="sender@localhost",
+        body="message body",
+        thread="thread-id",
+        metadata={"metadata1": "value1", "metadata2": "value2"},
+    )
+
+    class SendBehaviour(OneShotBehaviour):
+        async def run(self):
+            await self.send(message)
+            self.kill()
+
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
@@ -301,7 +341,7 @@ def test_send_message(message):
     assert agent.client.send.await_count == 1
     msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.body[None] == "message body"
-    assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
+    assert msg_arg.to == aioxmpp.JID.fromstr("to@external_xmpp.com")
     thread_found = False
     for data in msg_arg.xep0004_data:
         if data.title == SPADE_X_METADATA:
@@ -1019,8 +1059,8 @@ def test_fsm_fail_on_end():
 
 def test_to_graphviz(fsm):
     assert (
-        fsm.to_graphviz()
-        == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+            fsm.to_graphviz()
+            == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
     )
 
 
