@@ -4,7 +4,7 @@ import sys
 from asyncio import Future
 from contextlib import suppress
 from threading import Thread
-from typing import Type, Dict, Union, Coroutine
+from typing import Type, Union, Coroutine
 
 from singletonify import singleton
 
