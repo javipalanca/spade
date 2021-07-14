@@ -97,7 +97,7 @@ class XORTemplate(BaseTemplate):
 class Template(BaseTemplate, MessageBase):
     """Template for message matching"""
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = f'<template to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:
             s += "\n" + self.body + "\n"

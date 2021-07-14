@@ -1,3 +1,5 @@
+from typing import Dict, Optional
+
 import aioxmpp
 from aioxmpp import PresenceState, PresenceShow
 
@@ -34,7 +36,7 @@ class PresenceManager(object):
         self.roster.on_unsubscribed.connect(self._on_unsubscribed)
 
     @property
-    def state(self):
+    def state(self) -> aioxmpp.PresenceState:
         """
         The currently set presence state (as aioxmpp.PresenceState)
         which is broadcast when the client connects and when the presence is
@@ -51,7 +53,7 @@ class PresenceManager(object):
         return self.presenceserver.state
 
     @property
-    def status(self):
+    def status(self) -> Dict[str, str]:
         """
         The currently set textual presence status which is broadcast when the
         client connects and when the presence is re-emitted.
@@ -67,7 +69,7 @@ class PresenceManager(object):
         return self.presenceserver.status
 
     @property
-    def priority(self):
+    def priority(self) -> int:
         """
         The currently set priority which is broadcast when the client connects
         and when the presence is re-emitted.
@@ -82,7 +84,7 @@ class PresenceManager(object):
         """
         return self.presenceserver.priority
 
-    def is_available(self):
+    def is_available(self) -> bool:
         """
         Returns the available flag from the state
 
@@ -92,7 +94,7 @@ class PresenceManager(object):
         """
         return self.state.available
 
-    def set_available(self, show=PresenceShow.NONE):
+    def set_available(self, show: Optional[aioxmpp.PresenceShow] = PresenceShow.NONE):
         """
         Sets the agent availability to True.
 
@@ -103,12 +105,17 @@ class PresenceManager(object):
         show = self.state.show if show is PresenceShow.NONE else show
         self.set_presence(PresenceState(available=True, show=show))
 
-    def set_unavailable(self):
+    def set_unavailable(self) -> None:
         """Sets the agent availability to False."""
         show = PresenceShow.NONE
         self.set_presence(PresenceState(available=False, show=show))
 
-    def set_presence(self, state=None, status=None, priority=None):
+    def set_presence(
+        self,
+        state: Optional[aioxmpp.PresenceState] = None,
+        status: Optional[str] = None,
+        priority: Optional[int] = None,
+    ):
         """
         Change the presence broadcast by the client.
         If the client is currently connected, the new presence is broadcast immediately.
@@ -124,7 +131,7 @@ class PresenceManager(object):
         priority = priority if priority is not None else self.priority
         self.presenceserver.set_presence(state, status, priority)
 
-    def get_contacts(self):
+    def get_contacts(self) -> Dict[str, Dict]:
         """
         Returns list of contacts
 
@@ -140,7 +147,7 @@ class PresenceManager(object):
 
         return self._contacts
 
-    def get_contact(self, jid):
+    def get_contact(self, jid: aioxmpp.JID) -> Dict:
         """
         Returns a contact
 
@@ -158,7 +165,7 @@ class PresenceManager(object):
         except AttributeError:
             raise AttributeError("jid must be an aioxmpp.JID object")
 
-    def _update_roster_with_presence(self, stanza):
+    def _update_roster_with_presence(self, stanza: aioxmpp.Presence) -> None:
         """ """
         if stanza.from_.bare() == self.agent.jid.bare():
             return
@@ -167,7 +174,7 @@ class PresenceManager(object):
         except KeyError:
             self._contacts[stanza.from_.bare()] = {"presence": stanza}
 
-    def subscribe(self, peer_jid):
+    def subscribe(self, peer_jid: str) -> None:
         """
         Asks for subscription
 
@@ -177,7 +184,7 @@ class PresenceManager(object):
         """
         self.roster.subscribe(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def unsubscribe(self, peer_jid):
+    def unsubscribe(self, peer_jid: str) -> None:
         """
         Asks for unsubscription
 
@@ -187,7 +194,7 @@ class PresenceManager(object):
         """
         self.roster.unsubscribe(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def approve(self, peer_jid):
+    def approve(self, peer_jid: str) -> None:
         """
         Approve a subscription request from jid
 
@@ -197,42 +204,42 @@ class PresenceManager(object):
         """
         self.roster.approve(aioxmpp.JID.fromstr(peer_jid).bare())
 
-    def _on_bare_available(self, stanza):
+    def _on_bare_available(self, stanza: aioxmpp.Presence) -> None:
         """ """
         self._update_roster_with_presence(stanza)
         self.on_available(str(stanza.from_), stanza)
 
-    def _on_available(self, full_jid, stanza):
+    def _on_available(self, full_jid, stanza: aioxmpp.Presence) -> None:
         """ """
         self._update_roster_with_presence(stanza)
         self.on_available(str(stanza.from_), stanza)
 
-    def _on_unavailable(self, full_jid, stanza):
+    def _on_unavailable(self, full_jid, stanza: aioxmpp.Presence) -> None:
         """ """
         self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
 
-    def _on_bare_unavailable(self, stanza):
+    def _on_bare_unavailable(self, stanza: aioxmpp.Presence) -> None:
         """ """
         self._update_roster_with_presence(stanza)
         self.on_unavailable(str(stanza.from_), stanza)
 
-    def _on_changed(self, from_, stanza):
+    def _on_changed(self, from_, stanza: aioxmpp.Presence) -> None:
         """ """
         self._update_roster_with_presence(stanza)
 
-    def _on_subscribe(self, stanza):
+    def _on_subscribe(self, stanza: aioxmpp.Presence) -> None:
         """ """
         if self.approve_all:
             self.roster.approve(stanza.from_.bare())
         else:
             self.on_subscribe(str(stanza.from_))
 
-    def _on_subscribed(self, stanza):
+    def _on_subscribed(self, stanza: aioxmpp.Presence) -> None:
         """ """
         self.on_subscribed(str(stanza.from_))
 
-    def _on_unsubscribe(self, stanza):
+    def _on_unsubscribe(self, stanza: aioxmpp.Presence) -> None:
         """ """
         if self.approve_all:
             self.client.stream.enqueue(
@@ -244,11 +251,11 @@ class PresenceManager(object):
         else:
             self.on_unsubscribe(str(stanza.from_))
 
-    def _on_unsubscribed(self, stanza):
+    def _on_unsubscribed(self, stanza: aioxmpp.Presence) -> None:
         """ """
         self.on_unsubscribed(str(stanza.from_))
 
-    def on_subscribe(self, peer_jid):
+    def on_subscribe(self, peer_jid: str) -> None:
         """
         Callback called when a subscribe query is received.
         To ve overloaded by user.
@@ -259,7 +266,7 @@ class PresenceManager(object):
         """
         pass  # pragma: no cover
 
-    def on_subscribed(self, peer_jid):
+    def on_subscribed(self, peer_jid: str) -> None:
         """
         Callback called when a subscribed message is received.
         To ve overloaded by user.
@@ -270,7 +277,7 @@ class PresenceManager(object):
         """
         pass  # pragma: no cover
 
-    def on_unsubscribe(self, peer_jid):
+    def on_unsubscribe(self, peer_jid: str) -> None:
         """
         Callback called when an unsubscribe query is received.
         To ve overloaded by user.
@@ -281,7 +288,7 @@ class PresenceManager(object):
         """
         pass  # pragma: no cover
 
-    def on_unsubscribed(self, peer_jid):
+    def on_unsubscribed(self, peer_jid: str) -> None:
         """
         Callback called when an unsubscribed message is received.
         To ve overloaded by user.
@@ -292,7 +299,7 @@ class PresenceManager(object):
         """
         pass  # pragma: no cover
 
-    def on_available(self, peer_jid, stanza):
+    def on_available(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
         """
         Callback called when a contact becomes available.
         To ve overloaded by user.
@@ -304,7 +311,7 @@ class PresenceManager(object):
         """
         pass  # pragma: no cover
 
-    def on_unavailable(self, peer_jid, stanza):
+    def on_unavailable(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
         """
         Callback called when a contact becomes unavailable.
         To ve overloaded by user.
