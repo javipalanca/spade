@@ -11,13 +11,13 @@ import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
-from spade.behaviour import FSMBehaviour, CyclicBehaviour
-from spade.container import Container
-from spade.message import Message
-from spade.presence import PresenceManager
-from spade.template import Template
-from spade.trace import TraceStore
-from spade.web import WebApp
+from .behaviour import FSMBehaviour, CyclicBehaviour
+from .container import Container
+from .message import Message
+from .presence import PresenceManager
+from .template import Template
+from .trace import TraceStore
+from .web import WebApp
 
 logger = logging.getLogger("spade.Agent")
 

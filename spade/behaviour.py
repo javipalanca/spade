@@ -7,10 +7,13 @@ from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Type, Optional, Coroutine, Dict
+from typing import Any, Type, Optional, Coroutine, Dict, TYPE_CHECKING
 
 from .message import Message
 from .template import Template
+
+if TYPE_CHECKING:
+    from .agent import Agent
 
 now = datetime.now
 
@@ -51,7 +54,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         self.queue = None
 
-    def set_agent(self, agent: Type['Agent']) -> None:
+    def set_agent(self, agent: Type["Agent"]) -> None:
         """
         Links behaviour with its owner agent
 

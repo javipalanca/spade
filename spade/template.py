@@ -1,7 +1,7 @@
 import logging
 from abc import ABCMeta
 
-from spade.message import MessageBase
+from .message import MessageBase
 
 logger = logging.getLogger("spade.Template")
 

@@ -1,7 +1,7 @@
 import datetime
 import logging
 import socket
-from typing import Optional, Coroutine, Type
+from typing import Optional, Coroutine, Type, TYPE_CHECKING
 
 import aiohttp_jinja2
 import jinja2
@@ -10,7 +10,11 @@ from aiohttp import web as aioweb
 from aiohttp.web_runner import AppRunner
 from aioxmpp import PresenceType, JID
 
-from spade.message import Message
+from .behaviour import CyclicBehaviour
+from .message import Message
+
+if TYPE_CHECKING:
+    from .agent import Agent
 
 logger = logging.getLogger("spade.Web")
 
@@ -276,7 +280,7 @@ class WebApp(object):
         self.agent.traces.append(msg)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
-    def find_behaviour(self, behaviour_str: str) -> Optional[Type["CyclicBehaviour"]]:
+    def find_behaviour(self, behaviour_str: str) -> Optional[Type[CyclicBehaviour]]:
         behav = None
         for behaviour in self.agent.behaviours:
             if str(behaviour) == behaviour_str:

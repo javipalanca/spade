@@ -4,11 +4,15 @@ import sys
 from asyncio import Future
 from contextlib import suppress
 from threading import Thread
-from typing import Type, Dict, Union, Coroutine, Optional
+from typing import Type, Dict, Union, Coroutine, TYPE_CHECKING
 
 from singletonify import singleton
 
-from spade.message import Message
+from .behaviour import CyclicBehaviour
+from .message import Message
+
+if TYPE_CHECKING:
+    from .agent import Agent
 
 logger = logging.getLogger("SPADE")
 
@@ -23,7 +27,7 @@ class Container(object):
     """
 
     def __init__(self):
-        self.__agents: Dict[str, "Agent"] = {}
+        self.__agents: Dict[str, Type["Agent"]] = {}
         self.aiothread = AioThread()
         self.aiothread.start()
         self.loop = self.aiothread.loop
@@ -66,8 +70,8 @@ class Container(object):
             agent (spade.agent.Agent): the agent to be registered
         """
         self.__agents[str(agent.jid)] = agent
-        agent.set_container(self)
-        agent.set_loop(self.loop)
+        agent.set_container(container=self)
+        agent.set_loop(loop=self.loop)
 
     def unregister(self, jid: str) -> None:
         if str(jid) in self.__agents:
@@ -98,7 +102,7 @@ class Container(object):
         """
         return self.__agents[jid]
 
-    async def send(self, msg: Message, behaviour: Type["CyclicBehaviour"]) -> None:
+    async def send(self, msg: Message, behaviour: Type[CyclicBehaviour]) -> None:
         """
         This method sends the message using the container mechanism
         when the receiver is also registered in the container. Otherwise,

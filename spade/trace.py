@@ -5,7 +5,7 @@ from typing import Optional, List
 
 from aioxmpp import JID
 
-from spade.message import Message
+from .message import Message
 
 
 def _agent_in_msg(agent, msg):
