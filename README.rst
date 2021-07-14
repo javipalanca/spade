@@ -10,9 +10,11 @@ SPADE
     :target: https://pypi.python.org/pypi/spade
 
 .. image:: https://img.shields.io/apm/l/atomic-design-ui.svg?
+    :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
 .. image:: https://pepy.tech/badge/spade
+    :target: https://pepy.tech/project/spade
     :alt: Downloads
 
 .. image:: https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg

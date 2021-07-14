@@ -58,6 +58,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'Topic :: Internet :: XMPP',
     ],
