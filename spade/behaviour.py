@@ -60,7 +60,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         """
         self.agent = agent
-        self.queue = asyncio.Queue(loop=self.agent.loop)
+        self.queue = asyncio.Queue()
         self.presence = agent.presence
         self.web = agent.web
 
