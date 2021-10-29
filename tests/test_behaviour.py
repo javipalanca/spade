@@ -821,8 +821,8 @@ def test_fsm_behaviour(fsm):
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
-    agent.sync1_behaviour = asyncio.Event(loop=agent.loop)
-    agent.sync2_behaviour = asyncio.Event(loop=agent.loop)
+    agent.sync1_behaviour = asyncio.Event()
+    agent.sync2_behaviour = asyncio.Event()
 
     agent.state = None
 
