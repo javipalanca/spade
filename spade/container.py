@@ -8,6 +8,9 @@ from singletonify import singleton
 
 logger = logging.getLogger("SPADE")
 
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 
 @singleton()
 class Container(object):
