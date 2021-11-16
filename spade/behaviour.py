@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Union
+from typing import Any, Optional, Coroutine, Dict
 
 from .message import Message
 from .template import Template
@@ -51,7 +51,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         self.queue = None
 
-    def set_agent(self, agent):
+    def set_agent(self, agent) -> None:
         """
         Links behaviour with its owner agent
 
@@ -64,7 +64,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.presence = agent.presence
         self.web = agent.web
 
-    def set_template(self, template: Template):
+    def set_template(self, template: Template) -> None:
         """
         Sets the template that is used to match incoming
         messages with this behaviour.
@@ -114,12 +114,12 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return self.agent.get(name)
 
-    def start(self):
+    def start(self) -> None:
         """starts behaviour in the event loop"""
         self.agent.submit(self._start())
         self.is_running = True
 
-    async def _start(self):
+    async def _start(self) -> None:
         """
         Start coroutine. runs on_start coroutine and then
         runs the _step coroutine where the body of the behaviour
@@ -136,7 +136,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         await self._step()
         self._is_done.clear()
 
-    def kill(self, exit_code: Any = None):
+    def kill(self, exit_code: Optional[Any] = None) -> None:
         """
         Stops the behaviour
 
@@ -169,6 +169,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Returns:
           object: the exit code of the behaviour
 
+        Raises:
+            BehaviourNotFinishedException: if the behaviour is not yet finished
+
         """
         if self._done() or self.is_killed():
             return self._exit_code
@@ -176,7 +179,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             raise BehaviourNotFinishedException
 
     @exit_code.setter
-    def exit_code(self, value: Any):
+    def exit_code(self, value: Any) -> None:
         """
         Sets a new exit code to the behaviour.
 
@@ -197,10 +200,29 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return False
 
-    def is_done(self):
+    def is_done(self) -> bool:
+        """
+        Check if the behaviour is finished
+
+        Returns:
+             bool: whether the behaviour is finished or not
+        """
         return not self._is_done.is_set()
 
-    def join(self, timeout=None):
+    def join(self, timeout: Optional[float] = None) -> Optional[Coroutine]:
+        """
+        Wait for the behaviour to complete
+
+        Args:
+            timeout (Optional[float]): an optional timeout to wait to join (if None, the join is blocking)
+
+        Returns:
+            None: if called from a synchronous method
+            Coroutine: if called from an async method
+
+        Raises:
+            TimeoutError: if the timeout is reached
+        """
 
         try:
             in_coroutine = asyncio.get_event_loop() == self.agent.loop
@@ -217,7 +239,16 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         else:
             return self._async_join(timeout=timeout)
 
-    async def _async_join(self, timeout):
+    async def _async_join(self, timeout: Optional[float]) -> None:
+        """
+        Coroutine to wait until a behaviour is finished
+
+        Args:
+            timeout (Optional[float]): an optional timeout to wait to join
+
+        Raises:
+            TimeoutError: fi the timeout is reached
+        """
         t_start = time.time()
         while not self.is_done():
             await asyncio.sleep(0.001)
@@ -225,34 +256,34 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             if timeout is not None and t - t_start > timeout:
                 raise TimeoutError
 
-    async def on_start(self):
+    async def on_start(self) -> None:
         """
         Coroutine called before the behaviour is started.
         """
         pass
 
-    async def on_end(self):
+    async def on_end(self) -> None:
         """
         Coroutine called after the behaviour is done or killed.
         """
         pass
 
     @abstractmethod
-    async def run(self):
+    async def run(self) -> None:
         """
         Body of the behaviour.
         To be implemented by user.
         """
         raise NotImplementedError  # pragma: no cover
 
-    async def _run(self):
+    async def _run(self) -> None:
         """
         Function to be overload by more complex behaviours.
         In other case it just calls run() coroutine.
         """
         await self.run()
 
-    async def _step(self):
+    async def _step(self) -> None:
         """
         Main loop of the behaviour.
         checks whether behaviour is done or killed,
@@ -282,7 +313,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             self.kill(exit_code=e)
         self.agent.remove_behaviour(self)
 
-    async def enqueue(self, message: Message):
+    async def enqueue(self, message: Message) -> None:
         """
         Enqueues a message in the behaviour's mailbox
 
@@ -301,7 +332,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return self.queue.qsize()
 
-    async def send(self, msg: Message):
+    async def send(self, msg: Message) -> None:
         """
         Sends a message.
 
@@ -315,18 +346,18 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         msg.sent = True
         self.agent.traces.append(msg, category=str(self))
 
-    async def _xmpp_send(self, msg: Message):
+    async def _xmpp_send(self, msg: Message) -> None:
         aioxmpp_msg = msg.prepare()
         await self.agent.client.send(aioxmpp_msg)
 
-    async def receive(self, timeout: float = None) -> Union[Message, None]:
+    async def receive(self, timeout: Optional[float] = None) -> Optional[Message]:
         """
         Receives a message for this behaviour.
         If timeout is not None it returns the message or "None"
         after timeout is done.
 
         Args:
-            timeout (float): number of seconds until return
+            timeout (float, optional): number of seconds until return
 
         Returns:
             spade.message.Message: a Message or None
@@ -344,7 +375,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 msg = None
         return msg
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}/{}".format(
             "/".join(base.__name__ for base in self.__class__.__bases__),
             self.__class__.__name__,
@@ -369,7 +400,7 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """This behaviour is executed periodically with an interval"""
 
-    def __init__(self, period, start_at=None):
+    def __init__(self, period: float, start_at: Optional[datetime] = None):
         """
         Creates a periodic behaviour.
 
@@ -392,7 +423,7 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
         return self._period
 
     @period.setter
-    def period(self, value: float):
+    def period(self, value: float) -> None:
         """
         Set the period.
 
@@ -403,7 +434,7 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
             raise ValueError("Period must be greater or equal than zero.")
         self._period = timedelta(seconds=value)
 
-    async def _run(self):
+    async def _run(self) -> None:
         if now() >= self._next_activation:
             logger.debug(f"Periodic behaviour activated: {self}")
             await self.run()
@@ -436,7 +467,7 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
         self._timeout = start_at
         self._timeout_triggered = False
 
-    async def _run(self):
+    async def _run(self) -> None:
         if now() >= self._timeout:
             logger.debug(f"Timeout behaviour activated: {self}")
             await self.run()
@@ -463,7 +494,7 @@ class State(OneShotBehaviour, metaclass=ABCMeta):
         super().__init__()
         self.next_state = None
 
-    def set_next_state(self, state_name):
+    def set_next_state(self, state_name: str) -> None:
         """
         Set the state to transition to when this state is finished.
         state_name must be a valid state and the transition must be registered.
@@ -481,17 +512,17 @@ class FSMBehaviour(CyclicBehaviour):
 
     def __init__(self):
         super().__init__()
-        self._states = {}
+        self._states: Dict[str, State] = {}
         self._transitions = collections.defaultdict(list)
-        self.current_state = None
+        self.current_state: Optional[str] = None
         self.setup()
 
-    def setup(self):
+    def setup(self) -> None:
         """ """
         pass
 
-    def add_state(self, name: str, state: State, initial: bool = False):
-        """ Adds a new state to the FSM.
+    def add_state(self, name: str, state: State, initial: bool = False) -> None:
+        """Adds a new state to the FSM.
 
         Args:
           name (str): the name of the state, which is used as its identifier.
@@ -505,14 +536,14 @@ class FSMBehaviour(CyclicBehaviour):
         if initial:
             self.current_state = name
 
-    def get_state(self, name):
+    def get_state(self, name) -> State:
         return self._states[name]
 
-    def get_states(self):
+    def get_states(self) -> Dict[str, State]:
         return self._states
 
-    def add_transition(self, source: str, dest: str):
-        """ Adds a transition from one state to another.
+    def add_transition(self, source: str, dest: str) -> None:
+        """Adds a transition from one state to another.
 
         Args:
           source (str): the name of the state from where the transition starts
@@ -539,7 +570,7 @@ class FSMBehaviour(CyclicBehaviour):
             raise NotValidTransition
         return True
 
-    async def _run(self):
+    async def _run(self) -> None:
         behaviour = self._states[self.current_state]
         behaviour.set_agent(self.agent)
         behaviour.receive = self.receive
@@ -584,7 +615,7 @@ class FSMBehaviour(CyclicBehaviour):
             )
             self.kill()
 
-    async def run(self):
+    async def run(self) -> None:
         """
         In this kind of behaviour there is no need to overload run.
         The run methods to be overloaded are in the State class.

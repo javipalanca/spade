@@ -1,4 +1,5 @@
 import logging
+from typing import Optional, Dict, Type
 
 import aioxmpp
 import aioxmpp.forms.xso as forms_xso
@@ -11,7 +12,14 @@ logger = logging.getLogger("spade.Message")
 class MessageBase(object):
     """ """
 
-    def __init__(self, to=None, sender=None, body=None, thread=None, metadata=None):
+    def __init__(
+        self,
+        to: Optional[str] = None,
+        sender: Optional[str] = None,
+        body: Optional[str] = None,
+        thread: Optional[str] = None,
+        metadata: Optional[Dict[str, str]] = None,
+    ):
         self.sent = False
         self._to, self._sender, self._body, self._thread = None, None, None, None
         self.to = to
@@ -28,7 +36,7 @@ class MessageBase(object):
             self.metadata = metadata
 
     @classmethod
-    def from_node(cls, node):
+    def from_node(cls, node: aioxmpp.Message) -> Type['MessageBase']:
         """
         Creates a new spade.message.Message from an aixoxmpp.stanza.Message
 
@@ -73,7 +81,7 @@ class MessageBase(object):
         return self._to
 
     @to.setter
-    def to(self, jid: str):
+    def to(self, jid: str) -> None:
         """
         Set jid of the receiver.
 
@@ -97,7 +105,7 @@ class MessageBase(object):
         return self._sender
 
     @sender.setter
-    def sender(self, jid: str):
+    def sender(self, jid: str) -> None:
         """
         Set jid of the sender
 
@@ -119,7 +127,7 @@ class MessageBase(object):
         return self._body
 
     @body.setter
-    def body(self, body: str):
+    def body(self, body: str) -> None:
         """
         Set body of the message
         Args:
@@ -140,7 +148,7 @@ class MessageBase(object):
         return self._thread
 
     @thread.setter
-    def thread(self, value: str):
+    def thread(self, value: str) -> None:
         """
         Set thread id of the message
 
@@ -152,7 +160,7 @@ class MessageBase(object):
             raise TypeError("'thread' MUST be a string")
         self._thread = value
 
-    def set_metadata(self, key: str, value: str):
+    def set_metadata(self, key: str, value: str) -> None:
         """
         Add a new metadata to the message
 
@@ -165,7 +173,7 @@ class MessageBase(object):
             raise TypeError("'key' and 'value' of metadata MUST be strings")
         self.metadata[key] = value
 
-    def get_metadata(self, key) -> str:
+    def get_metadata(self, key: str) -> str:
         """
         Get the value of a metadata. Returns None if metadata does not exist.
 
@@ -178,7 +186,7 @@ class MessageBase(object):
         """
         return self.metadata[key] if key in self.metadata else None
 
-    def match(self, message) -> bool:
+    def match(self, message: Type['MessageBase']) -> bool:
         """
         Returns wether a message matches with this message or not.
         The message can be a Message object or a Template object.
@@ -210,18 +218,18 @@ class MessageBase(object):
         return True
 
     @property
-    def id(self):
+    def id(self) -> int:
         """ """
         return id(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Type['MessageBase']):
         return self.match(other)
 
 
 class Message(MessageBase):
     """ """
 
-    def make_reply(self):
+    def make_reply(self) -> 'Message':
         """
         Creates a copy of the message, exchanging sender and receiver
 
@@ -237,7 +245,7 @@ class Message(MessageBase):
             metadata=self.metadata,
         )
 
-    def prepare(self):
+    def prepare(self) -> aioxmpp.Message:
         """
         Returns an aioxmpp.stanza.Message built from the Message and prepared to be sent.
 
@@ -247,7 +255,9 @@ class Message(MessageBase):
         """
 
         msg = aioxmpp.stanza.Message(
-            to=self.to, from_=self.sender, type_=aioxmpp.MessageType.CHAT,
+            to=self.to,
+            from_=self.sender,
+            type_=aioxmpp.MessageType.CHAT,
         )
 
         msg.body[None] = self.body
@@ -259,7 +269,9 @@ class Message(MessageBase):
             for name, value in self.metadata.items():
                 data.fields.append(
                     forms_xso.Field(
-                        var=name, type_=forms_xso.FieldType.TEXT_SINGLE, values=[value],
+                        var=name,
+                        type_=forms_xso.FieldType.TEXT_SINGLE,
+                        values=[value],
                     )
                 )
 
@@ -277,7 +289,7 @@ class Message(MessageBase):
 
         return msg
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = f'<message to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
         if self.body:
             s += "\n" + self.body + "\n"

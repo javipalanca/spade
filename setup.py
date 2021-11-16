@@ -6,7 +6,8 @@ from setuptools import setup, find_packages
 
 def parse_requirements(filename):
     """ load requirements from a pip requirements file """
-    lineiter = (line.strip() for line in open(filename))
+    with open(filename) as f:
+        lineiter = [line.strip() for line in f]
     return [line for line in lineiter if line and not line.startswith("#")]
 
 
@@ -57,6 +58,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'Topic :: Internet :: XMPP',
     ],
