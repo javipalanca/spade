@@ -14,7 +14,7 @@ from .message import Message
 logger = logging.getLogger("SPADE")
 
 # check if python is 3.6 or higher
-if sys.version_info > (3, 6) and sys.platform == "win32":
+if sys.version_info < (3, 7) and sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
@@ -42,7 +42,7 @@ class Container(object):
             return False
 
     def start_agent(
-        self, agent, auto_register: bool = True
+            self, agent, auto_register: bool = True
     ) -> Union[Coroutine, Future]:
         coro = agent._async_start(auto_register=auto_register)
 
