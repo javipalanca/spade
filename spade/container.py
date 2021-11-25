@@ -13,7 +13,8 @@ from .message import Message
 
 logger = logging.getLogger("SPADE")
 
-if sys.platform == "win32":
+# check if python is 3.6 or higher
+if sys.version_info > (3, 6) and sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
