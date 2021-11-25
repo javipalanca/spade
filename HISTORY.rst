@@ -2,6 +2,11 @@
 History
 =======
 
+3.2.2 (2021-11-25)
+------------------
+
+* Hotfix for the event loop in windows when python is 3.6
+
 3.2.1 (2021-11-16)
 ------------------
 
