@@ -406,7 +406,7 @@ def test_receive():
 def test_receive_with_timeout():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.recv_msg = await self.receive(5.0)
+            self.agent.recv_msg = await self.receive(15.0)
             self.kill()
 
     agent = MockedAgentFactory()
@@ -419,9 +419,9 @@ def test_receive_with_timeout():
 
     future = agent.start(auto_register=False)
     future.result()
-    agent._message_received(msg.prepare())
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
+    agent._message_received(msg.prepare())
 
     behaviour.join()
 

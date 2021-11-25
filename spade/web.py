@@ -1,34 +1,39 @@
 import datetime
 import logging
 import socket
+from typing import Optional, Coroutine, Type
 
 import aiohttp_jinja2
 import jinja2
 import timeago
 from aiohttp import web as aioweb
+from aiohttp.web_runner import AppRunner
 from aioxmpp import PresenceType, JID
 
-from spade.message import Message
+from .behaviour import CyclicBehaviour
+from .message import Message
 
 logger = logging.getLogger("spade.Web")
 
 
-def unused_port(hostname):
+def unused_port(hostname: str) -> None:
     """Return a port that is unused on the current host."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((hostname, 0))
         return s.getsockname()[1]
 
 
-async def start_server_in_loop(runner, hostname, port, agent):
+async def start_server_in_loop(
+    runner: AppRunner, hostname: str, port: int, agent
+):
     """
     Listens to http requests and sends them to the webapp.
 
     Args:
-        runner: AppRunner to process the http requests
-        hostname: host name to listen from.
-        port: port to listen from.
-        agent: agent that owns the web app.
+        runner (AppRunner): AppRunner to process the http requests
+        hostname (str): host name to listen from.
+        port (int): port to listen from.
+        agent (spade.agent.Agent): agent that owns the web app.
     """
     await runner.setup()
     agent.web.server = aioweb.TCPSite(runner, hostname, port)
@@ -37,7 +42,7 @@ async def start_server_in_loop(runner, hostname, port, agent):
 
 
 class WebApp(object):
-    """Module to handle agent's web interface"""
+    """ Module to handle agent's web interface """
 
     def __init__(self, agent):
         self.agent = agent
@@ -53,7 +58,12 @@ class WebApp(object):
         self.loaders = [internal_loader, cwd_loader]
         self._set_loaders()
 
-    def start(self, hostname=None, port=None, templates_path=None):
+    def start(
+        self,
+        hostname: Optional[str] = None,
+        port: Optional[int] = None,
+        templates_path: Optional[str] = None,
+    ) -> None:
         """
         Starts the web interface.
 
@@ -77,10 +87,10 @@ class WebApp(object):
             start_server_in_loop(self.runner, self.hostname, self.port, self.agent)
         )
 
-    def is_started(self):
+    def is_started(self) -> bool:
         return self.runner is not None
 
-    def _set_loaders(self):
+    def _set_loaders(self) -> None:
         loader = jinja2.ChoiceLoader(self.loaders)
         aiohttp_jinja2.setup(
             self.app,
@@ -89,7 +99,7 @@ class WebApp(object):
             context_processors=[self.agent_processor, aiohttp_jinja2.request_processor],
         )
 
-    def setup_routes(self):
+    def setup_routes(self) -> None:
         self.app.router.add_get("/spade", self.index)
         self.app.router.add_get("/spade/stop", self.stop_agent)
         self.app.router.add_get("/spade/stop/now/", self.stop_now)
@@ -107,7 +117,13 @@ class WebApp(object):
         )
         self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
 
-    def add_get(self, path, controller, template, raw=False):
+    def add_get(
+        self,
+        path: str,
+        controller: Coroutine,
+        template: str,
+        raw: Optional[bool] = False,
+    ) -> None:
         """
         Setup a route of type GET
 
@@ -124,7 +140,13 @@ class WebApp(object):
             fn = self._prepare_controller(controller, template)
         self.app.router.add_get(path, fn)
 
-    def add_post(self, path, controller, template, raw=False):
+    def add_post(
+        self,
+        path: str,
+        controller: Coroutine,
+        template: str,
+        raw: Optional[bool] = False,
+    ) -> None:
         """
         Setup a route of type POST
 
@@ -141,7 +163,7 @@ class WebApp(object):
             fn = self._prepare_controller(controller, template)
         self.app.router.add_post(path, fn)
 
-    def _prepare_controller(self, controller, template):
+    def _prepare_controller(self, controller: Coroutine, template: str) -> None:
         """
         Wraps the controller wether to render a jinja template or to return a json response (if template is None)
         Args:
@@ -255,7 +277,7 @@ class WebApp(object):
         self.agent.traces.append(msg)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
-    def find_behaviour(self, behaviour_str):
+    def find_behaviour(self, behaviour_str: str) -> Optional[Type[CyclicBehaviour]]:
         behav = None
         for behaviour in self.agent.behaviours:
             if str(behaviour) == behaviour_str:

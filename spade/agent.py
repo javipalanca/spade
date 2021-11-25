@@ -1,20 +1,23 @@
 import asyncio
 import logging
 import sys
+from asyncio import Future
 from hashlib import md5
 from threading import Event
+from typing import Coroutine, Union, Optional, Type, Any, List
 
 import aiosasl
 import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
-from spade.behaviour import FSMBehaviour
-from spade.container import Container
-from spade.message import Message
-from spade.presence import PresenceManager
-from spade.trace import TraceStore
-from spade.web import WebApp
+from .behaviour import FSMBehaviour, CyclicBehaviour
+from .container import Container
+from .message import Message
+from .presence import PresenceManager
+from .template import Template
+from .trace import TraceStore
+from .web import WebApp
 
 logger = logging.getLogger("spade.Agent")
 
@@ -26,7 +29,7 @@ class AuthenticationFailure(Exception):
 
 
 class Agent(object):
-    def __init__(self, jid, password, verify_security=False):
+    def __init__(self, jid: str, password: str, verify_security: bool = False):
         """
         Creates an agent
 
@@ -61,10 +64,10 @@ class Agent(object):
 
         self._alive = Event()
 
-    def set_loop(self, loop):
+    def set_loop(self, loop) -> None:
         self.loop = loop
 
-    def set_container(self, container):
+    def set_container(self, container: Container) -> None:
         """
         Sets the container to which the agent is attached
 
@@ -73,17 +76,21 @@ class Agent(object):
         """
         self.container = container
 
-    def start(self, auto_register=True):
+    def start(self, auto_register: bool = True) -> Union[Coroutine, Future]:
         """
         Tells the container to start this agent.
         It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
 
         Args:
             auto_register (bool): register the agent in the server (Default value = True)
+
+        Returns:
+            Coroutine: if called from an async method
+            Future: if called from a synchronized method
         """
         return self.container.start_agent(agent=self, auto_register=auto_register)
 
-    async def _async_start(self, auto_register=True):
+    async def _async_start(self, auto_register: bool = True) -> None:
         """
         Starts the agent from a coroutine. This fires some actions:
 
@@ -120,7 +127,9 @@ class Agent(object):
 
         # register a message callback here
         self.message_dispatcher.register_callback(
-            aioxmpp.MessageType.CHAT, None, self._message_received,
+            aioxmpp.MessageType.CHAT,
+            None,
+            self._message_received,
         )
 
         await self._hook_plugin_after_connection()
@@ -135,19 +144,19 @@ class Agent(object):
                         state.set_agent(self)
                 behaviour.start()
 
-    async def _hook_plugin_before_connection(self):
+    async def _hook_plugin_before_connection(self) -> None:
         """
         Overload this method to hook a plugin before connetion is done
         """
         pass
 
-    async def _hook_plugin_after_connection(self):
+    async def _hook_plugin_after_connection(self) -> None:
         """
         Overload this method to hook a plugin after connetion is done
         """
         pass
 
-    async def _async_connect(self):  # pragma: no cover
+    async def _async_connect(self) -> None:  # pragma: no cover
         """ connect and authenticate to the XMPP server. Async mode. """
         try:
             self.conn_coro = self.client.connected()
@@ -159,7 +168,7 @@ class Agent(object):
                 "Could not authenticate the agent. Check user and password or use auto_register=True"
             )
 
-    async def _async_register(self):  # pragma: no cover
+    async def _async_register(self) -> None:  # pragma: no cover
         """ Register the agent in the XMPP server from a coroutine. """
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
@@ -168,7 +177,7 @@ class Agent(object):
         )
         await ibr.register(stream, query)
 
-    async def setup(self):
+    async def setup(self) -> None:
         """
         Setup agent before startup.
         This coroutine may be overloaded.
@@ -176,12 +185,17 @@ class Agent(object):
         await asyncio.sleep(0)
 
     @property
-    def name(self):
-        """ Returns the name of the agent (the string before the '@') """
+    def name(self) -> str:
+        """
+        Returns the name of the agent (the string before the '@')
+
+        Returns:
+            str: the name of the agent (the string before the '@')
+        """
         return self.jid.localpart
 
     @property
-    def avatar(self):
+    def avatar(self) -> str:
         """
         Generates a unique avatar for the agent based on its JID.
         Uses Gravatar service with MonsterID option.
@@ -193,7 +207,7 @@ class Agent(object):
         return self.build_avatar_url(self.jid.bare())
 
     @staticmethod
-    def build_avatar_url(jid):
+    def build_avatar_url(jid: str) -> str:
         """
         Static method to build a gravatar url with the agent's JID
 
@@ -207,13 +221,13 @@ class Agent(object):
         digest = md5(str(jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
-    def submit(self, coro):
+    def submit(self, coro: Coroutine) -> Future:
         """
         Runs a coroutine in the event loop of the agent.
         this call is not blocking.
 
         Args:
-          coro (coroutine): the coroutine to be run
+          coro (Coroutine): the coroutine to be run
 
         Returns:
             asyncio.Future: the future of the coroutine execution
@@ -221,18 +235,20 @@ class Agent(object):
         """
         return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
-    def add_behaviour(self, behaviour, template=None):
+    def add_behaviour(
+        self, behaviour: Type[CyclicBehaviour], template: Optional[Template] = None
+    ) -> None:
         """
         Adds and starts a behaviour to the agent.
         If template is not None it is used to match
         new messages and deliver them to the behaviour.
 
         Args:
-          behaviour (spade.behaviour.CyclicBehaviour): the behaviour to be started
+          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour to be started
           template (spade.template.Template, optional): the template to match messages with (Default value = None)
 
         """
-        behaviour.set_agent(self)
+        behaviour.set_agent(agent=self)
         if issubclass(type(behaviour), FSMBehaviour):
             for _, state in behaviour.get_states().items():
                 state.set_agent(self)
@@ -241,13 +257,13 @@ class Agent(object):
         if self.is_alive():
             behaviour.start()
 
-    def remove_behaviour(self, behaviour):
+    def remove_behaviour(self, behaviour: Type[CyclicBehaviour]) -> None:
         """
         Removes a behaviour from the agent.
         The behaviour is first killed.
 
         Args:
-          behaviour (spade.behaviour.CyclicBehaviour): the behaviour instance to be removed
+          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to be removed
 
         """
         if not self.has_behaviour(behaviour):
@@ -256,12 +272,12 @@ class Agent(object):
         self.behaviours[index].kill()
         self.behaviours.pop(index)
 
-    def has_behaviour(self, behaviour):
+    def has_behaviour(self, behaviour: Type[CyclicBehaviour]) -> bool:
         """
         Checks if a behaviour is added to an agent.
 
         Args:
-          behaviour (spade.behaviour.CyclicBehaviour): the behaviour instance to check
+          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to check
 
         Returns:
           bool: a boolean that indicates wether the behaviour is inside the agent.
@@ -269,14 +285,14 @@ class Agent(object):
         """
         return behaviour in self.behaviours
 
-    def stop(self):
+    def stop(self) -> Union[Coroutine, Future]:
         """
         Tells the container to start this agent.
         It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
         """
         return self.container.stop_agent(self)
 
-    async def _async_stop(self):
+    async def _async_stop(self) -> None:
         """ Stops an agent and kills all its behaviours. """
         if self.presence:
             self.presence.set_unavailable()
@@ -295,7 +311,7 @@ class Agent(object):
 
         self._alive.clear()
 
-    def is_alive(self):
+    def is_alive(self) -> bool:
         """
         Checks if the agent is alive.
 
@@ -305,7 +321,7 @@ class Agent(object):
         """
         return self._alive.is_set()
 
-    def set(self, name, value):
+    def set(self, name: str, value: Any):
         """
         Stores a knowledge item in the agent knowledge base.
 
@@ -316,7 +332,7 @@ class Agent(object):
         """
         self._values[name] = value
 
-    def get(self, name):
+    def get(self, name: str) -> Any:
         """
         Recovers a knowledge item from the agent's knowledge base.
 
@@ -332,7 +348,7 @@ class Agent(object):
         else:
             return None
 
-    def _message_received(self, msg):
+    def _message_received(self, msg: aioxmpp.Message) -> List[Future]:
         """
         Callback run when an XMPP Message is reveived.
         This callback delivers the message to every behaviour
@@ -350,7 +366,7 @@ class Agent(object):
         msg = Message.from_node(msg)
         return self.dispatch(msg)
 
-    def dispatch(self, msg):
+    def dispatch(self, msg: Message) -> List[Future]:
         """
         Dispatch the message to every behaviour that is waiting for
         it using their templates match.
