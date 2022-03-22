@@ -4,10 +4,22 @@ SPADE
 
 
 .. image:: https://img.shields.io/pypi/v/spade.svg
-        :target: https://pypi.python.org/pypi/spade
+    :target: https://pypi.python.org/pypi/spade
 
 .. image:: https://img.shields.io/pypi/pyversions/spade.svg
     :target: https://pypi.python.org/pypi/spade
+
+.. image:: https://img.shields.io/tokei/lines/github/javipalanca/spade?label=lines
+    :alt: Total Lines
+    :target: https://pepy.tech/project/spade
+
+.. image:: https://img.shields.io/github/languages/count/javipalanca/spade?label=languages
+    :alt: Languages
+    :target: https://pepy.tech/project/spade
+
+.. image:: https://img.shields.io/github/languages/code-size/javipalanca/spade
+    :alt: Code Size
+    :target: https://pepy.tech/project/spade
 
 .. image:: https://img.shields.io/apm/l/atomic-design-ui.svg?
     :target: https://opensource.org/licenses/MIT
@@ -18,19 +30,21 @@ SPADE
     :alt: Downloads
 
 .. image:: https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg
-        :target: https://github.com/javipalanca/spade/actions/workflows/python-package.yml
-        :alt: Continuous Integration Status
+    :target: https://github.com/javipalanca/spade/actions/workflows/python-package.yml
+    :alt: Continuous Integration Status
 
 .. image:: https://coveralls.io/repos/github/javipalanca/spade/badge.svg?branch=master
-        :target: https://coveralls.io/github/javipalanca/spade?branch=master
-        :alt: Code Coverage Status
+    :target: https://coveralls.io/github/javipalanca/spade?branch=master
+    :alt: Code Coverage Status
 
 .. image:: https://readthedocs.org/projects/spade/badge/?version=latest
-        :target: https://spade-mas.readthedocs.io?badge=latest
-        :alt: Documentation Status
+    :target: https://spade-mas.readthedocs.io?badge=latest
+    :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/format/spade.svg
     :target: https://pypi.python.org/pypi/spade
+
+
 
 
 Smart Python Agent Development Environment
