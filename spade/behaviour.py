@@ -60,7 +60,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         """
         self.agent = agent
-        self.queue = asyncio.Queue(loop=self.agent.loop)
+        self.queue = asyncio.Queue()
         self.presence = agent.presence
         self.web = agent.web
 
@@ -320,7 +320,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Args:
             message (spade.message.Message): the message to be enqueued
         """
-        await self.queue.put(message)
+        await asyncio.run_coroutine_threadsafe(self.queue.put(message), self.agent.loop)
 
     def mailbox_size(self) -> int:
         """
