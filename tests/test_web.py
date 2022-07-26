@@ -78,14 +78,14 @@ def test_add_template_path():
     agent.stop()
 
 
-async def test_check_server(test_client):
+async def test_check_server(aiohttp_client):
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
 
     agent.web.setup_routes()
 
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
     response = await client.get("/spade")
 
     text = await response.text()
@@ -100,12 +100,12 @@ async def test_check_server(test_client):
     agent.stop().result()
 
 
-async def test_request_home(test_client):
+async def test_request_home(aiohttp_client):
     agent = MockedAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/spade")
     response = await response.text()
@@ -120,10 +120,10 @@ async def test_request_home(test_client):
     agent.stop().result()
 
 
-async def test_get_messages(test_client):
+async def test_get_messages(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     # add messages to trace
     for i in range(5):
@@ -140,7 +140,7 @@ async def test_get_messages(test_client):
     agent.stop().result()
 
 
-async def test_get_behaviour(test_client):
+async def test_get_behaviour(aiohttp_client):
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             self.kill()
@@ -150,7 +150,7 @@ async def test_get_behaviour(test_client):
     agent.add_behaviour(behaviour)
     agent.web.setup_routes()
 
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get(
         "/spade/behaviour/OneShotBehaviour/EmptyOneShotBehaviour/"
@@ -166,7 +166,7 @@ async def test_get_behaviour(test_client):
     agent.stop().result()
 
 
-async def test_kill_behaviour(test_client):
+async def test_kill_behaviour(aiohttp_client):
     class EmptyCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             await asyncio.sleep(0.1)
@@ -176,7 +176,7 @@ async def test_kill_behaviour(test_client):
     agent.add_behaviour(behaviour)
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     await client.get("/spade/behaviour/CyclicBehaviour/EmptyCyclicBehaviour/kill/")
 
@@ -185,13 +185,13 @@ async def test_kill_behaviour(test_client):
     agent.stop().result()
 
 
-async def test_get_agent(test_client):
+async def test_get_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
     future.result()
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     jid = "friend@server"
     item = Item(jid=JID.fromstr(jid))
@@ -208,14 +208,14 @@ async def test_get_agent(test_client):
     agent.stop().result()
 
 
-async def test_unsubscribe_agent(test_client):
+async def test_unsubscribe_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.client.enqueue = Mock()
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     jid = "friend@server"
     jid_ = JID.fromstr(jid)
@@ -236,14 +236,14 @@ async def test_unsubscribe_agent(test_client):
     agent.stop().result()
 
 
-async def test_send_agent(test_client):
+async def test_send_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
     agent.stream = MagicMock()
     agent.stream.send = CoroutineMock()
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     jid = "friend@server"
     item = Item(jid=JID.fromstr(jid))
@@ -287,12 +287,12 @@ async def test_find_behaviour_fail():
     agent.stop().result()
 
 
-async def test_add_get(test_client):
+async def test_add_get(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/test")
     response = await response.text()
@@ -303,7 +303,7 @@ async def test_add_get(test_client):
     agent.stop().result()
 
 
-async def test_add_get_raw(test_client):
+async def test_add_get_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get(
         "/test",
@@ -313,7 +313,7 @@ async def test_add_get_raw(test_client):
     )
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/test")
     response = await response.text()
@@ -323,7 +323,7 @@ async def test_add_get_raw(test_client):
     agent.stop().result()
 
 
-async def test_add_post(test_client):
+async def test_add_post(aiohttp_client):
     agent = Agent("jid@server", "password")
 
     async def handle_post(request):
@@ -333,7 +333,7 @@ async def test_add_post(test_client):
 
     agent.web.add_post("/test", handle_post, "tests/hello.html")
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.post("/test", data={"number": 1024})
     response = await response.text()
@@ -344,7 +344,7 @@ async def test_add_post(test_client):
     agent.stop().result()
 
 
-async def test_add_post_raw(test_client):
+async def test_add_post_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
 
     async def handle_post(request):
@@ -354,7 +354,7 @@ async def test_add_post_raw(test_client):
 
     agent.web.add_post("/test", handle_post, template=None, raw=True)
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.post("/test", data={"number": 1024})
     response = await response.text()
@@ -364,10 +364,10 @@ async def test_add_post_raw(test_client):
     agent.stop().result()
 
 
-async def test_stop(test_client):
+async def test_stop(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/spade/stop")
     response = await response.text()
@@ -398,7 +398,7 @@ async def test_stop(test_client):
     assert not agent.is_alive()
 
 
-async def test_add_get_json(test_client):
+async def test_add_get_json(aiohttp_client):
     async def controller(request):
         return {"number": 42}
 
@@ -406,7 +406,7 @@ async def test_add_get_json(test_client):
     agent.web.add_get("/test", controller, None)
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/test")
     assert response.status == 200
@@ -417,7 +417,7 @@ async def test_add_get_json(test_client):
     agent.stop().result()
 
 
-async def test_add_post_json(test_client):
+async def test_add_post_json(aiohttp_client):
     async def handle_post(request):
         form = await request.post()
         number = form["number"]
@@ -427,7 +427,7 @@ async def test_add_post_json(test_client):
     agent.web.add_post("/test", handle_post, None)
 
     agent.web.setup_routes()
-    client = await test_client(agent.web.app)
+    client = await aiohttp_client(agent.web.app)
 
     response = await client.post("/test", data={"number": 1024})
     assert response.status == 200
