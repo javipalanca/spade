@@ -1,6 +1,7 @@
 import asyncio
 import time
 
+import pytest
 import requests
 from aiohttp import web
 from aiohttp_jinja2 import get_env
@@ -9,6 +10,7 @@ from aioxmpp.roster import Item
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from parsel import Selector
 from testfixtures import LogCapture
+from unittest.mock import AsyncMock, Mock, MagicMock
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
@@ -33,7 +35,6 @@ def test_web():
     assert agent.web.server is not None
     agent.stop()
 
-
 def test_default_template_path():
     agent = Agent("jid@server", "password")
 
@@ -53,7 +54,6 @@ def test_default_template_path():
     assert filesystem_loader.searchpath == ["."]
 
     agent.stop()
-
 
 def test_add_template_path():
     agent = Agent("jid@server", "password")
@@ -76,7 +76,7 @@ def test_add_template_path():
 
     agent.stop()
 
-
+@pytest.mark.asyncio
 async def test_check_server(aiohttp_client):
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
@@ -98,7 +98,7 @@ async def test_check_server(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_request_home(aiohttp_client):
     agent = MockedAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
@@ -118,7 +118,7 @@ async def test_request_home(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_get_messages(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
@@ -138,7 +138,7 @@ async def test_get_messages(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_get_behaviour(aiohttp_client):
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
@@ -164,7 +164,7 @@ async def test_get_behaviour(aiohttp_client):
     )
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_kill_behaviour(aiohttp_client):
     class EmptyCyclicBehaviour(CyclicBehaviour):
         async def run(self):
@@ -183,7 +183,7 @@ async def test_kill_behaviour(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_get_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
     future = agent.start(auto_register=False)
@@ -206,7 +206,7 @@ async def test_get_agent(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_unsubscribe_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
@@ -234,7 +234,7 @@ async def test_unsubscribe_agent(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_send_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     future = agent.start(auto_register=False)
@@ -261,7 +261,7 @@ async def test_send_agent(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_find_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
@@ -276,7 +276,7 @@ async def test_find_behaviour():
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_find_behaviour_fail():
     agent = Agent("jid@server", "password")
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
@@ -285,7 +285,7 @@ async def test_find_behaviour_fail():
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_add_get(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
@@ -301,7 +301,7 @@ async def test_add_get(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_add_get_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get(
@@ -321,7 +321,7 @@ async def test_add_get_raw(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_add_post(aiohttp_client):
     agent = Agent("jid@server", "password")
 
@@ -342,7 +342,7 @@ async def test_add_post(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_add_post_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
 
@@ -362,7 +362,7 @@ async def test_add_post_raw(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_stop(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
@@ -396,7 +396,7 @@ async def test_stop(aiohttp_client):
 
     assert not agent.is_alive()
 
-
+@pytest.mark.asyncio
 async def test_add_get_json(aiohttp_client):
     async def controller(request):
         return {"number": 42}
@@ -415,7 +415,7 @@ async def test_add_get_json(aiohttp_client):
 
     agent.stop().result()
 
-
+@pytest.mark.asyncio
 async def test_add_post_json(aiohttp_client):
     async def handle_post(request):
         form = await request.post()
