@@ -1,10 +1,10 @@
 import asyncio
 import datetime
 from threading import Event
+from unittest.mock import AsyncMock, Mock, MagicMock
 
 import aioxmpp
 import pytest
-from asynctest import CoroutineMock, MagicMock, Mock
 
 from spade.agent import Agent
 from spade.behaviour import (
@@ -332,7 +332,7 @@ def test_send_message_to_external_agent():
     future.result()
 
     agent.client = MagicMock()
-    agent.client.send = CoroutineMock()
+    agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -366,7 +366,7 @@ def test_send_message_without_sender():
     future.result()
 
     agent.client = MagicMock()
-    agent.client.send = CoroutineMock()
+    agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -1192,10 +1192,10 @@ def test_behaviour_at_end():
     class StopAgent(Agent):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self._async_connect = CoroutineMock()
-            self._async_register = CoroutineMock()
+            self._async_connect = AsyncMock()
+            self._async_register = AsyncMock()
             self.conn_coro = Mock()
-            self.conn_coro.__aexit__ = CoroutineMock()
+            self.conn_coro.__aexit__ = AsyncMock()
             self.stream = Mock()
             self.value = 1000
 
@@ -1230,10 +1230,10 @@ def test_two_behaviours_at_end():
     class StopAgent(Agent):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self._async_connect = CoroutineMock()
-            self._async_register = CoroutineMock()
+            self._async_connect = AsyncMock()
+            self._async_register = AsyncMock()
             self.conn_coro = Mock()
-            self.conn_coro.__aexit__ = CoroutineMock()
+            self.conn_coro.__aexit__ = AsyncMock()
             self.stream = Mock()
             self.value = 1000
 

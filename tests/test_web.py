@@ -6,7 +6,6 @@ from aiohttp import web
 from aiohttp_jinja2 import get_env
 from aioxmpp import JID, PresenceType
 from aioxmpp.roster import Item
-from asynctest import Mock, CoroutineMock, MagicMock
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from parsel import Selector
 from testfixtures import LogCapture
@@ -241,7 +240,7 @@ async def test_send_agent(aiohttp_client):
     future = agent.start(auto_register=False)
     future.result()
     agent.stream = MagicMock()
-    agent.stream.send = CoroutineMock()
+    agent.stream.send = AsyncMock()
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 

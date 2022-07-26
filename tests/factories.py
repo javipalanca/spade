@@ -1,6 +1,6 @@
 import factory
 from aioxmpp import PresenceShow, PresenceState
-from asynctest import CoroutineMock, Mock
+from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
 
@@ -8,10 +8,10 @@ from spade.agent import Agent
 class MockedConnectedAgent(Agent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._async_connect = CoroutineMock()
-        self._async_register = CoroutineMock()
+        self._async_connect = AsyncMock()
+        self._async_register = AsyncMock()
         self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = CoroutineMock()
+        self.conn_coro.__aexit__ = AsyncMock()
         self.stream = Mock()
 
 
@@ -30,9 +30,9 @@ class MockedPresenceConnectedAgent(Agent):
         super().__init__(*args, **kwargs)
         if status is None:
             status = {}
-        self._async_connect = CoroutineMock()
+        self._async_connect = AsyncMock()
         self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = CoroutineMock()
+        self.conn_coro.__aexit__ = AsyncMock()
 
         self.available = available
         self.show = show

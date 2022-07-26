@@ -2,8 +2,8 @@ import asyncio
 
 import aioxmpp
 from aioxmpp import PresenceManagedClient
-from asynctest import CoroutineMock, Mock
 from testfixtures import LogCapture
+from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
@@ -14,7 +14,7 @@ from .factories import MockedAgentFactory
 
 def test_create_agent(mocker):
     agent = Agent("jid@server", "fake_password")
-    agent._async_connect = CoroutineMock()
+    agent._async_connect = AsyncMock()
 
     assert agent.is_alive() is False
 
@@ -25,7 +25,7 @@ def test_create_agent(mocker):
     assert agent.stream is None
 
     agent.conn_coro = mocker.Mock()
-    agent.conn_coro.__aexit__ = CoroutineMock()
+    agent.conn_coro.__aexit__ = AsyncMock()
 
     assert agent.is_alive() is True
     future = agent.stop()
@@ -64,7 +64,7 @@ def test_avatar():
 
 def test_setup():
     agent = MockedAgentFactory()
-    agent.setup = CoroutineMock()
+    agent.setup = AsyncMock()
     future = agent.start(auto_register=False)
     assert future.result() is None
 
@@ -173,10 +173,10 @@ def test_create_agent_from_another_agent_from_setup():
             await self.agent2.start(auto_register=False)
 
     agent1 = SetupAgent("fake@host", "secret")
-    agent1._async_connect = CoroutineMock()
-    agent1._async_register = CoroutineMock()
+    agent1._async_connect = AsyncMock()
+    agent1._async_register = AsyncMock()
     agent1.conn_coro = Mock()
-    agent1.conn_coro.__aexit__ = CoroutineMock()
+    agent1.conn_coro.__aexit__ = AsyncMock()
     agent1.stream = Mock()
 
     agent1.agent2 = None

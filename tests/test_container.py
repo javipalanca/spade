@@ -2,7 +2,7 @@ import asyncio
 import time
 
 import aioxmpp
-from asynctest import MagicMock, CoroutineMock
+from unittest.mock import AsyncMock, MagicMock
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.container import Container
@@ -59,7 +59,7 @@ def test_send_message_with_container():
     future.result()
 
     agent.client = MagicMock()
-    agent.client.send = CoroutineMock()
+    agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
@@ -90,7 +90,7 @@ def test_send_message_to_outer_with_container():
     agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
-    behaviour._xmpp_send = CoroutineMock()
+    behaviour._xmpp_send = AsyncMock()
     agent.add_behaviour(behaviour)
 
     behaviour.join()
