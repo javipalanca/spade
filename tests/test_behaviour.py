@@ -816,13 +816,17 @@ def test_timeout_behaviour_zero():
 
     agent.stop()
 
+async def createEventCoro():
+    return asyncio.Event()
 
 def test_fsm_behaviour(fsm):
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
-    agent.sync1_behaviour = asyncio.Event(loop=agent.loop)
-    agent.sync2_behaviour = asyncio.Event(loop=agent.loop)
+    future1_behaviour = asyncio.run_coroutine_threadsafe(createEventCoro(), loop=agent.loop)
+    future2_behaviour = asyncio.run_coroutine_threadsafe(createEventCoro(), loop=agent.loop)
+    agent.sync1_behaviour = future1_behaviour.result()
+    agent.sync2_behaviour = future2_behaviour.result()
 
     agent.state = None
 
