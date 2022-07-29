@@ -1,10 +1,10 @@
-multidict==6.0.2
+multidict==5.2.0  #6.0.2
 pyasn1-modules==0.2.8
 pyasn1==0.4.8
 aioxmpp==0.13.2
 aiohttp==3.8.1
 aiohttp_jinja2==1.5  #0.14.0
-jinja2== 3.1.2  #>=2.9.6
+jinja2== 3.0.3  #3.1.2
 jinja2-time==0.2.0
 timeago==1.0.15
 singletonify==0.2.4

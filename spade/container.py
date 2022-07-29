@@ -15,7 +15,7 @@ logger = logging.getLogger("SPADE")
 
 # check if python is 3.6 or higher
 if sys.version_info >= (3, 7) and sys.platform == "win32":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # pragma: no cover
 
 
 @singleton()

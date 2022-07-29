@@ -301,7 +301,6 @@ class Agent(object):
         if self.web.is_started():
             await self.web.runner.cleanup()
 
-        """ Discconnect from XMPP server. """
         if self.is_alive():
             # Disconnect from XMPP server
             self.client.stop()
