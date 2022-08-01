@@ -6,7 +6,8 @@ from setuptools import setup, find_packages
 
 def parse_requirements(filename):
     """ load requirements from a pip requirements file """
-    lineiter = (line.strip() for line in open(filename))
+    with open(filename) as f:
+        lineiter = [line.strip() for line in f]
     return [line for line in lineiter if line and not line.startswith("#")]
 
 
@@ -27,7 +28,7 @@ test_requirements = parse_requirements("requirements_dev.txt")
 
 setup(
     name='spade',
-    version='3.1.6',
+    version='3.2.2',
     description="Smart Python Agent Development Environment",
     long_description=readme + '\n\n' + history,
     author="Javi Palanca",
@@ -46,13 +47,20 @@ setup(
     zip_safe=False,
     keywords='spade',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Internet :: XMPP',
     ],
     test_suite='tests',
     tests_require=test_requirements,

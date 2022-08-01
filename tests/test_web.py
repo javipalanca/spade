@@ -380,8 +380,10 @@ async def test_stop(test_client):
 
     with LogCapture() as log:
         try:
-            await client.get("/spade/stop/now/", timeout=0.0005)
+            await client.get("/spade/stop/now/", timeout=0.05)
         except requests.exceptions.ReadTimeout:
+            pass
+        except asyncio.exceptions.TimeoutError:
             pass
 
         log.check_present(

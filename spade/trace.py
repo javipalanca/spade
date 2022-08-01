@@ -1,8 +1,11 @@
 # coding=utf-8
 import datetime
 import itertools
+from typing import Optional, List
 
 from aioxmpp import JID
+
+from .message import Message
 
 
 def _agent_in_msg(agent, msg):
@@ -14,15 +17,15 @@ def _agent_in_msg(agent, msg):
 class TraceStore(object):
     """Stores and allows queries about events."""
 
-    def __init__(self, size):
+    def __init__(self, size: int):
         self.size = size
         self.store = []
 
-    def reset(self):
+    def reset(self) -> None:
         """Resets the trace store"""
         self.store = []
 
-    def append(self, event, category=None):
+    def append(self, event: Message, category: Optional[str] = None) -> None:
         """
         Adds a new event to the trace store.
         The event may hava a category
@@ -37,7 +40,7 @@ class TraceStore(object):
         if len(self.store) > self.size:
             del self.store[-1]
 
-    def len(self):
+    def len(self) -> int:
         """
         Length of the store
 
@@ -47,7 +50,7 @@ class TraceStore(object):
         """
         return len(self.store)
 
-    def all(self, limit=None):
+    def all(self, limit: Optional[int] = None) -> List[Message]:
         """
         Returns all the events, until a limit if defined
 
@@ -60,7 +63,7 @@ class TraceStore(object):
         """
         return self.store[:limit][::-1]
 
-    def received(self, limit=None):
+    def received(self, limit: Optional[int] = None) -> List[Message]:
         """
         Returns all the events that have been received (excluding sent events), until a limit if defined
 
@@ -77,7 +80,12 @@ class TraceStore(object):
             )
         )[::-1]
 
-    def filter(self, limit=None, to=None, category=None):
+    def filter(
+        self,
+        limit: Optional[int] = None,
+        to: Optional[str] = None,
+        category: Optional[str] = None,
+    ) -> List[Message]:
         """
         Returns the events that match the filters
 

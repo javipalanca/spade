@@ -1,21 +1,30 @@
 import asyncio
 import logging
 import sys
+from asyncio import Future
 from contextlib import suppress
 from threading import Thread
+from typing import Type, Union, Coroutine
 
 from singletonify import singleton
 
+from .behaviour import CyclicBehaviour
+from .message import Message
+
 logger = logging.getLogger("SPADE")
+
+# check if python is 3.6 or higher
+if sys.version_info >= (3, 7) and sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 @singleton()
 class Container(object):
     """
-     The container class allows agents to exchange messages
-     without using the XMPP socket if they are in the same
-     process.
-     The container is a singleton.
+    The container class allows agents to exchange messages
+    without using the XMPP socket if they are in the same
+    process.
+    The container is a singleton.
     """
 
     def __init__(self):
@@ -26,13 +35,15 @@ class Container(object):
         self.loop.set_debug(False)
         self.is_running = True
 
-    def __in_coroutine(self):
+    def __in_coroutine(self) -> bool:
         try:
             return asyncio.get_event_loop() == self.loop
         except RuntimeError:  # pragma: no cover
             return False
 
-    def start_agent(self, agent, auto_register=True):
+    def start_agent(
+            self, agent, auto_register: bool = True
+    ) -> Union[Coroutine, Future]:
         coro = agent._async_start(auto_register=auto_register)
 
         if self.__in_coroutine():
@@ -42,7 +53,7 @@ class Container(object):
             future.wait = future.result
             return future
 
-    def stop_agent(self, agent):
+    def stop_agent(self, agent) -> Union[Coroutine, Future]:
         coro = agent._async_stop()
 
         if self.__in_coroutine():
@@ -52,11 +63,11 @@ class Container(object):
             future.wait = future.result
             return future
 
-    def reset(self):
+    def reset(self) -> None:
         """ Empty the container by unregistering all the agents. """
         self.__agents = {}
 
-    def register(self, agent):
+    def register(self, agent) -> None:
         """
         Register a new agent.
 
@@ -67,11 +78,11 @@ class Container(object):
         agent.set_container(self)
         agent.set_loop(self.loop)
 
-    def unregister(self, jid):
+    def unregister(self, jid: str) -> None:
         if str(jid) in self.__agents:
             del self.__agents[str(jid)]
 
-    def has_agent(self, jid):
+    def has_agent(self, jid: str) -> bool:
         """
         Check if an agent is registered in the container.
         Args:
@@ -82,7 +93,7 @@ class Container(object):
         """
         return jid in self.__agents
 
-    def get_agent(self, jid):
+    def get_agent(self, jid: str):
         """
         Returns a registered agent
         Args:
@@ -96,7 +107,7 @@ class Container(object):
         """
         return self.__agents[jid]
 
-    async def send(self, msg, behaviour):
+    async def send(self, msg: Message, behaviour: Type[CyclicBehaviour]) -> None:
         """
         This method sends the message using the container mechanism
         when the receiver is also registered in the container. Otherwise,
@@ -111,7 +122,7 @@ class Container(object):
         else:
             await behaviour._xmpp_send(msg)
 
-    def stop(self):
+    def stop(self) -> None:
         agents = [agent.stop() for agent in self.__agents.values() if agent.is_alive()]
         if self.__in_coroutine():
             coro = asyncio.gather(*agents)
@@ -128,7 +139,7 @@ class AioThread(Thread):
         self.running = True
         self.daemon = True
 
-    def run(self):
+    def run(self) -> None:
         try:
             self.loop.run_forever()
             if sys.version_info >= (3, 7):
@@ -144,12 +155,12 @@ class AioThread(Thread):
         except Exception as e:  # pragma: no cover
             logger.error("Exception in the event loop: {}".format(e))
 
-    def finalize(self):
+    def finalize(self) -> None:
         if self.running:
             self.loop.call_soon_threadsafe(self.loop.stop)
             self.running = False
 
 
-def stop_container():
+def stop_container() -> None:
     container = Container()
     container.stop()
