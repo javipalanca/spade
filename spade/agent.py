@@ -88,7 +88,9 @@ class Agent(object):
             Coroutine: if called from an async method
             Future: if called from a synchronized method
         """
-        return self.container.start_agent(agent=self, auto_register=auto_register)
+        #return self.container.start_agent(agent=self, auto_register=auto_register)
+        f = Future()
+        f.set_result(True)
 
     async def _async_start(self, auto_register: bool = True) -> None:
         """
@@ -113,7 +115,7 @@ class Agent(object):
             aioxmpp.make_security_layer(
                 self.password, no_verify=not self.verify_security
             ),
-            loop=self.loop,
+            # loop=self.loop,
             logger=logging.getLogger(self.jid.localpart),
         )
 
@@ -173,7 +175,7 @@ class Agent(object):
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
         _, stream, features = await aioxmpp.node.connect_xmlstream(
-            self.jid, metadata, loop=self.loop
+            self.jid, metadata, #loop=self.loop
         )
         await ibr.register(stream, query)
 
@@ -233,7 +235,8 @@ class Agent(object):
             asyncio.Future: the future of the coroutine execution
 
         """
-        return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+        #return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+        return asyncio.create_task(coro)
 
     def add_behaviour(
         self, behaviour: Type[CyclicBehaviour], template: Optional[Template] = None

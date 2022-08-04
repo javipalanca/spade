@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sys
+import uvloop
 from asyncio import Future
 from contextlib import suppress
 from threading import Thread
@@ -12,6 +13,8 @@ from .behaviour import CyclicBehaviour
 from .message import Message
 
 logger = logging.getLogger("SPADE")
+
+uvloop.install()
 
 # check if python is 3.6 or higher
 if sys.version_info >= (3, 7) and sys.platform == "win32":
@@ -29,10 +32,11 @@ class Container(object):
 
     def __init__(self):
         self.__agents = {}
-        self.aiothread = AioThread()
-        self.aiothread.start()
-        self.loop = self.aiothread.loop
-        self.loop.set_debug(False)
+        # self.aiothread = AioThread()
+        # self.aiothread.start()
+        #self.loop = asyncio.new_event_loop()  # self.aiothread.loop
+        #self.loop.set_debug(False)
+        self.loop = None
         self.is_running = True
 
     def __in_coroutine(self) -> bool:
@@ -49,7 +53,8 @@ class Container(object):
         if self.__in_coroutine():
             return coro
         else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            #return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            return asyncio.create_task(coro)
 
     def stop_agent(self, agent) -> Union[Coroutine, Future]:
         coro = agent._async_stop()
@@ -57,7 +62,8 @@ class Container(object):
         if self.__in_coroutine():
             return coro
         else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            #return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            return asyncio.create_task(coro)
 
     def reset(self) -> None:
         """ Empty the container by unregistering all the agents. """
@@ -73,6 +79,9 @@ class Container(object):
         self.__agents[str(agent.jid)] = agent
         agent.set_container(self)
         agent.set_loop(self.loop)
+
+    def all_agents(self):
+        return self.__agents.values()
 
     def unregister(self, jid: str) -> None:
         if str(jid) in self.__agents:
@@ -118,14 +127,25 @@ class Container(object):
         else:
             await behaviour._xmpp_send(msg)
 
-    def stop(self) -> None:
-        agents = [agent.stop() for agent in self.__agents.values() if agent.is_alive()]
-        if self.__in_coroutine():
-            coro = asyncio.gather(*agents)
-            asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-        self.aiothread.finalize()
+    async def stop(self) -> None:
+        agents = [agent._async_stop() for agent in self.all_agents() if agent.is_alive()]
+        #if self.__in_coroutine():
+        await asyncio.gather(*agents)
+            #asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+            #return asyncio.create_task(coro)
+        # self.aiothread.finalize()
         self.reset()
         self.is_running = False
+
+    async def run_agents(self):
+        await asyncio.gather(*[asyncio.create_task(agent._async_start(auto_register=True)) for agent in self.all_agents()])
+        # while any([not a.is_alive() for a in self.all_agents()]):
+        #    await asyncio.sleep(0.05)
+
+    def run(self):
+        asyncio.run(self.run_agents())
+        asyncio.run(self.stop())
+
 
 
 class AioThread(Thread):
@@ -160,3 +180,7 @@ class AioThread(Thread):
 def stop_container() -> None:
     container = Container()
     container.stop()
+
+def start_container() -> None:
+    container = Container()
+    container.run()

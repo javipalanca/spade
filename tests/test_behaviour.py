@@ -92,7 +92,10 @@ def test_on_start_on_end():
 
     agent.start(auto_register=False)
 
-    behaviour.join()
+    from spade.container import Container
+    container = Container()
+    container.run()
+    #behaviour.join()
 
     assert agent.on_start_flag is True
     assert agent.on_end_flag is True
