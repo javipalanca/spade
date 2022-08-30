@@ -139,8 +139,6 @@ class Container(object):
 
     async def run_agents(self):
         await asyncio.gather(*[asyncio.create_task(agent._async_start(auto_register=True)) for agent in self.all_agents()])
-        # while any([not a.is_alive() for a in self.all_agents()]):
-        #    await asyncio.sleep(0.05)
 
     def run(self):
         asyncio.run(self.run_agents())
