@@ -213,3 +213,4 @@ def test_filter_to_and_category_limit():
         (x[1].body, x[2]) for x in trace.filter(to="1@server", category="1", limit=1)
     ]
     assert result == [("1", "1")]
+
