@@ -196,7 +196,7 @@ Ok, we have sent a message but now we need someone to receive that message. Show
     if __name__ == "__main__":
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
         future = receiveragent.start()
-        future.result() # wait for receiver agent to be prepared.
+        future.wait() # wait for receiver agent to be prepared.
         senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
         senderagent.start()
 
