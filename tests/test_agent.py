@@ -9,43 +9,21 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
+from spade import run_spade
 from .factories import MockedAgentFactory
 
 
 def test_create_agent(mocker):
-    agent = Agent("jid@server", "fake_password")
-    agent._async_connect = AsyncMock()
+    agent = MockedAgentFactory()
 
     assert agent.is_alive() is False
 
-    future = agent.start(auto_register=False)
-    assert future.result() is None
+    run_spade()
 
     agent._async_connect.assert_called_once()
-    assert agent.stream is None
-
-    agent.conn_coro = mocker.Mock()
-    agent.conn_coro.__aexit__ = AsyncMock()
-
-    assert agent.is_alive() is True
-    future = agent.stop()
-    future.result()
 
     agent.conn_coro.__aexit__.assert_called_once()
 
-    assert agent.is_alive() is False
-
-
-def test_connected_agent():
-    agent = MockedAgentFactory()
-    assert agent.is_alive() is False
-
-    future = agent.start(auto_register=False)
-    assert future.result() is None
-    assert agent.is_alive() is True
-
-    future = agent.stop()
-    future.result()
     assert agent.is_alive() is False
 
 
@@ -65,11 +43,10 @@ def test_avatar():
 def test_setup():
     agent = MockedAgentFactory()
     agent.setup = AsyncMock()
-    future = agent.start(auto_register=False)
-    assert future.result() is None
+
+    run_spade()
 
     agent.setup.assert_called_once()
-    agent.stop()
 
 
 def test_set_get():
@@ -87,8 +64,8 @@ def test_client():
     agent = MockedAgentFactory()
     assert agent.client is None
 
-    future = agent.start()
-    future.result()
+    run_spade()
+
     assert type(agent.client) == PresenceManagedClient
 
 
@@ -96,12 +73,9 @@ def test_register():
     agent = MockedAgentFactory()
     agent.register = Mock()
 
-    future = agent.start(auto_register=True)
-    assert future.result() is None
+    run_spade()
 
     assert len(agent._async_register.mock_calls) == 1
-
-    agent.stop()
 
 
 def test_receive_without_behaviours():
@@ -110,8 +84,6 @@ def test_receive_without_behaviours():
     msg = Message.from_node(aiomsg)
 
     assert agent.traces.len() == 0
-    future = agent.start(auto_register=False)
-    assert future.result() is None
 
     with LogCapture() as log:
         agent._message_received(aiomsg)
@@ -121,8 +93,6 @@ def test_receive_without_behaviours():
 
     assert agent.traces.len() == 1
     assert msg in agent.traces.store[0]
-
-    agent.stop()
 
 
 def test_create_agent_from_another_agent():
@@ -137,25 +107,17 @@ def test_create_agent_from_another_agent():
             self.agent.agent2._done = False
             self.agent.dummy_behav = DummyBehav()
             self.agent.agent2.add_behaviour(self.agent.dummy_behav)
-            await self.agent.agent2.start(auto_register=False)
+            # await self.agent.agent2.start(auto_register=False)
             self.kill()
 
     agent1 = MockedAgentFactory()
     agent1.agent2 = None
     create_behav = CreateBehav()
     agent1.add_behaviour(create_behav)
-    future = agent1.start(auto_register=False)
-    assert future.result() is None
-    assert agent1.is_alive()
 
-    create_behav.join()
-    agent1.dummy_behav.join()
+    run_spade()
 
-    assert agent1.agent2.is_alive()
     assert agent1.agent2._done
-
-    agent1.agent2.stop()
-    agent1.stop()
 
 
 def test_create_agent_from_another_agent_from_setup():

@@ -35,6 +35,7 @@ def test_web():
     assert agent.web.server is not None
     agent.stop()
 
+
 def test_default_template_path():
     agent = Agent("jid@server", "password")
 
@@ -54,6 +55,7 @@ def test_default_template_path():
     assert filesystem_loader.searchpath == ["."]
 
     agent.stop()
+
 
 def test_add_template_path():
     agent = Agent("jid@server", "password")
@@ -76,8 +78,9 @@ def test_add_template_path():
 
     agent.stop()
 
+
 @pytest.mark.asyncio
-async def test_check_server(aiohttp_client):
+async def test_check_server(aiohttp_client, loop):
     agent = MockedAgentFactory()
     future = agent.start(auto_register=False)
     future.result()
@@ -97,6 +100,7 @@ async def test_check_server(aiohttp_client):
     assert sel.css("ul.products-list > li").getall() == []
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_request_home(aiohttp_client):
@@ -118,6 +122,7 @@ async def test_request_home(aiohttp_client):
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_get_messages(aiohttp_client):
     agent = Agent("jid@server", "password")
@@ -137,6 +142,7 @@ async def test_get_messages(aiohttp_client):
     assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_get_behaviour(aiohttp_client):
@@ -159,10 +165,11 @@ async def test_get_behaviour(aiohttp_client):
     sel = Selector(text=response)
 
     assert (
-        sel.css("section.content-header > h1::text").get().strip()
-        == "OneShotBehaviour/EmptyOneShotBehaviour"
+            sel.css("section.content-header > h1::text").get().strip()
+            == "OneShotBehaviour/EmptyOneShotBehaviour"
     )
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_kill_behaviour(aiohttp_client):
@@ -182,6 +189,7 @@ async def test_kill_behaviour(aiohttp_client):
     assert behaviour.is_killed()
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_get_agent(aiohttp_client):
@@ -205,6 +213,7 @@ async def test_get_agent(aiohttp_client):
     assert sel.css("section.content-header > h1::text").get().strip() == jid
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_unsubscribe_agent(aiohttp_client):
@@ -234,6 +243,7 @@ async def test_unsubscribe_agent(aiohttp_client):
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_send_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
@@ -261,6 +271,7 @@ async def test_send_agent(aiohttp_client):
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_find_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
@@ -276,6 +287,7 @@ async def test_find_behaviour():
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_find_behaviour_fail():
     agent = Agent("jid@server", "password")
@@ -284,6 +296,7 @@ async def test_find_behaviour_fail():
     assert found_behaviour is None
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_add_get(aiohttp_client):
@@ -300,6 +313,7 @@ async def test_add_get(aiohttp_client):
     assert sel.css("h1::text").get().strip() == "42"
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_add_get_raw(aiohttp_client):
@@ -320,6 +334,7 @@ async def test_add_get_raw(aiohttp_client):
     assert response == "Hello Raw Get"
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_add_post(aiohttp_client):
@@ -342,6 +357,7 @@ async def test_add_post(aiohttp_client):
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_add_post_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
@@ -362,6 +378,7 @@ async def test_add_post_raw(aiohttp_client):
 
     agent.stop().result()
 
+
 @pytest.mark.asyncio
 async def test_stop(aiohttp_client):
     agent = Agent("jid@server", "password")
@@ -373,8 +390,8 @@ async def test_stop(aiohttp_client):
 
     sel = Selector(text=response)
     assert (
-        sel.css("div.alert-warning > span::text").get().strip()
-        == "Agent is stopping now."
+            sel.css("div.alert-warning > span::text").get().strip()
+            == "Agent is stopping now."
     )
 
     with LogCapture() as log:
@@ -396,6 +413,7 @@ async def test_stop(aiohttp_client):
 
     assert not agent.is_alive()
 
+
 @pytest.mark.asyncio
 async def test_add_get_json(aiohttp_client):
     async def controller(request):
@@ -414,6 +432,7 @@ async def test_add_get_json(aiohttp_client):
     assert data["number"] == 42
 
     agent.stop().result()
+
 
 @pytest.mark.asyncio
 async def test_add_post_json(aiohttp_client):
