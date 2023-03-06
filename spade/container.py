@@ -1,10 +1,9 @@
 import asyncio
 import logging
 import sys
-from asyncio import Future
+import traceback
 from contextlib import suppress
-from threading import Thread
-from typing import Type, Union, Coroutine
+from typing import Type, Coroutine, Awaitable
 
 from singletonify import singleton
 
@@ -29,35 +28,9 @@ class Container(object):
 
     def __init__(self):
         self.__agents = {}
-        self.aiothread = AioThread()
-        self.aiothread.start()
-        self.loop = self.aiothread.loop
+        self.loop = asyncio.new_event_loop()
         self.loop.set_debug(False)
         self.is_running = True
-
-    def __in_coroutine(self) -> bool:
-        try:
-            return asyncio.get_event_loop() == self.loop
-        except RuntimeError:  # pragma: no cover
-            return False
-
-    def start_agent(
-            self, agent, auto_register: bool = True
-    ) -> Union[Coroutine, Future]:
-        coro = agent._async_start(auto_register=auto_register)
-
-        if self.__in_coroutine():
-            return coro
-        else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-
-    def stop_agent(self, agent) -> Union[Coroutine, Future]:
-        coro = agent._async_stop()
-
-        if self.__in_coroutine():
-            return coro
-        else:
-            return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
 
     def reset(self) -> None:
         """ Empty the container by unregistering all the agents. """
@@ -116,47 +89,38 @@ class Container(object):
         if to in self.__agents:
             self.__agents[to].dispatch(msg)
         else:
-            await behaviour._xmpp_send(msg)
+            await behaviour._xmpp_send(msg=msg)
 
     def stop(self) -> None:
-        agents = [agent.stop() for agent in self.__agents.values() if agent.is_alive()]
-        if self.__in_coroutine():
-            coro = asyncio.gather(*agents)
-            asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-        self.aiothread.finalize()
+        for agent in [agent for agent in self.__agents.values() if agent.is_alive()]:
+            logger.info(f"Stopping agent {agent.jid}")
+            self.run(agent.stop())
         self.reset()
         self.is_running = False
 
-
-class AioThread(Thread):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loop = asyncio.new_event_loop()
-        self.running = True
-        self.daemon = True
-
-    def run(self) -> None:
-        try:
-            self.loop.run_forever()
-            if sys.version_info >= (3, 7):
-                tasks = asyncio.all_tasks(loop=self.loop)  # pragma: no cover
-            else:
-                tasks = asyncio.Task.all_tasks(loop=self.loop)  # pragma: no cover
-            for task in tasks:
-                task.cancel()
-                with suppress(asyncio.CancelledError):
-                    self.loop.run_until_complete(task)
-            self.loop.close()
-            logger.debug("Loop closed")
-        except Exception as e:  # pragma: no cover
-            logger.error("Exception in the event loop: {}".format(e))
-
-    def finalize(self) -> None:
-        if self.running:
-            self.loop.call_soon_threadsafe(self.loop.stop)
-            self.running = False
+    def run(self, coro: Awaitable) -> None:
+        self.loop.run_until_complete(coro)
 
 
-def stop_container() -> None:
+def run_container(main_func: Coroutine) -> None:
     container = Container()
+    try:
+        container.run(main_func)
+    except KeyboardInterrupt:
+        logger.warning("Keyboard interrupt received. Stopping SPADE...")
+    except Exception as e:  # pragma: no cover
+        logger.error("Exception in the event loop: {}".format(e))
+
     container.stop()
+
+    if sys.version_info >= (3, 7):
+        tasks = asyncio.all_tasks(loop=container.loop)  # pragma: no cover
+    else:
+        tasks = asyncio.Task.all_tasks(loop=container.loop)  # pragma: no cover
+    for task in tasks:
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            container.run(task)
+    container.stop()
+    container.loop.close()
+    logger.debug("Loop closed")

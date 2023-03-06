@@ -1,8 +1,7 @@
 import datetime
 import getpass
-import time
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour, PeriodicBehaviour
 from spade.message import Message
@@ -56,7 +55,7 @@ class ReceiverAgent(Agent):
         self.add_behaviour(b)
 
 
-if __name__ == "__main__":
+async def main():
     receiver_jid = input("Receiver JID> ")
     passwd = getpass.getpass()
     receiveragent = ReceiverAgent(receiver_jid, passwd)
@@ -65,18 +64,16 @@ if __name__ == "__main__":
     passwd = getpass.getpass()
     senderagent = PeriodicSenderAgent(sender_jid, passwd)
 
-    future = receiveragent.start(auto_register=True)
-    future.result()  # wait for receiver agent to be prepared.
+    await receiveragent.start(auto_register=True)
 
     senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
-    senderagent.start(auto_register=True)
+    await senderagent.start(auto_register=True)
 
-    while receiveragent.is_alive():
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            senderagent.stop()
-            receiveragent.stop()
-            break
+    await spade.wait_until_finished(senderagent)
+
+    await receiveragent.stop()
     print("Agents finished")
-    quit_spade()
+
+
+if __name__ == "__main__":
+    spade.run(main())

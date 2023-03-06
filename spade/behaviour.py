@@ -3,6 +3,7 @@ import collections
 import logging
 import time
 import traceback
+import typing
 from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
@@ -15,6 +16,8 @@ from .template import Template
 now = datetime.now
 
 logger = logging.getLogger("spade.behaviour")
+
+BehaviourType = typing.TypeVar("BehaviourType", bound="CyclicBehaviour")
 
 
 class BehaviourNotFinishedException(Exception):
@@ -209,7 +212,16 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return not self._is_done.is_set()
 
-    def join(self, timeout: Optional[float] = None) -> Optional[Coroutine]:
+    def is_alive(self) -> bool:
+        """
+        Check if the behaviour is alive
+
+        Returns:
+             bool: whether the behaviour is alive or not
+        """
+        return self.is_running
+
+    async def join(self, timeout: Optional[float] = None) -> None:
         """
         Wait for the behaviour to complete
 
@@ -217,27 +229,13 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             timeout (Optional[float]): an optional timeout to wait to join (if None, the join is blocking)
 
         Returns:
-            None: if called from a synchronous method
-            Coroutine: if called from an async method
+            None
 
         Raises:
             TimeoutError: if the timeout is reached
         """
 
-        try:
-            in_coroutine = asyncio.get_event_loop() == self.agent.loop
-        except RuntimeError:  # pragma: no cover
-            in_coroutine = False
-
-        if not in_coroutine:
-            t_start = time.time()
-            while not self.is_done():
-                time.sleep(0.001)
-                t = time.time()
-                if timeout is not None and t - t_start > timeout:
-                    raise TimeoutError
-        else:
-            return self._async_join(timeout=timeout)
+        return await self._async_join(timeout=timeout)
 
     async def _async_join(self, timeout: Optional[float]) -> None:
         """
@@ -311,6 +309,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except Exception as e:
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
+        self.is_running = False
         self.agent.remove_behaviour(self)
 
     async def enqueue(self, message: Message) -> None:
@@ -320,7 +319,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Args:
             message (spade.message.Message): the message to be enqueued
         """
-        await asyncio.run_coroutine_threadsafe(self.queue.put(message), self.agent.loop)
+        # await asyncio.run_coroutine_threadsafe(self.queue.put(message), self.agent.loop)
+        asyncio.create_task(self.queue.put(message))
 
     def mailbox_size(self) -> int:
         """

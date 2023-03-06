@@ -1,6 +1,8 @@
 import getpass
 import time
 import asyncio
+
+import spade
 from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour
 
@@ -28,18 +30,21 @@ class DummyAgent(Agent):
         self.add_behaviour(self.my_behav)
 
 
-if __name__ == "__main__":
+async def main():
     jid = input("JID> ")
     passwd = getpass.getpass()
 
     dummy = DummyAgent(jid, passwd)
-    future = dummy.start()
-    future.result()  # Wait until the start method is finished
+    await dummy.start()
 
     # wait until user interrupts with ctrl+C
     while not dummy.my_behav.is_killed():
         try:
-            time.sleep(1)
+            await asyncio.sleep(1)
         except KeyboardInterrupt:
             break
-    dummy.stop()
+    await dummy.stop()
+
+
+if __name__ == "__main__":
+    spade.run(main())

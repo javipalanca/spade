@@ -1,7 +1,8 @@
+import asyncio
 import getpass
 import time
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 
@@ -85,8 +86,7 @@ class Agent2(Agent):
             self.presence.on_available = self.on_available
 
 
-if __name__ == "__main__":
-
+async def main():
     jid1 = input("Agent1 JID> ")
     passwd1 = getpass.getpass()
 
@@ -97,14 +97,10 @@ if __name__ == "__main__":
     agent1 = Agent1(jid1, passwd1)
     agent1.jid2 = jid2
     agent2.jid1 = jid1
-    agent2.start()
-    agent1.start()
+    await agent2.start()
+    await agent1.start()
 
-    while True:
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            break
-    agent1.stop()
-    agent2.stop()
-    quit_spade()
+    await spade.wait_until_finished([agent1, agent2])
+
+if __name__ == "__main__":
+    spade.run(main())

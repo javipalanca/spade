@@ -1,6 +1,7 @@
 import datetime
 import logging
 import socket
+from asyncio import Task
 from typing import Optional, Coroutine, Type
 
 import aiohttp_jinja2
@@ -63,7 +64,7 @@ class WebApp(object):
         hostname: Optional[str] = None,
         port: Optional[int] = None,
         templates_path: Optional[str] = None,
-    ) -> None:
+    ) -> Task:
         """
         Starts the web interface.
 

@@ -1,17 +1,17 @@
 import asyncio
 import logging
 import sys
-from asyncio import Future
+from asyncio import Future, Task
 from hashlib import md5
 from threading import Event
-from typing import Coroutine, Union, Optional, Type, Any, List
+from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
 import aiosasl
 import aioxmpp
 import aioxmpp.ibr as ibr
 from aioxmpp.dispatcher import SimpleMessageDispatcher
 
-from .behaviour import FSMBehaviour, CyclicBehaviour
+from .behaviour import BehaviourType, FSMBehaviour, CyclicBehaviour
 from .container import Container
 from .message import Message
 from .presence import PresenceManager
@@ -20,6 +20,8 @@ from .trace import TraceStore
 from .web import WebApp
 
 logger = logging.getLogger("spade.Agent")
+
+AgentType = TypeVar("AgentType", bound="Agent")
 
 
 class AuthenticationFailure(Exception):
@@ -76,19 +78,17 @@ class Agent(object):
         """
         self.container = container
 
-    def start(self, auto_register: bool = True) -> Union[Coroutine, Future]:
+    async def start(self, auto_register: bool = True) -> None:
         """
-        Tells the container to start this agent.
-        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
+        Starts this agent.
 
         Args:
             auto_register (bool): register the agent in the server (Default value = True)
 
         Returns:
-            Coroutine: if called from an async method
-            Future: if called from a synchronized method
+            None
         """
-        return self.container.start_agent(agent=self, auto_register=auto_register)
+        return await self._async_start(auto_register=auto_register)
 
     async def _async_start(self, auto_register: bool = True) -> None:
         """
@@ -103,7 +103,6 @@ class Agent(object):
           auto_register (bool, optional): register the agent in the server (Default value = True)
 
         """
-
         await self._hook_plugin_before_connection()
 
         if auto_register:
@@ -113,7 +112,6 @@ class Agent(object):
             aioxmpp.make_security_layer(
                 self.password, no_verify=not self.verify_security
             ),
-            loop=self.loop,
             logger=logging.getLogger(self.jid.localpart),
         )
 
@@ -173,7 +171,7 @@ class Agent(object):
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
         _, stream, features = await aioxmpp.node.connect_xmlstream(
-            self.jid, metadata, loop=self.loop
+            self.jid, metadata
         )
         await ibr.register(stream, query)
 
@@ -221,7 +219,7 @@ class Agent(object):
         digest = md5(str(jid).encode("utf-8")).hexdigest()
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
-    def submit(self, coro: Coroutine) -> Future:
+    def submit(self, coro: Coroutine) -> Task:
         """
         Runs a coroutine in the event loop of the agent.
         this call is not blocking.
@@ -230,13 +228,14 @@ class Agent(object):
           coro (Coroutine): the coroutine to be run
 
         Returns:
-            asyncio.Future: the future of the coroutine execution
+            asyncio.Task: the Task assigned to the coroutine execution
 
         """
-        return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+        # return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
+        return asyncio.create_task(coro)
 
     def add_behaviour(
-        self, behaviour: Type[CyclicBehaviour], template: Optional[Template] = None
+        self, behaviour: BehaviourType, template: Optional[Template] = None
     ) -> None:
         """
         Adds and starts a behaviour to the agent.
@@ -285,12 +284,11 @@ class Agent(object):
         """
         return behaviour in self.behaviours
 
-    def stop(self) -> Union[Coroutine, Future]:
+    async def stop(self) -> None:
         """
-        Tells the container to start this agent.
-        It returns a coroutine or a future depending on whether it is called from a coroutine or a synchronous method.
+        Stops this agent.
         """
-        return self.container.stop_agent(self)
+        return await self._async_stop()
 
     async def _async_stop(self) -> None:
         """ Stops an agent and kills all its behaviours. """
@@ -371,21 +369,21 @@ class Agent(object):
         it using their templates match.
 
         Args:
-          msg (spade.message.Messagge): the message to dispatch.
+          msg (spade.message.Message): the message to dispatch.
 
         Returns:
-            list(asyncio.Future): a list of futures of the append of the message at each matched behaviour.
+            list(asyncio.Future): a list of tasks for each message queuing in each matching behavior.
 
         """
         logger.debug(f"Got message: {msg}")
-        futures = []
+        tasks = []
         matched = False
         for behaviour in (x for x in self.behaviours if x.match(msg)):
-            futures.append(self.submit(behaviour.enqueue(msg)))
+            tasks.append(self.submit(behaviour.enqueue(msg)))
             logger.debug(f"Message enqueued to behaviour: {behaviour}")
             self.traces.append(msg, category=str(behaviour))
             matched = True
         if not matched:
             logger.warning(f"No behaviour matched for message: {msg}")
             self.traces.append(msg)
-        return futures
+        return tasks
