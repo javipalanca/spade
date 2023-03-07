@@ -1,13 +1,12 @@
 import asyncio
 import logging
 import sys
-import traceback
 from contextlib import suppress
-from typing import Type, Coroutine, Awaitable
+from typing import Coroutine, Awaitable
 
 from singletonify import singleton
 
-from .behaviour import CyclicBehaviour
+from .behaviour import BehaviourType
 from .message import Message
 
 logger = logging.getLogger("SPADE")
@@ -15,6 +14,16 @@ logger = logging.getLogger("SPADE")
 # check if python is 3.6 or higher
 if sys.version_info >= (3, 7) and sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # pragma: no cover
+
+
+def get_or_create_eventloop():
+    try:
+        return asyncio.get_running_loop()
+    except RuntimeError as ex:
+        if "There is no current event loop in thread" in str(ex):
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return asyncio.get_event_loop()
 
 
 @singleton()
@@ -28,8 +37,7 @@ class Container(object):
 
     def __init__(self):
         self.__agents = {}
-        self.loop = asyncio.new_event_loop()
-        self.loop.set_debug(False)
+        self.loop = get_or_create_eventloop()
         self.is_running = True
 
     def reset(self) -> None:
@@ -76,7 +84,7 @@ class Container(object):
         """
         return self.__agents[jid]
 
-    async def send(self, msg: Message, behaviour: Type[CyclicBehaviour]) -> None:
+    async def send(self, msg: Message, behaviour: BehaviourType) -> None:
         """
         This method sends the message using the container mechanism
         when the receiver is also registered in the container. Otherwise,

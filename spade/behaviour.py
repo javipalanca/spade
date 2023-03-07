@@ -8,7 +8,7 @@ from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Optional, Coroutine, Dict
+from typing import Any, Optional, Dict
 
 from .message import Message
 from .template import Template
@@ -45,8 +45,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.agent = None
         self.template = None
         self._force_kill = Event()
-        self._is_done = asyncio.Event()
-        self._is_done.set()
+        self._is_done = None
         self._exit_code = 0
         self.presence = None
         self.web = None
@@ -63,6 +62,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         """
         self.agent = agent
+        asyncio.set_event_loop(self.agent.loop)
+        self._is_done = asyncio.Event()
+        self._is_done.set()
         self.queue = asyncio.Queue()
         self.presence = agent.presence
         self.web = agent.web
@@ -128,7 +130,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         runs the _step coroutine where the body of the behaviour
         is called.
         """
-        self.agent._alive.wait()
+        await self.agent._alive.wait()
         try:
             await self.on_start()
         except Exception as e:

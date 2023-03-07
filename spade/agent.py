@@ -3,7 +3,6 @@ import logging
 import sys
 from asyncio import Future, Task
 from hashlib import md5
-from threading import Event
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
 import aiosasl
@@ -58,13 +57,14 @@ class Agent(object):
         self.container.register(self)
 
         self.loop = self.container.loop
+        asyncio.set_event_loop(self.loop)
 
         # Web service
         self.web = WebApp(agent=self)
 
         self.traces = TraceStore(size=1000)
 
-        self._alive = Event()
+        self._alive = asyncio.Event()
 
     def set_loop(self, loop) -> None:
         self.loop = loop

@@ -1,6 +1,6 @@
 import asyncio
 import datetime
-from threading import Event
+from asyncio import Event
 from unittest.mock import AsyncMock, Mock, MagicMock
 
 import aioxmpp
@@ -69,7 +69,7 @@ def fsm():
     return fsm_
 
 
-def test_on_start_on_end():
+async def test_on_start_on_end():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def on_start(self):
             self.agent.on_start_flag = True
@@ -90,19 +90,16 @@ def test_on_start_on_end():
     assert agent.on_start_flag is False
     assert agent.on_end_flag is False
 
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    from spade.container import Container
-    container = Container()
-    container.run()
-    #behaviour.join()
+    await behaviour.join()
 
     assert agent.on_start_flag is True
     assert agent.on_end_flag is True
-    agent.stop()
+    await agent.stop()
 
 
-def test_on_start_exception():
+async def test_on_start_exception():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def on_start(self):
             result = 1 / 0
@@ -116,16 +113,16 @@ def test_on_start_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert type(behaviour.exit_code) == ZeroDivisionError
     assert not agent.flag
-    agent.stop()
+    await agent.stop()
 
 
-def test_on_run_exception():
+async def test_on_run_exception():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             result = 1 / 0
@@ -136,16 +133,16 @@ def test_on_run_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert type(behaviour.exit_code) == ZeroDivisionError
     assert not agent.flag
-    agent.stop()
+    await agent.stop()
 
 
-def test_on_end_exception():
+async def test_on_end_exception():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             pass
@@ -159,16 +156,16 @@ def test_on_end_exception():
     behaviour = TestOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert type(behaviour.exit_code) == ZeroDivisionError
     assert not agent.flag
-    agent.stop()
+    await agent.stop()
 
 
-def test_add_behaviour():
+async def test_add_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             self.kill()
@@ -179,8 +176,7 @@ def test_add_behaviour():
 
     assert agent.has_behaviour(behaviour)
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     assert behaviour.agent == agent
     assert behaviour.template is None
@@ -188,10 +184,10 @@ def test_add_behaviour():
     assert behaviour.web == agent.web
     assert behaviour.queue.empty()
 
-    behaviour.join()
+    await behaviour.join()
 
     assert behaviour.is_done()
-    agent.stop()
+    await agent.stop()
 
 
 def test_remove_behaviour():
@@ -221,7 +217,7 @@ def test_remove_behaviour_not_added():
         agent.remove_behaviour(behaviour)
 
 
-def test_wait_for_agent_start():
+async def test_wait_for_agent_start():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def on_start(self):
             self.agent.started = True
@@ -234,13 +230,13 @@ def test_wait_for_agent_start():
     behaviour = EmptyOneShotBehaviour()
     agent.add_behaviour(behaviour)
 
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.started
 
-    agent.stop()
+    await agent.stop()
 
 
 def test_behaviour_match():
@@ -285,26 +281,24 @@ def test_behaviour_match_without_template():
     assert behaviour.match(msg)
 
 
-def test_send_message(message):
+async def test_send_message(message):
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
             await self.send(message)
             self.kill()
 
     agent = MockedAgentFactory(jid="sender@localhost")
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent2 = MockedAgentFactory(jid="to@localhost")
-    future = agent2.start(auto_register=False)
-    future.result()
+    await agent2.start(auto_register=False)
 
     agent2.dispatch = Mock()
 
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent2.dispatch.assert_called
     msg_arg = agent2.dispatch.call_args[0][0]
@@ -312,11 +306,11 @@ def test_send_message(message):
     assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
     assert msg_arg.thread == "thread-id"
 
-    agent.stop()
-    agent2.stop()
+    await agent.stop()
+    await agent2.stop()
 
 
-def test_send_message_to_external_agent():
+async def test_send_message_to_external_agent():
     message = Message(
         to="to@external_xmpp.com",
         sender="sender@localhost",
@@ -331,15 +325,14 @@ def test_send_message_to_external_agent():
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.client = MagicMock()
     agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.client.send.await_count == 1
     msg_arg = agent.client.send.await_args[0][0]
@@ -354,10 +347,10 @@ def test_send_message_to_external_agent():
                     thread_found = True
     assert thread_found
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_send_message_without_sender():
+async def test_send_message_without_sender():
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
             msg = Message()
@@ -365,23 +358,22 @@ def test_send_message_without_sender():
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.client = MagicMock()
     agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
     msg_arg = agent.client.send.await_args[0][0]
     assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_receive():
+async def test_receive():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             msg = Message(body="received body")
@@ -395,18 +387,18 @@ def test_receive():
     agent.add_behaviour(behaviour)
     assert behaviour.mailbox_size() == 0
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     assert agent.is_alive()
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.recv_msg.body == "received body"
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_receive_with_timeout():
+async def test_receive_with_timeout():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             self.agent.recv_msg = await self.receive(15.0)
@@ -420,21 +412,21 @@ def test_receive_with_timeout():
     agent.add_behaviour(behaviour, template)
     assert behaviour.mailbox_size() == 0
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
     agent._message_received(msg.prepare())
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.recv_msg.body == "received body"
     assert agent.recv_msg == msg
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_receive_with_timeout_error():
+async def test_receive_with_timeout_error():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             self.agent.recv_msg = await self.receive(0.01)
@@ -446,16 +438,16 @@ def test_receive_with_timeout_error():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    future = agent.start(auto_register=False)
-    future.result()
-    behaviour.join()
+    await agent.start(auto_register=False)
+
+    await behaviour.join()
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
-    agent.stop()
+    await agent.stop()
 
 
-def test_receive_with_empty_queue():
+async def test_receive_with_empty_queue():
     class RecvBehaviour(OneShotBehaviour):
         async def run(self):
             self.agent.recv_msg = await self.receive()
@@ -467,16 +459,16 @@ def test_receive_with_empty_queue():
     behaviour = RecvBehaviour()
     agent.add_behaviour(behaviour, template)
 
-    future = agent.start(auto_register=False)
-    future.result()
-    behaviour.join()
+    await agent.start(auto_register=False)
+
+    await behaviour.join()
 
     assert behaviour.mailbox_size() == 0
     assert agent.recv_msg is None
-    agent.stop()
+    await agent.stop()
 
 
-def test_set_get():
+async def test_set_get():
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
             self.set("key", "value")
@@ -484,19 +476,18 @@ def test_set_get():
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.get("key") == "value"
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_multiple_templates():
+async def test_multiple_templates():
     class Template1Behaviour(OneShotBehaviour):
         async def run(self):
             self.agent.msg1 = await self.receive(timeout=2)
@@ -529,69 +520,67 @@ def test_multiple_templates():
     msg2 = Message(metadata={"performative": "template2"}).prepare()
     msg3 = Message(metadata={"performative": "template3"}).prepare()
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     agent._message_received(msg1)
     agent._message_received(msg2)
     agent._message_received(msg3)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.msg1.get_metadata("performative") == "template1"
     assert agent.msg2.get_metadata("performative") == "template2"
     assert agent.msg3.get_metadata("performative") == "template3"
-    agent.stop()
+    await agent.stop()
 
 
-def test_kill_behaviour():
+async def test_kill_behaviour():
     class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.kill()
 
     agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert behaviour.is_killed()
     assert behaviour.exit_code == 0
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_exit_code_from_kill_behaviour():
+async def test_exit_code_from_kill_behaviour():
     class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.kill(42)
 
     agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert behaviour.is_killed()
     assert behaviour.exit_code == 42
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_set_exit_code_behaviour():
+async def test_set_exit_code_behaviour():
     class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.exit_code = 1024
-            agent.event.wait()
+            await agent.event.wait()
             self.kill()
 
     agent = MockedAgentFactory()
     behaviour = TestCyclicBehaviour()
-    agent.event = Event()
-    future = agent.start(auto_register=False)
-    future.result()
+    agent.event = asyncio.Event()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
 
@@ -599,26 +588,24 @@ def test_set_exit_code_behaviour():
         assert behaviour.exit_code
 
     agent.event.set()
-    behaviour.join()
+    await behaviour.join()
 
-    future = agent.stop()
-    future.result()
+    await agent.stop()
 
     assert behaviour.exit_code == 1024
 
     assert not agent.is_alive()
 
 
-def test_notfinishedexception_behaviour():
+async def test_notfinishedexception_behaviour():
     class TestBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.event.wait()
+            await self.agent.event.wait()
 
     agent = MockedAgentFactory()
-    agent.event = Event()
+    agent.event = asyncio.Event()
     behaviour = TestBehaviour()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(behaviour)
 
@@ -629,13 +616,12 @@ def test_notfinishedexception_behaviour():
 
     assert behaviour.exit_code == 0
 
-    future = agent.stop()
-    future.result()
+    await agent.stop()
 
     assert not agent.is_alive()
 
 
-def test_cyclic_behaviour():
+async def test_cyclic_behaviour():
     class TestCyclicBehaviour(CyclicBehaviour):
         async def run(self):
             self.agent.cycles += 1
@@ -645,21 +631,20 @@ def test_cyclic_behaviour():
     agent = MockedAgentFactory()
     agent.cycles = 0
     behaviour = TestCyclicBehaviour()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     assert agent.cycles == 0
 
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.cycles == 3
     assert behaviour.is_killed()
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_oneshot_behaviour():
+async def test_oneshot_behaviour():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def run(self):
             self.agent.one_shot_behaviour_executed = True
@@ -672,15 +657,15 @@ def test_oneshot_behaviour():
 
     assert agent.one_shot_behaviour_executed is False
 
-    future = agent.start(auto_register=False)
-    future.result()
-    behaviour.join()
+    await agent.start(auto_register=False)
+
+    await behaviour.join()
 
     assert agent.one_shot_behaviour_executed is True
-    agent.stop()
+    await agent.stop()
 
 
-def test_periodic_behaviour():
+async def test_periodic_behaviour():
     class TestPeriodicBehaviour(PeriodicBehaviour):
         async def run(self):
             self.agent.periodic_behaviour_execution_counter += 1
@@ -693,15 +678,15 @@ def test_periodic_behaviour():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    future = agent.start(auto_register=False)
-    future.result()
-    behaviour.join()
+    await agent.start(auto_register=False)
+
+    await behaviour.join()
 
     assert agent.periodic_behaviour_execution_counter == 1
-    agent.stop()
+    await agent.stop()
 
 
-def test_periodic_behaviour_period_zero():
+async def test_periodic_behaviour_period_zero():
     class TestPeriodicBehaviour(PeriodicBehaviour):
         async def run(self):
             self.agent.periodic_behaviour_execution_counter += 1
@@ -714,12 +699,12 @@ def test_periodic_behaviour_period_zero():
 
     assert agent.periodic_behaviour_execution_counter == 0
 
-    future = agent.start(auto_register=False)
-    future.result()
-    behaviour.join()
+    await agent.start(auto_register=False)
+
+    await behaviour.join()
 
     assert agent.periodic_behaviour_execution_counter == 1
-    agent.stop()
+    await agent.stop()
 
 
 def test_periodic_behaviour_negative_period():
@@ -743,15 +728,14 @@ def test_set_period():
     assert behaviour.period == datetime.timedelta(seconds=2)
 
 
-def test_periodic_start_at():
+async def test_periodic_start_at():
     class TestPeriodicBehaviour(PeriodicBehaviour):
         async def run(self):
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestPeriodicBehaviour(period=0.01, start_at=start_at)
@@ -760,22 +744,21 @@ def test_periodic_start_at():
 
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.delay >= start_at
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_timeout_behaviour():
+async def test_timeout_behaviour():
     class TestTimeoutBehaviour(TimeoutBehaviour):
         async def run(self):
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -784,24 +767,23 @@ def test_timeout_behaviour():
     assert not behaviour._timeout_triggered
 
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.delay >= start_at
     assert behaviour._timeout_triggered
     assert behaviour.is_done()
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_timeout_behaviour_zero():
+async def test_timeout_behaviour_zero():
     class TestTimeoutBehaviour(TimeoutBehaviour):
         async def run(self):
             self.agent.delay = datetime.datetime.now()
             self.kill()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     start_at = datetime.datetime.now() + datetime.timedelta(seconds=0)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
@@ -811,25 +793,20 @@ def test_timeout_behaviour_zero():
     assert not behaviour._timeout_triggered
 
     agent.add_behaviour(behaviour)
-    behaviour.join()
+    await behaviour.join()
 
     assert agent.delay >= start_at
     assert behaviour._timeout_triggered
     assert behaviour.is_done()
 
-    agent.stop()
+    await agent.stop()
 
-async def createEventCoro():
-    return asyncio.Event()
 
-def test_fsm_behaviour(fsm):
+async def test_fsm_behaviour(fsm):
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
-    future1_behaviour = asyncio.run_coroutine_threadsafe(createEventCoro(), loop=agent.loop)
-    future2_behaviour = asyncio.run_coroutine_threadsafe(createEventCoro(), loop=agent.loop)
-    agent.sync1_behaviour = future1_behaviour.result()
-    agent.sync2_behaviour = future2_behaviour.result()
+    agent.sync1_behaviour = asyncio.Event()
+    agent.sync2_behaviour = asyncio.Event()
+    await agent.start(auto_register=False)
 
     agent.state = None
 
@@ -839,24 +816,24 @@ def test_fsm_behaviour(fsm):
     agent.add_behaviour(fsm)
     assert fsm.current_state == STATE_ONE
     assert not fsm.state_one.is_done()
-    wait_for_behaviour_is_killed(fsm.state_one)
+    await wait_for_behaviour_is_killed(fsm.state_one)
     assert agent.state == STATE_ONE
-    agent.loop.call_soon_threadsafe(agent.sync1_behaviour.set)
-    fsm.state_one.join()
+    agent.sync1_behaviour.set()
+    await fsm.state_one.join()
 
     assert fsm.current_state == STATE_TWO
     assert not fsm.state_two.is_done()
-    wait_for_behaviour_is_killed(fsm.state_two)
+    await wait_for_behaviour_is_killed(fsm.state_two)
     assert agent.state == STATE_TWO
-    agent.loop.call_soon_threadsafe(agent.sync2_behaviour.set)
-    fsm.state_two.join()
+    agent.sync2_behaviour.set()
+    await fsm.state_two.join()
 
     assert fsm.current_state == STATE_THREE
-    wait_for_behaviour_is_killed(fsm.state_three)
+    await wait_for_behaviour_is_killed(fsm.state_three)
     assert agent.state == STATE_THREE
-    fsm.state_three.join()
+    await fsm.state_three.join()
 
-    agent.stop()
+    await agent.stop()
 
 
 def test_fsm_add_bad_state(fsm):
@@ -881,7 +858,7 @@ def test_fsm_not_valid_state(fsm):
         fsm.is_valid_transition("BAD_STATE", STATE_TWO)
 
 
-def test_fsm_bad_state():
+async def test_fsm_bad_state():
     class StateOne(State):
         async def run(self):
             self.set_next_state("BAD_STATE")
@@ -903,22 +880,22 @@ def test_fsm_bad_state():
     fsm_.add_transition(STATE_ONE, STATE_TWO)
 
     agent = MockedAgentFactory()
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
     assert fsm_.current_state == STATE_ONE
 
     agent.add_behaviour(fsm_)
 
-    state_one.join()
+    await state_one.join()
     assert fsm_.current_state == STATE_ONE
 
-    fsm_.join()
+    await fsm_.join()
     assert fsm_.is_killed()
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_fsm_bad_transition():
+async def test_fsm_bad_transition():
     class StateOne(State):
         async def run(self):
             self.set_next_state(STATE_THREE)
@@ -947,20 +924,19 @@ def test_fsm_bad_transition():
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     assert fsm_.current_state == STATE_ONE
 
     agent.add_behaviour(fsm_)
 
-    state_one.join()
+    await state_one.join()
     assert fsm_.current_state == STATE_ONE
 
-    fsm_.join()
+    await fsm_.join()
     assert fsm_.is_killed()
 
-    agent.stop()
+    await agent.stop()
 
 
 def test_fsm_two_initials():
@@ -986,7 +962,7 @@ def test_fsm_two_initials():
     assert fsm_.current_state == STATE_TWO
 
 
-def test_fsm_fail_on_start():
+async def test_fsm_fail_on_start():
     class StateOne(State):
         async def on_start(self):
             raise Exception
@@ -999,21 +975,20 @@ def test_fsm_fail_on_start():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(fsm_)
 
-    fsm_.join()
+    await fsm_.join()
 
     assert fsm_.is_killed()
 
     assert type(fsm_.exit_code) == Exception
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_fsm_fail_on_run():
+async def test_fsm_fail_on_run():
     class StateOne(State):
         async def run(self):
             raise Exception
@@ -1023,21 +998,20 @@ def test_fsm_fail_on_run():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(fsm_)
 
-    fsm_.join()
+    await fsm_.join()
 
     assert fsm_.is_killed()
 
     assert type(fsm_.exit_code) == Exception
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_fsm_fail_on_end():
+async def test_fsm_fail_on_end():
     class StateOne(State):
         async def run(self):
             pass
@@ -1050,28 +1024,27 @@ def test_fsm_fail_on_end():
     fsm_.add_state(STATE_ONE, state_one, initial=True)
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.add_behaviour(fsm_)
 
-    fsm_.join()
+    await fsm_.join()
 
     assert fsm_.is_killed()
 
     assert type(fsm_.exit_code) == Exception
 
-    agent.stop()
+    await agent.stop()
 
 
 def test_to_graphviz(fsm):
     assert (
-            fsm.to_graphviz()
-            == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
+        fsm.to_graphviz()
+        == "digraph finite_state_machine { rankdir=LR; node [fixedsize=true];STATE_ONE -> STATE_TWO;STATE_TWO -> STATE_THREE;}"
     )
 
 
-def test_join():
+async def test_join():
     class WaitBehav(OneShotBehaviour):
         async def run(self):
             for i in range(100):
@@ -1083,17 +1056,17 @@ def test_join():
     behaviour = WaitBehav()
 
     agent.add_behaviour(behaviour)
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join(timeout=None)
+    await behaviour.join(timeout=None)
 
     assert behaviour.is_done()
     assert agent.i == 99
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_join_with_timeout():
+async def test_join_with_timeout():
     class WaitBehav(OneShotBehaviour):
         async def run(self):
             await asyncio.sleep(100)
@@ -1103,17 +1076,17 @@ def test_join_with_timeout():
     behaviour = WaitBehav()
 
     agent.add_behaviour(behaviour)
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
     with pytest.raises(TimeoutError):
-        behaviour.join(timeout=0.01)
+        await behaviour.join(timeout=0.01)
 
     assert not behaviour.is_done()
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_join_with_long_timeout():
+async def test_join_with_long_timeout():
     class WaitBehav(OneShotBehaviour):
         async def run(self):
             await asyncio.sleep(0)
@@ -1123,16 +1096,16 @@ def test_join_with_long_timeout():
     behaviour = WaitBehav()
 
     agent.add_behaviour(behaviour)
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
-    behaviour.join(timeout=100)
+    await behaviour.join(timeout=100)
 
     assert behaviour.is_done()
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_join_inside_behaviour():
+async def test_join_inside_behaviour():
     class Behav1(OneShotBehaviour):
         async def run(self):
             class Behav2(OneShotBehaviour):
@@ -1151,18 +1124,17 @@ def test_join_inside_behaviour():
     behav1 = Behav1()
     agent.add_behaviour(behav1)
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
-    behav1.join()
+    await behav1.join()
 
     assert agent.behav1
     assert agent.behav2
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_join_inside_behaviour_with_timeout():
+async def test_join_inside_behaviour_with_timeout():
     class Behav1(OneShotBehaviour):
         async def run(self):
             class Behav2(OneShotBehaviour):
@@ -1181,17 +1153,16 @@ def test_join_inside_behaviour_with_timeout():
     behav1 = Behav1()
     agent.add_behaviour(behav1)
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
-    behav1.join()
+    await behav1.join()
 
     assert agent.behav1
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_behaviour_at_end():
+async def test_behaviour_at_end():
     class FinalBehav(OneShotBehaviour):
         async def run(self):
             self.agent.value = 2000
@@ -1206,24 +1177,23 @@ def test_behaviour_at_end():
             self.stream = Mock()
             self.value = 1000
 
-        def stop(self):
+        async def stop(self):
             behav = FinalBehav()
             self.add_behaviour(behav)
-            behav.join()
-            return super().stop()
+            await behav.join()
+            return await super().stop()
 
     agent = StopAgent("fakejid@fakeserver", "fakepassword")
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     assert agent.value == 1000
-    future = agent.stop()
-    future.result()
+    await agent.stop()
+
     assert agent.value == 2000
 
 
-def test_two_behaviours_at_end():
+async def test_two_behaviours_at_end():
     class FinalBehav2(OneShotBehaviour):
         async def run(self):
             self.agent.value = 2000
@@ -1244,20 +1214,19 @@ def test_two_behaviours_at_end():
             self.stream = Mock()
             self.value = 1000
 
-        def stop(self):
+        async def stop(self):
             behav = FinalBehav1()
             self.add_behaviour(behav)
-            behav.join()
-            return super().stop()
+            await behav.join()
+            return await super().stop()
 
     agent = StopAgent("fakejid@fakeserver", "fakepassword")
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     assert agent.value == 1000
-    future = agent.stop()
-    future.result()
+    await agent.stop()
+
     assert agent.value == 2000
 
 

@@ -23,10 +23,10 @@ async def wait_until_finished(agents: Union[List[AgentType], AgentType]) -> None
     if not isinstance(agents, list):
         agents = [agents]
     try:
-        while any([agent.is_alive() for agent in agents]):
+        while any([ag.is_alive() for ag in agents]):
             await asyncio.sleep(1)
     except KeyboardInterrupt:
         logger.warning("Keyboard interrupt received. Stopping SPADE...")
-    for agent in agents:
-        logger.info(f"Stopping agent {agent.jid}")
-        await agent.stop()
+    for ag in agents:
+        logger.info(f"Stopping agent {ag.jid}")
+        await ag.stop()

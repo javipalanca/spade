@@ -9,18 +9,19 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
-from spade import run_spade
 from .factories import MockedAgentFactory
 
 
-def test_create_agent(mocker):
+async def test_create_agent(mocker):
     agent = MockedAgentFactory()
 
     assert agent.is_alive() is False
 
-    run_spade()
+    await agent.start(auto_register=False)
 
     agent._async_connect.assert_called_once()
+
+    await agent.stop()
 
     agent.conn_coro.__aexit__.assert_called_once()
 
@@ -40,13 +41,15 @@ def test_avatar():
     )
 
 
-def test_setup():
+async def test_setup():
     agent = MockedAgentFactory()
     agent.setup = AsyncMock()
 
-    run_spade()
+    await agent.start()
 
     agent.setup.assert_called_once()
+
+    await agent.stop()
 
 
 def test_set_get():
@@ -60,22 +63,26 @@ def test_get_none():
     assert agent.get("KB_name_unknown") is None
 
 
-def test_client():
+async def test_client():
     agent = MockedAgentFactory()
     assert agent.client is None
 
-    run_spade()
+    await agent.start(auto_register=False)
 
     assert type(agent.client) == PresenceManagedClient
 
+    await agent.stop()
 
-def test_register():
+
+async def test_register():
     agent = MockedAgentFactory()
     agent.register = Mock()
 
-    run_spade()
+    await agent.start()
 
     assert len(agent._async_register.mock_calls) == 1
+
+    await agent.stop()
 
 
 def test_receive_without_behaviours():
@@ -95,7 +102,7 @@ def test_receive_without_behaviours():
     assert msg in agent.traces.store[0]
 
 
-def test_create_agent_from_another_agent():
+async def test_create_agent_from_another_agent():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
             self.agent._done = True
@@ -107,7 +114,7 @@ def test_create_agent_from_another_agent():
             self.agent.agent2._done = False
             self.agent.dummy_behav = DummyBehav()
             self.agent.agent2.add_behaviour(self.agent.dummy_behav)
-            # await self.agent.agent2.start(auto_register=False)
+            await self.agent.agent2.start(auto_register=False)
             self.kill()
 
     agent1 = MockedAgentFactory()
@@ -115,12 +122,16 @@ def test_create_agent_from_another_agent():
     create_behav = CreateBehav()
     agent1.add_behaviour(create_behav)
 
-    run_spade()
+    await agent1.start(auto_register=False)
+
+    await create_behav.join()
 
     assert agent1.agent2._done
 
+    await agent1.stop()
 
-def test_create_agent_from_another_agent_from_setup():
+
+async def test_create_agent_from_another_agent_from_setup():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
             self.agent._done = True
@@ -143,20 +154,19 @@ def test_create_agent_from_another_agent_from_setup():
 
     agent1.agent2 = None
 
-    future = agent1.start(auto_register=False)
-    assert future.result() is None
+    await agent1.start(auto_register=False)
     assert agent1.is_alive()
 
-    agent1.agent2.dummy_behav.join()
+    await agent1.agent2.dummy_behav.join()
 
     assert agent1.agent2.is_alive()
     assert agent1.agent2._done
 
-    agent1.agent2.stop()
-    agent1.stop()
+    await agent1.agent2.stop()
+    await agent1.stop()
 
 
-def test_submit_send():
+async def test_submit_send():
     agent = MockedAgentFactory()
 
     class DummyBehav(OneShotBehaviour):
@@ -167,19 +177,18 @@ def test_submit_send():
     behav = DummyBehav()
     agent.add_behaviour(behav, template=template)
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     msg_to_send = Message(to="fake@jid", body="BODY", metadata={"performative": "TEST"})
     agent.submit(behav.send(msg_to_send))
-    behav.join()
+    await behav.join()
 
     assert str(agent.recv_msg.to) == "fake@jid"
     assert agent.recv_msg.body == "BODY"
     assert agent.recv_msg.metadata == {"performative": "TEST"}
 
 
-def test_stop_agent_with_blocking_await():
+async def test_stop_agent_with_blocking_await():
     agent1 = MockedAgentFactory()
     agent1.value = 1000
 
@@ -199,10 +208,9 @@ def test_stop_agent_with_blocking_await():
     agent1.add_behaviour(dummybehav)
     agent1.add_behaviour(stopbehah)
 
-    future1 = agent1.start(auto_register=False)
-    future1.result()
+    await agent1.start(auto_register=False)
 
-    stopbehah.join()
+    await stopbehah.join()
 
     assert not agent1.is_alive()
     assert agent1.value == 1000

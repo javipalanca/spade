@@ -18,10 +18,10 @@ from spade.message import Message
 from .factories import MockedAgentFactory, MockedPresenceAgentFactory
 
 
-def test_web():
+async def test_web():
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     agent.web.start(port=10000)
 
     assert agent.web.app is not None
@@ -31,12 +31,12 @@ def test_web():
         if agent.web.server is not None:
             break
         counter += 1
-        time.sleep(0.1)
+        await asyncio.sleep(0.1)
     assert agent.web.server is not None
-    agent.stop()
+    await agent.stop()
 
 
-def test_default_template_path():
+async def test_default_template_path():
     agent = Agent("jid@server", "password")
 
     env = get_env(agent.web.app)
@@ -54,10 +54,10 @@ def test_default_template_path():
     assert "internal_tpl_agent.html" not in filesystem_loader.list_templates()
     assert filesystem_loader.searchpath == ["."]
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_add_template_path():
+async def test_add_template_path():
     agent = Agent("jid@server", "password")
 
     agent.web.start(templates_path="/tmp/spade")
@@ -76,14 +76,12 @@ def test_add_template_path():
     assert filesystem_loader.list_templates() == []
     assert filesystem_loader.searchpath == ["/tmp/spade"]
 
-    agent.stop()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_check_server(aiohttp_client, loop):
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.web.setup_routes()
 
@@ -99,14 +97,13 @@ async def test_check_server(aiohttp_client, loop):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_request_home(aiohttp_client):
     agent = MockedAgentFactory(jid="jid@server", password="password")
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 
@@ -120,10 +117,9 @@ async def test_request_home(aiohttp_client):
 
     assert sel.css("ul.products-list > li").getall() == []
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_get_messages(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
@@ -141,10 +137,9 @@ async def test_get_messages(aiohttp_client):
 
     assert len(sel.css("ul.timeline > li").getall()) == 6  # num messages + end clock
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_get_behaviour(aiohttp_client):
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
@@ -165,13 +160,12 @@ async def test_get_behaviour(aiohttp_client):
     sel = Selector(text=response)
 
     assert (
-            sel.css("section.content-header > h1::text").get().strip()
-            == "OneShotBehaviour/EmptyOneShotBehaviour"
+        sel.css("section.content-header > h1::text").get().strip()
+        == "OneShotBehaviour/EmptyOneShotBehaviour"
     )
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_kill_behaviour(aiohttp_client):
     class EmptyCyclicBehaviour(CyclicBehaviour):
         async def run(self):
@@ -188,14 +182,12 @@ async def test_kill_behaviour(aiohttp_client):
 
     assert behaviour.is_killed()
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_get_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
@@ -212,14 +204,13 @@ async def test_get_agent(aiohttp_client):
 
     assert sel.css("section.content-header > h1::text").get().strip() == jid
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_unsubscribe_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     agent.client.enqueue = Mock()
 
     agent.web.setup_routes()
@@ -241,14 +232,13 @@ async def test_unsubscribe_agent(aiohttp_client):
     assert arg.to == jid_.bare()
     assert arg.type_ == PresenceType.UNSUBSCRIBE
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_send_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
+
     agent.stream = MagicMock()
     agent.stream.send = AsyncMock()
     agent.web.setup_routes()
@@ -269,10 +259,9 @@ async def test_send_agent(aiohttp_client):
     assert sent[1].sent
     assert sent[1].body == "Hello World"
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_find_behaviour():
     class EmptyOneShotBehaviour(OneShotBehaviour):
         async def run(self):
@@ -285,20 +274,18 @@ async def test_find_behaviour():
 
     assert found_behaviour == behaviour
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_find_behaviour_fail():
     agent = Agent("jid@server", "password")
     found_behaviour = agent.web.find_behaviour("OneShotBehaviour/EmptyOneShotBehaviour")
 
     assert found_behaviour is None
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_add_get(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
@@ -307,15 +294,17 @@ async def test_add_get(aiohttp_client):
     client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/test")
+
+    assert response.status == 200
+
     response = await response.text()
 
     sel = Selector(text=response)
     assert sel.css("h1::text").get().strip() == "42"
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_add_get_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.add_get(
@@ -333,10 +322,9 @@ async def test_add_get_raw(aiohttp_client):
 
     assert response == "Hello Raw Get"
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_add_post(aiohttp_client):
     agent = Agent("jid@server", "password")
 
@@ -355,10 +343,9 @@ async def test_add_post(aiohttp_client):
     sel = Selector(text=response)
     assert sel.css("h1::text").get() == "1024"
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_add_post_raw(aiohttp_client):
     agent = Agent("jid@server", "password")
 
@@ -376,10 +363,9 @@ async def test_add_post_raw(aiohttp_client):
 
     assert response == "Hello Raw Post Number=1024"
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_stop(aiohttp_client):
     agent = Agent("jid@server", "password")
     agent.web.setup_routes()
@@ -390,8 +376,8 @@ async def test_stop(aiohttp_client):
 
     sel = Selector(text=response)
     assert (
-            sel.css("div.alert-warning > span::text").get().strip()
-            == "Agent is stopping now."
+        sel.css("div.alert-warning > span::text").get().strip()
+        == "Agent is stopping now."
     )
 
     with LogCapture() as log:
@@ -409,12 +395,11 @@ async def test_stop(aiohttp_client):
     counter = 5
     while agent.is_alive() and counter > 0:
         counter -= 0.5
-        time.sleep(0.5)
+        await asyncio.sleep(0.5)
 
     assert not agent.is_alive()
 
 
-@pytest.mark.asyncio
 async def test_add_get_json(aiohttp_client):
     async def controller(request):
         return {"number": 42}
@@ -431,10 +416,9 @@ async def test_add_get_json(aiohttp_client):
     data = await response.json()
     assert data["number"] == 42
 
-    agent.stop().result()
+    await agent.stop()
 
 
-@pytest.mark.asyncio
 async def test_add_post_json(aiohttp_client):
     async def handle_post(request):
         form = await request.post()
@@ -453,4 +437,4 @@ async def test_add_post_json(aiohttp_client):
     data = await response.json()
     assert data["number"] == 1024
 
-    agent.stop().result()
+    await agent.stop()
