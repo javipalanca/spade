@@ -47,7 +47,6 @@ jobs:
           - "windows-py310"
 
         include:
-            tox_env: "py37"
           - name: "ubuntu-py38"
             python: "3.8"
             os: ubuntu-latest
@@ -69,7 +68,7 @@ jobs:
             python: "3.9"
             os: macos-latest
             tox_env: "py39"
-        - name: "macos-py310"
+          - name: "macos-py310"
             python: "3.10"
             os: macos-latest
             tox_env: "py310"
@@ -82,7 +81,7 @@ jobs:
             python: "3.9"
             os: windows-latest
             tox_env: "py39"
-        - name: "windows-py310"
+          - name: "windows-py310"
             python: "3.10"
             os: windows-latest
             tox_env: "py310"
