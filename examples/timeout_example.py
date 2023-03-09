@@ -55,11 +55,13 @@ async def main():
 
     await receiveragent.start(auto_register=True)
 
-    senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
+    # store receiver_jid in the sender knowledge base
+    senderagent.set("receiver_jid", receiver_jid)
     await senderagent.start(auto_register=True)
 
     await spade.wait_until_finished(receiveragent)
     print("Agents finished")
+
 
 if __name__ == "__main__":
     spade.run(main())

@@ -58,7 +58,9 @@ async def test_plugin_multiple_override():
             await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = 3
 
-    class AgentWithPlugin(PluginMixin1, PluginMixin2, PluginMixin3, MockedConnectedAgent):
+    class AgentWithPlugin(
+        PluginMixin1, PluginMixin2, PluginMixin3, MockedConnectedAgent
+    ):
         pass
 
     agent = AgentWithPlugin("test@localhost", "secret")

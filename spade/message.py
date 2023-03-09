@@ -36,7 +36,7 @@ class MessageBase(object):
             self.metadata = metadata
 
     @classmethod
-    def from_node(cls, node: aioxmpp.Message) -> Type['MessageBase']:
+    def from_node(cls, node: aioxmpp.Message) -> Type["MessageBase"]:
         """
         Creates a new spade.message.Message from an aixoxmpp.stanza.Message
 
@@ -186,7 +186,7 @@ class MessageBase(object):
         """
         return self.metadata[key] if key in self.metadata else None
 
-    def match(self, message: Type['MessageBase']) -> bool:
+    def match(self, message: Type["MessageBase"]) -> bool:
         """
         Returns wether a message matches with this message or not.
         The message can be a Message object or a Template object.
@@ -222,14 +222,14 @@ class MessageBase(object):
         """ """
         return id(self)
 
-    def __eq__(self, other: Type['MessageBase']):
+    def __eq__(self, other: Type["MessageBase"]):
         return self.match(other)
 
 
 class Message(MessageBase):
     """ """
 
-    def make_reply(self) -> 'Message':
+    def make_reply(self) -> "Message":
         """
         Creates a copy of the message, exchanging sender and receiver
 

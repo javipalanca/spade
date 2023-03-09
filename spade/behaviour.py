@@ -39,7 +39,7 @@ class NotValidTransition(Exception):
 
 
 class CyclicBehaviour(object, metaclass=ABCMeta):
-    """ This behaviour is executed cyclically until it is stopped. """
+    """This behaviour is executed cyclically until it is stopped."""
 
     def __init__(self):
         self.agent = None
@@ -214,15 +214,6 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return not self._is_done.is_set()
 
-    def is_alive(self) -> bool:
-        """
-        Check if the behaviour is alive
-
-        Returns:
-             bool: whether the behaviour is alive or not
-        """
-        return self.is_running
-
     async def join(self, timeout: Optional[float] = None) -> None:
         """
         Wait for the behaviour to complete
@@ -294,8 +285,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             try:
                 await self._run()
                 await asyncio.sleep(0)  # relinquish cpu
-            except CancelledError:
-                logger.info("Behaviour {} cancelled".format(self))
+            except CancelledError:  # pragma: no cover
+                logger.debug("Behaviour {} cancelled".format(self))
                 cancelled = True
             except Exception as e:
                 logger.error(
@@ -421,7 +412,7 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
     @property
     def period(self) -> timedelta:
-        """ Get the period. """
+        """Get the period."""
         return self._period
 
     @period.setter

@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, MagicMock
 import aioxmpp
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
-from spade.container import Container
+from spade.container import Container, run_container
 from spade.message import Message
 from .factories import MockedAgentFactory
 
@@ -107,7 +107,6 @@ async def test_send_message_to_outer_with_container():
 
 def test_unregister():
     container = Container()
-    container.reset()
 
     agent = MockedAgentFactory()
     agent2 = MockedAgentFactory(jid="agent2@server")

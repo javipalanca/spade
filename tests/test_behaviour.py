@@ -1,6 +1,5 @@
 import asyncio
 import datetime
-from asyncio import Event
 from unittest.mock import AsyncMock, Mock, MagicMock
 
 import aioxmpp

@@ -1,5 +1,5 @@
-import datetime
 import getpass
+from datetime import datetime
 
 import spade
 from spade.agent import Agent
@@ -10,7 +10,7 @@ from spade.message import Message
 class PeriodicSenderAgent(Agent):
     class InformBehav(PeriodicBehaviour):
         async def run(self):
-            print(f"PeriodicSenderBehaviour running at {datetime.datetime.now().time()}: {self.counter}")
+            print(f"PeriodicSenderBehav at {datetime.now().time()}: {self.counter}")
             msg = Message(to=self.get("receiver_jid"))  # Instantiate the message
             msg.body = "Hello World"  # Set the message content
 
@@ -66,7 +66,8 @@ async def main():
 
     await receiveragent.start(auto_register=True)
 
-    senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
+    # store receiver_jid in the sender knowledge base
+    senderagent.set("receiver_jid", receiver_jid)
     await senderagent.start(auto_register=True)
 
     await spade.wait_until_finished(senderagent)

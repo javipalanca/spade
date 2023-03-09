@@ -1,6 +1,4 @@
-import asyncio
 import getpass
-import time
 
 import spade
 from spade.agent import Agent
@@ -101,6 +99,7 @@ async def main():
     await agent1.start()
 
     await spade.wait_until_finished([agent1, agent2])
+
 
 if __name__ == "__main__":
     spade.run(main())

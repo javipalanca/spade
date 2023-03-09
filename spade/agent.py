@@ -155,7 +155,7 @@ class Agent(object):
         pass
 
     async def _async_connect(self) -> None:  # pragma: no cover
-        """ connect and authenticate to the XMPP server. Async mode. """
+        """connect and authenticate to the XMPP server. Async mode."""
         try:
             self.conn_coro = self.client.connected()
             aenter = type(self.conn_coro).__aenter__(self.conn_coro)
@@ -167,12 +167,10 @@ class Agent(object):
             )
 
     async def _async_register(self) -> None:  # pragma: no cover
-        """ Register the agent in the XMPP server from a coroutine. """
+        """Register the agent in the XMPP server from a coroutine."""
         metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
         query = ibr.Query(self.jid.localpart, self.password)
-        _, stream, features = await aioxmpp.node.connect_xmlstream(
-            self.jid, metadata
-        )
+        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata)
         await ibr.register(stream, query)
 
     async def setup(self) -> None:
@@ -231,7 +229,6 @@ class Agent(object):
             asyncio.Task: the Task assigned to the coroutine execution
 
         """
-        # return asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
         return asyncio.create_task(coro)
 
     def add_behaviour(
@@ -291,7 +288,7 @@ class Agent(object):
         return await self._async_stop()
 
     async def _async_stop(self) -> None:
-        """ Stops an agent and kills all its behaviours. """
+        """Stops an agent and kills all its behaviours."""
         if self.presence:
             self.presence.set_unavailable()
         for behav in self.behaviours:

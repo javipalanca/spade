@@ -13,17 +13,22 @@ logger = logging.getLogger("SPADE")
 
 # check if python is 3.6 or higher
 if sys.version_info >= (3, 7) and sys.platform == "win32":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # pragma: no cover
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsSelectorEventLoopPolicy()
+    )  # pragma: no cover
 
 
-def get_or_create_eventloop():
-    try:
-        return asyncio.get_running_loop()
-    except RuntimeError as ex:
-        if "There is no current event loop in thread" in str(ex):
+def get_or_create_eventloop():  # pragma: no cover
+    if sys.version_info < (3, 10):
+        loop = asyncio.get_event_loop()
+    else:
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
             loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            return asyncio.get_event_loop()
+
+    asyncio.set_event_loop(loop)
+    return loop
 
 
 @singleton()
@@ -41,8 +46,8 @@ class Container(object):
         self.is_running = True
 
     def reset(self) -> None:
-        """ Empty the container by unregistering all the agents. """
-        self.__agents = {}
+        """Empty the container by unregistering all the agents."""
+        self.__init__()
 
     def register(self, agent) -> None:
         """
@@ -99,18 +104,11 @@ class Container(object):
         else:
             await behaviour._xmpp_send(msg=msg)
 
-    def stop(self) -> None:
-        for agent in [agent for agent in self.__agents.values() if agent.is_alive()]:
-            logger.info(f"Stopping agent {agent.jid}")
-            self.run(agent.stop())
-        self.reset()
-        self.is_running = False
-
-    def run(self, coro: Awaitable) -> None:
+    def run(self, coro: Awaitable) -> None:  # pragma: no cover
         self.loop.run_until_complete(coro)
 
 
-def run_container(main_func: Coroutine) -> None:
+def run_container(main_func: Coroutine) -> None:  # pragma: no cover
     container = Container()
     try:
         container.run(main_func)
@@ -119,9 +117,7 @@ def run_container(main_func: Coroutine) -> None:
     except Exception as e:  # pragma: no cover
         logger.error("Exception in the event loop: {}".format(e))
 
-    container.stop()
-
-    if sys.version_info >= (3, 7):
+    if sys.version_info >= (3, 7):  # pragma: no cover
         tasks = asyncio.all_tasks(loop=container.loop)  # pragma: no cover
     else:
         tasks = asyncio.Task.all_tasks(loop=container.loop)  # pragma: no cover
@@ -129,6 +125,6 @@ def run_container(main_func: Coroutine) -> None:
         task.cancel()
         with suppress(asyncio.CancelledError):
             container.run(task)
-    container.stop()
+
     container.loop.close()
     logger.debug("Loop closed")
