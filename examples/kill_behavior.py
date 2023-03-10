@@ -1,6 +1,5 @@
-import getpass
-import time
 import asyncio
+import getpass
 
 import spade
 from spade.agent import Agent
@@ -43,6 +42,9 @@ async def main():
             await asyncio.sleep(1)
         except KeyboardInterrupt:
             break
+
+    assert dummy.my_behav.exit_code == 10
+
     await dummy.stop()
 
 

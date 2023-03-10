@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import sys
-from asyncio import Future, Task
+from asyncio import Task
 from hashlib import md5
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
@@ -342,7 +342,7 @@ class Agent(object):
         else:
             return None
 
-    def _message_received(self, msg: aioxmpp.Message) -> List[Future]:
+    def _message_received(self, msg: aioxmpp.Message) -> List[Task]:
         """
         Callback run when an XMPP Message is reveived.
         This callback delivers the message to every behaviour
@@ -360,7 +360,7 @@ class Agent(object):
         msg = Message.from_node(msg)
         return self.dispatch(msg)
 
-    def dispatch(self, msg: Message) -> List[Future]:
+    def dispatch(self, msg: Message) -> List[Task]:
         """
         Dispatch the message to every behaviour that is waiting for
         it using their templates match.

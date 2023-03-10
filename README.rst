@@ -49,7 +49,7 @@ Features
 
 * Multi-agent platform based on XMPP_
 * Presence notification allows the system to know the current state of the agents in real-time
-* Python >=3.6
+* Python >=3.8
 * Asyncio-based
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)

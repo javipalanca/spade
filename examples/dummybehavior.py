@@ -1,6 +1,5 @@
-import getpass
-import time
 import asyncio
+import getpass
 
 import spade
 from spade import wait_until_finished
