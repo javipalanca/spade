@@ -116,7 +116,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -129,7 +129,7 @@ jobs:
         coverage erase
         coverage run --source=spade -m py.test
     - name: Coveralls
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: javipalanca/coveralls-python-action@develop
       with:
         parallel: true
         flag-name: Unit Test
