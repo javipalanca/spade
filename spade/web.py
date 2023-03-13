@@ -23,9 +23,7 @@ def unused_port(hostname: str) -> None:
         return s.getsockname()[1]
 
 
-async def start_server_in_loop(
-    runner: AppRunner, hostname: str, port: int, agent
-):
+async def start_server_in_loop(runner: AppRunner, hostname: str, port: int, agent):
     """
     Listens to http requests and sends them to the webapp.
 
@@ -42,7 +40,7 @@ async def start_server_in_loop(
 
 
 class WebApp(object):
-    """ Module to handle agent's web interface """
+    """Module to handle agent's web interface"""
 
     def __init__(self, agent):
         self.agent = agent
@@ -63,7 +61,7 @@ class WebApp(object):
         hostname: Optional[str] = None,
         port: Optional[int] = None,
         templates_path: Optional[str] = None,
-    ) -> None:
+    ):
         """
         Starts the web interface.
 
