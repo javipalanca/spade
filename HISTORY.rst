@@ -2,7 +2,15 @@
 History
 =======
 
-3.2.3 (2023-12-13)
+3.3.0 (2023-06-13)
+------------------
+
+* Updated to Python>=3.8
+* Changed the way agents are launched (now with `spade.run()`)
+* Python 3.11 still not supported due to a bug in `aiohttp`
+* Deprecated support for Python<=3.7
+
+3.2.3 (2022-12-13)
 ------------------
 
 * Updated third-party libs
