@@ -21,7 +21,7 @@ SPADE
     :alt: Code Size
     :target: https://pepy.tech/project/spade
 
-.. image:: https://img.shields.io/apm/l/atomic-design-ui.svg?
+.. image:: https://img.shields.io/pypi/l/spade
     :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
