@@ -1,9 +1,8 @@
-import time
+import asyncio
 
 import pytest
 from aioxmpp import JID
 
-from spade import quit_spade
 from spade.container import Container
 from spade.message import Message
 
@@ -43,18 +42,17 @@ def run_around_tests():
         container.__init__()
     yield
     # Code that will run after your test, for example:
-    quit_spade()
 
 
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
-    quit_spade()
+    pass
 
 
-def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
+async def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
     counter = 0
     while not behaviour.is_killed() and counter < tries:
-        time.sleep(sleep)
+        await asyncio.sleep(sleep)
         counter += 1
     if not behaviour.is_killed():
         raise Exception("Behaviour not finished")

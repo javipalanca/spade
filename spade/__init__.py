@@ -1,13 +1,32 @@
 # -*- coding: utf-8 -*-
+import asyncio
+import logging
+from typing import Union, List
 
 from . import agent
 from . import behaviour
 from . import message
 from . import template
-from .container import stop_container as quit_spade  # noqa: F401
+from .agent import AgentType
+from .container import run_container as run  # noqa: F401
 
 __author__ = """Javi Palanca"""
 __email__ = "jpalanca@gmail.com"
-__version__ = "3.2.3"
+__version__ = "3.3.0"
 
 __all__ = ["agent", "behaviour", "message", "template"]
+
+logger = logging.getLogger("SPADE")
+
+
+async def wait_until_finished(agents: Union[List[AgentType], AgentType]) -> None:
+    if not isinstance(agents, list):
+        agents = [agents]
+    try:
+        while any([ag.is_alive() for ag in agents]):
+            await asyncio.sleep(1)
+    except KeyboardInterrupt:
+        logger.warning("Keyboard interrupt received. Stopping SPADE...")
+    for ag in agents:
+        logger.info(f"Stopping agent {ag.jid}")
+        await ag.stop()

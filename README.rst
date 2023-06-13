@@ -21,7 +21,7 @@ SPADE
     :alt: Code Size
     :target: https://pepy.tech/project/spade
 
-.. image:: https://img.shields.io/apm/l/atomic-design-ui.svg?
+.. image:: https://img.shields.io/pypi/l/spade
     :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
@@ -63,7 +63,7 @@ Features
 
 * Multi-agent platform based on XMPP_
 * Presence notification allows the system to know the current state of the agents in real-time
-* Python >=3.6
+* Python >=3.8
 * Asyncio-based
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)

@@ -1,7 +1,7 @@
 from tests.factories import MockedConnectedAgent
 
 
-def test_add_plugin():
+async def test_add_plugin():
     class PluginMixin:
         async def _hook_plugin_before_connection(self, *args, **kwargs):
             await super()._hook_plugin_before_connection(*args, **kwargs)
@@ -16,14 +16,13 @@ def test_add_plugin():
 
     agent = AgentWithPlugin("test@localhost", "secret")
 
-    future = agent.start()
-    future.result()
+    await agent.start()
 
     assert agent.before_hook
     assert agent.after_hook
 
 
-def test_plugin_override():
+async def test_plugin_override():
     class PluginMixin:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
             await super()._hook_plugin_after_connection(*args, **kwargs)
@@ -34,16 +33,16 @@ def test_plugin_override():
 
     agent = AgentWithPlugin("test@localhost", "secret")
 
-    future = agent.start()
-    future.result()
+    await agent.start()
 
     assert agent.client is None
 
 
-def test_plugin_multiple_override():
+async def test_plugin_multiple_override():
     """
     The order of the mixins is important
     """
+
     class PluginMixin1:
         async def _hook_plugin_after_connection(self, *args, **kwargs):
             await super()._hook_plugin_after_connection(*args, **kwargs)
@@ -59,12 +58,13 @@ def test_plugin_multiple_override():
             await super()._hook_plugin_after_connection(*args, **kwargs)
             self.client = 3
 
-    class AgentWithPlugin(PluginMixin1, PluginMixin2, PluginMixin3, MockedConnectedAgent):
+    class AgentWithPlugin(
+        PluginMixin1, PluginMixin2, PluginMixin3, MockedConnectedAgent
+    ):
         pass
 
     agent = AgentWithPlugin("test@localhost", "secret")
 
-    future = agent.start()
-    future.result()
+    await agent.start()
 
     assert agent.client == 1

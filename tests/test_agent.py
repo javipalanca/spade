@@ -2,8 +2,8 @@ import asyncio
 
 import aioxmpp
 from aioxmpp import PresenceManagedClient
-from asynctest import CoroutineMock, Mock
 from testfixtures import LogCapture
+from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
@@ -12,40 +12,19 @@ from spade.template import Template
 from .factories import MockedAgentFactory
 
 
-def test_create_agent(mocker):
-    agent = Agent("jid@server", "fake_password")
-    agent._async_connect = CoroutineMock()
+async def test_create_agent(mocker):
+    agent = MockedAgentFactory()
 
     assert agent.is_alive() is False
 
-    future = agent.start(auto_register=False)
-    assert future.result() is None
+    await agent.start(auto_register=False)
 
     agent._async_connect.assert_called_once()
-    assert agent.stream is None
 
-    agent.conn_coro = mocker.Mock()
-    agent.conn_coro.__aexit__ = CoroutineMock()
-
-    assert agent.is_alive() is True
-    future = agent.stop()
-    future.result()
+    await agent.stop()
 
     agent.conn_coro.__aexit__.assert_called_once()
 
-    assert agent.is_alive() is False
-
-
-def test_connected_agent():
-    agent = MockedAgentFactory()
-    assert agent.is_alive() is False
-
-    future = agent.start(auto_register=False)
-    assert future.result() is None
-    assert agent.is_alive() is True
-
-    future = agent.stop()
-    future.result()
     assert agent.is_alive() is False
 
 
@@ -62,14 +41,15 @@ def test_avatar():
     )
 
 
-def test_setup():
+async def test_setup():
     agent = MockedAgentFactory()
-    agent.setup = CoroutineMock()
-    future = agent.start(auto_register=False)
-    assert future.result() is None
+    agent.setup = AsyncMock()
+
+    await agent.start()
 
     agent.setup.assert_called_once()
-    agent.stop()
+
+    await agent.stop()
 
 
 def test_set_get():
@@ -83,25 +63,26 @@ def test_get_none():
     assert agent.get("KB_name_unknown") is None
 
 
-def test_client():
+async def test_client():
     agent = MockedAgentFactory()
     assert agent.client is None
 
-    future = agent.start()
-    future.result()
+    await agent.start(auto_register=False)
+
     assert type(agent.client) == PresenceManagedClient
 
+    await agent.stop()
 
-def test_register():
+
+async def test_register():
     agent = MockedAgentFactory()
     agent.register = Mock()
 
-    future = agent.start(auto_register=True)
-    assert future.result() is None
+    await agent.start()
 
     assert len(agent._async_register.mock_calls) == 1
 
-    agent.stop()
+    await agent.stop()
 
 
 def test_receive_without_behaviours():
@@ -110,8 +91,6 @@ def test_receive_without_behaviours():
     msg = Message.from_node(aiomsg)
 
     assert agent.traces.len() == 0
-    future = agent.start(auto_register=False)
-    assert future.result() is None
 
     with LogCapture() as log:
         agent._message_received(aiomsg)
@@ -122,10 +101,8 @@ def test_receive_without_behaviours():
     assert agent.traces.len() == 1
     assert msg in agent.traces.store[0]
 
-    agent.stop()
 
-
-def test_create_agent_from_another_agent():
+async def test_create_agent_from_another_agent():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
             self.agent._done = True
@@ -144,21 +121,17 @@ def test_create_agent_from_another_agent():
     agent1.agent2 = None
     create_behav = CreateBehav()
     agent1.add_behaviour(create_behav)
-    future = agent1.start(auto_register=False)
-    assert future.result() is None
-    assert agent1.is_alive()
 
-    create_behav.join()
-    agent1.dummy_behav.join()
+    await agent1.start(auto_register=False)
 
-    assert agent1.agent2.is_alive()
+    await create_behav.join()
+
     assert agent1.agent2._done
 
-    agent1.agent2.stop()
-    agent1.stop()
+    await agent1.stop()
 
 
-def test_create_agent_from_another_agent_from_setup():
+async def test_create_agent_from_another_agent_from_setup():
     class DummyBehav(OneShotBehaviour):
         async def run(self):
             self.agent._done = True
@@ -173,28 +146,27 @@ def test_create_agent_from_another_agent_from_setup():
             await self.agent2.start(auto_register=False)
 
     agent1 = SetupAgent("fake@host", "secret")
-    agent1._async_connect = CoroutineMock()
-    agent1._async_register = CoroutineMock()
+    agent1._async_connect = AsyncMock()
+    agent1._async_register = AsyncMock()
     agent1.conn_coro = Mock()
-    agent1.conn_coro.__aexit__ = CoroutineMock()
+    agent1.conn_coro.__aexit__ = AsyncMock()
     agent1.stream = Mock()
 
     agent1.agent2 = None
 
-    future = agent1.start(auto_register=False)
-    assert future.result() is None
+    await agent1.start(auto_register=False)
     assert agent1.is_alive()
 
-    agent1.agent2.dummy_behav.join()
+    await agent1.agent2.dummy_behav.join()
 
     assert agent1.agent2.is_alive()
     assert agent1.agent2._done
 
-    agent1.agent2.stop()
-    agent1.stop()
+    await agent1.agent2.stop()
+    await agent1.stop()
 
 
-def test_submit_send():
+async def test_submit_send():
     agent = MockedAgentFactory()
 
     class DummyBehav(OneShotBehaviour):
@@ -205,19 +177,18 @@ def test_submit_send():
     behav = DummyBehav()
     agent.add_behaviour(behav, template=template)
 
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
     msg_to_send = Message(to="fake@jid", body="BODY", metadata={"performative": "TEST"})
     agent.submit(behav.send(msg_to_send))
-    behav.join()
+    await behav.join()
 
     assert str(agent.recv_msg.to) == "fake@jid"
     assert agent.recv_msg.body == "BODY"
     assert agent.recv_msg.metadata == {"performative": "TEST"}
 
 
-def test_stop_agent_with_blocking_await():
+async def test_stop_agent_with_blocking_await():
     agent1 = MockedAgentFactory()
     agent1.value = 1000
 
@@ -237,10 +208,9 @@ def test_stop_agent_with_blocking_await():
     agent1.add_behaviour(dummybehav)
     agent1.add_behaviour(stopbehah)
 
-    future1 = agent1.start(auto_register=False)
-    future1.result()
+    await agent1.start(auto_register=False)
 
-    stopbehah.join()
+    await stopbehah.join()
 
     assert not agent1.is_alive()
     assert agent1.value == 1000
