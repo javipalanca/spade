@@ -232,7 +232,7 @@ Creating an agent from within another agent
 -------------------------------------------
 
 There is a common use case where you may need to create an agent from within another agent, that is, from within another
-agent's behaviour. This is a common case where ```start`` must be called with an ``await`` statement in order to work properly. Example::
+agent's behaviour. This is a common case where ``start`` must be called with an ``await`` statement in order to work properly. Example::
 
     import spade
     from spade.agent import Agent
