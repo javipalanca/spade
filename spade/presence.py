@@ -258,7 +258,7 @@ class PresenceManager(object):
     def on_subscribe(self, peer_jid: str) -> None:
         """
         Callback called when a subscribe query is received.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent asking for subscription
@@ -269,7 +269,7 @@ class PresenceManager(object):
     def on_subscribed(self, peer_jid: str) -> None:
         """
         Callback called when a subscribed message is received.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent that accepted subscription
@@ -280,7 +280,7 @@ class PresenceManager(object):
     def on_unsubscribe(self, peer_jid: str) -> None:
         """
         Callback called when an unsubscribe query is received.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent asking for unsubscription
@@ -291,7 +291,7 @@ class PresenceManager(object):
     def on_unsubscribed(self, peer_jid: str) -> None:
         """
         Callback called when an unsubscribed message is received.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent that unsubscribed
@@ -302,7 +302,7 @@ class PresenceManager(object):
     def on_available(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
         """
         Callback called when a contact becomes available.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent that is available
@@ -314,7 +314,7 @@ class PresenceManager(object):
     def on_unavailable(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
         """
         Callback called when a contact becomes unavailable.
-        To ve overloaded by user.
+        To be overloaded by user.
 
         Args:
           peer_jid (str): the JID of the agent that is unavailable
