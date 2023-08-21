@@ -174,7 +174,7 @@ There are four handlers that you can override to manage these kind of messages: 
 
 .. note:: In the previous example you can see also how to approve a subscription request by using the ``approve`` method.
 
-.. tip:: If you want to automatically approve all subscription requests you can set the ``approve_all`` flag to ``True``.
+.. tip:: If you want to automatically approve all subscription requests you can set the ``PresenceManager.approve_all`` flag to ``True``.
 
 
 Example
