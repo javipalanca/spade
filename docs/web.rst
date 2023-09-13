@@ -199,3 +199,17 @@ A simple example of template would be:
     </html>
 
 .. note:: Note that the ``agent`` variable is always available in your templates to help you to access your internal data.
+
+
+Menu entries
+------------
+
+You can also add new entries to the menu bar of the agent's web interface. To do so, you can use the ``add_menu_entry`` method.
+This method receives the name of the entry, the path to which it will redirect and the icon that will be shown in the menu bar.
+The icon is a string from the Font Awesome collection (http://fontawesome.io/icons/).
+
+For example, to add a new entry to the menu, you can do the following::
+
+    agent.web.add_menu_entry("My entry", "/my_entry", "fa fa-user")
+
+

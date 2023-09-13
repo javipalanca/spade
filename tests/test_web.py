@@ -1,7 +1,6 @@
 import asyncio
-import time
+from unittest.mock import AsyncMock, Mock, MagicMock
 
-import pytest
 import requests
 from aiohttp import web
 from aiohttp_jinja2 import get_env
@@ -10,7 +9,6 @@ from aioxmpp.roster import Item
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from parsel import Selector
 from testfixtures import LogCapture
-from unittest.mock import AsyncMock, Mock, MagicMock
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
@@ -80,13 +78,15 @@ async def test_add_template_path():
 
 
 async def test_check_server(aiohttp_client, loop):
-    agent = MockedAgentFactory()
+    agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 
     agent.web.setup_routes()
 
     client = await aiohttp_client(agent.web.app)
     response = await client.get("/spade")
+
+    assert response.status == 200
 
     text = await response.text()
 
@@ -374,6 +374,8 @@ async def test_stop(aiohttp_client):
     client = await aiohttp_client(agent.web.app)
 
     response = await client.get("/spade/stop")
+    assert response.status == 200
+
     response = await response.text()
 
     sel = Selector(text=response)
@@ -440,3 +442,30 @@ async def test_add_post_json(aiohttp_client):
     assert data["number"] == 1024
 
     await agent.stop()
+
+
+async def test_add_menu_entry(aiohttp_client):
+    agent = MockedPresenceAgentFactory()
+    await agent.start(auto_register=False)
+    agent.web.setup_routes()
+
+    agent.web.add_menu_entry("Test", "/test", "fa fa-test")
+
+    client = await aiohttp_client(agent.web.app)
+    response = await client.get("/spade")
+
+    assert response.status == 200
+
+    # get html from response
+    response = await response.text()
+    # look for menu entry
+    sel = Selector(text=response)
+
+    assert len(sel.css("ul.sidebar-menu > li").getall()) == 2
+
+    # get second li element from sidebar-menu
+    menu_entry = sel.css("ul.sidebar-menu > li").getall()[1]
+    menu_entry = Selector(text=menu_entry)
+    assert menu_entry.css("li > a > span::text").get().strip() == "Test"
+    assert menu_entry.css("a > i::attr(class)").get().strip() == "fa fa-test"
+    assert menu_entry.css("a::attr(href)").get().strip() == "/test"
