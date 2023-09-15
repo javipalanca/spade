@@ -31,7 +31,7 @@ New Behaviours
 --------------
 
 Developing new behaviours is as easy as creating a new class that inherits from ``spade.behaviour.CyclicBehaviour`` (or
-any of its subclassed behaviours) and overload the methods that are needed. Pay atention to the methods that are related
+any of its subclassed behaviours) and overload the methods that are needed. Pay attention to the methods that are related
 with the control flow of a behaviour like ``_step``, ``done`` and ``_run``. And remember that you *should not* overload
 the methods that are reserved for the user to be overloaded: ``on_start``, ``run`` and ``on_end``.
 
