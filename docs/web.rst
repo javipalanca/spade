@@ -84,7 +84,7 @@ In this example there are some elements that must be explained:
 
 Next we are going to explain a little more about the controller, the path and the template.
 
-.. note:: Please, do not use the ``/spade`` path o avoid conflicts with the default agent pages (unless you want to modify them).
+.. note:: Please, do not use the ``/spade`` path to avoid conflicts with the default agent pages (unless you want to modify them).
 
 Controller
 ----------
