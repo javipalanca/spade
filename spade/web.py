@@ -86,6 +86,10 @@ class WebApp(object):
             start_server_in_loop(self.runner, self.hostname, self.port, self.agent)
         )
 
+    def add_template_path(self, templates_path):
+        self.loaders.insert(0, jinja2.FileSystemLoader(templates_path))
+        self._set_loaders()
+
     def is_started(self) -> bool:
         return self.runner is not None
 

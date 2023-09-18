@@ -55,10 +55,33 @@ async def test_default_template_path():
     await agent.stop()
 
 
-async def test_add_template_path():
+async def test_add_template_path_init():
     agent = Agent("jid@server", "password")
 
     agent.web.start(templates_path="/tmp/spade")
+
+    env = get_env(agent.web.app)
+    loader = env.loader
+
+    assert type(loader) == ChoiceLoader
+    assert len(loader.loaders) == 3
+    assert type(loader.loaders[0]) == FileSystemLoader
+    assert type(loader.loaders[1]) == PackageLoader
+    assert type(loader.loaders[2]) == FileSystemLoader
+
+    filesystem_loader = loader.loaders[0]
+
+    assert filesystem_loader.list_templates() == []
+    assert filesystem_loader.searchpath == ["/tmp/spade"]
+
+    await agent.stop()
+
+
+async def test_add_template_path():
+    agent = Agent("jid@server", "password")
+
+    agent.web.start()
+    agent.web.add_template_path(templates_path="/tmp/spade")
 
     env = get_env(agent.web.app)
     loader = env.loader
