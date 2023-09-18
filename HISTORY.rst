@@ -2,6 +2,11 @@
 History
 =======
 
+3.3.2 (2023-09-18)
+------------------
+
+* Added add_template_path function to the web component.
+
 3.3.1 (2023-09-18)
 ------------------
 
