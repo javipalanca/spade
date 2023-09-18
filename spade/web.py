@@ -55,6 +55,7 @@ class WebApp(object):
         cwd_loader = jinja2.FileSystemLoader(".")
         self.loaders = [internal_loader, cwd_loader]
         self._set_loaders()
+        self.menu_entries = {}
 
     def start(
         self,
@@ -114,6 +115,18 @@ class WebApp(object):
             "/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent
         )
         self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
+
+    def add_menu_entry(self, name: str, url: str, icon="fa fa-circle") -> None:
+        """
+        Adds a new entry to the menu.
+
+        Args:
+          name (str): name of the entry
+          url (str): url to be redirected to
+          icon (str): icon to be displayed (Default value = "fa fa-circle")
+
+        """
+        self.menu_entries[name] = (url, icon)
 
     def add_get(
         self,
@@ -193,7 +206,12 @@ class WebApp(object):
         messages = [
             (self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)
         ]
-        return {"agent": self.agent, "messages": messages}
+        return {
+            "agent": self.agent,
+            "messages": messages,
+            "menu": self.menu_entries,
+            "active": request.path,
+        }
 
     # Default controllers for agent
 

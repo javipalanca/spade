@@ -759,7 +759,7 @@ async def test_timeout_behaviour():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.01)
+    start_at = datetime.datetime.now() + datetime.timedelta(seconds=0.02)
     behaviour = TestTimeoutBehaviour(start_at=start_at)
 
     assert behaviour._timeout == start_at
