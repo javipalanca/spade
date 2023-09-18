@@ -2,6 +2,12 @@
 History
 =======
 
+3.3.1 (2023-09-18)
+------------------
+
+* Added menu entries support for the web interface.
+* Minor typos in documentation.
+
 3.3.0 (2023-06-13)
 ------------------
 
