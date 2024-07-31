@@ -2,7 +2,7 @@ import datetime
 import itertools
 from collections import namedtuple
 
-from aioxmpp import JID
+from slixmpp import JID
 
 from spade.message import Message
 from spade.trace import TraceStore, _agent_in_msg
@@ -10,17 +10,17 @@ from spade.trace import TraceStore, _agent_in_msg
 
 def test_agent_in_msg_sender():
     msg = Message(sender="agent@server")
-    assert _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_agent_in_msg_to():
     msg = Message(to="agent@server")
-    assert _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_agent_in_msg_false():
     msg = Message(to="agent2@server")
-    assert not _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert not _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_init():

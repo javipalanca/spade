@@ -2,8 +2,9 @@ import asyncio
 import datetime
 from unittest.mock import AsyncMock, Mock, MagicMock
 
-import aioxmpp
 import pytest
+
+from slixmpp import JID
 
 from spade.agent import Agent
 from spade.behaviour import (
@@ -302,7 +303,7 @@ async def test_send_message(message):
     assert agent2.dispatch.assert_called
     msg_arg = agent2.dispatch.call_args[0][0]
     assert msg_arg.body == "message body"
-    assert msg_arg.to == aioxmpp.JID.fromstr("to@localhost")
+    assert msg_arg.to == JID("to@localhost")
     assert msg_arg.thread == "thread-id"
 
     await agent.stop()
@@ -311,7 +312,7 @@ async def test_send_message(message):
 
 async def test_send_message_to_external_agent():
     message = Message(
-        to="to@external_xmpp.com",
+        to="to@external.xmpp.com",
         sender="sender@localhost",
         body="message body",
         thread="thread-id",
@@ -326,7 +327,6 @@ async def test_send_message_to_external_agent():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client = MagicMock()
     agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -335,14 +335,14 @@ async def test_send_message_to_external_agent():
 
     assert agent.client.send.await_count == 1
     msg_arg = agent.client.send.await_args[0][0]
-    assert msg_arg.body[None] == "message body"
-    assert msg_arg.to == aioxmpp.JID.fromstr("to@external_xmpp.com")
+    assert msg_arg['body'] == "message body"
+    assert msg_arg['to'] == JID("to@external.xmpp.com")
     thread_found = False
-    for data in msg_arg.xep0004_data:
-        if data.title == SPADE_X_METADATA:
-            for field in data.fields:
-                if field.var == "_thread_node":
-                    assert field.values[0] == "thread-id"
+    for data in [pl for pl in msg_arg.get_payload() if pl.tag == '{jabber:x:data}x']:
+        if data.find('{jabber:x:data}title').text == SPADE_X_METADATA:
+            for field in data.findall('{jabber:x:data}field'):
+                if field.attrib['var'] == "_thread_node":
+                    assert field.find('{jabber:x:data}value').text == "thread-id"
                     thread_found = True
     assert thread_found
 
@@ -359,7 +359,6 @@ async def test_send_message_without_sender():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client = MagicMock()
     agent.client.send = AsyncMock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
@@ -367,7 +366,7 @@ async def test_send_message_without_sender():
     await behaviour.join()
 
     msg_arg = agent.client.send.await_args[0][0]
-    assert msg_arg.from_ == aioxmpp.JID.fromstr("fake@jid")
+    assert msg_arg['from'] == JID("fake@jid")
 
     await agent.stop()
 
