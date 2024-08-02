@@ -163,7 +163,7 @@ class PresenceManager(object):
         """
         for jid, item in dict(self.client.client_roster).items():
             try:
-                self._contacts[JID(jid).bare].update(item.__getstate__()['_state'])
+                self._contacts[JID(jid).bare].update(item._state)
             except KeyError:
                 self._contacts[JID(jid).bare] = item
 
