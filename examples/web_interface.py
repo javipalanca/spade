@@ -32,11 +32,16 @@ class WebAgent(agent.Agent):
             await asyncio.sleep(1)
 
     class DummyFSMBehav(behaviour.FSMBehaviour):
+        async def on_start(self) -> None:
+            print(f"FSM starting at initial state {self.current_state}")
+        async def on_end(self) -> None:
+            print(f"FSM finished at state {self.current_state}")
         def setup(self):
             class S(State):
                 async def run(self):
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(100)
 
+            print("Preparing FSM")
             self.add_state("S 1", S(), initial=True)
             self.add_state("S 2", S())
             self.add_state("S 3", S())
@@ -48,6 +53,7 @@ class WebAgent(agent.Agent):
             self.add_transition("S 3", "S 5")
             self.add_transition("S 2", "S 4")
             self.add_transition("S 4", "S 5")
+            print("FSM prepared")
 
     async def setup(self):
         self.web.start(templates_path="examples")
@@ -64,6 +70,7 @@ class WebAgent(agent.Agent):
         timeoutbehav = self.DummyTimeoutBehav(start_at=datetime.datetime.now())
         self.add_behaviour(timeoutbehav, template=template3)
         fsm_behav = self.DummyFSMBehav()
+        fsm_behav.setup()
         self.add_behaviour(fsm_behav, template=template4)
         behavs = [dummybehav, periodbehav, timeoutbehav, fsm_behav]
 
