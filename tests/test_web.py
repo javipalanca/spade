@@ -4,15 +4,15 @@ from unittest.mock import AsyncMock, Mock, MagicMock
 import requests
 from aiohttp import web
 from aiohttp_jinja2 import get_env
-from aioxmpp import JID, PresenceType
-from aioxmpp.roster import Item
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from parsel import Selector
+from slixmpp import JID
 from testfixtures import LogCapture
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
+from spade.presence import PresenceType
 from .factories import MockedAgentFactory, MockedPresenceAgentFactory
 
 
@@ -55,10 +55,33 @@ async def test_default_template_path():
     await agent.stop()
 
 
-async def test_add_template_path():
+async def test_add_template_path_init():
     agent = Agent("jid@server", "password")
 
     agent.web.start(templates_path="/tmp/spade")
+
+    env = get_env(agent.web.app)
+    loader = env.loader
+
+    assert type(loader) == ChoiceLoader
+    assert len(loader.loaders) == 3
+    assert type(loader.loaders[0]) == FileSystemLoader
+    assert type(loader.loaders[1]) == PackageLoader
+    assert type(loader.loaders[2]) == FileSystemLoader
+
+    filesystem_loader = loader.loaders[0]
+
+    assert filesystem_loader.list_templates() == []
+    assert filesystem_loader.searchpath == ["/tmp/spade"]
+
+    await agent.stop()
+
+
+async def test_add_template_path():
+    agent = Agent("jid@server", "password")
+
+    agent.web.start()
+    agent.web.add_template_path(templates_path="/tmp/spade")
 
     env = get_env(agent.web.app)
     loader = env.loader
@@ -193,9 +216,7 @@ async def test_get_agent(aiohttp_client):
     client = await aiohttp_client(agent.web.app)
 
     jid = "friend@server"
-    item = Item(jid=JID.fromstr(jid))
-
-    agent.presence.roster._update_entry(item)
+    agent.client.update_roster(jid=jid)
 
     response = await client.get(f"/spade/agent/{jid}/")
     response = await response.text()
@@ -211,26 +232,25 @@ async def test_unsubscribe_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client.enqueue = Mock()
+    agent.client.send_presence_subscription = Mock()
 
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 
     jid = "friend@server"
-    jid_ = JID.fromstr(jid)
-    item = Item(jid=jid_)
+    jid_ = JID(jid)
 
-    agent.presence.roster._update_entry(item)
+    agent.client.update_roster(jid=jid_)
 
     response = await client.get(f"/spade/agent/{jid}/unsubscribe/")
 
     assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
-    assert agent.client.enqueue.mock_calls
-    arg = agent.client.enqueue.call_args[0][0]
+    assert agent.client.send_presence_subscription.mock_calls
+    arg = agent.client.send_presence_subscription.call_args[1]
 
-    assert arg.to == jid_.bare()
-    assert arg.type_ == PresenceType.UNSUBSCRIBE
+    assert arg['pto'] == jid_.bare
+    assert arg['ptype'] == PresenceType.UNSUBSCRIBE.value
 
     await agent.stop()
 
@@ -244,14 +264,15 @@ async def test_send_agent(aiohttp_client):
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 
-    jid = "friend@server"
-    item = Item(jid=JID.fromstr(jid))
-    agent.presence.roster._update_entry(item)
+    jid = JID("friend@server")
+
+    agent.client.update_roster(jid=jid)
 
     msg = "Hello World"
 
     response = await client.post(f"/spade/agent/{jid}/send/", data={"message": msg})
 
+    assert response.status == 200
     assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
     sent = agent.traces.all()[0]

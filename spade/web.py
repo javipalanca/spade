@@ -8,10 +8,11 @@ import jinja2
 import timeago
 from aiohttp import web as aioweb
 from aiohttp.web_runner import AppRunner
-from aioxmpp import PresenceType, JID
+from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
+from .presence import PresenceType
 
 logger = logging.getLogger("spade.Web")
 
@@ -85,6 +86,10 @@ class WebApp(object):
         return self.agent.submit(
             start_server_in_loop(self.runner, self.hostname, self.port, self.agent)
         )
+
+    def add_template_path(self, templates_path):
+        self.loaders.insert(0, jinja2.FileSystemLoader(templates_path))
+        self._set_loaders()
 
     def is_started(self) -> bool:
         return self.runner is not None
@@ -220,11 +225,11 @@ class WebApp(object):
         contacts = [
             {
                 "jid": jid,
-                "avatar": self.agent.build_avatar_url(jid.bare()),
-                "available": c["presence"].type_ == PresenceType.AVAILABLE
+                "avatar": self.agent.build_avatar_url(jid.bare),
+                "available": c["presence"]['type'] == PresenceType.AVAILABLE
                 if "presence" in c.keys()
                 else False,
-                "show": str(c["presence"].show).split(".")[1]
+                "show": str(c["presence"].get_type()).split(".")[1]
                 if "presence" in c.keys()
                 else None,
             }
@@ -268,10 +273,10 @@ class WebApp(object):
         agent_messages = [
             (self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)
         ]
-        c = self.agent.presence.get_contact(JID.fromstr(agent_jid))
+        c = self.agent.presence.get_contact(JID(agent_jid))
         contact = {
-            "show": str(c["presence"].show).split(".")[1]
-            if "presence" in c.keys()
+            "show": str(c["presence"].get_type())
+            if "presence" in c._state.keys()
             else None
         }
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
@@ -287,8 +292,8 @@ class WebApp(object):
         body = form["message"]
         logger.info("Sending message to {}: {}".format(agent_jid, body))
         msg = Message(to=agent_jid, sender=str(self.agent.jid), body=body)
-        aioxmpp_msg = msg.prepare()
-        await self.agent.stream.send(aioxmpp_msg)
+        slixmpp_msg = msg.prepare()
+        self.agent.client.send(slixmpp_msg)
         msg.sent = True
         self.agent.traces.append(msg)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))

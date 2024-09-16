@@ -1,7 +1,7 @@
 import asyncio
 
 import pytest
-from aioxmpp import JID
+from slixmpp import JID
 
 from spade.container import Container
 from spade.message import Message
@@ -9,7 +9,7 @@ from spade.message import Message
 
 @pytest.fixture
 def jid():
-    return JID.fromstr("friend@localhost/home")
+    return JID("friend@localhost/home")
 
 
 @pytest.fixture

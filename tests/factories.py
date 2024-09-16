@@ -1,8 +1,8 @@
 import factory
-from aioxmpp import PresenceShow, PresenceState
 from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
+from spade.presence import PresenceShow
 
 
 class MockedConnectedAgent(Agent):
@@ -10,8 +10,6 @@ class MockedConnectedAgent(Agent):
         super().__init__(*args, **kwargs)
         self._async_connect = AsyncMock()
         self._async_register = AsyncMock()
-        self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = AsyncMock()
         self.stream = Mock()
 
 
@@ -25,14 +23,12 @@ class MockedAgentFactory(factory.Factory):
 
 class MockedPresenceConnectedAgent(Agent):
     def __init__(
-        self, available=None, show=None, status=None, priority=0, *args, **kwargs
+        self, available=None, show=PresenceShow.NONE, status=None, priority=0, *args, **kwargs
     ):
         super().__init__(*args, **kwargs)
         if status is None:
             status = {}
         self._async_connect = AsyncMock()
-        self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = AsyncMock()
 
         self.available = available
         self.show = show
@@ -40,10 +36,9 @@ class MockedPresenceConnectedAgent(Agent):
         self.priority = priority
 
     def mock_presence(self):
-        show = self.show if self.show is not None else PresenceShow.NONE
-        available = self.available if self.available is not None else False
-        state = PresenceState(available, show)
-        self.presence.presenceserver.set_presence(state, self.status, self.priority)
+        show = self.show if self.show is not None else None
+        self.presence.set_available()
+        self.presence.set_presence(show, self.status, self.priority)
 
 
 class MockedPresenceAgentFactory(factory.Factory):

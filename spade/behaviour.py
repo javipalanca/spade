@@ -338,8 +338,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.agent.traces.append(msg, category=str(self))
 
     async def _xmpp_send(self, msg: Message) -> None:
-        aioxmpp_msg = msg.prepare()
-        await self.agent.client.send(aioxmpp_msg)
+        slixmpp_msg = msg.prepare()
+        await self.agent.client.send(slixmpp_msg)
 
     async def receive(self, timeout: Optional[float] = None) -> Optional[Message]:
         """
