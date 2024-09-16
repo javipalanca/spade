@@ -309,7 +309,9 @@ async def test_find_behaviour_fail():
 
 async def test_add_get(aiohttp_client):
     agent = MockedAgentFactory()
-    agent.web.add_get("/test", lambda request: {"number": 42}, "tests/hello.html")
+    async def controller(request):
+        return {"number": 42}
+    agent.web.add_get("/test", controller, "tests/hello.html")
 
     await agent.start(auto_register=False)
 

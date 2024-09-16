@@ -2,6 +2,13 @@
 History
 =======
 
+3.3.3 (2024-09-05)
+------------------
+
+* Added support to Python 3.11 and 3.12
+* Upgraded aiohttp to 3.10.5.
+* Fixed viz.js CDN
+
 3.3.2 (2023-09-18)
 ------------------
 
