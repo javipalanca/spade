@@ -1,5 +1,5 @@
 import getpass
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import spade
 from spade.agent import Agent
@@ -29,8 +29,8 @@ class PeriodicSenderAgent(Agent):
             self.counter = 0
 
     async def setup(self):
-        print(f"PeriodicSenderAgent started at {datetime.datetime.now().time()}")
-        start_at = datetime.datetime.now() + datetime.timedelta(seconds=5)
+        print(f"PeriodicSenderAgent started at {datetime.now().time()}")
+        start_at = datetime.now() + timedelta(seconds=5)
         b = self.InformBehav(period=2, start_at=start_at)
         self.add_behaviour(b)
 

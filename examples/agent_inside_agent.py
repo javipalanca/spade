@@ -1,6 +1,6 @@
 import getpass
 
-from aioxmpp import JID
+from slixmpp import JID
 
 import spade
 from spade.agent import Agent
@@ -24,7 +24,7 @@ async def main():
     passwd = getpass.getpass()
     agent1 = AgentExample(jid, passwd)
     behav = CreateBehav()
-    behav.server = JID.fromstr(jid).domain
+    behav.server = JID(jid).domain
     agent1.add_behaviour(behav)
     # This start is in a synchronous piece of code, so it must NOT be awaited
     await agent1.start(auto_register=True)
