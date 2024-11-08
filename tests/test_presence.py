@@ -1,22 +1,20 @@
 from unittest.mock import Mock
-
 import pytest
-import slixmpp.roster
-
-from spade.presence import ContactNotFound, PresenceShow, PresenceType
-from .factories import MockedPresenceAgentFactory
-
 from slixmpp.stanza import Presence
 from slixmpp import JID
+
+from spade.presence import ContactNotFound, PresenceShow, PresenceType, Contact
+from .factories import MockedPresenceAgentFactory
+
 
 async def test_get_state_not_available():
     agent = MockedPresenceAgentFactory(available=False, show=PresenceShow.NONE)
 
     await agent.start(auto_register=False)
 
-    assert agent.presence.current_available is None
-    assert agent.presence.current_status is None
-    assert agent.presence.current_show is PresenceShow.NONE
+    assert agent.presence.is_available() is False
+    assert agent.presence. get_status() is None
+    assert agent.presence.get_show() is PresenceShow.NONE
 
 
 async def test_get_state_available():
@@ -26,15 +24,15 @@ async def test_get_state_available():
 
     agent.mock_presence()
 
-    assert agent.presence.current_available
+    assert agent.presence.is_available() is True
 
 
-async def test_set_available():
+async def test_set_presence_available():
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
-    agent.presence.set_available()
+    agent.presence.set_presence(PresenceType.AVAILABLE)
 
     assert agent.presence.is_available()
 
@@ -44,10 +42,10 @@ async def test_set_available_with_show():
 
     await agent.start(auto_register=False)
 
-    agent.presence.set_available(show=PresenceShow.CHAT)
+    agent.presence.set_presence(PresenceType.AVAILABLE, show=PresenceShow.CHAT)
 
     assert agent.presence.is_available()
-    assert agent.presence.current_show == PresenceShow.CHAT
+    assert agent.presence.get_show() == PresenceShow.CHAT
 
 
 async def test_set_unavailable():
@@ -57,7 +55,7 @@ async def test_set_unavailable():
 
     agent.presence.set_unavailable()
 
-    assert not agent.presence.is_available()
+    assert agent.presence.is_available() is False
 
 
 async def test_get_state_show():
@@ -67,17 +65,17 @@ async def test_get_state_show():
 
     agent.mock_presence()
 
-    assert agent.presence.current_show == PresenceShow.AWAY
+    assert agent.presence.get_show() == PresenceShow.AWAY
 
 
 async def test_get_status_empty():
-    agent = MockedPresenceAgentFactory(status={})
+    agent = MockedPresenceAgentFactory(status="")
 
     await agent.start(auto_register=False)
 
     agent.mock_presence()
 
-    assert agent.presence.status == {}
+    assert agent.presence.get_status() == ""
 
 
 async def test_get_status_string():
@@ -87,17 +85,17 @@ async def test_get_status_string():
 
     agent.mock_presence()
 
-    assert agent.presence.status == {None: "Working"}
+    assert agent.presence.get_status() == "Working"
 
 
 async def test_get_status_dict():
-    agent = MockedPresenceAgentFactory(status={"en": "Working"})
+    agent = MockedPresenceAgentFactory(status="Working")
 
     await agent.start(auto_register=False)
 
     agent.mock_presence()
 
-    assert agent.presence.status == {"en": "Working"}
+    assert agent.presence.get_status() == "Working"
 
 
 async def test_get_priority_default():
@@ -107,7 +105,7 @@ async def test_get_priority_default():
 
     agent.mock_presence()
 
-    assert agent.presence.priority == 0
+    assert agent.presence.get_priority() == 0
 
 
 async def test_get_priority():
@@ -117,17 +115,7 @@ async def test_get_priority():
 
     agent.mock_presence()
 
-    assert agent.presence.priority == 10
-
-
-async def test_set_presence_available():
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.presence.set_available()
-
-    assert agent.presence.is_available()
+    assert agent.presence.get_priority() == 10
 
 
 async def test_set_presence_unavailable():
@@ -137,7 +125,7 @@ async def test_set_presence_unavailable():
 
     agent.presence.set_unavailable()
 
-    assert not agent.presence.is_available()
+    assert agent.presence.is_available() is False
 
 
 async def test_set_presence_status():
@@ -147,17 +135,7 @@ async def test_set_presence_status():
 
     agent.presence.set_presence(status="Lunch")
 
-    assert agent.presence.status == {None: "Lunch"}
-
-
-async def test_set_presence_status_dict():
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.presence.set_presence(status={"en": "Lunch"})
-
-    assert agent.presence.status == {"en": "Lunch"}
+    assert agent.presence.get_status() == "Lunch"
 
 
 async def test_set_presence_priority():
@@ -167,7 +145,7 @@ async def test_set_presence_priority():
 
     agent.presence.set_presence(priority=5)
 
-    assert agent.presence.priority == 5
+    assert agent.presence.get_priority() == 5
 
 
 async def test_set_presence():
@@ -175,13 +153,12 @@ async def test_set_presence():
 
     await agent.start(auto_register=False)
 
-    agent.presence.set_available()
-    agent.presence.set_presence(show=PresenceShow.NONE, status="Lunch", priority=2)
+    agent.presence.set_presence(show=PresenceShow.AWAY, status="Lunch", priority=2)
 
     assert agent.presence.is_available()
-    assert agent.presence.current_show == PresenceShow.NONE
-    assert agent.presence.status == {None: "Lunch"}
-    assert agent.presence.priority == 2
+    assert agent.presence.get_show() == PresenceShow.AWAY
+    assert agent.presence.get_status() == "Lunch"
+    assert agent.presence.get_priority() == 2
 
 
 async def test_get_contacts_empty():
@@ -192,124 +169,113 @@ async def test_get_contacts_empty():
     assert agent.presence.get_contacts() == {}
 
 
-async def test_get_contacts(jid):
+async def test_get_contacts(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
-    agent.client.update_roster(
-        jid=jid,
-        name="My Friend"
-    )
+    #Create presence stanza for jid and name="My Friend"
+    stanza = Presence()
+    stanza["from"] = jid
+    stanza["type"] = PresenceType.AVAILABLE.value
+    stanza.name = "My Friend"
+    print(dir(stanza))
+    print(str(stanza.get_stanza_values()))
+
+    agent.presence.handle_presence(stanza)
 
     contacts = agent.presence.get_contacts()
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == slixmpp.roster.RosterItem
-    assert contacts[bare_jid]["name"] == "My Friend"
-    assert contacts[bare_jid]["subscription"] == "none"
-    assert contacts[bare_jid]['pending_out'] is False
-    assert not contacts[bare_jid]['groups']
+    assert type(contacts[bare_jid]) == Contact
+    assert contacts[bare_jid].name == "My Friend"
+    assert contacts[bare_jid].subscription == "none"
+    assert contacts[bare_jid].groups == []
+    assert contacts[bare_jid].ask == "none"
+    assert hasattr(contacts[bare_jid], "resources")
+    assert isinstance(contacts[bare_jid].resources, dict)
 
 
-async def test_get_contacts_with_presence(jid):
+async def test_get_contacts_with_update(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
-    agent.client.update_roster(
-        jid=jid,
-        name="My Available Friend"
-    )
+    agent.client.update_roster(jid=jid, name="My Friend")
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.SUBSCRIBE.value
+    stanza["from"] = jid
+    stanza.set_show(PresenceShow.CHAT.value)
+    stanza["status"] = "Just Chatting"
+    stanza.set_priority(2)
 
-    agent.client.event("presence_subscribe", stanza)
+    agent.presence._update_roster_with_presence(stanza)
 
     contacts = agent.presence.get_contacts()
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert contacts[bare_jid]["name"] == "My Available Friend"
+    assert type(contacts[bare_jid]) == Contact
+    assert contacts[bare_jid].name == "My Friend"
+    assert contacts[bare_jid].subscription == "none"
+    assert contacts[bare_jid].groups == []
+    assert contacts[bare_jid].ask == SubscriptionAsk.NONE
+    assert hasattr(contacts[bare_jid], "resources")
+    assert isinstance(contacts[bare_jid].resources, dict)
+    assert contacts[bare_jid].resources[jid.resource].type == PresenceShow.CHAT.value
+    assert contacts[bare_jid].resources[jid.resource].show == PresenceShow.CHAT
+    assert contacts[bare_jid].resources[jid.resource].status is "Just Chatting"
+    assert contacts[bare_jid].resources[jid.resource].priority == 2
 
-
-async def test_get_contacts_with_presence_on_and_off(jid):
+async def test_get_contacts_with_update_unavailable(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
-    agent.client.update_roster(
-        jid=jid,
-        name="My Friend"
-    )
+    agent.client.update_roster(jid=jid, name="My Friend")
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.AVAILABLE.value
+    stanza["from"] = jid
+    stanza.set_type(PresenceType.UNAVAILABLE.value)
 
-    agent.client.event("presence_available", stanza)
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = 'unavailable'
-
-    agent.client.event("presence_unavailable", stanza)
+    agent.presence._update_roster_with_presence(stanza)
 
     contacts = agent.presence.get_contacts()
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert contacts[bare_jid]["name"] == "My Friend"
-    assert contacts[bare_jid]["presence"].get_type() == 'unavailable'
+    assert type(contacts[bare_jid]) == Contact
+    assert contacts[bare_jid].name == "My Friend"
+    assert contacts[bare_jid].subscription == "none"
+    assert contacts[bare_jid].groups == []
+    assert contacts[bare_jid].ask == SubscriptionAsk.NONE
+    assert hasattr(contacts[bare_jid], "resources")
+    assert isinstance(contacts[bare_jid].resources, dict)
+    print(stanza)
+    print(contacts[bare_jid].resources[jid.resource])
+    assert contacts[bare_jid].resources[jid.resource].type == PresenceType.UNAVAILABLE.value
+    assert contacts[bare_jid].resources[jid.resource].show == PresenceShow.NONE
+    assert contacts[bare_jid].resources[jid.resource].status is ""
+    assert contacts[bare_jid].resources[jid.resource].priority == 0
 
 
-async def test_get_contacts_with_presence_unavailable(jid):
+async def test_get_contact(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
-    agent.client.update_roster(
-        jid=jid,
-        name="My UnAvailable Friend"
-    )
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = 'unavailable'
-
-    agent.client.event("presence_unavailable", stanza)
-
-    contacts = agent.presence.get_contacts()
-
-    bare_jid = jid.bare
-    assert bare_jid in contacts
-    assert contacts[bare_jid]["name"] == "My UnAvailable Friend"
-    assert contacts[bare_jid]["presence"].get_type() == 'unavailable'
-
-
-async def test_get_contact(jid):
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.client.update_roster(
-        jid=jid,
-        name="My Friend"
-    )
-    agent.client.client_roster[jid.bare]['whitelisted'] = True
-    agent.client.client_roster[jid.bare].save()
+    agent.client.update_roster(jid=jid, name="My Friend")
 
     contact = agent.presence.get_contact(jid)
 
-    assert type(contact) == slixmpp.roster.RosterItem
-    assert contact["name"] == "My Friend"
-    assert contact["subscription"] == "none"
-    assert contact["whitelisted"] == True
-    assert contact['pending_out'] is False
-    assert len(contact['groups']) == 0
+    assert type(contact) == Contact
+    assert contact.name == "My Friend"
+    assert contact.subscription == "none"
+    assert len(contact.groups) == 0
+    assert contact.ask == SubscriptionAsk.NONE
+    assert hasattr(contact, "resources")
+    assert isinstance(contact.resources, dict)
 
 
 async def test_get_invalid_jid_contact():
@@ -330,55 +296,52 @@ async def test_get_invalid_str_contact():
         agent.presence.get_contact("invalid@contact")
 
 
-async def test_subscribe(jid):
-    peer_jid = str(jid)
+async def test_subscribe(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
     agent.client.send_presence_subscription = Mock()
-    agent.presence.subscribe(peer_jid)
+    agent.presence.subscribe(jid)
 
     assert agent.client.send_presence_subscription.mock_calls
     arg = agent.client.send_presence_subscription.call_args[1]
 
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.SUBSCRIBE.value
+    assert arg["pto"] == jid.bare
+    assert arg["ptype"] == "subscribe"
 
 
-async def test_unsubscribe(jid):
-    peer_jid = str(jid)
+async def test_unsubscribe(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
     agent.client.send_presence_subscription = Mock()
-    agent.presence.unsubscribe(peer_jid)
+    agent.presence.unsubscribe(jid)
 
     assert agent.client.send_presence_subscription.mock_calls
     arg = agent.client.send_presence_subscription.call_args[1]
 
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.UNSUBSCRIBE.value
+    assert arg["pto"] == jid.bare
+    assert arg["ptype"] == "unsubscribe"
 
 
-async def test_approve(jid):
-    peer_jid = str(jid)
+async def test_approve(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
 
     agent.client.send_presence_subscription = Mock()
-    agent.presence.approve(peer_jid)
+    agent.presence.approve(jid)
 
     assert agent.client.send_presence_subscription.mock_calls
     arg = agent.client.send_presence_subscription.call_args[1]
 
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.SUBSCRIBED.value
+    assert arg["pto"] == jid.bare
+    assert arg["ptype"] == "subscribed"
 
 
-async def test_on_available(jid):
+async def test_on_available(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
@@ -386,8 +349,8 @@ async def test_on_available(jid):
     agent.presence.on_available = Mock()
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.AVAILABLE.value
+    stanza["from"] = jid
+    stanza["type"] = PresenceType.AVAILABLE.value
 
     agent.client.event("presence_available", stanza)
 
@@ -397,10 +360,10 @@ async def test_on_available(jid):
     stanza_arg = agent.presence.on_available.call_args[0][1]
 
     assert jid_arg == str(jid)
-    assert stanza_arg['type'] == PresenceType.AVAILABLE.value
+    assert stanza_arg["type"] == PresenceType.AVAILABLE.value
 
 
-async def test_on_unavailable(jid):
+async def test_on_unavailable(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
@@ -408,8 +371,8 @@ async def test_on_unavailable(jid):
     agent.presence.on_unavailable = Mock()
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = 'unavailable'
+    stanza["from"] = jid
+    stanza["type"] = "unavailable"
 
     agent.client.event("presence_unavailable", stanza)
 
@@ -419,10 +382,41 @@ async def test_on_unavailable(jid):
     stanza_arg = agent.presence.on_unavailable.call_args[0][1]
 
     assert jid_arg == str(jid)
-    assert stanza_arg['type'] == 'unavailable'
+    assert stanza_arg["type"] == "unavailable"
 
 
-async def test_on_subscribe(jid):
+async def test_on_changed_status(jid: JID):
+    agent = MockedPresenceAgentFactory()
+
+    await agent.start(auto_register=False)
+
+    # Create a presence stanza with the desired change
+    stanza = Presence()
+    stanza["from"] = jid
+    stanza["show"] = PresenceShow.CHAT.value
+
+    # Trigger the 'changed_status' event with the presence stanza
+    agent.client.event("changed_status", stanza)
+
+    # Verify that the contact in the roster has the updated presence
+    contacts = agent.presence.get_contacts()
+    bare_jid = jid.bare
+
+    # Check that the contact is in the roster and has the correct presence
+    assert bare_jid in contacts
+    contact = contacts[bare_jid]
+
+    # Verify that the contact has updated presence information
+    assert contact.resources is not None
+    assert len(contact.resources) > 0
+
+    # Get the presence information for the resource and verify the 'show' state
+    resource_presence = contact.resources.get(jid.resource)
+    assert resource_presence is not None
+    assert resource_presence.show == PresenceShow.CHAT
+
+
+async def test_on_subscribe(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
@@ -430,8 +424,8 @@ async def test_on_subscribe(jid):
     agent.presence.on_subscribe = Mock()
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.SUBSCRIBE.value
+    stanza["from"] = jid
+    stanza["type"] = PresenceType.SUBSCRIBE.value
 
     agent.client.event("presence_subscribe", stanza)
 
@@ -442,28 +436,7 @@ async def test_on_subscribe(jid):
     assert jid_arg == str(jid)
 
 
-async def test_on_subscribe_approve_all(jid):
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.presence.approve_all = True
-    agent.client.send_presence_subscription = Mock()
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.SUBSCRIBE.value
-
-    agent.client.event("presence_subscribe", stanza)
-
-    assert agent.client.send_presence_subscription.mock_calls
-    arg = agent.client.send_presence_subscription.call_args[1]
-
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.SUBSCRIBED.value
-
-
-async def test_on_subscribed(jid):
+async def test_on_subscribed(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
@@ -471,17 +444,19 @@ async def test_on_subscribed(jid):
     agent.presence.on_subscribed = Mock()
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.SUBSCRIBED.value
+    stanza["from"] = jid
+    stanza["type"] = PresenceType.SUBSCRIBED.value
 
     agent.client.event("presence_subscribed", stanza)
+
+    assert agent.presence.on_subscribed.mock_calls
 
     jid_arg = agent.presence.on_subscribed.call_args[0][0]
 
     assert jid_arg == str(jid)
 
 
-async def test_on_unsubscribe(jid):
+async def test_on_unsubscribe(jid: JID):
     agent = MockedPresenceAgentFactory()
 
     await agent.start(auto_register=False)
@@ -489,87 +464,16 @@ async def test_on_unsubscribe(jid):
     agent.presence.on_unsubscribe = Mock()
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.UNSUBSCRIBE.value
+    stanza["from"] = jid
+    stanza["type"] = PresenceType.UNSUBSCRIBE.value
 
     agent.client.event("presence_unsubscribe", stanza)
+
+    assert agent.presence.on_unsubscribe.mock_calls
 
     jid_arg = agent.presence.on_unsubscribe.call_args[0][0]
 
     assert jid_arg == str(jid)
-
-
-async def test_on_unsubscribe_approve_all(jid):
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.presence.approve_all = True
-    agent.client.send_presence_subscription = Mock()
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza['type'] = PresenceType.UNSUBSCRIBED.value
-
-    agent.client.event("presence_unsubscribe", stanza)
-
-    assert agent.client.send_presence_subscription.mock_calls
-    arg = agent.client.send_presence_subscription.call_args[1]
-
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.UNSUBSCRIBED.value
-
-
-async def test_on_unsubscribed(jid):
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.presence.on_unsubscribed = Mock()
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza.set_type(PresenceType.UNSUBSCRIBED.value)
-
-    agent.client.event("presence_unsubscribed", stanza)
-
-    jid_arg = agent.presence.on_unsubscribed.call_args[0][0]
-
-    assert jid_arg == str(jid)
-
-
-async def test_on_changed(jid):
-    agent = MockedPresenceAgentFactory()
-
-    await agent.start(auto_register=False)
-
-    agent.client.update_roster(
-        jid=jid,
-        name="My Friend"
-    )
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza.set_type(PresenceType.AVAILABLE.value)
-    stanza.set_show(PresenceShow.CHAT.value)
-
-    agent.client.event("presence_available", stanza)
-
-    contact = agent.presence.get_contact(jid)
-    assert contact["name"] == "My Friend"
-    assert contact["presence"].get_type() == PresenceShow.CHAT.value
-
-    stanza = Presence()
-    stanza['from'] = jid
-    stanza.set_type(PresenceType.AVAILABLE.value)
-    stanza.set_show(PresenceShow.AWAY.value)
-
-    agent.client.event("presence_available", stanza)
-
-    contact = agent.presence.get_contact(jid)
-
-    assert contact["name"] == "My Friend"
-    assert contact["presence"].get_type() == PresenceShow.AWAY.value
 
 
 async def test_ignore_self_presence():
@@ -577,16 +481,14 @@ async def test_ignore_self_presence():
 
     await agent.start(auto_register=False)
 
-    jid = agent.jid
+    jid_ = agent.jid
 
     stanza = Presence()
-    stanza['from'] = jid
-    stanza.set_type(PresenceType.AVAILABLE.value)
-    stanza.set_show(PresenceShow.CHAT.value)
+    stanza["from"] = jid_
+    stanza["type"] = PresenceType.AVAILABLE.value
+    stanza["show"] = PresenceShow.CHAT.value
 
     agent.client.event("presence_available", stanza)
 
     with pytest.raises(ContactNotFound):
-        agent.presence.get_contact(jid)
-
-    assert len(agent.presence.get_contacts()) == 0
+        agent.presence.get_contact(jid_)

@@ -2,7 +2,7 @@ import factory
 from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
-from spade.presence import PresenceShow
+from spade.presence import PresenceShow, PresenceType
 
 
 class MockedConnectedAgent(Agent):
@@ -36,16 +36,15 @@ class MockedPresenceConnectedAgent(Agent):
         self.priority = priority
 
     def mock_presence(self):
-        show = self.show if self.show is not None else None
-        self.presence.set_available()
-        self.presence.set_presence(show, self.status, self.priority)
+        show = self.show if self.show is not None else PresenceShow.NONE
+        self.presence.set_presence(PresenceType.AVAILABLE, show, self.status, self.priority)
 
 
 class MockedPresenceAgentFactory(factory.Factory):
     class Meta:
         model = MockedPresenceConnectedAgent
 
-    jid = "fake@jid"
+    jid = "fake@jid.com"
     password = "fake_password"
     available = None
     show = None

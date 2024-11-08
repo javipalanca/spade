@@ -1,5 +1,5 @@
 import asyncio
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock
 
 from slixmpp import JID
 
@@ -56,13 +56,13 @@ async def test_send_message_with_container():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client.send = AsyncMock()
+    agent.client.send = Mock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     await behaviour.join()
 
-    assert agent.client.send.await_count == 0
+    assert agent.client.send.call_count == 0
 
     assert fake_receiver_agent.dispatch.call_count == 1
     assert (

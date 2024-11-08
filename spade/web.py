@@ -12,7 +12,7 @@ from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
-from .presence import PresenceType
+from .presence import PresenceType, ContactNotFound
 
 logger = logging.getLogger("spade.Web")
 
@@ -225,13 +225,13 @@ class WebApp(object):
         contacts = [
             {
                 "jid": jid,
-                "avatar": self.agent.build_avatar_url(jid.bare),
-                "available": c["presence"]['type'] == PresenceType.AVAILABLE
-                if "presence" in c.keys()
-                else False,
-                "show": str(c["presence"].get_type()).split(".")[1]
-                if "presence" in c.keys()
-                else None,
+                "avatar": self.agent.build_avatar_url(jid),
+                "available": c.is_available(),
+                "show": c.get_presence().show,
+                "resources": c.resources,
+                "resource0": (list(c.resources.values())[0].show,
+                              list(c.resources.values())[0].status,
+                              list(c.resources.values())[0].priority)
             }
             for jid, c in self.agent.presence.get_contacts().items()
         ]
@@ -273,17 +273,27 @@ class WebApp(object):
         agent_messages = [
             (self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)
         ]
-        c = self.agent.presence.get_contact(JID(agent_jid))
-        contact = {
-            "show": str(c["presence"].get_type())
-            if "presence" in c._state.keys()
-            else None
-        }
+        try:
+            c = self.agent.presence.get_contact(JID(agent_jid))
+            contact = {
+                "show": str(c.get_presence().show)
+            }
+        except ContactNotFound:
+            # raise 404
+            raise aioweb.HTTPNotFound()
+
+        except Exception as e:
+            print(">>>>EXCEPTION: ", e)
+
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
 
     async def unsubscribe_agent(self, request):
-        agent_jid = request.match_info["agentjid"]
-        self.agent.presence.unsubscribe(agent_jid)
+        try:
+            agent_jid = request.match_info["agentjid"]
+            print(">>>>UNSUBSCRIBING: ", agent_jid)
+            self.agent.presence.unsubscribe(JID(agent_jid, bare=True))
+        except Exception as e:
+            print(">>>>EXCEPTION: ", e)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
     async def send_agent(self, request):

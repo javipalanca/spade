@@ -55,7 +55,7 @@ class MessageBase(object):
         msg._to = node['to']
         msg._sender = node['from']
 
-        if type(node['body']) == dict:
+        if isinstance(node['body'], dict):
             for body in node['body'].values():
                 msg.body = body
                 break

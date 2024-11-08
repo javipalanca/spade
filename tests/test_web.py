@@ -6,13 +6,13 @@ from aiohttp import web
 from aiohttp_jinja2 import get_env
 from jinja2 import ChoiceLoader, FileSystemLoader, PackageLoader
 from parsel import Selector
-from slixmpp import JID
+from slixmpp import JID, Presence
 from testfixtures import LogCapture
 
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
-from spade.presence import PresenceType
+from spade.presence import PresenceType, PresenceShow
 from .factories import MockedAgentFactory, MockedPresenceAgentFactory
 
 
@@ -209,21 +209,26 @@ async def test_kill_behaviour(aiohttp_client):
 
 
 async def test_get_agent(aiohttp_client):
-    agent = MockedPresenceAgentFactory(jid="jid@server", password="password")
+    agent = MockedPresenceAgentFactory(jid="jid@server.com/work", password="password")
     await agent.start(auto_register=False)
 
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 
-    jid = "friend@server"
-    agent.client.update_roster(jid=jid)
+    jid = JID("friend@server.com/work")
+    # Create a presence stanza with the desired change
+    stanza = Presence()
+    stanza["from"] = jid
+    stanza["show"] = PresenceShow.CHAT.value
+    # Trigger the 'changed_status' event with the presence stanza
+    agent.client.event("changed_status", stanza)
 
-    response = await client.get(f"/spade/agent/{jid}/")
+    response = await client.get(f"/spade/agent/{jid.bare}/")
     response = await response.text()
 
     sel = Selector(text=response)
 
-    assert sel.css("section.content-header > h1::text").get().strip() == jid
+    assert sel.css("section.content-header > h1::text").get().strip() == jid.bare
 
     await agent.stop()
 
@@ -243,6 +248,8 @@ async def test_unsubscribe_agent(aiohttp_client):
     agent.client.update_roster(jid=jid_)
 
     response = await client.get(f"/spade/agent/{jid}/unsubscribe/")
+
+    print(await response.text())
 
     assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 

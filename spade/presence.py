@@ -1,24 +1,20 @@
 from enum import Enum
-from typing import Dict, Optional, Union
+from typing import Dict, Optional
 
 from slixmpp import JID
 from slixmpp.stanza import Presence
 
 
 class ContactNotFound(Exception):
-    """ """
     pass
 
 
 class PresenceShow(Enum):
-    """
-    Enum that contains the possible show values to append in the presence stanzas
-    """
     EXTENDED_AWAY = 'xa'
     AWAY = 'away'
     CHAT = 'chat'
     DND = 'dnd'
-    NONE = None
+    NONE = 'none'
 
 
 class PresenceType(Enum):
@@ -32,316 +28,219 @@ class PresenceType(Enum):
     UNSUBSCRIBED = 'unsubscribed'
 
 
-class PresenceManager(object):
-    """ """
-
-    def __init__(self, agent):
-        self.agent = agent
-        self.client = agent.client
-
-        self._contacts = {}
-
-        self.approve_all = False
-
-        self.current_available: Union[bool, None] = None
-        self.current_status: Union[Dict[str, str], None] = None
-        self.current_show: PresenceShow = PresenceShow.NONE
-        self.current_priority: int = 0
-
-        self.client.add_event_handler('presence_available', self._on_available)
-        self.client.add_event_handler('presence_unavailable', self._on_unavailable)
-        self.client.add_event_handler('changed_status', self._on_changed)
-
-        self.client.add_event_handler('presence_subscribe', self._on_subscribe)
-        self.client.add_event_handler('presence_subscribed', self._on_subscribed)
-        self.client.add_event_handler('presence_unsubscribe', self._on_unsubscribe)
-        self.client.add_event_handler('presence_unsubscribed', self._on_unsubscribed)
-
-    @property
-    def available(self) -> bool:
-        """
-        Availability property. A boolean value that indicates internally
-        if a client is available or not.
-
-        :return: The availability of the client
-        """
-        return self.current_available
-
-    @property
-    def status(self) -> Union[Dict[str, str], None]:
-        """
-        State property. A human-readable string value appended to the presence stanza
-        indicating a more detailed presence state
-
-        :return: The availability of the client
-        """
-        return self.current_status
-
-    @property
-    def show(self) -> PresenceShow:
-        """
-        Show property. A more specific availability value.
-        Used internally by the client/server. Not human-readable
-
-        :return: A value of PresenceShow
-        """
-        return self.current_show
-
-    @property
-    def priority(self) -> int:
-        """
-        Priority property of the presence stanzas sent by the client
-
-        :return: An integer between the values -128 and 127
-        (range defined in the RFC 6121)
-        """
-        return self.current_priority
+class PresenceInfo:
+    def __init__(self, presence_type: PresenceType, show: PresenceShow, status: Optional[str], priority: int):
+        self.type = presence_type
+        self.show = show
+        self.status = status
+        self.priority = priority
 
     def is_available(self) -> bool:
-        """
-        :return: The availability of the client
-        """
-        return self.current_available
+        return self.type == PresenceType.AVAILABLE
 
-    def set_available(self, show: Optional[PresenceShow] = PresenceShow.NONE, status: Optional[str] = None):
-        """
-        Sets the agent availability to True.
+    def __str__(self):
+        return f"PresenceInfo(Type: {self.type}, Show: {self.show}, Status: {self.status}, Priority: {self.priority})"
 
-        Args:
-          show (spade.PresenceShow, optional): the show state of the presence (Default value = PresenceShow.NONE)
-          status (string): The human-readable status
 
-        """
-        self.current_available = True
-        self.current_show = show if show is not None else self.current_show
-        self.current_status = status if status is not None else self.current_status
+class Contact:
+    def __init__(self, jid: JID, name: str, subscription: str, ask: str, groups: list):
+        self.jid = jid
+        self.name = name
+        self.subscription = subscription
+        self.ask = ask
+        self.groups = groups
+        self.resources: Dict[str, PresenceInfo] = {}
+        self.current_presence: Optional[PresenceInfo] = None
+        self.last_presence: Optional[PresenceInfo] = None
 
-    def set_unavailable(self, show: Optional[PresenceShow] = PresenceShow.NONE, status: Optional[str] = None) -> None:
-        """Sets the agent availability to False."""
-        self.client.current_state = False
-        self.current_show = show if show is not None else self.current_show
-        self.current_status = status if status is not None else self.current_status
+    def update_presence(self, resource: str, presence_info: PresenceInfo):
+        self.resources[resource] = presence_info
+        # Update the current presence automatically based on priority
+        self.last_presence = self.current_presence
+        self.current_presence = max(self.resources.values(), key=lambda p: p.priority, default=None)
 
-    def set_presence(
-        self,
-        show: Optional[PresenceShow] = PresenceShow.NONE,
-        status: Optional[str] = None,
-        priority: Optional[int] = None,
-    ):
-        """
-        Change the presence broadcast by the client.
-        If the client is currently connected, the new presence is broadcast immediately.
+    def get_presence(self, resource: Optional[str] = None) -> PresenceInfo:
+        if resource:
+            if resource in self.resources:
+                return self.resources[resource]
+            else:
+                raise KeyError(f"Resource '{resource}' not found for contact {self.jid}.")
+        if self.current_presence:
+            return self.current_presence
+        raise ContactNotFound(f"No presence information available for contact {self.jid}.")
 
-        Args:
-          show(PresenceShow, optional): New presence state to broadcast (Default value = None)
-          status(dict or str, optional): New status information to broadcast (Default value = None)
-          priority (int, optional): New priority for the resource (Default value = None)
+    def update_subscription(self, subscription: str, ask: str):
+        self.subscription = subscription
+        self.ask = ask
 
-        """
-        if status is not None:
-            if type(status) is str:
-                self.current_status = {None: status}
-            elif type(status) is dict:
-                self.current_status = status
+    def is_available(self) -> bool:
+        return self.current_presence is not None and self.current_presence.type == PresenceType.AVAILABLE
 
-        self.current_show = show if show is not None else self.current_show
-        self.current_priority = priority if priority is not None else self.current_priority
-        self.client.send_presence(
-            pshow=show.value if show is not None else None,
-            pstatus=status,
-            ppriority=priority,
-            ptype='unavailable' if self.current_available is None or not self.current_available else None
-        )
+    def __str__(self):
+        return f"Contact(JID: {self.jid}, Name: {self.name}, Presence: {self.current_presence})"
 
-    def get_contacts(self) -> Dict[str, Dict]:
-        """
-        Returns list of contacts
 
-        Returns:
-          dict: the roster of contacts
+class PresenceManager:
+    def __init__(self, agent, approve_all: bool = False):
+        self.contacts: Dict[str, Contact] = {}
+        self.agent = agent
+        self.current_presence: Optional[PresenceInfo] = None
+        self.approve_all = approve_all
+        # Adding event handlers to handle incoming presence and subscription events
+        self.agent.client.add_event_handler("presence_available", self.handle_presence)
+        self.agent.client.add_event_handler("presence_unavailable", self.handle_presence)
+        self.agent.client.add_event_handler("presence_subscribe", self.handle_subscription)
+        self.agent.client.add_event_handler("presence_subscribed", self.handle_subscription)
+        self.agent.client.add_event_handler("presence_unsubscribe", self.handle_subscription)
+        self.agent.client.add_event_handler("presence_unsubscribed", self.handle_subscription)
 
-        """
-        for jid, item in dict(self.client.client_roster).items():
-            try:
-                self._contacts[JID(jid).bare].update(item._state)
-            except KeyError:
-                self._contacts[JID(jid).bare] = item
+    def is_available(self) -> bool:
+        return self.current_presence is not None and self.current_presence.is_available()
+    
+    def get_presence(self) -> PresenceInfo:
+        return self.current_presence
+    
+    def get_show(self) -> PresenceShow:
+        return self.current_presence.show if self.current_presence else PresenceShow.NONE
+    
+    def get_status(self) -> Optional[str]:
+        return self.current_presence.status if self.current_presence else None
 
-        return self._contacts
+    def get_priority(self) -> int:
+        return self.current_presence.priority if self.current_presence else 0      
 
-    def get_contact(self, jid: JID) -> Dict:
-        """
-        Returns a contact
+    def handle_presence(self, presence: Presence):
+        peer_jid = presence['from'].bare
+        resource = presence['from'].resource
+        presence_type = presence['type']
+        # Normalise the value of `type` if it is a show
+        if presence_type in [show.value for show in PresenceShow]:
+            presence_type = PresenceType.AVAILABLE.value
+        presence_type = PresenceType(presence_type)
+        show = PresenceShow(presence.get('show', 'none'))
+        status = presence.get('status')
+        priority = int(presence.get('priority', 0))
 
-        Args:
-          jid (JID): jid of the contact
+        name = presence.name if presence.name else peer_jid
+        presence_info = PresenceInfo(presence_type, show, status, priority)
+        if peer_jid not in self.contacts:
+            # Create a new contact if it doesn't exist
+            self.contacts[peer_jid] = Contact(jid=JID(peer_jid), name=name, subscription='', ask='', groups=[])
+        # Update the presence of the contact
+        self.contacts[peer_jid].update_presence(resource, presence_info)
+        # Call user-defined handler
+        if presence_type == PresenceType.AVAILABLE:
+            self.on_available(peer_jid, self.contacts[peer_jid].last_presence)
+        elif presence_type == PresenceType.UNAVAILABLE:
+            self.on_unavailable(peer_jid, self.contacts[peer_jid].last_presence)
 
-        Returns:
-          dict: the roster of contacts
+    def handle_subscription(self, presence: Presence):
+        peer_jid = presence['from'].bare
+        subscription_type = presence['type']
+        ask = presence.get('ask', 'none')
 
-        """
-        if type(jid) is not JID:
-            raise AttributeError("jid must be an JID")
-
-        try:
-            return self.get_contacts()[jid.bare]
-        except KeyError:
-            raise ContactNotFound
-
-    def _update_roster_with_presence(self, stanza: Presence) -> None:
-        """ """
-        if stanza['from'].bare == self.agent.jid.bare:
-            return
-        try:
-            self._contacts[stanza['from'].bare].update({"presence": stanza})
-        except KeyError:
-            self._contacts[stanza['from'].bare] = {"presence": stanza}
-
-    def subscribe(self, peer_jid: str) -> None:
-        """
-        Asks for subscription
-
-        Args:
-          peer_jid (str): the JID you ask for subscriptiion
-
-        """
-        self.client.send_presence_subscription(
-            pto=JID(peer_jid).bare,
-            ptype='subscribe'
-        )
-
-    def unsubscribe(self, peer_jid: str) -> None:
-        """
-        Asks for unsubscription
-
-        Args:
-          peer_jid (str): the JID you ask for unsubscriptiion
-
-        """
-        self.client.send_presence_subscription(
-            pto=JID(peer_jid).bare,
-            ptype='unsubscribe'
-        )
-
-    def approve(self, peer_jid: str) -> None:
-        """
-        Approve a subscription request from jid
-
-        Args:
-          peer_jid (str): the JID to approve
-
-        """
-        self.client.send_presence_subscription(
-            pto=JID(peer_jid).bare,
-            ptype='subscribed'
-        )
-
-    def _on_available(self, stanza: Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_available(str(stanza['from']), stanza)
-
-    def _on_unavailable(self, stanza: Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_unavailable(str(stanza['from']), stanza)
-
-    def _on_changed(self, stanza: Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-
-    def _on_subscribe(self, stanza: Presence) -> None:
-        """ """
-        if self.approve_all:
-            self.client.send_presence_subscription(
-                pto=JID(stanza['from'].bare).bare,
-                ptype='subscribed'
-            )
+        if peer_jid not in self.contacts:
+            # Create a new contact if it doesn't exist
+            self.contacts[peer_jid] = Contact(jid=JID(peer_jid), name=peer_jid, subscription=subscription_type, ask=ask, groups=[])
         else:
-            self.on_subscribe(str(stanza['from']))
+            # Update the subscription information
+            self.contacts[peer_jid].update_subscription(subscription_type, ask)
 
-    def _on_subscribed(self, stanza: Presence) -> None:
-        """ """
-        self.on_subscribed(str(stanza['from']))
+        # Call user-defined handler or automatically approve if approve_all is True
+        if subscription_type == "subscribe" and self.approve_all:
+            self.approve_subscription(peer_jid)
+            self.on_subscribe(peer_jid)
+        elif subscription_type == "subscribe":
+            self.on_subscribe(peer_jid)
+        elif subscription_type == "subscribed":
+            self.on_subscribed(peer_jid)
+        elif subscription_type == "unsubscribe":
+            self.on_unsubscribe(peer_jid)
+        elif subscription_type == "unsubscribed":
+            self.on_unsubscribed(peer_jid)
 
-    def _on_unsubscribe(self, stanza: Presence) -> None:
-        """ """
-        if self.approve_all:
-            self.client.send_presence_subscription(
-                pto=JID(stanza['from']).bare,
-                ptype='unsubscribed'
-            )
+    def handle_roster_update(self, iq):
+        """Se ejecuta cuando el roster es recibido o actualizado"""
+        # Get the Slixmpp RosterManager
+        roster = self.client.client_roster
+
+        # Iterate over all JIDs in the roster
+        for jid in roster.keys():
+            name = roster[jid]['name']  # Friendly name of the contact (can be None)
+            subscription = roster[jid]['subscription']  # Subscription status (none, to, from, both)
+            ask = roster[jid]['ask']  # Subscription request (can be subscribe)
+            groups = roster[jid]['groups']  # List of groups to which the contact belongs
+
+            # Storing contact information in the internal structure
+            self.contacts[jid] = {
+                'name': name,
+                'subscription': subscription,
+                'ask': ask,
+                'groups': groups,
+                'resources': {}
+            }
+
+    def get_contact_presence(self, jid: str, resource: Optional[str] = None) -> PresenceInfo:
+        if jid in self.contacts:
+            return self.contacts[jid].get_presence(resource)
         else:
-            self.on_unsubscribe(str(stanza['from']))
+            raise ContactNotFound(f"Contact with JID '{jid}' not found.")
 
-    def _on_unsubscribed(self, stanza: Presence) -> None:
-        """ """
-        self.on_unsubscribed(str(stanza['from']))
+    def get_contact(self, jid: str) -> Contact:
+        if jid in self.contacts:
+            return self.contacts[jid]
+        else:
+            raise ContactNotFound(f"Contact with JID '{jid}' not found.")
 
-    def on_subscribe(self, peer_jid: str) -> None:
-        """
-        Callback called when a subscribe query is received.
-        To be overloaded by user.
+    def get_contacts(self) -> Dict[str, Contact]:
+        return self.contacts
 
-        Args:
-          peer_jid (str): the JID of the agent asking for subscription
+    def set_presence(self, presence_type: PresenceType=PresenceType.AVAILABLE, show: PresenceShow=PresenceShow.CHAT, status: Optional[str]="", priority: int=0):
+        # This method could be used to set the presence for the local user
+        self.current_presence = PresenceInfo(presence_type, show, status, priority)
+        # Send the presence stanza to the server
+        self.agent.client.send_presence(ptype=presence_type.value, pshow=show.value, pstatus=status, ppriority=str(priority))
 
-        """
-        pass  # pragma: no cover
+    def set_unavailable(self):
+        # Method to set presence to unavailable
+        self.set_presence(PresenceType.UNAVAILABLE, PresenceShow.NONE, None, 0)
 
-    def on_subscribed(self, peer_jid: str) -> None:
-        """
-        Callback called when a subscribed message is received.
-        To be overloaded by user.
+    def subscribe(self, jid: str):
+        # Logic to send a subscription request to a contact
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(jid=JID(jid), name=jid, subscription='subscribe', ask='subscribe', groups=[])
+        # Send the subscription stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype='subscribe')
 
-        Args:
-          peer_jid (str): the JID of the agent that accepted subscription
+    def unsubscribe(self, jid: str):
+        # Logic to send an unsubscription request to a contact
+        if jid in self.contacts:
+            self.contacts[jid].update_subscription('unsubscribe', 'unsubscribe')
+        # Send the unsubscription stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype='unsubscribe')
 
-        """
-        pass  # pragma: no cover
+    def approve_subscription(self, jid: str):
+        # Logic to approve a subscription request
+        if jid in self.contacts:
+            self.contacts[jid].update_subscription('subscribed', '')
+        # Send the subscribed stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype='subscribed')
 
-    def on_unsubscribe(self, peer_jid: str) -> None:
-        """
-        Callback called when an unsubscribe query is received.
-        To be overloaded by user.
+    # User-overridable methods
+    def on_subscribe(self, peer_jid: str):
+        pass
 
-        Args:
-          peer_jid (str): the JID of the agent asking for unsubscription
+    def on_subscribed(self, peer_jid: str):
+        pass
 
-        """
-        pass  # pragma: no cover
+    def on_unsubscribe(self, peer_jid: str):
+        pass
 
-    def on_unsubscribed(self, peer_jid: str) -> None:
-        """
-        Callback called when an unsubscribed message is received.
-        To be overloaded by user.
+    def on_unsubscribed(self, peer_jid: str):
+        pass
 
-        Args:
-          peer_jid (str): the JID of the agent that unsubscribed
+    def on_available(self, peer_jid: str, last_presence: Optional[PresenceInfo]):
+        pass
 
-        """
-        pass  # pragma: no cover
-
-    def on_available(self, peer_jid: str, stanza: Presence) -> None:
-        """
-        Callback called when a contact becomes available.
-        To be overloaded by user.
-
-        Args:
-          peer_jid (str): the JID of the agent that is available
-          stanza (slixmpp.stanza.Presence): The presence message containing type, show, priority and status values.
-
-        """
-        pass  # pragma: no cover
-
-    def on_unavailable(self, peer_jid: str, stanza: Presence) -> None:
-        """
-        Callback called when a contact becomes unavailable.
-        To be overloaded by user.
-
-        Args:
-          peer_jid (str): the JID of the agent that is unavailable
-          stanza (slixmpp.stanza.Presence): The presence message containing type, show, priority and status values.
-
-        """
-        pass  # pragma: no cover
+    def on_unavailable(self, peer_jid: str, last_presence: Optional[PresenceInfo]):
+        pass
