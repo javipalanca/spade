@@ -130,8 +130,9 @@ class PresenceManager:
         return self.current_presence.priority if self.current_presence else 0      
 
     def handle_presence(self, presence: Presence):
-        peer_jid = presence['from']
-        bare_jid = peer_jid.bare
+        jid = presence['from']
+        peer_jid = str(jid)
+        bare_jid = jid.bare
         if bare_jid == self.agent.jid.bare:
             return
         resource = presence['from'].resource
@@ -230,6 +231,10 @@ class PresenceManager:
         self.current_presence = PresenceInfo(presence_type, show, status, priority)
         # Send the presence stanza to the server
         self.agent.client.send_presence(ptype=presence_type.value, pshow=show.value, pstatus=status, ppriority=str(priority))
+
+    def set_available(self):
+        # Method to set presence to available
+        self.set_presence(PresenceType.AVAILABLE)
 
     def set_unavailable(self):
         # Method to set presence to unavailable

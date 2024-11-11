@@ -469,9 +469,12 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
                 logger.debug(
                     f"Timeout behaviour going to sleep for {seconds} seconds: {self}"
                 )
+                start_time = time.monotonic()
                 await asyncio.sleep(seconds)
-                await self.run()
-                self._timeout_triggered = True
+                elapsed = time.monotonic() - start_time
+                if elapsed >= seconds:
+                    await self.run()
+                    self._timeout_triggered = True
 
     def _done(self) -> bool:
         """ """

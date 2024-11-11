@@ -113,7 +113,7 @@ class Agent(object):
             auto_register
         )
         # Presence service
-        self.presence = PresenceManager(self)
+        self.presence = PresenceManager(agent=self, approve_all=False)
 
         await self._async_connect()
 
