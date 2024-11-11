@@ -28,6 +28,9 @@ class XMPPClient(ClientXMPP):
             self.add_event_handler("register", self.register)
             self.register_plugin('xep_0077')  # In-band-registration
 
+        self.register_plugin('xep_0199')  # Ping / Keepalive connection
+        self['xep_0199'].enable_keepalive(interval=55)
+
     def session_start(self, event):
         self.send_presence()
         self.get_roster()
