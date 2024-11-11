@@ -8,6 +8,9 @@ from slixmpp.stanza import Presence
 class ContactNotFound(Exception):
     pass
 
+class PresenceNotFound(Exception):
+    pass
+
 
 class PresenceShow(Enum):
     EXTENDED_AWAY = 'xa'
@@ -82,7 +85,7 @@ class Contact:
                 raise KeyError(f"Resource '{resource}' not found for contact {self.jid}.")
         if self.current_presence:
             return self.current_presence
-        raise ContactNotFound(f"No presence information available for contact {self.jid}.")
+        raise PresenceNotFound(f"No presence information available for contact {self.jid}.")
 
     def update_subscription(self, subscription: str, ask: str):
         self.subscription = subscription

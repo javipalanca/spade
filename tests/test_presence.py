@@ -219,7 +219,7 @@ async def test_get_contacts_with_update(jid: JID, iq: Iq):
     assert isinstance(contacts[bare_jid].resources, dict)
     assert contacts[bare_jid].resources[jid.resource].type == PresenceType.AVAILABLE
     assert contacts[bare_jid].resources[jid.resource].show == PresenceShow.CHAT
-    assert contacts[bare_jid].resources[jid.resource].status is "Just Chatting"
+    assert contacts[bare_jid].resources[jid.resource].status == "Just Chatting"
     assert contacts[bare_jid].resources[jid.resource].priority == 2
 
 async def test_get_contacts_with_update_unavailable(jid: JID, iq: Iq):
@@ -491,3 +491,5 @@ async def test_ignore_self_presence():
 
     with pytest.raises(ContactNotFound):
         agent.presence.get_contact(jid_)
+
+    await agent.stop()

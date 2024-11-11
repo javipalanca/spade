@@ -221,5 +221,5 @@ async def test_update_roster(jid: JID):
     assert isinstance(contacts[bare_jid].resources, dict)
     assert contacts[bare_jid].resources[jid2.resource].type == PresenceType.AVAILABLE
     assert contacts[bare_jid].resources[jid2.resource].show == PresenceShow.CHAT
-    assert contacts[bare_jid].resources[jid2.resource].status is "Just Chatting"
+    assert contacts[bare_jid].resources[jid2.resource].status == "Just Chatting"
     assert contacts[bare_jid].resources[jid2.resource].priority == 2

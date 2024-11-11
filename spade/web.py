@@ -12,7 +12,7 @@ from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
-from .presence import PresenceType, ContactNotFound
+from .presence import PresenceType, PresenceShow, ContactNotFound, PresenceNotFound
 
 logger = logging.getLogger("spade.Web")
 
@@ -115,11 +115,11 @@ class WebApp(object):
             "/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/",
             self.kill_behaviour,
         )
-        self.app.router.add_get("/spade/agent/{agentjid}/", self.get_agent)
+        self.app.router.add_get("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/", self.get_agent)
         self.app.router.add_get(
-            "/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent
+            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/unsubscribe/", self.unsubscribe_agent
         )
-        self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
+        self.app.router.add_post("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/send/", self.send_agent)
 
     def add_menu_entry(self, name: str, url: str, icon="fa fa-circle") -> None:
         """
@@ -281,19 +281,22 @@ class WebApp(object):
         except ContactNotFound:
             # raise 404
             raise aioweb.HTTPNotFound()
+        except PresenceNotFound:
+            contact = {
+                "show": PresenceShow.NONE
+            }
 
         except Exception as e:
-            print(">>>>EXCEPTION: ", e)
+            logger.error(e)
 
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
 
     async def unsubscribe_agent(self, request):
         try:
             agent_jid = request.match_info["agentjid"]
-            print(">>>>UNSUBSCRIBING: ", agent_jid)
             self.agent.presence.unsubscribe(JID(agent_jid, bare=True))
         except Exception as e:
-            print(">>>>EXCEPTION: ", e)
+            logger.error(e)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
 
     async def send_agent(self, request):
