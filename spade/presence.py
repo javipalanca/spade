@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 from slixmpp import JID
 from slixmpp.stanza import Presence
@@ -37,9 +37,20 @@ class PresenceInfo:
 
     def is_available(self) -> bool:
         return self.type == PresenceType.AVAILABLE
+    
+    def __eq__(self, other):
+        if not isinstance(other, PresenceInfo):
+            return False
+        return self.type == other.type and self.show == other.show and self.status == other.status and self.priority == other.priority
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __str__(self):
         return f"PresenceInfo(Type: {self.type}, Show: {self.show}, Status: {self.status}, Priority: {self.priority})"
+    
+    def __repr__(self) -> str:
+        return str(self)
 
 
 class Contact:
@@ -54,10 +65,14 @@ class Contact:
         self.last_presence: Optional[PresenceInfo] = None
 
     def update_presence(self, resource: str, presence_info: PresenceInfo):
-        self.resources[resource] = presence_info
         # Update the current presence automatically based on priority
-        self.last_presence = self.current_presence
-        self.current_presence = max(self.resources.values(), key=lambda p: p.priority, default=None)
+        if presence_info == self.resources.get(resource):
+            return
+        self.resources[resource] = presence_info
+        new_presence = max(self.resources.values(), key=lambda p: p.priority, default=None)
+        if new_presence != self.current_presence:
+            self.last_presence = self.current_presence
+            self.current_presence = new_presence
 
     def get_presence(self, resource: Optional[str] = None) -> PresenceInfo:
         if resource:
@@ -89,10 +104,12 @@ class PresenceManager:
         # Adding event handlers to handle incoming presence and subscription events
         self.agent.client.add_event_handler("presence_available", self.handle_presence)
         self.agent.client.add_event_handler("presence_unavailable", self.handle_presence)
+        self.agent.client.add_event_handler("changed_status", self.handle_presence)
         self.agent.client.add_event_handler("presence_subscribe", self.handle_subscription)
         self.agent.client.add_event_handler("presence_subscribed", self.handle_subscription)
         self.agent.client.add_event_handler("presence_unsubscribe", self.handle_subscription)
         self.agent.client.add_event_handler("presence_unsubscribed", self.handle_subscription)
+        self.agent.client.add_event_handler("roster_update", self.handle_roster_update)
 
     def is_available(self) -> bool:
         return self.current_presence is not None and self.current_presence.is_available()
@@ -110,12 +127,15 @@ class PresenceManager:
         return self.current_presence.priority if self.current_presence else 0      
 
     def handle_presence(self, presence: Presence):
-        peer_jid = presence['from'].bare
+        peer_jid = presence['from']
+        bare_jid = peer_jid.bare
+        if bare_jid == self.agent.jid.bare:
+            return
         resource = presence['from'].resource
         presence_type = presence['type']
         # Normalise the value of `type` if it is a show
         if presence_type in [show.value for show in PresenceShow]:
-            presence_type = PresenceType.AVAILABLE.value
+            presence_type = PresenceType.AVAILABLE
         presence_type = PresenceType(presence_type)
         show = PresenceShow(presence.get('show', 'none'))
         status = presence.get('status')
@@ -123,16 +143,16 @@ class PresenceManager:
 
         name = presence.name if presence.name else peer_jid
         presence_info = PresenceInfo(presence_type, show, status, priority)
-        if peer_jid not in self.contacts:
+        if bare_jid not in self.contacts:
             # Create a new contact if it doesn't exist
-            self.contacts[peer_jid] = Contact(jid=JID(peer_jid), name=name, subscription='', ask='', groups=[])
+            self.contacts[bare_jid] = Contact(jid=JID(peer_jid), name=name, subscription='', ask='', groups=[])
         # Update the presence of the contact
-        self.contacts[peer_jid].update_presence(resource, presence_info)
+        self.contacts[bare_jid].update_presence(resource, presence_info)
         # Call user-defined handler
         if presence_type == PresenceType.AVAILABLE:
-            self.on_available(peer_jid, self.contacts[peer_jid].last_presence)
+            self.on_available(peer_jid, presence_info, self.contacts[bare_jid].last_presence)
         elif presence_type == PresenceType.UNAVAILABLE:
-            self.on_unavailable(peer_jid, self.contacts[peer_jid].last_presence)
+            self.on_unavailable(peer_jid, presence_info, self.contacts[bare_jid].last_presence)
 
     def handle_subscription(self, presence: Presence):
         peer_jid = presence['from'].bare
@@ -159,34 +179,41 @@ class PresenceManager:
         elif subscription_type == "unsubscribed":
             self.on_unsubscribed(peer_jid)
 
-    def handle_roster_update(self, iq):
-        """Se ejecuta cuando el roster es recibido o actualizado"""
-        # Get the Slixmpp RosterManager
-        roster = self.client.client_roster
+    def handle_roster_update(self, event):
+        """Executed when the roster is received or updated."""
 
-        # Iterate over all JIDs in the roster
-        for jid in roster.keys():
-            name = roster[jid]['name']  # Friendly name of the contact (can be None)
-            subscription = roster[jid]['subscription']  # Subscription status (none, to, from, both)
-            ask = roster[jid]['ask']  # Subscription request (can be subscribe)
-            groups = roster[jid]['groups']  # List of groups to which the contact belongs
+        roster = event['roster']
+        for item in roster:
+            bare_jid = item.get_jid().bare
+            name = item.get('name', bare_jid)
+            subscription = item.get('subscription', "none")
+            ask = item.get('ask', "none")
+            groups = item.get_groups()
 
             # Storing contact information in the internal structure
-            self.contacts[jid] = {
-                'name': name,
-                'subscription': subscription,
-                'ask': ask,
-                'groups': groups,
-                'resources': {}
-            }
+            if bare_jid not in self.contacts:
+                self.contacts[bare_jid] = Contact(jid=bare_jid, name=name, subscription=subscription, ask=ask, groups=groups)
+            else:
+                self.contacts[bare_jid].name = name
+                self.contacts[bare_jid].subscription = subscription
+                self.contacts[bare_jid].ask = ask
+                self.contacts[bare_jid].groups = groups
 
-    def get_contact_presence(self, jid: str, resource: Optional[str] = None) -> PresenceInfo:
+    def get_contact_presence(self, jid: Union[str, JID], resource: Optional[str] = None) -> PresenceInfo:
+        if isinstance(jid, JID):
+            jid = jid.bare
+        else:
+            jid = JID(jid).bare
         if jid in self.contacts:
             return self.contacts[jid].get_presence(resource)
         else:
             raise ContactNotFound(f"Contact with JID '{jid}' not found.")
 
-    def get_contact(self, jid: str) -> Contact:
+    def get_contact(self, jid: Union[str, JID]) -> Contact:
+        if isinstance(jid, JID):
+            jid = jid.bare
+        else:
+            jid = JID(jid).bare
         if jid in self.contacts:
             return self.contacts[jid]
         else:
@@ -239,8 +266,8 @@ class PresenceManager:
     def on_unsubscribed(self, peer_jid: str):
         pass
 
-    def on_available(self, peer_jid: str, last_presence: Optional[PresenceInfo]):
+    def on_available(self, peer_jid: str, presence_info: PresenceInfo, last_presence: Optional[PresenceInfo]):
         pass
 
-    def on_unavailable(self, peer_jid: str, last_presence: Optional[PresenceInfo]):
+    def on_unavailable(self, peer_jid: str, presence_info: PresenceInfo, last_presence: Optional[PresenceInfo]):
         pass

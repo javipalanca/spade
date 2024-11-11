@@ -1,9 +1,22 @@
 import pytest
-from slixmpp import Presence
+from slixmpp import Presence, JID, Iq
+from spade.presence import Contact
 
 from .factories import MockedPresenceAgentFactory
-from spade.presence import PresenceManager, PresenceShow, PresenceType, ContactNotFound
+from spade.presence import PresenceManager, PresenceInfo, PresenceShow, PresenceType, ContactNotFound
 
+
+async def test_presence_info_equals():
+    presence1 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.CHAT, "Online", 5)
+    presence2 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.CHAT, "Online", 5)
+
+    assert presence1 == presence2
+
+async def test_presence_info_not_equals():
+    presence1 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.CHAT, "Online", 5)
+    presence2 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.AWAY, "Online", 5)
+
+    assert presence1 != presence2
 
 async def test_get_state_not_available():
     agent = MockedPresenceAgentFactory(available=False, show=PresenceShow.NONE)
@@ -142,3 +155,71 @@ async def test_contact_not_found():
 
     with pytest.raises(ContactNotFound):
         manager.get_contact("nonexistent@localhost")
+
+
+async def test_handle_roster_update(jid: JID, iq: Iq):
+    agent = MockedPresenceAgentFactory()
+
+    await agent.start(auto_register=False)
+
+    agent.presence.handle_roster_update(iq)
+
+    contacts = agent.presence.get_contacts()
+
+    bare_jid = jid.bare
+    assert bare_jid in contacts
+    assert type(contacts[bare_jid]) == Contact
+    assert contacts[bare_jid].name == "My Friend"
+    assert contacts[bare_jid].subscription == "both"
+    assert contacts[bare_jid].groups == ["Friends"]
+    assert contacts[bare_jid].ask == "none"
+    assert hasattr(contacts[bare_jid], "resources")
+    assert isinstance(contacts[bare_jid].resources, dict)
+
+
+async def test_update_roster(jid: JID):
+    agent = MockedPresenceAgentFactory()
+
+    await agent.start(auto_register=False)
+
+    agent.client.update_roster(jid=JID("johndoe@localhost"), name="My Friend")
+    
+    jid2 = JID("johndoe@localhost")
+
+    iq = agent.client.make_iq_result(ito=jid)
+    #set namespace to roster
+    iq['roster']['xmlns'] = 'jabber:iq:roster'
+    iq['type'] = 'result'
+    iq['roster']['items'] = {
+        str(jid2): {
+            'name': 'My Friend',
+            'subscription': 'none',
+            'groups': []
+        }
+    }
+
+    agent.client.event("roster_update", iq)
+
+    stanza = Presence()
+    stanza["from"] = jid2
+    stanza.set_show(PresenceShow.CHAT.value)
+    stanza["status"] = "Just Chatting"
+    stanza.set_priority(2)
+
+    agent.client.event("presence_available", stanza)
+
+    contacts = agent.presence.get_contacts()
+
+    bare_jid = jid2.bare
+    assert bare_jid in contacts
+    assert type(contacts[bare_jid]) == Contact
+    assert contacts[bare_jid].name == "My Friend"
+    assert contacts[bare_jid].subscription == "none"
+    assert contacts[bare_jid].groups == []
+    assert contacts[bare_jid].ask == "none"
+    assert hasattr(contacts[bare_jid], "resources")
+    assert isinstance(contacts[bare_jid].resources, dict)
+    assert contacts[bare_jid].resources[jid2.resource].type == PresenceType.AVAILABLE
+    assert contacts[bare_jid].resources[jid2.resource].show == PresenceShow.CHAT
+    assert contacts[bare_jid].resources[jid2.resource].status is "Just Chatting"
+    assert contacts[bare_jid].resources[jid2.resource].priority == 2

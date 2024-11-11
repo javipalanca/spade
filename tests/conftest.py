@@ -1,7 +1,7 @@
 import asyncio
 
 import pytest
-from slixmpp import JID
+from slixmpp import JID, Iq
 
 from spade.container import Container
 from spade.message import Message
@@ -31,6 +31,30 @@ def message2():
         body="message body",
         thread="thread-id",
     )
+
+@pytest.fixture
+def iq():
+    iq = Iq()
+    iq['type'] = 'result'
+    iq['id'] = '123'
+    iq["to"] = "friend@localhost/home"
+    iq['from'] = 'localhost'
+    #set namespace to roster
+    iq['roster']['xmlns'] = 'jabber:iq:roster'
+    iq['type'] = 'result'
+    iq['roster']['items'] = {
+        'friend@localhost': {
+            'name': 'My Friend',
+            'subscription': 'both',
+            'groups': ['Friends']
+        },
+        'friend2@localhost': {
+            'name': 'User Two',
+            'subscription': 'to',
+            'groups': ['Work']
+        }
+    }
+    return iq
 
 
 @pytest.fixture(autouse=True)

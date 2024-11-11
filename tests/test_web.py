@@ -237,7 +237,7 @@ async def test_unsubscribe_agent(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client.send_presence_subscription = Mock()
+    agent.client.send_presence = Mock()
 
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
@@ -253,8 +253,8 @@ async def test_unsubscribe_agent(aiohttp_client):
 
     assert str(response.url.relative()) == f"/spade/agent/{jid}/"
 
-    assert agent.client.send_presence_subscription.mock_calls
-    arg = agent.client.send_presence_subscription.call_args[1]
+    assert agent.client.send_presence.mock_calls
+    arg = agent.client.send_presence.call_args[1]
 
     assert arg['pto'] == jid_.bare
     assert arg['ptype'] == PresenceType.UNSUBSCRIBE.value
@@ -262,18 +262,16 @@ async def test_unsubscribe_agent(aiohttp_client):
     await agent.stop()
 
 
-async def test_send_agent(aiohttp_client):
+async def test_send_agent(aiohttp_client, jid, iq):
     agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.stream = MagicMock()
-    agent.stream.send = AsyncMock()
+    agent.client = Mock()
+    agent.client.send = Mock()
     agent.web.setup_routes()
     client = await aiohttp_client(agent.web.app)
 
-    jid = JID("friend@server")
-
-    agent.client.update_roster(jid=jid)
+    agent.presence.handle_roster_update(iq)
 
     msg = "Hello World"
 
