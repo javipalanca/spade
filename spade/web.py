@@ -12,7 +12,7 @@ from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
-from .presence import PresenceType, PresenceShow, ContactNotFound, PresenceNotFound
+from .presence import PresenceShow, ContactNotFound, PresenceNotFound
 
 logger = logging.getLogger("spade.Web")
 
@@ -117,11 +117,16 @@ class WebApp(object):
             self.kill_behaviour,
         )
 
-        self.app.router.add_get("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/", self.get_agent)
         self.app.router.add_get(
-            "/spade/agent/unsubscribe/{agentjid:[^/]+(?:/[^/]+)?}/", self.unsubscribe_agent
+            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/", self.get_agent
         )
-        self.app.router.add_post("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/send/", self.send_agent)
+        self.app.router.add_get(
+            "/spade/agent/unsubscribe/{agentjid:[^/]+(?:/[^/]+)?}/",
+            self.unsubscribe_agent,
+        )
+        self.app.router.add_post(
+            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/send/", self.send_agent
+        )
 
     def add_menu_entry(self, name: str, url: str, icon="fa fa-circle") -> None:
         """
@@ -231,9 +236,11 @@ class WebApp(object):
                 "available": c.is_available(),
                 "show": c.get_presence().show,
                 "resources": c.resources,
-                "resource0": (list(c.resources.values())[0].show,
-                              list(c.resources.values())[0].status,
-                              list(c.resources.values())[0].priority)
+                "resource0": (
+                    list(c.resources.values())[0].show,
+                    list(c.resources.values())[0].status,
+                    list(c.resources.values())[0].priority,
+                ),
             }
             for jid, c in self.agent.presence.get_contacts().items()
         ]
@@ -277,16 +284,12 @@ class WebApp(object):
         ]
         try:
             c = self.agent.presence.get_contact(JID(agent_jid))
-            contact = {
-                "show": c.get_presence().show.value
-            }
+            contact = {"show": c.get_presence().show.value}
         except ContactNotFound:
             # raise 404
             raise aioweb.HTTPNotFound()
         except PresenceNotFound:
-            contact = {
-                "show": PresenceShow.NONE.value
-            }
+            contact = {"show": PresenceShow.NONE.value}
 
         except Exception as e:
             logger.error(e)

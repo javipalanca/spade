@@ -8,31 +8,38 @@ from slixmpp.stanza import Presence
 class ContactNotFound(Exception):
     pass
 
+
 class PresenceNotFound(Exception):
     pass
 
 
 class PresenceShow(Enum):
-    EXTENDED_AWAY = 'xa'
-    AWAY = 'away'
-    CHAT = 'chat'
-    DND = 'dnd'
-    NONE = 'none'
+    EXTENDED_AWAY = "xa"
+    AWAY = "away"
+    CHAT = "chat"
+    DND = "dnd"
+    NONE = "none"
 
 
 class PresenceType(Enum):
-    AVAILABLE = 'available'
-    UNAVAILABLE = 'unavailable'
-    ERROR = 'error'
-    PROBE = 'probe'
-    SUBSCRIBE = 'subscribe'
-    SUBSCRIBED = 'subscribed'
-    UNSUBSCRIBE = 'unsubscribe'
-    UNSUBSCRIBED = 'unsubscribed'
+    AVAILABLE = "available"
+    UNAVAILABLE = "unavailable"
+    ERROR = "error"
+    PROBE = "probe"
+    SUBSCRIBE = "subscribe"
+    SUBSCRIBED = "subscribed"
+    UNSUBSCRIBE = "unsubscribe"
+    UNSUBSCRIBED = "unsubscribed"
 
 
 class PresenceInfo:
-    def __init__(self, presence_type: PresenceType, show: PresenceShow, status: Optional[str], priority: int):
+    def __init__(
+        self,
+        presence_type: PresenceType,
+        show: PresenceShow,
+        status: Optional[str],
+        priority: int,
+    ):
         self.type = presence_type
         self.show = show
         self.status = status
@@ -40,18 +47,23 @@ class PresenceInfo:
 
     def is_available(self) -> bool:
         return self.type == PresenceType.AVAILABLE
-    
+
     def __eq__(self, other):
         if not isinstance(other, PresenceInfo):
             return False
-        return self.type == other.type and self.show == other.show and self.status == other.status and self.priority == other.priority
-    
+        return (
+            self.type == other.type
+            and self.show == other.show
+            and self.status == other.status
+            and self.priority == other.priority
+        )
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __str__(self):
         return f"PresenceInfo(Type: {self.type}, Show: {self.show}, Status: {self.status}, Priority: {self.priority})"
-    
+
     def __repr__(self) -> str:
         return str(self)
 
@@ -72,7 +84,9 @@ class Contact:
         if presence_info == self.resources.get(resource):
             return
         self.resources[resource] = presence_info
-        new_presence = max(self.resources.values(), key=lambda p: p.priority, default=None)
+        new_presence = max(
+            self.resources.values(), key=lambda p: p.priority, default=None
+        )
         if new_presence != self.current_presence:
             self.last_presence = self.current_presence
             self.current_presence = new_presence
@@ -82,24 +96,31 @@ class Contact:
             if resource in self.resources:
                 return self.resources[resource]
             else:
-                raise KeyError(f"Resource '{resource}' not found for contact {self.jid}.")
+                raise KeyError(
+                    f"Resource '{resource}' not found for contact {self.jid}."
+                )
         if self.current_presence:
             return self.current_presence
-        raise PresenceNotFound(f"No presence information available for contact {self.jid}.")
+        raise PresenceNotFound(
+            f"No presence information available for contact {self.jid}."
+        )
 
     def update_subscription(self, subscription: str, ask: str):
         self.subscription = subscription
         self.ask = ask
 
     def is_available(self) -> bool:
-        return self.current_presence is not None and self.current_presence.type == PresenceType.AVAILABLE
-    
+        return (
+            self.current_presence is not None
+            and self.current_presence.type == PresenceType.AVAILABLE
+        )
+
     def is_subscribed(self) -> bool:
-        return self.subscription in ['both', 'to'] or self.ask == 'subscribe'
+        return self.subscription in ["both", "to"] or self.ask == "subscribe"
 
     def __str__(self):
         return f"Contact(JID: {self.jid}, Name: {self.name}, Presence: {self.current_presence})"
-    
+
     def __repr__(self) -> str:
         return str(self)
 
@@ -112,67 +133,93 @@ class PresenceManager:
         self.approve_all = approve_all
         # Adding event handlers to handle incoming presence and subscription events
         self.agent.client.add_event_handler("presence_available", self.handle_presence)
-        self.agent.client.add_event_handler("presence_unavailable", self.handle_presence)
+        self.agent.client.add_event_handler(
+            "presence_unavailable", self.handle_presence
+        )
         self.agent.client.add_event_handler("changed_status", self.handle_presence)
-        self.agent.client.add_event_handler("presence_subscribe", self.handle_subscription)
-        self.agent.client.add_event_handler("presence_subscribed", self.handle_subscription)
-        self.agent.client.add_event_handler("presence_unsubscribe", self.handle_subscription)
-        self.agent.client.add_event_handler("presence_unsubscribed", self.handle_subscription)
+        self.agent.client.add_event_handler(
+            "presence_subscribe", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_subscribed", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_unsubscribe", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_unsubscribed", self.handle_subscription
+        )
         self.agent.client.add_event_handler("roster_update", self.handle_roster_update)
 
     def is_available(self) -> bool:
-        return self.current_presence is not None and self.current_presence.is_available()
-    
+        return (
+            self.current_presence is not None and self.current_presence.is_available()
+        )
+
     def get_presence(self) -> PresenceInfo:
         return self.current_presence
-    
+
     def get_show(self) -> PresenceShow:
-        return self.current_presence.show if self.current_presence else PresenceShow.NONE
-    
+        return (
+            self.current_presence.show if self.current_presence else PresenceShow.NONE
+        )
+
     def get_status(self) -> Optional[str]:
         return self.current_presence.status if self.current_presence else None
 
     def get_priority(self) -> int:
-        return self.current_presence.priority if self.current_presence else 0      
+        return self.current_presence.priority if self.current_presence else 0
 
     def handle_presence(self, presence: Presence):
-        jid = presence['from']
+        jid = presence["from"]
         peer_jid = str(jid)
         bare_jid = jid.bare
         if bare_jid == self.agent.jid.bare:
             return
-        resource = presence['from'].resource
-        presence_type = presence['type']
+        resource = presence["from"].resource
+        presence_type = presence["type"]
         # Normalise the value of `type` if it is a show
         if presence_type in [show.value for show in PresenceShow]:
             presence_type = PresenceType.AVAILABLE
         presence_type = PresenceType(presence_type)
 
-        show = PresenceShow(presence.get('show', 'none'))
-        status = presence.get('status')
-        priority = int(presence.get('priority', 0))
+        show = PresenceShow(presence.get("show", "none"))
+        status = presence.get("status")
+        priority = int(presence.get("priority", 0))
 
         name = presence.name if presence.name else peer_jid
         presence_info = PresenceInfo(presence_type, show, status, priority)
         if bare_jid not in self.contacts:
             # Create a new contact if it doesn't exist
-            self.contacts[bare_jid] = Contact(jid=JID(peer_jid), name=name, subscription='', ask='', groups=[])
+            self.contacts[bare_jid] = Contact(
+                jid=JID(peer_jid), name=name, subscription="", ask="", groups=[]
+            )
         # Update the presence of the contact
         self.contacts[bare_jid].update_presence(resource, presence_info)
         # Call user-defined handler
         if presence_type == PresenceType.AVAILABLE:
-            self.on_available(peer_jid, presence_info, self.contacts[bare_jid].last_presence)
+            self.on_available(
+                peer_jid, presence_info, self.contacts[bare_jid].last_presence
+            )
         elif presence_type == PresenceType.UNAVAILABLE:
-            self.on_unavailable(peer_jid, presence_info, self.contacts[bare_jid].last_presence)
+            self.on_unavailable(
+                peer_jid, presence_info, self.contacts[bare_jid].last_presence
+            )
 
     def handle_subscription(self, presence: Presence):
-        peer_jid = presence['from'].bare
-        subscription_type = presence['type']
-        ask = presence.get('ask', 'none')
+        peer_jid = presence["from"].bare
+        subscription_type = presence["type"]
+        ask = presence.get("ask", "none")
 
         if peer_jid not in self.contacts:
             # Create a new contact if it doesn't exist
-            self.contacts[peer_jid] = Contact(jid=JID(peer_jid), name=peer_jid, subscription=subscription_type, ask=ask, groups=[])
+            self.contacts[peer_jid] = Contact(
+                jid=JID(peer_jid),
+                name=peer_jid,
+                subscription=subscription_type,
+                ask=ask,
+                groups=[],
+            )
         else:
             # Update the subscription information
             self.contacts[peer_jid].update_subscription(subscription_type, ask)
@@ -193,24 +240,32 @@ class PresenceManager:
     def handle_roster_update(self, event):
         """Executed when the roster is received or updated."""
 
-        roster = event['roster']
+        roster = event["roster"]
         for item in roster:
             bare_jid = item.get_jid().bare
-            name = item.get('name', bare_jid)
-            subscription = item.get('subscription', "none")
-            ask = item.get('ask', "none")
+            name = item.get("name", bare_jid)
+            subscription = item.get("subscription", "none")
+            ask = item.get("ask", "none")
             groups = item.get_groups()
 
             # Storing contact information in the internal structure
             if bare_jid not in self.contacts:
-                self.contacts[bare_jid] = Contact(jid=bare_jid, name=name, subscription=subscription, ask=ask, groups=groups)
+                self.contacts[bare_jid] = Contact(
+                    jid=bare_jid,
+                    name=name,
+                    subscription=subscription,
+                    ask=ask,
+                    groups=groups,
+                )
             else:
                 self.contacts[bare_jid].name = name
                 self.contacts[bare_jid].subscription = subscription
                 self.contacts[bare_jid].ask = ask
                 self.contacts[bare_jid].groups = groups
 
-    def get_contact_presence(self, jid: Union[str, JID], resource: Optional[str] = None) -> PresenceInfo:
+    def get_contact_presence(
+        self, jid: Union[str, JID], resource: Optional[str] = None
+    ) -> PresenceInfo:
         if isinstance(jid, JID):
             jid = jid.bare
         else:
@@ -231,13 +286,24 @@ class PresenceManager:
             raise ContactNotFound(f"Contact with JID '{jid}' not found.")
 
     def get_contacts(self) -> Dict[str, Contact]:
-        return {jid:c for jid,c in self.contacts.items() if c.is_subscribed()}
+        return {jid: c for jid, c in self.contacts.items() if c.is_subscribed()}
 
-    def set_presence(self, presence_type: PresenceType=PresenceType.AVAILABLE, show: PresenceShow=PresenceShow.CHAT, status: Optional[str]="", priority: int=0):
+    def set_presence(
+        self,
+        presence_type: PresenceType = PresenceType.AVAILABLE,
+        show: PresenceShow = PresenceShow.CHAT,
+        status: Optional[str] = "",
+        priority: int = 0,
+    ):
         # This method could be used to set the presence for the local user
         self.current_presence = PresenceInfo(presence_type, show, status, priority)
         # Send the presence stanza to the server
-        self.agent.client.send_presence(ptype=presence_type.value, pshow=show.value, pstatus=status, ppriority=str(priority))
+        self.agent.client.send_presence(
+            ptype=presence_type.value,
+            pshow=show.value,
+            pstatus=status,
+            ppriority=str(priority),
+        )
 
     def set_available(self):
         # Method to set presence to available
@@ -250,25 +316,27 @@ class PresenceManager:
     def subscribe(self, jid: str):
         # Logic to send a subscription request to a contact
         if jid not in self.contacts:
-            self.contacts[jid] = Contact(jid=JID(jid), name=jid, subscription='to', ask='subscribe', groups=[])
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="to", ask="subscribe", groups=[]
+            )
         else:
-            self.contacts[jid].update_subscription('to', 'subscribe')
+            self.contacts[jid].update_subscription("to", "subscribe")
         # Send the subscription stanza to the server
-        self.agent.client.send_presence(pto=jid, ptype='subscribe')
+        self.agent.client.send_presence(pto=jid, ptype="subscribe")
 
     def unsubscribe(self, jid: str):
         # Logic to send an unsubscription request to a contact
         if jid in self.contacts:
-            self.contacts[jid].update_subscription('unsubscribe', 'unsubscribe')
+            self.contacts[jid].update_subscription("unsubscribe", "unsubscribe")
         # Send the unsubscription stanza to the server
-        self.agent.client.send_presence(pto=jid, ptype='unsubscribe')
+        self.agent.client.send_presence(pto=jid, ptype="unsubscribe")
 
     def approve_subscription(self, jid: str):
         # Logic to approve a subscription request
         if jid in self.contacts:
-            self.contacts[jid].update_subscription('subscribed', '')
+            self.contacts[jid].update_subscription("subscribed", "")
         # Send the subscribed stanza to the server
-        self.agent.client.send_presence(pto=jid, ptype='subscribed')
+        self.agent.client.send_presence(pto=jid, ptype="subscribed")
 
     # User-overridable methods
     def on_subscribe(self, peer_jid: str):
@@ -283,8 +351,18 @@ class PresenceManager:
     def on_unsubscribed(self, peer_jid: str):
         pass
 
-    def on_available(self, peer_jid: str, presence_info: PresenceInfo, last_presence: Optional[PresenceInfo]):
+    def on_available(
+        self,
+        peer_jid: str,
+        presence_info: PresenceInfo,
+        last_presence: Optional[PresenceInfo],
+    ):
         pass
 
-    def on_unavailable(self, peer_jid: str, presence_info: PresenceInfo, last_presence: Optional[PresenceInfo]):
+    def on_unavailable(
+        self,
+        peer_jid: str,
+        presence_info: PresenceInfo,
+        last_presence: Optional[PresenceInfo],
+    ):
         pass

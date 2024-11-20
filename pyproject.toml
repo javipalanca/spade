@@ -1,12 +1,13 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["setuptools>=61.0", "poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "spade"
 version = "3.3.3"
 description = "Smart Python Agent Development Environment"
-authors = ["Javi Palanca <jpalanca@gmail.com>"]
+authors = ["Javi Palanca"]
+maintainers = ["Javi Palanca"]
 license = "MIT"
 readme = "README.rst"
 homepage = "https://github.com/javipalanca/spade"
@@ -31,6 +32,12 @@ classifiers=[
 packages = [
     { include = "spade"}
 ]
+
+[project.urls]
+
+bugs = "https://github.com/javipalanca/spade/issues"
+changelog = "https://github.com/javipalanca/spade/blob/master/HISTORY.rst"
+homepage = "https://github.com/javipalanca/spade"
 
 [tool.poetry.dependencies]
 python = "^3.8"
