@@ -244,9 +244,9 @@ async def test_unsubscribe_agent(aiohttp_client, jid):
 
     agent.client.update_roster(jid=jid, name="friend", subscription="both")
 
-    response = await client.get(f"/spade/agent/{jid}/unsubscribe/")
+    response = await client.get(f"/spade/agent/unsubscribe/{jid}/")
 
-    assert str(response.url.relative()) == f"/spade/agent/{jid}/"
+    assert str(response.url.relative()) == f"/spade"
 
     assert agent.client.send_presence.mock_calls
     arg = agent.client.send_presence.call_args[1]

@@ -93,9 +93,15 @@ class Contact:
 
     def is_available(self) -> bool:
         return self.current_presence is not None and self.current_presence.type == PresenceType.AVAILABLE
+    
+    def is_subscribed(self) -> bool:
+        return self.subscription in ['both', 'to'] or self.ask == 'subscribe'
 
     def __str__(self):
         return f"Contact(JID: {self.jid}, Name: {self.name}, Presence: {self.current_presence})"
+    
+    def __repr__(self) -> str:
+        return str(self)
 
 
 class PresenceManager:
@@ -141,6 +147,7 @@ class PresenceManager:
         if presence_type in [show.value for show in PresenceShow]:
             presence_type = PresenceType.AVAILABLE
         presence_type = PresenceType(presence_type)
+
         show = PresenceShow(presence.get('show', 'none'))
         status = presence.get('status')
         priority = int(presence.get('priority', 0))
@@ -224,7 +231,7 @@ class PresenceManager:
             raise ContactNotFound(f"Contact with JID '{jid}' not found.")
 
     def get_contacts(self) -> Dict[str, Contact]:
-        return self.contacts
+        return {jid:c for jid,c in self.contacts.items() if c.is_subscribed()}
 
     def set_presence(self, presence_type: PresenceType=PresenceType.AVAILABLE, show: PresenceShow=PresenceShow.CHAT, status: Optional[str]="", priority: int=0):
         # This method could be used to set the presence for the local user
@@ -243,7 +250,9 @@ class PresenceManager:
     def subscribe(self, jid: str):
         # Logic to send a subscription request to a contact
         if jid not in self.contacts:
-            self.contacts[jid] = Contact(jid=JID(jid), name=jid, subscription='subscribe', ask='subscribe', groups=[])
+            self.contacts[jid] = Contact(jid=JID(jid), name=jid, subscription='to', ask='subscribe', groups=[])
+        else:
+            self.contacts[jid].update_subscription('to', 'subscribe')
         # Send the subscription stanza to the server
         self.agent.client.send_presence(pto=jid, ptype='subscribe')
 

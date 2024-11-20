@@ -66,19 +66,17 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
-                <p>{{ contacts }}</p>
                     <ul class="users-list clearfix">
                         {% for contact in contacts %}
                         <li>
                             <a href="/spade/agent/{{ contact.jid }}/">
                                 <img src="{{ contact.avatar }}" alt="User Image">
                                 <span class="users-list-name">{{ contact.jid }}</span>
-                                {%if not contact.is_available %}
+                                {%if not contact.available %}
                                     <i class="fa fa-circle text-red"></i> OFFLINE
                                 {%  else %}
-                                    {% if contact.show.value == "away" or contact.show.value  == "xa" or contact.show.value == "dnd" or
-                                    contact.show.value == "extended_away" or contact.show.value == "do_not_disturb" %}
-                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show.value }}
+                                    {% if contact.show.value in ["xa", "away", "dnd"] %}
+                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show.value | upper }}
                                     {% elif contact.show.value == "none" or contact.show.value == "plain" or contact.show.value == "chat"
                                     or contact.show.value == "free_for_chat" %}
                                     <i class="fa fa-circle text-green"></i> ONLINE

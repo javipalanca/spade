@@ -12,7 +12,7 @@ from spade import agent, behaviour
 from spade.behaviour import State
 from spade.message import Message
 from spade.template import Template
-from spade.presence import PresenceShow, PresenceType
+from spade.presence import PresenceShow, PresenceType, Contact
 
 
 class WebAgent(agent.Agent):
@@ -42,17 +42,17 @@ class WebAgent(agent.Agent):
                     await asyncio.sleep(100)
 
             print("Preparing FSM")
-            self.add_state("S 1", S(), initial=True)
-            self.add_state("S 2", S())
-            self.add_state("S 3", S())
-            self.add_state("S 4", S())
-            self.add_state("S 5", S())
-            self.add_transition("S 1", "S 2")
-            self.add_transition("S 2", "S 1")
-            self.add_transition("S 1", "S 3")
-            self.add_transition("S 3", "S 5")
-            self.add_transition("S 2", "S 4")
-            self.add_transition("S 4", "S 5")
+            self.add_state("S1", S(), initial=True)
+            self.add_state("S2", S())
+            self.add_state("S3", S())
+            self.add_state("S4", S())
+            self.add_state("S5", S())
+            self.add_transition("S1", "S2")
+            self.add_transition("S2", "S1")
+            self.add_transition("S1", "S3")
+            self.add_transition("S3", "S5")
+            self.add_transition("S2", "S4")
+            self.add_transition("S4", "S5")
             print("FSM prepared")
 
     async def setup(self):
@@ -89,6 +89,8 @@ class WebAgent(agent.Agent):
             "agent4@fake.server", PresenceType.AVAILABLE, show=PresenceShow.CHAT
         )
         self.add_fake_contact("agent5@fake.server", PresenceType.UNAVAILABLE)
+        self.add_fake_contact("agent6@fake.server", PresenceType.AVAILABLE, 
+                              show=PresenceShow.EXTENDED_AWAY)
 
         # Send and Receive some fake messages
         self.traces.reset()
@@ -111,12 +113,12 @@ class WebAgent(agent.Agent):
     def add_fake_contact(self, jid, presence, show=None):
         jid = JID(jid)
 
-        self.client.update_roster(jid)
+        self.presence.contacts[jid.bare] =  Contact(jid.bare, name=jid.bare, subscription='both', ask='', groups=[])
 
         stanza = Presence(sfrom=jid)
         stanza.set_type(presence.value)
         if show:
-            stanza["show"] = show
+            stanza["type"] = show.value
 
         self.client.event("presence_available", stanza)
 
@@ -133,7 +135,6 @@ async def main(jid, pwd, port):
     await a.start(auto_register=True)
 
     print("Agent web at {}:{}".format(a.web.hostname, a.web.port))
-    print(a.jid)
     await spade.wait_until_finished(a)
 
 

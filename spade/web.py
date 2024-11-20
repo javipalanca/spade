@@ -105,6 +105,7 @@ class WebApp(object):
 
     def setup_routes(self) -> None:
         self.app.router.add_get("/spade", self.index)
+        self.app.router.add_get("/spade/", self.index)
         self.app.router.add_get("/spade/stop", self.stop_agent)
         self.app.router.add_get("/spade/stop/now/", self.stop_now)
         self.app.router.add_get("/spade/messages/", self.get_messages)
@@ -115,9 +116,10 @@ class WebApp(object):
             "/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/",
             self.kill_behaviour,
         )
+
         self.app.router.add_get("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/", self.get_agent)
         self.app.router.add_get(
-            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/unsubscribe/", self.unsubscribe_agent
+            "/spade/agent/unsubscribe/{agentjid:[^/]+(?:/[^/]+)?}/", self.unsubscribe_agent
         )
         self.app.router.add_post("/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/send/", self.send_agent)
 
@@ -276,14 +278,14 @@ class WebApp(object):
         try:
             c = self.agent.presence.get_contact(JID(agent_jid))
             contact = {
-                "show": str(c.get_presence().show)
+                "show": c.get_presence().show.value
             }
         except ContactNotFound:
             # raise 404
             raise aioweb.HTTPNotFound()
         except PresenceNotFound:
             contact = {
-                "show": PresenceShow.NONE
+                "show": PresenceShow.NONE.value
             }
 
         except Exception as e:
@@ -294,10 +296,10 @@ class WebApp(object):
     async def unsubscribe_agent(self, request):
         try:
             agent_jid = request.match_info["agentjid"]
-            self.agent.presence.unsubscribe(JID(agent_jid, bare=True))
+            self.agent.presence.unsubscribe(str(JID(agent_jid).bare))
         except Exception as e:
             logger.error(e)
-        raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
+        raise aioweb.HTTPFound("/spade")
 
     async def send_agent(self, request):
         agent_jid = request.match_info["agentjid"]

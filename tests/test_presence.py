@@ -396,6 +396,7 @@ async def test_on_changed_status(jid: JID):
 
     # Trigger the 'changed_status' event with the presence stanza
     agent.client.event("changed_status", stanza)
+    agent.presence.subscribe(jid.bare)
 
     # Verify that the contact in the roster has the updated presence
     contacts = agent.presence.get_contacts()

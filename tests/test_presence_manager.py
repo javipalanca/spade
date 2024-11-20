@@ -193,7 +193,7 @@ async def test_update_roster(jid: JID):
     iq['roster']['items'] = {
         str(jid2): {
             'name': 'My Friend',
-            'subscription': 'none',
+            'subscription': 'to',
             'groups': []
         }
     }
@@ -214,7 +214,7 @@ async def test_update_roster(jid: JID):
     assert bare_jid in contacts
     assert type(contacts[bare_jid]) == Contact
     assert contacts[bare_jid].name == "My Friend"
-    assert contacts[bare_jid].subscription == "none"
+    assert contacts[bare_jid].subscription == "to"
     assert contacts[bare_jid].groups == []
     assert contacts[bare_jid].ask == "none"
     assert hasattr(contacts[bare_jid], "resources")
