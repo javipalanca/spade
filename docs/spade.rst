@@ -68,6 +68,14 @@ spade.web module
    :undoc-members:
    :show-inheritance:
 
+spade.xmpp\_client module
+-------------------------
+
+.. automodule:: spade.xmpp_client
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
