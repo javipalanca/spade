@@ -23,11 +23,9 @@
                     <div class="col-sm-4 border-right">
                       <div class="description-block">
                           <span class="description-header">STATUS</span>
-                        {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
-                        contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
-                          <h5 class="description-text"><i class="fa fa-circle text-yellow"></i> {{ contact.show }}</h5>
-                        {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT" or
-                        contact.show == "FREE_FOR_CHAT" %}
+                          {% if contact["show"] in ["xa", "away", "dnd"] %}
+                          <h5 class="description-text"><i class="fa fa-circle text-yellow"></i> {{ contact["show"] | upper }}</h5>
+                        {% elif contact["show"] == None or contact["show"] in ["CHAT", "chat", "PLAIN", "plain"]%}
                           <h5 class="description-text"><i class="fa fa-circle text-green"></i> ONLINE</h5>
                         {% else %}
                           <h5 class="description-text"><i class="fa fa-circle text-red"></i> OFFLINE</h5>
@@ -39,7 +37,7 @@
                     <div class="col-sm-4 border-right">
                       <div class="description-block">
                           <span class="description-header">ACTION</span>
-                          <a href="/spade/agent/{{ ajid }}/unsubscribe/">
+                          <a href="/spade/agent/unsubscribe/{{ ajid }}/">
                                 <button type="button" class="btn btn-block btn-warning btn-xs">Unsubscribe</button>
                           </a>
                       </div>

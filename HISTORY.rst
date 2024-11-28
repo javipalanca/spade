@@ -2,6 +2,15 @@
 History
 =======
 
+
+4.0.0rc (2024-11-28)
+--------------------
+
+* Added XMPP server as cli.
+* Migrated to pyproject.
+* Migrated to ruff.
+* Improved presence management API.
+
 3.3.3 (2024-09-05)
 ------------------
 

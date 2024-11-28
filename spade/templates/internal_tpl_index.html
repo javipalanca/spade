@@ -75,11 +75,10 @@
                                 {%if not contact.available %}
                                     <i class="fa fa-circle text-red"></i> OFFLINE
                                 {%  else %}
-                                    {% if contact.show == "AWAY" or contact.show == "XA" or contact.show == "DND" or
-                                    contact.show == "EXTENDED_AWAY" or contact.show == "DO_NOT_DISTURB" %}
-                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show }}
-                                    {% elif contact.show == "NONE" or contact.show == "PLAIN" or contact.show == "CHAT"
-                                    or contact.show == "FREE_FOR_CHAT" %}
+                                    {% if contact.show.value in ["xa", "away", "dnd"] %}
+                                    <i class="fa fa-circle text-yellow"></i> {{ contact.show.value | upper }}
+                                    {% elif contact.show.value == "none" or contact.show.value == "plain" or contact.show.value == "chat"
+                                    or contact.show.value == "free_for_chat" %}
                                     <i class="fa fa-circle text-green"></i> ONLINE
                                     {% endif %}
                                 {% endif %}

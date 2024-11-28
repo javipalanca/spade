@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spade"
+dynamic = ["version", "dependencies"]
+description = "Smart Python Agent Development Environment"
+authors = [{ name = "Javi Palanca" }]
+maintainers = [{ name = "Javi Palanca" }]
+license = {text = "MIT"}
+readme = "README.rst"
+keywords = ["spade"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Internet :: XMPP"
+]
+
+[project.urls]
+Homepage = "https://github.com/javipalanca/spade"
+Repository = "https://github.com/javipalanca/spade"
+
+[project.scripts]
+spade = "spade.cli:cli"
+
+[tool.setuptools]
+packages = ["spade"]
+
+[tool.setuptools.dynamic]
+version = {attr = "spade.__version__"}
+dependencies = {file = "requirements.txt"}
+
+[tool.ruff]
+select = ["E", "F"]
+ignore = ["E501"]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.ruff.isort]
+known-first-party = ["spade"]

@@ -1,7 +1,7 @@
 import asyncio
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, Mock
 
-import aioxmpp
+from slixmpp import JID
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.container import Container
@@ -56,14 +56,13 @@ async def test_send_message_with_container():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client = MagicMock()
-    agent.client.send = AsyncMock()
+    agent.client.send = Mock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
     await behaviour.join()
 
-    assert agent.client.send.await_count == 0
+    assert agent.client.send.call_count == 0
 
     assert fake_receiver_agent.dispatch.call_count == 1
     assert (
@@ -100,7 +99,7 @@ async def test_send_message_to_outer_with_container():
 
     args, kwargs = behaviour._xmpp_send.await_args
     msg_arg = kwargs["msg"]
-    assert msg_arg.to == aioxmpp.JID.fromstr("to@outerhost")
+    assert msg_arg.to == JID("to@outerhost")
 
     await agent.stop()
 

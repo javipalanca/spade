@@ -1,14 +1,11 @@
 import asyncio
 import logging
-import sys
 from asyncio import Task
 from hashlib import md5
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
-import aiosasl
-import aioxmpp
-import aioxmpp.ibr as ibr
-from aioxmpp.dispatcher import SimpleMessageDispatcher
+from slixmpp import JID
+from slixmpp import Message as slixmppMessage
 
 from .behaviour import BehaviourType, FSMBehaviour, CyclicBehaviour
 from .container import Container
@@ -17,6 +14,7 @@ from .presence import PresenceManager
 from .template import Template
 from .trace import TraceStore
 from .web import WebApp
+from .xmpp_client import XMPPClient
 
 logger = logging.getLogger("spade.Agent")
 
@@ -24,6 +22,12 @@ AgentType = TypeVar("AgentType", bound="Agent")
 
 
 class AuthenticationFailure(Exception):
+    """ """
+
+    pass
+
+
+class DisconnectedException(Exception):
     """ """
 
     pass
@@ -37,19 +41,16 @@ class Agent(object):
         Args:
           jid (str): The identifier of the agent in the form username@server
           password (str): The password to connect to the server
-          verify_security (bool): Wether to verify or not the SSL certificates
+          verify_security (bool): Weather to verify or not the SSL certificates
         """
-        self.jid = aioxmpp.JID.fromstr(jid)
+        self.jid = JID(jid)
         self.password = password
         self.verify_security = verify_security
 
         self.behaviours = []
         self._values = {}
 
-        self.conn_coro = None
-        self.stream = None
         self.client = None
-        self.message_dispatcher = None
         self.presence = None
         self.loop = None
 
@@ -105,30 +106,13 @@ class Agent(object):
         """
         await self._hook_plugin_before_connection()
 
-        if auto_register:
-            await self._async_register()
-        self.client = aioxmpp.PresenceManagedClient(
-            self.jid,
-            aioxmpp.make_security_layer(
-                self.password, no_verify=not self.verify_security
-            ),
-            logger=logging.getLogger(self.jid.localpart),
+        self.client = XMPPClient(
+            self.jid, self.password, self.verify_security, auto_register
         )
-
-        # obtain an instance of the service
-        self.message_dispatcher = self.client.summon(SimpleMessageDispatcher)
-
         # Presence service
-        self.presence = PresenceManager(self)
+        self.presence = PresenceManager(agent=self, approve_all=False)
 
         await self._async_connect()
-
-        # register a message callback here
-        self.message_dispatcher.register_callback(
-            aioxmpp.MessageType.CHAT,
-            None,
-            self._message_received,
-        )
 
         await self._hook_plugin_after_connection()
 
@@ -144,34 +128,67 @@ class Agent(object):
 
     async def _hook_plugin_before_connection(self) -> None:
         """
-        Overload this method to hook a plugin before connetion is done
+        Overload this method to hook a plugin before connection is done
         """
         pass
 
     async def _hook_plugin_after_connection(self) -> None:
         """
-        Overload this method to hook a plugin after connetion is done
+        Overload this method to hook a plugin after connection is done
         """
         pass
 
     async def _async_connect(self) -> None:  # pragma: no cover
         """connect and authenticate to the XMPP server. Async mode."""
-        try:
-            self.conn_coro = self.client.connected()
-            aenter = type(self.conn_coro).__aenter__(self.conn_coro)
-            self.stream = await aenter
-            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
-        except aiosasl.AuthenticationFailure:
-            raise AuthenticationFailure(
-                "Could not authenticate the agent. Check user and password or use auto_register=True"
-            )
 
-    async def _async_register(self) -> None:  # pragma: no cover
-        """Register the agent in the XMPP server from a coroutine."""
-        metadata = aioxmpp.make_security_layer(None, no_verify=not self.verify_security)
-        query = ibr.Query(self.jid.localpart, self.password)
-        _, stream, features = await aioxmpp.node.connect_xmlstream(self.jid, metadata)
-        await ibr.register(stream, query)
+        self.client.connected_event = asyncio.Event()
+        self.client.disconnected_event = asyncio.Event()
+        self.client.failed_auth_event = asyncio.Event()
+
+        connected_task = asyncio.create_task(
+            self.client.connected_event.wait(), name="connected"
+        )
+        disconnected_task = asyncio.create_task(
+            self.client.disconnected_event.wait(), name="disconnected"
+        )
+        failed_auth_task = asyncio.create_task(
+            self.client.failed_auth_event.wait(), name="failed_auth"
+        )
+
+        self.client.add_event_handler(
+            "session_start", lambda _: self.client.connected_event.set()
+        )
+        self.client.add_event_handler(
+            "disconnected", lambda _: self.client.disconnected_event.set()
+        )
+        self.client.add_event_handler(
+            "failed_all_auth", lambda _: self.client.failed_auth_event.set()
+        )
+        self.client.add_event_handler("message", self._message_received)
+
+        self.client.connect()
+
+        done, pending = await asyncio.wait(
+            [connected_task, disconnected_task, failed_auth_task],
+            return_when=asyncio.FIRST_COMPLETED,
+        )
+
+        for task in pending:
+            task.cancel()
+
+        for task in done:
+            await task
+
+            if task.get_name() == "failed_auth":
+                raise AuthenticationFailure(
+                    "Could not authenticate the agent. Check user and password or use auto_register=True"
+                )
+            elif task.get_name() == "disconnected":
+                raise DisconnectedException(
+                    "Error during the connection with the server"
+                )
+
+        logger.info(f"Agent {str(self.jid)} connected and authenticated.")
 
     async def setup(self) -> None:
         """
@@ -188,7 +205,7 @@ class Agent(object):
         Returns:
             str: the name of the agent (the string before the '@')
         """
-        return self.jid.localpart
+        return self.jid.node
 
     @property
     def avatar(self) -> str:
@@ -200,7 +217,7 @@ class Agent(object):
           str: the url of the agent's avatar
 
         """
-        return self.build_avatar_url(self.jid.bare())
+        return self.build_avatar_url(self.jid.bare)
 
     @staticmethod
     def build_avatar_url(jid: str) -> str:
@@ -211,7 +228,7 @@ class Agent(object):
           jid (aioxmpp.JID): an XMPP identifier
 
         Returns:
-          str: an URL for the gravatar
+          str: a URL for the gravatar
 
         """
         digest = md5(str(jid).encode("utf-8")).hexdigest()
@@ -298,9 +315,7 @@ class Agent(object):
 
         if self.is_alive():
             # Disconnect from XMPP server
-            self.client.stop()
-            aexit = self.conn_coro.__aexit__(*sys.exc_info())
-            await aexit
+            await self.client.disconnect()
             logger.info("Client disconnected.")
 
         self._alive.clear()
@@ -342,7 +357,7 @@ class Agent(object):
         else:
             return None
 
-    def _message_received(self, msg: aioxmpp.Message) -> List[Task]:
+    def _message_received(self, msg: slixmppMessage) -> List[Task]:
         """
         Callback run when an XMPP Message is reveived.
         This callback delivers the message to every behaviour
@@ -350,10 +365,10 @@ class Agent(object):
         converted to spade.message.Message
 
         Args:
-          msg (aioxmpp.Messagge): the message just received.
+          msg (slixmpp.Message): the message just received.
 
         Returns:
-            list(asyncio.Future): a list of futures of the append of the message at each matched behaviour.
+            list(asyncio.Future): a list of futures of the appended of the message at each matched behaviour.
 
         """
 

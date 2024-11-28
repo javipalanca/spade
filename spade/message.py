@@ -1,8 +1,10 @@
 import logging
 from typing import Optional, Dict, Type
 
-import aioxmpp
-import aioxmpp.forms.xso as forms_xso
+import slixmpp.stanza
+from slixmpp.plugins.xep_0004 import Form
+
+import spade.message
 
 SPADE_X_METADATA = "spade:x:metadata"
 
@@ -36,46 +38,49 @@ class MessageBase(object):
             self.metadata = metadata
 
     @classmethod
-    def from_node(cls, node: aioxmpp.Message) -> Type["MessageBase"]:
+    def from_node(cls, node: slixmpp.Message) -> Type["MessageBase"]:
         """
-        Creates a new spade.message.Message from an aixoxmpp.stanza.Message
+        Creates a new spade.message.Message from a slixmpp.stanza.Message
 
         Args:
-          node (aioxmpp.stanza.Message): an aioxmpp Message
+          node (slixmpp.stanza.Message): a slixmpp Message
 
         Returns:
           spade.message.Message: a new spade Message
 
         """
-        if not isinstance(node, aioxmpp.stanza.Message):
-            raise AttributeError("node must be a aioxmpp.stanza.Message instance")
+        if not isinstance(node, slixmpp.stanza.Message):
+            raise AttributeError("node must be a slixmpp.stanza.Message instance")
         msg = cls()
-        msg._to = node.to
-        msg._sender = node.from_
-        if None in node.body:
-            msg.body = node.body[None]
-        else:
-            for key in node.body.keys():
-                msg.body = node.body[key]
-                break
+        msg._to = node["to"]
+        msg._sender = node["from"]
 
-        for data in node.xep0004_data:
-            if data.title == SPADE_X_METADATA:
-                for field in data.fields:
-                    if field.var != "_thread_node":
-                        msg.set_metadata(field.var, field.values[0])
+        if isinstance(node["body"], dict):
+            for body in node["body"].values():
+                msg.body = body
+                break
+        else:
+            msg.body = node["body"]
+
+        for data in [pl for pl in node.get_payload() if pl.tag == "{jabber:x:data}x"]:
+            if data.find("{jabber:x:data}title").text == SPADE_X_METADATA:
+                for field in data.findall("{jabber:x:data}field"):
+                    if field.attrib["var"] != "_thread_node":
+                        msg.set_metadata(
+                            field.attrib["var"], field.find("{jabber:x:data}value").text
+                        )
                     else:
-                        msg.thread = field.values[0]
+                        msg.thread = field.find("{jabber:x:data}value").text
 
         return msg
 
     @property
-    def to(self) -> aioxmpp.JID:
+    def to(self) -> slixmpp.JID:
         """
         Gets the jid of the receiver.
 
         Returns:
-          aioxmpp.JID: jid of the receiver
+          slixmpp.JID: jid of the receiver
 
         """
         return self._to
@@ -91,15 +96,15 @@ class MessageBase(object):
         """
         if jid is not None and not isinstance(jid, str):
             raise TypeError("'to' MUST be a string")
-        self._to = aioxmpp.JID.fromstr(jid) if jid is not None else None
+        self._to = slixmpp.JID(jid) if jid is not None else None
 
     @property
-    def sender(self) -> aioxmpp.JID:
+    def sender(self) -> slixmpp.JID:
         """
         Get jid of the sender
 
         Returns:
-          aioxmpp.JID: jid of the sender
+          slixmpp.JID: jid of the sender
 
         """
         return self._sender
@@ -115,7 +120,7 @@ class MessageBase(object):
         """
         if jid is not None and not isinstance(jid, str):
             raise TypeError("'sender' MUST be a string")
-        self._sender = aioxmpp.JID.fromstr(jid) if jid is not None else None
+        self._sender = slixmpp.JID(jid) if jid is not None else None
 
     @property
     def body(self) -> str:
@@ -223,6 +228,8 @@ class MessageBase(object):
         return id(self)
 
     def __eq__(self, other: Type["MessageBase"]):
+        if type(other) is not spade.message.Message:
+            return False
         return self.match(other)
 
 
@@ -245,47 +252,34 @@ class Message(MessageBase):
             metadata=self.metadata,
         )
 
-    def prepare(self) -> aioxmpp.Message:
+    def prepare(self) -> slixmpp.stanza.Message:
         """
-        Returns an aioxmpp.stanza.Message built from the Message and prepared to be sent.
+        Returns a slixmpp.stanza.Message built from the Message and prepared to be sent.
 
         Returns:
-          aioxmpp.stanza.Message: the message prepared to be sent
+          slixmpp.stanza.Message: the message prepared to be sent
 
         """
-
-        msg = aioxmpp.stanza.Message(
-            to=self.to,
-            from_=self.sender,
-            type_=aioxmpp.MessageType.CHAT,
-        )
-
-        msg.body[None] = self.body
+        msg = slixmpp.stanza.Message()
+        msg["to"] = self.to
+        msg["from"] = self.sender
+        msg["body"] = self.body
+        msg.chat()
 
         # Send metadata using xep-0004: Data Forms (https://xmpp.org/extensions/xep-0004.html)
         if len(self.metadata):
-            data = forms_xso.Data(type_=forms_xso.DataType.FORM)
-
+            form = Form()
+            form["type"] = "form"
             for name, value in self.metadata.items():
-                data.fields.append(
-                    forms_xso.Field(
-                        var=name,
-                        type_=forms_xso.FieldType.TEXT_SINGLE,
-                        values=[value],
-                    )
-                )
+                form.add_field(var=name, ftype="text-single", value=value)
 
             if self.thread:
-                data.fields.append(
-                    forms_xso.Field(
-                        var="_thread_node",
-                        type_=forms_xso.FieldType.TEXT_SINGLE,
-                        values=[self.thread],
-                    )
+                form.add_field(
+                    var="_thread_node", ftype="text-single", value=self.thread
                 )
 
-            data.title = SPADE_X_METADATA
-            msg.xep0004_data = [data]
+            form["title"] = SPADE_X_METADATA
+            msg.append(form)
 
         return msg
 

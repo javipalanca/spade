@@ -28,7 +28,7 @@ test_requirements = parse_requirements("requirements_dev.txt")
 
 setup(
     name='spade',
-    version='3.3.3',
+    version='4.0.0rc1',
     description="Smart Python Agent Development Environment",
     long_description=readme + '\n\n' + history,
     author="Javi Palanca",
@@ -37,7 +37,7 @@ setup(
     packages=find_packages(include=['spade']),
     entry_points={
         'console_scripts': [
-            'spade=spade.cli:main'
+            'spade=spade.cli:cli'
         ]
     },
     include_package_data=True,
@@ -55,6 +55,8 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: POSIX :: Linux',
         'Operating System :: Microsoft :: Windows',

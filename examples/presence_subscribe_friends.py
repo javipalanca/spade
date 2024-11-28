@@ -3,6 +3,7 @@ import getpass
 import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
+from spade.presence import PresenceType
 
 
 class Agent1(Agent):
@@ -11,7 +12,7 @@ class Agent1(Agent):
         self.add_behaviour(self.Behav1())
 
     class Behav1(OneShotBehaviour):
-        def on_available(self, jid, stanza):
+        def on_available(self, jid, presence_info, last_presence):
             print(
                 "[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0])
             )
@@ -34,14 +35,15 @@ class Agent1(Agent):
                     self.agent.name, jid.split("@")[0]
                 )
             )
-            self.presence.approve(jid)
+            self.presence.approve_subscription(jid)
 
         async def run(self):
             self.presence.on_subscribe = self.on_subscribe
             self.presence.on_subscribed = self.on_subscribed
             self.presence.on_available = self.on_available
 
-            self.presence.set_available()
+            self.presence.set_presence(PresenceType.AVAILABLE)
+            print(f"[{self.agent.name}] Agent {self.agent.name} is asking for subscription to {self.agent.jid2}")
             self.presence.subscribe(self.agent.jid2)
 
 
@@ -51,7 +53,7 @@ class Agent2(Agent):
         self.add_behaviour(self.Behav2())
 
     class Behav2(OneShotBehaviour):
-        def on_available(self, jid, stanza):
+        def on_available(self, jid, presence_info, last_presence):
             print(
                 "[{}] Agent {} is available.".format(self.agent.name, jid.split("@")[0])
             )
@@ -74,11 +76,13 @@ class Agent2(Agent):
                     self.agent.name, jid.split("@")[0]
                 )
             )
-            self.presence.approve(jid)
+            print(f"[{self.agent.name}] Agent {self.agent.name} has received a subscription query from {jid}")
+            self.presence.approve_subscription(jid)
+            print(f"[{self.agent.name}] And after approving it, Agent {self.agent.name} is asking for subscription to {jid}")
             self.presence.subscribe(jid)
 
         async def run(self):
-            self.presence.set_available()
+            self.presence.set_presence(PresenceType.AVAILABLE)
             self.presence.on_subscribe = self.on_subscribe
             self.presence.on_subscribed = self.on_subscribed
             self.presence.on_available = self.on_available

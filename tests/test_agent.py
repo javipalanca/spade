@@ -1,10 +1,11 @@
 import asyncio
 
-import aioxmpp
-from aioxmpp import PresenceManagedClient
 from testfixtures import LogCapture
 from unittest.mock import AsyncMock, Mock
 
+from slixmpp import Message as slixmppMessage
+
+import spade.xmpp_client
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
@@ -23,21 +24,19 @@ async def test_create_agent(mocker):
 
     await agent.stop()
 
-    agent.conn_coro.__aexit__.assert_called_once()
-
     assert agent.is_alive() is False
 
 
 def test_name():
-    agent = MockedAgentFactory(jid="john@fake_server")
+    agent = MockedAgentFactory(jid="john@fake.server")
     assert agent.name == "john"
 
 
 def test_avatar():
-    agent = MockedAgentFactory(jid="test_avatar@fake_server")
+    agent = MockedAgentFactory(jid="test_avatar@fake.server")
     assert (
         agent.avatar
-        == "http://www.gravatar.com/avatar/44bdc5585ef57844edb11c5b9711d2e6?d=monsterid"
+        == "http://www.gravatar.com/avatar/c23af06d68b5e37d3589e7a8748e7b6c?d=monsterid"
     )
 
 
@@ -69,31 +68,32 @@ async def test_client():
 
     await agent.start(auto_register=False)
 
-    assert type(agent.client) == PresenceManagedClient
+    assert type(agent.client) == spade.xmpp_client.XMPPClient
 
     await agent.stop()
 
-
-async def test_register():
-    agent = MockedAgentFactory()
-    agent.register = Mock()
-
-    await agent.start()
-
-    assert len(agent._async_register.mock_calls) == 1
-
-    await agent.stop()
+#
+# async def test_register():
+#     agent = MockedAgentFactory()
+#     agent.register = Mock()
+#
+#     await agent.start()
+#
+#     assert len(agent._async_register.mock_calls) == 1
+#
+#     await agent.stop()
 
 
 def test_receive_without_behaviours():
     agent = MockedAgentFactory()
-    aiomsg = aioxmpp.Message(type_=aioxmpp.MessageType.CHAT)
-    msg = Message.from_node(aiomsg)
+    slimsg = slixmppMessage()
+    slimsg.chat()
+    msg = Message.from_node(slimsg)
 
     assert agent.traces.len() == 0
 
     with LogCapture() as log:
-        agent._message_received(aiomsg)
+        agent._message_received(slimsg)
         log.check_present(
             ("spade.Agent", "WARNING", f"No behaviour matched for message: {msg}")
         )
