@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=64.0.0", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "spade"
-version = "3.3.3"
+dynamic = ["version", "dependencies"]
 description = "Smart Python Agent Development Environment"
 authors = [{ name = "Javi Palanca" }]
 maintainers = [{ name = "Javi Palanca" }]
@@ -33,8 +33,15 @@ classifiers = [
 Homepage = "https://github.com/javipalanca/spade"
 Repository = "https://github.com/javipalanca/spade"
 
+[project.scripts]
+spade = "spade.cli:cli"
+
 [tool.setuptools]
 packages = ["spade"]
+
+[tool.setuptools.dynamic]
+version = {attr = "spade.__version__"}
+dependencies = {file = "requirements.txt"}
 
 [tool.ruff]
 select = ["E", "F"]

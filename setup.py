@@ -37,7 +37,7 @@ setup(
     packages=find_packages(include=['spade']),
     entry_points={
         'console_scripts': [
-            'spade=spade.cli:main'
+            'spade=spade.cli:cli'
         ]
     },
     include_package_data=True,
