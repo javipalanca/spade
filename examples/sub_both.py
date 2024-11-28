@@ -21,7 +21,7 @@ class Sub1Agent(Agent):
         print("Agent starting . . .")
         self.presence.subscribe(self.sub2)
         self.presence.on_subscribed = lambda jid: print(jid, "Subscribed")
-        self.presence.on_available = lambda jid, stanza: print(jid, "Available")
+        self.presence.on_available = lambda jid, info, last: print(jid, "Available")
         self.presence.on_subscribe = self.approve
         #self.presence.approve_all = True
         b = self.MyBehav()
@@ -29,15 +29,15 @@ class Sub1Agent(Agent):
 
     def approve(self, jid):
         print("Subscription request from", jid)
-        self.presence.approve(jid)
+        self.presence.approve_subscription(jid)
 
 
 async def main():
-    jid = "sub111@gtirouter.dsic.upv.es"  #input("JID> ")
-    passwd = "1234" #getpass.getpass()
+    jid = input("JID> ")
+    passwd = getpass.getpass()
 
-    hjid = "sub211@gtirouter.dsic.upv.es" #input("Human JID> ")
-    passwd = "1234"
+    hjid = input("Human JID> ")
+    passwd = getpass.getpass()
 
     dummy = Sub1Agent(jid, passwd)
     dummy.sub2 = hjid

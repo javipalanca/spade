@@ -11,7 +11,6 @@ class RegistrationException(Exception):
 
 
 class XMPPClient(ClientXMPP):
-
     def __init__(self, jid, password, verify_security, auto_register):
         ClientXMPP.__init__(self, jid, password)
 
@@ -22,14 +21,14 @@ class XMPPClient(ClientXMPP):
             self.ssl_context.verify_mode = ssl.CERT_NONE
 
         self.add_event_handler("session_start", self.session_start)
-        self.register_plugin('xep_0199')  # XMPP Ping
+        self.register_plugin("xep_0199")  # XMPP Ping
 
         if auto_register:
             self.add_event_handler("register", self.register)
-            self.register_plugin('xep_0077')  # In-band-registration
+            self.register_plugin("xep_0077")  # In-band-registration
 
-        self.register_plugin('xep_0199')  # Ping / Keepalive connection
-        self['xep_0199'].enable_keepalive(interval=55)
+        self.register_plugin("xep_0199")  # Ping / Keepalive connection
+        self["xep_0199"].enable_keepalive(interval=55)
 
     def session_start(self, event):
         self.send_presence()
@@ -37,9 +36,9 @@ class XMPPClient(ClientXMPP):
 
     async def register(self, event):
         resp = self.Iq()
-        resp['type'] = 'set'
-        resp['register']['username'] = self.boundjid.user
-        resp['register']['password'] = self.password
+        resp["type"] = "set"
+        resp["register"]["username"] = self.boundjid.user
+        resp["register"]["password"] = self.password
 
         try:
             await resp.send()

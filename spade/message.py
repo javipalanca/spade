@@ -52,23 +52,25 @@ class MessageBase(object):
         if not isinstance(node, slixmpp.stanza.Message):
             raise AttributeError("node must be a slixmpp.stanza.Message instance")
         msg = cls()
-        msg._to = node['to']
-        msg._sender = node['from']
+        msg._to = node["to"]
+        msg._sender = node["from"]
 
-        if isinstance(node['body'], dict):
-            for body in node['body'].values():
+        if isinstance(node["body"], dict):
+            for body in node["body"].values():
                 msg.body = body
                 break
         else:
-            msg.body = node['body']
+            msg.body = node["body"]
 
-        for data in [pl for pl in node.get_payload() if pl.tag == '{jabber:x:data}x']:
-            if data.find('{jabber:x:data}title').text == SPADE_X_METADATA:
-                for field in data.findall('{jabber:x:data}field'):
-                    if field.attrib['var'] != "_thread_node":
-                        msg.set_metadata(field.attrib['var'], field.find('{jabber:x:data}value').text)
+        for data in [pl for pl in node.get_payload() if pl.tag == "{jabber:x:data}x"]:
+            if data.find("{jabber:x:data}title").text == SPADE_X_METADATA:
+                for field in data.findall("{jabber:x:data}field"):
+                    if field.attrib["var"] != "_thread_node":
+                        msg.set_metadata(
+                            field.attrib["var"], field.find("{jabber:x:data}value").text
+                        )
                     else:
-                        msg.thread = field.find('{jabber:x:data}value').text
+                        msg.thread = field.find("{jabber:x:data}value").text
 
         return msg
 
@@ -259,30 +261,24 @@ class Message(MessageBase):
 
         """
         msg = slixmpp.stanza.Message()
-        msg['to'] = self.to
-        msg['from'] = self.sender
-        msg['body'] = self.body
+        msg["to"] = self.to
+        msg["from"] = self.sender
+        msg["body"] = self.body
         msg.chat()
 
         # Send metadata using xep-0004: Data Forms (https://xmpp.org/extensions/xep-0004.html)
         if len(self.metadata):
             form = Form()
-            form['type'] = 'form'
+            form["type"] = "form"
             for name, value in self.metadata.items():
-                form.add_field(
-                    var=name,
-                    ftype='text-single',
-                    value=value
-                )
+                form.add_field(var=name, ftype="text-single", value=value)
 
             if self.thread:
                 form.add_field(
-                    var='_thread_node',
-                    ftype='text-single',
-                    value=self.thread
+                    var="_thread_node", ftype="text-single", value=self.thread
                 )
 
-            form['title'] = SPADE_X_METADATA
+            form["title"] = SPADE_X_METADATA
             msg.append(form)
 
         return msg

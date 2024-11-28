@@ -74,12 +74,14 @@ servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: clean ## package and upload a release
-	poetry build
-	poetry publish
+	python setup.py sdist
+	python setup.py bdist_wheel
+	twine upload dist/*
 
 dist: clean ## builds source and wheel package
-	poetry build
+	python setup.py sdist
+	python setup.py bdist_wheel
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	poetry install
+	python setup.py install

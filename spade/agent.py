@@ -107,10 +107,7 @@ class Agent(object):
         await self._hook_plugin_before_connection()
 
         self.client = XMPPClient(
-            self.jid,
-            self.password,
-            self.verify_security,
-            auto_register
+            self.jid, self.password, self.verify_security, auto_register
         )
         # Presence service
         self.presence = PresenceManager(agent=self, approve_all=False)
@@ -148,20 +145,32 @@ class Agent(object):
         self.client.disconnected_event = asyncio.Event()
         self.client.failed_auth_event = asyncio.Event()
 
-        connected_task = asyncio.create_task(self.client.connected_event.wait(), name='connected')
-        disconnected_task = asyncio.create_task(self.client.disconnected_event.wait(), name='disconnected')
-        failed_auth_task = asyncio.create_task(self.client.failed_auth_event.wait(), name='failed_auth')
+        connected_task = asyncio.create_task(
+            self.client.connected_event.wait(), name="connected"
+        )
+        disconnected_task = asyncio.create_task(
+            self.client.disconnected_event.wait(), name="disconnected"
+        )
+        failed_auth_task = asyncio.create_task(
+            self.client.failed_auth_event.wait(), name="failed_auth"
+        )
 
-        self.client.add_event_handler('session_start', lambda _: self.client.connected_event.set())
-        self.client.add_event_handler('disconnected', lambda _: self.client.disconnected_event.set())
-        self.client.add_event_handler('failed_all_auth', lambda _: self.client.failed_auth_event.set())
-        self.client.add_event_handler('message', self._message_received)
+        self.client.add_event_handler(
+            "session_start", lambda _: self.client.connected_event.set()
+        )
+        self.client.add_event_handler(
+            "disconnected", lambda _: self.client.disconnected_event.set()
+        )
+        self.client.add_event_handler(
+            "failed_all_auth", lambda _: self.client.failed_auth_event.set()
+        )
+        self.client.add_event_handler("message", self._message_received)
 
         self.client.connect()
 
         done, pending = await asyncio.wait(
             [connected_task, disconnected_task, failed_auth_task],
-            return_when=asyncio.FIRST_COMPLETED
+            return_when=asyncio.FIRST_COMPLETED,
         )
 
         for task in pending:
@@ -170,7 +179,7 @@ class Agent(object):
         for task in done:
             await task
 
-            if task.get_name() == 'failed_auth':
+            if task.get_name() == "failed_auth":
                 raise AuthenticationFailure(
                     "Could not authenticate the agent. Check user and password or use auto_register=True"
                 )

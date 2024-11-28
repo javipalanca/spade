@@ -12,8 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "python -m ensurepip --upgrade && python -m pip install --upgrade pip setuptools && pip install poetry && poetry install",
-
+    "postCreateCommand": "chmod +x .devcontainer/postcreate.sh && .devcontainer/postcreate.sh",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
