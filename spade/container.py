@@ -27,10 +27,9 @@ def get_or_create_eventloop():  # pragma: no cover
             loop = asyncio.get_running_loop()
         except RuntimeError:
             loop = asyncio.new_event_loop()
-    if platform.system() == 'Windows':
+    if platform.system() == "Windows":
         # Force SelectorEventLoop on Windows
         loop = asyncio.SelectorEventLoop()
-
     asyncio.set_event_loop(loop)
     return loop
 

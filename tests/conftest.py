@@ -1,7 +1,10 @@
 import asyncio
+import platform
 
 import pytest
 from slixmpp import JID, Iq
+from aiohttp.test_utils import TestClient
+from aiohttp import web
 
 from spade.container import Container
 from spade.message import Message
@@ -71,6 +74,13 @@ def run_around_tests():
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
     pass
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_event_loop():
+    if platform.system() == "Windows":
+        loop = asyncio.SelectorEventLoop()
+        asyncio.set_event_loop(loop)
 
 
 async def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
