@@ -44,8 +44,8 @@ version = {attr = "spade.__version__"}
 dependencies = {file = "requirements.txt"}
 
 [tool.ruff]
-select = ["E", "F"]
-ignore = ["E501"]
+lint.select = ["E", "F"]
+lint.ignore = ["E501"]
 line-length = 88
 target-version = "py38"
 
@@ -54,5 +54,5 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["spade"]
