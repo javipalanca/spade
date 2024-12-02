@@ -28,7 +28,7 @@ def get_or_create_eventloop():  # pragma: no cover
     if platform.system() == "Windows":
         try:
             import winloop
-            asyncio.set_event_loop_policy(winloop.WindowsProactorEventLoopPolicy())
+            asyncio.set_event_loop_policy(winloop.EventLoopPolicy())
         except ImportError:
             pass  # winloop is not available, use default
     else:

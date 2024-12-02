@@ -43,7 +43,7 @@ def test_make_reply(message):
 
 
 def test_message_from_node_attribute_error():
-    with pytest.raises(AttributeError) as e:
+    with pytest.raises(AttributeError):
         Message.from_node(Message())
 
 
@@ -113,7 +113,7 @@ def test_not_equal(message, message2):
 
 
 def test_id(message):
-    assert type(message.id) == int
+    assert isinstance(message.id, int)
 
 
 def test_metadata_is_string():

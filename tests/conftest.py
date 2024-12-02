@@ -1,10 +1,7 @@
 import asyncio
-import platform
 
 import pytest
 from slixmpp import JID, Iq
-from aiohttp.test_utils import TestClient
-from aiohttp import web
 
 from spade.container import Container
 from spade.message import Message
