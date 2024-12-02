@@ -59,28 +59,35 @@ def iq():
     }
     return iq
 
+@pytest.fixture(scope='session')
+def loop():
+    from spade.container import get_or_create_eventloop
+    loop = get_or_create_eventloop()
+    yield loop
+    loop.close()
 
-@pytest.fixture(autouse=True)
-def run_around_tests():
-    # Code that will run before your test, for example:
-    # A test function will be run at this point
+
+@pytest.fixture(autouse=True, scope="function")
+async def run_around_tests(loop):
     container = Container()
+    container.reset()
     if not container.is_running:
         container.__init__()
+    container.loop = loop
     yield
-    # Code that will run after your test, for example:
-
+    # Cancel tasks and close loop after testing
+    tasks = asyncio.all_tasks(loop=container.loop)
+    for task in tasks:
+        task.cancel()
+        from contextlib import suppress
+        with suppress(asyncio.CancelledError):
+            #container.loop.run_until_complete(task)
+            await task
+    
 
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
     pass
-
-
-@pytest.fixture(scope="module", autouse=True)
-def setup_event_loop():
-    if platform.system() == "Windows":
-        loop = asyncio.SelectorEventLoop()
-        asyncio.set_event_loop(loop)
 
 
 async def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):

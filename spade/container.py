@@ -20,6 +20,25 @@ if sys.version_info >= (3, 7) and sys.platform == "win32":
 
 
 def get_or_create_eventloop():  # pragma: no cover
+    """
+    Create or retrieve the appropriate event loop, using uvloop on Linux/macOS
+    and winloop on Windows if available.
+    """
+    # Use uvloop or winloop if available
+    if platform.system() == "Windows":
+        try:
+            import winloop
+            asyncio.set_event_loop_policy(winloop.WindowsProactorEventLoopPolicy())
+        except ImportError:
+            pass  # winloop is not available, use default
+    else:
+        try:
+            import uvloop
+            asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        except ImportError:
+            pass  # uvloop is not available, use default
+
+    # Create or retrieve the event loop
     if sys.version_info < (3, 10):
         loop = asyncio.get_event_loop()
     else:
@@ -27,10 +46,7 @@ def get_or_create_eventloop():  # pragma: no cover
             loop = asyncio.get_running_loop()
         except RuntimeError:
             loop = asyncio.new_event_loop()
-    if platform.system() == "Windows":
-        # Force SelectorEventLoop on Windows
-        loop = asyncio.SelectorEventLoop()
-    asyncio.set_event_loop(loop)
+            asyncio.set_event_loop(loop)
     return loop
 
 
@@ -120,14 +136,21 @@ def run_container(main_func: Coroutine) -> None:  # pragma: no cover
     except Exception as e:  # pragma: no cover
         logger.error("Exception in the event loop: {}".format(e))
 
+    # Cancel all pending tasks
     if sys.version_info >= (3, 7):  # pragma: no cover
-        tasks = asyncio.all_tasks(loop=container.loop)  # pragma: no cover
+        tasks = asyncio.all_tasks(loop=container.loop)
     else:
-        tasks = asyncio.Task.all_tasks(loop=container.loop)  # pragma: no cover
+        tasks = asyncio.Task.all_tasks(loop=container.loop)
+
     for task in tasks:
         task.cancel()
         with suppress(asyncio.CancelledError):
             container.run(task)
 
+    # Shutdown asynchronous generators
+    container.loop.run_until_complete(container.loop.shutdown_asyncgens())
+
+    # Close the event loop
     container.loop.close()
     logger.debug("Loop closed")
+

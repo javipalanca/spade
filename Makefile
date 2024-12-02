@@ -1,3 +1,7 @@
+# Variables
+PYTHON = python
+BUILD_DIR = dist
+
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 define BROWSER_PYSCRIPT
@@ -48,7 +52,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## check style with flake8
-	flake8 spade tests
+	ruff check spade tests
 
 test: ## run tests quickly with the default Python
 	pytest
@@ -74,14 +78,12 @@ servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: clean ## package and upload a release
-	python setup.py sdist
-	python setup.py bdist_wheel
-	twine upload dist/*
+	$(PYTHON) -m build
+	twine upload $(BUILD_DIR)/*
 
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
+	$(PYTHON) -m build
+	ls -l $(BUILD_DIR)
 
 install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+	$(PYTHON) -m pip install .

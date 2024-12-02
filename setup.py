@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
+import sys
 from setuptools import setup, find_packages
 
 
@@ -18,6 +19,11 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = parse_requirements("requirements.txt")
+
+if sys.platform.startswith("win32"):
+    requirements.append("winloop>=0.1.7")
+else:
+    requirements.append("uvloop>=0.21.0")
 
 setup_requirements = [
     'pytest-runner',

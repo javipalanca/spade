@@ -6,13 +6,10 @@ from pyjabber.server import Server
 
 
 def check_port_in_use(port, host="0.0.0.0"):
-    """Check if a port is in use"""
+    """Checks if a port is in use"""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        try:
-            s.bind((host, port))
-            return False
-        except socket.error:
-            return True
+        result = s.connect_ex((host, port))
+        return result == 0
 
 
 def create_cli():
