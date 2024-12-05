@@ -34,7 +34,9 @@ class DisconnectedException(Exception):
 
 
 class Agent(object):
-    def __init__(self, jid: str, password: str, verify_security: bool = False):
+    def __init__(
+        self, jid: str, password: str, port: int = 5222, verify_security: bool = False
+    ):
         """
         Creates an agent
 
@@ -45,6 +47,7 @@ class Agent(object):
         """
         self.jid = JID(jid)
         self.password = password
+        self.xmpp_port = port
         self.verify_security = verify_security
 
         self.behaviours = []
@@ -166,7 +169,7 @@ class Agent(object):
         )
         self.client.add_event_handler("message", self._message_received)
 
-        self.client.connect()
+        self.client.connect(self.jid.host, self.xmpp_port)
 
         done, pending = await asyncio.wait(
             [connected_task, disconnected_task, failed_auth_task],

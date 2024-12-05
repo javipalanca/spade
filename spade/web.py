@@ -2,8 +2,6 @@ import datetime
 import logging
 import socket
 from typing import Optional, Coroutine, Type
-import platform
-import asyncio
 
 import aiohttp_jinja2
 import jinja2
@@ -36,9 +34,6 @@ async def start_server_in_loop(runner: AppRunner, hostname: str, port: int, agen
         port (int): port to listen from.
         agent (spade.agent.Agent): agent that owns the web app.
     """
-    if platform.system() == "Windows":
-        loop = asyncio.SelectorEventLoop()
-        asyncio.set_event_loop(loop)
     await runner.setup()
     agent.web.server = aioweb.TCPSite(runner, hostname, port)
     await agent.web.server.start()

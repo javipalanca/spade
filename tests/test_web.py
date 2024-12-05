@@ -100,7 +100,7 @@ async def test_add_template_path():
     await agent.stop()
 
 
-async def test_check_server(aiohttp_client, loop):
+async def test_check_server(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 

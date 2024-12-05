@@ -28,12 +28,14 @@ def get_or_create_eventloop():  # pragma: no cover
     if platform.system() == "Windows":
         try:
             import winloop
+
             asyncio.set_event_loop_policy(winloop.EventLoopPolicy())
         except ImportError:
             pass  # winloop is not available, use default
     else:
         try:
             import uvloop
+
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         except ImportError:
             pass  # uvloop is not available, use default
@@ -153,4 +155,3 @@ def run_container(main_func: Coroutine) -> None:  # pragma: no cover
     # Close the event loop
     container.loop.close()
     logger.debug("Loop closed")
-
