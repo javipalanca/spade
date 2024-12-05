@@ -59,22 +59,6 @@ def iq():
     }
     return iq
 
-# @pytest.fixture(autouse=True, scope="function")
-# async def run_around_tests(event_loop):
-#     container = Container()
-#     container.reset()
-#     if not container.is_running:
-#         container.__init__()
-#     container.loop = event_loop
-#     yield
-#     # Cancel tasks and close loop after testing
-#     tasks = asyncio.all_tasks(loop=container.loop)
-#     for task in tasks:
-#         task.cancel()
-#         from contextlib import suppress
-#         with suppress(asyncio.CancelledError):
-#             await task
-    
 
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
