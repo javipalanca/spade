@@ -36,7 +36,7 @@ def create_cli():
     @click.option(
         "--purge", is_flag=True, help="Restore database file to default state (empty)"
     )
-    def run(host, client_port, server_port, debug, db, purge, log_path):
+    def run(host, client_port, server_port, debug, db, purge):
         """Launch an XMPP server"""
         if check_port_in_use(client_port, host):
             click.echo(f"Error: The port {client_port} is already in use.")
