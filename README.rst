@@ -8,10 +8,7 @@ SPADE
 
 .. image:: https://img.shields.io/pypi/pyversions/spade.svg
     :target: https://pypi.python.org/pypi/spade
-
-.. image:: https://img.shields.io/tokei/lines/github/javipalanca/spade?label=lines
-    :alt: Total Lines
-    :target: https://pepy.tech/project/spade
+    :alt: Python Versions
 
 .. image:: https://img.shields.io/github/languages/count/javipalanca/spade?label=languages
     :alt: Languages
