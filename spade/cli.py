@@ -1,4 +1,5 @@
 import sys
+import os
 import click
 import spade
 import socket
@@ -25,7 +26,17 @@ def create_cli():
     @click.option("--client_port", default=5222, help="Client port")
     @click.option("--server_port", default=5269, help="Server port")
     @click.option("--debug", is_flag=True, default=False, help="Enables debug mode")
-    def run(host, client_port, server_port, debug):
+    @click.option(
+        "--db",
+        type=str,
+        default=os.path.join("server.db"),
+        show_default=True,
+        help="Path for database file",
+    )
+    @click.option(
+        "--purge", is_flag=True, help="Restore database file to default state (empty)"
+    )
+    def run(host, client_port, server_port, debug, db, purge, log_path):
         """Launch an XMPP server"""
         if check_port_in_use(client_port, host):
             click.echo(f"Error: The port {client_port} is already in use.")
@@ -39,6 +50,8 @@ def create_cli():
             client_port=client_port,
             server_port=server_port,
             connection_timeout=600,
+            database_path=db,
+            database_purge=purge,
         )
         server.start(debug=debug)
 

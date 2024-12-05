@@ -169,7 +169,7 @@ class Agent(object):
         )
         self.client.add_event_handler("message", self._message_received)
 
-        self.client.connect(self.jid.host, self.xmpp_port)
+        self.client.connect(address=(self.jid.host, self.xmpp_port))
 
         done, pending = await asyncio.wait(
             [connected_task, disconnected_task, failed_auth_task],
