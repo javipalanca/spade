@@ -1,5 +1,5 @@
 import asyncio
-from unittest.mock import AsyncMock, Mock, MagicMock
+from unittest.mock import Mock
 
 import requests
 from aiohttp import web
@@ -100,7 +100,7 @@ async def test_add_template_path():
     await agent.stop()
 
 
-async def test_check_server(aiohttp_client, loop):
+async def test_check_server(aiohttp_client):
     agent = MockedPresenceAgentFactory()
     await agent.start(auto_register=False)
 
@@ -246,7 +246,7 @@ async def test_unsubscribe_agent(aiohttp_client, jid):
 
     response = await client.get(f"/spade/agent/unsubscribe/{jid}/")
 
-    assert str(response.url.relative()) == f"/spade"
+    assert str(response.url.relative()) == "/spade"
 
     assert agent.client.send_presence.mock_calls
     arg = agent.client.send_presence.call_args[1]

@@ -1,6 +1,6 @@
 import asyncio
 import datetime
-from unittest.mock import AsyncMock, Mock, MagicMock
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 
@@ -102,7 +102,7 @@ async def test_on_start_on_end():
 async def test_on_start_exception():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def on_start(self):
-            result = 1 / 0
+            1 / 0
             self.agent.flag = True
 
         async def run(self):
@@ -125,7 +125,7 @@ async def test_on_start_exception():
 async def test_on_run_exception():
     class TestOneShotBehaviour(OneShotBehaviour):
         async def run(self):
-            result = 1 / 0
+            1 / 0
             self.agent.flag = True
 
     agent = MockedAgentFactory()
@@ -148,7 +148,7 @@ async def test_on_end_exception():
             pass
 
         async def on_end(self):
-            result = 1 / 0
+            1 / 0
             self.agent.flag = True
 
     agent = MockedAgentFactory()

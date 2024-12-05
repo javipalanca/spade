@@ -1,7 +1,6 @@
 from unittest.mock import Mock
 import pytest
 from slixmpp.stanza import Presence, Iq
-from slixmpp.xmlstream import ET
 from slixmpp import JID
 
 from spade.presence import ContactNotFound, PresenceShow, PresenceType, Contact

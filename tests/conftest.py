@@ -7,6 +7,9 @@ from spade.container import Container
 from spade.message import Message
 
 
+pytest_plugins = 'pytest_asyncio'
+
+
 @pytest.fixture
 def jid():
     return JID("friend@localhost/home")
@@ -56,17 +59,22 @@ def iq():
     }
     return iq
 
-
-@pytest.fixture(autouse=True)
-def run_around_tests():
-    # Code that will run before your test, for example:
-    # A test function will be run at this point
-    container = Container()
-    if not container.is_running:
-        container.__init__()
-    yield
-    # Code that will run after your test, for example:
-
+# @pytest.fixture(autouse=True, scope="function")
+# async def run_around_tests(event_loop):
+#     container = Container()
+#     container.reset()
+#     if not container.is_running:
+#         container.__init__()
+#     container.loop = event_loop
+#     yield
+#     # Cancel tasks and close loop after testing
+#     tasks = asyncio.all_tasks(loop=container.loop)
+#     for task in tasks:
+#         task.cancel()
+#         from contextlib import suppress
+#         with suppress(asyncio.CancelledError):
+#             await task
+    
 
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):

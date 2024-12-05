@@ -3,13 +3,15 @@ History
 =======
 
 
-4.0.0rc (2024-11-28)
+4.0.0 (2024-12-05)
 --------------------
 
-* Added XMPP server as cli.
+* Added custom XMPP server as cli.
 * Migrated to pyproject.
-* Migrated to ruff.
+* Migrated linter to ruff.
 * Improved presence management API.
+* Agents can now select the XMPP port.
+* Use uvloop or winloop if available.
 
 3.3.3 (2024-09-05)
 ------------------
