@@ -132,7 +132,9 @@ Here is a self-explaining example::
 
 
 
-This code would output::
+This code would output
+
+.. code-block:: bash
 
     $ python sender.py
     SenderAgent started
@@ -142,7 +144,9 @@ This code would output::
 
 
 
-Ok, we have sent a message but now we need someone to receive that message. Show me the code::
+Ok, we have sent a message but now we need someone to receive that message. Show me the code
+
+.. code-block:: python
 
     import spade
     from spade.agent import Agent
@@ -217,7 +221,9 @@ In this example you can see how the ``RecvBehav`` behaviour receives the message
 *performative* with the value **inform** in the metadata and the sent message does also include that metadata, so the
 message and the template match.
 
-The code below would output::
+The code below would output
+
+.. code-block:: bash
 
     $ python send_and_recv.py
     ReceiverAgent started

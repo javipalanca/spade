@@ -20,6 +20,14 @@ spade.behaviour module
    :undoc-members:
    :show-inheritance:
 
+spade.cli module
+----------------
+
+.. automodule:: spade.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 spade.container module
 ----------------------
 

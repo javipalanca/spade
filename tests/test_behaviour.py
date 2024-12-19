@@ -117,7 +117,7 @@ async def test_on_start_exception():
 
     await behaviour.join()
 
-    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert isinstance(behaviour.exit_code, ZeroDivisionError)
     assert not agent.flag
     await agent.stop()
 
@@ -137,7 +137,7 @@ async def test_on_run_exception():
 
     await behaviour.join()
 
-    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert isinstance(behaviour.exit_code, ZeroDivisionError)
     assert not agent.flag
     await agent.stop()
 
@@ -160,7 +160,7 @@ async def test_on_end_exception():
 
     await behaviour.join()
 
-    assert type(behaviour.exit_code) == ZeroDivisionError
+    assert isinstance(behaviour.exit_code, ZeroDivisionError)
     assert not agent.flag
     await agent.stop()
 
@@ -335,14 +335,14 @@ async def test_send_message_to_external_agent():
 
     assert agent.client.send.call_count == 1
     msg_arg = agent.client.send.call_args[0][0]
-    assert msg_arg['body'] == "message body"
-    assert msg_arg['to'] == JID("to@external.xmpp.com")
+    assert msg_arg["body"] == "message body"
+    assert msg_arg["to"] == JID("to@external.xmpp.com")
     thread_found = False
-    for data in [pl for pl in msg_arg.get_payload() if pl.tag == '{jabber:x:data}x']:
-        if data.find('{jabber:x:data}title').text == SPADE_X_METADATA:
-            for field in data.findall('{jabber:x:data}field'):
-                if field.attrib['var'] == "_thread_node":
-                    assert field.find('{jabber:x:data}value').text == "thread-id"
+    for data in [pl for pl in msg_arg.get_payload() if pl.tag == "{jabber:x:data}x"]:
+        if data.find("{jabber:x:data}title").text == SPADE_X_METADATA:
+            for field in data.findall("{jabber:x:data}field"):
+                if field.attrib["var"] == "_thread_node":
+                    assert field.find("{jabber:x:data}value").text == "thread-id"
                     thread_found = True
     assert thread_found
 
@@ -366,7 +366,7 @@ async def test_send_message_without_sender():
     await behaviour.join()
 
     msg_arg = agent.client.send.call_args[0][0]
-    assert msg_arg['from'] == JID("fake@jid")
+    assert msg_arg["from"] == JID("fake@jid")
 
     await agent.stop()
 
@@ -981,7 +981,7 @@ async def test_fsm_fail_on_start():
 
     assert fsm_.is_killed()
 
-    assert type(fsm_.exit_code) == Exception
+    assert isinstance(fsm_.exit_code, Exception)
 
     await agent.stop()
 
@@ -1004,7 +1004,7 @@ async def test_fsm_fail_on_run():
 
     assert fsm_.is_killed()
 
-    assert type(fsm_.exit_code) == Exception
+    assert isinstance(fsm_.exit_code, Exception)
 
     await agent.stop()
 
@@ -1030,7 +1030,7 @@ async def test_fsm_fail_on_end():
 
     assert fsm_.is_killed()
 
-    assert type(fsm_.exit_code) == Exception
+    assert isinstance(fsm_.exit_code, Exception)
 
     await agent.stop()
 

@@ -43,10 +43,10 @@ async def test_default_template_path():
     package_loader = loader.loaders[0]
     filesystem_loader = loader.loaders[1]
 
-    assert type(loader) == ChoiceLoader
+    assert isinstance(loader, ChoiceLoader)
     assert len(loader.loaders) == 2
-    assert type(package_loader) == PackageLoader
-    assert type(filesystem_loader) == FileSystemLoader
+    assert isinstance(package_loader, PackageLoader)
+    assert isinstance(filesystem_loader, FileSystemLoader)
 
     assert "internal_tpl_agent.html" in package_loader.list_templates()
     assert "internal_tpl_agent.html" not in filesystem_loader.list_templates()
@@ -63,11 +63,11 @@ async def test_add_template_path_init():
     env = get_env(agent.web.app)
     loader = env.loader
 
-    assert type(loader) == ChoiceLoader
+    assert isinstance(loader, ChoiceLoader)
     assert len(loader.loaders) == 3
-    assert type(loader.loaders[0]) == FileSystemLoader
-    assert type(loader.loaders[1]) == PackageLoader
-    assert type(loader.loaders[2]) == FileSystemLoader
+    assert isinstance(loader.loaders[0], FileSystemLoader)
+    assert isinstance(loader.loaders[1], PackageLoader)
+    assert isinstance(loader.loaders[2], FileSystemLoader)
 
     filesystem_loader = loader.loaders[0]
 
@@ -86,11 +86,11 @@ async def test_add_template_path():
     env = get_env(agent.web.app)
     loader = env.loader
 
-    assert type(loader) == ChoiceLoader
+    assert isinstance(loader, ChoiceLoader)
     assert len(loader.loaders) == 3
-    assert type(loader.loaders[0]) == FileSystemLoader
-    assert type(loader.loaders[1]) == PackageLoader
-    assert type(loader.loaders[2]) == FileSystemLoader
+    assert isinstance(loader.loaders[0], FileSystemLoader)
+    assert isinstance(loader.loaders[1], PackageLoader)
+    assert isinstance(loader.loaders[2], FileSystemLoader)
 
     filesystem_loader = loader.loaders[0]
 
@@ -251,8 +251,8 @@ async def test_unsubscribe_agent(aiohttp_client, jid):
     assert agent.client.send_presence.mock_calls
     arg = agent.client.send_presence.call_args[1]
 
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.UNSUBSCRIBE.value
+    assert arg["pto"] == jid.bare
+    assert arg["ptype"] == PresenceType.UNSUBSCRIBE.value
 
     await agent.stop()
 
@@ -308,8 +308,10 @@ async def test_find_behaviour_fail():
 
 async def test_add_get(aiohttp_client):
     agent = MockedAgentFactory()
+
     async def controller(request):
         return {"number": 42}
+
     agent.web.add_get("/test", controller, "tests/hello.html")
 
     await agent.start(auto_register=False)

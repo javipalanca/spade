@@ -3,7 +3,13 @@ from slixmpp import Presence, JID, Iq
 from spade.presence import Contact
 
 from .factories import MockedPresenceAgentFactory
-from spade.presence import PresenceManager, PresenceInfo, PresenceShow, PresenceType, ContactNotFound
+from spade.presence import (
+    PresenceManager,
+    PresenceInfo,
+    PresenceShow,
+    PresenceType,
+    ContactNotFound,
+)
 
 
 async def test_presence_info_equals():
@@ -12,11 +18,13 @@ async def test_presence_info_equals():
 
     assert presence1 == presence2
 
+
 async def test_presence_info_not_equals():
     presence1 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.CHAT, "Online", 5)
     presence2 = PresenceInfo(PresenceType.AVAILABLE, PresenceShow.AWAY, "Online", 5)
 
     assert presence1 != presence2
+
 
 async def test_get_state_not_available():
     agent = MockedPresenceAgentFactory(available=False, show=PresenceShow.NONE)
@@ -40,18 +48,18 @@ async def test_handle_presence_available(jid):
     manager = PresenceManager(agent=mocked_agent, approve_all=False)
 
     presence = Presence()
-    presence['from'] = jid
-    presence['type'] = 'available'
-    presence['show'] = 'chat'
-    presence['status'] = 'Online'
-    presence['priority'] = '5'
+    presence["from"] = jid
+    presence["type"] = "available"
+    presence["show"] = "chat"
+    presence["status"] = "Online"
+    presence["priority"] = "5"
 
     manager.handle_presence(presence)
 
     contact = manager.get_contact(jid.bare)
     assert contact.is_available()
     assert contact.current_presence.show == PresenceShow.CHAT
-    assert contact.current_presence.status == 'Online'
+    assert contact.current_presence.status == "Online"
 
 
 async def test_handle_presence_unavailable(jid):
@@ -61,18 +69,18 @@ async def test_handle_presence_unavailable(jid):
 
     # First, set the contact as available
     presence_available = Presence()
-    presence_available['from'] = jid
-    presence_available['type'] = 'available'
-    presence_available['show'] = 'chat'
-    presence_available['status'] = 'Online'
-    presence_available['priority'] = '5'
+    presence_available["from"] = jid
+    presence_available["type"] = "available"
+    presence_available["show"] = "chat"
+    presence_available["status"] = "Online"
+    presence_available["priority"] = "5"
 
     manager.handle_presence(presence_available)
 
     # Now, set the contact as unavailable
     presence_unavailable = Presence()
-    presence_unavailable['from'] = jid
-    presence_unavailable['type'] = 'unavailable'
+    presence_unavailable["from"] = jid
+    presence_unavailable["type"] = "unavailable"
 
     manager.handle_presence(presence_unavailable)
 
@@ -86,15 +94,15 @@ async def test_handle_subscription_approve_all(jid):
     manager = PresenceManager(agent=mocked_agent, approve_all=True)
 
     presence_subscribe = Presence()
-    presence_subscribe['from'] = jid
-    presence_subscribe['type'] = 'subscribe'
-    presence_subscribe['ask'] = 'subscribe'
-    presence_subscribe['subscription'] = 'subscribe'
+    presence_subscribe["from"] = jid
+    presence_subscribe["type"] = "subscribe"
+    presence_subscribe["ask"] = "subscribe"
+    presence_subscribe["subscription"] = "subscribe"
 
     manager.handle_subscription(presence_subscribe)
 
     contact = manager.get_contact(jid.bare)
-    assert contact.subscription == 'subscribed'
+    assert contact.subscription == "subscribed"
 
 
 async def test_handle_subscription_manual(jid):
@@ -103,15 +111,14 @@ async def test_handle_subscription_manual(jid):
     manager = PresenceManager(agent=mocked_agent, approve_all=False)
 
     presence_subscribe = Presence()
-    presence_subscribe['from'] = jid
-    presence_subscribe['type'] = 'subscribe'
-    presence_subscribe['ask'] = 'subscribe'
+    presence_subscribe["from"] = jid
+    presence_subscribe["type"] = "subscribe"
+    presence_subscribe["ask"] = "subscribe"
 
     manager.handle_subscription(presence_subscribe)
 
     contact = manager.get_contact(jid.bare)
-    assert contact.subscription == 'subscribe'
-
+    assert contact.subscription == "subscribe"
 
 
 async def test_set_presence():
@@ -126,26 +133,24 @@ async def test_set_presence():
     assert manager.current_presence.priority == 10
 
 
-
 async def test_get_contact_presence(jid):
     mocked_agent = MockedPresenceAgentFactory()
     await mocked_agent.start()
     manager = PresenceManager(agent=mocked_agent, approve_all=False)
 
     presence = Presence()
-    presence['from'] = jid
-    presence['type'] = 'available'
-    presence['show'] = 'chat'
-    presence['status'] = 'Online'
-    presence['priority'] = '5'
+    presence["from"] = jid
+    presence["type"] = "available"
+    presence["show"] = "chat"
+    presence["status"] = "Online"
+    presence["priority"] = "5"
 
     manager.handle_presence(presence)
 
     presence_info = manager.get_contact_presence(jid.bare)
     assert presence_info.show == PresenceShow.CHAT
-    assert presence_info.status == 'Online'
+    assert presence_info.status == "Online"
     assert presence_info.priority == 5
-
 
 
 async def test_contact_not_found():
@@ -168,7 +173,7 @@ async def test_handle_roster_update(jid: JID, iq: Iq):
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "both"
     assert contacts[bare_jid].groups == ["Friends"]
@@ -183,19 +188,15 @@ async def test_update_roster(jid: JID):
     await agent.start(auto_register=False)
 
     agent.client.update_roster(jid=JID("johndoe@localhost"), name="My Friend")
-    
+
     jid2 = JID("johndoe@localhost")
 
     iq = agent.client.make_iq_result(ito=jid)
-    #set namespace to roster
-    iq['roster']['xmlns'] = 'jabber:iq:roster'
-    iq['type'] = 'result'
-    iq['roster']['items'] = {
-        str(jid2): {
-            'name': 'My Friend',
-            'subscription': 'to',
-            'groups': []
-        }
+    # set namespace to roster
+    iq["roster"]["xmlns"] = "jabber:iq:roster"
+    iq["type"] = "result"
+    iq["roster"]["items"] = {
+        str(jid2): {"name": "My Friend", "subscription": "to", "groups": []}
     }
 
     agent.client.event("roster_update", iq)
@@ -212,7 +213,7 @@ async def test_update_roster(jid: JID):
 
     bare_jid = jid2.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "to"
     assert contacts[bare_jid].groups == []

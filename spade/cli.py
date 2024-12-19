@@ -1,9 +1,11 @@
 import sys
-import os
 import click
 import spade
 import socket
+
 from pyjabber.server import Server
+from rich.console import Console
+from rich.panel import Panel
 
 
 def check_port_in_use(port, host="0.0.0.0"):
@@ -29,7 +31,7 @@ def create_cli():
     @click.option(
         "--db",
         type=str,
-        default=os.path.join("server.db"),
+        default="server.db",
         show_default=True,
         help="Path for database file",
     )
@@ -53,7 +55,39 @@ def create_cli():
             database_path=db,
             database_purge=purge,
         )
-        server.start(debug=debug)
+
+        print_spade_info()
+        container = spade.container.Container()
+        loop = container.loop
+        loop.run_until_complete(server.start())
+
+    def print_spade_info():
+        """Prints SPADE information"""
+
+        console = Console()
+
+        project_name = "[bold green]SPADE[/bold green] - [yellow]Smart Python Agent Development Environment[/yellow]"
+        author = (
+            "[green]Development Lead:[/green]\n"
+            "  - [cyan]Javi Palanca[/cyan]\n"
+            "[green]Funded by:[/green]\n"
+            "  - [cyan]Valencian Research Institute for Artificial Intelligence (VRAIN)[/cyan]\n"
+            "[green]URL:[/green]\n"
+            "  - [cyan] http://github.com/javipalanca/spade[/cyan]\n"
+            "[green]Documentation:[/green]\n"
+            "  - [cyan] http://spade-mas.readthedocs.io/[/cyan]"
+        )
+
+        footer = f"[cyan]Version:[/cyan] {spade.__version__}   [magenta]License:[/magenta] MIT"
+
+        console.print(
+            Panel.fit(
+                f"{project_name}\n\n{author}",
+                title="SPADE",
+                subtitle=footer,
+                border_style="blue",
+            )
+        )
 
     @cli.command()
     def version():

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `message` package."""
+
 import copy
 
 from slixmpp.plugins.xep_0004 import Form
@@ -14,22 +15,27 @@ from spade.message import Message, SPADE_X_METADATA
 
 def test_prepare(message):
     aiomsg = message.prepare()
-    assert aiomsg['to'] == JID("to@localhost")
-    assert aiomsg['from'] == JID("sender@localhost")
-    assert aiomsg['body'] == "message body"
+    assert aiomsg["to"] == JID("to@localhost")
+    assert aiomsg["from"] == JID("sender@localhost")
+    assert aiomsg["body"] == "message body"
 
-    for form in [pl for pl in aiomsg.get_payload() if pl.tag == '{jabber:x:data}x']:
-        if form.find('{jabber:x:data}title').text == SPADE_X_METADATA:
-            for field in form.findall('{jabber:x:data}field'):
-                if field.attrib['var'] == "_thread_node":
-                    assert field.find('{jabber:x:data}value').text == "thread-id"
+    for form in [pl for pl in aiomsg.get_payload() if pl.tag == "{jabber:x:data}x"]:
+        if form.find("{jabber:x:data}title").text == SPADE_X_METADATA:
+            for field in form.findall("{jabber:x:data}field"):
+                if field.attrib["var"] == "_thread_node":
+                    assert field.find("{jabber:x:data}value").text == "thread-id"
                 else:
-                    assert message.get_metadata(field.attrib['var']) == field.find('{jabber:x:data}value').text
+                    assert (
+                        message.get_metadata(field.attrib["var"])
+                        == field.find("{jabber:x:data}value").text
+                    )
 
 
 def test_message_to_string(message):
-    assert message.__str__() == ('<message to="to@localhost" from="sender@localhost" thread="thread-id" metadata={'
-                                 '\'metadata1\': \'value1\', \'metadata2\': \'value2\'}>\nmessage body\n</message>')
+    assert message.__str__() == (
+        '<message to="to@localhost" from="sender@localhost" thread="thread-id" metadata={'
+        "'metadata1': 'value1', 'metadata2': 'value2'}>\nmessage body\n</message>"
+    )
 
 
 def test_make_reply(message):
@@ -50,10 +56,7 @@ def test_message_from_node_attribute_error():
 def test_body_with_languages():
     msg = slixmppMessage()
     msg.chat()
-    msg['body'] = {
-        'en': 'Hello World',
-        'es': 'Hola Mundo'
-    }
+    msg["body"] = {"en": "Hello World", "es": "Hola Mundo"}
 
     new_msg = Message.from_node(msg)
     assert new_msg.body == "Hello World"
@@ -67,21 +70,13 @@ def test_message_from_node():
     slimsg.chat()
 
     data = Form()
-    data['type'] = 'form'
+    data["type"] = "form"
 
-    data.add_field(
-        var="performative",
-        ftype='text-single',
-        value="request"
-    )
+    data.add_field(var="performative", ftype="text-single", value="request")
 
-    data.add_field(
-        var="_thread_node",
-        ftype='text-single',
-        value="thread-id"
-    )
+    data.add_field(var="_thread_node", ftype="text-single", value="thread-id")
 
-    data['title'] = SPADE_X_METADATA
+    data["title"] = SPADE_X_METADATA
     slimsg.append(data)
 
     msg = Message.from_node(slimsg)
@@ -98,10 +93,10 @@ def test_thread_empty():
     assert msg.metadata == {}
 
     slimsg = msg.prepare()
-    for data in [pl for pl in slimsg.get_payload() if pl.tag == '{jabber:x:data}x']:
-        if data.findall('{jabber:x:data}title').text == SPADE_X_METADATA:
-            for field in data.findall('{jabber:x:data}field'):
-                assert field.attrib['var'] != "_thread_node"
+    for data in [pl for pl in slimsg.get_payload() if pl.tag == "{jabber:x:data}x"]:
+        if data.findall("{jabber:x:data}title").text == SPADE_X_METADATA:
+            for field in data.findall("{jabber:x:data}field"):
+                assert field.attrib["var"] != "_thread_node"
 
 
 def test_equal(message):

@@ -1,15 +1,13 @@
-multidict==5.2.0
-#pyasn1-modules==0.4.1
-#pyasn1==0.6.1
+#multidict==5.2.0
 slixmpp==1.8.5
-aiohttp==3.10.5
+aiohttp>=3.10.4
 aiohttp_jinja2==1.6
 jinja2==3.0.3
 jinja2-time==0.2.0
 timeago==1.0.16
 singletonify==0.2.4
 pytz==2022.1
-pyjabber==0.1.8
+pyjabber>=0.1.9
 uvloop>=0.21.0; platform_system != "Windows"
 winloop>=0.1.7; platform_system == "Windows"
 

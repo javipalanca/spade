@@ -11,4 +11,5 @@ Contributors
 ------------
 
 * Sergio Alemany <https://github.com/Gersiete>
+* Manel Soler <https://github.com/sosanzma>
 

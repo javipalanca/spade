@@ -34,7 +34,7 @@ test_requirements = parse_requirements("requirements_dev.txt")
 
 setup(
     name='spade',
-    version='4.0.0rc4',
+    version='4.0.0',
     description="Smart Python Agent Development Environment",
     long_description=readme + '\n\n' + history,
     author="Javi Palanca",
