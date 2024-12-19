@@ -4,4 +4,4 @@ build:
 python:
     version: 3.8
     install:
-        - requirements: requirements_dev.txt
+        - requirements: requirements.txt
