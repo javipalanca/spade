@@ -65,12 +65,9 @@ async def main():
     recv_passwd = getpass.getpass()
 
     receiveragent = ReceiverAgent(recv_jid, recv_passwd)
-    await receiveragent.start(auto_register=True)
-    print("Receiver started")
-
     senderagent = SenderAgent(recv_jid, sender_jid, sender_passwd)
-    await senderagent.start(auto_register=True)
-    print("Sender started")
+    await spade.start_agents([receiveragent, senderagent])
+    print("Agents started")
 
     await spade.wait_until_finished(receiveragent)
     print("Agents finished")

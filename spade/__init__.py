@@ -30,3 +30,9 @@ async def wait_until_finished(agents: Union[List[AgentType], AgentType]) -> None
     for ag in agents:
         logger.info(f"Stopping agent {ag.jid}")
         await ag.stop()
+
+
+async def start_agents(agents: List[AgentType]) -> None:
+    if not isinstance(agents, list):
+        agents = [agents]
+    await asyncio.gather(*[ag.start() for ag in agents])

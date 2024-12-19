@@ -23,7 +23,13 @@ class MockedAgentFactory(factory.Factory):
 
 class MockedPresenceConnectedAgent(Agent):
     def __init__(
-        self, available=None, show=PresenceShow.NONE, status=None, priority=0, *args, **kwargs
+        self,
+        available=None,
+        show=PresenceShow.NONE,
+        status=None,
+        priority=0,
+        *args,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
         if status is None:
@@ -37,7 +43,9 @@ class MockedPresenceConnectedAgent(Agent):
 
     def mock_presence(self):
         show = self.show if self.show is not None else PresenceShow.NONE
-        self.presence.set_presence(PresenceType.AVAILABLE, show, self.status, self.priority)
+        self.presence.set_presence(
+            PresenceType.AVAILABLE, show, self.status, self.priority
+        )
 
 
 class MockedPresenceAgentFactory(factory.Factory):

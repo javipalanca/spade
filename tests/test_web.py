@@ -251,8 +251,8 @@ async def test_unsubscribe_agent(aiohttp_client, jid):
     assert agent.client.send_presence.mock_calls
     arg = agent.client.send_presence.call_args[1]
 
-    assert arg['pto'] == jid.bare
-    assert arg['ptype'] == PresenceType.UNSUBSCRIBE.value
+    assert arg["pto"] == jid.bare
+    assert arg["ptype"] == PresenceType.UNSUBSCRIBE.value
 
     await agent.stop()
 
@@ -308,8 +308,10 @@ async def test_find_behaviour_fail():
 
 async def test_add_get(aiohttp_client):
     agent = MockedAgentFactory()
+
     async def controller(request):
         return {"number": 42}
+
     agent.web.add_get("/test", controller, "tests/hello.html")
 
     await agent.start(auto_register=False)

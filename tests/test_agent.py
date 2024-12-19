@@ -72,6 +72,7 @@ async def test_client():
 
     await agent.stop()
 
+
 #
 # async def test_register():
 #     agent = MockedAgentFactory()

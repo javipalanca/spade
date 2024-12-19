@@ -5,20 +5,46 @@ Quick Start
 Creating your first dummy agent
 -------------------------------
 
-It's time for us to build our first SPADE agent. We'll assume that we have a registered user in an XMPP server with a
-jid and a password. The jid contains the agent's name (before the @) and the DNS or IP of the XMPP server (after the @).
-But **remember**! You should have your own jid and password in an XMPP server running in your own computer or in the
-Internet. In this example we will assume that our jid is *your_jid@your_xmpp_server* and the password is *your_password*.
+It's time for us to build our first SPADE agent. SPADE includes its own XMPP server, 
+which can be launched with the command ``spade run``. Agents are automatically registered on this server. 
+However, if desired, an external server can also be used.
+In this example, we will assume that our jid is *your_jid@localhost* and the password is *your_password*.
+
+.. code-block:: bash
+
+    $ spade run
+    ╭─────────────────────────────── SPADE ────────────────────────────────╮
+    │ SPADE - Smart Python Agent Development Environment                   │
+    │                                                                      │
+    │ Development Lead:                                                    │
+    │   - Javi Palanca                                                     │
+    │ Funded by:                                                           │
+    │   - Valencian Research Institute for Artificial Intelligence (VRAIN) │
+    │ URL:                                                                 │
+    │   -  http://github.com/javipalanca/spade                             │
+    │ Documentation:                                                       │
+    │   -  http://spade-mas.readthedocs.io/                                │
+    ╰────────────────── Version: 4.0.0      License: MIT ──────────────────╯
+    yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:89 - Starting server...
+    yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:133 - Client domain => 0.0.0.0
+    yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:134 - Server is listening clients on [('0.0.0.0', 5222), ('158.42.184.157', 5222)]
+    yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:149 - Server is listening servers on [('0.0.0.0', 5269)]
+    yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:150 - Server started...
+    yyyy-m-d h:m:s | INFO     | pyjabber.webpage.adminPage:start:35 - Serving admin webpage on http://localhost:9090
+
+
+.. warning:: The SPADE server **MUST** be running in order to run the agents. If you close the server, the agents will stop working. 
+
+.. hint:: To install a different XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
 
 .. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
 
-.. hint:: To install an XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
 
-A basic SPADE agent is really a python script that imports the spade module and that uses the constructs defined therein.
-For starters, fire up you favorite Python editor and create a file called ``dummyagent.py``.
+A basic SPADE agent is really a Python script that imports the spade module and that 
+uses the constructs defined therein. For starters, fire up your favorite Python editor and create a file called ``dummyagent.py``.
 
-.. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist
-    and are only for demonstration purposes.
+
+.. warning:: Remember to change the example's jids and passwords by your own accounts. These accounts do not exist and are only for demonstration purposes.
 
 To create an agent in a project you just need to: ::
 
@@ -29,7 +55,7 @@ To create an agent in a project you just need to: ::
             print("Hello World! I'm agent {}".format(str(self.jid)))
 
     async def main():
-        dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+        dummy = DummyAgent("dummy@localhost", "your_password")
         await dummy.start()
 
     if __name__ == "__main__":
@@ -37,10 +63,12 @@ To create an agent in a project you just need to: ::
 
 
 This agent is only printing on screen a message during its setup and stopping. If you run this script you get
-the following output::
+the following output
+
+.. code-block:: bash
 
     $ python dummyagent.py
-    Hello World! I'm agent your_jid@your_xmpp_server
+    Hello World! I'm agent dummy@localhost
     $
 
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
@@ -49,6 +77,9 @@ dumb agent that does nothing, but it serves well as a starting point to understa
 .. note:: A SPADE agent is an asyncronous agent. That means that all the code to run an agent must be executed in an
     asyncronous loop. This is done by the ``spade.run()`` function. This function receives a coroutine as a parameter
     and runs it in an async loop. In our example, the ``main()`` coroutine is the one that is run in the loop.
+
+.. note:: If you need to run a set of agents in parallel you can use the ``spade.start_agents(agent_list)`` function. This function
+    receives a list of agents and runs them in parallel. This is useful when you need to run a big set of agents.
 
 An agent with a behaviour
 -------------------------
@@ -87,7 +118,7 @@ Example::
             self.add_behaviour(b)
 
     async def main():
-        dummy = DummyAgent("your_jid@your_xmpp_server", "your_password")
+        dummy = DummyAgent("dummy@localhost", "your_password")
         await dummy.start()
         print("DummyAgent started. Check its console to see the output.")
 
