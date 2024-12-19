@@ -68,7 +68,7 @@ async def test_client():
 
     await agent.start(auto_register=False)
 
-    assert type(agent.client) == spade.xmpp_client.XMPPClient
+    assert isinstance(agent.client, spade.xmpp_client.XMPPClient)
 
     await agent.stop()
 

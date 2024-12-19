@@ -181,7 +181,7 @@ async def test_get_contacts(jid: JID, iq: Iq):
     bare_jid = jid.bare
     assert bare_jid in contacts
     assert len(contacts) == 2
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "both"
     assert contacts[bare_jid].groups == ["Friends"]
@@ -209,7 +209,7 @@ async def test_get_contacts_with_update(jid: JID, iq: Iq):
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "both"
     assert contacts[bare_jid].groups == ["Friends"]
@@ -239,7 +239,7 @@ async def test_get_contacts_with_update_unavailable(jid: JID, iq: Iq):
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "both"
     assert contacts[bare_jid].groups == ["Friends"]
@@ -260,7 +260,7 @@ async def test_get_contact(jid: JID, iq: Iq):
     agent.presence.handle_roster_update(iq)
     contact = agent.presence.get_contact(jid)
 
-    assert type(contact) == Contact
+    assert isinstance(contact, Contact)
     assert contact.name == "My Friend"
     assert contact.subscription == "both"
     assert len(contact.groups) == 1

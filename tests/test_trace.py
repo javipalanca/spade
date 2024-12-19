@@ -45,7 +45,7 @@ def test_append():
     trace.append("EVENT")
     assert len(trace.store) == 1
     assert trace.store[0][1] == "EVENT"
-    assert type(trace.store[0][0]) == datetime.datetime
+    assert isinstance(trace.store[0][0], datetime.datetime)
     assert trace.store[0][2] is None
 
 
@@ -63,7 +63,7 @@ def test_append_with_category():
     trace.append("EVENT", "CATEGORY")
     assert len(trace.store) == 1
     assert trace.store[0][1] == "EVENT"
-    assert type(trace.store[0][0]) == datetime.datetime
+    assert isinstance(trace.store[0][0], datetime.datetime)
     assert trace.store[0][2] == "CATEGORY"
 
 

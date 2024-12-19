@@ -173,7 +173,7 @@ async def test_handle_roster_update(jid: JID, iq: Iq):
 
     bare_jid = jid.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "both"
     assert contacts[bare_jid].groups == ["Friends"]
@@ -213,7 +213,7 @@ async def test_update_roster(jid: JID):
 
     bare_jid = jid2.bare
     assert bare_jid in contacts
-    assert type(contacts[bare_jid]) == Contact
+    assert isinstance(contacts[bare_jid], Contact)
     assert contacts[bare_jid].name == "My Friend"
     assert contacts[bare_jid].subscription == "to"
     assert contacts[bare_jid].groups == []
