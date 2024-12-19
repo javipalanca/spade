@@ -65,6 +65,7 @@ Features
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
 * Web-based interface
+* Incorporates a custom XMPP server (pyjabber)
 * Use any XMPP server
 
 Plugins
@@ -72,12 +73,16 @@ Plugins
 
 - **spade_bdi** (BDI agents with AgentSpeak):
         - Code: https://github.com/javipalanca/spade_bdi
+        - Documentation: https://spade-bdi.readthedocs.io
 - **spade_pubsub** (PubSub protocol for agents):
         - Code: https://github.com/javipalanca/spade_pubsub
-        - documentation: https://spade-pubsub.readthedocs.io
+        - Documentation: https://spade-pubsub.readthedocs.io
 - **spade_artifact** (Artifacts for SPADE):
         - Code: https://github.com/javipalanca/spade_artifact
         - Documentation: https://spade-artifact.readthedocs.io
+- **spade_norms** (Norms for SPADE):
+        - Code: https://github.com/javipalanca/spade_norms
+        - Documentation: https://spade-norms.readthedocs.io/
 - **spade_bokeh** (bokeh plots for agents):
         - Code: https://github.com/javipalanca/spade_bokeh
         - Documentation: https://spade-bokeh.readthedocs.io
