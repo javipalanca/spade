@@ -12,7 +12,7 @@ from spade import agent, behaviour
 from spade.behaviour import State
 from spade.message import Message
 from spade.template import Template
-from spade.presence import PresenceShow, PresenceType, Contact
+from spade.presence import PresenceShow, PresenceType, PresenceInfo, Contact
 
 
 class WebAgent(agent.Agent):
@@ -34,9 +34,11 @@ class WebAgent(agent.Agent):
     class DummyFSMBehav(behaviour.FSMBehaviour):
         async def on_start(self) -> None:
             print(f"FSM starting at initial state {self.current_state}")
+
         async def on_end(self) -> None:
             print(f"FSM finished at state {self.current_state}")
-        def setup(self):
+
+        def setup_states(self):
             class S(State):
                 async def run(self):
                     await asyncio.sleep(100)
@@ -70,7 +72,7 @@ class WebAgent(agent.Agent):
         timeoutbehav = self.DummyTimeoutBehav(start_at=datetime.datetime.now())
         self.add_behaviour(timeoutbehav, template=template3)
         fsm_behav = self.DummyFSMBehav()
-        fsm_behav.setup()
+        fsm_behav.setup_states()
         self.add_behaviour(fsm_behav, template=template4)
         behavs = [dummybehav, periodbehav, timeoutbehav, fsm_behav]
 
@@ -89,8 +91,11 @@ class WebAgent(agent.Agent):
             "agent4@fake.server", PresenceType.AVAILABLE, show=PresenceShow.CHAT
         )
         self.add_fake_contact("agent5@fake.server", PresenceType.UNAVAILABLE)
-        self.add_fake_contact("agent6@fake.server", PresenceType.AVAILABLE, 
-                              show=PresenceShow.EXTENDED_AWAY)
+        self.add_fake_contact(
+            "agent6@fake.server",
+            PresenceType.AVAILABLE,
+            show=PresenceShow.EXTENDED_AWAY,
+        )
 
         # Send and Receive some fake messages
         self.traces.reset()
@@ -113,14 +118,14 @@ class WebAgent(agent.Agent):
     def add_fake_contact(self, jid, presence, show=None):
         jid = JID(jid)
 
-        self.presence.contacts[jid.bare] =  Contact(jid.bare, name=jid.bare, subscription='both', ask='', groups=[])
+        contact = Contact(
+            jid.bare, name=jid.bare, subscription="both", ask="", groups=[]
+        )
 
-        stanza = Presence(sfrom=jid)
-        stanza.set_type(presence.value)
-        if show:
-            stanza["type"] = show.value
+        pinfo = PresenceInfo(presence, show=show)
+        contact.update_presence("resource", pinfo)
 
-        self.client.event("presence_available", stanza)
+        self.presence.contacts[jid.bare] = contact
 
 
 async def main(jid, pwd, port):

@@ -37,8 +37,8 @@ class PresenceInfo:
         self,
         presence_type: PresenceType,
         show: PresenceShow,
-        status: Optional[str],
-        priority: int,
+        status: Optional[str] = "",
+        priority: int = 0,
     ):
         self.type = presence_type
         self.show = show

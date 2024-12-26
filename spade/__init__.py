@@ -12,7 +12,7 @@ from .container import run_container as run  # noqa: F401
 
 __author__ = """Javi Palanca"""
 __email__ = "jpalanca@gmail.com"
-__version__ = "4.0.0"
+__version__ = "4.0.1"
 
 __all__ = ["agent", "behaviour", "message", "template"]
 
@@ -27,9 +27,8 @@ async def wait_until_finished(agents: Union[List[AgentType], AgentType]) -> None
             await asyncio.sleep(1)
     except KeyboardInterrupt:
         logger.warning("Keyboard interrupt received. Stopping SPADE...")
-    for ag in agents:
-        logger.info(f"Stopping agent {ag.jid}")
-        await ag.stop()
+    finally:
+        await asyncio.gather(*[a.stop() for a in agents if a.is_alive()])
 
 
 async def start_agents(agents: List[AgentType]) -> None:

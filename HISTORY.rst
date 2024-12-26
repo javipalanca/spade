@@ -3,6 +3,15 @@ History
 =======
 
 
+4.0.1 (2024-12-26)
+--------------------
+
+* Fixed minor bugs.
+* Agents are now stopped when Ctrl+C is pressed.
+* Added --debug flag to the CLI.
+* Updated documentation config file.
+* Lint examples.
+
 4.0.0 (2024-12-19)
 --------------------
 

@@ -15,7 +15,7 @@ class DummyAgent(Agent):
         async def run(self):
             msg = await self.receive()
             if msg:
-                print("Msg recibido:", msg)
+                print("Msg received:", msg)
                 reply = msg.make_reply()
                 reply.body = msg.body
                 await self.send(reply)
@@ -33,10 +33,10 @@ class DummyAgent(Agent):
 
 
 async def main():
-    jid = "chatagent@gtirouter.dsic.upv.es"  #input("JID> ")
-    passwd = "1234" #getpass.getpass()
+    jid = input("JID> ")
+    passwd = getpass.getpass()
 
-    hjid = "javi@gtirouter.dsic.upv.es" #input("Human JID> ")
+    hjid = input("Human JID> ")
 
     dummy = DummyAgent(jid, passwd)
     dummy.human_jid = hjid
@@ -49,4 +49,3 @@ async def main():
 
 if __name__ == "__main__":
     spade.run(main())
-
