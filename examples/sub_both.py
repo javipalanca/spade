@@ -16,14 +16,13 @@ class Sub1Agent(Agent):
             await asyncio.sleep(10)
             print(self.agent.presence.get_contacts())
 
-
     async def setup(self):
         print("Agent starting . . .")
         self.presence.subscribe(self.sub2)
         self.presence.on_subscribed = lambda jid: print(jid, "Subscribed")
         self.presence.on_available = lambda jid, info, last: print(jid, "Available")
         self.presence.on_subscribe = self.approve
-        #self.presence.approve_all = True
+        # self.presence.approve_all = True
         b = self.MyBehav()
         self.add_behaviour(b)
 
@@ -55,4 +54,3 @@ async def main():
 
 if __name__ == "__main__":
     spade.run(main())
-

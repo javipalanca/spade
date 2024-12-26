@@ -43,7 +43,9 @@ class Agent1(Agent):
             self.presence.on_available = self.on_available
 
             self.presence.set_presence(PresenceType.AVAILABLE)
-            print(f"[{self.agent.name}] Agent {self.agent.name} is asking for subscription to {self.agent.jid2}")
+            print(
+                f"[{self.agent.name}] Agent {self.agent.name} is asking for subscription to {self.agent.jid2}"
+            )
             self.presence.subscribe(self.agent.jid2)
 
 
@@ -76,9 +78,13 @@ class Agent2(Agent):
                     self.agent.name, jid.split("@")[0]
                 )
             )
-            print(f"[{self.agent.name}] Agent {self.agent.name} has received a subscription query from {jid}")
+            print(
+                f"[{self.agent.name}] Agent {self.agent.name} has received a subscription query from {jid}"
+            )
             self.presence.approve_subscription(jid)
-            print(f"[{self.agent.name}] And after approving it, Agent {self.agent.name} is asking for subscription to {jid}")
+            print(
+                f"[{self.agent.name}] And after approving it, Agent {self.agent.name} is asking for subscription to {jid}"
+            )
             self.presence.subscribe(jid)
 
         async def run(self):

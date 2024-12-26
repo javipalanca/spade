@@ -110,6 +110,11 @@ class Container(object):
         """
         return self.__agents[jid]
 
+    def stop_agents(self):
+        self.loop.run_until_complete(
+            asyncio.gather(*[a.stop() for a in self.__agents.values()])
+        )
+
     async def send(self, msg: Message, behaviour: BehaviourType) -> None:
         """
         This method sends the message using the container mechanism
@@ -137,6 +142,8 @@ def run_container(main_func: Coroutine) -> None:  # pragma: no cover
         logger.warning("Keyboard interrupt received. Stopping SPADE...")
     except Exception as e:  # pragma: no cover
         logger.error("Exception in the event loop: {}".format(e))
+
+    container.stop_agents()
 
     # Cancel all pending tasks
     if sys.version_info >= (3, 7):  # pragma: no cover

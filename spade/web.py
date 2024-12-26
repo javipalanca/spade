@@ -284,7 +284,10 @@ class WebApp(object):
         ]
         try:
             c = self.agent.presence.get_contact(JID(agent_jid))
-            contact = {"show": c.get_presence().show.value}
+            if c.get_presence().show is not None:
+                contact = {"show": c.get_presence().show.value}
+            else:
+                contact = {"show": PresenceShow.NONE.value}
         except ContactNotFound:
             # raise 404
             raise aioweb.HTTPNotFound()
@@ -293,6 +296,7 @@ class WebApp(object):
 
         except Exception as e:
             logger.error(e)
+            raise e
 
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
 
