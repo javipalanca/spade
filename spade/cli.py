@@ -6,6 +6,7 @@ import socket
 from pyjabber.server import Server
 from rich.console import Console
 from rich.panel import Panel
+from loguru import logger
 
 
 def check_port_in_use(port, host="0.0.0.0"):
@@ -46,6 +47,19 @@ def create_cli():
         if check_port_in_use(server_port, host):
             click.echo(f"Error: The port {server_port} is already in use.")
             sys.exit(1)
+
+        logger.remove()
+        if debug:
+            level="DEBUG"
+        else:
+            level="INFO"
+
+        logger.add(
+            sys.stderr,
+            enqueue=True,
+            format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> - <level>{level}: {message}</level>",
+            level=level,
+        )
 
         server = Server(
             host=host,
