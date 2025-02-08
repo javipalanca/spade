@@ -327,14 +327,15 @@ async def test_send_message_to_external_agent():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client.send = Mock()
     behaviour = SendBehaviour()
+    behaviour._xmpp_send = AsyncMock()
     agent.add_behaviour(behaviour)
 
     await behaviour.join()
 
-    assert agent.client.send.call_count == 1
-    msg_arg = agent.client.send.call_args[0][0]
+    assert behaviour._xmpp_send.await_count == 1
+    msg_arg = behaviour._xmpp_send.await_args_list[0].kwargs["msg"]
+    msg_arg = msg_arg.prepare()
     assert msg_arg["body"] == "message body"
     assert msg_arg["to"] == JID("to@external.xmpp.com")
     thread_found = False
@@ -359,13 +360,14 @@ async def test_send_message_without_sender():
     agent = MockedAgentFactory()
     await agent.start(auto_register=False)
 
-    agent.client.send = Mock()
     behaviour = SendBehaviour()
+    behaviour._xmpp_send = AsyncMock()
     agent.add_behaviour(behaviour)
 
     await behaviour.join()
 
-    msg_arg = agent.client.send.call_args[0][0]
+    msg_arg = behaviour._xmpp_send.call_args_list[0].kwargs["msg"]
+    msg_arg = msg_arg.prepare()
     assert msg_arg["from"] == JID("fake@jid")
 
     await agent.stop()

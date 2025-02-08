@@ -50,9 +50,9 @@ def create_cli():
 
         logger.remove()
         if debug:
-            level="DEBUG"
+            level = "DEBUG"
         else:
-            level="INFO"
+            level = "INFO"
 
         logger.add(
             sys.stderr,
