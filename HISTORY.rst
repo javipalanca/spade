@@ -3,6 +3,10 @@ History
 =======
 
 
+4.0.2 (2025-01-09)
+--------------------
+* Fixed bug sending messages to external agents.
+
 4.0.1 (2024-12-26)
 --------------------
 
