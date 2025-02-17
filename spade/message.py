@@ -2,6 +2,7 @@ import logging
 from typing import Optional, Dict, Type
 
 import slixmpp.stanza
+from slixmpp import ClientXMPP
 from slixmpp.plugins.xep_0004 import Form
 
 import spade.message
@@ -252,15 +253,18 @@ class Message(MessageBase):
             metadata=self.metadata,
         )
 
-    def prepare(self) -> slixmpp.stanza.Message:
+    def prepare(self, client: ClientXMPP) -> slixmpp.stanza.Message:
         """
         Returns a slixmpp.stanza.Message built from the Message and prepared to be sent.
 
+        Args:
+            client (ClientXMPP): An XMPP client, whose stream will be used to send the message
+
         Returns:
-          slixmpp.stanza.Message: the message prepared to be sent
+            slixmpp.stanza.Message: the message prepared to be sent
 
         """
-        msg = slixmpp.stanza.Message()
+        msg = client.Message()
         msg["to"] = self.to
         msg["from"] = self.sender
         msg["body"] = self.body

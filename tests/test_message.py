@@ -4,7 +4,9 @@
 """Tests for `message` package."""
 
 import copy
+from unittest.mock import MagicMock
 
+import slixmpp.stanza
 from slixmpp.plugins.xep_0004 import Form
 from slixmpp import JID
 from slixmpp import Message as slixmppMessage
@@ -14,7 +16,9 @@ from spade.message import Message, SPADE_X_METADATA
 
 
 def test_prepare(message):
-    aiomsg = message.prepare()
+    mock_client = MagicMock()
+    mock_client.Message.return_value = slixmpp.stanza.Message()
+    aiomsg = message.prepare(mock_client)
     assert aiomsg["to"] == JID("to@localhost")
     assert aiomsg["from"] == JID("sender@localhost")
     assert aiomsg["body"] == "message body"
@@ -92,7 +96,9 @@ def test_thread_empty():
     assert msg.thread is None
     assert msg.metadata == {}
 
-    slimsg = msg.prepare()
+    mock_client = MagicMock()
+    mock_client.Message.return_value = slixmpp.stanza.Message()
+    slimsg = msg.prepare(mock_client)
     for data in [pl for pl in slimsg.get_payload() if pl.tag == "{jabber:x:data}x"]:
         if data.findall("{jabber:x:data}title").text == SPADE_X_METADATA:
             for field in data.findall("{jabber:x:data}field"):

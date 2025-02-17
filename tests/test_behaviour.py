@@ -1,8 +1,9 @@
 import asyncio
 import datetime
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import AsyncMock, Mock, MagicMock
 
 import pytest
+import slixmpp.stanza
 
 from slixmpp import JID
 
@@ -335,7 +336,10 @@ async def test_send_message_to_external_agent():
 
     assert behaviour._xmpp_send.await_count == 1
     msg_arg = behaviour._xmpp_send.await_args_list[0].kwargs["msg"]
-    msg_arg = msg_arg.prepare()
+
+    mock_client = MagicMock()
+    mock_client.Message.return_value = slixmpp.stanza.Message()
+    msg_arg = msg_arg.prepare(mock_client)
     assert msg_arg["body"] == "message body"
     assert msg_arg["to"] == JID("to@external.xmpp.com")
     thread_found = False
@@ -367,7 +371,10 @@ async def test_send_message_without_sender():
     await behaviour.join()
 
     msg_arg = behaviour._xmpp_send.call_args_list[0].kwargs["msg"]
-    msg_arg = msg_arg.prepare()
+
+    mock_client = MagicMock()
+    mock_client.Message.return_value = slixmpp.stanza.Message()
+    msg_arg = msg_arg.prepare(mock_client)
     assert msg_arg["from"] == JID("fake@jid")
 
     await agent.stop()
@@ -416,7 +423,10 @@ async def test_receive_with_timeout():
 
     assert agent.is_alive()
     assert agent.has_behaviour(behaviour)
-    agent._message_received(msg.prepare())
+
+    mock_client = MagicMock()
+    mock_client.Message.return_value = slixmpp.stanza.Message()
+    agent._message_received(msg.prepare(mock_client))
 
     await behaviour.join()
 
@@ -516,9 +526,18 @@ async def test_multiple_templates():
     behaviour = Template3Behaviour()
     agent.add_behaviour(behaviour, template3)
 
-    msg1 = Message(metadata={"performative": "template1"}).prepare()
-    msg2 = Message(metadata={"performative": "template2"}).prepare()
-    msg3 = Message(metadata={"performative": "template3"}).prepare()
+    mock_client1 = MagicMock()
+    mock_client1.Message.return_value = slixmpp.stanza.Message()
+
+    mock_client2 = MagicMock()
+    mock_client2.Message.return_value = slixmpp.stanza.Message()
+
+    mock_client3 = MagicMock()
+    mock_client3.Message.return_value = slixmpp.stanza.Message()
+
+    msg1 = Message(metadata={"performative": "template1"}).prepare(mock_client1)
+    msg2 = Message(metadata={"performative": "template2"}).prepare(mock_client2)
+    msg3 = Message(metadata={"performative": "template3"}).prepare(mock_client3)
 
     await agent.start(auto_register=False)
 
