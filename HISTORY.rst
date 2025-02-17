@@ -2,6 +2,12 @@
 History
 =======
 
+4.0.3 (2025-02-17)
+--------------------
+* Prepare XMPP messages linked to client stream.
+* Added CLI support for in-memory database in the XMPP server.
+* Added CLI support for custom connection timeout.
+* Fixed bug in XMPP sending method.
 
 4.0.2 (2025-01-09)
 --------------------

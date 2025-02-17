@@ -314,7 +314,7 @@ class WebApp(object):
         body = form["message"]
         logger.info("Sending message to {}: {}".format(agent_jid, body))
         msg = Message(to=agent_jid, sender=str(self.agent.jid), body=body)
-        slixmpp_msg = msg.prepare()
+        slixmpp_msg = msg.prepare(self.agent.client)
         self.agent.client.send(slixmpp_msg)
         msg.sent = True
         self.agent.traces.append(msg)
