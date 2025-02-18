@@ -38,9 +38,14 @@ def create_cli():
         help="Path for database file",
     )
     @click.option(
-        "--purge", is_flag=True, default=False, help="Restore database file to default state (empty)"
+        "--purge",
+        is_flag=True,
+        default=False,
+        help="Restore database file to default state (empty)",
     )
-    @click.option("--memory", is_flag=True, default=False, help="Use an in-memory database")
+    @click.option(
+        "--memory", is_flag=True, default=False, help="Use an in-memory database"
+    )
     def run(host, client_port, server_port, debug, timeout, db, purge, memory):
         """Launch an XMPP server"""
         if check_port_in_use(client_port, host):
