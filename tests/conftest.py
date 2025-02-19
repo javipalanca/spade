@@ -1,10 +1,11 @@
 import asyncio
 
 import pytest
+import pytest_asyncio
 from slixmpp import JID, Iq
 
 from spade.message import Message
-
+from pyjabber.server import Server
 
 pytest_plugins = "pytest_asyncio"
 
@@ -63,6 +64,20 @@ def iq():
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
     pass
+
+
+@pytest_asyncio.fixture(scope="function", autouse=False)
+async def server(event_loop):
+    server = Server()
+    server_task = event_loop.create_task(server.start())
+    await server.ready.wait()
+    yield event_loop
+    server_task.cancel()
+    try:
+        await asyncio.sleep(10)
+        await server_task
+    except asyncio.CancelledError:
+        pass
 
 
 async def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
