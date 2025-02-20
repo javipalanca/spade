@@ -66,7 +66,14 @@ def cleanup(request):
     pass
 
 
-@pytest_asyncio.fixture(scope="function", autouse=False)
+@pytest.fixture(scope="module")
+def event_loop():
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest_asyncio.fixture(scope="module", autouse=False)
 async def server(event_loop):
     server = Server()
     server_task = event_loop.create_task(server.start())
@@ -74,7 +81,6 @@ async def server(event_loop):
     yield event_loop
     server_task.cancel()
     try:
-        await asyncio.sleep(10)
         await server_task
     except asyncio.CancelledError:
         pass
