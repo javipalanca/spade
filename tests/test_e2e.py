@@ -1,9 +1,15 @@
 import asyncio
+import logging
 import threading
+import time
+from sys import stdout
+from unittest.mock import Mock, MagicMock
 
+import loguru
 import pytest
 
 import spade
+from spade import wait_until_finished, start_agents
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
@@ -17,13 +23,22 @@ PWD = "1234"
 
 @pytest.mark.asyncio
 async def test_connection(server, capsys):
+    loguru.logger.add(
+        sink=stdout,
+        enqueue=True,
+        format="<green>{time}</green> - <level>{level}: {message}</level>",
+        level='TRACE',
+    )
+    logging.getLogger("spade.Agent")
     class DummyAgent(Agent):
         async def setup(self):
             print("Hello World! I'm agent {}".format(str(self.jid)))
+            await self.stop()
 
     dummy = DummyAgent(JID, PWD)
-    await dummy.start()
-    await dummy.stop()
+    dummy.set_loop(server)
+    await start_agents([dummy])
+    # await wait_until_finished(dummy)
 
     output = capsys.readouterr().out
     assert output in f"Hello World! I'm agent {JID}\n"
@@ -62,8 +77,8 @@ async def test_msg_via_container(server, capsys):
 
     receiver = ReceiverAgent(f"{JID}/1", PWD)
     sender = SenderAgent(f"{JID}/2", PWD)
-    await spade.start_agents([receiver, sender])
-    await spade.wait_until_finished(receiver)
+    await start_agents([receiver, sender])
+    await wait_until_finished(receiver)
 
     assert msg.body in capsys.readouterr().out
 
@@ -106,12 +121,8 @@ async def test_msg_via_xmpp(server, capsys):
     receiver = ReceiverAgent(f"{JID}", PWD)
     sender = SenderAgent(f"{JID2}", PWD)
 
-    loop = server
-
-    receiver_task = loop.create_task(receiver.start())
-    sender_task = loop.create_task(sender.start())
-
-    await asyncio.gather(receiver_task, sender_task)
+    await spade.start_agents([receiver, sender])
+    await spade.wait_until_finished([receiver, sender])
     try:
         res = await msg_received
         assert f"Hello World {JID}" in res
@@ -121,57 +132,192 @@ async def test_msg_via_xmpp(server, capsys):
         pytest.fail("TEST ERROR")
 
 @pytest.mark.asyncio
-async def test_msg_via_xmpp2(server, capsys):
-    msg = Message(to=f"test")
-    msg.set_metadata("performative", "inform")
-    msg.body = f"Hello World {JID}"
+async def test_ping_pong_container(server, capsys):
+    ping_future = asyncio.Future()
+    pong_future = asyncio.Future()
 
-    msg_received = asyncio.Future()
+    class PingAgent(Agent):
+        def __init__(self, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            super().__init__(*args, **kwargs)
 
-    class SenderAgent(Agent):
-        class InformBehav(OneShotBehaviour):
+        class PingBehav(OneShotBehaviour):
             async def run(self):
-                self.agent.container.reset()
+                msg = Message(to=self.agent.recv_jid)
+                msg.set_metadata("performative", "inform")
+                msg.body = "Ping {}".format(self.agent.recv_jid)
+
                 await self.send(msg)
+                msg_response = await self.receive(timeout=5)
+                if msg_response:
+                    pong_future.set_result(msg_response.body)
+
                 await self.agent.stop()
 
         async def setup(self):
-            b = self.InformBehav()
+            b = self.PingBehav()
             self.add_behaviour(b)
 
-    class ReceiverAgent(Agent):
-        class RecvBehav(OneShotBehaviour):
+    class PongAgent(Agent):
+        def __init__(self, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            super().__init__(*args, **kwargs)
+
+        class PongBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=5)
-                if msg_res:
-                    msg_received.set_result(msg.body)
-                else:
-                    msg_received.set_result("NOT RECEIVED")
+                msg = await self.receive(timeout=5)
+                if msg:
+                    ping_future.set_result(msg.body)
+                    msg_response = Message(to=self.agent.recv_jid)
+                    msg_response.set_metadata("performative", "inform")
+                    msg_response.body = "Pong {}".format(self.agent.recv_jid)
+                    await self.send(msg_response)
 
                 await self.agent.stop()
 
         async def setup(self):
-            b = self.RecvBehav()
-            template = Template()
-            template.set_metadata("performative", "inform")
-            self.add_behaviour(b, template)
+            b = self.PongBehav()
+            self.add_behaviour(b)
 
-    receiver = ReceiverAgent(f"{JID}", PWD)
-    sender = SenderAgent(f"{JID2}", PWD)
+    ping = PingAgent(f"{JID2}", f"{JID}", PWD)
+    pong = PongAgent(f"{JID}", f"{JID2}", PWD)
 
-    loop = server
+    await start_agents(pong)
+    time.sleep(1)
+    await start_agents(ping)
+    await wait_until_finished([ping, pong])
 
-    receiver_task = loop.create_task(receiver.start())
-    sender_task = loop.create_task(sender.start())
+    assert ping_future.result() == 'Ping test2@localhost'
+    assert pong_future.result() == 'Pong test@localhost'
 
-    await asyncio.gather(receiver_task, sender_task)
-    try:
-        res = await msg_received
-        assert res == f"Hello World {JID}"
-    except AssertionError as e:
-        pytest.fail()
-    except Exception as e:
-        pytest.fail("TEST ERROR")
+
+@pytest.mark.asyncio
+async def test_ping_pong_xmpp(server, capsys):
+    ping_future = asyncio.Future()
+    pong_future = asyncio.Future()
+
+    class PingAgent(Agent):
+        def __init__(self, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            super().__init__(*args, **kwargs)
+
+        class PingBehav(OneShotBehaviour):
+            async def run(self):
+                self.agent.container.reset()
+                msg = Message(to=self.agent.recv_jid)
+                msg.set_metadata("performative", "inform")
+                msg.body = "Ping {}".format(self.agent.recv_jid)
+
+                await self.send(msg)
+                msg_response = await self.receive(timeout=5)
+                if msg_response:
+                    pong_future.set_result(msg_response.body)
+
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.PingBehav()
+            self.add_behaviour(b)
+
+    class PongAgent(Agent):
+        def __init__(self, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            super().__init__(*args, **kwargs)
+
+        class PongBehav(OneShotBehaviour):
+            async def run(self):
+                msg = await self.receive(timeout=5)
+                if msg:
+                    ping_future.set_result(msg.body)
+                    msg_response = Message(to=self.agent.recv_jid)
+                    msg_response.set_metadata("performative", "inform")
+                    msg_response.body = "Pong {}".format(self.agent.recv_jid)
+                    self.agent.container.reset()
+                    await self.send(msg_response)
+
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.PongBehav()
+            self.add_behaviour(b)
+
+    ping = PingAgent(f"{JID2}", f"{JID}", PWD)
+    pong = PongAgent(f"{JID}", f"{JID2}", PWD)
+
+    await start_agents(pong)
+    time.sleep(1)
+    await start_agents(ping)
+    await wait_until_finished([ping, pong])
+
+    assert ping_future.result() == 'Ping test2@localhost'
+    assert pong_future.result() == 'Pong test@localhost'
+    # assert ping.
+
+@pytest.mark.asyncio
+async def test_ping_pong(server, capsys):
+    ping_future = asyncio.Future()
+    pong_future = asyncio.Future()
+
+    class PingAgent(Agent):
+        def __init__(self, beh, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            self.beh = beh
+            super().__init__(*args, **kwargs)
+
+        async def setup(self):
+            self.add_behaviour(self.beh)
+
+    class PingBehav(OneShotBehaviour):
+        async def run(self):
+            msg = Message(to=self.agent.recv_jid)
+            msg.set_metadata("performative", "inform")
+            msg.body = "Ping {}".format(self.agent.recv_jid)
+
+            await self.send(msg)
+            msg_response = await self.receive(timeout=5)
+            if msg_response:
+                pong_future.set_result(msg_response.body)
+
+            await self.agent.stop()
+
+    class PongAgent(Agent):
+        def __init__(self, beh, recv_jid, *args, **kwargs):
+            self.recv_jid = recv_jid
+            self.beh = beh
+            super().__init__(*args, **kwargs)
+
+        async def setup(self):
+            self.add_behaviour(self.beh)
+
+    class PongBehav(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(timeout=5)
+            if msg:
+                ping_future.set_result(msg.body)
+                msg_response = Message(to=self.agent.recv_jid)
+                msg_response.set_metadata("performative", "inform")
+                msg_response.body = "Pong {}".format(self.agent.recv_jid)
+                await self.send(msg_response)
+
+            await self.agent.stop()
+
+    ping_beh = PingBehav()
+    pong_beh = PongBehav()
+    ping = PingAgent(ping_beh, f"{JID2}", f"{JID}", PWD)
+    pong = PongAgent(pong_beh, f"{JID}", f"{JID2}", PWD)
+
+    ping.dispatch = MagicMock(side_effect=ping.dispatch)
+    pong.dispatch = MagicMock(side_effect=pong.dispatch)
+
+    await start_agents([pong])
+    time.sleep(1)
+    await start_agents([ping])
+    await wait_until_finished([ping, pong])
+
+    assert ping_future.result() == 'Ping test2@localhost'
+    assert pong_future.result() == 'Pong test@localhost'
+    # assert ping.dispatch.assert_called()
+    assert pong.dispatch.assert_called()
 
 #
 # @pytest.mark.asyncio
