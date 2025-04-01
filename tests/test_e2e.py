@@ -18,7 +18,6 @@ PWD = "1234"
 
 @pytest.fixture(autouse=True)
 async def cleanup():
-    yield
     # The Container class is a Singleton, and is reused across all the test
     # SPADE run closes the container event loop on the spade.run() exit, and blocks
     # further executions in the session. It's necessary to force a new instance of the
@@ -28,6 +27,8 @@ async def cleanup():
         if isinstance(closure_cell.cell_contents, _Box):
             box = closure_cell.cell_contents    # this should be the box instance
             box.value = None                    # set to None
+
+    yield
 
 
 def test_connection(capsys):
