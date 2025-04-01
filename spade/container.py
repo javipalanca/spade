@@ -5,6 +5,8 @@ import platform
 from contextlib import suppress
 from typing import Coroutine, Awaitable
 
+import loguru
+from pyjabber.server import Server
 from singletonify import singleton
 
 from .behaviour import BehaviourType
@@ -110,6 +112,7 @@ class Container(object):
         """
         return self.__agents[jid]
 
+
     def stop_agents(self):
         self.loop.run_until_complete(
             asyncio.gather(*[a.stop() for a in self.__agents.values()])
@@ -134,9 +137,18 @@ class Container(object):
         self.loop.run_until_complete(coro)
 
 
-def run_container(main_func: Coroutine) -> None:  # pragma: no cover
+def run_container(main_func: Coroutine, embedded_xmpp_server: bool = False) -> None:  # pragma: no cover
     container = Container()
+    server = None
+
     try:
+        if embedded_xmpp_server:
+            loguru.logger.remove()  # Silent server
+            server_instance = Server(host='localhost', database_in_memory=True)
+            server = container.loop.create_task(server_instance.start())
+            container.run(server_instance.ready.wait())
+            logger.info("SPADE XMPP server running on localhost:5222")
+
         container.run(main_func)
     except KeyboardInterrupt:
         logger.warning("Keyboard interrupt received. Stopping SPADE...")
@@ -144,6 +156,11 @@ def run_container(main_func: Coroutine) -> None:  # pragma: no cover
         logger.error("Exception in the event loop: {}".format(e))
 
     container.stop_agents()
+
+    # Close server
+    if embedded_xmpp_server and server:
+        server.cancel()
+        container.run(server)
 
     # Cancel all pending tasks
     if sys.version_info >= (3, 7):  # pragma: no cover
@@ -157,7 +174,7 @@ def run_container(main_func: Coroutine) -> None:  # pragma: no cover
             container.run(task)
 
     # Shutdown asynchronous generators
-    container.loop.run_until_complete(container.loop.shutdown_asyncgens())
+    # container.loop.run_until_complete(container.loop.shutdown_asyncgens())
 
     # Close the event loop
     container.loop.close()
