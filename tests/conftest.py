@@ -1,16 +1,10 @@
 import asyncio
-import os
-import threading
-import time
 
-import loguru
 import pytest
-import pytest_asyncio
-from loguru import logger
 from slixmpp import JID, Iq
 
 from spade.message import Message
-from pyjabber.server import Server
+
 
 pytest_plugins = "pytest_asyncio"
 
@@ -69,65 +63,6 @@ def iq():
 @pytest.fixture(scope="module", autouse=True)
 def cleanup(request):
     pass
-
-#
-@pytest.fixture(scope="function")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-#
-# @pytest.fixture
-# def thread_loop():
-#     loop = asyncio.new_event_loop()
-#     yield loop
-#     loop.close()
-
-
-@pytest.fixture(scope="function", autouse=False)
-def server(event_loop):
-    # async def run(loop):
-    #     time.sleep(100)
-    #     asyncio.set_event_loop(loop)
-    #     asyncio.run(run_server_loop(loop))
-    #
-    # async def run_server_loop(loop):
-    #     # asyncio.set_event_loop(loop)
-    #     # server = Server(database_in_memory=True)
-    #     # loop.run_until_complete(server.start())
-    #     loop.run_until_complete(lambda x: asyncio.sleep(100))
-    #     try:
-    #         await asyncio.sleep(100)
-    #         await server.start()# loop.run_forever()
-    #     finally:
-    #         await server.stop_server()
-    #         # loop.run_until_complete(server.stop_server())
-    #
-    # server_loop = asyncio.new_event_loop()
-    # server_thread = threading.Thread(
-    #     target=run,
-    #     args=(server_loop,),
-    #     daemon=True
-    # )
-    #
-    # server_thread.start()
-    # time.sleep(0.5)
-
-    loop = event_loop
-    # server = Server()
-    # loop.create_task(server.start())
-    #
-    # time.sleep(0.5)
-
-    yield loop
-
-    # loop.run_until_complete(server.stop_server())
-
-    #
-    # yield asyncio.new_event_loop()
-    #
-    # server_loop.call_soon_threadsafe(server_loop.stop)
-    # server_thread.join()
 
 
 async def wait_for_behaviour_is_killed(behaviour, tries=500, sleep=0.01):
