@@ -9,6 +9,7 @@ from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.container import Container
 from spade.message import Message
+from spade.presence import PresenceType, Contact
 from spade.template import Template
 
 JID = "test@localhost"
@@ -136,3 +137,60 @@ def test_msg_via_xmpp(capsys):
     spade.run(main(), True)
 
     assert msg_res_future.result() == msg.body
+
+
+def test_presence_subscribe():
+    class Agent1(Agent):
+        async def setup(self):
+            self.add_behaviour(self.Behav1())
+
+        class Behav1(OneShotBehaviour):
+            def on_subscribe(self, jid):
+                self.presence.approve_subscription(jid)
+                asyncio.create_task(self.agent.stop())
+
+            async def run(self):
+                self.presence.on_subscribe = self.on_subscribe
+                self.presence.set_presence(PresenceType.AVAILABLE)
+                self.presence.subscribe(self.agent.jid2)
+
+    class Agent2(Agent):
+        async def setup(self):
+            self.add_behaviour(self.Behav2())
+
+        class Behav2(OneShotBehaviour):
+            def on_subscribe(self, jid):
+                self.presence.approve_subscription(jid)
+                self.presence.subscribe(jid)
+                asyncio.create_task(self.agent.stop())
+
+            async def run(self):
+                self.presence.on_subscribe = self.on_subscribe
+                self.presence.set_presence(PresenceType.AVAILABLE)
+
+    async def main():
+        agent2 = Agent2(JID2, PWD)
+        agent1 = Agent1(JID, PWD)
+        agent1.jid2 = JID2
+        agent2.jid1 = JID
+        await agent2.start()
+        await agent1.start()
+
+        await spade.wait_until_finished([agent1, agent2])
+
+        try:
+            await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 10)
+        except asyncio.TimeoutError:
+            assert pytest.fail()
+
+        assert JID in agent1.presence.get_contacts()
+        contact1: Contact = agent1.presence.get_contact(JID)
+        assert contact1.jid == JID
+        assert contact1.subscription == 'both'
+
+        assert JID2 in agent2.presence.get_contacts()
+        contact2: Contact = agent2.presence.get_contact(JID2)
+        assert contact2.jid == JID
+        assert contact2.subscription == 'both'
+
+    spade.run(main(), True)
