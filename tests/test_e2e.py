@@ -34,18 +34,26 @@ async def cleanup():
 
 def test_connection(capsys):
     class DummyAgent(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.res = ""
+
+        class DummyBehav(OneShotBehaviour):
+            async def run(self):
+                self.agent.res += f"Hello World! I'm agent {JID}"
+                await self.agent.stop()
+
         async def setup(self):
-            print("Hello World! I'm agent {}".format(str(self.jid)))
-            await self.stop()
+            self.add_behaviour(self.DummyBehav())
+
+    dummy = DummyAgent(JID, PWD)
 
     async def main():
-        dummy = DummyAgent(JID, PWD)
         await spade.start_agents([dummy])
+        await spade.wait_until_finished([dummy])
 
     spade.run(main(), True)
-
-    output = capsys.readouterr().out
-    assert output in f"Hello World! I'm agent {JID}\n"
+    assert dummy.res == f"Hello World! I'm agent {JID}"
 
 
 def test_msg_via_container(capsys):
