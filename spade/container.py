@@ -174,7 +174,7 @@ def run_container(main_func: Coroutine, embedded_xmpp_server: bool = False) -> N
             container.run(task)
 
     # Shutdown asynchronous generators
-    # container.loop.run_until_complete(container.loop.shutdown_asyncgens())
+    container.loop.run_until_complete(container.loop.shutdown_asyncgens())
 
     # Close the event loop
     container.loop.close()
