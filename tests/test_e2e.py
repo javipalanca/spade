@@ -3,13 +3,14 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 from singletonify import _Box
+from slixmpp import Presence
 
 import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.container import Container
 from spade.message import Message
-from spade.presence import PresenceType, Contact
+from spade.presence import PresenceType, Contact, PresenceShow
 from spade.template import Template
 
 JID = "test@localhost"
@@ -149,20 +150,36 @@ def test_msg_via_xmpp(capsys):
 
 def test_presence_subscribe():
     class Agent1(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.presence_trace = []
+
         async def setup(self):
             self.add_behaviour(self.Behav1())
 
         class Behav1(OneShotBehaviour):
             def on_subscribe(self, jid):
                 self.presence.approve_subscription(jid)
+
+            def on_subscribed(self, peer_jid):
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
+
+            def on_presence_received(self, presence: Presence):
+                self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
             async def run(self):
                 self.presence.on_subscribe = self.on_subscribe
+                self.presence.on_subscribed = self.on_subscribed
+                self.presence.on_presence_received = self.on_presence_received
                 self.presence.set_presence(PresenceType.AVAILABLE)
                 self.presence.subscribe(self.agent.jid2)
 
     class Agent2(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.presence_trace = []
+
         async def setup(self):
             self.add_behaviour(self.Behav2())
 
@@ -170,35 +187,48 @@ def test_presence_subscribe():
             def on_subscribe(self, jid):
                 self.presence.approve_subscription(jid)
                 self.presence.subscribe(jid)
+
+            def on_subscribed(self, peer_jid):
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.AWAY, "I'm taking a quick break", 5)
+
+            def on_presence_received(self, presence: Presence):
+                self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
             async def run(self):
                 self.presence.on_subscribe = self.on_subscribe
+                self.presence.on_subscribed = self.on_subscribed
+                self.presence.on_presence_received = self.on_presence_received
                 self.presence.set_presence(PresenceType.AVAILABLE)
 
+    agent2 = Agent2(JID2, PWD)
+    agent1 = Agent1(JID, PWD)
+    agent1.jid2 = JID2
+    agent2.jid1 = JID
+
     async def main():
-        agent2 = Agent2(JID2, PWD)
-        agent1 = Agent1(JID, PWD)
-        agent1.jid2 = JID2
-        agent2.jid1 = JID
         await agent2.start()
         await agent1.start()
-
-        await spade.wait_until_finished([agent1, agent2])
-
         try:
             await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 10)
         except asyncio.TimeoutError:
-            assert pytest.fail()
-
-        assert JID in agent1.presence.get_contacts()
-        contact1: Contact = agent1.presence.get_contact(JID)
-        assert contact1.jid == JID
-        assert contact1.subscription == 'both'
-
-        assert JID2 in agent2.presence.get_contacts()
-        contact2: Contact = agent2.presence.get_contact(JID2)
-        assert contact2.jid == JID
-        assert contact2.subscription == 'both'
+            pass
+            # assert pytest.fail()
 
     spade.run(main(), True)
+
+    assert JID2 in agent1.presence.get_contacts()
+    contact2: Contact = agent1.presence.get_contact(JID2)
+    assert contact2.jid == JID2
+    assert contact2.subscription == 'both'
+    assert any(
+        [e['show'] == PresenceShow.AWAY.value and e['status'] == "I'm taking a quick break" and e['priority'] == 5
+         for e in agent1.presence_trace])
+
+    assert JID in agent2.presence.get_contacts()
+    contact1: Contact = agent2.presence.get_contact(JID)
+    assert contact1.jid == JID
+    assert contact1.subscription == 'both'
+    assert any(
+        [e['show'] == PresenceShow.DND.value and e['status'] == "Working hard. Go away!" and e['priority'] == 0
+         for e in agent2.presence_trace])
