@@ -33,7 +33,7 @@ async def cleanup():
     yield
 
 
-def test_connection(capsys):
+def test_connection():
     class DummyAgent(Agent):
         def __init__(self, jid, password):
             super().__init__(jid, password)
@@ -57,7 +57,7 @@ def test_connection(capsys):
     assert dummy.res == f"Hello World! I'm agent {JID}"
 
 
-def test_msg_via_container(capsys):
+def test_msg_via_container():
     msg = Message(to=f"{JID}/1")
     msg.set_metadata("performative", "inform")
     msg.body = f"Hello World {JID}/1"
@@ -73,11 +73,15 @@ def test_msg_via_container(capsys):
             self.add_behaviour(b)
 
     class ReceiverAgent(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.res = ""
+
         class RecvBehav(OneShotBehaviour):
             async def run(self):
                 msg_res = await self.receive(timeout=10)
                 if msg_res:
-                    print(msg_res.body)
+                    self.agent.res = msg_res.body
 
                 await self.agent.stop()
 
@@ -87,19 +91,20 @@ def test_msg_via_container(capsys):
             template.set_metadata("performative", "inform")
             self.add_behaviour(b, template)
 
-    async def main():
-        receiver = ReceiverAgent(f"{JID}/1", PWD)
-        sender = SenderAgent(f"{JID}/2", PWD)
+    receiver = ReceiverAgent(f"{JID}/1", PWD)
+    sender = SenderAgent(f"{JID}/2", PWD)
 
-        await spade.start_agents([receiver, sender])
+    async def main():
+        await receiver.start()
+        await sender.start()
         await spade.wait_until_finished(receiver)
 
     spade.run(main(), True)
 
-    assert msg.body in capsys.readouterr().out
+    assert msg.body in receiver.res
 
 
-def test_msg_via_xmpp(capsys):
+def test_msg_via_xmpp():
     msg = Message(to=f"{JID}")
     msg.set_metadata("performative", "inform")
     msg.body = f"Hello World {JID}"
@@ -130,15 +135,15 @@ def test_msg_via_xmpp(capsys):
             template.set_metadata("performative", "inform")
             self.add_behaviour(b, template)
 
+    receiver = ReceiverAgent(f"{JID}", PWD)
+    sender = SenderAgent(f"{JID2}", PWD)
+
     async def main():
         with patch('spade.container.Container.send') as mock_send:
             async def send(*args):
                 await args[1]._xmpp_send(msg=args[0])
 
             mock_send.side_effect = send
-
-            receiver = ReceiverAgent(f"{JID}", PWD)
-            sender = SenderAgent(f"{JID2}", PWD)
 
             await spade.start_agents([receiver, sender])
             await spade.wait_until_finished(receiver)
@@ -215,7 +220,7 @@ def test_presence_subscribe():
             pass
             # assert pytest.fail()
 
-    spade.run(main(), True)
+    spade.run(main(), False)
 
     assert JID2 in agent1.presence.get_contacts()
     contact2: Contact = agent1.presence.get_contact(JID2)

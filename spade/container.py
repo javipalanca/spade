@@ -7,6 +7,7 @@ from typing import Coroutine, Awaitable
 
 import loguru
 from pyjabber.server import Server
+from pyjabber.server_parameters import Parameters
 from singletonify import singleton
 
 from .behaviour import BehaviourType
@@ -144,7 +145,9 @@ def run_container(main_func: Coroutine, embedded_xmpp_server: bool = False) -> N
     try:
         if embedded_xmpp_server:
             loguru.logger.remove()  # Silent server
-            server_instance = Server(host='localhost', database_in_memory=True)
+            server_instance = Server(Parameters(
+                host='localhost', database_in_memory=True
+            ))
             server = container.loop.create_task(server_instance.start())
             container.run(server_instance.ready.wait())
             logger.info("SPADE XMPP server running on localhost:5222")
