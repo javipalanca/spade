@@ -2,12 +2,40 @@
 Quick Start
 ===========
 
-Creating your first dummy agent
+Preparing the environment
 -------------------------------
+Before starting to use the SPADE platform, we need to set up the execution environment.
+The platform is based on the XMPP communication protocol and requires a dedicated server to work properly.
+Here, you can choose between three scenarios:
 
-It's time for us to build our first SPADE agent. SPADE includes its own XMPP server, 
-which can be launched with the command ``spade run``. Agents are automatically registered on this server. 
-However, if desired, an external server can also be used.
+SPADE coroutine executor
+########################
+A SPADE agent is an asynchronous agent. This means that all the code required to run an agent must be executed inside an asynchronous loop.
+This is done using the *spade.run()* function. This function takes a coroutine as its first parameter and runs it within an async loop.
+The second parameter is a boolean (False by default). If set to True, an internal server instance will be launched, managed during the coroutine lifespan, and deleted after it finishes.
+
+.. code-block:: python
+
+    async def main():
+            dummy = DummyAgent("dummy@localhost", "your_password")
+            await dummy.start()
+
+        if __name__ == "__main__":
+            spade.run(main(), True)
+                        ^       ^
+                        |       |
+                    coroutine   |
+                                |
+                            Server Flag
+This is the preferred method for launching SPADE scripts, as the user does not need to install or manage any external server
+
+.. note:: The launched server will have *localhost* as its host. Take this into account when creating the agents and assigning their JIDs.
+    A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
+
+SPADE CLI command
+#####################
+The same server explained prevoiusly can be launched detached from any agent using ``spade run``.
+This approach is useful in more complex MAS integrations and for obtaining a detailed log of the messages sent between agents.
 In this example, we will assume that our jid is *your_jid@localhost* and the password is *your_password*.
 
 .. code-block:: bash
@@ -32,15 +60,32 @@ In this example, we will assume that our jid is *your_jid@localhost* and the pas
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:150 - Server started...
     yyyy-m-d h:m:s | INFO     | pyjabber.webpage.adminPage:start:35 - Serving admin webpage on http://localhost:9090
 
+.. note:: The launched server will have *localhost* as its host. Take this into account when creating the agents and assigning their JIDs.
+    A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
 
-.. warning:: The SPADE server **MUST** be running in order to run the agents. If you close the server, the agents will stop working. 
+Dedicated XMPP server
+####################
+Any XMPP server can be used with the SPADE platform. Prosody is a well-tested solution with SPADE,
+but there is a wide catalog of popular servers with large communities.
+
+.. warning:: Make sure that *spade.run()* does not launch the internal server if your dedicated server
+    is already running, as this can cause conflicts with the port binding.
+
+
+Creating your first dummy agent
+-------------------------------
+
+It's time for us to build our first SPADE agent.
+
+
+.. warning:: The SPADE server **MUST** be running in order to run the agents. If you close the server, the agents will stop working.
 
 .. hint:: To install a different XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
 
 .. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
 
 
-A basic SPADE agent is really a Python script that imports the spade module and that 
+A basic SPADE agent is really a Python script that imports the spade module and that
 uses the constructs defined therein. For starters, fire up your favorite Python editor and create a file called ``dummyagent.py``.
 
 
