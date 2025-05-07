@@ -1,19 +1,17 @@
 import asyncio
 import sys
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import loguru
 import pytest
 import pytest_asyncio
 from pyjabber.server import Server
 from pyjabber.server_parameters import Parameters
-from singletonify import _Box
 from slixmpp import Presence
 
 import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
-from spade.container import Container
 from spade.message import Message
 from spade.presence import PresenceType, Contact, PresenceShow
 from spade.template import Template
@@ -28,7 +26,7 @@ async def server():
     loguru.logger.remove()
     loguru.logger.add(sys.stdout, level="TRACE")
 
-    server = Server(Parameters(database_in_memory=True))
+    server = Server(Parameters(database_in_memory=True, database_purge=True))
     task = asyncio.create_task(server.start())
     yield task
     task.cancel()
@@ -55,7 +53,7 @@ async def test_connection():
 
     dummy = DummyAgent(JID, PWD)
 
-    await spade.start_agents([dummy])
+    await dummy.start()
     await spade.wait_until_finished([dummy])
 
     assert dummy.res == f"Hello World! I'm agent {JID}"
@@ -212,13 +210,12 @@ async def test_presence_subscribe():
     agent1.jid2 = JID2
     agent2.jid1 = JID
 
-    await spade.start_agents(agent2)
-    await spade.start_agents(agent1)
+    await agent2.start()
+    await agent1.start()
     try:
         await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 10)
     except asyncio.TimeoutError:
-        pass
-        # assert pytest.fail()
+        assert pytest.fail()
 
     assert JID2 in agent1.presence.get_contacts()
     contact2: Contact = agent1.presence.get_contact(JID2)
