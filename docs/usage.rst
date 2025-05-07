@@ -2,13 +2,45 @@
 Quick Start
 ===========
 
-Creating your first dummy agent
+Preparing the environment
 -------------------------------
+Before you start using the SPADE platform, you need to set up the execution environment.
+The platform is based on the XMPP communication protocol and requires a dedicated server to function properly.
+At this point, you can choose between three scenarios:
 
-It's time for us to build our first SPADE agent. SPADE includes its own XMPP server, 
-which can be launched with the command ``spade run``. Agents are automatically registered on this server. 
-However, if desired, an external server can also be used.
-In this example, we will assume that our jid is *your_jid@localhost* and the password is *your_password*.
+SPADE coroutine executor
+########################
+A SPADE agent is asynchronous, meaning that all the code required to run an agent must be executed within an asynchronous loop.
+This is achieved using the *spade.run()* function. This function takes a coroutine as its first parameter and runs it within an
+asynchronous loop. The second parameter is a boolean (default is False). If set to True, an internal server instance will be
+launched, managed during the coroutine's lifespan, and deleted once it finishes.
+
+.. code-block:: python
+
+    async def main():
+            dummy = DummyAgent("dummy@localhost", "your_password")
+            await dummy.start()
+
+        if __name__ == "__main__":
+            spade.run(main(), True)
+                        ^       ^
+                        |       |
+                    coroutine   |
+                                |
+                            Server Flag
+This is the preferred method for launching SPADE scripts, as it eliminates the need for the user to install or manage any external server.
+
+
+.. note:: The launched server will use *localhost* as its host. Keep this in mind when creating agents and assigning their JIDs.
+    A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
+
+
+
+SPADE CLI command
+#####################
+The same server described previously can be launched independently from any agent using *spade run*.
+This approach is useful for more complex MAS integrations and for obtaining a detailed log of the messages exchanged between agents.
+
 
 .. code-block:: bash
 
@@ -32,15 +64,32 @@ In this example, we will assume that our jid is *your_jid@localhost* and the pas
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:150 - Server started...
     yyyy-m-d h:m:s | INFO     | pyjabber.webpage.adminPage:start:35 - Serving admin webpage on http://localhost:9090
 
+.. note:: The launched server will use *localhost* as its host. Keep this in mind when creating agents and assigning their JIDs.
+    A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
 
-.. warning:: The SPADE server **MUST** be running in order to run the agents. If you close the server, the agents will stop working. 
+Dedicated XMPP server
+####################
+Any XMPP server can be used with the SPADE platform. *Prosody* is a well-tested solution with SPADE,
+but there is a wide range of popular servers with large communities.
+
+.. warning:: Make sure that *spade.run()* does not launch the internal server if your dedicated server
+    is already running, as this can cause conflicts with the port binding.
+
+
+Creating your first dummy agent
+-------------------------------
+
+It's time for us to build our first SPADE agent.
+
+
+.. warning:: The SPADE server **MUST** be running in order to run the agents. If you close the server, the agents will stop working.
 
 .. hint:: To install a different XMPP server visit https://xmpp.org/software/servers.html (we recommend `Prosody IM <https://prosody.im>`_)
 
 .. hint:: To create a new XMPP account you can follow the steps of https://xmpp.org/getting-started/
 
 
-A basic SPADE agent is really a Python script that imports the spade module and that 
+A basic SPADE agent is really a Python script that imports the spade module and that
 uses the constructs defined therein. For starters, fire up your favorite Python editor and create a file called ``dummyagent.py``.
 
 
@@ -291,7 +340,6 @@ agent's behaviour. This is a common case where ``start`` must be called with an 
 
     if __name__ == "__main__":
         spade.run(main())
-
 
 
 
