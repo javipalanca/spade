@@ -1,9 +1,237 @@
 import asyncio
+import sys
+from unittest.mock import patch, MagicMock
 
+import loguru
 import pytest
+import pytest_asyncio
+from pyjabber.server import Server
+from pyjabber.server_parameters import Parameters
+from singletonify import _Box
+from slixmpp import Presence
+
+import spade
+from spade.agent import Agent
+from spade.behaviour import OneShotBehaviour
+from spade.container import Container
+from spade.message import Message
+from spade.presence import PresenceType, Contact, PresenceShow
+from spade.template import Template
+
+JID = "test@localhost"
+JID2 = "test2@localhost"
+PWD = "1234"
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def server():
+    loguru.logger.remove()
+    loguru.logger.add(sys.stdout, level="TRACE")
+
+    server = Server(Parameters(database_in_memory=True))
+    task = asyncio.create_task(server.start())
+    yield task
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
 
 
 @pytest.mark.asyncio
-async def test_connection(server):
-    loop = server
-    await asyncio.sleep(30)
+async def test_connection():
+    class DummyAgent(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.res = ""
+
+        class DummyBehav(OneShotBehaviour):
+            async def run(self):
+                self.agent.res += f"Hello World! I'm agent {JID}"
+                await self.agent.stop()
+
+        async def setup(self):
+            self.add_behaviour(self.DummyBehav())
+
+    dummy = DummyAgent(JID, PWD)
+
+    await spade.start_agents([dummy])
+    await spade.wait_until_finished([dummy])
+
+    assert dummy.res == f"Hello World! I'm agent {JID}"
+
+
+@pytest.mark.asyncio
+async def test_msg_via_container():
+    msg = Message(to=f"{JID}/1")
+    msg.set_metadata("performative", "inform")
+    msg.body = f"Hello World {JID}/1"
+
+    class SenderAgent(Agent):
+        class InformBehav(OneShotBehaviour):
+            async def run(self):
+                await self.send(msg)
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.InformBehav()
+            self.add_behaviour(b)
+
+    class ReceiverAgent(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.res = ""
+
+        class RecvBehav(OneShotBehaviour):
+            async def run(self):
+                msg_res = await self.receive(timeout=10)
+                if msg_res:
+                    self.agent.res = msg_res.body
+
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.RecvBehav()
+            template = Template()
+            template.set_metadata("performative", "inform")
+            self.add_behaviour(b, template)
+
+    receiver = ReceiverAgent(f"{JID}/1", PWD)
+    sender = SenderAgent(f"{JID}/2", PWD)
+
+    await receiver.start()
+    await sender.start()
+    await spade.wait_until_finished(receiver)
+
+    assert msg.body in receiver.res
+
+
+@pytest.mark.asyncio
+async def test_msg_via_xmpp():
+    msg = Message(to=f"{JID}")
+    msg.set_metadata("performative", "inform")
+    msg.body = f"Hello World {JID}"
+
+    msg_res_future = asyncio.Future()
+
+    class SenderAgent(Agent):
+        class SendBehav(OneShotBehaviour):
+            async def run(self):
+                await self.send(msg)
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.SendBehav()
+            self.add_behaviour(b)
+
+    class ReceiverAgent(Agent):
+        class RecvBehav(OneShotBehaviour):
+            async def run(self):
+                msg_res = await self.receive(timeout=5)
+                if msg_res:
+                    msg_res_future.set_result(msg.body)
+                await self.agent.stop()
+
+        async def setup(self):
+            b = self.RecvBehav()
+            template = Template()
+            template.set_metadata("performative", "inform")
+            self.add_behaviour(b, template)
+
+    receiver = ReceiverAgent(f"{JID}", PWD)
+    sender = SenderAgent(f"{JID2}", PWD)
+
+    with patch('spade.container.Container.send') as mock_send:
+        async def send(*args):
+            await args[1]._xmpp_send(msg=args[0])
+
+        mock_send.side_effect = send
+
+        await spade.start_agents([receiver, sender])
+        await spade.wait_until_finished(receiver)
+
+    assert msg_res_future.result() == msg.body
+
+
+@pytest.mark.asyncio
+async def test_presence_subscribe():
+    class Agent1(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.presence_trace = []
+
+        async def setup(self):
+            self.add_behaviour(self.Behav1())
+
+        class Behav1(OneShotBehaviour):
+            def on_subscribe(self, jid):
+                self.presence.approve_subscription(jid)
+
+            def on_subscribed(self, peer_jid):
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
+
+            def on_presence_received(self, presence: Presence):
+                self.agent.presence_trace.append(presence)
+                asyncio.create_task(self.agent.stop())
+
+            async def run(self):
+                self.presence.on_subscribe = self.on_subscribe
+                self.presence.on_subscribed = self.on_subscribed
+                self.presence.on_presence_received = self.on_presence_received
+                self.presence.set_presence(PresenceType.AVAILABLE)
+                self.presence.subscribe(self.agent.jid2)
+
+    class Agent2(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.presence_trace = []
+
+        async def setup(self):
+            self.add_behaviour(self.Behav2())
+
+        class Behav2(OneShotBehaviour):
+            def on_subscribe(self, jid):
+                self.presence.approve_subscription(jid)
+                self.presence.subscribe(jid)
+
+            def on_subscribed(self, peer_jid):
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.AWAY, "I'm taking a quick break", 5)
+
+            def on_presence_received(self, presence: Presence):
+                self.agent.presence_trace.append(presence)
+                asyncio.create_task(self.agent.stop())
+
+            async def run(self):
+                self.presence.on_subscribe = self.on_subscribe
+                self.presence.on_subscribed = self.on_subscribed
+                self.presence.on_presence_received = self.on_presence_received
+                self.presence.set_presence(PresenceType.AVAILABLE)
+
+    agent2 = Agent2(JID2, PWD)
+    agent1 = Agent1(JID, PWD)
+    agent1.jid2 = JID2
+    agent2.jid1 = JID
+
+    await spade.start_agents(agent2)
+    await spade.start_agents(agent1)
+    try:
+        await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 10)
+    except asyncio.TimeoutError:
+        pass
+        # assert pytest.fail()
+
+    assert JID2 in agent1.presence.get_contacts()
+    contact2: Contact = agent1.presence.get_contact(JID2)
+    assert contact2.jid == JID2
+    assert contact2.subscription == 'both'
+    assert any(
+        [e['show'] == PresenceShow.AWAY.value and e['status'] == "I'm taking a quick break" and e['priority'] == 5
+         for e in agent1.presence_trace])
+
+    assert JID in agent2.presence.get_contacts()
+    contact1: Contact = agent2.presence.get_contact(JID)
+    assert contact1.jid == JID
+    assert contact1.subscription == 'both'
+    assert any(
+        [e['show'] == PresenceShow.DND.value and e['status'] == "Working hard. Go away!" and e['priority'] == 0
+         for e in agent2.presence_trace])
