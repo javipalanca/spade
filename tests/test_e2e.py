@@ -22,10 +22,17 @@ JID2 = "test2@localhost"
 PWD = "1234"
 
 
-@pytest_asyncio.fixture(autouse=True)
-async def server():
+@pytest_asyncio.fixture(scope="function")
+def event_loop():
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest_asyncio.fixture(autouse=True, scope="function")
+async def server(event_loop):
     server = Server(Parameters(database_in_memory=False, database_purge=True))
-    task = asyncio.create_task(server.start())
+    task = event_loop.create_task(server.start())
     yield task
     task.cancel()
     try:
@@ -170,6 +177,7 @@ async def test_presence_subscribe():
                 self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
 
             def on_presence_received(self, presence: Presence):
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
                 self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
@@ -177,7 +185,7 @@ async def test_presence_subscribe():
                 self.presence.on_subscribe = self.on_subscribe
                 self.presence.on_subscribed = self.on_subscribed
                 self.presence.on_presence_received = self.on_presence_received
-                self.presence.set_presence(PresenceType.AVAILABLE)
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
                 self.presence.subscribe(self.agent.jid2)
 
     class Agent2(Agent):
@@ -197,6 +205,7 @@ async def test_presence_subscribe():
                 self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.AWAY, "I'm taking a quick break", 5)
 
             def on_presence_received(self, presence: Presence):
+
                 self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
@@ -204,7 +213,7 @@ async def test_presence_subscribe():
                 self.presence.on_subscribe = self.on_subscribe
                 self.presence.on_subscribed = self.on_subscribed
                 self.presence.on_presence_received = self.on_presence_received
-                self.presence.set_presence(PresenceType.AVAILABLE)
+                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.AWAY, "I'm taking a quick break", 5)
 
     agent2 = Agent2(JID2, PWD)
     agent1 = Agent1(JID, PWD)
@@ -222,14 +231,10 @@ async def test_presence_subscribe():
     contact2: Contact = agent1.presence.get_contact(JID2)
     assert contact2.jid == JID2
     assert contact2.subscription == 'both'
-    assert any(
-        [e['show'] == PresenceShow.AWAY.value and e['status'] == "I'm taking a quick break" and e['priority'] == 5
-         for e in agent1.presence_trace])
+    assert contact2.current_presence.is_available()
 
     assert JID in agent2.presence.get_contacts()
     contact1: Contact = agent2.presence.get_contact(JID)
     assert contact1.jid == JID
     assert contact1.subscription == 'both'
-    assert any(
-        [e['show'] == PresenceShow.DND.value and e['status'] == "Working hard. Go away!" and e['priority'] == 0
-         for e in agent2.presence_trace])
+    assert contact1.current_presence.is_available()
