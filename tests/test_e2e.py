@@ -1,4 +1,5 @@
 import asyncio
+import os.path
 import sys
 from unittest.mock import patch
 
@@ -23,10 +24,7 @@ PWD = "1234"
 
 @pytest_asyncio.fixture(autouse=True)
 async def server():
-    loguru.logger.remove()
-    loguru.logger.add(sys.stdout, level="TRACE")
-
-    server = Server(Parameters(database_in_memory=True, database_purge=True))
+    server = Server(Parameters(database_in_memory=False, database_purge=True))
     task = asyncio.create_task(server.start())
     yield task
     task.cancel()
@@ -34,6 +32,9 @@ async def server():
         await task
     except asyncio.CancelledError:
         pass
+    finally:
+        if os.path.isfile('pyjabber.db'):
+            os.remove('pyjabber.db')
 
 
 @pytest.mark.asyncio
