@@ -23,7 +23,7 @@ def test_prepare(message):
     assert aiomsg["from"] == JID("sender@localhost")
     assert aiomsg["body"] == "message body"
 
-    for form in [pl for pl in aiomsg.get_payload() if pl.tag == "{jabber:x:data}x"]:
+    for form in [pl for pl in aiomsg.xml.findall("{jabber:x:data}x")]:
         if form.find("{jabber:x:data}title").text == SPADE_X_METADATA:
             for field in form.findall("{jabber:x:data}field"):
                 if field.attrib["var"] == "_thread_node":

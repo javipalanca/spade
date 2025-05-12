@@ -53,8 +53,8 @@ class MessageBase(object):
         if not isinstance(node, slixmpp.stanza.Message):
             raise AttributeError("node must be a slixmpp.stanza.Message instance")
         msg = cls()
-        msg._to = node["to"]
-        msg._sender = node["from"]
+        msg._to = str(node["to"])
+        msg._sender = str(node["from"])
 
         if isinstance(node["body"], dict):
             for body in node["body"].values():
@@ -204,16 +204,16 @@ class MessageBase(object):
           bool: wether the message matches or not
 
         """
-        if self.to and message.to != self.to:
+        if self.to and (message.to is None or message.to != self.to):
             return False
 
-        if self.sender and message.sender != self.sender:
+        if self.sender and (message.sender is None or message.sender != self.sender):
             return False
 
-        if self.body and message.body != self.body:
+        if self.body and (message.body is None or message.body != self.body):
             return False
 
-        if self.thread and message.thread != self.thread:
+        if self.thread and (message.thread is None or message.thread != self.thread):
             return False
 
         for key, value in self.metadata.items():
@@ -283,6 +283,7 @@ class Message(MessageBase):
                 )
 
             form["title"] = SPADE_X_METADATA
+            msg.append(form)
             msg.append(form)
 
         return msg
