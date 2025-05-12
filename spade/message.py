@@ -5,8 +5,6 @@ import slixmpp.stanza
 from slixmpp import ClientXMPP
 from slixmpp.plugins.xep_0004 import Form
 
-import spade.message
-
 SPADE_X_METADATA = "spade:x:metadata"
 
 logger = logging.getLogger("spade.Message")
