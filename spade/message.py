@@ -229,7 +229,7 @@ class MessageBase(object):
         return id(self)
 
     def __eq__(self, other: Type["MessageBase"]):
-        if type(other) is not spade.message.Message:
+        if not isinstance(other, Message):
             return False
         return self.match(other)
 
