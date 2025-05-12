@@ -29,6 +29,7 @@ def create_cli():
     @click.option("--client_port", default=5222, help="Client port")
     @click.option("--server_port", default=5269, help="Server port")
     @click.option("--debug", is_flag=True, default=False, help="Enables debug mode")
+    @click.option("--timeout", default=600, help="Connection timeout")
     @click.option(
         "--db",
         type=str,
@@ -37,9 +38,15 @@ def create_cli():
         help="Path for database file",
     )
     @click.option(
-        "--purge", is_flag=True, help="Restore database file to default state (empty)"
+        "--purge",
+        is_flag=True,
+        default=False,
+        help="Restore database file to default state (empty)",
     )
-    def run(host, client_port, server_port, debug, db, purge):
+    @click.option(
+        "--memory", is_flag=True, default=False, help="Use an in-memory database"
+    )
+    def run(host, client_port, server_port, debug, timeout, db, purge, memory):
         """Launch an XMPP server"""
         if check_port_in_use(client_port, host):
             click.echo(f"Error: The port {client_port} is already in use.")
@@ -65,9 +72,10 @@ def create_cli():
             host=host,
             client_port=client_port,
             server_port=server_port,
-            connection_timeout=600,
+            connection_timeout=timeout,
             database_path=db,
             database_purge=purge,
+            database_in_memory=memory,
         )
 
         print_spade_info()
