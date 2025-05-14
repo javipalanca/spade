@@ -40,8 +40,8 @@ async def server(event_loop):
     except asyncio.CancelledError:
         pass
     finally:
-        if os.path.isfile('pyjabber.db'):
-            os.remove('pyjabber.db')
+        if os.path.isfile('pyjabber_test.db'):
+            os.remove('pyjabber_test.db')
 
 
 @pytest.mark.asyncio
