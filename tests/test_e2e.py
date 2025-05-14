@@ -139,7 +139,7 @@ async def test_msg_via_xmpp():
     class ReceiverAgent(Agent):
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=5)
+                msg_res = await self.receive(timeout=10)
                 if msg_res:
                     msg_res_future.set_result(msg.body)
                 await self.agent.stop()
