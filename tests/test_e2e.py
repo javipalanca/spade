@@ -77,6 +77,9 @@ async def test_msg_via_container():
         class InformBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -90,10 +93,13 @@ async def test_msg_via_container():
 
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=10)
+                msg_res = await self.receive(timeout=5)
                 if msg_res:
                     self.agent.res = msg_res.body
 
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -109,7 +115,7 @@ async def test_msg_via_container():
     await sender.start()
     await spade.wait_until_finished(receiver)
 
-    assert msg.body in receiver.res
+    assert receiver.res == msg.body
 
 
 @pytest.mark.asyncio
