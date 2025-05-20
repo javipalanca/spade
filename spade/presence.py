@@ -132,15 +132,11 @@ class PresenceManager:
         self.current_presence: Optional[PresenceInfo] = None
         self.approve_all = approve_all
         # Adding event handlers to handle incoming presence and subscription events
-        self.agent.client.add_event_handler(
-            "presence_available", self.handle_presence
-        )
+        self.agent.client.add_event_handler("presence_available", self.handle_presence)
         self.agent.client.add_event_handler(
             "presence_unavailable", self.handle_presence
         )
-        self.agent.client.add_event_handler(
-            "changed_status", self.handle_presence
-        )
+        self.agent.client.add_event_handler("changed_status", self.handle_presence)
         self.agent.client.add_event_handler(
             "presence_subscribe", self.handle_subscription
         )
@@ -339,9 +335,15 @@ class PresenceManager:
                 jid=JID(jid), name=jid, subscription="to", ask="", groups=[]
             )
         else:
-            if self.contacts[jid].subscription == "none" and self.contacts[jid].ask == "subscribe":
+            if (
+                self.contacts[jid].subscription == "none"
+                and self.contacts[jid].ask == "subscribe"
+            ):
                 self.contacts[jid].update_subscription("to", "")
-            elif self.contacts[jid].subscription == "from" and self.contacts[jid].ask == "subscribe":
+            elif (
+                self.contacts[jid].subscription == "from"
+                and self.contacts[jid].ask == "subscribe"
+            ):
                 self.contacts[jid].update_subscription("both", "")
 
     def unsubscribe(self, jid: str):

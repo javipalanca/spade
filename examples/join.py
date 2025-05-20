@@ -39,4 +39,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    spade.run(main())
+    spade.run(main(), True)

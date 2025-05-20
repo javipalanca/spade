@@ -1,9 +1,7 @@
 import asyncio
 import os.path
-import sys
 from unittest.mock import patch
 
-import loguru
 import pytest
 import pytest_asyncio
 from pyjabber.server import Server
@@ -14,7 +12,7 @@ import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
-from spade.presence import PresenceType, Contact, PresenceShow
+from spade.presence import Contact
 from spade.template import Template
 
 JID = "test@localhost"
@@ -31,7 +29,7 @@ def event_loop():
 
 @pytest_asyncio.fixture(autouse=True, scope="function")
 async def server(event_loop):
-    server = Server(Parameters(database_in_memory=False, database_purge=True))
+    server = Server(Parameters(database_in_memory=True))
     task = event_loop.create_task(server.start())
     yield task
     task.cancel()
@@ -40,8 +38,8 @@ async def server(event_loop):
     except asyncio.CancelledError:
         pass
     finally:
-        if os.path.isfile('pyjabber.db'):
-            os.remove('pyjabber.db')
+        if os.path.isfile("pyjabber_test.db"):
+            os.remove("pyjabber_test.db")
 
 
 @pytest.mark.asyncio
@@ -77,6 +75,9 @@ async def test_msg_via_container():
         class InformBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -90,10 +91,13 @@ async def test_msg_via_container():
 
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=10)
+                msg_res = await self.receive(timeout=5)
                 if msg_res:
                     self.agent.res = msg_res.body
 
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -109,7 +113,7 @@ async def test_msg_via_container():
     await sender.start()
     await spade.wait_until_finished(receiver)
 
-    assert msg.body in receiver.res
+    assert receiver.res == msg.body
 
 
 @pytest.mark.asyncio
@@ -133,7 +137,7 @@ async def test_msg_via_xmpp():
     class ReceiverAgent(Agent):
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=5)
+                msg_res = await self.receive(timeout=10)
                 if msg_res:
                     msg_res_future.set_result(msg.body)
                 await self.agent.stop()
@@ -147,7 +151,8 @@ async def test_msg_via_xmpp():
     receiver = ReceiverAgent(f"{JID}", PWD)
     sender = SenderAgent(f"{JID2}", PWD)
 
-    with patch('spade.container.Container.send') as mock_send:
+    with patch("spade.container.Container.send") as mock_send:
+
         async def send(*args):
             await args[1]._xmpp_send(msg=args[0])
 
@@ -224,9 +229,9 @@ async def test_presence_subscribe():
     assert JID2 in agent1.presence.get_contacts()
     contact2: Contact = agent1.presence.get_contact(JID2)
     assert contact2.jid == JID2
-    assert contact2.subscription == 'both'
+    assert contact2.subscription == "both"
 
     assert JID in agent2.presence.get_contacts()
     contact1: Contact = agent2.presence.get_contact(JID)
     assert contact1.jid == JID
-    assert contact1.subscription == 'both'
+    assert contact1.subscription == "both"
