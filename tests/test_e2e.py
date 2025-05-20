@@ -1,9 +1,7 @@
 import asyncio
 import os.path
-import sys
 from unittest.mock import patch
 
-import loguru
 import pytest
 import pytest_asyncio
 from pyjabber.server import Server
@@ -14,7 +12,7 @@ import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
-from spade.presence import PresenceType, Contact, PresenceShow
+from spade.presence import Contact
 from spade.template import Template
 
 JID = "test@localhost"

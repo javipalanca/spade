@@ -256,11 +256,6 @@ class MessageBase(object):
 
 class Message(MessageBase):
     """ """
-
-    def sender_empty(self):
-        return self.sender.node == '' and self.sender.domain == '' and self.sender.resource == ''
-
-
     def make_reply(self) -> "Message":
         """
         Creates a copy of the message, exchanging sender and receiver
@@ -307,7 +302,6 @@ class Message(MessageBase):
                 )
 
             form["title"] = SPADE_X_METADATA
-            msg.append(form)
             msg.append(form)
 
         return msg

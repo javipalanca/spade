@@ -5,7 +5,7 @@ import random
 
 import click
 import slixmpp
-from slixmpp import JID, Presence
+from slixmpp import JID
 
 import spade
 from spade import agent, behaviour
