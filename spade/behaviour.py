@@ -330,7 +330,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Args:
             msg (spade.message.Message): the message to be sent.
         """
-        if not msg.sender:
+        if msg.empty_sender():
             msg.sender = str(self.agent.jid)
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
         await self.agent.container.send(msg, self)

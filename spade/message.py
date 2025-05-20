@@ -1,11 +1,10 @@
 import logging
-from typing import Optional, Dict, Type
+from typing import Optional, Dict, Type, Union
 
 import slixmpp.stanza
 from slixmpp import ClientXMPP
 from slixmpp.plugins.xep_0004 import Form
-
-import spade.message
+from slixmpp import JID
 
 SPADE_X_METADATA = "spade:x:metadata"
 
@@ -17,14 +16,13 @@ class MessageBase(object):
 
     def __init__(
         self,
-        to: Optional[str] = None,
-        sender: Optional[str] = None,
+        to: Optional[Union[str, JID]] = None,
+        sender: Optional[Union[str, JID]] = None,
         body: Optional[str] = None,
         thread: Optional[str] = None,
         metadata: Optional[Dict[str, str]] = None,
     ):
         self.sent = False
-        self._to, self._sender, self._body, self._thread = None, None, None, None
         self.to = to
         self.sender = sender
         self.body = body
@@ -53,8 +51,8 @@ class MessageBase(object):
         if not isinstance(node, slixmpp.stanza.Message):
             raise AttributeError("node must be a slixmpp.stanza.Message instance")
         msg = cls()
-        msg._to = node["to"]
-        msg._sender = node["from"]
+        msg.to = node["to"]
+        msg.sender = node["from"]
 
         if isinstance(node["body"], dict):
             for body in node["body"].values():
@@ -87,7 +85,7 @@ class MessageBase(object):
         return self._to
 
     @to.setter
-    def to(self, jid: str) -> None:
+    def to(self, jid: Union[str, JID]) -> None:
         """
         Set jid of the receiver.
 
@@ -95,9 +93,14 @@ class MessageBase(object):
           jid (str): the jid of the receiver.
 
         """
-        if jid is not None and not isinstance(jid, str):
-            raise TypeError("'to' MUST be a string")
-        self._to = slixmpp.JID(jid) if jid is not None else None
+        if jid is None:
+            self._to = JID()
+        elif isinstance(jid, str):
+            self._to = slixmpp.JID(jid)
+        elif isinstance(jid, slixmpp.JID):
+            self._to = jid
+        else:
+            raise TypeError("'to' MUST be a valid JID, str or None")
 
     @property
     def sender(self) -> slixmpp.JID:
@@ -111,7 +114,7 @@ class MessageBase(object):
         return self._sender
 
     @sender.setter
-    def sender(self, jid: str) -> None:
+    def sender(self, jid: Union[str, JID]) -> None:
         """
         Set jid of the sender
 
@@ -119,9 +122,14 @@ class MessageBase(object):
           jid (str): jid of the sender
 
         """
-        if jid is not None and not isinstance(jid, str):
-            raise TypeError("'sender' MUST be a string")
-        self._sender = slixmpp.JID(jid) if jid is not None else None
+        if jid is None:
+            self._sender = JID()
+        elif isinstance(jid, str):
+            self._sender = slixmpp.JID(jid)
+        elif isinstance(jid, slixmpp.JID):
+            self._sender = jid
+        else:
+            raise TypeError("'sender' MUST be a valid JID, str or None")
 
     @property
     def body(self) -> str:
@@ -133,13 +141,15 @@ class MessageBase(object):
         return self._body
 
     @body.setter
-    def body(self, body: str) -> None:
+    def body(self, body: Union[str, None]) -> None:
         """
         Set body of the message
         Args:
             body (str): The body of the message
         """
-        if body is not None and not isinstance(body, str):
+        if body is None:
+            self._body = ''
+        elif not isinstance(body, str):
             raise TypeError("'body' MUST be a string")
         self._body = body
 
@@ -154,7 +164,7 @@ class MessageBase(object):
         return self._thread
 
     @thread.setter
-    def thread(self, value: str) -> None:
+    def thread(self, value: Union[str, None]) -> None:
         """
         Set thread id of the message
 
@@ -192,6 +202,16 @@ class MessageBase(object):
         """
         return self.metadata[key] if key in self.metadata else None
 
+    @staticmethod
+    def empty_jid(jid: JID):
+        return not jid.bare and not jid.domain and not jid.resource
+
+    def empty_to(self):
+        return self.empty_jid(self.to)
+
+    def empty_sender(self):
+        return self.empty_jid(self.sender)
+
     def match(self, message: Type["MessageBase"]) -> bool:
         """
         Returns wether a message matches with this message or not.
@@ -204,16 +224,16 @@ class MessageBase(object):
           bool: wether the message matches or not
 
         """
-        if self.to and message.to != self.to:
+        if not self.empty_to() and not message.to.__eq__(self.to):
             return False
 
-        if self.sender and message.sender != self.sender:
+        if not self.empty_sender() and not message.sender.__eq__(self.sender):
             return False
 
         if self.body and message.body != self.body:
             return False
 
-        if self.thread and message.thread != self.thread:
+        if self.thread and (message.thread is None or message.thread != self.thread):
             return False
 
         for key, value in self.metadata.items():
@@ -229,13 +249,17 @@ class MessageBase(object):
         return id(self)
 
     def __eq__(self, other: Type["MessageBase"]):
-        if type(other) is not spade.message.Message:
+        if not isinstance(other, Message):
             return False
-        return self.match(other)
+        return self.match(other) and other.match(self)
 
 
 class Message(MessageBase):
     """ """
+
+    def sender_empty(self):
+        return self.sender.node == '' and self.sender.domain == '' and self.sender.resource == ''
+
 
     def make_reply(self) -> "Message":
         """
@@ -283,6 +307,7 @@ class Message(MessageBase):
                 )
 
             form["title"] = SPADE_X_METADATA
+            msg.append(form)
             msg.append(form)
 
         return msg

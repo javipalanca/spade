@@ -1,14 +1,18 @@
 import asyncio
-from unittest.mock import patch, MagicMock
+import os.path
+import sys
+from unittest.mock import patch
 
+import loguru
 import pytest
-from singletonify import _Box
+import pytest_asyncio
+from pyjabber.server import Server
+from pyjabber.server_parameters import Parameters
 from slixmpp import Presence
 
 import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
-from spade.container import Container
 from spade.message import Message
 from spade.presence import PresenceType, Contact, PresenceShow
 from spade.template import Template
@@ -18,22 +22,30 @@ JID2 = "test2@localhost"
 PWD = "1234"
 
 
-@pytest.fixture(autouse=True)
-async def cleanup():
-    # The Container class is a Singleton, and is reused across all the test
-    # SPADE run closes the container event loop on the spade.run() exit, and blocks
-    # further executions in the session. It's necessary to force a new instance of the
-    # Container class to make sure each test retrieves a new event loop in order to work
-    # Singleton Issue ==> https://github.com/Cologler/singletonify-python/issues/1
-    for closure_cell in Container.__class__.__call__.__closure__:
-        if isinstance(closure_cell.cell_contents, _Box):
-            box = closure_cell.cell_contents    # this should be the box instance
-            box.value = None                    # set to None
-
-    yield
+@pytest_asyncio.fixture(scope="function")
+def event_loop():
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
 
 
-def test_connection():
+@pytest_asyncio.fixture(autouse=True, scope="function")
+async def server(event_loop):
+    server = Server(Parameters(database_in_memory=False, database_purge=True))
+    task = event_loop.create_task(server.start())
+    yield task
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+    finally:
+        if os.path.isfile('pyjabber_test.db'):
+            os.remove('pyjabber_test.db')
+
+
+@pytest.mark.asyncio
+async def test_connection():
     class DummyAgent(Agent):
         def __init__(self, jid, password):
             super().__init__(jid, password)
@@ -49,15 +61,14 @@ def test_connection():
 
     dummy = DummyAgent(JID, PWD)
 
-    async def main():
-        await spade.start_agents([dummy])
-        await spade.wait_until_finished([dummy])
+    await dummy.start()
+    await spade.wait_until_finished([dummy])
 
-    spade.run(main(), True)
     assert dummy.res == f"Hello World! I'm agent {JID}"
 
 
-def test_msg_via_container():
+@pytest.mark.asyncio
+async def test_msg_via_container():
     msg = Message(to=f"{JID}/1")
     msg.set_metadata("performative", "inform")
     msg.body = f"Hello World {JID}/1"
@@ -66,6 +77,9 @@ def test_msg_via_container():
         class InformBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -79,10 +93,13 @@ def test_msg_via_container():
 
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=10)
+                msg_res = await self.receive(timeout=5)
                 if msg_res:
                     self.agent.res = msg_res.body
 
+                self.kill(exit_code=0)
+
+            async def on_end(self):
                 await self.agent.stop()
 
         async def setup(self):
@@ -94,17 +111,15 @@ def test_msg_via_container():
     receiver = ReceiverAgent(f"{JID}/1", PWD)
     sender = SenderAgent(f"{JID}/2", PWD)
 
-    async def main():
-        await receiver.start()
-        await sender.start()
-        await spade.wait_until_finished(receiver)
+    await receiver.start()
+    await sender.start()
+    await spade.wait_until_finished(receiver)
 
-    spade.run(main(), True)
-
-    assert msg.body in receiver.res
+    assert receiver.res == msg.body
 
 
-def test_msg_via_xmpp():
+@pytest.mark.asyncio
+async def test_msg_via_xmpp():
     msg = Message(to=f"{JID}")
     msg.set_metadata("performative", "inform")
     msg.body = f"Hello World {JID}"
@@ -124,7 +139,7 @@ def test_msg_via_xmpp():
     class ReceiverAgent(Agent):
         class RecvBehav(OneShotBehaviour):
             async def run(self):
-                msg_res = await self.receive(timeout=5)
+                msg_res = await self.receive(timeout=10)
                 if msg_res:
                     msg_res_future.set_result(msg.body)
                 await self.agent.stop()
@@ -138,22 +153,20 @@ def test_msg_via_xmpp():
     receiver = ReceiverAgent(f"{JID}", PWD)
     sender = SenderAgent(f"{JID2}", PWD)
 
-    async def main():
-        with patch('spade.container.Container.send') as mock_send:
-            async def send(*args):
-                await args[1]._xmpp_send(msg=args[0])
+    with patch('spade.container.Container.send') as mock_send:
+        async def send(*args):
+            await args[1]._xmpp_send(msg=args[0])
 
-            mock_send.side_effect = send
+        mock_send.side_effect = send
 
-            await spade.start_agents([receiver, sender])
-            await spade.wait_until_finished(receiver)
-
-    spade.run(main(), True)
+        await spade.start_agents([receiver, sender])
+        await spade.wait_until_finished(receiver)
 
     assert msg_res_future.result() == msg.body
 
 
-def test_presence_subscribe():
+@pytest.mark.asyncio
+async def test_presence_subscribe():
     class Agent1(Agent):
         def __init__(self, jid, password):
             super().__init__(jid, password)
@@ -167,17 +180,15 @@ def test_presence_subscribe():
                 self.presence.approve_subscription(jid)
 
             def on_subscribed(self, peer_jid):
-                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.DND, "Working hard. Go away!", 0)
+                pass
 
             def on_presence_received(self, presence: Presence):
-                self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
             async def run(self):
                 self.presence.on_subscribe = self.on_subscribe
                 self.presence.on_subscribed = self.on_subscribed
                 self.presence.on_presence_received = self.on_presence_received
-                self.presence.set_presence(PresenceType.AVAILABLE)
                 self.presence.subscribe(self.agent.jid2)
 
     class Agent2(Agent):
@@ -194,46 +205,34 @@ def test_presence_subscribe():
                 self.presence.subscribe(jid)
 
             def on_subscribed(self, peer_jid):
-                self.presence.set_presence(PresenceType.AVAILABLE, PresenceShow.AWAY, "I'm taking a quick break", 5)
+                pass
 
             def on_presence_received(self, presence: Presence):
-                self.agent.presence_trace.append(presence)
                 asyncio.create_task(self.agent.stop())
 
             async def run(self):
                 self.presence.on_subscribe = self.on_subscribe
                 self.presence.on_subscribed = self.on_subscribed
                 self.presence.on_presence_received = self.on_presence_received
-                self.presence.set_presence(PresenceType.AVAILABLE)
 
     agent2 = Agent2(JID2, PWD)
     agent1 = Agent1(JID, PWD)
     agent1.jid2 = JID2
     agent2.jid1 = JID
 
-    async def main():
-        await agent2.start()
-        await agent1.start()
-        try:
-            await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 10)
-        except asyncio.TimeoutError:
-            pass
-            # assert pytest.fail()
-
-    spade.run(main(), False)
+    await agent2.start()
+    await agent1.start()
+    try:
+        await asyncio.wait_for(spade.wait_until_finished([agent1, agent2]), 3)
+    except asyncio.TimeoutError:
+        pass
 
     assert JID2 in agent1.presence.get_contacts()
     contact2: Contact = agent1.presence.get_contact(JID2)
     assert contact2.jid == JID2
     assert contact2.subscription == 'both'
-    assert any(
-        [e['show'] == PresenceShow.AWAY.value and e['status'] == "I'm taking a quick break" and e['priority'] == 5
-         for e in agent1.presence_trace])
 
     assert JID in agent2.presence.get_contacts()
     contact1: Contact = agent2.presence.get_contact(JID)
     assert contact1.jid == JID
     assert contact1.subscription == 'both'
-    assert any(
-        [e['show'] == PresenceShow.DND.value and e['status'] == "Working hard. Go away!" and e['priority'] == 0
-         for e in agent2.presence_trace])

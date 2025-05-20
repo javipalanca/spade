@@ -4,15 +4,16 @@ Quick Start
 
 Preparing the environment
 -------------------------------
-Before starting to use the SPADE platform, we need to set up the execution environment.
-The platform is based on the XMPP communication protocol and requires a dedicated server to work properly.
-Here, you can choose between three scenarios:
+Before you start using the SPADE platform, you need to set up the execution environment.
+The platform is based on the XMPP communication protocol and requires a dedicated server to function properly.
+At this point, you can choose between three scenarios:
 
 SPADE coroutine executor
 ########################
-A SPADE agent is an asynchronous agent. This means that all the code required to run an agent must be executed inside an asynchronous loop.
-This is done using the *spade.run()* function. This function takes a coroutine as its first parameter and runs it within an async loop.
-The second parameter is a boolean (False by default). If set to True, an internal server instance will be launched, managed during the coroutine lifespan, and deleted after it finishes.
+A SPADE agent is asynchronous, meaning that all the code required to run an agent must be executed within an asynchronous loop.
+This is achieved using the *spade.run()* function. This function takes a coroutine as its first parameter and runs it within an
+asynchronous loop. The second parameter is a boolean (default is False). If set to True, an internal server instance will be
+launched, managed during the coroutine's lifespan, and deleted once it finishes.
 
 .. code-block:: python
 
@@ -27,16 +28,19 @@ The second parameter is a boolean (False by default). If set to True, an interna
                     coroutine   |
                                 |
                             Server Flag
-This is the preferred method for launching SPADE scripts, as the user does not need to install or manage any external server
+This is the preferred method for launching SPADE scripts, as it eliminates the need for the user to install or manage any external server.
 
-.. note:: The launched server will have *localhost* as its host. Take this into account when creating the agents and assigning their JIDs.
+
+.. note:: The launched server will use *localhost* as its host. Keep this in mind when creating agents and assigning their JIDs.
     A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
+
+
 
 SPADE CLI command
 #####################
-The same server explained prevoiusly can be launched detached from any agent using ``spade run``.
-This approach is useful in more complex MAS integrations and for obtaining a detailed log of the messages sent between agents.
-In this example, we will assume that our jid is *your_jid@localhost* and the password is *your_password*.
+The same server described previously can be launched independently from any agent using *spade run*.
+This approach is useful for more complex MAS integrations and for obtaining a detailed log of the messages exchanged between agents.
+
 
 .. code-block:: bash
 
@@ -60,13 +64,13 @@ In this example, we will assume that our jid is *your_jid@localhost* and the pas
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:150 - Server started...
     yyyy-m-d h:m:s | INFO     | pyjabber.webpage.adminPage:start:35 - Serving admin webpage on http://localhost:9090
 
-.. note:: The launched server will have *localhost* as its host. Take this into account when creating the agents and assigning their JIDs.
+.. note:: The launched server will use *localhost* as its host. Keep this in mind when creating agents and assigning their JIDs.
     A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
 
 Dedicated XMPP server
 ####################
-Any XMPP server can be used with the SPADE platform. Prosody is a well-tested solution with SPADE,
-but there is a wide catalog of popular servers with large communities.
+Any XMPP server can be used with the SPADE platform. *Prosody* is a well-tested solution with SPADE,
+but there is a wide range of popular servers with large communities.
 
 .. warning:: Make sure that *spade.run()* does not launch the internal server if your dedicated server
     is already running, as this can cause conflicts with the port binding.
@@ -336,7 +340,6 @@ agent's behaviour. This is a common case where ``start`` must be called with an 
 
     if __name__ == "__main__":
         spade.run(main())
-
 
 
 
