@@ -31,7 +31,7 @@ def event_loop():
 
 @pytest_asyncio.fixture(autouse=True, scope="function")
 async def server(event_loop):
-    server = Server(Parameters(database_in_memory=False, database_purge=True))
+    server = Server(Parameters(database_in_memory=True))
     task = event_loop.create_task(server.start())
     yield task
     task.cancel()
