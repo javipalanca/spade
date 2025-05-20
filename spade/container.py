@@ -113,7 +113,6 @@ class Container(object):
         """
         return self.__agents[jid]
 
-
     def stop_agents(self):
         self.loop.run_until_complete(
             asyncio.gather(*[a.stop() for a in self.__agents.values()])
@@ -138,16 +137,18 @@ class Container(object):
         self.loop.run_until_complete(coro)
 
 
-def run_container(main_func: Coroutine, embedded_xmpp_server: bool = False) -> None:  # pragma: no cover
+def run_container(
+    main_func: Coroutine, embedded_xmpp_server: bool = False
+) -> None:  # pragma: no cover
     container = Container()
     server = None
 
     try:
         if embedded_xmpp_server:
             loguru.logger.remove()  # Silent server
-            server_instance = Server(Parameters(
-                host='localhost', database_in_memory=True
-            ))
+            server_instance = Server(
+                Parameters(host="localhost", database_in_memory=True)
+            )
             server = container.loop.create_task(server_instance.start())
             container.run(server_instance.ready.wait())
             logger.info("SPADE XMPP server running on localhost:5222")

@@ -148,7 +148,7 @@ class MessageBase(object):
             body (str): The body of the message
         """
         if body is None:
-            self._body = ''
+            self._body = ""
         elif not isinstance(body, str):
             raise TypeError("'body' MUST be a string")
         self._body = body
@@ -256,6 +256,7 @@ class MessageBase(object):
 
 class Message(MessageBase):
     """ """
+
     def make_reply(self) -> "Message":
         """
         Creates a copy of the message, exchanging sender and receiver

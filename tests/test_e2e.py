@@ -38,8 +38,8 @@ async def server(event_loop):
     except asyncio.CancelledError:
         pass
     finally:
-        if os.path.isfile('pyjabber_test.db'):
-            os.remove('pyjabber_test.db')
+        if os.path.isfile("pyjabber_test.db"):
+            os.remove("pyjabber_test.db")
 
 
 @pytest.mark.asyncio
@@ -151,7 +151,8 @@ async def test_msg_via_xmpp():
     receiver = ReceiverAgent(f"{JID}", PWD)
     sender = SenderAgent(f"{JID2}", PWD)
 
-    with patch('spade.container.Container.send') as mock_send:
+    with patch("spade.container.Container.send") as mock_send:
+
         async def send(*args):
             await args[1]._xmpp_send(msg=args[0])
 
@@ -228,9 +229,9 @@ async def test_presence_subscribe():
     assert JID2 in agent1.presence.get_contacts()
     contact2: Contact = agent1.presence.get_contact(JID2)
     assert contact2.jid == JID2
-    assert contact2.subscription == 'both'
+    assert contact2.subscription == "both"
 
     assert JID in agent2.presence.get_contacts()
     contact1: Contact = agent2.presence.get_contact(JID)
     assert contact1.jid == JID
-    assert contact1.subscription == 'both'
+    assert contact1.subscription == "both"
