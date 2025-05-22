@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, Type, Union
+from typing import Optional, Dict, Union
 
 import slixmpp.stanza
 from slixmpp import ClientXMPP
@@ -12,7 +12,7 @@ logger = logging.getLogger("spade.Message")
 
 
 class MessageBase(object):
-    """ """
+    """Base class for message handling in SPADE."""
 
     def __init__(
         self,
@@ -22,7 +22,6 @@ class MessageBase(object):
         thread: Optional[str] = None,
         metadata: Optional[Dict[str, str]] = None,
     ):
-
         self.sent = False
         self.to = to  # type: ignore
         self.sender = sender  # type: ignore

@@ -30,7 +30,7 @@ def get_or_create_eventloop():  # pragma: no cover
     # Use uvloop or winloop if available
     if platform.system() == "Windows":
         try:
-            import winloop   # pyright: ignore[reportMissingImports]
+            import winloop  # pyright: ignore[reportMissingImports]
 
             asyncio.set_event_loop_policy(winloop.EventLoopPolicy())
         except ImportError:
