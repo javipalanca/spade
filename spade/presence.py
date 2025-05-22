@@ -192,7 +192,7 @@ class PresenceManager:
         if bare_jid not in self.contacts:
             # Create a new contact if it doesn't exist
             self.contacts[bare_jid] = Contact(
-                jid=JID(peer_jid), name=name, subscription="", ask="", groups=[]
+                jid=JID(peer_jid), name=name, subscription="none", ask="", groups=[]
             )
         # Update the presence of the contact
         self.contacts[bare_jid].update_presence(resource, presence_info)
@@ -206,6 +206,8 @@ class PresenceManager:
                 peer_jid, presence_info, self.contacts[bare_jid].last_presence
             )
 
+        self.on_presence_received(presence)
+
     def handle_subscription(self, presence: Presence):
         peer_jid = presence["from"].bare
         subscription_type = presence["type"]
@@ -216,13 +218,10 @@ class PresenceManager:
             self.contacts[peer_jid] = Contact(
                 jid=JID(peer_jid),
                 name=peer_jid,
-                subscription=subscription_type,
+                subscription="none",
                 ask=ask,
                 groups=[],
             )
-        else:
-            # Update the subscription information
-            self.contacts[peer_jid].update_subscription(subscription_type, ask)
 
         # Call user-defined handler or automatically approve if approve_all is True
         if subscription_type == "subscribe" and self.approve_all:
@@ -231,10 +230,12 @@ class PresenceManager:
         elif subscription_type == "subscribe":
             self.on_subscribe(peer_jid)
         elif subscription_type == "subscribed":
+            self.subscribed(peer_jid)
             self.on_subscribed(peer_jid)
         elif subscription_type == "unsubscribe":
             self.on_unsubscribe(peer_jid)
         elif subscription_type == "unsubscribed":
+            self.unsubscribed(peer_jid)
             self.on_unsubscribed(peer_jid)
 
     def handle_roster_update(self, event):
@@ -320,21 +321,60 @@ class PresenceManager:
                 jid=JID(jid), name=jid, subscription="to", ask="subscribe", groups=[]
             )
         else:
-            self.contacts[jid].update_subscription("to", "subscribe")
+            if self.contacts[jid].subscription == "from":
+                self.contacts[jid].update_subscription("from", "subscribe")
+            else:
+                self.contacts[jid].update_subscription("to", "subscribe")
         # Send the subscription stanza to the server
         self.agent.client.send_presence(pto=jid, ptype="subscribe")
+
+    def subscribed(self, jid: str):
+        # Logic to update contact subscription with subscribe
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="to", ask="", groups=[]
+            )
+        else:
+            if (
+                self.contacts[jid].subscription == "none"
+                and self.contacts[jid].ask == "subscribe"
+            ):
+                self.contacts[jid].update_subscription("to", "")
+            elif (
+                self.contacts[jid].subscription == "from"
+                and self.contacts[jid].ask == "subscribe"
+            ):
+                self.contacts[jid].update_subscription("both", "")
 
     def unsubscribe(self, jid: str):
         # Logic to send an unsubscription request to a contact
         if jid in self.contacts:
-            self.contacts[jid].update_subscription("unsubscribe", "unsubscribe")
+            if self.contacts[jid].subscription == "both":
+                self.contacts[jid].update_subscription("from", "")
+            elif self.contacts[jid].subscription == "to":
+                self.contacts[jid].update_subscription("none", "")
         # Send the unsubscription stanza to the server
         self.agent.client.send_presence(pto=jid, ptype="unsubscribe")
+
+    def unsubscribed(self, jid: str):
+        # Logic to update contact subscription with unsubscribe
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="none", ask="", groups=[]
+            )
+        else:
+            if self.contacts[jid].subscription == "both":
+                self.contacts[jid].update_subscription("to", "")
+            elif self.contacts[jid].subscription == "from":
+                self.contacts[jid].update_subscription("none", "")
 
     def approve_subscription(self, jid: str):
         # Logic to approve a subscription request
         if jid in self.contacts:
-            self.contacts[jid].update_subscription("subscribed", "")
+            if self.contacts[jid].subscription == "to":
+                self.contacts[jid].update_subscription("both", "")
+            else:
+                self.contacts[jid].update_subscription("from", "")
         # Send the subscribed stanza to the server
         self.agent.client.send_presence(pto=jid, ptype="subscribed")
 
@@ -349,6 +389,9 @@ class PresenceManager:
         pass
 
     def on_unsubscribed(self, peer_jid: str):
+        pass
+
+    def on_presence_received(self, presence: Presence):
         pass
 
     def on_available(

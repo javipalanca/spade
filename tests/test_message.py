@@ -23,7 +23,7 @@ def test_prepare(message):
     assert aiomsg["from"] == JID("sender@localhost")
     assert aiomsg["body"] == "message body"
 
-    for form in [pl for pl in aiomsg.get_payload() if pl.tag == "{jabber:x:data}x"]:
+    for form in [pl for pl in aiomsg.xml.findall("{jabber:x:data}x")]:
         if form.find("{jabber:x:data}title").text == SPADE_X_METADATA:
             for field in form.findall("{jabber:x:data}field"):
                 if field.attrib["var"] == "_thread_node":
@@ -141,6 +141,10 @@ def test_body_is_string():
     Message(body="body")
 
 
+def test_body_is_none():
+    Message(body=None)
+
+
 def test_body_is_not_string():
     with pytest.raises(TypeError):
         Message(body={})
@@ -168,12 +172,17 @@ def test_to_is_string():
 
 def test_to_is_not_string():
     with pytest.raises(TypeError):
-        Message(to=JID("agent@fakeserver"))
+        Message(to={})
 
 
 def test_to_set_string():
     msg = Message()
     msg.to = "agent@fakeserver"
+
+
+def test_to_set_jid():
+    msg = Message()
+    msg.to = JID("agent@fakeserver")
 
 
 def test_to_set_not_string():
@@ -191,9 +200,13 @@ def test_sender_is_string():
     Message(sender="agent@fakeserver")
 
 
+def test_sender_is_jid():
+    Message(sender=JID("agent@fakeserver"))
+
+
 def test_sender_is_not_string():
     with pytest.raises(TypeError):
-        Message(sender=JID("agent@fakeserver"))
+        Message(sender={})
 
 
 def test_sender_set_string():
@@ -235,3 +248,8 @@ def test_thread_set_not_string():
 def test_thread_set_none():
     msg = Message()
     msg.thread = None
+
+
+def test_sender_empty_true():
+    msg = Message()
+    assert msg.empty_sender()

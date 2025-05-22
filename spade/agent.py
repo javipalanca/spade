@@ -4,6 +4,7 @@ from asyncio import Task
 from hashlib import md5
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
+from slixmpp import __version__ as slixmpp_version
 from slixmpp import JID
 from slixmpp import Message as slixmppMessage
 
@@ -50,11 +51,11 @@ class Agent(object):
         self.xmpp_port = port
         self.verify_security = verify_security
 
-        self.behaviours = []
-        self._values = {}
+        self.behaviours: list = []
+        self._values: dict = {}
 
-        self.client = None
-        self.presence = None
+        self.client: Optional[XMPPClient] = None
+        self.presence: Optional[PresenceManager] = None
         self.loop = None
 
         self.container = Container()
@@ -144,54 +145,60 @@ class Agent(object):
     async def _async_connect(self) -> None:  # pragma: no cover
         """connect and authenticate to the XMPP server. Async mode."""
 
-        self.client.connected_event = asyncio.Event()
-        self.client.disconnected_event = asyncio.Event()
-        self.client.failed_auth_event = asyncio.Event()
+        if self.client is not None:
+            self.client.connected_event = asyncio.Event()
+            self.client.disconnected_event = asyncio.Event()
+            self.client.failed_auth_event = asyncio.Event()
 
-        connected_task = asyncio.create_task(
-            self.client.connected_event.wait(), name="connected"
-        )
-        disconnected_task = asyncio.create_task(
-            self.client.disconnected_event.wait(), name="disconnected"
-        )
-        failed_auth_task = asyncio.create_task(
-            self.client.failed_auth_event.wait(), name="failed_auth"
-        )
+            connected_task = asyncio.create_task(
+                self.client.connected_event.wait(), name="connected"
+            )
+            disconnected_task = asyncio.create_task(
+                self.client.disconnected_event.wait(), name="disconnected"
+            )
+            failed_auth_task = asyncio.create_task(
+                self.client.failed_auth_event.wait(), name="failed_auth"
+            )
 
-        self.client.add_event_handler(
-            "session_start", lambda _: self.client.connected_event.set()
-        )
-        self.client.add_event_handler(
-            "disconnected", lambda _: self.client.disconnected_event.set()
-        )
-        self.client.add_event_handler(
-            "failed_all_auth", lambda _: self.client.failed_auth_event.set()
-        )
-        self.client.add_event_handler("message", self._message_received)
+            self.client.add_event_handler(
+                "session_start", lambda _: self.client.connected_event.set()
+            )
+            self.client.add_event_handler(
+                "disconnected", lambda _: self.client.disconnected_event.set()
+            )
+            self.client.add_event_handler(
+                "failed_all_auth", lambda _: self.client.failed_auth_event.set()
+            )
+            self.client.add_event_handler("message", self._message_received)
 
-        self.client.connect(address=(self.jid.host, self.xmpp_port))
+            if slixmpp_version <= "1.9.1":
+                self.client.connect(address=(self.jid.host, self.xmpp_port))
+            else:
+                self.client.connect(host=self.jid.host, port=self.xmpp_port)
 
-        done, pending = await asyncio.wait(
-            [connected_task, disconnected_task, failed_auth_task],
-            return_when=asyncio.FIRST_COMPLETED,
-        )
+            done, pending = await asyncio.wait(
+                [connected_task, disconnected_task, failed_auth_task],
+                return_when=asyncio.FIRST_COMPLETED,
+            )
 
-        for task in pending:
-            task.cancel()
+            for task in pending:
+                task.cancel()
 
-        for task in done:
-            await task
+            for task in done:
+                await task
 
-            if task.get_name() == "failed_auth":
-                raise AuthenticationFailure(
-                    "Could not authenticate the agent. Check user and password or use auto_register=True"
-                )
-            elif task.get_name() == "disconnected":
-                raise DisconnectedException(
-                    "Error during the connection with the server"
-                )
+                if task.get_name() == "failed_auth":
+                    raise AuthenticationFailure(
+                        "Could not authenticate the agent. Check user and password or use auto_register=True"
+                    )
+                elif task.get_name() == "disconnected":
+                    raise DisconnectedException(
+                        "Error during the connection with the server"
+                    )
 
-        logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+            logger.info(f"Agent {str(self.jid)} connected and authenticated.")
+        else:
+            raise RuntimeError("XMPPClient is not initialized.")
 
     async def setup(self) -> None:
         """
@@ -234,7 +241,7 @@ class Agent(object):
           str: a URL for the gravatar
 
         """
-        digest = md5(str(jid).encode("utf-8")).hexdigest()
+        digest = md5(str(jid).encode("utf-8")).hexdigest()  # nosec
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
     def submit(self, coro: Coroutine) -> Task:

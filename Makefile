@@ -54,6 +54,9 @@ clean-test: ## remove test and coverage artifacts
 lint: ## check style with flake8
 	ruff check spade tests
 
+format: ## format code with black
+	ruff format spade tests
+
 test: ## run tests quickly with the default Python
 	pytest
 

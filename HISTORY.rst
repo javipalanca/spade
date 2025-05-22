@@ -2,6 +2,22 @@
 History
 =======
 
+4.1.0 (2025-05-22)
+---------------------
+
+* XMPP server is now auto launched transparently with agents.
+* Added support for Python 3.13.
+* Added end2end tests.
+* Memory database integration for the XMPP server.
+* Server parameter configurations improved.
+* Enhanced presence management and subscription process.
+* Added embedded server capability for examples.
+* Dropped Python 3.8 support.
+* Added overloadable presence_received handler.
+* Fixed slixmpp address kwarg error.
+* Improved type hints and code structure in agent and message modules.
+
+
 4.0.3 (2025-02-17)
 --------------------
 * Prepare XMPP messages linked to client stream.

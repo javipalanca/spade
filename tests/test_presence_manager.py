@@ -97,12 +97,11 @@ async def test_handle_subscription_approve_all(jid):
     presence_subscribe["from"] = jid
     presence_subscribe["type"] = "subscribe"
     presence_subscribe["ask"] = "subscribe"
-    presence_subscribe["subscription"] = "subscribe"
 
     manager.handle_subscription(presence_subscribe)
 
     contact = manager.get_contact(jid.bare)
-    assert contact.subscription == "subscribed"
+    assert contact.subscription == "from"
 
 
 async def test_handle_subscription_manual(jid):
@@ -118,7 +117,7 @@ async def test_handle_subscription_manual(jid):
     manager.handle_subscription(presence_subscribe)
 
     contact = manager.get_contact(jid.bare)
-    assert contact.subscription == "subscribe"
+    assert contact.subscription == "none"
 
 
 async def test_set_presence():

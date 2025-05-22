@@ -100,7 +100,7 @@ def test_receive_without_behaviours():
         )
 
     assert agent.traces.len() == 1
-    assert msg in agent.traces.store[0]
+    assert msg == agent.traces.store[0][1]
 
 
 async def test_create_agent_from_another_agent():
