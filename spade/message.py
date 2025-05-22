@@ -1,9 +1,9 @@
 import logging
-from typing import Optional, Dict, Type, Union
+from typing import Optional, Dict, Union
 
 import slixmpp.stanza
 from slixmpp import ClientXMPP
-from slixmpp.plugins.xep_0004 import Form
+from slixmpp.plugins.xep_0004.stanza.form import Form
 from slixmpp import JID
 
 SPADE_X_METADATA = "spade:x:metadata"
@@ -12,19 +12,19 @@ logger = logging.getLogger("spade.Message")
 
 
 class MessageBase(object):
-    """ """
+    """Base class for message handling in SPADE."""
 
     def __init__(
         self,
-        to: Optional[Union[str, JID]] = None,
-        sender: Optional[Union[str, JID]] = None,
+        to: Union[str, JID, None] = None,
+        sender: Union[str, JID, None] = None,
         body: Optional[str] = None,
         thread: Optional[str] = None,
         metadata: Optional[Dict[str, str]] = None,
     ):
         self.sent = False
-        self.to = to
-        self.sender = sender
+        self.to = to  # type: ignore
+        self.sender = sender  # type: ignore
         self.body = body
         self.thread = thread
 
@@ -37,7 +37,7 @@ class MessageBase(object):
             self.metadata = metadata
 
     @classmethod
-    def from_node(cls, node: slixmpp.Message) -> Type["MessageBase"]:
+    def from_node(cls, node: slixmpp.Message) -> "MessageBase":
         """
         Creates a new spade.message.Message from a slixmpp.stanza.Message
 
@@ -62,14 +62,17 @@ class MessageBase(object):
             msg.body = node["body"]
 
         for data in [pl for pl in node.get_payload() if pl.tag == "{jabber:x:data}x"]:
-            if data.find("{jabber:x:data}title").text == SPADE_X_METADATA:
+            title_elem = data.find("{jabber:x:data}title")
+            if title_elem is not None and title_elem.text == SPADE_X_METADATA:
                 for field in data.findall("{jabber:x:data}field"):
+                    value_elem = field.find("{jabber:x:data}value")
+                    value_text = value_elem.text if value_elem is not None else None
                     if field.attrib["var"] != "_thread_node":
-                        msg.set_metadata(
-                            field.attrib["var"], field.find("{jabber:x:data}value").text
-                        )
+                        if value_text is not None:
+                            msg.set_metadata(field.attrib["var"], value_text)
                     else:
-                        msg.thread = field.find("{jabber:x:data}value").text
+                        if value_text is not None:
+                            msg.thread = value_text
 
         return msg
 
@@ -85,7 +88,7 @@ class MessageBase(object):
         return self._to
 
     @to.setter
-    def to(self, jid: Union[str, JID]) -> None:
+    def to(self, jid: Union[str, JID, None]) -> None:
         """
         Set jid of the receiver.
 
@@ -114,7 +117,7 @@ class MessageBase(object):
         return self._sender
 
     @sender.setter
-    def sender(self, jid: Union[str, JID]) -> None:
+    def sender(self, jid: Union[str, JID, None]) -> None:
         """
         Set jid of the sender
 
@@ -132,7 +135,7 @@ class MessageBase(object):
             raise TypeError("'sender' MUST be a valid JID, str or None")
 
     @property
-    def body(self) -> str:
+    def body(self) -> Union[str, None]:
         """
         Get body of the message
         Returns:
@@ -151,10 +154,10 @@ class MessageBase(object):
             self._body = ""
         elif not isinstance(body, str):
             raise TypeError("'body' MUST be a string")
-        self._body = body
+        self._body = body  # type: ignore
 
     @property
-    def thread(self) -> str:
+    def thread(self) -> Union[str, None]:
         """
         Get Thread of the message
 
@@ -189,7 +192,7 @@ class MessageBase(object):
             raise TypeError("'key' and 'value' of metadata MUST be strings")
         self.metadata[key] = value
 
-    def get_metadata(self, key: str) -> str:
+    def get_metadata(self, key: str) -> Union[str, None]:
         """
         Get the value of a metadata. Returns None if metadata does not exist.
 
@@ -212,7 +215,7 @@ class MessageBase(object):
     def empty_sender(self):
         return self.empty_jid(self.sender)
 
-    def match(self, message: Type["MessageBase"]) -> bool:
+    def match(self, message: "MessageBase") -> bool:
         """
         Returns wether a message matches with this message or not.
         The message can be a Message object or a Template object.
@@ -248,7 +251,7 @@ class MessageBase(object):
         """ """
         return id(self)
 
-    def __eq__(self, other: Type["MessageBase"]):
+    def __eq__(self, other: object):
         if not isinstance(other, Message):
             return False
         return self.match(other) and other.match(self)

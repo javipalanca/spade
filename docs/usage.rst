@@ -28,6 +28,7 @@ launched, managed during the coroutine's lifespan, and deleted once it finishes.
                     coroutine   |
                                 |
                             Server Flag
+
 This is the preferred method for launching SPADE scripts, as it eliminates the need for the user to install or manage any external server.
 
 
@@ -68,7 +69,8 @@ This approach is useful for more complex MAS integrations and for obtaining a de
     A valid JID would be something like *agent1@localhost* or *agent1@127.0.0.1*
 
 Dedicated XMPP server
-####################
+#####################
+
 Any XMPP server can be used with the SPADE platform. *Prosody* is a well-tested solution with SPADE,
 but there is a wide range of popular servers with large communities.
 
@@ -114,7 +116,7 @@ To create an agent in a project you just need to: ::
 This agent is only printing on screen a message during its setup and stopping. If you run this script you get
 the following output
 
-.. code-block:: bash
+.. code-block:: console
 
     $ python dummyagent.py
     Hello World! I'm agent dummy@localhost
