@@ -4,6 +4,7 @@ from asyncio import Task
 from hashlib import md5
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
+from slixmpp import __version__ as slixmpp_version
 from slixmpp import JID
 from slixmpp import Message as slixmppMessage
 
@@ -169,7 +170,10 @@ class Agent(object):
         )
         self.client.add_event_handler("message", self._message_received)
 
-        self.client.connect(address=(self.jid.host, self.xmpp_port))
+        if slixmpp_version <= '1.9.1':
+            self.client.connect(address=(self.jid.host, self.xmpp_port))
+        else:
+            self.client.connect(host=self.jid.host, port=self.xmpp_port)
 
         done, pending = await asyncio.wait(
             [connected_task, disconnected_task, failed_auth_task],
