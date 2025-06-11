@@ -123,6 +123,7 @@ async def test_msg_via_xmpp():
         class SendBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
+                await asyncio.sleep(1)
                 await self.agent.stop()
 
         async def setup(self):
