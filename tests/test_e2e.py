@@ -123,9 +123,6 @@ async def test_msg_via_xmpp():
         class SendBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
-                while not self.agent.client.waiting_queue.empty():
-                    await asyncio.sleep(1)
-                await self.agent.stop()
 
         async def setup(self):
             b = self.SendBehav()
@@ -161,6 +158,7 @@ async def test_msg_via_xmpp():
 
         await spade.start_agents([receiver, sender])
         await spade.wait_until_finished(receiver)
+        await sender.stop()
 
     assert receiver.res == msg.body
 
