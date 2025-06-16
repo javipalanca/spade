@@ -156,7 +156,8 @@ async def test_msg_via_xmpp():
 
         mock_send.side_effect = send
 
-        await spade.start_agents([receiver, sender])
+        await spade.start_agents([receiver])
+        await spade.start_agents([sender])
         await spade.wait_until_finished(receiver)
         await sender.stop()
 

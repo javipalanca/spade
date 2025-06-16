@@ -170,7 +170,7 @@ class Agent(object):
         )
         self.client.add_event_handler("message", self._message_received)
 
-        if slixmpp_version <= '1.9.1':
+        if slixmpp_version <= "1.9.1":
             self.client.connect(address=(self.jid.host, self.xmpp_port))
         else:
             self.client.connect(host=self.jid.host, port=self.xmpp_port)
