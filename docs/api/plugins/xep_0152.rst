@@ -1,0 +1,18 @@
+
+XEP-0152: Reachability Addresses
+================================
+
+.. module:: slixmpp.plugins.xep_0152
+
+.. autoclass:: XEP_0152
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0152.stanza
+    :members:
+    :undoc-members:
+

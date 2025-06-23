@@ -1,0 +1,26 @@
+
+XEP-0332: HTTP over XMPP transport
+==================================
+
+.. module:: slixmpp.plugins.xep_0332
+
+.. autoclass:: XEP_0332
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0332.stanza.data
+    :members:
+    :undoc-members:
+
+.. automodule:: slixmpp.plugins.xep_0332.stanza.request
+    :members:
+    :undoc-members:
+
+.. automodule:: slixmpp.plugins.xep_0332.stanza.response
+    :members:
+    :undoc-members:
+

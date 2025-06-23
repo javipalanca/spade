@@ -1,0 +1,18 @@
+
+XEP-0308: Last Message Correction
+=================================
+
+.. module:: slixmpp.plugins.xep_0308
+
+.. autoclass:: XEP_0308
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0308.stanza
+    :members:
+    :undoc-members:
+

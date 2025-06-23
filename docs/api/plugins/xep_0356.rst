@@ -1,0 +1,17 @@
+
+XEP-0356: Privileged Entity
+===========================
+
+.. module:: slixmpp.plugins.xep_0356
+
+.. autoclass:: XEP_0356
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0356.stanza
+    :members:
+    :undoc-members:

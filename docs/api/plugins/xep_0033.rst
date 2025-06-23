@@ -1,0 +1,18 @@
+
+XEP-0033: Extended Stanza Addressing
+====================================
+
+.. module:: slixmpp.plugins.xep_0033
+
+.. autoclass:: XEP_0033
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0033.stanza
+    :members:
+    :undoc-members:
+

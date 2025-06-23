@@ -1,0 +1,18 @@
+
+XEP-0359: Unique and Stable Stanza IDs
+======================================
+
+.. module:: slixmpp.plugins.xep_0359
+
+.. autoclass:: XEP_0359
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0359.stanza
+    :members:
+    :undoc-members:
+

@@ -1,0 +1,18 @@
+
+XEP-0235: OAuth Over XMPP
+=========================
+
+.. module:: slixmpp.plugins.xep_0235
+
+.. autoclass:: XEP_0235
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0235.stanza
+    :members:
+    :undoc-members:
+

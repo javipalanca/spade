@@ -1,0 +1,18 @@
+
+XEP-0441: Message Archive Management Preferences
+================================================
+
+.. module:: slixmpp.plugins.xep_0441
+
+.. autoclass:: XEP_0441
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0441.stanza
+    :members:
+    :undoc-members:
+

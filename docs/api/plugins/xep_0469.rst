@@ -1,0 +1,17 @@
+XEP-0469: Bookmark Pinning
+==========================
+
+.. module:: slixmpp.plugins.xep_0469
+
+.. autoclass:: XEP_0469
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0469.stanza
+    :members:
+    :undoc-members:
+

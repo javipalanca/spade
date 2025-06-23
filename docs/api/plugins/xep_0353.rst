@@ -1,0 +1,18 @@
+
+XEP-0353: Jingle Message Initiation
+===================================
+
+.. module:: slixmpp.plugins.xep_0353
+
+.. autoclass:: XEP_0353
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0353.stanza
+    :members:
+    :undoc-members:
+

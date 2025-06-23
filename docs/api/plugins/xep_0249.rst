@@ -1,0 +1,18 @@
+
+XEP-0249: Direct MUC Invitations
+================================
+
+.. module:: slixmpp.plugins.xep_0249
+
+.. autoclass:: XEP_0249
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0249.stanza
+    :members:
+    :undoc-members:
+

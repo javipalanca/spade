@@ -1,0 +1,18 @@
+
+XEP-0280: Message Carbons
+=========================
+
+.. module:: slixmpp.plugins.xep_0280
+
+.. autoclass:: XEP_0280
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0280.stanza
+    :members:
+    :undoc-members:
+

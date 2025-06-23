@@ -1,0 +1,18 @@
+
+XEP-0122: Data Forms Validation
+===============================
+
+.. module:: slixmpp.plugins.xep_0122
+
+.. autoclass:: XEP_0122
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0122.stanza
+    :members:
+    :undoc-members:
+

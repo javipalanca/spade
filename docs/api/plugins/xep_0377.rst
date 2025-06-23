@@ -1,0 +1,18 @@
+
+XEP-0377: Spam Reporting
+========================
+
+.. module:: slixmpp.plugins.xep_0377
+
+.. autoclass:: XEP_0377
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0377.stanza
+    :members:
+    :undoc-members:
+

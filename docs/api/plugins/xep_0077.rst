@@ -1,0 +1,65 @@
+
+XEP-0077: In-Band Registration
+==============================
+
+.. module:: slixmpp.plugins.xep_0077
+
+.. autoclass:: XEP_0077
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+Internal APi methods
+--------------------
+
+The API here is made to allow components to manage registered users.
+The default handlers make use of the plugin options and store users
+in memory.
+
+.. glossary::
+
+    user_get
+        - **jid**: unused
+        - **node**: unused
+        - **ifrom**: who the request is coming from
+        - **args**: :class:`~.Iq` registration request.
+        - **returns**: ``dict`` containing user data or None.
+
+        Get user data for a user.
+
+    user_validate
+        - **jid**: unused
+        - **node**: unused
+        - **ifrom**: who the request is coming from
+        - **args**: :class:`~.Iq` registration request, 'register' payload.
+        - **raises**: ValueError if some fields are invalid
+
+        Validate form fields and save user data.
+
+    user_remove
+        - **jid**: unused
+        - **node**: unused
+        - **ifrom**: who the request is coming from
+        - **args**: :class:`~.Iq` registration removal request.
+        - **raises**: KeyError if the user is not found.
+
+        Remove a user from the store.
+
+    make_registration_form
+        - **jid**: unused
+        - **node**: unused
+        - **ifrom**: who the request is coming from
+        - **args**: :class:`~.Iq` registration request.
+        - **raises**: KeyError if the user is not found.
+
+        Return an :class:`~.Iq` reply for the request, with a form and
+        options set. By default, use ``form_fields`` and ``form_instructions``
+        plugin config options.
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0077.stanza
+    :members:
+    :undoc-members:
+

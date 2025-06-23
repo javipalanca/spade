@@ -1,0 +1,18 @@
+
+XEP-0444: Message Reactions
+===========================
+
+.. module:: slixmpp.plugins.xep_0444
+
+.. autoclass:: XEP_0444
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0444.stanza
+    :members:
+    :undoc-members:
+

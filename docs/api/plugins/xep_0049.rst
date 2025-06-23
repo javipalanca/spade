@@ -1,0 +1,18 @@
+
+XEP-0049: Private XML Storage
+=============================
+
+.. module:: slixmpp.plugins.xep_0049
+
+.. autoclass:: XEP_0049
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0049.stanza
+    :members:
+    :undoc-members:
+

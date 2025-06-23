@@ -1,0 +1,45 @@
+
+XEP-0319: Last User Interaction in Presence
+===========================================
+
+.. module:: slixmpp.plugins.xep_0319
+
+.. autoclass:: XEP_0319
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+.. _api-0319:
+
+Internal API methods
+--------------------
+
+The default API manages an in-memory cache of idle periods.
+
+.. glossary::
+
+    set_idle
+        - **jid**: :class:`~.JID` who has been idling
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: :class:`datetime`, timestamp of the idle start
+
+        Set the idle start for a JID.
+
+    get_idle
+        - **jid**: :class:`~.JID` to get the idle time of
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: : unused
+        - **returns**: :class:`datetime`
+
+        Get the idle start timestamp for a JID.
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0319.stanza
+    :members:
+    :undoc-members:
+

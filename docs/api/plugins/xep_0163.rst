@@ -1,0 +1,9 @@
+
+XEP-0163: Personal Eventing Protocol (PEP)
+==========================================
+
+.. module:: slixmpp.plugins.xep_0163
+
+.. autoclass:: XEP_0163
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end

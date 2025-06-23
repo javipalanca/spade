@@ -1,0 +1,18 @@
+
+XEP-0084: User Avatar
+=====================
+
+.. module:: slixmpp.plugins.xep_0084
+
+.. autoclass:: XEP_0084
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0084.stanza
+    :members:
+    :undoc-members:
+

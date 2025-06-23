@@ -1,0 +1,18 @@
+
+XEP-0118: User Tune
+===================
+
+.. module:: slixmpp.plugins.xep_0118
+
+.. autoclass:: XEP_0118
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0118.stanza
+    :members:
+    :undoc-members:
+

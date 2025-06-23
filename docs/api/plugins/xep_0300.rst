@@ -1,0 +1,18 @@
+
+XEP-0300: Use of Cryptographic Hash Functions in XMPP
+=====================================================
+
+.. module:: slixmpp.plugins.xep_0300
+
+.. autoclass:: XEP_0300
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0300.stanza
+    :members:
+    :undoc-members:
+

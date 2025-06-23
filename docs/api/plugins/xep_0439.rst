@@ -1,0 +1,18 @@
+
+XEP-0439: Quick Response
+========================
+
+.. module:: slixmpp.plugins.xep_0439
+
+.. autoclass:: XEP_0439
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0439.stanza
+    :members:
+    :undoc-members:
+

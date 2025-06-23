@@ -1,0 +1,52 @@
+
+XEP-0054: vcard-temp
+====================
+
+.. module:: slixmpp.plugins.xep_0054
+
+.. autoclass:: XEP_0054
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. _api-0054:
+
+Internal API methods
+--------------------
+
+This plugin maintains by default an in-memory cache of the received
+VCards.
+
+.. glossary::
+
+    set_vcard
+        - **jid**: :class:`~.JID` of whom to set the vcard
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: :class:`~.VCardTemp` object to store for this JID.
+
+        Set a VCard for a JID.
+
+    get_vcard
+        - **jid**: :class:`~.JID` of whom to set the vcard
+        - **node**: unused
+        - **ifrom**: :class:`~.JID` the request is coming from
+        - **args**: unused
+        - **returns**: :class:`~.VCardTemp` object for this JID or None.
+
+        Get a stored VCard for a JID.
+
+    del_vcard
+        - **jid**: :class:`~.JID` of whom to set the vcard
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+
+        Delete a stored VCard for a JID.
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0054.stanza
+    :members:
+    :undoc-members:
+

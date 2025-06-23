@@ -1,0 +1,9 @@
+
+XEP-0222: Persistent Storage of Public Data via PubSub
+======================================================
+
+.. module:: slixmpp.plugins.xep_0222
+
+.. autoclass:: XEP_0222
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end

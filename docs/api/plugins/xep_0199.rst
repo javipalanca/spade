@@ -1,0 +1,18 @@
+
+XEP-0199: XMPP Ping
+===================
+
+.. module:: slixmpp.plugins.xep_0199
+
+.. autoclass:: XEP_0199
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0199.stanza
+    :members:
+    :undoc-members:
+

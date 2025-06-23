@@ -1,0 +1,89 @@
+
+XEP-0047: In-band Bytestreams
+=============================
+
+.. module:: slixmpp.plugins.xep_0047
+
+.. autoclass:: XEP_0047
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. autoclass:: IBBytestream
+    :members:
+
+.. _api-0047:
+
+Internal API methods
+--------------------
+
+The API here is used to manage streams and authorize. The default handlers
+work with the config parameters.
+
+.. glossary::
+
+    authorized_sid (0047 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: :class:`~.Iq` of the stream request.
+        - **returns**: ``True`` if the stream should be accepted,
+          ``False`` otherwise.
+
+        Check if the stream should be accepted. Uses
+        the information setup by :term:`preauthorize_sid (0047 version)`
+        by default.
+
+    authorized (0047 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: :class:`~.Iq` of the stream request.
+        - **returns**: ``True`` if the stream should be accepted,
+          ``False`` otherwise.
+
+        A fallback handler (run after :term:`authorized_sid (0047 version)`)
+        to check if a stream should be accepted. Uses the ``auto_accept``
+        parameter by default.
+
+    preauthorize_sid (0047 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream will be from.
+        - **args**: Unused.
+
+        Register a stream id to be accepted automatically (called from
+        other plugins such as XEP-0095).
+
+    get_stream
+        - **jid**: :class:`~.JID` of local receiver.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: unused
+        - **returns**: :class:`~.IBBytestream`
+
+        Return a currently opened stream between two JIDs.
+
+    set_stream
+        - **jid**: :class:`~.JID` of local receiver.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: unused
+
+        Register an opened stream between two JIDs.
+
+    del_stream
+        - **jid**: :class:`~.JID` of local receiver.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: unused
+
+        Delete a stream between two JIDs.
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0047.stanza
+    :members:
+    :undoc-members:
+

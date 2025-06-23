@@ -1,0 +1,18 @@
+
+XEP-0369: MIX-CORE
+==================
+
+.. module:: slixmpp.plugins.xep_0369
+
+.. autoclass:: XEP_0369
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0369.stanza
+    :members:
+    :undoc-members:
+

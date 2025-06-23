@@ -1,0 +1,17 @@
+
+XEP-0292: vCard4 Over XMPP
+==========================
+
+.. module:: slixmpp.plugins.xep_0292
+
+.. autoclass:: XEP_0292
+    :members:
+    :exclude-members: plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0292.stanza
+    :members:
+    :undoc-members:

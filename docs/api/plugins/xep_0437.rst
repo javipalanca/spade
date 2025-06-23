@@ -1,0 +1,18 @@
+
+XEP-0437: Room Activity Indicators
+==================================
+
+.. module:: slixmpp.plugins.xep_0437
+
+.. autoclass:: XEP_0437
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0437.stanza
+    :members:
+    :undoc-members:
+

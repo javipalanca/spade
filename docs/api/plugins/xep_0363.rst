@@ -1,0 +1,24 @@
+
+XEP-0363: HTTP File Upload
+==========================
+
+.. module:: slixmpp.plugins.xep_0363
+
+.. autoclass:: XEP_0363
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. autoclass:: UploadServiceNotFound
+
+.. autoclass:: FileTooBig
+
+.. autoclass:: HTTPError
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0363.stanza
+    :members:
+    :undoc-members:
+

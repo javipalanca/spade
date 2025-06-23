@@ -1,0 +1,18 @@
+
+XEP-0055: Jabber search
+=======================
+
+.. module:: slixmpp.plugins.xep_0055
+
+.. autoclass:: XEP_0055
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0055.stanza
+    :members:
+    :undoc-members:
+

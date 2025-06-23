@@ -1,0 +1,18 @@
+
+XEP-0335: JSON Containers
+=========================
+
+.. module:: slixmpp.plugins.xep_0335
+
+.. autoclass:: XEP_0335
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0335.stanza
+    :members:
+    :undoc-members:
+

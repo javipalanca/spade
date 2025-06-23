@@ -1,0 +1,44 @@
+
+XEP-0128: Service Discovery Extensions
+======================================
+
+.. module:: slixmpp.plugins.xep_0128
+
+.. autoclass:: XEP_0128
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. _api-0128:
+
+Internal API methods
+--------------------
+
+
+
+.. glossary::
+
+    add_extended_info
+        - **jid**: JID to set the extended info for
+        - **node**:  note to set the info at
+        - **ifrom**: unused
+        - **args**: A :class:`~.Form` or list of forms to add to the disco
+          extended info for this JID/node.
+
+        Add extended info for a JID/node.
+
+    set_extended_info
+        - **jid**: JID to set the extended info for
+        - **node**:  note to set the info at
+        - **ifrom**: unused
+        - **args**: A :class:`~.Form` or list of forms to set as the disco
+          extended info for this JID/node.
+
+        Set extended info for a JID/node.
+
+    del_extended_info
+        - **jid**: JID to delete the extended info from
+        - **node**:  note to delete the info from
+        - **ifrom**: unused
+        - **args**: unused
+
+        Delete extended info for a JID/node.

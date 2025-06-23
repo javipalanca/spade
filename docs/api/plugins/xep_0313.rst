@@ -1,0 +1,19 @@
+
+XEP-0313: Message Archive Management
+====================================
+
+.. module:: slixmpp.plugins.xep_0313
+
+.. autoclass:: XEP_0313
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0313.stanza
+    :members:
+    :member-order: bysource
+    :undoc-members:
+

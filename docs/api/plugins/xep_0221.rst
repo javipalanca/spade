@@ -1,0 +1,18 @@
+
+XEP-0221: Data Forms Media Element
+==================================
+
+.. module:: slixmpp.plugins.xep_0221
+
+.. autoclass:: XEP_0221
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0221.stanza
+    :members:
+    :undoc-members:
+

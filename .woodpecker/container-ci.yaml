@@ -1,0 +1,12 @@
+when:
+  event: [ manual ]
+
+steps:
+  build-and-push:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      repo: codeberg.org/poezio/woodpecker-slixmpp
+      registry: codeberg.org
+      username: nicoco
+      password:
+        from_secret: codeberg_package_nicoco

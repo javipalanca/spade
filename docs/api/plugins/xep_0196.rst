@@ -1,0 +1,18 @@
+
+XEP-0196: User Gaming
+=====================
+
+.. module:: slixmpp.plugins.xep_0196
+
+.. autoclass:: XEP_0196
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0196.stanza
+    :members:
+    :undoc-members:
+

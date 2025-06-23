@@ -1,0 +1,55 @@
+
+XEP-0153: vCard-Based Avatars
+=============================
+
+.. module:: slixmpp.plugins.xep_0153
+
+.. autoclass:: XEP_0153
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. _api-0153:
+
+Internal API methods
+--------------------
+
+The internal API is used here to maintain an in-memory JID→avatar hash
+cache.
+
+.. glossary::
+
+    set_hash
+        - **jid**: :class:`~.JID` of whom to retrieve the last activity
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: ``str``, avatar hash
+
+        Set the avatar hash for a JID.
+
+    reset_hash
+        - **jid**: :class:`~.JID` of whom to retrieve the last activity
+        - **node**: unused
+        - **ifrom**: :class:`~.JID` of the entity requesting the reset.
+        - **args**: unused
+        - **returns**
+          information.
+
+        Reset the avatar hash for a JID. This downloads the vcard and computes
+        the hash.
+
+    get_hash
+        - **jid**: :class:`~.JID` of whom to retrieve the last activity
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+        - **returns**: ``Optional[str]``, the avatar hash
+
+        Get the avatar hash for a JID.
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0153.stanza
+    :members:
+    :undoc-members:
+

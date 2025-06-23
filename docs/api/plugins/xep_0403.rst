@@ -1,0 +1,18 @@
+
+XEP-0403: MIX-Presence
+======================
+
+.. module:: slixmpp.plugins.xep_0403
+
+.. autoclass:: XEP_0403
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0403.stanza
+    :members:
+    :undoc-members:
+

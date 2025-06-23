@@ -1,0 +1,18 @@
+
+XEP-0421: Anonymous unique occupant identifiers for MUCs
+========================================================
+
+.. module:: slixmpp.plugins.xep_0421
+
+.. autoclass:: XEP_0421
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0421.stanza
+    :members:
+    :undoc-members:
+

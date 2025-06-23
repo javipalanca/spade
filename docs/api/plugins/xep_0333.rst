@@ -1,0 +1,18 @@
+
+XEP-0333: Chat Markers
+======================
+
+.. module:: slixmpp.plugins.xep_0333
+
+.. autoclass:: XEP_0333
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0333.stanza
+    :members:
+    :undoc-members:
+

@@ -1,0 +1,18 @@
+
+XEP-0172: User Nickname
+=======================
+
+.. module:: slixmpp.plugins.xep_0172
+
+.. autoclass:: XEP_0172
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0172.stanza
+    :members:
+    :undoc-members:
+

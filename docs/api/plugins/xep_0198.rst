@@ -1,0 +1,18 @@
+
+XEP-0198: Stream Management
+===========================
+
+.. module:: slixmpp.plugins.xep_0198
+
+.. autoclass:: XEP_0198
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0198.stanza
+    :members:
+    :undoc-members:
+

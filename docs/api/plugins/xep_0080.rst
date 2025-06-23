@@ -1,0 +1,18 @@
+
+XEP-0080: User Location
+=======================
+
+.. module:: slixmpp.plugins.xep_0080
+
+.. autoclass:: XEP_0080
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0080.stanza
+    :members:
+    :undoc-members:
+

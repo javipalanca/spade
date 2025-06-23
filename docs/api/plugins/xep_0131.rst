@@ -1,0 +1,18 @@
+
+XEP-0131: Stanza Headers and Internet Metadata
+==============================================
+
+.. module:: slixmpp.plugins.xep_0131
+
+.. autoclass:: XEP_0131
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0131.stanza
+    :members:
+    :undoc-members:
+

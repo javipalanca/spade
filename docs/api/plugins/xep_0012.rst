@@ -1,0 +1,56 @@
+
+XEP-0012: Last Activity
+=======================
+
+.. module:: slixmpp.plugins.xep_0012
+
+.. autoclass:: XEP_0012
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+.. _api-0012:
+
+Internal API methods
+--------------------
+
+This plugin uses an in-memory storage by default to keep track of the
+received and sent last activities.
+
+.. glossary::
+
+    get_last_activity
+        - **jid**: :class:`~.JID` of whom to retrieve the last activity
+        - **node**: unused
+        - **ifrom**: who the request is from (None = local)
+        - **args**: ``None`` or an :class:`~.Iq` that is requesting the
+        - **returns**
+          information.
+
+        Get the last activity of a JID from the storage.
+
+    set_last_activity
+        - **jid**: :class:`~.JID` of whom to set the last activity
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: A dict containing ``'seconds'`` and ``'status'``
+          ``{'seconds': Optional[int], 'status': Optional[str]}``
+
+        Set the last activity of a JID in the storage.
+
+    del_last_activity
+        - **jid**: :class:`~.JID` to delete from the storage
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+
+        Remove the last activity of a JID from the storage.
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0012.stanza
+    :members:
+    :undoc-members:
+

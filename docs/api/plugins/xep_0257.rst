@@ -1,0 +1,18 @@
+
+XEP-0257: Client Certificate Management for SASL EXTERNAL
+=========================================================
+
+.. module:: slixmpp.plugins.xep_0257
+
+.. autoclass:: XEP_0257
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0257.stanza
+    :members:
+    :undoc-members:
+

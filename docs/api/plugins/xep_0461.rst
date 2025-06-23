@@ -1,0 +1,18 @@
+
+XEP-0461: Message Replies
+=========================
+
+.. module:: slixmpp.plugins.xep_0461
+
+.. autoclass:: XEP_0461
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0461.stanza
+    :members:
+    :undoc-members:
+
