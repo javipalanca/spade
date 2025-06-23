@@ -1,9 +1,0 @@
-
-XEP-0082: XMPP Date and Time Profiles
-=====================================
-
-.. module:: slixmpp.plugins.xep_0082
-
-.. autoclass:: XEP_0082
-    :members:
-    :exclude-members: session_bind, plugin_init, plugin_end

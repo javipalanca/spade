@@ -1,9 +1,0 @@
-
-XEP-0100: Gateway interaction
-=============================
-
-.. module:: slixmpp.plugins.xep_0100
-
-.. autoclass:: XEP_0100
-    :members:
-    :exclude-members: session_bind, plugin_init, plugin_end

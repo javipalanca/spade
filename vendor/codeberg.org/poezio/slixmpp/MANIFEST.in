@@ -1,6 +1,0 @@
-include README.rst
-include LICENSE
-include run_tests.py
-recursive-include docs Makefile *.bat *.py *.rst *.css *.ttf *.png
-recursive-include examples *.py
-recursive-include tests *.py

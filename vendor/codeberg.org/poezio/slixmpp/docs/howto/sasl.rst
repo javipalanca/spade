@@ -1,2 +1,0 @@
-How SASL Authentication Works
-=============================
