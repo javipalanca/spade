@@ -1,0 +1,18 @@
+
+XEP-0394: Message Markup
+========================
+
+.. module:: slixmpp.plugins.xep_0394
+
+.. autoclass:: XEP_0394
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0394.stanza
+    :members:
+    :undoc-members:
+

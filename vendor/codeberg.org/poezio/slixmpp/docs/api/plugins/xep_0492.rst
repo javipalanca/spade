@@ -1,0 +1,18 @@
+
+XEP-0492: Chat Notification Settings
+====================================
+
+.. module:: slixmpp.plugins.xep_0492
+
+.. autoclass:: XEP_0492
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0492.stanza
+    :members:
+    :undoc-members:
+

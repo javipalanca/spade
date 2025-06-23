@@ -1,0 +1,18 @@
+
+XEP-0317: Hats
+==============
+
+.. module:: slixmpp.plugins.xep_0317
+
+.. autoclass:: XEP_0317
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0317.stanza
+    :members:
+    :undoc-members:
+

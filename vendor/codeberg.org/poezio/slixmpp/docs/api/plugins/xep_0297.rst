@@ -1,0 +1,18 @@
+
+XEP-0297: Stanza Forwarding
+===========================
+
+.. module:: slixmpp.plugins.xep_0297
+
+.. autoclass:: XEP_0297
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0297.stanza
+    :members:
+    :undoc-members:
+

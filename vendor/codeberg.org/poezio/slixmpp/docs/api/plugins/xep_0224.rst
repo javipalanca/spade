@@ -1,0 +1,18 @@
+
+XEP-0224: Attention
+===================
+
+.. module:: slixmpp.plugins.xep_0224
+
+.. autoclass:: XEP_0224
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0224.stanza
+    :members:
+    :undoc-members:
+

@@ -1,0 +1,18 @@
+
+XEP-0203: Delayed Delivery
+==========================
+
+.. module:: slixmpp.plugins.xep_0203
+
+.. autoclass:: XEP_0203
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0203.stanza
+    :members:
+    :undoc-members:
+

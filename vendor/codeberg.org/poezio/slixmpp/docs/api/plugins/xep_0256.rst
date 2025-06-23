@@ -1,0 +1,9 @@
+
+XEP-0256: Last Activity in Presence
+===================================
+
+.. module:: slixmpp.plugins.xep_0256
+
+.. autoclass:: XEP_0256
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end

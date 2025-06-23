@@ -1,0 +1,9 @@
+
+XEP-0133: Service Administration
+================================
+
+.. module:: slixmpp.plugins.xep_0133
+
+.. autoclass:: XEP_0133
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end

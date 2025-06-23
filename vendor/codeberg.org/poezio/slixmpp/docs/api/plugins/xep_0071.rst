@@ -1,0 +1,18 @@
+
+XEP-0071: XHTML-IM
+==================
+
+.. module:: slixmpp.plugins.xep_0071
+
+.. autoclass:: XEP_0071
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0071.stanza
+    :members:
+    :undoc-members:
+

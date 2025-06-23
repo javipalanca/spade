@@ -1,0 +1,37 @@
+
+XEP-0060: Publish-Subscribe
+===========================
+
+.. module:: slixmpp.plugins.xep_0060
+
+.. autoclass:: XEP_0060
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0060.stanza.base
+    :members:
+    :undoc-members:
+
+
+.. automodule:: slixmpp.plugins.xep_0060.stanza.pubsub
+    :members:
+    :undoc-members:
+
+
+
+.. automodule:: slixmpp.plugins.xep_0060.stanza.pubsub_errors
+    :members:
+    :undoc-members:
+
+
+.. automodule:: slixmpp.plugins.xep_0060.stanza.pubsub_owner
+    :members:
+    :undoc-members:
+
+.. automodule:: slixmpp.plugins.xep_0060.stanza.pubsub_event
+    :members:
+    :undoc-members:

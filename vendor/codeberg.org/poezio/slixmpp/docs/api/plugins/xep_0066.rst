@@ -1,0 +1,18 @@
+
+XEP-0066: Out of Band Data
+==========================
+
+.. module:: slixmpp.plugins.xep_0066
+
+.. autoclass:: XEP_0066
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0066.stanza
+    :members:
+    :undoc-members:
+

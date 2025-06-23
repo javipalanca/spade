@@ -1,0 +1,18 @@
+
+XEP-0020: Feature Negotiation
+=============================
+
+.. module:: slixmpp.plugins.xep_0020
+
+.. autoclass:: XEP_0020
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0020.stanza
+    :members:
+    :undoc-members:
+

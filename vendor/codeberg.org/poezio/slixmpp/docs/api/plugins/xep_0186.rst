@@ -1,0 +1,18 @@
+
+XEP-0186: Invisible Command
+===========================
+
+.. module:: slixmpp.plugins.xep_0186
+
+.. autoclass:: XEP_0186
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0186.stanza
+    :members:
+    :undoc-members:
+

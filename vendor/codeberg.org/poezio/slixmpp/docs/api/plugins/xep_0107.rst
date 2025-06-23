@@ -1,0 +1,18 @@
+
+XEP-0107: User Mood
+===================
+
+.. module:: slixmpp.plugins.xep_0107
+
+.. autoclass:: XEP_0107
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0107.stanza
+    :members:
+    :undoc-members:
+

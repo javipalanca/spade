@@ -1,0 +1,18 @@
+
+XEP-0380: Explicit Message Encryption
+=====================================
+
+.. module:: slixmpp.plugins.xep_0380
+
+.. autoclass:: XEP_0380
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0380.stanza
+    :members:
+    :undoc-members:
+

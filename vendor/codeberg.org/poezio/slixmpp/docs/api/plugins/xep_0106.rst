@@ -1,0 +1,9 @@
+
+XEP-0106: JID Escaping
+======================
+
+.. module:: slixmpp.plugins.xep_0106
+
+.. autoclass:: XEP_0106
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end

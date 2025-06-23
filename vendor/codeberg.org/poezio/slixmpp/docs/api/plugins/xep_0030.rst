@@ -1,0 +1,39 @@
+
+XEP-0030: Service Discovery
+===========================
+
+.. module:: slixmpp.plugins.xep_0030
+
+.. autoclass:: XEP_0030
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+.. _api-0030:
+
+Internal API Methods
+--------------------
+
+All ``api`` operations supported by the 0030 plugin are implemented as part of
+the :class:`~.StaticDisco` class which implement an in-memory cache for disco
+info and items.
+
+
+.. automodule:: slixmpp.plugins.xep_0030.static
+    :members:
+    :member-order: bysource
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0030.stanza.info
+    :members:
+    :member-order: bysource
+    :undoc-members:
+
+.. automodule:: slixmpp.plugins.xep_0030.stanza.items
+    :members:
+    :member-order: bysource
+    :undoc-members:
+

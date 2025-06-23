@@ -1,0 +1,18 @@
+
+XEP-0425: Message Moderation
+============================
+
+.. module:: slixmpp.plugins.xep_0425
+
+.. autoclass:: XEP_0425
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0425.stanza
+    :members:
+    :undoc-members:
+

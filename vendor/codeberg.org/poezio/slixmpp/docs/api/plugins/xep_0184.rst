@@ -1,0 +1,18 @@
+
+XEP-0184: Message Delivery Receipts
+===================================
+
+.. module:: slixmpp.plugins.xep_0184
+
+.. autoclass:: XEP_0184
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0184.stanza
+    :members:
+    :undoc-members:
+

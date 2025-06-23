@@ -1,0 +1,18 @@
+
+XEP-0092: Software Version
+==========================
+
+.. module:: slixmpp.plugins.xep_0092
+
+.. autoclass:: XEP_0092
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0092.stanza
+    :members:
+    :undoc-members:
+

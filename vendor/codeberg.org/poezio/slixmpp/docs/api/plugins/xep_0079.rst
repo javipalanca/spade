@@ -1,0 +1,18 @@
+
+XEP-0079: Advanced Message Processing
+=====================================
+
+.. module:: slixmpp.plugins.xep_0079
+
+.. autoclass:: XEP_0079
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0079.stanza
+    :members:
+    :undoc-members:
+

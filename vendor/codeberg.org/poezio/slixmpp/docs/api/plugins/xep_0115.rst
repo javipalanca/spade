@@ -1,0 +1,66 @@
+
+XEP-0115: Entity Capabilities
+=============================
+
+.. module:: slixmpp.plugins.xep_0115
+
+.. autoclass:: XEP_0115
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. _api-0115:
+
+Internal API methods
+--------------------
+
+This internal API extends the Disco internal API, and also manages an
+in-memory cache of verstring→disco info, and fulljid→verstring.
+
+.. glossary::
+
+    cache_caps
+        - **jid**: unused
+        - **node**:  unused
+        - **ifrom**: unused
+        - **args**: a ``dict`` containing the verstring and
+          :class:`~.DiscoInfo` payload (
+          ``{'verstring': Optional[str], 'info': Optional[DiscoInfo]}``)
+
+        Cache a verification string with its payload.
+
+    get_caps
+        - **jid**: JID to retrieve the verstring for (unused with the default
+          handler)
+        - **node**:  unused
+        - **ifrom**: unused
+        - **args**: a ``dict`` containing the verstring
+          ``{'verstring': str}``
+        - **returns**: The :class:`~.DiscoInfo` payload for that verstring.
+
+        Get a disco payload from a verstring.
+
+    assign_verstring
+        - **jid**: :class:`~.JID` (full) to assign the verstring to
+        - **node**:  unused
+        - **ifrom**: unused
+        - **args**: a ``dict`` containing the verstring
+          ``{'verstring': str}``
+
+        Cache JID→verstring information.
+
+    get_verstring
+        - **jid**: :class:`~.JID` to use for fetching the verstring
+        - **node**:  unused
+        - **ifrom**: unused
+        - **args**: unused
+        - **returns**: ``str``, the verstring
+
+        Retrieve a verstring for a JID.
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0115.stanza
+    :members:
+    :undoc-members:
+

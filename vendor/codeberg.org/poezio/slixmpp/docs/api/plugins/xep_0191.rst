@@ -1,0 +1,18 @@
+
+XEP-0191: Blocking Command
+==========================
+
+.. module:: slixmpp.plugins.xep_0191
+
+.. autoclass:: XEP_0191
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0191.stanza
+    :members:
+    :undoc-members:
+

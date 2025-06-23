@@ -1,0 +1,18 @@
+
+XEP-0013: Flexible Offline Message Retrieval
+============================================
+
+.. module:: slixmpp.plugins.xep_0013
+
+.. autoclass:: XEP_0013
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0013.stanza
+    :members:
+    :undoc-members:
+

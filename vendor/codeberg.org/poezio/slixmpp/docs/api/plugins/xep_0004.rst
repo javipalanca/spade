@@ -1,0 +1,21 @@
+
+XEP-0004: Data Forms
+====================
+
+.. module:: slixmpp.plugins.xep_0004
+
+.. autoclass:: XEP_0004
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0004.stanza.field
+    :members:
+    :undoc-members:
+
+.. automodule:: slixmpp.plugins.xep_0004.stanza.form
+    :members:
+    :undoc-members:

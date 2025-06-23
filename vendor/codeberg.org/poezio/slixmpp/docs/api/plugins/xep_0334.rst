@@ -1,0 +1,18 @@
+
+XEP-0334: Message Processing Hints
+==================================
+
+.. module:: slixmpp.plugins.xep_0334
+
+.. autoclass:: XEP_0334
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0334.stanza
+    :members:
+    :undoc-members:
+

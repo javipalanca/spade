@@ -1,0 +1,60 @@
+
+XEP-0065: SOCKS5 Bytestreams
+============================
+
+.. module:: slixmpp.plugins.xep_0065
+
+.. autoclass:: XEP_0065
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+.. _api-0065:
+
+Internal API methods
+--------------------
+
+The internal API is used here to authorize or pre-authorize streams.
+
+.. glossary::
+
+    authorized_sid (0065 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: :class:`~.Iq` of the stream request.
+        - **returns**: ``True`` if the stream should be accepted,
+          ``False`` otherwise.
+
+        Check if the stream should be accepted. Uses
+        the information setup by :term:`preauthorize_sid (0065 version)`
+        by default.
+
+    authorized (0065 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream is from.
+        - **args**: :class:`~.Iq` of the stream request.
+        - **returns**: ``True`` if the stream should be accepted,
+          ``False`` otherwise.
+
+        A fallback handler (run after :term:`authorized_sid (0065 version)`)
+        to check if a stream should be accepted. Uses the ``auto_accept``
+        parameter by default.
+
+    preauthorize_sid (0065 version)
+        - **jid**: :class:`~.JID` receiving the stream initiation.
+        - **node**:  stream id
+        - **ifrom**: who the stream will be from.
+        - **args**: Unused.
+
+        Register a stream id to be accepted automatically (called from
+        other plugins such as XEP-0095).
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0065.stanza
+    :members:
+    :undoc-members:
+

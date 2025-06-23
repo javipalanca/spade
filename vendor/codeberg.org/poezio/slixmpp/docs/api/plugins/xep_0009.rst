@@ -1,0 +1,18 @@
+
+XEP-0009: Jabber-RPC
+====================
+
+.. module:: slixmpp.plugins.xep_0009
+
+.. autoclass:: XEP_0009
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0009.stanza.RPC
+    :members:
+    :undoc-members:
+

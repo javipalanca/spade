@@ -1,0 +1,62 @@
+
+XEP-0027: Current Jabber OpenPGP Usage
+======================================
+
+.. module:: slixmpp.plugins.xep_0027
+
+.. autoclass:: XEP_0027
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+.. _api-0027:
+
+Internal API methods
+--------------------
+
+The default API here is managing a JID→Keyid dict in-memory.
+
+.. glossary::
+
+    get_keyid
+        - **jid**: :class:`~.JID` to get.
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+        - **returns**: ``Optional[str]``, the keyid or None
+
+        Get the KeyiD for a JID, None if it is not found.
+
+    set_keyid
+        - **jid**: :class:`~.JID` to set the id for.
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: ``str``, keyid to set
+
+        Set the KeyiD for a JID.
+
+    del_keyid
+        - **jid**: :class:`~.JID` to delete from the mapping.
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+
+        Delete the KeyiD for a JID.
+
+    get_keyids
+        - **jid**: unused
+        - **node**: unused
+        - **ifrom**: unused
+        - **args**: unused
+        - **returns**: ``Dict[JID, str]`` the full internal mapping
+
+        Get all currently stored KeyIDs.
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0027.stanza
+    :members:
+    :undoc-members:
+

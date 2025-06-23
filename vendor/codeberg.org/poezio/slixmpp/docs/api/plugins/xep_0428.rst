@@ -1,0 +1,18 @@
+
+XEP-0428: Fallback Indication
+=============================
+
+.. module:: slixmpp.plugins.xep_0428
+
+.. autoclass:: XEP_0428
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0428.stanza
+    :members:
+    :undoc-members:
+

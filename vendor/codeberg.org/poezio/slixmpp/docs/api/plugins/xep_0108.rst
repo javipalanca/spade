@@ -1,0 +1,18 @@
+
+XEP-0108: User Activity
+=======================
+
+.. module:: slixmpp.plugins.xep_0108
+
+.. autoclass:: XEP_0108
+    :members:
+    :exclude-members: session_bind, plugin_init, plugin_end
+
+
+Stanza elements
+---------------
+
+.. automodule:: slixmpp.plugins.xep_0108.stanza
+    :members:
+    :undoc-members:
+
