@@ -1,9 +1,9 @@
 import ssl
 
-from slixmpp import ClientXMPP
+from _vendor.slixmpp import ClientXMPP
 import logging
 
-from slixmpp.exceptions import IqError, IqTimeout
+from _vendor.slixmpp.exceptions import IqError, IqTimeout
 
 
 class RegistrationException(Exception):

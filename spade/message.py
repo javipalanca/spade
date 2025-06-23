@@ -1,10 +1,11 @@
 import logging
 from typing import Optional, Dict, Type, Union
 
-import slixmpp.stanza
-from slixmpp import ClientXMPP
-from slixmpp.plugins.xep_0004 import Form
-from slixmpp import JID
+import _vendor.slixmpp.stanza
+from _vendor.slixmpp import ClientXMPP
+from _vendor.slixmpp.plugins.xep_0004 import Form
+from _vendor.slixmpp import JID
+from _vendor.slixmpp.stanza import Message as SlixmppMessage
 
 SPADE_X_METADATA = "spade:x:metadata"
 
@@ -37,7 +38,7 @@ class MessageBase(object):
             self.metadata = metadata
 
     @classmethod
-    def from_node(cls, node: slixmpp.Message) -> Type["MessageBase"]:
+    def from_node(cls, node: SlixmppMessage) -> Type["MessageBase"]:
         """
         Creates a new spade.message.Message from a slixmpp.stanza.Message
 
@@ -48,7 +49,7 @@ class MessageBase(object):
           spade.message.Message: a new spade Message
 
         """
-        if not isinstance(node, slixmpp.stanza.Message):
+        if not isinstance(node, SlixmppMessage):
             raise AttributeError("node must be a slixmpp.stanza.Message instance")
         msg = cls()
         msg.to = node["to"]
@@ -74,7 +75,7 @@ class MessageBase(object):
         return msg
 
     @property
-    def to(self) -> slixmpp.JID:
+    def to(self) -> JID:
         """
         Gets the jid of the receiver.
 
@@ -96,14 +97,14 @@ class MessageBase(object):
         if jid is None:
             self._to = JID()
         elif isinstance(jid, str):
-            self._to = slixmpp.JID(jid)
-        elif isinstance(jid, slixmpp.JID):
+            self._to = JID(jid)
+        elif isinstance(jid, JID):
             self._to = jid
         else:
             raise TypeError("'to' MUST be a valid JID, str or None")
 
     @property
-    def sender(self) -> slixmpp.JID:
+    def sender(self) -> JID:
         """
         Get jid of the sender
 
@@ -125,8 +126,8 @@ class MessageBase(object):
         if jid is None:
             self._sender = JID()
         elif isinstance(jid, str):
-            self._sender = slixmpp.JID(jid)
-        elif isinstance(jid, slixmpp.JID):
+            self._sender = JID(jid)
+        elif isinstance(jid, JID):
             self._sender = jid
         else:
             raise TypeError("'sender' MUST be a valid JID, str or None")
@@ -273,7 +274,7 @@ class Message(MessageBase):
             metadata=self.metadata,
         )
 
-    def prepare(self, client: ClientXMPP) -> slixmpp.stanza.Message:
+    def prepare(self, client: ClientXMPP) -> SlixmppMessage:
         """
         Returns a slixmpp.stanza.Message built from the Message and prepared to be sent.
 

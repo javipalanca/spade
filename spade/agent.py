@@ -4,9 +4,9 @@ from asyncio import Task
 from hashlib import md5
 from typing import Coroutine, Optional, Type, Any, List, TypeVar
 
-from slixmpp import __version__ as slixmpp_version
-from slixmpp import JID
-from slixmpp import Message as slixmppMessage
+from _vendor.slixmpp import __version__ as slixmpp_version
+from _vendor.slixmpp import JID
+from _vendor.slixmpp import Message as slixmppMessage
 
 from .behaviour import BehaviourType, FSMBehaviour, CyclicBehaviour
 from .container import Container

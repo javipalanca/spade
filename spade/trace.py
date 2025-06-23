@@ -3,7 +3,7 @@ import datetime
 import itertools
 from typing import Optional, List
 
-from slixmpp import JID
+from _vendor.slixmpp import JID
 
 from .message import Message
 
