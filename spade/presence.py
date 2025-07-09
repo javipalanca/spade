@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import Dict, Optional, Union
 
-from _vendor.slixmpp import JID
-from _vendor.slixmpp.stanza import Presence
+from slixmpp import JID
+from slixmpp.stanza import Presence
 
 
 class ContactNotFound(Exception):

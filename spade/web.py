@@ -8,7 +8,7 @@ import jinja2
 import timeago
 from aiohttp import web as aioweb
 from aiohttp.web_runner import AppRunner
-from _vendor.slixmpp import JID
+from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message

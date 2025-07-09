@@ -65,3 +65,4 @@ target/
 
 # IDE
 /.idea
+/.vscode

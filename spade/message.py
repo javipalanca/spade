@@ -1,11 +1,10 @@
 import logging
 from typing import Optional, Dict, Type, Union
 
-import _vendor.slixmpp.stanza
-from _vendor.slixmpp import ClientXMPP
-from _vendor.slixmpp.plugins.xep_0004 import Form
-from _vendor.slixmpp import JID
-from _vendor.slixmpp.stanza import Message as SlixmppMessage
+from slixmpp import ClientXMPP
+from slixmpp.plugins.xep_0004 import Form
+from slixmpp import JID
+from slixmpp.stanza import Message as SlixmppMessage
 
 SPADE_X_METADATA = "spade:x:metadata"
 
