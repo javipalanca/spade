@@ -50,11 +50,11 @@ class Agent(object):
         self.xmpp_port = port
         self.verify_security = verify_security
 
-        self.behaviours = []
-        self._values = {}
+        self.behaviours: list = []
+        self._values: dict = {}
 
-        self.client = None
-        self.presence = None
+        self.client: Optional[XMPPClient] = None
+        self.presence: Optional[PresenceManager] = None
         self.loop = None
 
         self.container = Container()
@@ -234,7 +234,7 @@ class Agent(object):
           str: a URL for the gravatar
 
         """
-        digest = md5(str(jid).encode("utf-8")).hexdigest()
+        digest = md5(str(jid).encode("utf-8")).hexdigest()  # nosec
         return "http://www.gravatar.com/avatar/{md5}?d=monsterid".format(md5=digest)
 
     def submit(self, coro: Coroutine) -> Task:

@@ -44,7 +44,7 @@ subprocess.call([sys.executable, "-m", "pip", "uninstall", "-y", "slixmpp"])
 
 setup(
     name="spade",
-    version="4.0.3",
+    version="4.1.0",
     description="Smart Python Agent Development Environment",
     long_description=readme + "\n\n" + history,
     author="Javi Palanca",
@@ -68,7 +68,8 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13" "Operating System :: MacOS :: MacOS X",
+        "Programming Language :: Python :: 3.13",
+        "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX :: Linux",
         "Operating System :: Microsoft :: Windows",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",

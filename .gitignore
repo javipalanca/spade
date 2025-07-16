@@ -66,3 +66,6 @@ target/
 # IDE
 /.idea
 /.vscode
+
+# pyjabberdb
+pyjabber.db
