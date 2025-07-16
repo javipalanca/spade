@@ -1,5 +1,4 @@
 import asyncio
-import os.path
 from unittest.mock import patch
 
 import pytest
@@ -37,9 +36,6 @@ async def server(event_loop):
         await task
     except asyncio.CancelledError:
         pass
-    finally:
-        if os.path.isfile("pyjabber_test.db"):
-            os.remove("pyjabber_test.db")
 
 
 @pytest.mark.asyncio
@@ -122,24 +118,25 @@ async def test_msg_via_xmpp():
     msg.set_metadata("performative", "inform")
     msg.body = f"Hello World {JID}"
 
-    msg_res_future = asyncio.Future()
-
     class SenderAgent(Agent):
         class SendBehav(OneShotBehaviour):
             async def run(self):
                 await self.send(msg)
-                await self.agent.stop()
 
         async def setup(self):
             b = self.SendBehav()
             self.add_behaviour(b)
 
     class ReceiverAgent(Agent):
+        def __init__(self, jid, password):
+            super().__init__(jid, password)
+            self.res = ""
+
         class RecvBehav(OneShotBehaviour):
             async def run(self):
                 msg_res = await self.receive(timeout=10)
                 if msg_res:
-                    msg_res_future.set_result(msg.body)
+                    self.agent.res = msg.body
                 await self.agent.stop()
 
         async def setup(self):
@@ -158,10 +155,12 @@ async def test_msg_via_xmpp():
 
         mock_send.side_effect = send
 
-        await spade.start_agents([receiver, sender])
+        await spade.start_agents([receiver])
+        await spade.start_agents([sender])
         await spade.wait_until_finished(receiver)
+        await sender.stop()
 
-    assert msg_res_future.result() == msg.body
+    assert receiver.res == msg.body
 
 
 @pytest.mark.asyncio

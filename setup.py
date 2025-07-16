@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-
+import subprocess
 import sys
 from setuptools import setup, find_packages
 
@@ -32,6 +32,15 @@ setup_requirements = [
 ]
 
 test_requirements = parse_requirements("requirements_dev.txt")
+
+
+"""
+Check for a slixmpp installation in the current env.
+The slixmpp-multiplatform dependency generates conflicts with any previous slixmpp installation.
+You should use SPADE in an isolated environment (venv, conda, docker...)
+"""
+subprocess.call([sys.executable, "-m", "pip", "uninstall", "-y", "slixmpp"])
+
 
 setup(
     name="spade",
