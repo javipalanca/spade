@@ -69,7 +69,8 @@ def create_cli():
             level=level,
         )
 
-        server = Server(Parameters(
+        server = Server(
+            Parameters(
                 host=host,
                 client_port=client_port,
                 server_port=server_port,
