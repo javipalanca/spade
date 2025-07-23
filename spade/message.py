@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, Union
+from typing import Optional, Dict, Union, Type
 
 from slixmpp import ClientXMPP
 from slixmpp.plugins.xep_0004.stanza.form import Form

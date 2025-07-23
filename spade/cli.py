@@ -4,6 +4,7 @@ import spade
 import socket
 
 from pyjabber.server import Server
+from pyjabber.server_parameters import Parameters
 from rich.console import Console
 from rich.panel import Panel
 from loguru import logger
@@ -69,13 +70,15 @@ def create_cli():
         )
 
         server = Server(
-            host=host,
-            client_port=client_port,
-            server_port=server_port,
-            connection_timeout=timeout,
-            database_path=db,
-            database_purge=purge,
-            database_in_memory=memory,
+            Parameters(
+                host=host,
+                client_port=client_port,
+                server_port=server_port,
+                connection_timeout=timeout,
+                database_path=db,
+                database_purge=purge,
+                database_in_memory=memory,
+            )
         )
 
         print_spade_info()
