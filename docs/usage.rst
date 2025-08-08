@@ -57,7 +57,7 @@ This approach is useful for more complex MAS integrations and for obtaining a de
     │   -  https://spadeagents.eu                                          │
     │ Documentation:                                                       │
     │   -  http://spade-mas.readthedocs.io/                                │
-    ╰────────────────── Version: 4.1.1      License: MIT ──────────────────╯
+    ╰────────────────── Version: 4.1.2      License: MIT ──────────────────╯
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:89 - Starting server...
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:133 - Client domain => 0.0.0.0
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:134 - Server is listening clients on [('0.0.0.0', 5222), ('158.42.184.157', 5222)]

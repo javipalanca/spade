@@ -12,7 +12,7 @@ from .container import run_container as run  # noqa: F401
 
 __author__ = """Javi Palanca"""
 __email__ = "jpalanca@gmail.com"
-__version__ = "4.1.1"
+__version__ = "4.1.2"
 
 __all__ = ["agent", "behaviour", "message", "template"]
 
