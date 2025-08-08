@@ -62,3 +62,10 @@ target/
 .python-version
 /.ipynb_checkpoints/
 /.pytest_cache/
+
+# IDE
+/.idea
+/.vscode
+
+# pyjabberdb
+pyjabber.db

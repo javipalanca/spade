@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ agent.jid.localpart }} agent</title>
+    <title>{{ agent.jid.local }} agent</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
@@ -135,7 +135,20 @@
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
                 <!-- Optionally, you can add icons to the links -->
-                <li class="active"><a href="/spade"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                {%  if active == "/spade" %}
+                <li class="active">
+                {% else %}
+                <li>
+                {% endif %}
+                    <a href="/spade"><i class="fa fa-id-card"></i> <span>Dashboard</span></a></li>
+                {% for name, entry in menu.items() %}
+                    {%  if active == entry.0 %}
+                    <li class="active">
+                    {% else %}
+                    <li>
+                    {% endif %}
+                        <a href="{{ entry.0 }}"><i class="{{ entry.1 }}"></i> <span>{{ name }}</span></a></li>
+                {% endfor %}
             </ul>
             <!-- /.sidebar-menu -->
         </section>
@@ -289,7 +302,7 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 3.0.9
+            <b>Version</b> 4.1.1rc1
         </div>
         <strong>Copyright © {% now 'local', '%Y' %} <a href="http://github.com/javipalanca/spade">SPADE</a>.</strong>
     </footer>

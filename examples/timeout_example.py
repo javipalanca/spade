@@ -1,6 +1,7 @@
-import getpass
-import time
 import datetime
+import getpass
+
+import spade
 from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour, TimeoutBehaviour
 from spade.message import Message
@@ -33,7 +34,7 @@ class ReceiverAgent(Agent):
                 print("Message received with content: {}".format(msg.body))
             else:
                 print("Did not received any message after 10 seconds")
-                self.kill()
+            self.kill()
 
         async def on_end(self):
             await self.agent.stop()
@@ -43,7 +44,7 @@ class ReceiverAgent(Agent):
         self.add_behaviour(b)
 
 
-if __name__ == "__main__":
+async def main():
     receiver_jid = input("Receiver JID> ")
     passwd = getpass.getpass()
     receiveragent = ReceiverAgent(receiver_jid, passwd)
@@ -52,17 +53,15 @@ if __name__ == "__main__":
     passwd = getpass.getpass()
     senderagent = TimeoutSenderAgent(sender_jid, passwd)
 
-    future = receiveragent.start(auto_register=True)
-    future.result()  # wait for receiver agent to be prepared.
+    await receiveragent.start(auto_register=True)
 
-    senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
-    senderagent.start(auto_register=True)
+    # store receiver_jid in the sender knowledge base
+    senderagent.set("receiver_jid", receiver_jid)
+    await senderagent.start(auto_register=True)
 
-    while receiveragent.is_alive():
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            senderagent.stop()
-            receiveragent.stop()
-            break
+    await spade.wait_until_finished(receiveragent)
     print("Agents finished")
+
+
+if __name__ == "__main__":
+    spade.run(main(), True)

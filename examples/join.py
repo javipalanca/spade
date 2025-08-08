@@ -1,7 +1,7 @@
 import asyncio
 import getpass
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 
@@ -25,18 +25,18 @@ class DummyAgent(Agent):
         self.add_behaviour(self.behav2)
 
 
-if __name__ == "__main__":
-
+async def main():
     jid = input("JID> ")
     passwd = getpass.getpass()
 
     dummy = DummyAgent(jid, passwd)
-    future = dummy.start()
-    future.result()
+    await dummy.start()
 
-    dummy.behav2.join()  # this join must not be awaited
+    await dummy.behav2.join()
 
     print("Stopping agent.")
-    dummy.stop()
+    await dummy.stop()
 
-    quit_spade()
+
+if __name__ == "__main__":
+    spade.run(main(), True)

@@ -8,10 +8,11 @@ import jinja2
 import timeago
 from aiohttp import web as aioweb
 from aiohttp.web_runner import AppRunner
-from aioxmpp import PresenceType, JID
+from slixmpp import JID
 
 from .behaviour import CyclicBehaviour
 from .message import Message
+from .presence import PresenceShow, ContactNotFound, PresenceNotFound
 
 logger = logging.getLogger("spade.Web")
 
@@ -23,9 +24,7 @@ def unused_port(hostname: str) -> None:
         return s.getsockname()[1]
 
 
-async def start_server_in_loop(
-    runner: AppRunner, hostname: str, port: int, agent
-):
+async def start_server_in_loop(runner: AppRunner, hostname: str, port: int, agent):
     """
     Listens to http requests and sends them to the webapp.
 
@@ -42,7 +41,7 @@ async def start_server_in_loop(
 
 
 class WebApp(object):
-    """ Module to handle agent's web interface """
+    """Module to handle agent's web interface"""
 
     def __init__(self, agent):
         self.agent = agent
@@ -57,13 +56,14 @@ class WebApp(object):
         cwd_loader = jinja2.FileSystemLoader(".")
         self.loaders = [internal_loader, cwd_loader]
         self._set_loaders()
+        self.menu_entries = {}
 
     def start(
         self,
         hostname: Optional[str] = None,
         port: Optional[int] = None,
         templates_path: Optional[str] = None,
-    ) -> None:
+    ):
         """
         Starts the web interface.
 
@@ -87,6 +87,10 @@ class WebApp(object):
             start_server_in_loop(self.runner, self.hostname, self.port, self.agent)
         )
 
+    def add_template_path(self, templates_path):
+        self.loaders.insert(0, jinja2.FileSystemLoader(templates_path))
+        self._set_loaders()
+
     def is_started(self) -> bool:
         return self.runner is not None
 
@@ -101,6 +105,7 @@ class WebApp(object):
 
     def setup_routes(self) -> None:
         self.app.router.add_get("/spade", self.index)
+        self.app.router.add_get("/spade/", self.index)
         self.app.router.add_get("/spade/stop", self.stop_agent)
         self.app.router.add_get("/spade/stop/now/", self.stop_now)
         self.app.router.add_get("/spade/messages/", self.get_messages)
@@ -111,11 +116,29 @@ class WebApp(object):
             "/spade/behaviour/{behaviour_type}/{behaviour_class}/kill/",
             self.kill_behaviour,
         )
-        self.app.router.add_get("/spade/agent/{agentjid}/", self.get_agent)
+
         self.app.router.add_get(
-            "/spade/agent/{agentjid}/unsubscribe/", self.unsubscribe_agent
+            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/", self.get_agent
         )
-        self.app.router.add_post("/spade/agent/{agentjid}/send/", self.send_agent)
+        self.app.router.add_get(
+            "/spade/agent/unsubscribe/{agentjid:[^/]+(?:/[^/]+)?}/",
+            self.unsubscribe_agent,
+        )
+        self.app.router.add_post(
+            "/spade/agent/{agentjid:[^/]+(?:/[^/]+)?}/send/", self.send_agent
+        )
+
+    def add_menu_entry(self, name: str, url: str, icon="fa fa-circle") -> None:
+        """
+        Adds a new entry to the menu.
+
+        Args:
+          name (str): name of the entry
+          url (str): url to be redirected to
+          icon (str): icon to be displayed (Default value = "fa fa-circle")
+
+        """
+        self.menu_entries[name] = (url, icon)
 
     def add_get(
         self,
@@ -195,7 +218,12 @@ class WebApp(object):
         messages = [
             (self.timeago(m[0]), m[1]) for m in self.agent.traces.received(limit=5)
         ]
-        return {"agent": self.agent, "messages": messages}
+        return {
+            "agent": self.agent,
+            "messages": messages,
+            "menu": self.menu_entries,
+            "active": request.path,
+        }
 
     # Default controllers for agent
 
@@ -204,13 +232,15 @@ class WebApp(object):
         contacts = [
             {
                 "jid": jid,
-                "avatar": self.agent.build_avatar_url(jid.bare()),
-                "available": c["presence"].type_ == PresenceType.AVAILABLE
-                if "presence" in c.keys()
-                else False,
-                "show": str(c["presence"].show).split(".")[1]
-                if "presence" in c.keys()
-                else None,
+                "avatar": self.agent.build_avatar_url(jid),
+                "available": c.is_available(),
+                "show": c.get_presence().show,
+                "resources": c.resources,
+                "resource0": (
+                    list(c.resources.values())[0].show,
+                    list(c.resources.values())[0].status,
+                    list(c.resources.values())[0].priority,
+                ),
             }
             for jid, c in self.agent.presence.get_contacts().items()
         ]
@@ -252,18 +282,31 @@ class WebApp(object):
         agent_messages = [
             (self.timeago(m[0]), m[1]) for m in self.agent.traces.filter(to=agent_jid)
         ]
-        c = self.agent.presence.get_contact(JID.fromstr(agent_jid))
-        contact = {
-            "show": str(c["presence"].show).split(".")[1]
-            if "presence" in c.keys()
-            else None
-        }
+        try:
+            c = self.agent.presence.get_contact(JID(agent_jid))
+            if c.get_presence().show is not None:
+                contact = {"show": c.get_presence().show.value}
+            else:
+                contact = {"show": PresenceShow.NONE.value}
+        except ContactNotFound:
+            # raise 404
+            raise aioweb.HTTPNotFound()
+        except PresenceNotFound:
+            contact = {"show": PresenceShow.NONE.value}
+
+        except Exception as e:
+            logger.error(e)
+            raise e
+
         return {"amessages": agent_messages, "ajid": agent_jid, "contact": contact}
 
     async def unsubscribe_agent(self, request):
-        agent_jid = request.match_info["agentjid"]
-        self.agent.presence.unsubscribe(agent_jid)
-        raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))
+        try:
+            agent_jid = request.match_info["agentjid"]
+            self.agent.presence.unsubscribe(str(JID(agent_jid).bare))
+        except Exception as e:
+            logger.error(e)
+        raise aioweb.HTTPFound("/spade")
 
     async def send_agent(self, request):
         agent_jid = request.match_info["agentjid"]
@@ -271,8 +314,8 @@ class WebApp(object):
         body = form["message"]
         logger.info("Sending message to {}: {}".format(agent_jid, body))
         msg = Message(to=agent_jid, sender=str(self.agent.jid), body=body)
-        aioxmpp_msg = msg.prepare()
-        await self.agent.stream.send(aioxmpp_msg)
+        slixmpp_msg = msg.prepare(self.agent.client)
+        self.agent.client.send(slixmpp_msg)
         msg.sent = True
         self.agent.traces.append(msg)
         raise aioweb.HTTPFound("/spade/agent/{agentjid}/".format(agentjid=agent_jid))

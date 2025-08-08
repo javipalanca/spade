@@ -1,8 +1,7 @@
 import asyncio
-import time
+from unittest.mock import AsyncMock, MagicMock, Mock
 
-import aioxmpp
-from asynctest import MagicMock, CoroutineMock
+from slixmpp import JID
 
 from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.container import Container
@@ -10,7 +9,7 @@ from spade.message import Message
 from .factories import MockedAgentFactory
 
 
-def test_use_container():
+async def test_use_container():
     container = Container()
     container.reset()
 
@@ -21,10 +20,10 @@ def test_use_container():
     assert container.has_agent(str(agent.jid))
     assert container.get_agent(str(agent.jid)) == agent
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_send_message_with_container():
+async def test_send_message_with_container():
     class FakeReceiverAgent:
         def __init__(self):
             self.jid = "fake_receiver_agent@server"
@@ -55,17 +54,15 @@ def test_send_message_with_container():
     fake_receiver_agent.dispatch = MagicMock()
 
     agent = MockedAgentFactory()
-    future = agent.start(auto_register=False)
-    future.result()
+    await agent.start(auto_register=False)
 
-    agent.client = MagicMock()
-    agent.client.send = CoroutineMock()
+    agent.client.send = Mock()
     behaviour = SendBehaviour()
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
-    assert agent.client.send.await_count == 0
+    assert agent.client.send.call_count == 0
 
     assert fake_receiver_agent.dispatch.call_count == 1
     assert (
@@ -73,10 +70,10 @@ def test_send_message_with_container():
         == "fake_receiver_agent@server"
     )
 
-    agent.stop()
+    await agent.stop()
 
 
-def test_send_message_to_outer_with_container():
+async def test_send_message_to_outer_with_container():
     class SendBehaviour(OneShotBehaviour):
         async def run(self):
             message = Message(to="to@outerhost")
@@ -87,27 +84,28 @@ def test_send_message_to_outer_with_container():
     container.reset()
 
     agent = MockedAgentFactory()
-    agent.start(auto_register=False)
+    await agent.start(auto_register=False)
 
     behaviour = SendBehaviour()
-    behaviour._xmpp_send = CoroutineMock()
+    behaviour._xmpp_send = AsyncMock()
     agent.add_behaviour(behaviour)
 
-    behaviour.join()
+    await behaviour.join()
 
     assert container.has_agent(str(agent.jid))
     assert not container.has_agent("to@outerhost")
 
     assert behaviour._xmpp_send.await_count == 1
-    msg_arg = behaviour._xmpp_send.await_args[0][0]
-    assert msg_arg.to == aioxmpp.JID.fromstr("to@outerhost")
 
-    agent.stop()
+    args, kwargs = behaviour._xmpp_send.await_args
+    msg_arg = kwargs["msg"]
+    assert msg_arg.to == JID("to@outerhost")
+
+    await agent.stop()
 
 
 def test_unregister():
     container = Container()
-    container.reset()
 
     agent = MockedAgentFactory()
     agent2 = MockedAgentFactory(jid="agent2@server")
@@ -121,7 +119,7 @@ def test_unregister():
     assert container.has_agent(str(agent2.jid))
 
 
-def test_cancel_tasks():
+async def test_cancel_tasks():
     agent = MockedAgentFactory()
 
     class Behav(CyclicBehaviour):
@@ -132,33 +130,10 @@ def test_cancel_tasks():
     behav = Behav()
     behav.has_finished = False
     agent.add_behaviour(behaviour=behav)
-    future = agent.start()
-    future.result()
+    await agent.start()
 
     assert not behav.has_finished
 
-    container = Container()
-    container.stop()
+    await agent.stop()
 
     assert not behav.has_finished
-
-
-def test_stop_container():
-    agent = MockedAgentFactory()
-
-    class Behav(OneShotBehaviour):
-        async def run(self):
-            container = Container()
-            container.stop()
-
-    behav = Behav()
-    agent.add_behaviour(behav)
-    future = agent.start(auto_register=False)
-    future.result()
-    behav.join()
-
-    counter = 0
-    while agent.is_alive() and counter < 5:
-        time.sleep(0.05)
-        counter += 1
-    assert not agent.is_alive()

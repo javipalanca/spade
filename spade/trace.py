@@ -3,14 +3,14 @@ import datetime
 import itertools
 from typing import Optional, List
 
-from aioxmpp import JID
+from slixmpp import JID
 
 from .message import Message
 
 
 def _agent_in_msg(agent, msg):
-    to = msg.to.bare() if msg.to else None
-    sender = msg.sender.bare() if msg.sender else None
+    to = msg.to.bare if msg.to else None
+    sender = msg.sender.bare if msg.sender else None
     return to == agent or sender == agent
 
 
@@ -103,12 +103,12 @@ class TraceStore(object):
                 (x for x in self.store if x[2] == category), limit
             )
         elif to and not category:
-            to = JID.fromstr(to)
+            to = JID(to)
             msg_slice = itertools.islice(
                 (x for x in self.store if _agent_in_msg(to, x[1])), limit
             )
         elif to and category:
-            to = JID.fromstr(to)
+            to = JID(to)
             msg_slice = itertools.islice(
                 (x for x in self.store if _agent_in_msg(to, x[1]) and x[2] == category),
                 limit,

@@ -1,8 +1,7 @@
-import datetime
 import getpass
-import time
+from datetime import datetime, timedelta
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour, PeriodicBehaviour
 from spade.message import Message
@@ -11,7 +10,7 @@ from spade.message import Message
 class PeriodicSenderAgent(Agent):
     class InformBehav(PeriodicBehaviour):
         async def run(self):
-            print(f"PeriodicSenderBehaviour running at {datetime.datetime.now().time()}: {self.counter}")
+            print(f"PeriodicSenderBehav at {datetime.now().time()}: {self.counter}")
             msg = Message(to=self.get("receiver_jid"))  # Instantiate the message
             msg.body = "Hello World"  # Set the message content
 
@@ -30,8 +29,8 @@ class PeriodicSenderAgent(Agent):
             self.counter = 0
 
     async def setup(self):
-        print(f"PeriodicSenderAgent started at {datetime.datetime.now().time()}")
-        start_at = datetime.datetime.now() + datetime.timedelta(seconds=5)
+        print(f"PeriodicSenderAgent started at {datetime.now().time()}")
+        start_at = datetime.now() + timedelta(seconds=5)
         b = self.InformBehav(period=2, start_at=start_at)
         self.add_behaviour(b)
 
@@ -56,7 +55,7 @@ class ReceiverAgent(Agent):
         self.add_behaviour(b)
 
 
-if __name__ == "__main__":
+async def main():
     receiver_jid = input("Receiver JID> ")
     passwd = getpass.getpass()
     receiveragent = ReceiverAgent(receiver_jid, passwd)
@@ -65,18 +64,17 @@ if __name__ == "__main__":
     passwd = getpass.getpass()
     senderagent = PeriodicSenderAgent(sender_jid, passwd)
 
-    future = receiveragent.start(auto_register=True)
-    future.result()  # wait for receiver agent to be prepared.
+    await receiveragent.start(auto_register=True)
 
-    senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
-    senderagent.start(auto_register=True)
+    # store receiver_jid in the sender knowledge base
+    senderagent.set("receiver_jid", receiver_jid)
+    await senderagent.start(auto_register=True)
 
-    while receiveragent.is_alive():
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            senderagent.stop()
-            receiveragent.stop()
-            break
+    await spade.wait_until_finished(senderagent)
+
+    await receiveragent.stop()
     print("Agents finished")
-    quit_spade()
+
+
+if __name__ == "__main__":
+    spade.run(main(), True)

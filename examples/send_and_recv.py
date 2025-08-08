@@ -1,7 +1,6 @@
 import getpass
-import time
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
@@ -58,7 +57,7 @@ class ReceiverAgent(Agent):
         self.add_behaviour(b, template)
 
 
-if __name__ == "__main__":
+async def main():
     sender_jid = input("SenderAgent JID> ")
     sender_passwd = getpass.getpass()
 
@@ -66,22 +65,13 @@ if __name__ == "__main__":
     recv_passwd = getpass.getpass()
 
     receiveragent = ReceiverAgent(recv_jid, recv_passwd)
-    future = receiveragent.start(auto_register=True)
-    future.result()
-    print("Receiver started")
-
     senderagent = SenderAgent(recv_jid, sender_jid, sender_passwd)
-    future = senderagent.start(auto_register=True)
-    future.result()
-    print("Sender started")
+    await spade.start_agents([receiveragent, senderagent])
+    print("Agents started")
 
-    while receiveragent.is_alive():
-        try:
-            time.sleep(1)
-            print(".", end="")
-        except KeyboardInterrupt:
-            senderagent.stop()
-            receiveragent.stop()
-            break
+    await spade.wait_until_finished(receiveragent)
     print("Agents finished")
-    quit_spade()
+
+
+if __name__ == "__main__":
+    spade.run(main(), True)

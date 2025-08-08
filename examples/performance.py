@@ -1,8 +1,9 @@
+import asyncio
 import getpass
 import time
 from sys import getsizeof
 
-from spade import quit_spade
+import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 from spade.message import Message
@@ -33,7 +34,7 @@ class Sender(Agent):
         self.add_behaviour(SendBehav())
 
 
-def run_experiment(credentials, num_msg=1000, body="0"):
+async def run_experiment(credentials, num_msg=1000, body="0"):
     sender_jid = credentials["sender_jid"]
     sender_passwd = credentials["sender_passwd"]
     recv_jid = credentials["recv_jid"]
@@ -48,14 +49,12 @@ def run_experiment(credentials, num_msg=1000, body="0"):
     sender.nmax = num_msg
     sender.body = body
 
-    future = receiver.start(auto_register=True)
-    future.result()
-    future = sender.start(auto_register=True)
-    future.result()
+    await receiver.start(auto_register=True)
+    await sender.start(auto_register=True)
     print("Go")
     t1 = time.time()
     while receiver.n < num_msg:
-        time.sleep(0.1)
+        await asyncio.sleep(0.1)
     t2 = time.time()
 
     size = getsizeof(body)
@@ -66,11 +65,11 @@ def run_experiment(credentials, num_msg=1000, body="0"):
         )
     )
 
-    sender.stop()
-    receiver.stop()
+    await sender.stop()
+    await receiver.stop()
 
 
-if __name__ == "__main__":
+async def main():
     agent_credentials = {
         "sender_jid": input("SenderAgent JID> "),
         "sender_passwd": getpass.getpass(),
@@ -78,16 +77,18 @@ if __name__ == "__main__":
         "recv_passwd": getpass.getpass(),
     }
 
-    run_experiment(agent_credentials)
+    await run_experiment(agent_credentials)
 
-    run_experiment(agent_credentials, num_msg=10000)
+    await run_experiment(agent_credentials, num_msg=10000)
 
-    run_experiment(agent_credentials, body="0" * 1000)
+    await run_experiment(agent_credentials, body="0" * 1000)
 
-    run_experiment(agent_credentials, num_msg=10000, body="0" * 1000)
+    await run_experiment(agent_credentials, num_msg=10000, body="0" * 1000)
 
-    run_experiment(agent_credentials, num_msg=10000, body="0" * 100000)
+    await run_experiment(agent_credentials, num_msg=10000, body="0" * 100000)
 
-    run_experiment(agent_credentials, num_msg=100000, body="0" * 100000)
+    await run_experiment(agent_credentials, num_msg=100000, body="0" * 100000)
 
-    quit_spade()
+
+if __name__ == "__main__":
+    spade.run(main(), True)

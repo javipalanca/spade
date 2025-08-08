@@ -1,324 +1,411 @@
-from typing import Dict, Optional
+from enum import Enum
+from typing import Dict, Optional, Union
 
-import aioxmpp
-from aioxmpp import PresenceState, PresenceShow
+from slixmpp import JID
+from slixmpp.stanza import Presence
 
 
 class ContactNotFound(Exception):
-    """ """
-
     pass
 
 
-class PresenceManager(object):
-    """ """
+class PresenceNotFound(Exception):
+    pass
 
-    def __init__(self, agent):
-        self.agent = agent
-        self.client = agent.client
-        self.roster = self.client.summon(aioxmpp.RosterClient)
-        self.presenceclient = self.client.summon(aioxmpp.PresenceClient)
-        self.presenceserver = self.client.summon(aioxmpp.PresenceServer)
 
-        self._contacts = {}
+class PresenceShow(Enum):
+    EXTENDED_AWAY = "xa"
+    AWAY = "away"
+    CHAT = "chat"
+    DND = "dnd"
+    NONE = "none"
 
-        self.approve_all = False
 
-        self.presenceclient.on_bare_available.connect(self._on_bare_available)
-        self.presenceclient.on_available.connect(self._on_available)
-        self.presenceclient.on_bare_unavailable.connect(self._on_bare_unavailable)
-        self.presenceclient.on_unavailable.connect(self._on_unavailable)
-        self.presenceclient.on_changed.connect(self._on_changed)
+class PresenceType(Enum):
+    AVAILABLE = "available"
+    UNAVAILABLE = "unavailable"
+    ERROR = "error"
+    PROBE = "probe"
+    SUBSCRIBE = "subscribe"
+    SUBSCRIBED = "subscribed"
+    UNSUBSCRIBE = "unsubscribe"
+    UNSUBSCRIBED = "unsubscribed"
 
-        self.roster.on_subscribe.connect(self._on_subscribe)
-        self.roster.on_subscribed.connect(self._on_subscribed)
-        self.roster.on_unsubscribe.connect(self._on_unsubscribe)
-        self.roster.on_unsubscribed.connect(self._on_unsubscribed)
 
-    @property
-    def state(self) -> aioxmpp.PresenceState:
-        """
-        The currently set presence state (as aioxmpp.PresenceState)
-        which is broadcast when the client connects and when the presence is
-        re-emitted.
-
-        This attribute cannot be written. It does not reflect the actual
-        presence seen by others. For example when the client is in fact
-        offline, others will see unavailable presence no matter what is set
-        here.
-
-        Returns:
-            aioxmpp.PresenceState: the presence state of the agent
-        """
-        return self.presenceserver.state
-
-    @property
-    def status(self) -> Dict[str, str]:
-        """
-        The currently set textual presence status which is broadcast when the
-        client connects and when the presence is re-emitted.
-
-        This attribute cannot be written. It does not reflect the actual
-        presence seen by others. For example when the client is in fact
-        offline, others will see unavailable presence no matter what is set
-        here.
-
-        Returns:
-            dict: a dict with the status in different languages (default key is None)
-        """
-        return self.presenceserver.status
-
-    @property
-    def priority(self) -> int:
-        """
-        The currently set priority which is broadcast when the client connects
-        and when the presence is re-emitted.
-
-        This attribute cannot be written. It does not reflect the actual
-        presence seen by others. For example when the client is in fact
-        offline, others will see unavailable presence no matter what is set
-        here.
-
-        Returns:
-            int: the priority of the connection
-        """
-        return self.presenceserver.priority
+class PresenceInfo:
+    def __init__(
+        self,
+        presence_type: PresenceType,
+        show: PresenceShow,
+        status: Optional[str] = "",
+        priority: int = 0,
+    ):
+        self.type = presence_type
+        self.show = show
+        self.status = status
+        self.priority = priority
 
     def is_available(self) -> bool:
-        """
-        Returns the available flag from the state
+        return self.type == PresenceType.AVAILABLE
 
-        Returns:
-          bool: wether the agent is available or not
+    def __eq__(self, other):
+        if not isinstance(other, PresenceInfo):
+            return False
+        return (
+            self.type == other.type
+            and self.show == other.show
+            and self.status == other.status
+            and self.priority == other.priority
+        )
 
-        """
-        return self.state.available
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
-    def set_available(self, show: Optional[aioxmpp.PresenceShow] = PresenceShow.NONE):
-        """
-        Sets the agent availability to True.
+    def __str__(self):
+        return f"PresenceInfo(Type: {self.type}, Show: {self.show}, Status: {self.status}, Priority: {self.priority})"
 
-        Args:
-          show (aioxmpp.PresenceShow, optional): the show state of the presence (Default value = PresenceShow.NONE)
+    def __repr__(self) -> str:
+        return str(self)
 
-        """
-        show = self.state.show if show is PresenceShow.NONE else show
-        self.set_presence(PresenceState(available=True, show=show))
 
-    def set_unavailable(self) -> None:
-        """Sets the agent availability to False."""
-        show = PresenceShow.NONE
-        self.set_presence(PresenceState(available=False, show=show))
+class Contact:
+    def __init__(self, jid: JID, name: str, subscription: str, ask: str, groups: list):
+        self.jid = jid
+        self.name = name
+        self.subscription = subscription
+        self.ask = ask
+        self.groups = groups
+        self.resources: Dict[str, PresenceInfo] = {}
+        self.current_presence: Optional[PresenceInfo] = None
+        self.last_presence: Optional[PresenceInfo] = None
+
+    def update_presence(self, resource: str, presence_info: PresenceInfo):
+        # Update the current presence automatically based on priority
+        if presence_info == self.resources.get(resource):
+            return
+        self.resources[resource] = presence_info
+        new_presence = max(
+            self.resources.values(), key=lambda p: p.priority, default=None
+        )
+        if new_presence != self.current_presence:
+            self.last_presence = self.current_presence
+            self.current_presence = new_presence
+
+    def get_presence(self, resource: Optional[str] = None) -> PresenceInfo:
+        if resource:
+            if resource in self.resources:
+                return self.resources[resource]
+            else:
+                raise KeyError(
+                    f"Resource '{resource}' not found for contact {self.jid}."
+                )
+        if self.current_presence:
+            return self.current_presence
+        raise PresenceNotFound(
+            f"No presence information available for contact {self.jid}."
+        )
+
+    def update_subscription(self, subscription: str, ask: str):
+        self.subscription = subscription
+        self.ask = ask
+
+    def is_available(self) -> bool:
+        return (
+            self.current_presence is not None
+            and self.current_presence.type == PresenceType.AVAILABLE
+        )
+
+    def is_subscribed(self) -> bool:
+        return self.subscription in ["both", "to"] or self.ask == "subscribe"
+
+    def __str__(self):
+        return f"Contact(JID: {self.jid}, Name: {self.name}, Presence: {self.current_presence})"
+
+    def __repr__(self) -> str:
+        return str(self)
+
+
+class PresenceManager:
+    def __init__(self, agent, approve_all: bool = False):
+        self.contacts: Dict[str, Contact] = {}
+        self.agent = agent
+        self.current_presence: Optional[PresenceInfo] = None
+        self.approve_all = approve_all
+        # Adding event handlers to handle incoming presence and subscription events
+        self.agent.client.add_event_handler("presence_available", self.handle_presence)
+        self.agent.client.add_event_handler(
+            "presence_unavailable", self.handle_presence
+        )
+        self.agent.client.add_event_handler("changed_status", self.handle_presence)
+        self.agent.client.add_event_handler(
+            "presence_subscribe", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_subscribed", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_unsubscribe", self.handle_subscription
+        )
+        self.agent.client.add_event_handler(
+            "presence_unsubscribed", self.handle_subscription
+        )
+        self.agent.client.add_event_handler("roster_update", self.handle_roster_update)
+
+    def is_available(self) -> bool:
+        return (
+            self.current_presence is not None and self.current_presence.is_available()
+        )
+
+    def get_presence(self) -> PresenceInfo:
+        return self.current_presence
+
+    def get_show(self) -> PresenceShow:
+        return (
+            self.current_presence.show if self.current_presence else PresenceShow.NONE
+        )
+
+    def get_status(self) -> Optional[str]:
+        return self.current_presence.status if self.current_presence else None
+
+    def get_priority(self) -> int:
+        return self.current_presence.priority if self.current_presence else 0
+
+    def handle_presence(self, presence: Presence):
+        jid = presence["from"]
+        peer_jid = str(jid)
+        bare_jid = jid.bare
+        if bare_jid == self.agent.jid.bare:
+            return
+        resource = presence["from"].resource
+        presence_type = presence["type"]
+        # Normalise the value of `type` if it is a show
+        if presence_type in [show.value for show in PresenceShow]:
+            presence_type = PresenceType.AVAILABLE
+        presence_type = PresenceType(presence_type)
+
+        show = PresenceShow(presence.get("show", "none"))
+        status = presence.get("status")
+        priority = int(presence.get("priority", 0))
+
+        name = presence.name if presence.name else peer_jid
+        presence_info = PresenceInfo(presence_type, show, status, priority)
+        if bare_jid not in self.contacts:
+            # Create a new contact if it doesn't exist
+            self.contacts[bare_jid] = Contact(
+                jid=JID(peer_jid), name=name, subscription="none", ask="", groups=[]
+            )
+        # Update the presence of the contact
+        self.contacts[bare_jid].update_presence(resource, presence_info)
+        # Call user-defined handler
+        if presence_type == PresenceType.AVAILABLE:
+            self.on_available(
+                peer_jid, presence_info, self.contacts[bare_jid].last_presence
+            )
+        elif presence_type == PresenceType.UNAVAILABLE:
+            self.on_unavailable(
+                peer_jid, presence_info, self.contacts[bare_jid].last_presence
+            )
+
+        self.on_presence_received(presence)
+
+    def handle_subscription(self, presence: Presence):
+        peer_jid = presence["from"].bare
+        subscription_type = presence["type"]
+        ask = presence.get("ask", "none")
+
+        if peer_jid not in self.contacts:
+            # Create a new contact if it doesn't exist
+            self.contacts[peer_jid] = Contact(
+                jid=JID(peer_jid),
+                name=peer_jid,
+                subscription="none",
+                ask=ask,
+                groups=[],
+            )
+
+        # Call user-defined handler or automatically approve if approve_all is True
+        if subscription_type == "subscribe" and self.approve_all:
+            self.approve_subscription(peer_jid)
+            self.on_subscribe(peer_jid)
+        elif subscription_type == "subscribe":
+            self.on_subscribe(peer_jid)
+        elif subscription_type == "subscribed":
+            self.subscribed(peer_jid)
+            self.on_subscribed(peer_jid)
+        elif subscription_type == "unsubscribe":
+            self.on_unsubscribe(peer_jid)
+        elif subscription_type == "unsubscribed":
+            self.unsubscribed(peer_jid)
+            self.on_unsubscribed(peer_jid)
+
+    def handle_roster_update(self, event):
+        """Executed when the roster is received or updated."""
+
+        roster = event["roster"]
+        for item in roster:
+            bare_jid = item.get_jid().bare
+            name = item.get("name", bare_jid)
+            subscription = item.get("subscription", "none")
+            ask = item.get("ask", "none")
+            groups = item.get_groups()
+
+            # Storing contact information in the internal structure
+            if bare_jid not in self.contacts:
+                self.contacts[bare_jid] = Contact(
+                    jid=bare_jid,
+                    name=name,
+                    subscription=subscription,
+                    ask=ask,
+                    groups=groups,
+                )
+            else:
+                self.contacts[bare_jid].name = name
+                self.contacts[bare_jid].subscription = subscription
+                self.contacts[bare_jid].ask = ask
+                self.contacts[bare_jid].groups = groups
+
+    def get_contact_presence(
+        self, jid: Union[str, JID], resource: Optional[str] = None
+    ) -> PresenceInfo:
+        if isinstance(jid, JID):
+            jid = jid.bare
+        else:
+            jid = JID(jid).bare
+        if jid in self.contacts:
+            return self.contacts[jid].get_presence(resource)
+        else:
+            raise ContactNotFound(f"Contact with JID '{jid}' not found.")
+
+    def get_contact(self, jid: Union[str, JID]) -> Contact:
+        if isinstance(jid, JID):
+            jid = jid.bare
+        else:
+            jid = JID(jid).bare
+        if jid in self.contacts:
+            return self.contacts[jid]
+        else:
+            raise ContactNotFound(f"Contact with JID '{jid}' not found.")
+
+    def get_contacts(self) -> Dict[str, Contact]:
+        return {jid: c for jid, c in self.contacts.items() if c.is_subscribed()}
 
     def set_presence(
         self,
-        state: Optional[aioxmpp.PresenceState] = None,
-        status: Optional[str] = None,
-        priority: Optional[int] = None,
+        presence_type: PresenceType = PresenceType.AVAILABLE,
+        show: PresenceShow = PresenceShow.CHAT,
+        status: Optional[str] = "",
+        priority: int = 0,
     ):
-        """
-        Change the presence broadcast by the client.
-        If the client is currently connected, the new presence is broadcast immediately.
+        # This method could be used to set the presence for the local user
+        self.current_presence = PresenceInfo(presence_type, show, status, priority)
+        # Send the presence stanza to the server
+        self.agent.client.send_presence(
+            ptype=presence_type.value,
+            pshow=show.value,
+            pstatus=status,
+            ppriority=str(priority),
+        )
 
-        Args:
-          state(aioxmpp.PresenceState, optional): New presence state to broadcast (Default value = None)
-          status(dict or str, optional): New status information to broadcast (Default value = None)
-          priority (int, optional): New priority for the resource (Default value = None)
+    def set_available(self):
+        # Method to set presence to available
+        self.set_presence(PresenceType.AVAILABLE)
 
-        """
-        state = state if state is not None else self.state
-        status = status if status is not None else self.status
-        priority = priority if priority is not None else self.priority
-        self.presenceserver.set_presence(state, status, priority)
+    def set_unavailable(self):
+        # Method to set presence to unavailable
+        self.set_presence(PresenceType.UNAVAILABLE, PresenceShow.NONE, None, 0)
 
-    def get_contacts(self) -> Dict[str, Dict]:
-        """
-        Returns list of contacts
-
-        Returns:
-          dict: the roster of contacts
-
-        """
-        for jid, item in self.roster.items.items():
-            try:
-                self._contacts[jid.bare()].update(item.export_as_json())
-            except KeyError:
-                self._contacts[jid.bare()] = item.export_as_json()
-
-        return self._contacts
-
-    def get_contact(self, jid: aioxmpp.JID) -> Dict:
-        """
-        Returns a contact
-
-        Args:
-          jid (aioxmpp.JID): jid of the contact
-
-        Returns:
-          dict: the roster of contacts
-
-        """
-        try:
-            return self.get_contacts()[jid.bare()]
-        except KeyError:
-            raise ContactNotFound
-        except AttributeError:
-            raise AttributeError("jid must be an aioxmpp.JID object")
-
-    def _update_roster_with_presence(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        if stanza.from_.bare() == self.agent.jid.bare():
-            return
-        try:
-            self._contacts[stanza.from_.bare()].update({"presence": stanza})
-        except KeyError:
-            self._contacts[stanza.from_.bare()] = {"presence": stanza}
-
-    def subscribe(self, peer_jid: str) -> None:
-        """
-        Asks for subscription
-
-        Args:
-          peer_jid (str): the JID you ask for subscriptiion
-
-        """
-        self.roster.subscribe(aioxmpp.JID.fromstr(peer_jid).bare())
-
-    def unsubscribe(self, peer_jid: str) -> None:
-        """
-        Asks for unsubscription
-
-        Args:
-          peer_jid (str): the JID you ask for unsubscriptiion
-
-        """
-        self.roster.unsubscribe(aioxmpp.JID.fromstr(peer_jid).bare())
-
-    def approve(self, peer_jid: str) -> None:
-        """
-        Approve a subscription request from jid
-
-        Args:
-          peer_jid (str): the JID to approve
-
-        """
-        self.roster.approve(aioxmpp.JID.fromstr(peer_jid).bare())
-
-    def _on_bare_available(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_available(str(stanza.from_), stanza)
-
-    def _on_available(self, full_jid, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_available(str(stanza.from_), stanza)
-
-    def _on_unavailable(self, full_jid, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_unavailable(str(stanza.from_), stanza)
-
-    def _on_bare_unavailable(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-        self.on_unavailable(str(stanza.from_), stanza)
-
-    def _on_changed(self, from_, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self._update_roster_with_presence(stanza)
-
-    def _on_subscribe(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        if self.approve_all:
-            self.roster.approve(stanza.from_.bare())
-        else:
-            self.on_subscribe(str(stanza.from_))
-
-    def _on_subscribed(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self.on_subscribed(str(stanza.from_))
-
-    def _on_unsubscribe(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        if self.approve_all:
-            self.client.stream.enqueue(
-                aioxmpp.Presence(
-                    type_=aioxmpp.structs.PresenceType.UNSUBSCRIBED,
-                    to=stanza.from_.bare(),
-                )
+    def subscribe(self, jid: str):
+        # Logic to send a subscription request to a contact
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="to", ask="subscribe", groups=[]
             )
         else:
-            self.on_unsubscribe(str(stanza.from_))
+            if self.contacts[jid].subscription == "from":
+                self.contacts[jid].update_subscription("from", "subscribe")
+            else:
+                self.contacts[jid].update_subscription("to", "subscribe")
+        # Send the subscription stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype="subscribe")
 
-    def _on_unsubscribed(self, stanza: aioxmpp.Presence) -> None:
-        """ """
-        self.on_unsubscribed(str(stanza.from_))
+    def subscribed(self, jid: str):
+        # Logic to update contact subscription with subscribe
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="to", ask="", groups=[]
+            )
+        else:
+            if (
+                self.contacts[jid].subscription == "none"
+                and self.contacts[jid].ask == "subscribe"
+            ):
+                self.contacts[jid].update_subscription("to", "")
+            elif (
+                self.contacts[jid].subscription == "from"
+                and self.contacts[jid].ask == "subscribe"
+            ):
+                self.contacts[jid].update_subscription("both", "")
 
-    def on_subscribe(self, peer_jid: str) -> None:
-        """
-        Callback called when a subscribe query is received.
-        To ve overloaded by user.
+    def unsubscribe(self, jid: str):
+        # Logic to send an unsubscription request to a contact
+        if jid in self.contacts:
+            if self.contacts[jid].subscription == "both":
+                self.contacts[jid].update_subscription("from", "")
+            elif self.contacts[jid].subscription == "to":
+                self.contacts[jid].update_subscription("none", "")
+        # Send the unsubscription stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype="unsubscribe")
 
-        Args:
-          peer_jid (str): the JID of the agent asking for subscription
+    def unsubscribed(self, jid: str):
+        # Logic to update contact subscription with unsubscribe
+        if jid not in self.contacts:
+            self.contacts[jid] = Contact(
+                jid=JID(jid), name=jid, subscription="none", ask="", groups=[]
+            )
+        else:
+            if self.contacts[jid].subscription == "both":
+                self.contacts[jid].update_subscription("to", "")
+            elif self.contacts[jid].subscription == "from":
+                self.contacts[jid].update_subscription("none", "")
 
-        """
-        pass  # pragma: no cover
+    def approve_subscription(self, jid: str):
+        # Logic to approve a subscription request
+        if jid in self.contacts:
+            if self.contacts[jid].subscription == "to":
+                self.contacts[jid].update_subscription("both", "")
+            else:
+                self.contacts[jid].update_subscription("from", "")
+        # Send the subscribed stanza to the server
+        self.agent.client.send_presence(pto=jid, ptype="subscribed")
 
-    def on_subscribed(self, peer_jid: str) -> None:
-        """
-        Callback called when a subscribed message is received.
-        To ve overloaded by user.
+    # User-overridable methods
+    def on_subscribe(self, peer_jid: str):
+        pass
 
-        Args:
-          peer_jid (str): the JID of the agent that accepted subscription
+    def on_subscribed(self, peer_jid: str):
+        pass
 
-        """
-        pass  # pragma: no cover
+    def on_unsubscribe(self, peer_jid: str):
+        pass
 
-    def on_unsubscribe(self, peer_jid: str) -> None:
-        """
-        Callback called when an unsubscribe query is received.
-        To ve overloaded by user.
+    def on_unsubscribed(self, peer_jid: str):
+        pass
 
-        Args:
-          peer_jid (str): the JID of the agent asking for unsubscription
+    def on_presence_received(self, presence: Presence):
+        pass
 
-        """
-        pass  # pragma: no cover
+    def on_available(
+        self,
+        peer_jid: str,
+        presence_info: PresenceInfo,
+        last_presence: Optional[PresenceInfo],
+    ):
+        pass
 
-    def on_unsubscribed(self, peer_jid: str) -> None:
-        """
-        Callback called when an unsubscribed message is received.
-        To ve overloaded by user.
-
-        Args:
-          peer_jid (str): the JID of the agent that unsubscribed
-
-        """
-        pass  # pragma: no cover
-
-    def on_available(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
-        """
-        Callback called when a contact becomes available.
-        To ve overloaded by user.
-
-        Args:
-          peer_jid (str): the JID of the agent that is available
-          stanza (aioxmpp.Presence): The presence message containing type, show, priority and status values.
-
-        """
-        pass  # pragma: no cover
-
-    def on_unavailable(self, peer_jid: str, stanza: aioxmpp.Presence) -> None:
-        """
-        Callback called when a contact becomes unavailable.
-        To ve overloaded by user.
-
-        Args:
-          peer_jid (str): the JID of the agent that is unavailable
-          stanza (aioxmpp.Presence): The presence message containing type, show, priority and status values.
-
-        """
-        pass  # pragma: no cover
+    def on_unavailable(
+        self,
+        peer_jid: str,
+        presence_info: PresenceInfo,
+        last_presence: Optional[PresenceInfo],
+    ):
+        pass

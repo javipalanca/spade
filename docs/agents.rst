@@ -86,10 +86,11 @@ destination. Note that the send function is an async coroutine, so it needs to b
 
 Here is a self-explaining example::
 
-    import time
+    import spade
     from spade.agent import Agent
     from spade.behaviour import OneShotBehaviour
     from spade.message import Message
+    from spade.template import Template
 
 
     class SenderAgent(Agent):
@@ -117,22 +118,23 @@ Here is a self-explaining example::
             self.add_behaviour(self.b)
 
 
+    async def main():
+        senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
+        await senderagent.start(auto_register=True)
+        print("Sender started")
+
+        await spade.wait_until_finished(receiveragent)
+        print("Agents finished")
+
+
     if __name__ == "__main__":
-        agent = SenderAgent("sender@your_xmpp_server", "sender_password")
-        future = agent.start()
-        future.result()
-
-        while agent.is_alive():
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                agent.stop()
-                break
-        print("Agent finished with exit code: {}".format(agent.b.exit_code))
+        spade.run(main())
 
 
 
-This code would output::
+This code would output
+
+.. code-block:: bash
 
     $ python sender.py
     SenderAgent started
@@ -142,9 +144,11 @@ This code would output::
 
 
 
-Ok, we have sent a message but now we need someone to receive that message. Show me the code::
+Ok, we have sent a message but now we need someone to receive that message. Show me the code
 
-    import time
+.. code-block:: python
+
+    import spade
     from spade.agent import Agent
     from spade.behaviour import OneShotBehaviour
     from spade.message import Message
@@ -193,21 +197,21 @@ Ok, we have sent a message but now we need someone to receive that message. Show
 
 
 
-    if __name__ == "__main__":
+    async def main():
         receiveragent = ReceiverAgent("receiver@your_xmpp_server", "receiver_password")
-        future = receiveragent.start()
-        future.wait() # wait for receiver agent to be prepared.
-        senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
-        senderagent.start()
+        await receiveragent.start(auto_register=True)
+        print("Receiver started")
 
-        while receiveragent.is_alive():
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                senderagent.stop()
-                receiveragent.stop()
-                break
+        senderagent = SenderAgent("sender@your_xmpp_server", "sender_password")
+        await senderagent.start(auto_register=True)
+        print("Sender started")
+
+        await spade.wait_until_finished(receiveragent)
         print("Agents finished")
+
+
+    if __name__ == "__main__":
+        spade.run(main())
 
 
 .. note:: It's important to remember that the send and receive functions are **coroutines**, so they **always**
@@ -217,19 +221,20 @@ In this example you can see how the ``RecvBehav`` behaviour receives the message
 *performative* with the value **inform** in the metadata and the sent message does also include that metadata, so the
 message and the template match.
 
-You can also note that we are using an *ugly* ``time.sleep`` to introduce an explicit wait to avoid sending the message
-before the receiver agent is up and ready since in another case the message would never be received (remember that spade
-is a **real-time** messaging platform. In future sections we'll show you how to use *presence notification* to wait for
-an agent to be *available*.
+The code below would output
 
-The code below would output::
+.. code-block:: bash
 
     $ python send_and_recv.py
     ReceiverAgent started
+    Receiver started
     RecvBehav running
     SenderAgent started
+    Sender started
     InformBehav running
     Message sent!
     Message received with content: Hello World
     Agents finished
+
+    Process finished with exit code 0
 

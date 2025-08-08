@@ -1,4 +1,8 @@
-from spade import quit_spade
+import getpass
+
+from slixmpp import JID
+
+import spade
 from spade.agent import Agent
 from spade.behaviour import OneShotBehaviour
 
@@ -10,19 +14,27 @@ class AgentExample(Agent):
 
 class CreateBehav(OneShotBehaviour):
     async def run(self):
-        agent2 = AgentExample("agent2_example@your_xmpp_server", "fake_password")
+        agent2 = AgentExample(f"agent2_example@{self.server}", "fake_password")
         # This start is inside an async def, so it must be awaited
         await agent2.start(auto_register=True)
 
 
-if __name__ == "__main__":
-    agent1 = AgentExample("agent1_example@your_xmpp_server", "fake_password")
+async def main():
+    jid = input("JID> ")
+    passwd = getpass.getpass()
+    agent1 = AgentExample(jid, passwd)
     behav = CreateBehav()
+    behav.server = JID(jid).domain
     agent1.add_behaviour(behav)
     # This start is in a synchronous piece of code, so it must NOT be awaited
-    future = agent1.start(auto_register=True)
-    future.result()
+    await agent1.start(auto_register=True)
 
     # wait until the behaviour is finished to quit spade.
-    behav.join()
-    quit_spade()
+    await behav.join()
+    await agent1.stop()
+
+    await spade.wait_until_finished(agent1)
+
+
+if __name__ == "__main__":
+    spade.run(main(), True)

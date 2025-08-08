@@ -1,17 +1,15 @@
 import factory
-from aioxmpp import PresenceShow, PresenceState
-from asynctest import CoroutineMock, Mock
+from unittest.mock import AsyncMock, Mock
 
 from spade.agent import Agent
+from spade.presence import PresenceShow, PresenceType
 
 
 class MockedConnectedAgent(Agent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._async_connect = CoroutineMock()
-        self._async_register = CoroutineMock()
-        self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = CoroutineMock()
+        self._async_connect = AsyncMock()
+        self._async_register = AsyncMock()
         self.stream = Mock()
 
 
@@ -25,14 +23,18 @@ class MockedAgentFactory(factory.Factory):
 
 class MockedPresenceConnectedAgent(Agent):
     def __init__(
-        self, available=None, show=None, status=None, priority=0, *args, **kwargs
+        self,
+        available=None,
+        show=PresenceShow.NONE,
+        status=None,
+        priority=0,
+        *args,
+        **kwargs,
     ):
         super().__init__(*args, **kwargs)
         if status is None:
             status = {}
-        self._async_connect = CoroutineMock()
-        self.conn_coro = Mock()
-        self.conn_coro.__aexit__ = CoroutineMock()
+        self._async_connect = AsyncMock()
 
         self.available = available
         self.show = show
@@ -41,16 +43,16 @@ class MockedPresenceConnectedAgent(Agent):
 
     def mock_presence(self):
         show = self.show if self.show is not None else PresenceShow.NONE
-        available = self.available if self.available is not None else False
-        state = PresenceState(available, show)
-        self.presence.presenceserver.set_presence(state, self.status, self.priority)
+        self.presence.set_presence(
+            PresenceType.AVAILABLE, show, self.status, self.priority
+        )
 
 
 class MockedPresenceAgentFactory(factory.Factory):
     class Meta:
         model = MockedPresenceConnectedAgent
 
-    jid = "fake@jid"
+    jid = "fake@jid.com"
     password = "fake_password"
     available = None
     show = None

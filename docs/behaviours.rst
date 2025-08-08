@@ -17,9 +17,8 @@ Let's see an example::
 
     import datetime
     import getpass
-    import time
 
-    from spade import quit_spade
+    import spade
     from spade.agent import Agent
     from spade.behaviour import CyclicBehaviour, PeriodicBehaviour
     from spade.message import Message
@@ -72,8 +71,7 @@ Let's see an example::
             b = self.RecvBehav()
             self.add_behaviour(b)
 
-
-    if __name__ == "__main__":
+    async def main():
         receiver_jid = input("Receiver JID> ")
         passwd = getpass.getpass()
         receiveragent = ReceiverAgent(receiver_jid, passwd)
@@ -82,21 +80,19 @@ Let's see an example::
         passwd = getpass.getpass()
         senderagent = PeriodicSenderAgent(sender_jid, passwd)
 
-        future = receiveragent.start(auto_register=True)
-        future.result()  # wait for receiver agent to be prepared.
+        await receiveragent.start(auto_register=True)
 
         senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
-        senderagent.start(auto_register=True)
+        await senderagent.start(auto_register=True)
 
-        while receiveragent.is_alive():
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                senderagent.stop()
-                receiveragent.stop()
-                break
+        await spade.wait_until_finished(receiveragent)
+        await senderagent.stop()
+        await receiveragent.stop()
         print("Agents finished")
-        quit_spade()
+
+
+    if __name__ == "__main__":
+        spade.run(main())
 
 The output of this code would be similar to::
 
@@ -142,8 +138,8 @@ a specified ``datetime`` just as in ``PeriodicBehaviours``.
 Let's see an example::
 
     import getpass
-    import time
     import datetime
+    import spade
     from spade.agent import Agent
     from spade.behaviour import CyclicBehaviour, TimeoutBehaviour
     from spade.message import Message
@@ -186,7 +182,7 @@ Let's see an example::
             self.add_behaviour(b)
 
 
-    if __name__ == "__main__":
+    async def main():
         receiver_jid = input("Receiver JID> ")
         passwd = getpass.getpass()
         receiveragent = ReceiverAgent(receiver_jid, passwd)
@@ -195,20 +191,19 @@ Let's see an example::
         passwd = getpass.getpass()
         senderagent = TimeoutSenderAgent(sender_jid, passwd)
 
-        future = receiveragent.start(auto_register=True)
-        future.result()  # wait for receiver agent to be prepared.
+        await receiveragent.start(auto_register=True)
 
         senderagent.set("receiver_jid", receiver_jid)  # store receiver_jid in the sender knowledge base
-        senderagent.start(auto_register=True)
+        await senderagent.start(auto_register=True)
 
-        while receiveragent.is_alive():
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                senderagent.stop()
-                receiveragent.stop()
-                break
+        await spade.wait_until_finished(receiveragent)
+        await senderagent.stop()
+        await receiveragent.stop()
         print("Agents finished")
+
+    if __name__ == "__main__":
+        spade.run(main())
+
 
 This would produce the following output::
 
@@ -257,8 +252,7 @@ state to the next one in order. It also sends a message to itself at the first i
 third (and final) state. Also note that the third state is a final state because it does not set a *next_state* to
 transit to::
 
-    import time
-
+    import spade
     from spade.agent import Agent
     from spade.behaviour import FSMBehaviour, State
     from spade.message import Message
@@ -311,20 +305,16 @@ transit to::
             self.add_behaviour(fsm)
 
 
-    if __name__ == "__main__":
+    async def main():
         fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
-        future = fsmagent.start()
-        future.result()
+        await fsmagent.start()
 
-        while fsmagent.is_alive():
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                fsmagent.stop()
-                break
+        await spade.wait_until_finished(fsmagent)
+        await fsmagent.stop()
         print("Agent finished")
 
-
+    if __name__ == "__main__":
+        spade.run(main())
 
 
 Waiting a Behaviour
@@ -332,14 +322,12 @@ Waiting a Behaviour
 
 Sometimes you may need to wait for a behaviour to finish. In order to make this easy, behaviours provide a method called
 ``join``. Using this method you can wait for a behaviour to be finished. Be careful, since this is a blocking operation.
-In order to make it usable inside and outside coroutines, this is also a morphing method (like ``start`` and ``stop``)
-which behaves different depending on the context. It returns a coroutine or a future depending on whether it is called
-from a coroutine or a synchronous method. Example::
+Example::
 
     import asyncio
     import getpass
 
-    from spade import quit_spade
+    import spade
     from spade.agent import Agent
     from spade.behaviour import OneShotBehaviour
 
@@ -363,18 +351,18 @@ from a coroutine or a synchronous method. Example::
             self.add_behaviour(self.behav2)
 
 
-    if __name__ == "__main__":
-
+    async def main():
         jid = input("JID> ")
         passwd = getpass.getpass()
 
         dummy = DummyAgent(jid, passwd)
-        future = dummy.start()
-        future.result()
+        await dummy.start()
 
-        dummy.behav2.join()  # this join must not be awaited
-
+        await dummy.behav2.join()
         print("Stopping agent.")
-        dummy.stop()
+        await dummy.stop()
 
-        quit_spade()
+
+    if __name__ == "__main__":
+        spade.run(main())
+

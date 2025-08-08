@@ -2,6 +2,89 @@
 History
 =======
 
+4.1.1 (2025-08-08)
+---------------------
+* Use the new slixmpp-multiplatform fork and manage existing slixmpp installations 
+* Hotfix in cli error
+
+
+4.1.0 (2025-05-22)
+---------------------
+
+* XMPP server is now auto launched transparently with agents.
+* Added support for Python 3.13.
+* Added end2end tests.
+* Memory database integration for the XMPP server.
+* Server parameter configurations improved.
+* Enhanced presence management and subscription process.
+* Added embedded server capability for examples.
+* Dropped Python 3.8 support.
+* Added overloadable presence_received handler.
+* Fixed slixmpp address kwarg error.
+* Improved type hints and code structure in agent and message modules.
+
+
+4.0.3 (2025-02-17)
+--------------------
+* Prepare XMPP messages linked to client stream.
+* Added CLI support for in-memory database in the XMPP server.
+* Added CLI support for custom connection timeout.
+* Fixed bug in XMPP sending method.
+
+4.0.2 (2025-01-09)
+--------------------
+* Fixed bug sending messages to external agents.
+
+4.0.1 (2024-12-26)
+--------------------
+
+* Fixed minor bugs.
+* Agents are now stopped when Ctrl+C is pressed.
+* Added --debug flag to the CLI.
+* Updated documentation config file.
+* Lint examples.
+
+4.0.0 (2024-12-19)
+--------------------
+
+* Added custom XMPP server as cli.
+* Migrated to pyproject.
+* Migrated linter to ruff.
+* Improved presence management API.
+* Agents can now select the XMPP port.
+* Use uvloop or winloop if available.
+
+3.3.3 (2024-09-05)
+------------------
+
+* Added support to Python 3.11 and 3.12
+* Upgraded aiohttp to 3.10.5.
+* Fixed viz.js CDN
+
+3.3.2 (2023-09-18)
+------------------
+
+* Added add_template_path function to the web component.
+
+3.3.1 (2023-09-18)
+------------------
+
+* Added menu entries support for the web interface.
+* Minor typos in documentation.
+
+3.3.0 (2023-06-13)
+------------------
+
+* Updated to Python>=3.8
+* Changed the way agents are launched (now with `spade.run()`)
+* Python 3.11 still not supported due to a bug in `aiohttp`
+* Deprecated support for Python<=3.7
+
+3.2.3 (2022-12-13)
+------------------
+
+* Updated third-party libs
+
 3.2.2 (2021-11-25)
 ------------------
 

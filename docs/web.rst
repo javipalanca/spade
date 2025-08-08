@@ -2,11 +2,11 @@
 Web Graphical Interface
 =======================
 
-Each agent in SPADE provides a graphical interface *by default* that is accesible via web under the ``/spade`` path.
+Each agent in SPADE provides a graphical interface *by default* that is accessible via web under the ``/spade`` path.
 To activate the web interface you just have to start the web module of the agent just as follows::
 
     agent = MyAgent("your_jid@your_xmpp_server", "your_password")
-    agent.start()
+    await agent.start()
     agent.web.start(hostname="127.0.0.1", port="10000")
 
 
@@ -71,7 +71,7 @@ the path with which it was registered. Let's see an example::
 
     a.web.add_get("/hello", hello_controller, "hello.html")
 
-    a.start(auto_register=True)
+    await a.start(auto_register=True)
     a.web.start(port=10000)
 
 
@@ -84,13 +84,13 @@ In this example there are some elements that must be explained:
 
 Next we are going to explain a little more about the controller, the path and the template.
 
-.. note:: Please, do not use the ``/spade`` path o avoid conflicts with the default agent pages (unless you want to modify them).
+.. note:: Please, do not use the ``/spade`` path to avoid conflicts with the default agent pages (unless you want to modify them).
 
 Controller
 ----------
-The controller is the asyncronous method (or coroutine) that prepares the data to render the web page. It is an ``async``
+The controller is the asynchronous method (or coroutine) that prepares the data to render the web page. It is an ``async``
 method that always receives a single argument: ``request``. A controller queries the
-model, which in our case is the agent (accesible in your coroutines using ``self.agent``) and prepares a dictionary
+model, which in our case is the agent (accessible in your coroutines using ``self.agent``) and prepares a dictionary
 which will be used to render the template (as we will see in a moment). Inside a controller coroutine you can do
 any agent related stuff (sending messages, starting or killing behaviours, etc.).
 
@@ -199,3 +199,17 @@ A simple example of template would be:
     </html>
 
 .. note:: Note that the ``agent`` variable is always available in your templates to help you to access your internal data.
+
+
+Menu entries
+------------
+
+You can also add new entries to the menu bar of the agent's web interface. To do so, you can use the ``add_menu_entry`` method.
+This method receives the name of the entry, the path to which it will redirect and the icon that will be shown in the menu bar.
+The icon is a string from the Font Awesome collection (http://fontawesome.io/icons/).
+
+For example, to add a new entry to the menu, you can do the following::
+
+    agent.web.add_menu_entry("My entry", "/my_entry", "fa fa-user")
+
+

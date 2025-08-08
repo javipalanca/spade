@@ -2,17 +2,17 @@
 import asyncio
 import datetime
 import random
-import time
 
-import aioxmpp
 import click
-from aioxmpp import PresenceType, Presence, JID, PresenceShow, MessageType
-from aioxmpp.roster.xso import Item
+import slixmpp
+from slixmpp import JID
 
+import spade
 from spade import agent, behaviour
 from spade.behaviour import State
 from spade.message import Message
 from spade.template import Template
+from spade.presence import PresenceShow, PresenceType, PresenceInfo, Contact
 
 
 class WebAgent(agent.Agent):
@@ -32,29 +32,37 @@ class WebAgent(agent.Agent):
             await asyncio.sleep(1)
 
     class DummyFSMBehav(behaviour.FSMBehaviour):
-        def setup(self):
+        async def on_start(self) -> None:
+            print(f"FSM starting at initial state {self.current_state}")
+
+        async def on_end(self) -> None:
+            print(f"FSM finished at state {self.current_state}")
+
+        def setup_states(self):
             class S(State):
                 async def run(self):
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(100)
 
-            self.add_state("S 1", S(), initial=True)
-            self.add_state("S 2", S())
-            self.add_state("S 3", S())
-            self.add_state("S 4", S())
-            self.add_state("S 5", S())
-            self.add_transition("S 1", "S 2")
-            self.add_transition("S 2", "S 1")
-            self.add_transition("S 1", "S 3")
-            self.add_transition("S 3", "S 5")
-            self.add_transition("S 2", "S 4")
-            self.add_transition("S 4", "S 5")
+            print("Preparing FSM")
+            self.add_state("S1", S(), initial=True)
+            self.add_state("S2", S())
+            self.add_state("S3", S())
+            self.add_state("S4", S())
+            self.add_state("S5", S())
+            self.add_transition("S1", "S2")
+            self.add_transition("S2", "S1")
+            self.add_transition("S1", "S3")
+            self.add_transition("S3", "S5")
+            self.add_transition("S2", "S4")
+            self.add_transition("S4", "S5")
+            print("FSM prepared")
 
-    def setup(self):
+    async def setup(self):
         self.web.start(templates_path="examples")
-        template1 = Template(sender="agent0@fake_server")
-        template2 = Template(sender="agent1@fake_server")
-        template3 = Template(sender="agent2@fake_server")
-        template4 = Template(sender="agent3@fake_server")
+        template1 = Template(sender="agent0@fake.server")
+        template2 = Template(sender="agent1@fake.server")
+        template3 = Template(sender="agent2@fake.server")
+        template4 = Template(sender="agent3@fake.server")
 
         # Create some dummy behaviours
         dummybehav = self.DummyBehav()
@@ -64,34 +72,39 @@ class WebAgent(agent.Agent):
         timeoutbehav = self.DummyTimeoutBehav(start_at=datetime.datetime.now())
         self.add_behaviour(timeoutbehav, template=template3)
         fsm_behav = self.DummyFSMBehav()
+        fsm_behav.setup_states()
         self.add_behaviour(fsm_behav, template=template4)
         behavs = [dummybehav, periodbehav, timeoutbehav, fsm_behav]
 
         # Create some fake contacts
-        self.add_fake_contact("agent0@fake_server", PresenceType.AVAILABLE)
+        self.add_fake_contact("agent0@fake.server", PresenceType.AVAILABLE)
         self.add_fake_contact(
-            "agent1@fake_server", PresenceType.AVAILABLE, show=PresenceShow.AWAY
+            "agent1@fake.server", PresenceType.AVAILABLE, show=PresenceShow.AWAY
         )
         self.add_fake_contact(
-            "agent2@fake_server",
+            "agent2@fake.server",
             PresenceType.AVAILABLE,
-            show=PresenceShow.DO_NOT_DISTURB,
+            show=PresenceShow.DND,
         )
-        self.add_fake_contact("agent3@fake_server", PresenceType.UNAVAILABLE)
+        self.add_fake_contact("agent3@fake.server", PresenceType.UNAVAILABLE)
         self.add_fake_contact(
-            "agent4@fake_server", PresenceType.AVAILABLE, show=PresenceShow.CHAT
+            "agent4@fake.server", PresenceType.AVAILABLE, show=PresenceShow.CHAT
         )
-        self.add_fake_contact("agent5@fake_server", PresenceType.UNAVAILABLE)
+        self.add_fake_contact("agent5@fake.server", PresenceType.UNAVAILABLE)
+        self.add_fake_contact(
+            "agent6@fake.server",
+            PresenceType.AVAILABLE,
+            show=PresenceShow.EXTENDED_AWAY,
+        )
 
         # Send and Receive some fake messages
         self.traces.reset()
         for i in range(20):
             number = random.randint(0, 3)
-            from_ = JID.fromstr("agent{}@fake_server".format(number))
-            msg = aioxmpp.Message(from_=from_, to=self.jid, type_=MessageType.CHAT)
-            msg.body[None] = "Hello from {}! This is a long message.".format(
-                from_.localpart
-            )
+            from_ = JID("agent{}@fake.server".format(number))
+            msg = slixmpp.Message(sfrom=from_, sto=self.jid)
+            msg.chat()
+            msg["body"] = "Hello from {}! This is a long message.".format(from_.local)
             msg = Message.from_node(msg)
             msg.metadata = {"performative": "inform", "acl-representation": "xml"}
             msg = msg.prepare()
@@ -103,24 +116,19 @@ class WebAgent(agent.Agent):
             self.traces.append(msg, category=str(behavs[number]))
 
     def add_fake_contact(self, jid, presence, show=None):
-        jid = JID.fromstr(jid)
-        item = Item(jid=jid)
-        item.approved = True
+        jid = JID(jid)
 
-        self.presence.roster._update_entry(item)
+        contact = Contact(
+            jid.bare, name=jid.bare, subscription="both", ask="", groups=[]
+        )
 
-        if show:
-            stanza = Presence(from_=jid, type_=presence, show=show)
-        else:
-            stanza = Presence(from_=jid, type_=presence)
-        self.presence.presenceclient.handle_presence(stanza)
+        pinfo = PresenceInfo(presence, show=show)
+        contact.update_presence("resource", pinfo)
+
+        self.presence.contacts[jid.bare] = contact
 
 
-@click.command()
-@click.option("--jid", prompt="Agent JID> ")
-@click.option("--pwd", prompt="Password>", hide_input=True)
-@click.option("--port", default=10000)
-def run(jid, pwd, port):
+async def main(jid, pwd, port):
     a = WebAgent(jid, pwd)
     a.web.port = port
 
@@ -128,15 +136,19 @@ def run(jid, pwd, port):
         return {"number": 42}
 
     a.web.add_get("/hello", hello, "hello.html")
-    a.start(auto_register=True)
+
+    await a.start(auto_register=True)
 
     print("Agent web at {}:{}".format(a.web.hostname, a.web.port))
-    print(a.jid)
-    while a.is_alive():
-        try:
-            time.sleep(3)
-        except KeyboardInterrupt:
-            a.stop()
+    await spade.wait_until_finished(a)
+
+
+@click.command()
+@click.option("--jid", prompt="Agent JID> ")
+@click.option("--pwd", prompt="Password>", hide_input=True)
+@click.option("--port", default=10000)
+def run(jid, pwd, port):
+    spade.run(main(jid, pwd, port))
 
 
 if __name__ == "__main__":

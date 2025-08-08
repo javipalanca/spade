@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Optional, Coroutine, Dict
+from typing import Any, Optional, Dict, TypeVar
 
 from .message import Message
 from .template import Template
@@ -15,6 +15,8 @@ from .template import Template
 now = datetime.now
 
 logger = logging.getLogger("spade.behaviour")
+
+BehaviourType = TypeVar("BehaviourType", bound="CyclicBehaviour")
 
 
 class BehaviourNotFinishedException(Exception):
@@ -36,14 +38,13 @@ class NotValidTransition(Exception):
 
 
 class CyclicBehaviour(object, metaclass=ABCMeta):
-    """ This behaviour is executed cyclically until it is stopped. """
+    """This behaviour is executed cyclically until it is stopped."""
 
     def __init__(self):
         self.agent = None
         self.template = None
         self._force_kill = Event()
-        self._is_done = asyncio.Event()
-        self._is_done.set()
+        self._is_done = None
         self._exit_code = 0
         self.presence = None
         self.web = None
@@ -60,7 +61,10 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         """
         self.agent = agent
-        self.queue = asyncio.Queue(loop=self.agent.loop)
+        asyncio.set_event_loop(self.agent.loop)
+        self._is_done = asyncio.Event()
+        self._is_done.set()
+        self.queue = asyncio.Queue()
         self.presence = agent.presence
         self.web = agent.web
 
@@ -125,7 +129,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         runs the _step coroutine where the body of the behaviour
         is called.
         """
-        self.agent._alive.wait()
+        await self.agent._alive.wait()
         try:
             await self.on_start()
         except Exception as e:
@@ -209,7 +213,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         return not self._is_done.is_set()
 
-    def join(self, timeout: Optional[float] = None) -> Optional[Coroutine]:
+    async def join(self, timeout: Optional[float] = None) -> None:
         """
         Wait for the behaviour to complete
 
@@ -217,27 +221,13 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             timeout (Optional[float]): an optional timeout to wait to join (if None, the join is blocking)
 
         Returns:
-            None: if called from a synchronous method
-            Coroutine: if called from an async method
+            None
 
         Raises:
             TimeoutError: if the timeout is reached
         """
 
-        try:
-            in_coroutine = asyncio.get_event_loop() == self.agent.loop
-        except RuntimeError:  # pragma: no cover
-            in_coroutine = False
-
-        if not in_coroutine:
-            t_start = time.time()
-            while not self.is_done():
-                time.sleep(0.001)
-                t = time.time()
-                if timeout is not None and t - t_start > timeout:
-                    raise TimeoutError
-        else:
-            return self._async_join(timeout=timeout)
+        return await self._async_join(timeout=timeout)
 
     async def _async_join(self, timeout: Optional[float]) -> None:
         """
@@ -294,8 +284,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             try:
                 await self._run()
                 await asyncio.sleep(0)  # relinquish cpu
-            except CancelledError:
-                logger.info("Behaviour {} cancelled".format(self))
+            except CancelledError:  # pragma: no cover
+                logger.debug("Behaviour {} cancelled".format(self))
                 cancelled = True
             except Exception as e:
                 logger.error(
@@ -311,6 +301,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except Exception as e:
             logger.error("Exception running on_end in behaviour {}: {}".format(self, e))
             self.kill(exit_code=e)
+        self.is_running = False
         self.agent.remove_behaviour(self)
 
     async def enqueue(self, message: Message) -> None:
@@ -320,7 +311,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Args:
             message (spade.message.Message): the message to be enqueued
         """
-        await self.queue.put(message)
+        asyncio.create_task(self.queue.put(message))
 
     def mailbox_size(self) -> int:
         """
@@ -339,7 +330,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         Args:
             msg (spade.message.Message): the message to be sent.
         """
-        if not msg.sender:
+        if msg.empty_sender():
             msg.sender = str(self.agent.jid)
             logger.debug(f"Adding agent's jid as sender to message: {msg}")
         await self.agent.container.send(msg, self)
@@ -347,8 +338,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.agent.traces.append(msg, category=str(self))
 
     async def _xmpp_send(self, msg: Message) -> None:
-        aioxmpp_msg = msg.prepare()
-        await self.agent.client.send(aioxmpp_msg)
+        slixmpp_msg = msg.prepare(self.agent.client)
+        slixmpp_msg.send()
 
     async def receive(self, timeout: Optional[float] = None) -> Optional[Message]:
         """
@@ -419,7 +410,7 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
     @property
     def period(self) -> timedelta:
-        """ Get the period. """
+        """Get the period."""
         return self._period
 
     @period.setter
@@ -478,9 +469,12 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
                 logger.debug(
                     f"Timeout behaviour going to sleep for {seconds} seconds: {self}"
                 )
+                start_time = time.monotonic()
                 await asyncio.sleep(seconds)
-                await self.run()
-                self._timeout_triggered = True
+                elapsed = time.monotonic() - start_time
+                if elapsed >= seconds:
+                    await self.run()
+                    self._timeout_triggered = True
 
     def _done(self) -> bool:
         """ """

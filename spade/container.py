@@ -1,21 +1,58 @@
 import asyncio
 import logging
 import sys
-from asyncio import Future
+import platform
 from contextlib import suppress
-from threading import Thread
-from typing import Type, Union, Coroutine
+from typing import Coroutine, Awaitable
 
+import loguru
+from pyjabber.server import Server
+from pyjabber.server_parameters import Parameters
 from singletonify import singleton
 
-from .behaviour import CyclicBehaviour
+from .behaviour import BehaviourType
 from .message import Message
 
 logger = logging.getLogger("SPADE")
 
 # check if python is 3.6 or higher
 if sys.version_info >= (3, 7) and sys.platform == "win32":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.set_event_loop_policy(
+        asyncio.WindowsSelectorEventLoopPolicy()
+    )  # pragma: no cover
+
+
+def get_or_create_eventloop():  # pragma: no cover
+    """
+    Create or retrieve the appropriate event loop, using uvloop on Linux/macOS
+    and winloop on Windows if available.
+    """
+    # Use uvloop or winloop if available
+    if platform.system() == "Windows":
+        try:
+            import winloop  # pyright: ignore[reportMissingImports]
+
+            asyncio.set_event_loop_policy(winloop.EventLoopPolicy())
+        except ImportError:
+            pass  # winloop is not available, use default
+    else:
+        try:
+            import uvloop
+
+            asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        except ImportError:
+            pass  # uvloop is not available, use default
+
+    # Create or retrieve the event loop
+    if sys.version_info < (3, 10):
+        loop = asyncio.get_event_loop()
+    else:
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+    return loop
 
 
 @singleton()
@@ -29,43 +66,12 @@ class Container(object):
 
     def __init__(self):
         self.__agents = {}
-        self.aiothread = AioThread()
-        self.aiothread.start()
-        self.loop = self.aiothread.loop
-        self.loop.set_debug(False)
+        self.loop = get_or_create_eventloop()
         self.is_running = True
 
-    def __in_coroutine(self) -> bool:
-        try:
-            return asyncio.get_event_loop() == self.loop
-        except RuntimeError:  # pragma: no cover
-            return False
-
-    def start_agent(
-            self, agent, auto_register: bool = True
-    ) -> Union[Coroutine, Future]:
-        coro = agent._async_start(auto_register=auto_register)
-
-        if self.__in_coroutine():
-            return coro
-        else:
-            future = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-            future.wait = future.result
-            return future
-
-    def stop_agent(self, agent) -> Union[Coroutine, Future]:
-        coro = agent._async_stop()
-
-        if self.__in_coroutine():
-            return coro
-        else:
-            future = asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-            future.wait = future.result
-            return future
-
     def reset(self) -> None:
-        """ Empty the container by unregistering all the agents. """
-        self.__agents = {}
+        """Empty the container by unregistering all the agents."""
+        self.__init__()
 
     def register(self, agent) -> None:
         """
@@ -107,7 +113,12 @@ class Container(object):
         """
         return self.__agents[jid]
 
-    async def send(self, msg: Message, behaviour: Type[CyclicBehaviour]) -> None:
+    def stop_agents(self):
+        self.loop.run_until_complete(
+            asyncio.gather(*[a.stop() for a in self.__agents.values()])
+        )
+
+    async def send(self, msg: Message, behaviour: BehaviourType) -> None:
         """
         This method sends the message using the container mechanism
         when the receiver is also registered in the container. Otherwise,
@@ -120,47 +131,55 @@ class Container(object):
         if to in self.__agents:
             self.__agents[to].dispatch(msg)
         else:
-            await behaviour._xmpp_send(msg)
+            await behaviour._xmpp_send(msg=msg)
 
-    def stop(self) -> None:
-        agents = [agent.stop() for agent in self.__agents.values() if agent.is_alive()]
-        if self.__in_coroutine():
-            coro = asyncio.gather(*agents)
-            asyncio.run_coroutine_threadsafe(coro, loop=self.loop)
-        self.aiothread.finalize()
-        self.reset()
-        self.is_running = False
+    def run(self, coro: Awaitable) -> None:  # pragma: no cover
+        self.loop.run_until_complete(coro)
 
 
-class AioThread(Thread):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loop = asyncio.new_event_loop()
-        self.running = True
-        self.daemon = True
-
-    def run(self) -> None:
-        try:
-            self.loop.run_forever()
-            if sys.version_info >= (3, 7):
-                tasks = asyncio.all_tasks(loop=self.loop)  # pragma: no cover
-            else:
-                tasks = asyncio.Task.all_tasks(loop=self.loop)  # pragma: no cover
-            for task in tasks:
-                task.cancel()
-                with suppress(asyncio.CancelledError):
-                    self.loop.run_until_complete(task)
-            self.loop.close()
-            logger.debug("Loop closed")
-        except Exception as e:  # pragma: no cover
-            logger.error("Exception in the event loop: {}".format(e))
-
-    def finalize(self) -> None:
-        if self.running:
-            self.loop.call_soon_threadsafe(self.loop.stop)
-            self.running = False
-
-
-def stop_container() -> None:
+def run_container(
+    main_func: Coroutine, embedded_xmpp_server: bool = False
+) -> None:  # pragma: no cover
     container = Container()
-    container.stop()
+    server = None
+
+    try:
+        if embedded_xmpp_server:
+            loguru.logger.remove()  # Silent server
+            server_instance = Server(
+                Parameters(host="localhost", database_in_memory=True)
+            )
+            server = container.loop.create_task(server_instance.start())
+            container.run(server_instance.ready.wait())
+            logger.info("SPADE XMPP server running on localhost:5222")
+
+        container.run(main_func)
+    except KeyboardInterrupt:
+        logger.warning("Keyboard interrupt received. Stopping SPADE...")
+    except Exception as e:  # pragma: no cover
+        logger.error("Exception in the event loop: {}".format(e))
+
+    container.stop_agents()
+
+    # Close server
+    if embedded_xmpp_server and server:
+        server.cancel()
+        container.run(server)
+
+    # Cancel all pending tasks
+    if sys.version_info >= (3, 7):  # pragma: no cover
+        tasks = asyncio.all_tasks(loop=container.loop)
+    else:
+        tasks = asyncio.Task.all_tasks(loop=container.loop)
+
+    for task in tasks:
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            container.run(task)
+
+    # Shutdown asynchronous generators
+    container.loop.run_until_complete(container.loop.shutdown_asyncgens())
+
+    # Close the event loop
+    container.loop.close()
+    logger.debug("Loop closed")

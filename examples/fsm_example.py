@@ -1,5 +1,7 @@
-import time
+import getpass
 
+import spade
+from spade import wait_until_finished
 from spade.agent import Agent
 from spade.behaviour import FSMBehaviour, State
 from spade.message import Message
@@ -52,16 +54,15 @@ class FSMAgent(Agent):
         self.add_behaviour(fsm)
 
 
-if __name__ == "__main__":
-    fsmagent = FSMAgent("fsmagent@your_xmpp_server", "your_password")
-    future = fsmagent.start()
-    future.result()
+async def main():
+    jid = input("JID> ")
+    passwd = getpass.getpass()
+    fsmagent = FSMAgent(jid, passwd)
+    await fsmagent.start()
 
-    while fsmagent.is_alive():
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            fsmagent.stop()
-            break
+    await wait_until_finished(fsmagent)
     print("Agent finished")
 
+
+if __name__ == "__main__":
+    spade.run(main(), True)

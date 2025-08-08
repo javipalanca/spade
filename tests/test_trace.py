@@ -2,7 +2,7 @@ import datetime
 import itertools
 from collections import namedtuple
 
-from aioxmpp import JID
+from slixmpp import JID
 
 from spade.message import Message
 from spade.trace import TraceStore, _agent_in_msg
@@ -10,17 +10,17 @@ from spade.trace import TraceStore, _agent_in_msg
 
 def test_agent_in_msg_sender():
     msg = Message(sender="agent@server")
-    assert _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_agent_in_msg_to():
     msg = Message(to="agent@server")
-    assert _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_agent_in_msg_false():
     msg = Message(to="agent2@server")
-    assert not _agent_in_msg(JID.fromstr("agent@server"), msg)
+    assert not _agent_in_msg(JID("agent@server"), msg)
 
 
 def test_init():
@@ -45,7 +45,7 @@ def test_append():
     trace.append("EVENT")
     assert len(trace.store) == 1
     assert trace.store[0][1] == "EVENT"
-    assert type(trace.store[0][0]) == datetime.datetime
+    assert isinstance(trace.store[0][0], datetime.datetime)
     assert trace.store[0][2] is None
 
 
@@ -63,7 +63,7 @@ def test_append_with_category():
     trace.append("EVENT", "CATEGORY")
     assert len(trace.store) == 1
     assert trace.store[0][1] == "EVENT"
-    assert type(trace.store[0][0]) == datetime.datetime
+    assert isinstance(trace.store[0][0], datetime.datetime)
     assert trace.store[0][2] == "CATEGORY"
 
 

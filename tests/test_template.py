@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `template` package."""
+
 import pytest
 
 from spade.message import Message

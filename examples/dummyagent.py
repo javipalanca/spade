@@ -1,19 +1,19 @@
 import getpass
 
-from spade import agent, quit_spade
+import spade
 
 
-class DummyAgent(agent.Agent):
+class DummyAgent(spade.agent.Agent):
     async def setup(self):
         print("Hello World! I'm agent {}".format(str(self.jid)))
 
 
-jid = input("JID> ")
-passwd = getpass.getpass()
+async def main():
+    jid = input("JID> ")
+    passwd = getpass.getpass()
+    dummy = DummyAgent(jid, passwd)
+    await dummy.start()
 
-dummy = DummyAgent(jid, passwd)
-future = dummy.start()
-future.result()
 
-dummy.stop()
-quit_spade()
+if __name__ == "__main__":
+    spade.run(main(), True)

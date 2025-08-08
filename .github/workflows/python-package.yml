@@ -20,13 +20,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
         with:
-          python-version: "3.9"
+          python-version: "3.12"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tox virtualenv flake8
+          pip install tox virtualenv ruff
       - name: Lint
-        run: "tox -e flake8"
+        run: "tox -e lint"
 
   test:
     runs-on: ${{ matrix.os }}
@@ -34,72 +34,72 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - "ubuntu-py36"
-          - "ubuntu-py37"
-          - "ubuntu-py38"
           - "ubuntu-py39"
+          - "ubuntu-py310"
+          - "ubuntu-py311"
+          - "ubuntu-py312"
 
-          - "macos-py36"
-          - "macos-py37"
-          - "macos-py38"
           - "macos-py39"
+          - "macos-py310"
+          - "macos-py311"
+          - "macos-py312"
 
-          - "windows-py36"
-          - "windows-py37"
-          - "windows-py38"
           - "windows-py39"
+          - "windows-py310"
+          - "windows-py311"
+          - "windows-py312"
 
         include:
-          - name: "ubuntu-py36"
-            python: "3.6"
-            os: ubuntu-latest
-            tox_env: "py36"
-          - name: "ubuntu-py37"
-            python: "3.7"
-            os: ubuntu-latest
-            tox_env: "py37"
-          - name: "ubuntu-py38"
-            python: "3.8"
-            os: ubuntu-latest
-            tox_env: "py38"
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
             tox_env: "py39"
+          - name: "ubuntu-py310"
+            python: "3.10"
+            os: ubuntu-latest
+            tox_env: "py310"
+          - name: "ubuntu-py311"
+            python: "3.11"
+            os: ubuntu-latest
+            tox_env: "py311"
+          - name: "ubuntu-py312"
+            python: "3.12"
+            os: ubuntu-latest
+            tox_env: "py312"
 
-          - name: "macos-py36"
-            python: "3.6"
-            os: macos-latest
-            tox_env: "py36"
-          - name: "macos-py37"
-            python: "3.7"
-            os: macos-latest
-            tox_env: "py37"
-          - name: "macos-py38"
-            python: "3.8"
-            os: macos-latest
-            tox_env: "py38"
           - name: "macos-py39"
             python: "3.9"
             os: macos-latest
             tox_env: "py39"
+          - name: "macos-py310"
+            python: "3.10"
+            os: macos-latest
+            tox_env: "py310"
+          - name: "macos-py311"
+            python: "3.11"
+            os: macos-latest
+            tox_env: "py311"
+          - name: "macos-py312"
+            python: "3.12"
+            os: macos-latest
+            tox_env: "py312"
 
-          - name: "windows-py36"
-            python: "3.6"
-            os: windows-latest
-            tox_env: "py36"
-          - name: "windows-py37"
-            python: "3.7"
-            os: windows-latest
-            tox_env: "py37"
-          - name: "windows-py38"
-            python: "3.8"
-            os: windows-latest
-            tox_env: "py38"
           - name: "windows-py39"
             python: "3.9"
             os: windows-latest
             tox_env: "py39"
+          - name: "windows-py310"
+            python: "3.10"
+            os: windows-latest
+            tox_env: "py310"
+          - name: "windows-py311"
+            python: "3.11"
+            os: windows-latest
+            tox_env: "py311"
+          - name: "windows-py312"
+            python: "3.12"
+            os: windows-latest
+            tox_env: "py312"
 
     steps:
     - uses: actions/checkout@v2
@@ -112,26 +112,24 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements_dev.txt
         python -m pip install -r requirements.txt
-    - name: Lint with flake8
+    - name: Lint with ruff
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 spade --count --ignore=E501 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 spade --count --exit-zero --max-complexity=10 --ignore=E501 --statistics
+        # ruff lint
+        ruff check spade
     - name: Test with pytest
       run: |
         pytest
-    
+
   coverage:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -142,9 +140,9 @@ jobs:
     - name: Run coverage
       run: |
         coverage erase
-        coverage run --source=spade -m py.test
+        coverage run --source=spade -m pytest
     - name: Coveralls
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: javipalanca/coveralls-python-action@develop
       with:
         parallel: true
         flag-name: Unit Test
