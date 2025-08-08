@@ -49,7 +49,7 @@ setup(
     long_description=readme + "\n\n" + history,
     author="Javi Palanca",
     author_email="jpalanca@gmail.com",
-    url="https://github.com/javipalanca/spade",
+    url="https://spadeagents.eu",
     packages=find_packages(include=["spade"]),
     entry_points={"console_scripts": ["spade=spade.cli:cli"]},
     include_package_data=True,
