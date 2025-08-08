@@ -22,7 +22,7 @@ launched, managed during the coroutine's lifespan, and deleted once it finishes.
             await dummy.start()
 
         if __name__ == "__main__":
-            spade.run(main(), True)
+            spade.run(main(), embedded_xmpp_server=True)
                         ^       ^
                         |       |
                     coroutine   |

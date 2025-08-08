@@ -2,6 +2,12 @@
 History
 =======
 
+4.1.1 (2025-08-08)
+---------------------
+* Use the new slixmpp-multiplatform fork and manage existing slixmpp installations 
+* Hotfix in cli error
+
+
 4.1.0 (2025-05-22)
 ---------------------
 
