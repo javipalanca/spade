@@ -44,7 +44,7 @@ subprocess.call([sys.executable, "-m", "pip", "uninstall", "-y", "slixmpp"])
 
 setup(
     name="spade",
-    version="4.1.0",
+    version="4.1.1rc1",
     description="Smart Python Agent Development Environment",
     long_description=readme + "\n\n" + history,
     author="Javi Palanca",
