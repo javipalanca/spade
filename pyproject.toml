@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools>=61.0",
+    "setuptools>=70.0",
     "wheel",
     "build"
     ]
@@ -10,11 +10,12 @@ build-backend = "setuptools.build_meta"
 name = "spade"
 dynamic = ["version", "dependencies"]
 description = "Smart Python Agent Development Environment"
-authors = [{ name = "Javi Palanca" }]
-maintainers = [{ name = "Javi Palanca" }]
+authors = [{ name = "Javi Palanca", email = "jpalanca@gmail.com" }]
+maintainers = [{ name = "Javi Palanca", email = "jpalanca@gmail.com" }]
 license = {text = "MIT"}
 readme = "README.rst"
 keywords = ["spade"]
+requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -36,16 +37,21 @@ classifiers = [
 [project.urls]
 Homepage = "https://spadeagents.eu"
 Repository = "https://github.com/javipalanca/spade"
+Documentation = "http://spade-mas.readthedocs.io/"
 
 [project.scripts]
 spade = "spade.cli:cli"
 
 [tool.setuptools]
 packages = ["spade"]
+include-package-data = true
 
 [tool.setuptools.dynamic]
 version = {attr = "spade.__version__"}
-dependencies = {file = "requirements.txt"}
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+spade = ["templates/*"]
 
 [tool.ruff]
 lint.select = ["E", "F"]
