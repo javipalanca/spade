@@ -34,7 +34,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/javipalanca/spade"
+Homepage = "https://spadeagents.eu"
 Repository = "https://github.com/javipalanca/spade"
 
 [project.scripts]

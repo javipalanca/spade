@@ -2,10 +2,11 @@
 History
 =======
 
-4.1.1 (2025-08-08)
+4.1.2 (2025-08-08)
 ---------------------
 * Use the new slixmpp-multiplatform fork and manage existing slixmpp installations 
 * Hotfix in cli error
+* Added official website link to README and usage documentation
 
 
 4.1.0 (2025-05-22)

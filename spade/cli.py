@@ -98,7 +98,7 @@ def create_cli():
             "[green]Funded by:[/green]\n"
             "  - [cyan]Valencian Research Institute for Artificial Intelligence (VRAIN)[/cyan]\n"
             "[green]URL:[/green]\n"
-            "  - [cyan] http://github.com/javipalanca/spade[/cyan]\n"
+            "  - [cyan] https://spadeagents.eu[/cyan]\n"
             "[green]Documentation:[/green]\n"
             "  - [cyan] http://spade-mas.readthedocs.io/[/cyan]"
         )
