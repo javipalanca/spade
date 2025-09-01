@@ -18,18 +18,20 @@ JID = "test@localhost"
 JID2 = "test2@localhost"
 PWD = "1234"
 
+#
+# @pytest_asyncio.fixture(scope="function")
+# def event_loop():
+#     loop = asyncio.new_event_loop()
+#     yield loop
+#     loop.close()
 
-@pytest_asyncio.fixture(scope="function")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
 
+@pytest_asyncio.fixture(autouse=True)
+async def server():
+    # loop = asyncio.new_event_loop()
 
-@pytest_asyncio.fixture(autouse=True, scope="function")
-async def server(event_loop):
     server = Server(Parameters(database_in_memory=True))
-    task = event_loop.create_task(server.start())
+    task = asyncio.create_task(server.start())
     yield task
     task.cancel()
     try:
@@ -108,6 +110,7 @@ async def test_msg_via_container():
     await receiver.start()
     await sender.start()
     await spade.wait_until_finished(receiver)
+    await sender.stop()
 
     assert receiver.res == msg.body
 
