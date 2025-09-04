@@ -125,8 +125,8 @@ the following output
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
 dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.
 
-.. note:: A SPADE agent is an asyncronous agent. That means that all the code to run an agent must be executed in an
-    asyncronous loop. This is done by the ``spade.run()`` function. This function receives a coroutine as a parameter
+.. note:: A SPADE agent is an asynchronous agent. That means that all the code to run an agent must be executed in an
+    asynchronous loop. This is done by the ``spade.run()`` function. This function receives a coroutine as a parameter
     and runs it in an async loop. In our example, the ``main()`` coroutine is the one that is run in the loop.
 
 .. note:: If you need to run a set of agents in parallel you can use the ``spade.start_agents(agent_list)`` function. This function

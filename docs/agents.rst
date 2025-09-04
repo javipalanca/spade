@@ -75,7 +75,7 @@ As you know, messages are the basis of every MAS. They are the centre of the who
 in which MAS are based. So it is very important to understand which facilities are present in SPADE to work with
 agent messages.
 
-First and foremost, threre is a ``Message`` class. This class is ``spade.message.Message`` and you can instantiate it to
+First and foremost, there is a ``Message`` class. This class is ``spade.message.Message`` and you can instantiate it to
 create new messages to work with. The class provides a method to introduce metadata into messages, this is useful for
 using the fields present in standard FIPA-ACL Messages. When a message is ready to be sent, it can be passed on to the
 send() method of the behaviour, which will trigger the internal communication process to actually send it to its
