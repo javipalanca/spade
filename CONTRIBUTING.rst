@@ -69,11 +69,16 @@ Ready to contribute? Here's how to set up `spade` for local development.
 
     $ git clone git@github.com:your_name_here/spade.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. You can use uv (recommended) or traditional virtualenv tools::
 
+    With uv (recommended):
+    $ cd spade/
+    $ uv sync --extra dev
+
+    Or with traditional tools (assuming you have virtualenvwrapper installed):
     $ mkvirtualenv spade
     $ cd spade/
-    $ python setup.py develop
+    $ pip install -e .[dev]
 
 4. Create a branch for local development::
 
@@ -81,13 +86,21 @@ Ready to contribute? Here's how to set up `spade` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
+5. When you're done making changes, check that your changes pass the linter and tests, including testing other Python versions with tox::
 
-    $ flake8 spade tests
-    $ python setup.py test or py.test
+    With uv (recommended):
+    $ uv run ruff check spade tests
+    $ uv run ruff format --check spade tests
+    $ uv run pytest
+    $ uv run tox
+
+    Or with traditional tools:
+    $ ruff check spade tests
+    $ ruff format --check spade tests
+    $ pytest
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   If using traditional tools, make sure to install the development dependencies first with ``pip install -e .[dev]``.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -106,8 +119,8 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.6, and for PyPy. Check
-   https://travis-ci.org/javipalanca/spade/pull_requests
+3. The pull request should work for Python 3.9, 3.10, 3.11 and 3.12. Check
+   https://github.com/javipalanca/spade/actions
    and make sure that the tests pass for all supported Python versions.
 
 Tips
@@ -115,5 +128,9 @@ Tips
 
 To run a subset of tests::
 
-$ py.test tests.test_agent
+    With uv:
+    $ uv run pytest tests.test_agent
+
+    Or with traditional tools:
+    $ pytest tests.test_agent
 
