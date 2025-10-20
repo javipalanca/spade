@@ -1,8 +1,8 @@
-import ssl
-
-from slixmpp import ClientXMPP
 import logging
+import ssl
+from packaging import version
 
+from slixmpp import ClientXMPP, __version__
 from slixmpp.exceptions import IqError, IqTimeout
 
 
@@ -16,19 +16,29 @@ class XMPPClient(ClientXMPP):
 
         self.logger = logging.getLogger("spade.Agent")
 
+        if version.parse(__version__) >= ("1.10.0"): 
+            self.enable_direct_tls = False
+
         if not verify_security:
             self.ssl_context.check_hostname = False
             self.ssl_context.verify_mode = ssl.CERT_NONE
 
         self.add_event_handler("session_start", self.session_start)
-        self.register_plugin("xep_0199")  # XMPP Ping
+        
+        # XMPP Ping
+        self.register_plugin("xep_0199")    
 
+        # In-band-registration
         if auto_register:
             self.add_event_handler("register", self.register)
-            self.register_plugin("xep_0077")  # In-band-registration
+            self.register_plugin("xep_0077")
 
-        self.register_plugin("xep_0199")  # Ping / Keepalive connection
+        # Ping / Keepalive connection
+        self.register_plugin("xep_0199")
         self["xep_0199"].enable_keepalive(interval=55)
+
+        # HTTP File Upload
+        self.register_plugin("xep_0363")
 
     def session_start(self, event):
         self.send_presence()
