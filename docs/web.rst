@@ -35,7 +35,7 @@ click the behaviour's name to see more information about it as in the next image
   :alt: SPADE behaviour page
 
 In this page you can check some important information about the behaviour such as its mailbox, the template with which
-it was registered, wether if it is killed or not or its exit code. Also, each type of behaviour may show any information
+it was registered, whether it is killed or not or its exit code. Also, each type of behaviour may show any information
 related with its internal data, e.g. in the previous image you can see that the behaviour is an FSMBehaviour and the
 interface shows the current state where the FSM is and an image with the structure of the FSM.
 Finally, you can also check all the messages that have been sent or received from/to this behaviour in the chat box.

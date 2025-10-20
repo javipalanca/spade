@@ -1,0 +1,35 @@
+name: macOS Tests
+
+on:
+  workflow_call:
+
+jobs:
+  test-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12"]
+    name: Python ${{ matrix.python }}
+
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "0.8.15"
+        enable-cache: true
+
+    - name: Set up dependencies
+      run: |
+        uv sync --extra dev
+
+    - name: Test with pytest
+      run: |
+        uv run pytest -q

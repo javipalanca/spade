@@ -50,6 +50,7 @@ A multi-agent systems platform written in Python and based on instant messaging 
 
 Develop agents that can chat both with other agents and humans.
 
+🌐 **Official Website: https://spadeagents.eu** 🌐
 
 * Free software: MIT license
 * Documentation: http://spade-mas.readthedocs.io/

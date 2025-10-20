@@ -8,17 +8,35 @@ Installation
 Stable release
 --------------
 
-To install SPADE, run this command in your terminal:
+**Preferred Method: Using uv**
+
+For the fastest installation experience, we recommend using `uv`_, a fast Python package manager:
+
+.. code-block:: console
+
+    $ uv add spade
+
+Alternatively, you can use uv's pip interface:
+
+.. code-block:: console
+
+    $ uv pip install spade
+
+If you don't have uv installed, you can install it by following the instructions at the `uv installation guide`_.
+
+**Traditional Method: Using pip**
+
+You can also install SPADE using pip:
 
 .. code-block:: console
 
     $ pip install spade
 
-This is the preferred method to install SPADE, as it will always install the most recent stable release. 
-
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
+This will install the most recent stable release. If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
 
+.. _uv: https://docs.astral.sh/uv/
+.. _uv installation guide: https://docs.astral.sh/uv/getting-started/installation/
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 
@@ -40,11 +58,29 @@ Or download the `tarball`_:
 
     $ curl  -OL https://github.com/javipalanca/spade/tarball/master
 
-Once you have a copy of the source, you can install it with:
+Once you have a copy of the source, you can install it with uv (recommended):
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ uv sync
+
+Or with pip (traditional method):
+
+.. code-block:: console
+
+    $ pip install -e .
+
+For development purposes, you can install with development dependencies:
+
+.. code-block:: console
+
+    $ uv sync --extra dev
+
+Or with pip:
+
+.. code-block:: console
+
+    $ pip install -e .[dev]
 
 
 .. _Github repo: https://github.com/javipalanca/spade

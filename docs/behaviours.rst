@@ -235,7 +235,7 @@ and, of course, use the ``send`` and ``receive`` coroutines to be able to intera
 
 Transitions in a ``FSMBehaviour`` define from which state to which state it is allowed to transit. A ``State`` defines
 its transit to another state by using the ``set_next_state`` method in its ``run`` coroutine.
-By using the ``set_next_state`` method a state dinamically expresses to which state it transits when it finishes. After
+By using the ``set_next_state`` method a state dynamically expresses to which state it transits when it finishes. After
 running a state, the FSM reads this *next_state* value and, if the transition is valid, it transits to that state.
 
 .. warning:: If the transition is not registered it raises a ``NotValidTransition`` exception and the FSM behaviour is
@@ -291,7 +291,7 @@ transit to::
             print("I'm at state three (final state)")
             msg = await self.receive(timeout=5)
             print(f"State Three received message {msg.body}")
-            # no final state is setted, since this is a final state
+            # no final state is set, since this is a final state
 
 
     class FSMAgent(Agent):
