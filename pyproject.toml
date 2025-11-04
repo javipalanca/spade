@@ -15,7 +15,7 @@ maintainers = [{ name = "Javi Palanca", email = "jpalanca@gmail.com" }]
 license = {text = "MIT"}
 readme = "README.rst"
 keywords = ["spade"]
-requires-python = ">=3.9"
+requires-python = ">=3.9, <3.13"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
