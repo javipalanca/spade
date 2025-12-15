@@ -9,12 +9,11 @@ from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import IO, Any, Optional, Dict, TypeVar
+from typing import IO, Any, Optional, Dict, TypeVar, Union
 from urllib.parse import urlparse
 
 import aiohttp
-import requests
-from slixmpp.plugins.xep_0363.http_upload import XEP_0363, UploadServiceNotFound, FileTooBig, HTTPError
+from slixmpp.plugins.xep_0363.http_upload import UploadServiceNotFound, FileTooBig, HTTPError
 
 from .message import Message
 from .template import Template
@@ -372,13 +371,13 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             except asyncio.QueueEmpty:
                 msg = None
         return msg
-    
-    async def send_file(self, filename: str, input_file: Optional[IO[bytes]]):
+
+    async def send_file(self, filename: str, input_file: Union[IO[bytes], None]) -> Union[str, None]:
         """
         Discovers the XEP 0363 service, and tries to send the file.
 
         Args:
-            filepath (str): Path to the file to upload (or only the name if ``input_file`` is provided)
+            filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
             input_file (IO[bytes]): Binary file stream on the file
 
         Returns:
@@ -386,7 +385,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         try:
             return await self.agent.client["xep_0363"].upload_file(
-                filename=filename, 
+                filename=filename,
                 input_file=input_file
             )
         except UploadServiceNotFound:
@@ -398,11 +397,10 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except HTTPError as e:
             logger.error(e)
             return None
-        
 
     async def download_file(self, url: str, dest_path: Optional[str]):
         """
-        Downloads a file from a 0363 slot (url) into the ``dest_path`` 
+        Downloads a file from a 0363 slot (url) into the ``dest_path``
         (or execution dir if not provided)
 
         Args:
@@ -415,7 +413,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         path = Path(dest_path)
         if path.suffix or not path.is_dir():
             raise ValueError("dest_path must be an existing valid dir, with no filename")
-        
+
         filename = Path(urlparse(url).path).name or "download"
         filepath = path / filename
 

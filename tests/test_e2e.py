@@ -237,3 +237,38 @@ async def test_presence_subscribe():
     contact1: Contact = agent2.presence.get_contact(JID)
     assert contact1.jid == JID
     assert contact1.subscription == "both"
+
+
+@pytest.mark.asyncio
+async def test_send_file(tmp_path):
+    mock_file = tmp_path / "test.txt"
+    mock_file.write_text("Testing!")
+
+    class UploadBehaviour(OneShotBehaviour):
+        async def run(self):
+            self.agent.url = await self.send_file(filename=mock_file)
+            msg = Message(to=self.agent.jid_to_send, metadata={"0363_url": self.agent.url})
+            self.kill()
+
+    class DownloadBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(10)
+            if msg:
+                self.agent.url = msg.get_metadata("0363_url")
+            self.kill()
+
+    uploader: Agent = MockedAgentFactory()
+    up_beh = UploadBehaviour()
+    uploader.add_behaviour(up_beh)
+    downloader: Agent = MockedAgentFactory()
+    down_beh = DownloadBehaviour()
+    downloader.add_behaviour(down_beh)
+
+    await asyncio.gather(*[uploader.start(), downloader.start()])
+    assert uploader.is_alive() and downloader.is_alive()
+
+    await asyncio.gather(*[up_beh.join(), down_beh.join()])
+
+    assert uploader.url is not None
+    assert downloader.url is not None
+    assert uploader.url == downloader.url
