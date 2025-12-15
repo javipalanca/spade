@@ -13,7 +13,11 @@ from typing import IO, Any, Optional, Dict, TypeVar, Union
 from urllib.parse import urlparse
 
 import aiohttp
-from slixmpp.plugins.xep_0363.http_upload import UploadServiceNotFound, FileTooBig, HTTPError
+from slixmpp.plugins.xep_0363.http_upload import (
+    UploadServiceNotFound,
+    FileTooBig,
+    HTTPError,
+)
 
 from .message import Message
 from .template import Template
@@ -372,7 +376,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 msg = None
         return msg
 
-    async def send_file(self, filename: str, input_file: Union[IO[bytes], None]) -> Union[str, None]:
+    async def send_file(
+        self, filename: str, input_file: Union[IO[bytes], None]
+    ) -> Union[str, None]:
         """
         Discovers the XEP 0363 service, and tries to send the file.
 
@@ -385,8 +391,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         """
         try:
             return await self.agent.client["xep_0363"].upload_file(
-                filename=filename,
-                input_file=input_file
+                filename=filename, input_file=input_file
             )
         except UploadServiceNotFound:
             logger.error("HTTP Upload service not found in server. Unable to upload")
@@ -412,7 +417,9 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         path = Path(dest_path)
         if path.suffix or not path.is_dir():
-            raise ValueError("dest_path must be an existing valid dir, with no filename")
+            raise ValueError(
+                "dest_path must be an existing valid dir, with no filename"
+            )
 
         filename = Path(urlparse(url).path).name or "download"
         filepath = path / filename
@@ -427,7 +434,6 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             return filepath
         except aiohttp.ClientError as e:
             logger.error(f"Error downloading from {url}: {e}")
-
 
     def __str__(self) -> str:
         return "{}/{}".format(

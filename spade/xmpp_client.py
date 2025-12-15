@@ -16,7 +16,7 @@ class XMPPClient(ClientXMPP):
 
         self.logger = logging.getLogger("spade.Agent")
 
-        if version.parse(__version__) >= version.Version("1.10.0"): 
+        if version.parse(__version__) >= version.Version("1.10.0"):
             self.enable_direct_tls = False
 
         if not verify_security:
@@ -24,9 +24,9 @@ class XMPPClient(ClientXMPP):
             self.ssl_context.verify_mode = ssl.CERT_NONE
 
         self.add_event_handler("session_start", self.session_start)
-        
+
         # XMPP Ping
-        self.register_plugin("xep_0199")    
+        self.register_plugin("xep_0199")
 
         # In-band-registration
         if auto_register:
