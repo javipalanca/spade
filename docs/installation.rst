@@ -8,25 +8,36 @@ Installation
 Stable release
 --------------
 
-**Preferred Method: Using uv**
+**Adding SPADE to your Python project**
 
-For the fastest installation experience, we recommend using `uv`_, a fast Python package manager:
+We recommend using `uv`_ to manage your Python projects. It's fast and makes dependency management easy.
+
+If you don't have `uv` installed, see the `uv installation guide`_.
+
+If you haven't created a `uv`-managed project yet, create one:
+
+.. code-block:: console
+
+    $ uv init spade-demo
+    $ cd spade-demo
+
+Then add SPADE to your project dependencies:
 
 .. code-block:: console
 
     $ uv add spade
 
-Alternatively, you can use uv's pip interface:
+**Installing SPADE without a project**
+
+If you don't want to create a `uv` project, you can still install SPADE globally using `uv`'s `pip` interface:
 
 .. code-block:: console
 
     $ uv pip install spade
 
-If you don't have uv installed, you can install it by following the instructions at the `uv installation guide`_.
+**Traditional installation with pip**
 
-**Traditional Method: Using pip**
-
-You can also install SPADE using pip:
+For projects using `pip` directly for dependencies:
 
 .. code-block:: console
 
@@ -58,13 +69,13 @@ Or download the `tarball`_:
 
     $ curl  -OL https://github.com/javipalanca/spade/tarball/master
 
-Once you have a copy of the source, you can install it with uv (recommended):
+Once you have a copy of the source, you can install it with `uv` (recommended):
 
 .. code-block:: console
 
     $ uv sync
 
-Or with pip (traditional method):
+Or with `pip` (traditional method):
 
 .. code-block:: console
 
@@ -76,7 +87,7 @@ For development purposes, you can install with development dependencies:
 
     $ uv sync --extra dev
 
-Or with pip:
+Or with `pip`:
 
 .. code-block:: console
 
