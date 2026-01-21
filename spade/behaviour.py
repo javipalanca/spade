@@ -1,13 +1,23 @@
 import asyncio
 import collections
 import logging
+import os
+from pathlib import Path
 import time
 import traceback
 from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Optional, Dict, TypeVar
+from typing import IO, Any, Optional, Dict, TypeVar, Union
+from urllib.parse import urlparse
+
+import aiohttp
+from slixmpp.plugins.xep_0363.http_upload import (
+    UploadServiceNotFound,
+    FileTooBig,
+    HTTPError,
+)
 
 from .message import Message
 from .template import Template
@@ -365,6 +375,65 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             except asyncio.QueueEmpty:
                 msg = None
         return msg
+
+    async def send_file(
+        self, filename: str, input_file: Union[IO[bytes], None]
+    ) -> Union[str, None]:
+        """
+        Discovers the XEP 0363 service, and tries to send the file.
+
+        Args:
+            filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
+            input_file (IO[bytes]): Binary file stream on the file
+
+        Returns:
+            An url used to download the uploaded file (GET HTTP method)
+        """
+        try:
+            return await self.agent.client["xep_0363"].upload_file(
+                filename=filename, input_file=input_file
+            )
+        except UploadServiceNotFound:
+            logger.error("HTTP Upload service not found in server. Unable to upload")
+            return None
+        except FileTooBig as e:
+            logger.error(e)
+            return None
+        except HTTPError as e:
+            logger.error(e)
+            return None
+
+    async def download_file(self, url: str, dest_path: Optional[str]):
+        """
+        Downloads a file from a 0363 slot (url) into the ``dest_path``
+        (or execution dir if not provided)
+
+        Args:
+            url (str): URL of the slot to download.
+            dest_path (str): Path to put the downloaded file. Must be an existing dir.
+        """
+        if dest_path is None:
+            dest_path = os.getcwd()
+
+        path = Path(dest_path)
+        if path.suffix or not path.is_dir():
+            raise ValueError(
+                "dest_path must be an existing valid dir, with no filename"
+            )
+
+        filename = Path(urlparse(url).path).name or "download"
+        filepath = path / filename
+
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as resp:
+                    with open(filepath, "wb") as file:
+                        async for chunk in resp.content.iter_chunked(8192):
+                            file.write(chunk)
+
+            return filepath
+        except aiohttp.ClientError as e:
+            logger.error(f"Error downloading from {url}: {e}")
 
     def __str__(self) -> str:
         return "{}/{}".format(
