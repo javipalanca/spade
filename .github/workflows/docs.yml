@@ -26,14 +26,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  DOCS_DESTINATION_DIR: ${{ github.ref == 'refs/heads/develop' && 'develop' || 'stable' }}
+
 jobs:
-  build-and-deploy:
+  build-docs:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      DOCS_DESTINATION_DIR: ${{ github.ref == 'refs/heads/develop' && 'docs/spade/develop' || 'docs/spade' }}
-      SPADE_DOCS_CHANNEL: ${{ github.ref == 'refs/heads/develop' && 'develop' || 'stable' }}
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -47,19 +46,37 @@ jobs:
         uses: astral-sh/setup-uv@v6
         with:
           version: "0.8.15"
+          enable-cache: true
 
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --extra dev --frozen
 
       - name: Build Sphinx docs
         run: |
-          rm -f docs/spade.rst docs/modules.rst
-          uv run sphinx-apidoc -o docs/ spade
-          uv run sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+          uv run --no-sync sphinx-apidoc -f -o docs/ spade
+          uv run --no-sync sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
           touch docs/_build/html/.nojekyll
 
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-html
+          path: docs/_build/html
+
+  deploy-docs:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    permissions:
+      contents: write
+    steps:
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-html
+          path: docs/_build/html
+
       - name: Deploy to gh-pages branch
-        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

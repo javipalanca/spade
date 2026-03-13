@@ -147,7 +147,7 @@ html_theme = "sphinx_rtd_theme"
 # "default.css".
 html_static_path = ["_static"]
 
-docs_channel = os.environ.get("SPADE_DOCS_CHANNEL", "stable")
+docs_channel = os.environ.get("DOCS_DESTINATION_DIR", "stable")
 html_context = {
     "show_develop_banner": docs_channel == "develop",
     "stable_docs_url": "https://spadeagents.eu/docs/spade/",
