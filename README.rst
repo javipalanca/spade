@@ -53,7 +53,9 @@ Develop agents that can chat both with other agents and humans.
 🌐 **Official Website: https://spadeagents.eu** 🌐
 
 * Free software: MIT license
-* Documentation: http://spade-mas.readthedocs.io/
+* Documentation (latest): https://spadeagents.eu/docs/spade/
+* Documentation (develop): https://spadeagents.eu/docs/spade/develop/
+* Legacy docs (temporary): https://spade-mas.readthedocs.io/
 
 
 Features
