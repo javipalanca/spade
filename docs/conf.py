@@ -59,7 +59,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "SPADE"
-copyright = "2020, Javi Palanca"
+copyright = "2026, Javi Palanca"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -146,6 +146,12 @@ html_theme = "sphinx_rtd_theme"
 # static files, so a file named "default.css" will overwrite the builtin
 # "default.css".
 html_static_path = ["_static"]
+
+docs_channel = os.environ.get("DOCS_DESTINATION_DIR", "stable")
+html_context = {
+    "show_develop_banner": docs_channel == "develop",
+    "stable_docs_url": "https://spadeagents.eu/docs/spade/",
+}
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page
 # bottom, using the given strftime format.

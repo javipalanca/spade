@@ -63,7 +63,7 @@ dev = [
 [project.urls]
 Homepage = "https://spadeagents.eu"
 Repository = "https://github.com/javipalanca/spade"
-Documentation = "http://spade-mas.readthedocs.io/"
+Documentation = "https://spadeagents.eu/docs/spade/"
 
 [project.scripts]
 spade = "spade.cli:cli"
