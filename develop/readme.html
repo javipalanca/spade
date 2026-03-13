@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPADE &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Foreword" href="foreword.html" />
+    <link rel="prev" title="Welcome to SPADE’s documentation!" href="index.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SPADE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugins">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>SPADE</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spade">
+<h1>SPADE<a class="headerlink" href="#spade" title="Permalink to this heading"></a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/spade"><img alt="https://img.shields.io/pypi/v/spade.svg" src="https://img.shields.io/pypi/v/spade.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/spade"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/spade.svg" /></a>
+<a class="reference external image-reference" href="https://pepy.tech/project/spade"><img alt="Languages" src="https://img.shields.io/github/languages/count/javipalanca/spade?label=languages" /></a>
+<a class="reference external image-reference" href="https://pepy.tech/project/spade"><img alt="Code Size" src="https://img.shields.io/github/languages/code-size/javipalanca/spade" /></a>
+<a class="reference external image-reference" href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/pypi/l/spade" /></a>
+<a class="reference external image-reference" href="https://pepy.tech/project/spade"><img alt="Downloads" src="https://pepy.tech/badge/spade" /></a>
+<a class="reference external image-reference" href="https://github.com/javipalanca/spade/actions/workflows/python-package.yml"><img alt="Continuous Integration Status" src="https://github.com/javipalanca/spade/actions/workflows/python-package.yml/badge.svg" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/github/javipalanca/spade?branch=master"><img alt="Code Coverage Status" src="https://coveralls.io/repos/github/javipalanca/spade/badge.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://spade-mas.readthedocs.io?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/spade/badge/?version=latest" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/spade"><img alt="https://img.shields.io/pypi/format/spade.svg" src="https://img.shields.io/pypi/format/spade.svg" /></a>
+<p>Smart Python Agent Development Environment</p>
+<p>A multi-agent systems platform written in Python and based on instant messaging (XMPP).</p>
+<p>Develop agents that can chat both with other agents and humans.</p>
+<p>🌐 <strong>Official Website: https://spadeagents.eu</strong> 🌐</p>
+<ul class="simple">
+<li><p>Free software: MIT license</p></li>
+<li><p>Documentation (latest): <a class="reference external" href="https://spadeagents.eu/docs/spade/">https://spadeagents.eu/docs/spade/</a></p></li>
+<li><p>Documentation (develop): <a class="reference external" href="https://spadeagents.eu/docs/spade/develop/">https://spadeagents.eu/docs/spade/develop/</a></p></li>
+<li><p>Legacy docs (temporary): <a class="reference external" href="https://spade-mas.readthedocs.io/">https://spade-mas.readthedocs.io/</a></p></li>
+</ul>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Multi-agent platform based on <a class="reference external" href="http://www.xmpp.org">XMPP</a></p></li>
+<li><p>Presence notification allows the system to know the current state of the agents in real-time</p></li>
+<li><p>Python &gt;=3.8</p></li>
+<li><p>Asyncio-based</p></li>
+<li><p>Agent model based on behaviours</p></li>
+<li><p>Supports FIPA metadata using XMPP Data Forms (<a class="reference external" href="https://xmpp.org/extensions/xep-0004.html">XEP-0004</a>: Data Forms)</p></li>
+<li><p>Web-based interface</p></li>
+<li><p>Incorporates a custom XMPP server (pyjabber)</p></li>
+<li><p>Use any XMPP server</p></li>
+</ul>
+</section>
+<section id="plugins">
+<h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>spade_bdi</strong> (BDI agents with AgentSpeak):</dt><dd><ul>
+<li><p>Code: <a class="reference external" href="https://github.com/javipalanca/spade_bdi">https://github.com/javipalanca/spade_bdi</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://spade-bdi.readthedocs.io">https://spade-bdi.readthedocs.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>spade_pubsub</strong> (PubSub protocol for agents):</dt><dd><ul>
+<li><p>Code: <a class="reference external" href="https://github.com/javipalanca/spade_pubsub">https://github.com/javipalanca/spade_pubsub</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://spade-pubsub.readthedocs.io">https://spade-pubsub.readthedocs.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>spade_artifact</strong> (Artifacts for SPADE):</dt><dd><ul>
+<li><p>Code: <a class="reference external" href="https://github.com/javipalanca/spade_artifact">https://github.com/javipalanca/spade_artifact</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://spade-artifact.readthedocs.io">https://spade-artifact.readthedocs.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>spade_norms</strong> (Norms for SPADE):</dt><dd><ul>
+<li><p>Code: <a class="reference external" href="https://github.com/javipalanca/spade_norms">https://github.com/javipalanca/spade_norms</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://spade-norms.readthedocs.io/">https://spade-norms.readthedocs.io/</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>spade_bokeh</strong> (bokeh plots for agents):</dt><dd><ul>
+<li><p>Code: <a class="reference external" href="https://github.com/javipalanca/spade_bokeh">https://github.com/javipalanca/spade_bokeh</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://spade-bokeh.readthedocs.io">https://spade-bokeh.readthedocs.io</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this heading"></a></h2>
+<p>This package was created with <a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a> and the <a class="reference external" href="https://github.com/audreyr/cookiecutter-pypackage">audreyr/cookiecutter-pypackage</a> project template.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to SPADE’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="foreword.html" class="btn btn-neutral float-right" title="Foreword" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

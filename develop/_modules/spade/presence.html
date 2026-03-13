@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spade.presence &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>spade.presence</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for spade.presence</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">slixmpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">JID</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">slixmpp.stanza</span><span class="w"> </span><span class="kn">import</span> <span class="n">Presence</span>
+
+
+<div class="viewcode-block" id="ContactNotFound"><a class="viewcode-back" href="../../spade.html#spade.presence.ContactNotFound">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ContactNotFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="PresenceNotFound"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceNotFound">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PresenceNotFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="PresenceShow"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceShow">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PresenceShow</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">EXTENDED_AWAY</span> <span class="o">=</span> <span class="s2">&quot;xa&quot;</span>
+    <span class="n">AWAY</span> <span class="o">=</span> <span class="s2">&quot;away&quot;</span>
+    <span class="n">CHAT</span> <span class="o">=</span> <span class="s2">&quot;chat&quot;</span>
+    <span class="n">DND</span> <span class="o">=</span> <span class="s2">&quot;dnd&quot;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span></div>
+
+
+<div class="viewcode-block" id="PresenceType"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceType">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PresenceType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">AVAILABLE</span> <span class="o">=</span> <span class="s2">&quot;available&quot;</span>
+    <span class="n">UNAVAILABLE</span> <span class="o">=</span> <span class="s2">&quot;unavailable&quot;</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+    <span class="n">PROBE</span> <span class="o">=</span> <span class="s2">&quot;probe&quot;</span>
+    <span class="n">SUBSCRIBE</span> <span class="o">=</span> <span class="s2">&quot;subscribe&quot;</span>
+    <span class="n">SUBSCRIBED</span> <span class="o">=</span> <span class="s2">&quot;subscribed&quot;</span>
+    <span class="n">UNSUBSCRIBE</span> <span class="o">=</span> <span class="s2">&quot;unsubscribe&quot;</span>
+    <span class="n">UNSUBSCRIBED</span> <span class="o">=</span> <span class="s2">&quot;unsubscribed&quot;</span></div>
+
+
+<div class="viewcode-block" id="PresenceInfo"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceInfo">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PresenceInfo</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">presence_type</span><span class="p">:</span> <span class="n">PresenceType</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="n">PresenceShow</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">presence_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span> <span class="o">=</span> <span class="n">show</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span>
+
+<div class="viewcode-block" id="PresenceInfo.is_available"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceInfo.is_available">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">PresenceInfo</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">type</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">show</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">status</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">priority</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;PresenceInfo(Type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">, Show: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="si">}</span><span class="s2">, Status: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">, Priority: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Contact"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Contact</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="n">JID</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subscription</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ask</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">groups</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jid</span> <span class="o">=</span> <span class="n">jid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="n">subscription</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ask</span> <span class="o">=</span> <span class="n">ask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PresenceInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceInfo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceInfo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Contact.update_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact.update_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_presence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">:</span> <span class="n">PresenceInfo</span><span class="p">):</span>
+        <span class="c1"># Update the current presence automatically based on priority</span>
+        <span class="k">if</span> <span class="n">presence_info</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="n">resource</span><span class="p">]</span> <span class="o">=</span> <span class="n">presence_info</span>
+        <span class="n">new_presence</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">priority</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_presence</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_presence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="o">=</span> <span class="n">new_presence</span></div>
+
+<div class="viewcode-block" id="Contact.get_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact.get_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_presence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PresenceInfo</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">resource</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="n">resource</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Resource &#39;</span><span class="si">{</span><span class="n">resource</span><span class="si">}</span><span class="s2">&#39; not found for contact </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span>
+        <span class="k">raise</span> <span class="n">PresenceNotFound</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;No presence information available for contact </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Contact.update_subscription"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact.update_subscription">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ask</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="n">subscription</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ask</span> <span class="o">=</span> <span class="n">ask</span></div>
+
+<div class="viewcode-block" id="Contact.is_available"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact.is_available">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Contact.is_subscribed"><a class="viewcode-back" href="../../spade.html#spade.presence.Contact.is_subscribed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask</span> <span class="o">==</span> <span class="s2">&quot;subscribe&quot;</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Contact(JID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, Presence: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PresenceManager"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PresenceManager</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">approve_all</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Contact</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceInfo</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approve_all</span> <span class="o">=</span> <span class="n">approve_all</span>
+        <span class="c1"># Adding event handlers to handle incoming presence and subscription events</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="s2">&quot;presence_available&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_presence</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;presence_unavailable&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_presence</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="s2">&quot;changed_status&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_presence</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;presence_subscribe&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_subscription</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;presence_subscribed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_subscription</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;presence_unsubscribe&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_subscription</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;presence_unsubscribed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_subscription</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="s2">&quot;roster_update&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_roster_update</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PresenceManager.is_available"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.is_available">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_presence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PresenceInfo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_show"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_show">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PresenceShow</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="o">.</span><span class="n">show</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="k">else</span> <span class="n">PresenceShow</span><span class="o">.</span><span class="n">NONE</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_status"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_status">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="o">.</span><span class="n">status</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_priority"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_priority">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span><span class="o">.</span><span class="n">priority</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="k">else</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="PresenceManager.handle_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.handle_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">handle_presence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presence</span><span class="p">:</span> <span class="n">Presence</span><span class="p">):</span>
+        <span class="n">jid</span> <span class="o">=</span> <span class="n">presence</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span>
+        <span class="n">peer_jid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span>
+        <span class="n">bare_jid</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">bare</span>
+        <span class="k">if</span> <span class="n">bare_jid</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">jid</span><span class="o">.</span><span class="n">bare</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">presence</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resource</span>
+        <span class="n">presence_type</span> <span class="o">=</span> <span class="n">presence</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="c1"># Normalise the value of `type` if it is a show</span>
+        <span class="k">if</span> <span class="n">presence_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">show</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">show</span> <span class="ow">in</span> <span class="n">PresenceShow</span><span class="p">]:</span>
+            <span class="n">presence_type</span> <span class="o">=</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span>
+        <span class="n">presence_type</span> <span class="o">=</span> <span class="n">PresenceType</span><span class="p">(</span><span class="n">presence_type</span><span class="p">)</span>
+
+        <span class="n">show</span> <span class="o">=</span> <span class="n">PresenceShow</span><span class="p">(</span><span class="n">presence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">))</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">presence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="n">priority</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">presence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;priority&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">presence</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">presence</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="n">peer_jid</span>
+        <span class="n">presence_info</span> <span class="o">=</span> <span class="n">PresenceInfo</span><span class="p">(</span><span class="n">presence_type</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bare_jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="c1"># Create a new contact if it doesn&#39;t exist</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                <span class="n">jid</span><span class="o">=</span><span class="n">JID</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[]</span>
+            <span class="p">)</span>
+        <span class="c1"># Update the presence of the contact</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_presence</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">)</span>
+        <span class="c1"># Call user-defined handler</span>
+        <span class="k">if</span> <span class="n">presence_type</span> <span class="o">==</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_available</span><span class="p">(</span>
+                <span class="n">peer_jid</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">last_presence</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">presence_type</span> <span class="o">==</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_unavailable</span><span class="p">(</span>
+                <span class="n">peer_jid</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">last_presence</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_presence_received</span><span class="p">(</span><span class="n">presence</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.handle_subscription"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.handle_subscription">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">handle_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presence</span><span class="p">:</span> <span class="n">Presence</span><span class="p">):</span>
+        <span class="n">peer_jid</span> <span class="o">=</span> <span class="n">presence</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bare</span>
+        <span class="n">subscription_type</span> <span class="o">=</span> <span class="n">presence</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">ask</span> <span class="o">=</span> <span class="n">presence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ask&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">peer_jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="c1"># Create a new contact if it doesn&#39;t exist</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">peer_jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                <span class="n">jid</span><span class="o">=</span><span class="n">JID</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">peer_jid</span><span class="p">,</span>
+                <span class="n">subscription</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+                <span class="n">ask</span><span class="o">=</span><span class="n">ask</span><span class="p">,</span>
+                <span class="n">groups</span><span class="o">=</span><span class="p">[],</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Call user-defined handler or automatically approve if approve_all is True</span>
+        <span class="k">if</span> <span class="n">subscription_type</span> <span class="o">==</span> <span class="s2">&quot;subscribe&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">approve_all</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">approve_subscription</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">subscription_type</span> <span class="o">==</span> <span class="s2">&quot;subscribe&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">subscription_type</span> <span class="o">==</span> <span class="s2">&quot;subscribed&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscribed</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribed</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">subscription_type</span> <span class="o">==</span> <span class="s2">&quot;unsubscribe&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_unsubscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">subscription_type</span> <span class="o">==</span> <span class="s2">&quot;unsubscribed&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unsubscribed</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_unsubscribed</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.handle_roster_update"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.handle_roster_update">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">handle_roster_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executed when the roster is received or updated.&quot;&quot;&quot;</span>
+
+        <span class="n">roster</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;roster&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">roster</span><span class="p">:</span>
+            <span class="n">bare_jid</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get_jid</span><span class="p">()</span><span class="o">.</span><span class="n">bare</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">bare_jid</span><span class="p">)</span>
+            <span class="n">subscription</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subscription&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="n">ask</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ask&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">)</span>
+            <span class="n">groups</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get_groups</span><span class="p">()</span>
+
+            <span class="c1"># Storing contact information in the internal structure</span>
+            <span class="k">if</span> <span class="n">bare_jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                    <span class="n">jid</span><span class="o">=</span><span class="n">bare_jid</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
+                    <span class="n">ask</span><span class="o">=</span><span class="n">ask</span><span class="p">,</span>
+                    <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="n">subscription</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">ask</span> <span class="o">=</span> <span class="n">ask</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">bare_jid</span><span class="p">]</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_contact_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_contact_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_contact_presence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JID</span><span class="p">],</span> <span class="n">resource</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PresenceInfo</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">JID</span><span class="p">):</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">bare</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span><span class="o">.</span><span class="n">bare</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">get_presence</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ContactNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Contact with JID &#39;</span><span class="si">{</span><span class="n">jid</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_contact"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_contact">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_contact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JID</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Contact</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">JID</span><span class="p">):</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">jid</span><span class="o">.</span><span class="n">bare</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">jid</span> <span class="o">=</span> <span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span><span class="o">.</span><span class="n">bare</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ContactNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Contact with JID &#39;</span><span class="si">{</span><span class="n">jid</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.get_contacts"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.get_contacts">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_contacts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Contact</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">jid</span><span class="p">:</span> <span class="n">c</span> <span class="k">for</span> <span class="n">jid</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">is_subscribed</span><span class="p">()}</span></div>
+
+<div class="viewcode-block" id="PresenceManager.set_presence"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.set_presence">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_presence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">presence_type</span><span class="p">:</span> <span class="n">PresenceType</span> <span class="o">=</span> <span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="n">PresenceShow</span> <span class="o">=</span> <span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># This method could be used to set the presence for the local user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_presence</span> <span class="o">=</span> <span class="n">PresenceInfo</span><span class="p">(</span><span class="n">presence_type</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+        <span class="c1"># Send the presence stanza to the server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">send_presence</span><span class="p">(</span>
+            <span class="n">ptype</span><span class="o">=</span><span class="n">presence_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">pshow</span><span class="o">=</span><span class="n">show</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">pstatus</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">ppriority</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">priority</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.set_available"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.set_available">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Method to set presence to available</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.set_unavailable"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.set_unavailable">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_unavailable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Method to set presence to unavailable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">,</span> <span class="n">PresenceShow</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.subscribe"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.subscribe">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Logic to send a subscription request to a contact</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                <span class="n">jid</span><span class="o">=</span><span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;from&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;from&quot;</span><span class="p">,</span> <span class="s2">&quot;subscribe&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;subscribe&quot;</span><span class="p">)</span>
+        <span class="c1"># Send the subscription stanza to the server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">send_presence</span><span class="p">(</span><span class="n">pto</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="s2">&quot;subscribe&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.subscribed"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.subscribed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Logic to update contact subscription with subscribe</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                <span class="n">jid</span><span class="o">=</span><span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">ask</span> <span class="o">==</span> <span class="s2">&quot;subscribe&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;from&quot;</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">ask</span> <span class="o">==</span> <span class="s2">&quot;subscribe&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.unsubscribe"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.unsubscribe">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Logic to send an unsubscription request to a contact</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;from&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;to&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c1"># Send the unsubscription stanza to the server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">send_presence</span><span class="p">(</span><span class="n">pto</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="s2">&quot;unsubscribe&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.unsubscribed"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.unsubscribed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">unsubscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Logic to update contact subscription with unsubscribe</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span>
+                <span class="n">jid</span><span class="o">=</span><span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;both&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;from&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PresenceManager.approve_subscription"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.approve_subscription">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">approve_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Logic to approve a subscription request</span>
+        <span class="k">if</span> <span class="n">jid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">subscription</span> <span class="o">==</span> <span class="s2">&quot;to&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contacts</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span><span class="o">.</span><span class="n">update_subscription</span><span class="p">(</span><span class="s2">&quot;from&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c1"># Send the subscribed stanza to the server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">send_presence</span><span class="p">(</span><span class="n">pto</span><span class="o">=</span><span class="n">jid</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="s2">&quot;subscribed&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># User-overridable methods</span>
+<div class="viewcode-block" id="PresenceManager.on_subscribe"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_subscribe">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_subscribed"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_subscribed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_unsubscribe"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_unsubscribe">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_unsubscribed"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_unsubscribed">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_unsubscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_presence_received"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_presence_received">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_presence_received</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presence</span><span class="p">:</span> <span class="n">Presence</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_available"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_available">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_available</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">presence_info</span><span class="p">:</span> <span class="n">PresenceInfo</span><span class="p">,</span>
+        <span class="n">last_presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceInfo</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="PresenceManager.on_unavailable"><a class="viewcode-back" href="../../spade.html#spade.presence.PresenceManager.on_unavailable">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_unavailable</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">peer_jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">presence_info</span><span class="p">:</span> <span class="n">PresenceInfo</span><span class="p">,</span>
+        <span class="n">last_presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceInfo</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

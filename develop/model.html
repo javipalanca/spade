@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The SPADE Agent Model &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Foreword" href="foreword.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The SPADE Agent Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#connection-to-the-platform">Connection to the Platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-message-dispatcher">The Message Dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-behaviours">The Behaviours</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>The SPADE Agent Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-spade-agent-model">
+<h1>The SPADE Agent Model<a class="headerlink" href="#the-spade-agent-model" title="Permalink to this heading"></a></h1>
+<p>The Agent Model in SPADE is primarily composed of a connection mechanism to the platform, a message dispatcher, and a set of different behaviours that the dispatcher assigns messages to. Every agent needs an identifier called Jabber ID (JID) and a valid password to establish a connection with the XMPP server.</p>
+<p>The JID (composed of a username, an &#64;, and a server domain) will be the name that identifies an agent on the platform, e.g., <em>myagent&#64;localhost</em>.</p>
+<section id="connection-to-the-platform">
+<h2>Connection to the Platform<a class="headerlink" href="#connection-to-the-platform" title="Permalink to this heading"></a></h2>
+<p>Communications in SPADE are handled internally by means of the <a class="reference external" href="http://www.xmpp.org">XMPP protocol</a>. This protocol has a mechanism to register and authenticate users against an XMPP server.</p>
+<p>After a successful registration, each agent maintains an open and persistent XMPP stream of communications with the platform. This process is automatically triggered as part of the agent registration process.</p>
+</section>
+<section id="the-message-dispatcher">
+<h2>The Message Dispatcher<a class="headerlink" href="#the-message-dispatcher" title="Permalink to this heading"></a></h2>
+<p>Each SPADE agent has an internal message dispatcher component. This message dispatcher acts like a mailman: when a message for the agent arrives, it places it in the correct “mailbox” (more about that later); and when the agent needs to send a message, the message dispatcher does the job, putting it in the communication stream. The message dispatching is done automatically by the SPADE agent library whenever a new message arrives or is to be sent.</p>
+</section>
+<section id="the-behaviours">
+<h2>The Behaviours<a class="headerlink" href="#the-behaviours" title="Permalink to this heading"></a></h2>
+<p>An agent can run several behaviours simultaneously. A behaviour is a task that an agent can execute using repeating patterns. SPADE provides some predefined behaviour types: Cyclic, One-Shot, Periodic, Time-Out, and Finite State Machine. These behaviour types help to implement the different tasks that an agent can perform. The kinds of behaviours supported by a SPADE agent are the following:</p>
+<ul class="simple">
+<li><p>Cyclic and Periodic behaviours are useful for performing repetitive tasks.</p></li>
+<li><p>One-Shot and Time-Out behaviours can be used to perform occasional tasks.</p></li>
+<li><p>The Finite State Machine allows more complex behaviours to be built.</p></li>
+</ul>
+<p>Every agent can have as many behaviours as desired. When a message arrives at the agent, the message dispatcher redirects it to the correct behaviour queue. A behaviour has a message template attached to it. Therefore, the message dispatcher uses this template to determine which behaviour the message is for, by matching it with the correct template. A behaviour can thus select what kind of messages it wants to receive by using templates.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="foreword.html" class="btn btn-neutral float-left" title="Foreword" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

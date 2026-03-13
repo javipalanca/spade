@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to SPADE’s documentation! &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SPADE" href="readme.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to SPADE’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-spade-s-documentation">
+<h1>Welcome to SPADE’s documentation!<a class="headerlink" href="#welcome-to-spade-s-documentation" title="Permalink to this heading"></a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#plugins">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#connection-to-the-platform">Connection to the Platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#the-message-dispatcher">The Message Dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#the-behaviours">The Behaviours</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#preparing-the-environment">Preparing the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#creating-your-first-dummy-agent">Creating your first dummy agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#an-agent-with-a-behaviour">An agent with a behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#finishing-a-behaviour">Finishing a behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#finishing-spade">Finishing SPADE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#creating-an-agent-from-within-another-agent">Creating an agent from within another agent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="agents.html#using-templates">Using templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="agents.html#sending-and-receiving-messages">Sending and Receiving Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="behaviours.html#periodic-behaviour">Periodic Behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="behaviours.html#timeoutbehaviour">TimeoutBehaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="behaviours.html#finite-state-machine-behaviour">Finite State Machine Behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="behaviours.html#waiting-a-behaviour">Waiting a Behaviour</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="presence.html#presence-manager">Presence Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="presence.html#availability-handlers">Availability handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="presence.html#contact-list">Contact List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="presence.html#subscribing-and-unsubscribing-to-contacts">Subscribing and unsubscribing to contacts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="presence.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="web.html#creating-custom-web-interfaces">Creating custom web interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#new-behaviours">New Behaviours</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#new-mixins">New Mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#new-libraries">New Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spade.html">spade package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#types-of-contributions">Types of Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#tips">Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#our-pledge">Our Pledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#our-standards">Our Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#our-responsibilities">Our Responsibilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#scope">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#enforcement">Enforcement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conduct.html#attribution">Attribution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authors.html#development-lead">Development Lead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">4.1.2 (2025-08-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id2">4.1.0 (2025-05-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id3">4.0.3 (2025-02-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id4">4.0.2 (2025-01-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id5">4.0.1 (2024-12-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id6">4.0.0 (2024-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id7">3.3.3 (2024-09-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id8">3.3.2 (2023-09-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id9">3.3.1 (2023-09-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id10">3.3.0 (2023-06-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id11">3.2.3 (2022-12-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id12">3.2.2 (2021-11-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id13">3.2.1 (2021-11-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id14">3.2.0 (2021-07-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id15">3.1.9 (2021-07-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id16">3.1.8 (2021-07-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id17">3.1.7 (2021-06-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id18">3.1.6 (2020-05-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id19">3.1.5 (2020-05-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id20">3.1.4 (2019-11-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id21">3.1.3 (2019-07-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id22">3.1.2 (2019-05-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id23">3.1.1 (2019-05-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id24">3.1.0 (2019-03-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id25">3.0.9 (2018-10-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id26">3.0.8 (2018-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id27">3.0.7 (2018-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id28">3.0.6 (2018-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id29">3.0.5 (2018-09-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id30">3.0.4 (2018-09-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id31">3.0.3 (2018-09-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id32">3.0.2 (2018-09-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id33">3.0.1 (2018-09-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id34">3.0.0 (2017-10-06)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="readme.html" class="btn btn-neutral float-right" title="SPADE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

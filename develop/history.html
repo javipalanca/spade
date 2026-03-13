@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Credits" href="authors.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">4.1.2 (2025-08-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.1.0 (2025-05-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">4.0.3 (2025-02-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">4.0.2 (2025-01-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">4.0.1 (2024-12-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">4.0.0 (2024-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">3.3.3 (2024-09-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">3.3.2 (2023-09-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">3.3.1 (2023-09-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">3.3.0 (2023-06-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">3.2.3 (2022-12-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">3.2.2 (2021-11-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">3.2.1 (2021-11-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">3.2.0 (2021-07-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">3.1.9 (2021-07-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">3.1.8 (2021-07-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">3.1.7 (2021-06-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">3.1.6 (2020-05-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">3.1.5 (2020-05-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">3.1.4 (2019-11-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">3.1.3 (2019-07-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">3.1.2 (2019-05-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id23">3.1.1 (2019-05-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">3.1.0 (2019-03-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id25">3.0.9 (2018-10-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">3.0.8 (2018-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">3.0.7 (2018-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">3.0.6 (2018-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">3.0.5 (2018-09-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id30">3.0.4 (2018-09-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">3.0.3 (2018-09-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">3.0.2 (2018-09-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id33">3.0.1 (2018-09-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id34">3.0.0 (2017-10-06)</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>History</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/history.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="history">
+<h1>History<a class="headerlink" href="#history" title="Permalink to this heading"></a></h1>
+<section id="id1">
+<h2>4.1.2 (2025-08-08)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use the new slixmpp-multiplatform fork and manage existing slixmpp installations</p></li>
+<li><p>Hotfix in cli error</p></li>
+<li><p>Added official website link to README and usage documentation</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>4.1.0 (2025-05-22)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>XMPP server is now auto launched transparently with agents.</p></li>
+<li><p>Added support for Python 3.13.</p></li>
+<li><p>Added end2end tests.</p></li>
+<li><p>Memory database integration for the XMPP server.</p></li>
+<li><p>Server parameter configurations improved.</p></li>
+<li><p>Enhanced presence management and subscription process.</p></li>
+<li><p>Added embedded server capability for examples.</p></li>
+<li><p>Dropped Python 3.8 support.</p></li>
+<li><p>Added overloadable presence_received handler.</p></li>
+<li><p>Fixed slixmpp address kwarg error.</p></li>
+<li><p>Improved type hints and code structure in agent and message modules.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>4.0.3 (2025-02-17)<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Prepare XMPP messages linked to client stream.</p></li>
+<li><p>Added CLI support for in-memory database in the XMPP server.</p></li>
+<li><p>Added CLI support for custom connection timeout.</p></li>
+<li><p>Fixed bug in XMPP sending method.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>4.0.2 (2025-01-09)<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed bug sending messages to external agents.</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>4.0.1 (2024-12-26)<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed minor bugs.</p></li>
+<li><p>Agents are now stopped when Ctrl+C is pressed.</p></li>
+<li><p>Added –debug flag to the CLI.</p></li>
+<li><p>Updated documentation config file.</p></li>
+<li><p>Lint examples.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>4.0.0 (2024-12-19)<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added custom XMPP server as cli.</p></li>
+<li><p>Migrated to pyproject.</p></li>
+<li><p>Migrated linter to ruff.</p></li>
+<li><p>Improved presence management API.</p></li>
+<li><p>Agents can now select the XMPP port.</p></li>
+<li><p>Use uvloop or winloop if available.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h2>3.3.3 (2024-09-05)<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added support to Python 3.11 and 3.12</p></li>
+<li><p>Upgraded aiohttp to 3.10.5.</p></li>
+<li><p>Fixed viz.js CDN</p></li>
+</ul>
+</section>
+<section id="id8">
+<h2>3.3.2 (2023-09-18)<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added add_template_path function to the web component.</p></li>
+</ul>
+</section>
+<section id="id9">
+<h2>3.3.1 (2023-09-18)<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added menu entries support for the web interface.</p></li>
+<li><p>Minor typos in documentation.</p></li>
+</ul>
+</section>
+<section id="id10">
+<h2>3.3.0 (2023-06-13)<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Updated to Python&gt;=3.8</p></li>
+<li><p>Changed the way agents are launched (now with <cite>spade.run()</cite>)</p></li>
+<li><p>Python 3.11 still not supported due to a bug in <cite>aiohttp</cite></p></li>
+<li><p>Deprecated support for Python&lt;=3.7</p></li>
+</ul>
+</section>
+<section id="id11">
+<h2>3.2.3 (2022-12-13)<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Updated third-party libs</p></li>
+</ul>
+</section>
+<section id="id12">
+<h2>3.2.2 (2021-11-25)<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Hotfix for the event loop in windows when python is 3.6</p></li>
+</ul>
+</section>
+<section id="id13">
+<h2>3.2.1 (2021-11-16)<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed event loop for windows</p></li>
+</ul>
+</section>
+<section id="id14">
+<h2>3.2.0 (2021-07-13)<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added support for Python 3.8 and 3.9</p></li>
+<li><p>Fixed support for Linux, Windows and macOS</p></li>
+</ul>
+</section>
+<section id="id15">
+<h2>3.1.9 (2021-07-08)<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Minor fix in docs.</p></li>
+</ul>
+</section>
+<section id="id16">
+<h2>3.1.8 (2021-07-08)<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added examples.</p></li>
+<li><p>Fixed documentation examples.</p></li>
+<li><p>Added Github CI support.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h2>3.1.7 (2021-06-25)<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added hooks for plugins.</p></li>
+<li><p>Minor bug fixings.</p></li>
+</ul>
+</section>
+<section id="id18">
+<h2>3.1.6 (2020-05-22)<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed coverage and ci.</p></li>
+</ul>
+</section>
+<section id="id19">
+<h2>3.1.5 (2020-05-21)<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed how to stop behaviours.</p></li>
+<li><p>Fixed some tests.</p></li>
+<li><p>Blackstyled code.</p></li>
+</ul>
+</section>
+<section id="id20">
+<h2>3.1.4 (2019-11-04)<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed issue with third party versions.</p></li>
+<li><p>Use factories in tests.</p></li>
+<li><p>Updated documentation and examples.</p></li>
+<li><p>Minor bug fixing.</p></li>
+</ul>
+</section>
+<section id="id21">
+<h2>3.1.3 (2019-07-18)<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added BDI plugin (<a class="reference external" href="https://github.com/javipalanca/spade_bdi">https://github.com/javipalanca/spade_bdi</a>).</p></li>
+<li><p>Improved the platform stop (quit_spade).</p></li>
+<li><p>Minor bug fixing.</p></li>
+</ul>
+</section>
+<section id="id22">
+<h2>3.1.2 (2019-05-14)<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Hotfix docs.</p></li>
+</ul>
+</section>
+<section id="id23">
+<h2>3.1.1 (2019-05-14)<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added Python 3.7 support.</p></li>
+<li><p>Added Code of Conduct.</p></li>
+<li><p>Minor bugs fixed.</p></li>
+</ul>
+</section>
+<section id="id24">
+<h2>3.1.0 (2019-03-22)<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Agents now run in a single event loop managed by the container.</p></li>
+<li><p>Behaviors can be waited for using the “join” method.</p></li>
+<li><p>To check if a behaviours is done you can now use the “is_done” method.</p></li>
+<li><p>The “setup” method is now a coroutine.</p></li>
+<li><p>New “quit_spade” helper to stop the whole process.</p></li>
+<li><p>The “start” and “stop” methods change depending on the context, since it is the container who will properly start or stop the agent.
+They return a coroutine or a future depending on whether they are called from a coroutine or a synchronous method.</p></li>
+</ul>
+</section>
+<section id="id25">
+<h2>3.0.9 (2018-10-24)<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added raw parameter to allow raw web responses.</p></li>
+<li><p>Changed default agent urls to the “/spade” namespace to avoid conflicts.</p></li>
+</ul>
+</section>
+<section id="id26">
+<h2>3.0.8 (2018-10-02)<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added a container mechanism to speedup local sends.</p></li>
+<li><p>Added performance example.</p></li>
+<li><p>Improved API doc.</p></li>
+<li><p>Added container tests.</p></li>
+</ul>
+</section>
+<section id="id27">
+<h2>3.0.7 (2018-09-27)<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed bug when running FSM states.</p></li>
+<li><p>Improved Message __str__.</p></li>
+<li><p>Fixed bug when thread is not defined in a message.</p></li>
+<li><p>aioxmpp send method is now in client instead of stream.</p></li>
+</ul>
+</section>
+<section id="id28">
+<h2>3.0.6 (2018-09-27)<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added statement to relinquish the cpu at each behaviour loop.</p></li>
+<li><p>Message Thread is now stored as metadata for simplicity.</p></li>
+</ul>
+</section>
+<section id="id29">
+<h2>3.0.5 (2018-09-21)<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added JSON responses in web module.</p></li>
+<li><p>Some improvements in aiothread management.</p></li>
+</ul>
+</section>
+<section id="id30">
+<h2>3.0.4 (2018-09-20)<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Added coroutines to start agents from within other agents.</p></li>
+<li><p>Improved API doc format.</p></li>
+</ul>
+</section>
+<section id="id31">
+<h2>3.0.3 (2018-09-12)<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Rename internal templates to avoid conflicts.</p></li>
+<li><p>Added API doc.</p></li>
+<li><p>Minor bug fixes.</p></li>
+</ul>
+</section>
+<section id="id32">
+<h2>3.0.2 (2018-09-12)<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fixed presence notification updates.</p></li>
+<li><p>Fixed FSM graphviz visualization.</p></li>
+<li><p>Raise AuthenticationFailure Exception when user is not registered or user or password is wrong.</p></li>
+<li><p>Import init improvements.</p></li>
+<li><p>Attribute auto_register is now default True.</p></li>
+<li><p>Improved documentation.</p></li>
+<li><p>Other minor fixes.</p></li>
+</ul>
+</section>
+<section id="id33">
+<h2>3.0.1 (2018-09-07)<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Minor doc fixings and improvements.</p></li>
+</ul>
+</section>
+<section id="id34">
+<h2>3.0.0 (2017-10-06)<a class="headerlink" href="#id34" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Started writing 3.0 version.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="authors.html" class="btn btn-neutral float-left" title="Credits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

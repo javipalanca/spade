@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Graphical Interface &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Extending SPADE with plugins" href="extending.html" />
+    <link rel="prev" title="Presence Notification" href="presence.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Web Graphical Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-custom-web-interfaces">Creating custom web interfaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controller">Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#json-responses">JSON Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#path">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#template">Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#menu-entries">Menu entries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Web Graphical Interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/web.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="web-graphical-interface">
+<h1>Web Graphical Interface<a class="headerlink" href="#web-graphical-interface" title="Permalink to this heading"></a></h1>
+<p>Each agent in SPADE provides a graphical interface <em>by default</em> that is accessible via web under the <code class="docutils literal notranslate"><span class="pre">/spade</span></code> path.
+To activate the web interface you just have to start the web module of the agent just as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">MyAgent</span><span class="p">(</span><span class="s2">&quot;your_jid@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">agent</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you can open a web browser and go to the url <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:10000/spade</span></code> and you’ll see the
+main page of your agent:</p>
+<img alt="SPADE index page" src="_images/spade_index.png" />
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to change the example’s jids and passwords by your own accounts. These accounts do not exist
+and are only for demonstration purposes.</p>
+</div>
+<p>In the previous image you can see the index page of an agent, where you can check its name and avatar,
+a list of its behaviours, and a list of its contacts. In the top menu bar you can also check its
+incoming messages and the profile menu of the agent where you can stop the agent.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Note that if you run several agents with the web interface each agent <strong>should</strong> have a different port in
+order to avoid errors because some port is busy. The hostname can also be customized if you need to expose only to
+<code class="docutils literal notranslate"><span class="pre">localhost</span></code> or to a public ip (or even <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>).</p>
+</div>
+<p>In the behaviours box you can see all the behaviours that have been added to the agent, both the
+active ones and the ended ones. You can click the <strong>kill</strong> button to stop a behaviour and you can
+click the behaviour’s name to see more information about it as in the next image:</p>
+<img alt="SPADE behaviour page" src="_images/spade_behaviour.png" />
+<p>In this page you can check some important information about the behaviour such as its mailbox, the template with which
+it was registered, whether it is killed or not or its exit code. Also, each type of behaviour may show any information
+related with its internal data, e.g. in the previous image you can see that the behaviour is an FSMBehaviour and the
+interface shows the current state where the FSM is and an image with the structure of the FSM.
+Finally, you can also check all the messages that have been sent or received from/to this behaviour in the chat box.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To see more information about a message just click on the message text and you’ll see something like the next
+image:</p>
+<a class="reference internal image-reference" href="_images/spade_msg.png"><img alt="SPADE message detail" class="align-center" src="_images/spade_msg.png" style="width: 50%;" /></a>
+</div>
+<p>From the index page you can also click on any of your contacts to see information about them. In a contact’s page you
+can check the presence status of your contact, unsubscribe from it and check the messages exchanged with it in the chat
+box. In such chat box you can also send a message to the contact.</p>
+<img alt="SPADE contact page" src="_images/spade_friend.png" />
+<section id="creating-custom-web-interfaces">
+<h2>Creating custom web interfaces<a class="headerlink" href="#creating-custom-web-interfaces" title="Permalink to this heading"></a></h2>
+<p>SPADE web module can also be used to create your own applications served by your agents themselves. You can register new
+paths in the web module and, following the model-view-controller paradigm (MVC), register controllers that compute the
+necessary data from the agent (the model) and render a template (the view) which will be served when someone requests
+the path with which it was registered. Let’s see an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">hello_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="s2">&quot;your_jid@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+
+<span class="n">a</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s2">&quot;/hello&quot;</span><span class="p">,</span> <span class="n">hello_controller</span><span class="p">,</span> <span class="s2">&quot;hello.html&quot;</span><span class="p">)</span>
+
+<span class="k">await</span> <span class="n">a</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example there are some elements that must be explained:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">hello_controller</span></code> function is a coroutine (see the <code class="docutils literal notranslate"><span class="pre">async</span></code> statement) that returns a dictionary with data that will be rendered in the template.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">add_get</span></code> method allows us to register a new controller with a path and a template.</p></li>
+<li><p>You can alternatively use the <code class="docutils literal notranslate"><span class="pre">add_post</span></code> method if the http request must be of type <strong>POST</strong> (e.g. sending forms).</p></li>
+</ol>
+</div></blockquote>
+<p>Next we are going to explain a little more about the controller, the path and the template.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please, do not use the <code class="docutils literal notranslate"><span class="pre">/spade</span></code> path to avoid conflicts with the default agent pages (unless you want to modify them).</p>
+</div>
+<section id="controller">
+<h3>Controller<a class="headerlink" href="#controller" title="Permalink to this heading"></a></h3>
+<p>The controller is the asynchronous method (or coroutine) that prepares the data to render the web page. It is an <code class="docutils literal notranslate"><span class="pre">async</span></code>
+method that always receives a single argument: <code class="docutils literal notranslate"><span class="pre">request</span></code>. A controller queries the
+model, which in our case is the agent (accessible in your coroutines using <code class="docutils literal notranslate"><span class="pre">self.agent</span></code>) and prepares a dictionary
+which will be used to render the template (as we will see in a moment). Inside a controller coroutine you can do
+any agent related stuff (sending messages, starting or killing behaviours, etc.).</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Just remember the trick that a coroutine should not be too intensive in cpu, to avoid blocking the execution of the agent.</p>
+</div>
+<p>An example of controller would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_behaviours_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">behaviours_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">behaviours</span><span class="p">:</span>
+        <span class="n">behaviours_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+             <span class="s2">&quot;behaviours&quot;</span><span class="p">:</span> <span class="n">behaviours_list</span><span class="p">,</span>
+             <span class="s2">&quot;rand&quot;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+            <span class="p">}</span>
+</pre></div>
+</div>
+<p>This controller would pass a variable called “behaviours” with the names of all the agent’s behaviours to the template,
+which would be able to render such data. It also generates a random number which is stored in the “rand” key of the data
+passed to the template.</p>
+<p>In the case that your controller responds to a <strong>POST</strong> query (it has been registered with the <code class="docutils literal notranslate"><span class="pre">add_post</span></code> method) you
+can recover the data sent through the request by using this snippet of code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_post_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">post</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Following the last example, the <em>form</em> variable would be a dictionary containing the data sent from the client. This way
+you can create forms in your web applications to be sent to your agents.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Instead of returning a dict with data to be rendered you can redirect to another URL by raising an <code class="docutils literal notranslate"><span class="pre">HTTPFound</span></code>
+exception from the <code class="docutils literal notranslate"><span class="pre">aiohttp.web</span></code> module as in the next example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">web</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_redirect_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="n">web</span><span class="o">.</span><span class="n">HTTPFound</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="json-responses">
+<h4>JSON Responses<a class="headerlink" href="#json-responses" title="Permalink to this heading"></a></h4>
+<p>In the case that you need to return a JSON Response instead of an HTML page, is as simple as follows: call the
+<code class="docutils literal notranslate"><span class="pre">add_get</span></code> or <code class="docutils literal notranslate"><span class="pre">add_post</span></code> method passing <code class="docutils literal notranslate"><span class="pre">None</span></code> as the template argument. Thus, the dictionary that you are
+returning in your controller coroutine will be built into a JSON Response instead of rendering a jinja2 template.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">json_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;my_data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}}</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">add_get</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">json_controller</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>You may also use the <code class="docutils literal notranslate"><span class="pre">raw=True</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">add_get</span></code> and <code class="docutils literal notranslate"><span class="pre">add_post</span></code> methods to indicate that the
+returned result should not be processed neither by jinja2 nor json parsing.</p>
+</div>
+</section>
+</section>
+<section id="path">
+<h3>Path<a class="headerlink" href="#path" title="Permalink to this heading"></a></h3>
+<p>The path will define where your application will respond to requests. You can use any allowed character for defining
+paths. To define variable paths you can also use the
+<a class="reference external" href="https://aiohttp.readthedocs.io/en/stable/web_quickstart.html#variable-resources">aiohttp syntax</a>.
+For example, a path <code class="docutils literal notranslate"><span class="pre">/a/{agentjid}/c</span></code> would match with the url <code class="docutils literal notranslate"><span class="pre">/a/agent&#64;server/c</span></code>. Then, in your controller, you
+can recover the <code class="docutils literal notranslate"><span class="pre">agentjid</span></code> value using the request object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_controller</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">jid</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">match_info</span><span class="p">[</span><span class="s1">&#39;agentjid&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jid&quot;</span><span class="p">:</span> <span class="n">jid</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="template">
+<h3>Template<a class="headerlink" href="#template" title="Permalink to this heading"></a></h3>
+<p>The template is an HTML file with an specific format which allows you to prepare dynamic web pages that are rendered with
+the information generated by your agent. The SPADE templates are created in the <a class="reference external" href="http://jinja.pocoo.org">Jinja2</a>
+format, which allows the rendering process to have variables that come from our agent controllers and control structures.</p>
+<p>In Jinja 2 variables are wrapped with double curly brackets (e.g. <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">my_variable</span> <span class="pre">}}</span></code>) and the control structures with
+curly brackets and the percentage symbol (e.g. <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">if</span> <span class="pre">my_variable</span> <span class="pre">%}</span> <span class="pre">Hello</span> <span class="pre">World</span> <span class="pre">{%</span> <span class="pre">endif</span> <span class="pre">%}</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To know more about the Jinja 2 template engine please visit: <a class="reference external" href="http://jinja.pocoo.org/docs/">http://jinja.pocoo.org/docs/</a></p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To allow SPADE to find your templates you can use the <code class="docutils literal notranslate"><span class="pre">templates_path</span></code> argument when starting the web module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">templates_path</span><span class="o">=</span><span class="s2">&quot;static/templates&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>A simple example of template would be:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>{{ agent.jid }}<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+     My favourite number is {{ number }}
+     <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>My behaviours:<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+     <span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+     {% for b in behaviours %}
+         <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span> {{ b }} <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+     {% endfor %}
+     <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">agent</span></code> variable is always available in your templates to help you to access your internal data.</p>
+</div>
+</section>
+<section id="menu-entries">
+<h3>Menu entries<a class="headerlink" href="#menu-entries" title="Permalink to this heading"></a></h3>
+<p>You can also add new entries to the menu bar of the agent’s web interface. To do so, you can use the <code class="docutils literal notranslate"><span class="pre">add_menu_entry</span></code> method.
+This method receives the name of the entry, the path to which it will redirect and the icon that will be shown in the menu bar.
+The icon is a string from the Font Awesome collection (<a class="reference external" href="http://fontawesome.io/icons/">http://fontawesome.io/icons/</a>).</p>
+<p>For example, to add a new entry to the menu, you can do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">add_menu_entry</span><span class="p">(</span><span class="s2">&quot;My entry&quot;</span><span class="p">,</span> <span class="s2">&quot;/my_entry&quot;</span><span class="p">,</span> <span class="s2">&quot;fa fa-user&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="presence.html" class="btn btn-neutral float-left" title="Presence Notification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extending.html" class="btn btn-neutral float-right" title="Extending SPADE with plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

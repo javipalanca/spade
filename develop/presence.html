@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presence Notification &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Web Graphical Interface" href="web.html" />
+    <link rel="prev" title="Advanced Behaviours" href="behaviours.html" />
+   
+  
+  <style>
+    .spade-dev-banner {
+      background: #f59e0b;
+      color: #111827;
+      text-align: center;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d97706;
+      width: 100%;
+    }
+    .spade-dev-banner a {
+      color: #111827;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var banner = document.createElement("div");
+      banner.className = "spade-dev-banner";
+      banner.innerHTML =
+        "You are viewing DEVELOPMENT docs. " +
+        "For stable docs, go to <a href=\"https://spadeagents.eu/docs/spade/\">latest stable</a>.";
+      
+      var page = document.querySelector(".wy-nav-content");
+      if (page) {
+        page.parentNode.insertBefore(banner, page);
+      } else {
+        document.body.prepend(banner);
+      }
+    });
+  </script>
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Presence Notification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#presence-manager">Presence Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#state">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#status">Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#priority">Priority</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-presence">Setting the Presence</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#availability-handlers">Availability handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact-list">Contact List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subscribing-and-unsubscribing-to-contacts">Subscribing and unsubscribing to contacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subscription-handlers">Subscription handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Presence Notification</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/presence.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="presence-notification">
+<h1>Presence Notification<a class="headerlink" href="#presence-notification" title="Permalink to this heading"></a></h1>
+<p>One of the most differentiating features of SPADE agents is their ability to maintain a roster or list of contacts
+(friends) and to receive notifications in real time about their contacts. This is a feature inherited from instant
+messaging technology and that, thanks to XMPP, SPADE powers to the maximum for its agents.</p>
+<section id="presence-manager">
+<h2>Presence Manager<a class="headerlink" href="#presence-manager" title="Permalink to this heading"></a></h2>
+<p>Every SPADE agent has a property to manage its presence. This manager is called <code class="docutils literal notranslate"><span class="pre">presence</span></code> and implements all the
+methods and attributes to manage an agent’s presence notification.</p>
+<p>A presence object encapsulates its information in a <code class="docutils literal notranslate"><span class="pre">PresenceInfo</span></code> class that contains four main attributes:
+<strong>type</strong>, <strong>show</strong>, <strong>status</strong> and <strong>priority</strong>. These attributes work together to provide a complete representation
+of an agent’s presence state. Let’s see every one of them:</p>
+<section id="state">
+<h3>State<a class="headerlink" href="#state" title="Permalink to this heading"></a></h3>
+<p>The state of a presence message shows if the agent is <strong>Available</strong> or <strong>Unavailable</strong>. This means that the agent is
+connected to an XMPP server or not. This is very useful to know, before contacting an agent, if it is available to
+receive a message in real time or not.</p>
+<p>The state is now managed through the <code class="docutils literal notranslate"><span class="pre">PresenceType</span></code> enumeration which can have the following values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceType.AVAILABLE</span></code>: The agent is connected and can receive messages</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceType.UNAVAILABLE</span></code>: The agent is disconnected or not able to receive messages</p></li>
+</ul>
+</div></blockquote>
+<p>Besides, the <em>State</em> has also an attribute to give additional information about <em>how available</em> the contact is. This is
+the <strong>Show</strong> attribute. The <em>Show</em> attribute is managed through the <code class="docutils literal notranslate"><span class="pre">PresenceShow</span></code> enumeration and can take the following values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceShow.CHAT</span></code>: The entity or resource is actively interested in chatting (i.e. receiving messages).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceShow.AWAY</span></code>: The entity or resource is temporarily away, however it can receive messages (they will probably be attended later)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceShow.EXTENDED_AWAY</span></code>: The entity or resource is away for an extended period (xa = “<em>eXtended Away</em>”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceShow.DND</span></code>: The entity or resource is busy (dnd = “<em>Do Not Disturb</em>”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PresenceShow.NONE</span></code>: Signifies absence of the <em>Show</em> element. Used for unavailable states.</p></li>
+</ul>
+</div></blockquote>
+<p>An agent can set its availability and show property:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span><span class="n">presence_type</span><span class="o">=</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you set your presence to <em>unavailable</em> the only possible show state is <code class="docutils literal notranslate"><span class="pre">PresenceShow.NONE</span></code>.</p>
+</div>
+<p>A short method to set <em>unavailability</em> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_unavailable</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To get your presence state:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">presence_info</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_presence</span><span class="p">()</span>  <span class="c1"># Gets your current presence information</span>
+
+<span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>  <span class="c1"># Returns a boolean to report whether the agent is available or not</span>
+
+<span class="n">current_show</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_show</span><span class="p">()</span>  <span class="c1"># Gets your current PresenceShow info</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If no <em>Show</em> element is provided, the entity is assumed to be online and available with <code class="docutils literal notranslate"><span class="pre">PresenceShow.NONE</span></code>.</p>
+</div>
+</section>
+<section id="status">
+<h3>Status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h3>
+<p>The status is used to set a textual status to your presence information. It is used to explain with natural language
+your current status which is broadcasted when the client connects and when the presence is re-emitted.</p>
+<p>An agent can get its status as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
+<span class="s2">&quot;Working...&quot;</span>
+</pre></div>
+</div>
+<p>The status can be set when defining a new presence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span>
+    <span class="n">presence_type</span><span class="o">=</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="s2">&quot;Working on SPADE agents&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this new version the status is managed as a simple string value, making it more straightforward
+to set and retrieve status information.</p>
+</div>
+</section>
+<section id="priority">
+<h3>Priority<a class="headerlink" href="#priority" title="Permalink to this heading"></a></h3>
+<p>Since an agent (and indeed any XMPP user) can have multiple connections to an XMPP server, it can set the priority of
+each of those connections to establish the level of each one. The value must be an integer between -128 and +127.</p>
+</section>
+<section id="setting-the-presence">
+<h3>Setting the Presence<a class="headerlink" href="#setting-the-presence" title="Permalink to this heading"></a></h3>
+<p>There is a method that can be used to set all presence attributes. Since they are all optional, you can change any
+of the attribute values with every call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span>
+                             <span class="n">presence_type</span><span class="o">=</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span>  <span class="c1"># set availability</span>
+                             <span class="n">show</span><span class="o">=</span><span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">,</span>  <span class="c1"># show status</span>
+                             <span class="n">status</span><span class="o">=</span><span class="s2">&quot;Lunch&quot;</span><span class="p">,</span>  <span class="c1"># status message</span>
+                             <span class="n">priority</span><span class="o">=</span><span class="mi">2</span>  <span class="c1"># connection priority</span>
+                            <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="availability-handlers">
+<h2>Availability handlers<a class="headerlink" href="#availability-handlers" title="Permalink to this heading"></a></h2>
+<p>To get notified when a contact gets available or unavailable you can override the <code class="docutils literal notranslate"><span class="pre">on_available</span></code> and <code class="docutils literal notranslate"><span class="pre">on_unavailable</span></code>
+handlers. These handlers now receive the peer jid of the contact, the current presence information, and the last known
+presence state:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_on_available_handler</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">,</span> <span class="n">last_presence</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;My friend </span><span class="si">{</span><span class="n">peer_jid</span><span class="si">}</span><span class="s2"> is now </span><span class="si">{</span><span class="n">presence_info</span><span class="o">.</span><span class="n">show</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">last_presence</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Previous state was: </span><span class="si">{</span><span class="n">last_presence</span><span class="o">.</span><span class="n">show</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+ <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_available</span> <span class="o">=</span> <span class="n">my_on_available_handler</span>
+</pre></div>
+</div>
+</section>
+<section id="contact-list">
+<h2>Contact List<a class="headerlink" href="#contact-list" title="Permalink to this heading"></a></h2>
+<p>Every contact to whom you are subscribed to appears in your <em>contact list</em>. You can use the <code class="docutils literal notranslate"><span class="pre">get_contacts()</span></code> method to
+get the full list of your contacts. This method returns a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the keys are the <code class="docutils literal notranslate"><span class="pre">JID</span></code> of your contacts and the
+values are <code class="docutils literal notranslate"><span class="pre">Contact</span></code> objects that contain all the information about each contact (presence info, name, subscription status,
+groups, etc.). The contact’s current presence is managed through the <code class="docutils literal notranslate"><span class="pre">PresenceInfo</span></code> class.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">contacts</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contacts</span><span class="p">[</span><span class="n">myfriend_jid</span><span class="p">]</span>
+<span class="go">Contact(</span>
+<span class="go">    JID: my_friend@server.com,</span>
+<span class="go">    Name: My Friend,</span>
+<span class="go">    Presence: PresenceInfo(Type: PresenceType.AVAILABLE, Show: PresenceShow.CHAT, Status: &quot;Working&quot;, Priority: 10)</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>You can also get a specific contact using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">contact</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_contact</span><span class="p">(</span><span class="s2">&quot;friend@server.com&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>An empty contact list will return an empty dictionary.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Contact class provides helper methods like <code class="docutils literal notranslate"><span class="pre">is_available()</span></code> and <code class="docutils literal notranslate"><span class="pre">is_subscribed()</span></code> to easily check contact status.</p>
+</div>
+</section>
+<section id="subscribing-and-unsubscribing-to-contacts">
+<h2>Subscribing and unsubscribing to contacts<a class="headerlink" href="#subscribing-and-unsubscribing-to-contacts" title="Permalink to this heading"></a></h2>
+<p>To subscribe and unsubscribe to/from a contact you have to send a special presence message asking for that subscription.
+SPADE helps you by providing some methods that send these special messages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Send a subscription request to a peer_jid</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+
+<span class="c1"># Send an unsubscribe request to a peer_jid</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">unsubscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+
+<span class="c1"># Approve a subscription request</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">approve_subscription</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="subscription-handlers">
+<h3>Subscription handlers<a class="headerlink" href="#subscription-handlers" title="Permalink to this heading"></a></h3>
+<p>The way you have to get notified when someone wants to subscribe/unsubscribe to you or when you want to get notified if
+a subscription/unsubscription process has succeed is by means of handlers.
+There are four handlers that you can override to manage these kind of messages: <code class="docutils literal notranslate"><span class="pre">on_subscribe</span></code>, <code class="docutils literal notranslate"><span class="pre">on_unsubscribe</span></code>,
+<code class="docutils literal notranslate"><span class="pre">on_subscribed</span></code> and <code class="docutils literal notranslate"><span class="pre">on_unsubscribed</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_on_subscribe_callback</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i_want_to_approve_request</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">approve_subscription</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+
+<span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_subscribe</span> <span class="o">=</span> <span class="n">my_on_subscribe_callback</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the previous example you can see also how to approve a subscription request by using the <code class="docutils literal notranslate"><span class="pre">approve_subscription</span></code> method.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you want to automatically approve all subscription requests you can set the <code class="docutils literal notranslate"><span class="pre">presence.approve_all</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<p>This is an example that shows in a practical way the presence module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneShotBehaviour</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.presence</span><span class="w"> </span><span class="kn">import</span> <span class="n">PresenceType</span><span class="p">,</span> <span class="n">PresenceShow</span><span class="p">,</span> <span class="n">PresenceInfo</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Agent1</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> running&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Behav1</span><span class="p">())</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">Behav1</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">,</span> <span class="n">last_presence</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">presence_info</span><span class="o">.</span><span class="n">show</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> has accepted the subscription&quot;</span><span class="p">)</span>
+            <span class="n">contacts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Contacts List: </span><span class="si">{</span><span class="n">contacts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> asked for subscription. Let&#39;s approve it&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">approve_subscription</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_subscribe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribe</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_subscribed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_available</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span>
+                <span class="n">presence_type</span><span class="o">=</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span>
+                <span class="n">show</span><span class="o">=</span><span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="s2">&quot;Ready to chat&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">jid2</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Agent2</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> running&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Behav2</span><span class="p">())</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">Behav2</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_available</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">,</span> <span class="n">presence_info</span><span class="p">,</span> <span class="n">last_presence</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">presence_info</span><span class="o">.</span><span class="n">show</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> has accepted the subscription&quot;</span><span class="p">)</span>
+            <span class="n">contacts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">get_contacts</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Contacts List: </span><span class="si">{</span><span class="n">contacts</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">on_subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peer_jid</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">] Agent </span><span class="si">{</span><span class="n">peer_jid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> asked for subscription. Let&#39;s approve it&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">approve_subscription</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">peer_jid</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_presence</span><span class="p">(</span>
+                <span class="n">presence_type</span><span class="o">=</span><span class="n">PresenceType</span><span class="o">.</span><span class="n">AVAILABLE</span><span class="p">,</span>
+                <span class="n">show</span><span class="o">=</span><span class="n">PresenceShow</span><span class="o">.</span><span class="n">CHAT</span><span class="p">,</span>
+                <span class="n">status</span><span class="o">=</span><span class="s2">&quot;Ready to chat&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_subscribe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribe</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_subscribed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_subscribed</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">on_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_available</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">jid1</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Agent1 JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd1</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+
+    <span class="n">jid2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Agent2 JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd2</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+
+    <span class="n">agent2</span> <span class="o">=</span> <span class="n">Agent2</span><span class="p">(</span><span class="n">jid2</span><span class="p">,</span> <span class="n">passwd2</span><span class="p">)</span>
+    <span class="n">agent1</span> <span class="o">=</span> <span class="n">Agent1</span><span class="p">(</span><span class="n">jid1</span><span class="p">,</span> <span class="n">passwd1</span><span class="p">)</span>
+    <span class="n">agent1</span><span class="o">.</span><span class="n">jid2</span> <span class="o">=</span> <span class="n">jid2</span>
+    <span class="n">agent2</span><span class="o">.</span><span class="n">jid1</span> <span class="o">=</span> <span class="n">jid1</span>
+    <span class="k">await</span> <span class="n">agent2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">agent1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">await</span> <span class="n">agent1</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">agent2</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="behaviours.html" class="btn btn-neutral float-left" title="Advanced Behaviours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="web.html" class="btn btn-neutral float-right" title="Web Graphical Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
