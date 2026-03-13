@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Agent communications" href="agents.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preparing-the-environment">Preparing the environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spade-coroutine-executor">SPADE coroutine executor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spade-cli-command">SPADE CLI command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dedicated-xmpp-server">Dedicated XMPP server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-your-first-dummy-agent">Creating your first dummy agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#an-agent-with-a-behaviour">An agent with a behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finishing-a-behaviour">Finishing a behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finishing-spade">Finishing SPADE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-an-agent-from-within-another-agent">Creating an agent from within another agent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
+<section id="preparing-the-environment">
+<h2>Preparing the environment<a class="headerlink" href="#preparing-the-environment" title="Permalink to this heading"></a></h2>
+<p>Before you start using the SPADE platform, you need to set up the execution environment.
+The platform is based on the XMPP communication protocol and requires a dedicated server to function properly.
+At this point, you can choose between three scenarios:</p>
+<section id="spade-coroutine-executor">
+<h3>SPADE coroutine executor<a class="headerlink" href="#spade-coroutine-executor" title="Permalink to this heading"></a></h3>
+<p>A SPADE agent is asynchronous, meaning that all the code required to run an agent must be executed within an asynchronous loop.
+This is achieved using the <em>spade.run()</em> function. This function takes a coroutine as its first parameter and runs it within an
+asynchronous loop. The second parameter is a boolean (default is False). If set to True, an internal server instance will be
+launched, managed during the coroutine’s lifespan, and deleted once it finishes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+        <span class="n">dummy</span> <span class="o">=</span> <span class="n">DummyAgent</span><span class="p">(</span><span class="s2">&quot;dummy@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">(),</span> <span class="n">embedded_xmpp_server</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="o">^</span>       <span class="o">^</span>
+                    <span class="o">|</span>       <span class="o">|</span>
+                <span class="n">coroutine</span>   <span class="o">|</span>
+                            <span class="o">|</span>
+                        <span class="n">Server</span> <span class="n">Flag</span>
+</pre></div>
+</div>
+<p>This is the preferred method for launching SPADE scripts, as it eliminates the need for the user to install or manage any external server.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The launched server will use <em>localhost</em> as its host. Keep this in mind when creating agents and assigning their JIDs.
+A valid JID would be something like <em>agent1&#64;localhost</em> or <em>agent1&#64;127.0.0.1</em></p>
+</div>
+</section>
+<section id="spade-cli-command">
+<h3>SPADE CLI command<a class="headerlink" href="#spade-cli-command" title="Permalink to this heading"></a></h3>
+<p>The same server described previously can be launched independently from any agent using <em>spade run</em>.
+This approach is useful for more complex MAS integrations and for obtaining a detailed log of the messages exchanged between agents.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>spade<span class="w"> </span>run
+╭───────────────────────────────<span class="w"> </span>SPADE<span class="w"> </span>────────────────────────────────╮
+│<span class="w"> </span>SPADE<span class="w"> </span>-<span class="w"> </span>Smart<span class="w"> </span>Python<span class="w"> </span>Agent<span class="w"> </span>Development<span class="w"> </span>Environment<span class="w">                   </span>│
+│<span class="w">                                                                      </span>│
+│<span class="w"> </span>Development<span class="w"> </span>Lead:<span class="w">                                                    </span>│
+│<span class="w">   </span>-<span class="w"> </span>Javi<span class="w"> </span>Palanca<span class="w">                                                     </span>│
+│<span class="w"> </span>Funded<span class="w"> </span>by:<span class="w">                                                           </span>│
+│<span class="w">   </span>-<span class="w"> </span>Valencian<span class="w"> </span>Research<span class="w"> </span>Institute<span class="w"> </span><span class="k">for</span><span class="w"> </span>Artificial<span class="w"> </span>Intelligence<span class="w"> </span><span class="o">(</span>VRAIN<span class="o">)</span><span class="w"> </span>│
+│<span class="w"> </span>URL:<span class="w">                                                                 </span>│
+│<span class="w">   </span>-<span class="w">  </span>https://spadeagents.eu<span class="w">                                          </span>│
+│<span class="w"> </span>Documentation:<span class="w">                                                       </span>│
+│<span class="w">   </span>-<span class="w">  </span>https://spadeagents.eu/docs/spade/<span class="w">                              </span>│
+╰──────────────────<span class="w"> </span>Version:<span class="w"> </span><span class="m">4</span>.1.2<span class="w">      </span>License:<span class="w"> </span>MIT<span class="w"> </span>──────────────────╯
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.server:run_server:89<span class="w"> </span>-<span class="w"> </span>Starting<span class="w"> </span>server...
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.server:run_server:133<span class="w"> </span>-<span class="w"> </span>Client<span class="w"> </span><span class="nv">domain</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span><span class="m">0</span>.0.0.0
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.server:run_server:134<span class="w"> </span>-<span class="w"> </span>Server<span class="w"> </span>is<span class="w"> </span>listening<span class="w"> </span>clients<span class="w"> </span>on<span class="w"> </span><span class="o">[(</span><span class="s1">&#39;0.0.0.0&#39;</span>,<span class="w"> </span><span class="m">5222</span><span class="o">)</span>,<span class="w"> </span><span class="o">(</span><span class="s1">&#39;158.42.184.157&#39;</span>,<span class="w"> </span><span class="m">5222</span><span class="o">)]</span>
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.server:run_server:149<span class="w"> </span>-<span class="w"> </span>Server<span class="w"> </span>is<span class="w"> </span>listening<span class="w"> </span>servers<span class="w"> </span>on<span class="w"> </span><span class="o">[(</span><span class="s1">&#39;0.0.0.0&#39;</span>,<span class="w"> </span><span class="m">5269</span><span class="o">)]</span>
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.server:run_server:150<span class="w"> </span>-<span class="w"> </span>Server<span class="w"> </span>started...
+yyyy-m-d<span class="w"> </span>h:m:s<span class="w"> </span><span class="p">|</span><span class="w"> </span>INFO<span class="w">     </span><span class="p">|</span><span class="w"> </span>pyjabber.webpage.adminPage:start:35<span class="w"> </span>-<span class="w"> </span>Serving<span class="w"> </span>admin<span class="w"> </span>webpage<span class="w"> </span>on<span class="w"> </span>http://localhost:9090
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The launched server will use <em>localhost</em> as its host. Keep this in mind when creating agents and assigning their JIDs.
+A valid JID would be something like <em>agent1&#64;localhost</em> or <em>agent1&#64;127.0.0.1</em></p>
+</div>
+</section>
+<section id="dedicated-xmpp-server">
+<h3>Dedicated XMPP server<a class="headerlink" href="#dedicated-xmpp-server" title="Permalink to this heading"></a></h3>
+<p>Any XMPP server can be used with the SPADE platform. <em>Prosody</em> is a well-tested solution with SPADE,
+but there is a wide range of popular servers with large communities.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure that <em>spade.run()</em> does not launch the internal server if your dedicated server
+is already running, as this can cause conflicts with the port binding.</p>
+</div>
+</section>
+</section>
+<section id="creating-your-first-dummy-agent">
+<h2>Creating your first dummy agent<a class="headerlink" href="#creating-your-first-dummy-agent" title="Permalink to this heading"></a></h2>
+<p>It’s time for us to build our first SPADE agent.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The SPADE server <strong>MUST</strong> be running in order to run the agents. If you close the server, the agents will stop working.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To install a different XMPP server visit <a class="reference external" href="https://xmpp.org/software/servers.html">https://xmpp.org/software/servers.html</a> (we recommend <a class="reference external" href="https://prosody.im">Prosody IM</a>)</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>To create a new XMPP account you can follow the steps of <a class="reference external" href="https://xmpp.org/getting-started/">https://xmpp.org/getting-started/</a></p>
+</div>
+<p>A basic SPADE agent is really a Python script that imports the spade module and that
+uses the constructs defined therein. For starters, fire up your favorite Python editor and create a file called <code class="docutils literal notranslate"><span class="pre">dummyagent.py</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to change the example’s jids and passwords by your own accounts. These accounts do not exist and are only for demonstration purposes.</p>
+</div>
+<p>To create an agent in a project you just need to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DummyAgent</span><span class="p">(</span><span class="n">spade</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello World! I&#39;m agent </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="p">)))</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">DummyAgent</span><span class="p">(</span><span class="s2">&quot;dummy@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This agent is only printing on screen a message during its setup and stopping. If you run this script you get
+the following output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>dummyagent.py
+<span class="go">Hello World! I&#39;m agent dummy@localhost</span>
+<span class="gp">$</span>
+</pre></div>
+</div>
+<p>And that’s it! We have built our first SPADE Agent in 6 lines of code. Easy, isn’t it? Of course, this is a very very
+dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A SPADE agent is an asynchronous agent. That means that all the code to run an agent must be executed in an
+asynchronous loop. This is done by the <code class="docutils literal notranslate"><span class="pre">spade.run()</span></code> function. This function receives a coroutine as a parameter
+and runs it in an async loop. In our example, the <code class="docutils literal notranslate"><span class="pre">main()</span></code> coroutine is the one that is run in the loop.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need to run a set of agents in parallel you can use the <code class="docutils literal notranslate"><span class="pre">spade.start_agents(agent_list)</span></code> function. This function
+receives a list of agents and runs them in parallel. This is useful when you need to run a big set of agents.</p>
+</div>
+</section>
+<section id="an-agent-with-a-behaviour">
+<h2>An agent with a behaviour<a class="headerlink" href="#an-agent-with-a-behaviour" title="Permalink to this heading"></a></h2>
+<p>Let’s build a more functional agent, one that uses an actual behaviour to perform a task. As we stated earlier, the real
+programming of the SPADE agents is done mostly in the behaviours. Let’s see how.</p>
+<p>Let’s create a cyclic behaviour that performs a task. In this case, a simple counter. We can modify our existing
+<code class="docutils literal notranslate"><span class="pre">dummyagent.py</span></code> script.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to change the example’s jids and passwords by your own accounts. These accounts do not exist
+and are only for demonstration purposes.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_until_finished</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">CyclicBehaviour</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DummyAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">MyBehav</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting behaviour . . .&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Counter: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agent starting . . .&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MyBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">DummyAgent</span><span class="p">(</span><span class="s2">&quot;dummy@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DummyAgent started. Check its console to see the output.&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wait until user interrupts with ctrl+C&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">wait_until_finished</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>As you can see, we have defined a custom behaviour called MyBehav that inherits from the spade.behaviour.CyclicBehaviour
+class, the default class for all behaviours. This class represents a cyclic behaviour with no specific period, that is,
+a loop-like behaviour.</p>
+<p>You can see that there is a coroutine called <code class="docutils literal notranslate"><span class="pre">on_start()</span></code> in the behaviour. This method is similar to the <code class="docutils literal notranslate"><span class="pre">setup()</span></code>
+method of the agent class but it is run in the async loop. It is executed just before the main iteration of the
+behaviour begins and it is used for initialization code. In this case, we print a line and initialize the variable for
+the counter. There is also an <code class="docutils literal notranslate"><span class="pre">on_end()</span></code> coroutine that is executed when a behaviour is done or killed.</p>
+<p>Also, there is the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method, which is very important. In all behaviours, this is the method in which the core of
+the programming is done, because this method is called on each iteration of the behaviour loop. It acts as the body of
+the loop, sort of. In our example, the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method prints the current value of the counter, increases it and then
+waits for a second (to iterate again).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Note</strong> that the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method is an async coroutine!. This is very important since SPADE is an
+<strong>async library</strong> based on python’s <a class="reference external" href="https://docs.python.org/3/library/asyncio.html">asyncio</a>. That’s why we can
+call async methods inside the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method, like the <code class="docutils literal notranslate"><span class="pre">await</span> <span class="pre">asyncio.sleep(1)</span></code>, which sleeps during one second
+without blocking the event loop.</p>
+</div>
+<p>Now look at the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> coroutine of the agent. There, we make an instance of MyBehav and add it to the current agent
+by means of the <code class="docutils literal notranslate"><span class="pre">add_behaviour()</span></code> method. The first parameter of this method is the behaviour we want to add, and
+there is also a second optional parameter which is the template associated to that behaviour, but we will talk later
+about templates.</p>
+<p>Let’s test our new agent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python dummyagent.py
+Agent starting . . .
+DummyAgent started. Check its console to see the output.
+Wait until user interrupts with ctrl+C
+Starting behaviour . . .
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+Counter: 5
+Counter: 6
+Counter: 7
+</pre></div>
+</div>
+<p>… and so on. As we have not set any end condition, this agent would go on counting forever until we press ctrl+C.</p>
+</section>
+<section id="finishing-a-behaviour">
+<h2>Finishing a behaviour<a class="headerlink" href="#finishing-a-behaviour" title="Permalink to this heading"></a></h2>
+<p>If you want to finish a behaviour you can kill it by using the <code class="docutils literal notranslate"><span class="pre">self.kill(exit_code)</span></code> method. This method <strong>marks</strong>
+the behaviour to be killed at the next loop iteration and stores the exit_code to be queried later.</p>
+<p>An example of how to kill a behaviour:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">CyclicBehaviour</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DummyAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">MyBehav</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting behaviour . . .&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Counter: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="n">exit_code</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Behaviour finished with exit code </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exit_code</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agent starting . . .&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_behav</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MyBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_behav</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">DummyAgent</span><span class="p">(</span><span class="s2">&quot;your_jid@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># wait until user interrupts with ctrl+C</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">dummy</span><span class="o">.</span><span class="n">my_behav</span><span class="o">.</span><span class="n">is_killed</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">assert</span> <span class="n">dummy</span><span class="o">.</span><span class="n">my_behav</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">==</span> <span class="mi">10</span>
+
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>And the output of this example would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python killbehav.py
+Agent starting . . .
+Starting behaviour . . .
+Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Behaviour finished with exit code 10.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An exit code may be of any type you need: int, dict, string, exception, etc.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember that killing a behaviour does not cancel its current run loop, if you need to finish the current
+iteration you’ll have to call return.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>If a exception occurs inside an <code class="docutils literal notranslate"><span class="pre">on_start</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span></code> or <code class="docutils literal notranslate"><span class="pre">on_end</span></code> coroutines, the behaviour will be
+automatically killed and the exception will be stored as its <code class="docutils literal notranslate"><span class="pre">exit_code</span></code>.</p>
+</div>
+</section>
+<section id="finishing-spade">
+<h2>Finishing SPADE<a class="headerlink" href="#finishing-spade" title="Permalink to this heading"></a></h2>
+<p>A SPADE script will be running until all agents are stopped. If you want to stop all agents and finish the script you
+may send a SIGINT (ctrl+C) signal. This signal will stop all agents.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">quit_spade()</span></code> method has been deprecated since the current version of SPADE (3.3).</p>
+</div>
+</section>
+<section id="creating-an-agent-from-within-another-agent">
+<h2>Creating an agent from within another agent<a class="headerlink" href="#creating-an-agent-from-within-another-agent" title="Permalink to this heading"></a></h2>
+<p>There is a common use case where you may need to create an agent from within another agent, that is, from within another
+agent’s behaviour. This is a common case where <code class="docutils literal notranslate"><span class="pre">start</span></code> must be called with an <code class="docutils literal notranslate"><span class="pre">await</span></code> statement in order to work properly. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneShotBehaviour</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AgentExample</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="si">}</span><span class="s2"> created.&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateBehav</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">agent2</span> <span class="o">=</span> <span class="n">AgentExample</span><span class="p">(</span><span class="s2">&quot;agent2_example@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;fake_password&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">agent2</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">agent1</span> <span class="o">=</span> <span class="n">AgentExample</span><span class="p">(</span><span class="s2">&quot;agent1_example@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;fake_password&quot;</span><span class="p">)</span>
+    <span class="n">behav</span> <span class="o">=</span> <span class="n">CreateBehav</span><span class="p">()</span>
+    <span class="n">agent1</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">behav</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">agent1</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># wait until the behaviour is finished to quit spade.</span>
+    <span class="k">await</span> <span class="n">behav</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="agents.html" class="btn btn-neutral float-right" title="Agent communications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

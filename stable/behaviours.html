@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Behaviours &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Presence Notification" href="presence.html" />
+    <link rel="prev" title="Agent communications" href="agents.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Behaviours</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#periodic-behaviour">Periodic Behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#timeoutbehaviour">TimeoutBehaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finite-state-machine-behaviour">Finite State Machine Behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#waiting-a-behaviour">Waiting a Behaviour</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Advanced Behaviours</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/behaviours.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-behaviours">
+<h1>Advanced Behaviours<a class="headerlink" href="#advanced-behaviours" title="Permalink to this heading"></a></h1>
+<p>There are more complex types of behaviours that you can use in SPADE. Let’s see some of them.</p>
+<section id="periodic-behaviour">
+<h2>Periodic Behaviour<a class="headerlink" href="#periodic-behaviour" title="Permalink to this heading"></a></h2>
+<p>This behaviour runs its <code class="docutils literal notranslate"><span class="pre">run()</span></code> body at a scheduled <code class="docutils literal notranslate"><span class="pre">period</span></code>. This period is set in seconds.
+You can also delay the startup of the periodic behaviour by setting a datetime in the <code class="docutils literal notranslate"><span class="pre">start_at</span></code> parameter.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to change the example’s jids and passwords by your own accounts. These accounts do not exist
+and are only for demonstration purposes.</p>
+</div>
+<p>Let’s see an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">CyclicBehaviour</span><span class="p">,</span> <span class="n">PeriodicBehaviour</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PeriodicSenderAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">InformBehav</span><span class="p">(</span><span class="n">PeriodicBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PeriodicSenderBehaviour running at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;receiver_jid&quot;</span><span class="p">))</span>  <span class="c1"># Instantiate the message</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Hello World&quot;</span>  <span class="c1"># Set the message content</span>
+
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message sent!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># stop agent from behaviour</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PeriodicSenderAgent started at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">start_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">InformBehav</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">start_at</span><span class="o">=</span><span class="n">start_at</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReceiverAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">RecvBehav</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RecvBehav running&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># wait for a message for 10 seconds</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message received with content: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">body</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Did not received any message after 10 seconds&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ReceiverAgent started&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RecvBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">receiver_jid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Receiver JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+    <span class="n">receiveragent</span> <span class="o">=</span> <span class="n">ReceiverAgent</span><span class="p">(</span><span class="n">receiver_jid</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+
+    <span class="n">sender_jid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Sender JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+    <span class="n">senderagent</span> <span class="o">=</span> <span class="n">PeriodicSenderAgent</span><span class="p">(</span><span class="n">sender_jid</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">receiveragent</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">senderagent</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;receiver_jid&quot;</span><span class="p">,</span> <span class="n">receiver_jid</span><span class="p">)</span>  <span class="c1"># store receiver_jid in the sender knowledge base</span>
+    <span class="k">await</span> <span class="n">senderagent</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">spade</span><span class="o">.</span><span class="n">wait_until_finished</span><span class="p">(</span><span class="n">receiveragent</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">senderagent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">receiveragent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agents finished&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The output of this code would be similar to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python periodic.py
+ReceiverAgent started
+RecvBehav running
+PeriodicSenderAgent started at 17:40:39.901903
+PeriodicSenderBehaviour running at 17:40:45.720227: 0
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+PeriodicSenderBehaviour running at 17:40:46.906229: 1
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+PeriodicSenderBehaviour running at 17:40:48.906347: 2
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+PeriodicSenderBehaviour running at 17:40:50.903576: 3
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+PeriodicSenderBehaviour running at 17:40:52.905082: 4
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+PeriodicSenderBehaviour running at 17:40:54.904886: 5
+Message sent!
+Message received with content: Hello World
+RecvBehav running
+Did not received any message after 10 seconds
+Agents finished
+</pre></div>
+</div>
+</section>
+<section id="timeoutbehaviour">
+<h2>TimeoutBehaviour<a class="headerlink" href="#timeoutbehaviour" title="Permalink to this heading"></a></h2>
+<p>You can also create a <code class="docutils literal notranslate"><span class="pre">TimeoutBehaviour</span></code> which is run once (like OneShotBehaviours) but its activation is triggered at
+a specified <code class="docutils literal notranslate"><span class="pre">datetime</span></code> just as in <code class="docutils literal notranslate"><span class="pre">PeriodicBehaviours</span></code>.</p>
+<p>Let’s see an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">CyclicBehaviour</span><span class="p">,</span> <span class="n">TimeoutBehaviour</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeoutSenderAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">InformBehav</span><span class="p">(</span><span class="n">TimeoutBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TimeoutSenderBehaviour running at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;receiver_jid&quot;</span><span class="p">))</span>  <span class="c1"># Instantiate the message</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;Hello World&quot;</span>  <span class="c1"># Set the message content</span>
+
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TimeoutSenderAgent started at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">start_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">InformBehav</span><span class="p">(</span><span class="n">start_at</span><span class="o">=</span><span class="n">start_at</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReceiverAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">RecvBehav</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># wait for a message for 10 seconds</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message received with content: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">body</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Did not received any message after 10 seconds&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RecvBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">receiver_jid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Receiver JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+    <span class="n">receiveragent</span> <span class="o">=</span> <span class="n">ReceiverAgent</span><span class="p">(</span><span class="n">receiver_jid</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+
+    <span class="n">sender_jid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Sender JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+    <span class="n">senderagent</span> <span class="o">=</span> <span class="n">TimeoutSenderAgent</span><span class="p">(</span><span class="n">sender_jid</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">receiveragent</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">senderagent</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;receiver_jid&quot;</span><span class="p">,</span> <span class="n">receiver_jid</span><span class="p">)</span>  <span class="c1"># store receiver_jid in the sender knowledge base</span>
+    <span class="k">await</span> <span class="n">senderagent</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">spade</span><span class="o">.</span><span class="n">wait_until_finished</span><span class="p">(</span><span class="n">receiveragent</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">senderagent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">receiveragent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agents finished&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This would produce the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python timeout.py
+TimeoutSenderAgent started at 18:12:09.620316
+TimeoutSenderBehaviour running at 18:12:14.625403
+Message received with content: Hello World
+Did not received any message after 10 seconds
+Agents finished
+</pre></div>
+</div>
+</section>
+<section id="finite-state-machine-behaviour">
+<h2>Finite State Machine Behaviour<a class="headerlink" href="#finite-state-machine-behaviour" title="Permalink to this heading"></a></h2>
+<p>SPADE agents can also have more complex behaviours which are a finite state machine (FSM) which has registered states and
+transitions between states. This kind of behaviour allows SPADE agents to build much more complex and interesting
+behaviours in our agent model.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">FSMBehaviour</span></code> class is a container behaviour (subclass of <code class="docutils literal notranslate"><span class="pre">CyclicBehaviour</span></code>) that implements the methods
+<code class="docutils literal notranslate"><span class="pre">add_state(name,</span> <span class="pre">state,</span> <span class="pre">initial)</span></code> and <code class="docutils literal notranslate"><span class="pre">add_transition(source,</span> <span class="pre">dest)</span></code>. Every state of the FSM must be registered in
+the behaviour with a string name and an instance of the <code class="docutils literal notranslate"><span class="pre">State</span></code> class. This <code class="docutils literal notranslate"><span class="pre">State</span></code> class represents a node of the
+FSM and (since it’s a subclass of <code class="docutils literal notranslate"><span class="pre">OneShotBehaviour</span></code>) you must override the <code class="docutils literal notranslate"><span class="pre">run</span></code> coroutine just as in a regular
+behaviour. Since a <code class="docutils literal notranslate"><span class="pre">State</span></code> is a regular behaviour, you can also override the <code class="docutils literal notranslate"><span class="pre">on_start</span></code> and <code class="docutils literal notranslate"><span class="pre">on_end</span></code> coroutines,
+and, of course, use the <code class="docutils literal notranslate"><span class="pre">send</span></code> and <code class="docutils literal notranslate"><span class="pre">receive</span></code> coroutines to be able to interact with other agents via SPADE messaging.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To mark a <code class="docutils literal notranslate"><span class="pre">State</span></code> as initial state of the FSM set <strong>initial</strong> parameter to <em>True</em> when calling <em>add_state</em>
+(<code class="docutils literal notranslate"><span class="pre">add_state(name,</span> <span class="pre">state,</span> <span class="pre">initial=True)</span></code>).
+<strong>A FSM can only have ONE initial state, so the initial state will be the last one registered.</strong></p>
+</div>
+<p>Transitions in a <code class="docutils literal notranslate"><span class="pre">FSMBehaviour</span></code> define from which state to which state it is allowed to transit. A <code class="docutils literal notranslate"><span class="pre">State</span></code> defines
+its transit to another state by using the <code class="docutils literal notranslate"><span class="pre">set_next_state</span></code> method in its <code class="docutils literal notranslate"><span class="pre">run</span></code> coroutine.
+By using the <code class="docutils literal notranslate"><span class="pre">set_next_state</span></code> method a state dynamically expresses to which state it transits when it finishes. After
+running a state, the FSM reads this <em>next_state</em> value and, if the transition is valid, it transits to that state.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the transition is not registered it raises a <code class="docutils literal notranslate"><span class="pre">NotValidTransition</span></code> exception and the FSM behaviour is
+finished.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">set_next_state</span></code> must be called with the same string name with which that state was registered. If the
+state is not registered a <code class="docutils literal notranslate"><span class="pre">NotValidState</span></code> exception is raised and the FSM behaviour is finished.</p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">FSMBehaviour</span></code> has a unique template, which is shared with all the states of the FSM. You must take this into account
+when you describe your FSM states, because they will share the same message queue.</p>
+<p>Next, we are going to see an example where a very simple FSM is defined, with three states, which transitate from one
+state to the next one in order. It also sends a message to itself at the first initial state, which is received at the
+third (and final) state. Also note that the third state is a final state because it does not set a <em>next_state</em> to
+transit to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">FSMBehaviour</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+
+<span class="n">STATE_ONE</span> <span class="o">=</span> <span class="s2">&quot;STATE_ONE&quot;</span>
+<span class="n">STATE_TWO</span> <span class="o">=</span> <span class="s2">&quot;STATE_TWO&quot;</span>
+<span class="n">STATE_THREE</span> <span class="o">=</span> <span class="s2">&quot;STATE_THREE&quot;</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ExampleFSMBehaviour</span><span class="p">(</span><span class="n">FSMBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FSM starting at initial state </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FSM finished at state </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">StateOne</span><span class="p">(</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I&#39;m at state one (initial state)&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">jid</span><span class="p">))</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;msg_from_state_one_to_state_three&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_next_state</span><span class="p">(</span><span class="n">STATE_TWO</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">StateTwo</span><span class="p">(</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I&#39;m at state two&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_next_state</span><span class="p">(</span><span class="n">STATE_THREE</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">StateThree</span><span class="p">(</span><span class="n">State</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I&#39;m at state three (final state)&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State Three received message </span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># no final state is set, since this is a final state</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FSMAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fsm</span> <span class="o">=</span> <span class="n">ExampleFSMBehaviour</span><span class="p">()</span>
+        <span class="n">fsm</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">STATE_ONE</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">StateOne</span><span class="p">(),</span> <span class="n">initial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fsm</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">STATE_TWO</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">StateTwo</span><span class="p">())</span>
+        <span class="n">fsm</span><span class="o">.</span><span class="n">add_state</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">STATE_THREE</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">StateThree</span><span class="p">())</span>
+        <span class="n">fsm</span><span class="o">.</span><span class="n">add_transition</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">STATE_ONE</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="n">STATE_TWO</span><span class="p">)</span>
+        <span class="n">fsm</span><span class="o">.</span><span class="n">add_transition</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">STATE_TWO</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="n">STATE_THREE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">fsm</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">fsmagent</span> <span class="o">=</span> <span class="n">FSMAgent</span><span class="p">(</span><span class="s2">&quot;fsmagent@your_xmpp_server&quot;</span><span class="p">,</span> <span class="s2">&quot;your_password&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">fsmagent</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">await</span> <span class="n">spade</span><span class="o">.</span><span class="n">wait_until_finished</span><span class="p">(</span><span class="n">fsmagent</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">fsmagent</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agent finished&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="waiting-a-behaviour">
+<h2>Waiting a Behaviour<a class="headerlink" href="#waiting-a-behaviour" title="Permalink to this heading"></a></h2>
+<p>Sometimes you may need to wait for a behaviour to finish. In order to make this easy, behaviours provide a method called
+<code class="docutils literal notranslate"><span class="pre">join</span></code>. Using this method you can wait for a behaviour to be finished. Be careful, since this is a blocking operation.
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">getpass</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">spade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneShotBehaviour</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DummyAgent</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">LongBehav</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Long Behaviour has finished&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">WaitingBehav</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">behav</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>  <span class="c1"># this join must be awaited</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Waiting Behaviour has finished&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Agent starting . . .&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behav</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LongBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">behav</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behav2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">WaitingBehav</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">behav2</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">jid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;JID&gt; &quot;</span><span class="p">)</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">DummyAgent</span><span class="p">(</span><span class="n">jid</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">behav2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stopping agent.&quot;</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">dummy</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">spade</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="agents.html" class="btn btn-neutral float-left" title="Agent communications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="presence.html" class="btn btn-neutral float-right" title="Presence Notification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

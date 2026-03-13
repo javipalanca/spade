@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spade package &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="API Documentation" href="api.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+      <li>spade package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/spade.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spade-package">
+<h1>spade package<a class="headerlink" href="#spade-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-spade.agent">
+<span id="spade-agent-module"></span><h2>spade.agent module<a class="headerlink" href="#module-spade.agent" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.agent.Agent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5222</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify_security</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/agent.html#Agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.add_behaviour">
+<span class="sig-name descname"><span class="pre">add_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">behaviour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BehaviourType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.template.Template" title="spade.template.Template"><span class="pre">Template</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.add_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.add_behaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Adds and starts a behaviour to the agent.
+If template is not None it is used to match
+new messages and deliver them to the behaviour.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour to be started
+template (spade.template.Template, optional): the template to match messages with (Default value = None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.agent.Agent.avatar">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">avatar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#spade.agent.Agent.avatar" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a unique avatar for the agent based on its JID.
+Uses Gravatar service with MonsterID option.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: the url of the agent’s avatar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.build_avatar_url">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_avatar_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.build_avatar_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.build_avatar_url" title="Permalink to this definition"></a></dt>
+<dd><p>Static method to build a gravatar url with the agent’s JID</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>jid (aioxmpp.JID): an XMPP identifier</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: a URL for the gravatar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.dispatch">
+<span class="sig-name descname"><span class="pre">dispatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Task</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.dispatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.dispatch" title="Permalink to this definition"></a></dt>
+<dd><p>Dispatch the message to every behaviour that is waiting for
+it using their templates match.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>msg (spade.message.Message): the message to dispatch.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list(asyncio.Future): a list of tasks for each message queuing in each matching behavior.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.get" title="Permalink to this definition"></a></dt>
+<dd><p>Recovers a knowledge item from the agent’s knowledge base.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name(str): name of the item</p>
+</dd>
+<dt>Returns:</dt><dd><p>object: the object retrieved or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.has_behaviour">
+<span class="sig-name descname"><span class="pre">has_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">behaviour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><span class="pre">CyclicBehaviour</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.has_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.has_behaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a behaviour is added to an agent.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to check</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: a boolean that indicates wether the behaviour is inside the agent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.is_alive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.is_alive" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the agent is alive.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: wheter the agent is alive or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.agent.Agent.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#spade.agent.Agent.name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the name of the agent (the string before the ‘&#64;’)</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: the name of the agent (the string before the ‘&#64;’)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.remove_behaviour">
+<span class="sig-name descname"><span class="pre">remove_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">behaviour</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><span class="pre">CyclicBehaviour</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.remove_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.remove_behaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Removes a behaviour from the agent.
+The behaviour is first killed.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to be removed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/agent.html#Agent.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.set" title="Permalink to this definition"></a></dt>
+<dd><p>Stores a knowledge item in the agent knowledge base.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): name of the item
+value (object): value of the item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.set_container">
+<span class="sig-name descname"><span class="pre">set_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.container.Container" title="spade.container.Container"><span class="pre">Container</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.set_container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.set_container" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the container to which the agent is attached</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>container (spade.container.Container): the container to be attached to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.set_loop">
+<span class="sig-name descname"><span class="pre">set_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loop</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.set_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.set_loop" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.setup">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Setup agent before startup.
+This coroutine may be overloaded.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.start">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auto_register</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.start" title="Permalink to this definition"></a></dt>
+<dd><p>Starts this agent.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>auto_register (bool): register the agent in the server (Default value = True)</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.stop">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.stop" title="Permalink to this definition"></a></dt>
+<dd><p>Stops this agent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.agent.Agent.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coro</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Coroutine</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Task</span></span></span><a class="reference internal" href="_modules/spade/agent.html#Agent.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.Agent.submit" title="Permalink to this definition"></a></dt>
+<dd><p>Runs a coroutine in the event loop of the agent.
+this call is not blocking.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>coro (Coroutine): the coroutine to be run</p>
+</dd>
+<dt>Returns:</dt><dd><p>asyncio.Task: the Task assigned to the coroutine execution</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.agent.AuthenticationFailure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.agent.</span></span><span class="sig-name descname"><span class="pre">AuthenticationFailure</span></span><a class="reference internal" href="_modules/spade/agent.html#AuthenticationFailure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.AuthenticationFailure" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.agent.DisconnectedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.agent.</span></span><span class="sig-name descname"><span class="pre">DisconnectedException</span></span><a class="reference internal" href="_modules/spade/agent.html#DisconnectedException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.agent.DisconnectedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-spade.behaviour">
+<span id="spade-behaviour-module"></span><h2>spade.behaviour module<a class="headerlink" href="#module-spade.behaviour" title="Permalink to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.behaviour.BehaviourNotFinishedException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">BehaviourNotFinishedException</span></span><a class="reference internal" href="_modules/spade/behaviour.html#BehaviourNotFinishedException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.BehaviourNotFinishedException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">CyclicBehaviour</span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This behaviour is executed cyclically until it is stopped.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.download_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.download_file" title="Permalink to this definition"></a></dt>
+<dd><p>Downloads a file from a 0363 slot (url) into the <code class="docutils literal notranslate"><span class="pre">dest_path</span></code>
+(or execution dir if not provided)</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>url (str): URL of the slot to download.
+dest_path (str): Path to put the downloaded file. Must be an existing dir.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.enqueue">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enqueue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.enqueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.enqueue" title="Permalink to this definition"></a></dt>
+<dd><p>Enqueues a message in the behaviour’s mailbox</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message (spade.message.Message): the message to be enqueued</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.exit_code">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exit_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.exit_code" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the exit_code of the behaviour.
+It only works when the behaviour is done or killed,
+otherwise it raises an exception.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>object: the exit code of the behaviour</p>
+</dd>
+<dt>Raises:</dt><dd><p>BehaviourNotFinishedException: if the behaviour is not yet finished</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.get" title="Permalink to this definition"></a></dt>
+<dd><p>Recovers a knowledge item from the agent’s knowledge base.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): name of the item</p>
+</dd>
+<dt>Returns:</dt><dd><p>Any: the object retrieved or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.is_done">
+<span class="sig-name descname"><span class="pre">is_done</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.is_done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.is_done" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the behaviour is finished</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: whether the behaviour is finished or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.is_killed">
+<span class="sig-name descname"><span class="pre">is_killed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.is_killed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.is_killed" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the behaviour was killed by means of the kill() method.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>bool: whether the behaviour is killed or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.join">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.join" title="Permalink to this definition"></a></dt>
+<dd><p>Wait for the behaviour to complete</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>timeout (Optional[float]): an optional timeout to wait to join (if None, the join is blocking)</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Raises:</dt><dd><p>TimeoutError: if the timeout is reached</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.kill">
+<span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exit_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.kill" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the behaviour</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>exit_code (object, optional): the exit code of the behaviour (Default value = None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.mailbox_size">
+<span class="sig-name descname"><span class="pre">mailbox_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.mailbox_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.mailbox_size" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if there is a message in the mailbox</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: the number of messages in the mailbox</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.match" title="Permalink to this definition"></a></dt>
+<dd><p>Matches a message with the behaviour’s template</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message(spade.message.Message): the message to match with</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: wheter the messaged matches or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.on_end">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.on_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.on_end" title="Permalink to this definition"></a></dt>
+<dd><p>Coroutine called after the behaviour is done or killed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.on_start">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.on_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.on_start" title="Permalink to this definition"></a></dt>
+<dd><p>Coroutine called before the behaviour is started.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.receive">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.receive" title="Permalink to this definition"></a></dt>
+<dd><p>Receives a message for this behaviour.
+If timeout is not None it returns the message or “None”
+after timeout is done.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>timeout (float, optional): number of seconds until return</p>
+</dd>
+<dt>Returns:</dt><dd><p>spade.message.Message: a Message or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.run">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.run" title="Permalink to this definition"></a></dt>
+<dd><p>Body of the behaviour.
+To be implemented by user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.send" title="Permalink to this definition"></a></dt>
+<dd><p>Sends a message.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>msg (spade.message.Message): the message to be sent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.send_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.send_file" title="Permalink to this definition"></a></dt>
+<dd><p>Discovers the XEP 0363 service, and tries to send the file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Path to the file to upload (or only the name if <code class="docutils literal notranslate"><span class="pre">input_file</span></code> is provided)
+input_file (IO[bytes]): Binary file stream on the file</p>
+</dd>
+<dt>Returns:</dt><dd><p>An url used to download the uploaded file (GET HTTP method)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.set" title="Permalink to this definition"></a></dt>
+<dd><p>Stores a knowledge item in the agent knowledge base.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): name of the item
+value (Any): value of the item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.set_agent">
+<span class="sig-name descname"><span class="pre">set_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.set_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.set_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Links behaviour with its owner agent</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>agent (spade.agent.Agent): the agent who owns the behaviour</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.set_template">
+<span class="sig-name descname"><span class="pre">set_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.template.Template" title="spade.template.Template"><span class="pre">Template</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.set_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.set_template" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the template that is used to match incoming
+messages with this behaviour.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>template (spade.template.Template): the template to match with</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.start" title="Permalink to this definition"></a></dt>
+<dd><p>starts behaviour in the event loop</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">FSMBehaviour</span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicBehaviour</span></code></a></p>
+<p>A behaviour composed of states (oneshotbehaviours) that may transition from one state to another.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.add_state">
+<span class="sig-name descname"><span class="pre">add_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.behaviour.State" title="spade.behaviour.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.add_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.add_state" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new state to the FSM.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): the name of the state, which is used as its identifier.
+state (spade.behaviour.State): The state class
+initial (bool, optional): wether the state is the initial state or not. (Only one initial state is allowed) (Default value = False)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.add_transition">
+<span class="sig-name descname"><span class="pre">add_transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.add_transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.add_transition" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a transition from one state to another.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>source (str): the name of the state from where the transition starts
+dest (str): the name of the state where the transition ends</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.behaviour.State" title="spade.behaviour.State"><span class="pre">State</span></a></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.get_state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.get_states">
+<span class="sig-name descname"><span class="pre">get_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#spade.behaviour.State" title="spade.behaviour.State"><span class="pre">State</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.get_states" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.is_valid_transition">
+<span class="sig-name descname"><span class="pre">is_valid_transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.is_valid_transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.is_valid_transition" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a transitions is registered in the FSM</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>source (str): the source state name
+dest (str): the destination state name</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: wether the transition is valid or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.run" title="Permalink to this definition"></a></dt>
+<dd><p>In this kind of behaviour there is no need to overload run.
+The run methods to be overloaded are in the State class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.setup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.FSMBehaviour.to_graphviz">
+<span class="sig-name descname"><span class="pre">to_graphviz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#FSMBehaviour.to_graphviz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.FSMBehaviour.to_graphviz" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the FSM behaviour structure to Graphviz syntax</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: the graph in Graphviz syntax</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.behaviour.NotValidState">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">NotValidState</span></span><a class="reference internal" href="_modules/spade/behaviour.html#NotValidState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.NotValidState" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.behaviour.NotValidTransition">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">NotValidTransition</span></span><a class="reference internal" href="_modules/spade/behaviour.html#NotValidTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.NotValidTransition" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.OneShotBehaviour">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">OneShotBehaviour</span></span><a class="reference internal" href="_modules/spade/behaviour.html#OneShotBehaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.OneShotBehaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicBehaviour</span></code></a></p>
+<p>This behaviour is only executed once</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.PeriodicBehaviour">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">PeriodicBehaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/behaviour.html#PeriodicBehaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.PeriodicBehaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicBehaviour</span></code></a></p>
+<p>This behaviour is executed periodically with an interval</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.behaviour.PeriodicBehaviour.period">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">period</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">timedelta</span></em><a class="headerlink" href="#spade.behaviour.PeriodicBehaviour.period" title="Permalink to this definition"></a></dt>
+<dd><p>Get the period.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.State">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">State</span></span><a class="reference internal" href="_modules/spade/behaviour.html#State"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.State" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.behaviour.OneShotBehaviour" title="spade.behaviour.OneShotBehaviour"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneShotBehaviour</span></code></a></p>
+<p>A state of a FSMBehaviour is a OneShotBehaviour</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.State.set_next_state">
+<span class="sig-name descname"><span class="pre">set_next_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#State.set_next_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.State.set_next_state" title="Permalink to this definition"></a></dt>
+<dd><p>Set the state to transition to when this state is finished.
+state_name must be a valid state and the transition must be registered.
+If set_next_state is not called then current state is a final state.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>state_name (str): the name of the state to transition to</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.behaviour.TimeoutBehaviour">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">TimeoutBehaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_at</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/behaviour.html#TimeoutBehaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.TimeoutBehaviour" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.behaviour.OneShotBehaviour" title="spade.behaviour.OneShotBehaviour"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneShotBehaviour</span></code></a></p>
+<p>This behaviour is executed once at after specified datetime</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.behaviour.now">
+<span class="sig-prename descclassname"><span class="pre">spade.behaviour.</span></span><span class="sig-name descname"><span class="pre">now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spade.behaviour.now" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new datetime object representing current time local to tz.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>tz</dt><dd><p>Timezone object.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>If no tz is specified, uses local timezone.</p>
+</dd></dl>
+
+</section>
+<section id="module-spade.cli">
+<span id="spade-cli-module"></span><h2>spade.cli module<a class="headerlink" href="#module-spade.cli" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.cli.check_port_in_use">
+<span class="sig-prename descclassname"><span class="pre">spade.cli.</span></span><span class="sig-name descname"><span class="pre">check_port_in_use</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.0.0.0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/cli.html#check_port_in_use"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.cli.check_port_in_use" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a port is in use</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.cli.create_cli">
+<span class="sig-prename descclassname"><span class="pre">spade.cli.</span></span><span class="sig-name descname"><span class="pre">create_cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/cli.html#create_cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.cli.create_cli" title="Permalink to this definition"></a></dt>
+<dd><p>Factory function to create the CLI</p>
+</dd></dl>
+
+</section>
+<section id="module-spade.container">
+<span id="spade-container-module"></span><h2>spade.container module<a class="headerlink" href="#module-spade.container" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.container.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.container.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><a class="reference internal" href="_modules/spade/container.html#Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.container.Container" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.container.Container" title="spade.container.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
+<p>The container class allows agents to exchange messages
+without using the XMPP socket if they are in the same
+process.
+The container is a singleton.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.container.get_or_create_eventloop">
+<span class="sig-prename descclassname"><span class="pre">spade.container.</span></span><span class="sig-name descname"><span class="pre">get_or_create_eventloop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/container.html#get_or_create_eventloop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.container.get_or_create_eventloop" title="Permalink to this definition"></a></dt>
+<dd><p>Create or retrieve the appropriate event loop, using uvloop on Linux/macOS
+and winloop on Windows if available.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.container.run_container">
+<span class="sig-prename descclassname"><span class="pre">spade.container.</span></span><span class="sig-name descname"><span class="pre">run_container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">main_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Coroutine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedded_xmpp_server</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/container.html#run_container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.container.run_container" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-spade.message">
+<span id="spade-message-module"></span><h2>spade.message module<a class="headerlink" href="#module-spade.message" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.message.Message">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.message.</span></span><span class="sig-name descname"><span class="pre">Message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/message.html#Message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.Message" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.message.MessageBase" title="spade.message.MessageBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.Message.make_reply">
+<span class="sig-name descname"><span class="pre">make_reply</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/spade/message.html#Message.make_reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.Message.make_reply" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a copy of the message, exchanging sender and receiver</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>spade.message.Message: a new message with exchanged sender and receiver</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.Message.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ClientXMPP</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Message</span></span></span><a class="reference internal" href="_modules/spade/message.html#Message.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.Message.prepare" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a slixmpp.stanza.Message built from the Message and prepared to be sent.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>client (ClientXMPP): An XMPP client, whose stream will be used to send the message</p>
+</dd>
+<dt>Returns:</dt><dd><p>slixmpp.stanza.Message: the message prepared to be sent</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.message.MessageBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.message.</span></span><span class="sig-name descname"><span class="pre">MessageBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/message.html#MessageBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for message handling in SPADE.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.message.MessageBase.body">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">body</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#spade.message.MessageBase.body" title="Permalink to this definition"></a></dt>
+<dd><p>Get body of the message
+Returns:</p>
+<blockquote>
+<div><p>str: the body of the message</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.empty_jid">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">empty_jid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JID</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/message.html#MessageBase.empty_jid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.empty_jid" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.empty_sender">
+<span class="sig-name descname"><span class="pre">empty_sender</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/message.html#MessageBase.empty_sender"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.empty_sender" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.empty_to">
+<span class="sig-name descname"><span class="pre">empty_to</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/message.html#MessageBase.empty_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.empty_to" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.from_node">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Message</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.message.MessageBase" title="spade.message.MessageBase"><span class="pre">MessageBase</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/message.html#MessageBase.from_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.from_node" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new spade.message.Message from a slixmpp.stanza.Message</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node (slixmpp.stanza.Message): a slixmpp Message</p>
+</dd>
+<dt>Returns:</dt><dd><p>spade.message.Message: a new spade Message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.get_metadata">
+<span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/message.html#MessageBase.get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.get_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Get the value of a metadata. Returns None if metadata does not exist.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>key (str): name of the metadata</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: the value of the metadata (or None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.message.MessageBase.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#spade.message.MessageBase.id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.MessageBase" title="spade.message.MessageBase"><span class="pre">MessageBase</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/message.html#MessageBase.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.match" title="Permalink to this definition"></a></dt>
+<dd><p>Returns wether a message matches with this message or not.
+The message can be a Message object or a Template object.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message (spade.message.Message): the message to match to</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool: wether the message matches or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.message.MessageBase.sender">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sender</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">JID</span></em><a class="headerlink" href="#spade.message.MessageBase.sender" title="Permalink to this definition"></a></dt>
+<dd><p>Get jid of the sender</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>slixmpp.JID: jid of the sender</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.message.MessageBase.set_metadata">
+<span class="sig-name descname"><span class="pre">set_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/message.html#MessageBase.set_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.message.MessageBase.set_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Add a new metadata to the message</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>key (str): name of the metadata
+value (str): value of the metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.message.MessageBase.thread">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thread</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#spade.message.MessageBase.thread" title="Permalink to this definition"></a></dt>
+<dd><p>Get Thread of the message</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: thread id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="spade.message.MessageBase.to">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">JID</span></em><a class="headerlink" href="#spade.message.MessageBase.to" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the jid of the receiver.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>slixmpp.JID: jid of the receiver</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-spade.presence">
+<span id="spade-presence-module"></span><h2>spade.presence module<a class="headerlink" href="#module-spade.presence" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.presence.Contact">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">Contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subscription</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#Contact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.Contact.get_presence">
+<span class="sig-name descname"><span class="pre">get_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></span><a class="reference internal" href="_modules/spade/presence.html#Contact.get_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact.get_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.Contact.is_available">
+<span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/presence.html#Contact.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact.is_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.Contact.is_subscribed">
+<span class="sig-name descname"><span class="pre">is_subscribed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/presence.html#Contact.is_subscribed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact.is_subscribed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.Contact.update_presence">
+<span class="sig-name descname"><span class="pre">update_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presence_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#Contact.update_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact.update_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.Contact.update_subscription">
+<span class="sig-name descname"><span class="pre">update_subscription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subscription</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#Contact.update_subscription"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.Contact.update_subscription" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.presence.ContactNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">ContactNotFound</span></span><a class="reference internal" href="_modules/spade/presence.html#ContactNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.ContactNotFound" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.presence.PresenceInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">PresenceInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presence_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceType" title="spade.presence.PresenceType"><span class="pre">PresenceType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceShow" title="spade.presence.PresenceShow"><span class="pre">PresenceShow</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceInfo" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceInfo.is_available">
+<span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceInfo.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceInfo.is_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">PresenceManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approve_all</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.approve_subscription">
+<span class="sig-name descname"><span class="pre">approve_subscription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.approve_subscription"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.approve_subscription" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_contact">
+<span class="sig-name descname"><span class="pre">get_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.presence.Contact" title="spade.presence.Contact"><span class="pre">Contact</span></a></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_contact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_contact" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_contact_presence">
+<span class="sig-name descname"><span class="pre">get_contact_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_contact_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_contact_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_contacts">
+<span class="sig-name descname"><span class="pre">get_contacts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#spade.presence.Contact" title="spade.presence.Contact"><span class="pre">Contact</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_contacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_contacts" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_presence">
+<span class="sig-name descname"><span class="pre">get_presence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_priority">
+<span class="sig-name descname"><span class="pre">get_priority</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_priority"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_priority" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_show">
+<span class="sig-name descname"><span class="pre">get_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#spade.presence.PresenceShow" title="spade.presence.PresenceShow"><span class="pre">PresenceShow</span></a></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.get_status" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.handle_presence">
+<span class="sig-name descname"><span class="pre">handle_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Presence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.handle_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.handle_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.handle_roster_update">
+<span class="sig-name descname"><span class="pre">handle_roster_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.handle_roster_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.handle_roster_update" title="Permalink to this definition"></a></dt>
+<dd><p>Executed when the roster is received or updated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.handle_subscription">
+<span class="sig-name descname"><span class="pre">handle_subscription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Presence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.handle_subscription"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.handle_subscription" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.is_available">
+<span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.is_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_available">
+<span class="sig-name descname"><span class="pre">on_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presence_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_presence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_presence_received">
+<span class="sig-name descname"><span class="pre">on_presence_received</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Presence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_presence_received"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_presence_received" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_subscribe">
+<span class="sig-name descname"><span class="pre">on_subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_subscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_subscribe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_subscribed">
+<span class="sig-name descname"><span class="pre">on_subscribed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_subscribed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_subscribed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_unavailable">
+<span class="sig-name descname"><span class="pre">on_unavailable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presence_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_presence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.presence.PresenceInfo" title="spade.presence.PresenceInfo"><span class="pre">PresenceInfo</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_unavailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_unavailable" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_unsubscribe">
+<span class="sig-name descname"><span class="pre">on_unsubscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_unsubscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_unsubscribe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.on_unsubscribed">
+<span class="sig-name descname"><span class="pre">on_unsubscribed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.on_unsubscribed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.on_unsubscribed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.set_available">
+<span class="sig-name descname"><span class="pre">set_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.set_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.set_available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.set_presence">
+<span class="sig-name descname"><span class="pre">set_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presence_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceType" title="spade.presence.PresenceType"><span class="pre">PresenceType</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PresenceType.AVAILABLE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.presence.PresenceShow" title="spade.presence.PresenceShow"><span class="pre">PresenceShow</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PresenceShow.CHAT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.set_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.set_presence" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.set_unavailable">
+<span class="sig-name descname"><span class="pre">set_unavailable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.set_unavailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.set_unavailable" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.subscribe">
+<span class="sig-name descname"><span class="pre">subscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.subscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.subscribe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.subscribed">
+<span class="sig-name descname"><span class="pre">subscribed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.subscribed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.subscribed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.unsubscribe">
+<span class="sig-name descname"><span class="pre">unsubscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.unsubscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.unsubscribe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.presence.PresenceManager.unsubscribed">
+<span class="sig-name descname"><span class="pre">unsubscribed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceManager.unsubscribed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceManager.unsubscribed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.presence.PresenceNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">PresenceNotFound</span></span><a class="reference internal" href="_modules/spade/presence.html#PresenceNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceNotFound" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">PresenceShow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceShow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceShow" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow.AWAY">
+<span class="sig-name descname"><span class="pre">AWAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'away'</span></em><a class="headerlink" href="#spade.presence.PresenceShow.AWAY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow.CHAT">
+<span class="sig-name descname"><span class="pre">CHAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'chat'</span></em><a class="headerlink" href="#spade.presence.PresenceShow.CHAT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow.DND">
+<span class="sig-name descname"><span class="pre">DND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dnd'</span></em><a class="headerlink" href="#spade.presence.PresenceShow.DND" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow.EXTENDED_AWAY">
+<span class="sig-name descname"><span class="pre">EXTENDED_AWAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'xa'</span></em><a class="headerlink" href="#spade.presence.PresenceShow.EXTENDED_AWAY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceShow.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'none'</span></em><a class="headerlink" href="#spade.presence.PresenceShow.NONE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.presence.PresenceType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.presence.</span></span><span class="sig-name descname"><span class="pre">PresenceType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/presence.html#PresenceType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.presence.PresenceType" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.AVAILABLE">
+<span class="sig-name descname"><span class="pre">AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'available'</span></em><a class="headerlink" href="#spade.presence.PresenceType.AVAILABLE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.ERROR">
+<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'error'</span></em><a class="headerlink" href="#spade.presence.PresenceType.ERROR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.PROBE">
+<span class="sig-name descname"><span class="pre">PROBE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'probe'</span></em><a class="headerlink" href="#spade.presence.PresenceType.PROBE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.SUBSCRIBE">
+<span class="sig-name descname"><span class="pre">SUBSCRIBE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'subscribe'</span></em><a class="headerlink" href="#spade.presence.PresenceType.SUBSCRIBE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.SUBSCRIBED">
+<span class="sig-name descname"><span class="pre">SUBSCRIBED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'subscribed'</span></em><a class="headerlink" href="#spade.presence.PresenceType.SUBSCRIBED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.UNAVAILABLE">
+<span class="sig-name descname"><span class="pre">UNAVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unavailable'</span></em><a class="headerlink" href="#spade.presence.PresenceType.UNAVAILABLE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.UNSUBSCRIBE">
+<span class="sig-name descname"><span class="pre">UNSUBSCRIBE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unsubscribe'</span></em><a class="headerlink" href="#spade.presence.PresenceType.UNSUBSCRIBE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.presence.PresenceType.UNSUBSCRIBED">
+<span class="sig-name descname"><span class="pre">UNSUBSCRIBED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unsubscribed'</span></em><a class="headerlink" href="#spade.presence.PresenceType.UNSUBSCRIBED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-spade.template">
+<span id="spade-template-module"></span><h2>spade.template module<a class="headerlink" href="#module-spade.template" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.ANDTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">ANDTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#ANDTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.ANDTemplate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.template.ANDTemplate.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#ANDTemplate.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.ANDTemplate.match" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.BaseTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">BaseTemplate</span></span><a class="reference internal" href="_modules/spade/template.html#BaseTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.BaseTemplate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Template operators</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.NOTTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">NOTTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#NOTTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.NOTTemplate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.template.NOTTemplate.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#NOTTemplate.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.NOTTemplate.match" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.ORTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">ORTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#ORTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.ORTemplate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.template.ORTemplate.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#ORTemplate.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.ORTemplate.match" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.Template">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">Template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.Template" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a>, <a class="reference internal" href="#spade.message.MessageBase" title="spade.message.MessageBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageBase</span></code></a></p>
+<p>Template for message matching</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.template.XORTemplate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">XORTemplate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#XORTemplate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.XORTemplate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.template.XORTemplate.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#XORTemplate.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.XORTemplate.match" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-spade.trace">
+<span id="spade-trace-module"></span><h2>spade.trace module<a class="headerlink" href="#module-spade.trace" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.trace.TraceStore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.trace.</span></span><span class="sig-name descname"><span class="pre">TraceStore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/trace.html#TraceStore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores and allows queries about events.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.all" title="Permalink to this definition"></a></dt>
+<dd><p>Returns all the events, until a limit if defined</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>limit (int, optional): the max length of the events to return (Default value = None)</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: a list of events</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.append" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new event to the trace store.
+The event may hava a category</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>event (spade.message.Message): the event to be stored
+category (str, optional): a category to classify the event (Default value = None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.filter" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the events that match the filters</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>limit (int, optional): the max length of the events to return (Default value = None)
+to (str, optional): only events that have been sent or received by ‘to’ (Default value = None)
+category (str, optional): only events belonging to the category (Default value = None)</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: a list of filtered events</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.len">
+<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.len"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.len" title="Permalink to this definition"></a></dt>
+<dd><p>Length of the store</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>int: the size of the trace store</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.received">
+<span class="sig-name descname"><span class="pre">received</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.message.Message" title="spade.message.Message"><span class="pre">Message</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.received"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.received" title="Permalink to this definition"></a></dt>
+<dd><p>Returns all the events that have been received (excluding sent events), until a limit if defined</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>limit (int, optional): the max length of the events to return (Default value = None)</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: a list of received events</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.trace.TraceStore.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/trace.html#TraceStore.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.trace.TraceStore.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the trace store</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-spade.web">
+<span id="spade-web-module"></span><h2>spade.web module<a class="headerlink" href="#module-spade.web" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.web.WebApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.web.</span></span><span class="sig-name descname"><span class="pre">WebApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Module to handle agent’s web interface</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.add_get">
+<span class="sig-name descname"><span class="pre">add_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Coroutine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.add_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.add_get" title="Permalink to this definition"></a></dt>
+<dd><p>Setup a route of type GET</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>path (str): URL to listen to
+controller (coroutine): the coroutine to handle the request
+template (str): the template to render the response or None if it is a JSON response
+raw (bool): indicates if post-processing (jinja, json, etc) is needed or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.add_menu_entry">
+<span class="sig-name descname"><span class="pre">add_menu_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fa</span> <span class="pre">fa-circle'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.add_menu_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.add_menu_entry" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new entry to the menu.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): name of the entry
+url (str): url to be redirected to
+icon (str): icon to be displayed (Default value = “fa fa-circle”)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.add_post">
+<span class="sig-name descname"><span class="pre">add_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Coroutine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.add_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.add_post" title="Permalink to this definition"></a></dt>
+<dd><p>Setup a route of type POST</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>path (str): URL to listen to
+controller (coroutine): the coroutine to handle the request
+template (str): the template to render the response or None if it is a JSON response
+raw (bool): indicates if post-processing (jinja, json, etc) is needed or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.add_template_path">
+<span class="sig-name descname"><span class="pre">add_template_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">templates_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.add_template_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.add_template_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.agent_processor">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">agent_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.agent_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.agent_processor" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.find_behaviour">
+<span class="sig-name descname"><span class="pre">find_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">behaviour_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#spade.behaviour.CyclicBehaviour" title="spade.behaviour.CyclicBehaviour"><span class="pre">CyclicBehaviour</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.find_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.find_behaviour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.get_agent">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.get_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.get_agent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.get_behaviour">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.get_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.get_behaviour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.get_messages">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.get_messages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.get_messages" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.index">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.is_started">
+<span class="sig-name descname"><span class="pre">is_started</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.is_started"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.is_started" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.kill_behaviour">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kill_behaviour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.kill_behaviour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.kill_behaviour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.send_agent">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.send_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.send_agent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.setup_routes">
+<span class="sig-name descname"><span class="pre">setup_routes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/web.html#WebApp.setup_routes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.setup_routes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">templates_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.start" title="Permalink to this definition"></a></dt>
+<dd><p>Starts the web interface.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>hostname (str, optional): host name to listen from. (Default value = None)
+port (int, optional): port to listen from. (Default value = None)
+templates_path (str, optional): path to look for templates. (Default value = None)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.stop_agent">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.stop_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.stop_agent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.stop_now">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop_now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.stop_now"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.stop_now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.timeago">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timeago</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.timeago"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.timeago" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.web.WebApp.unsubscribe_agent">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unsubscribe_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#WebApp.unsubscribe_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.WebApp.unsubscribe_agent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.web.start_server_in_loop">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.web.</span></span><span class="sig-name descname"><span class="pre">start_server_in_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AppRunner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hostname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/web.html#start_server_in_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.start_server_in_loop" title="Permalink to this definition"></a></dt>
+<dd><p>Listens to http requests and sends them to the webapp.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>runner (AppRunner): AppRunner to process the http requests
+hostname (str): host name to listen from.
+port (int): port to listen from.
+agent (spade.agent.Agent): agent that owns the web app.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spade.web.unused_port">
+<span class="sig-prename descclassname"><span class="pre">spade.web.</span></span><span class="sig-name descname"><span class="pre">unused_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/web.html#unused_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.web.unused_port" title="Permalink to this definition"></a></dt>
+<dd><p>Return a port that is unused on the current host.</p>
+</dd></dl>
+
+</section>
+<section id="module-spade.xmpp_client">
+<span id="spade-xmpp-client-module"></span><h2>spade.xmpp_client module<a class="headerlink" href="#module-spade.xmpp_client" title="Permalink to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="spade.xmpp_client.RegistrationException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.xmpp_client.</span></span><span class="sig-name descname"><span class="pre">RegistrationException</span></span><a class="reference internal" href="_modules/spade/xmpp_client.html#RegistrationException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.xmpp_client.RegistrationException" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spade.xmpp_client.XMPPClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.xmpp_client.</span></span><span class="sig-name descname"><span class="pre">XMPPClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify_security</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_register</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/xmpp_client.html#XMPPClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.xmpp_client.XMPPClient" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ClientXMPP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.xmpp_client.XMPPClient.register">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/xmpp_client.html#XMPPClient.register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.xmpp_client.XMPPClient.register" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.xmpp_client.XMPPClient.session_start">
+<span class="sig-name descname"><span class="pre">session_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/xmpp_client.html#XMPPClient.session_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.xmpp_client.XMPPClient.session_start" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-spade">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-spade" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-left" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

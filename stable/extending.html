@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extending SPADE with plugins &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Web Graphical Interface" href="web.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending SPADE with plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-behaviours">New Behaviours</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-mixins">New Mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#new-libraries">New Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Extending SPADE with plugins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/extending.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="extending-spade-with-plugins">
+<span id="extending"></span><h1>Extending SPADE with plugins<a class="headerlink" href="#extending-spade-with-plugins" title="Permalink to this heading"></a></h1>
+<p>This release of SPADE is designed as a very light version of the platform (compared with SPADE&lt;3.0) which provides only
+the core features that a MAS platform should have. This implies that some of the features that were provided by previous
+versions of the platform are now not included.</p>
+<p><em>How makes that sense?</em> Well, all that previous features are not lost, but
+are going to be turned into plugins that you can connect to your MAS application.</p>
+<p>This way it is very easy to add new features to SPADE without disturbing the core development.</p>
+<p>We have planned three different ways to design plugins for the SPADE platform, but of course we are open to suggestions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A plugin needs to comply with some requirements to be accepted as a SPADE plugin and be listed as an official
+plugin on the main page:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>It must be open source (of course!) and published in PyPi.</p></li>
+<li><p>The package must be called spade-* (e.g.: spade-bdi, spade-owl, etc.) and be imported as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">spade_*</span></code>.</p></li>
+<li><p>It must be tested.</p></li>
+<li><p>It must follow the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>.</p></li>
+</ol>
+</div></blockquote>
+</div>
+<p>You can develop <em>new behaviours</em>, <em>new mixins</em> that modify behaviours, and of course <em>new libraries</em> that your agents
+can use inside your behaviours. Let’s see some examples of each of these ones:</p>
+<section id="new-behaviours">
+<h2>New Behaviours<a class="headerlink" href="#new-behaviours" title="Permalink to this heading"></a></h2>
+<p>Developing new behaviours is as easy as creating a new class that inherits from <code class="docutils literal notranslate"><span class="pre">spade.behaviour.CyclicBehaviour</span></code> (or
+any of its subclassed behaviours) and overload the methods that are needed. Pay attention to the methods that are related
+with the control flow of a behaviour like <code class="docutils literal notranslate"><span class="pre">_step</span></code>, <code class="docutils literal notranslate"><span class="pre">done</span></code> and <code class="docutils literal notranslate"><span class="pre">_run</span></code>. And remember that you <em>should not</em> overload
+the methods that are reserved for the user to be overloaded: <code class="docutils literal notranslate"><span class="pre">on_start</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span></code> and <code class="docutils literal notranslate"><span class="pre">on_end</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">BDIBehaviour</span><span class="p">(</span><span class="n">spade</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">PeriodicBehaviour</span><span class="p">):</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the bdi stuff</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_belief</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+        <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_desire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+        <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_intention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+        <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the done evaluation</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="new-mixins">
+<h2>New Mixins<a class="headerlink" href="#new-mixins" title="Permalink to this heading"></a></h2>
+<p>Some cases you don’t want to add a new behaviour, but to add new features to current behaviours or agents. This can be done by
+means of <em>mixins</em>. A mixin is a class that a behaviour or an agent can inherit from, in addition to the original parent class,
+making use of the multiple inheritance of python. This way, when we are creating our agent and we implement its
+behaviour which is (for example) a cyclic behaviour and we want to add this behaviour a feature that is provided by a
+plugin called <code class="docutils literal notranslate"><span class="pre">spade-p2p</span></code> that allows the agent to send P2P messages (by modifying the send and receive methods of the
+behaviour) we should do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spade_p2p</span><span class="w"> </span><span class="kn">import</span> <span class="n">P2PMixin</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyNewBehaviour</span><span class="p">(</span><span class="n">P2PMixin</span><span class="p">,</span> <span class="n">CyclicBehaviour</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">my_message</span><span class="p">,</span> <span class="n">p2p</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The order of your mixins is important! The base behaviour class <strong>must</strong> be <strong>always</strong> the last one in the
+method resolution order.</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Remember that if you need to call the parent function of the base behaviour (or any other mixin in the method
+resolution order), you must use the <code class="docutils literal notranslate"><span class="pre">super()</span></code> function (see the following example).</p>
+</div>
+<p>To develop this example mixin you should do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">P2PMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">p2p</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p2p</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_p2p</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send_p2p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>In case you need to apply the mixin to the <code class="docutils literal notranslate"><span class="pre">Agent</span></code> class there are two hook coroutines that are prepared to be overriden
+if needed. These coroutines are <code class="docutils literal notranslate"><span class="pre">_hook_plugin_before_connection</span></code> and <code class="docutils literal notranslate"><span class="pre">_hook_plugin_after_connection</span></code>. They will be called
+before and after the connection to the server is done respectively.
+In order to support multiple mixins it is <strong>important</strong> to call always to the parent method. Next, an example of how to
+build a simple mixin is shown:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyMixin</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hook_plugin_before_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># do my plugin stuff before the connection is done</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_hook_plugin_after_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># do my plugin stuff after the connection is done</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyAgent</span><span class="p">(</span><span class="n">MyMixin</span><span class="p">,</span> <span class="n">Agent</span><span class="p">):</span>
+    <span class="c1"># Inherit always from mixins first. Last class to inherit from is Agent.</span>
+</pre></div>
+</div>
+</section>
+<section id="new-libraries">
+<h2>New Libraries<a class="headerlink" href="#new-libraries" title="Permalink to this heading"></a></h2>
+<p>Finally, the easiest way to add new features to your agents is by means of <em>libraries</em>. If you want your agents to
+support, for example, the OWL content language, you don’t need to change spade, just make a library that handles it.
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spade_owl</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span> <span class="k">as</span> <span class="n">owl_parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade_owl</span><span class="w"> </span><span class="kn">import</span> <span class="n">dump</span> <span class="k">as</span> <span class="n">owl_dump</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyBehaviour</span><span class="p">(</span><span class="n">spade</span><span class="o">.</span><span class="n">behaviour</span><span class="o">.</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+
+        <span class="n">owl_content</span> <span class="o">=</span> <span class="n">owl_parse</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="c1"># do wat you want with the owl content</span>
+
+        <span class="n">reply</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">owl_dump</span><span class="p">(</span><span class="o">...</span><span class="n">my</span> <span class="n">owl</span> <span class="n">reply</span><span class="o">...</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="web.html" class="btn btn-neutral float-left" title="Web Graphical Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

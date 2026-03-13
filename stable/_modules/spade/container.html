@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spade.container &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>spade.container</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for spade.container</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Coroutine</span><span class="p">,</span> <span class="n">Awaitable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">loguru</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyjabber.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyjabber.server_parameters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameters</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">singletonify</span><span class="w"> </span><span class="kn">import</span> <span class="n">singleton</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">BehaviourType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;SPADE&quot;</span><span class="p">)</span>
+
+<span class="c1"># check if python is 3.6 or higher</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop_policy</span><span class="p">(</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">WindowsSelectorEventLoopPolicy</span><span class="p">()</span>
+    <span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+
+<div class="viewcode-block" id="get_or_create_eventloop"><a class="viewcode-back" href="../../spade.html#spade.container.get_or_create_eventloop">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_or_create_eventloop</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create or retrieve the appropriate event loop, using uvloop on Linux/macOS</span>
+<span class="sd">    and winloop on Windows if available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use uvloop or winloop if available</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">winloop</span>  <span class="c1"># pyright: ignore[reportMissingImports]</span>
+
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop_policy</span><span class="p">(</span><span class="n">winloop</span><span class="o">.</span><span class="n">EventLoopPolicy</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># winloop is not available, use default</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">uvloop</span>
+
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop_policy</span><span class="p">(</span><span class="n">uvloop</span><span class="o">.</span><span class="n">EventLoopPolicy</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># uvloop is not available, use default</span>
+
+    <span class="c1"># Create or retrieve the event loop</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loop</span></div>
+
+
+<div class="viewcode-block" id="Container"><a class="viewcode-back" href="../../spade.html#spade.container.Container">[docs]</a><span class="nd">@singleton</span><span class="p">()</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Container</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The container class allows agents to exchange messages</span>
+<span class="sd">    without using the XMPP socket if they are in the same</span>
+<span class="sd">    process.</span>
+<span class="sd">    The container is a singleton.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">get_or_create_eventloop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty the container by unregistering all the agents.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register a new agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            agent (spade.agent.Agent): the agent to be registered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">jid</span><span class="p">)]</span> <span class="o">=</span> <span class="n">agent</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">set_container</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">set_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">jid</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if an agent is registered in the container.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            jid (str): the jid of the agent to be checked.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: wether the agent is or is not registered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">jid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a registered agent</span>
+<span class="sd">        Args:</span>
+<span class="sd">            jid (str): the identifier of the agent</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            spade.agent.Agent: the agent you were looking for</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: if the agent is not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">[</span><span class="n">jid</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">:</span> <span class="n">BehaviourType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method sends the message using the container mechanism</span>
+<span class="sd">        when the receiver is also registered in the container. Otherwise,</span>
+<span class="sd">        it uses the XMPP send method from the original behaviour.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            msg (spade.message.Message): the message to be sent</span>
+<span class="sd">            behaviour: the behaviour that is sending the message</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">to</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">to</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__agents</span><span class="p">[</span><span class="n">to</span><span class="p">]</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">_xmpp_send</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">:</span> <span class="n">Awaitable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_container"><a class="viewcode-back" href="../../spade.html#spade.container.run_container">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">run_container</span><span class="p">(</span>
+    <span class="n">main_func</span><span class="p">:</span> <span class="n">Coroutine</span><span class="p">,</span> <span class="n">embedded_xmpp_server</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">embedded_xmpp_server</span><span class="p">:</span>
+            <span class="n">loguru</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># Silent server</span>
+            <span class="n">server_instance</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span>
+                <span class="n">Parameters</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">database_in_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">server_instance</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
+            <span class="n">container</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">server_instance</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">wait</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;SPADE XMPP server running on localhost:5222&quot;</span><span class="p">)</span>
+
+        <span class="n">container</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main_func</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Keyboard interrupt received. Stopping SPADE...&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Exception in the event loop: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="n">container</span><span class="o">.</span><span class="n">stop_agents</span><span class="p">()</span>
+
+    <span class="c1"># Close server</span>
+    <span class="k">if</span> <span class="n">embedded_xmpp_server</span> <span class="ow">and</span> <span class="n">server</span><span class="p">:</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+    <span class="c1"># Cancel all pending tasks</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">):</span>
+            <span class="n">container</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+    <span class="c1"># Shutdown asynchronous generators</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">())</span>
+
+    <span class="c1"># Close the event loop</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loop closed&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

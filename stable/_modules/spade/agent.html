@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spade.agent &mdash; SPADE 4.1.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> SPADE
+          </a>
+              <div class="version">
+                4.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>spade.agent</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for spade.agent</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">md5</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Coroutine</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">slixmpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">JID</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">slixmpp</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span> <span class="k">as</span> <span class="n">slixmppMessage</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.behaviour</span><span class="w"> </span><span class="kn">import</span> <span class="n">BehaviourType</span><span class="p">,</span> <span class="n">FSMBehaviour</span><span class="p">,</span> <span class="n">CyclicBehaviour</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.container</span><span class="w"> </span><span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.presence</span><span class="w"> </span><span class="kn">import</span> <span class="n">PresenceManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.template</span><span class="w"> </span><span class="kn">import</span> <span class="n">Template</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.trace</span><span class="w"> </span><span class="kn">import</span> <span class="n">TraceStore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.web</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebApp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.xmpp_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">XMPPClient</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;spade.Agent&quot;</span><span class="p">)</span>
+
+<span class="n">AgentType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;AgentType&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Agent&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AuthenticationFailure"><a class="viewcode-back" href="../../spade.html#spade.agent.AuthenticationFailure">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AuthenticationFailure</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="DisconnectedException"><a class="viewcode-back" href="../../spade.html#spade.agent.DisconnectedException">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DisconnectedException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5222</span><span class="p">,</span> <span class="n">verify_security</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an agent</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          jid (str): The identifier of the agent in the form username@server</span>
+<span class="sd">          password (str): The password to connect to the server</span>
+<span class="sd">          verify_security (bool): Weather to verify or not the SSL certificates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jid</span> <span class="o">=</span> <span class="n">JID</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xmpp_port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify_security</span> <span class="o">=</span> <span class="n">verify_security</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">XMPPClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresenceManager</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">loop</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">)</span>
+
+        <span class="c1"># Web service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">web</span> <span class="o">=</span> <span class="n">WebApp</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">traces</span> <span class="o">=</span> <span class="n">TraceStore</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Agent.set_loop"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.set_loop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span></div>
+
+<div class="viewcode-block" id="Agent.set_container"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.set_container">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_container</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">:</span> <span class="n">Container</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the container to which the agent is attached</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            container (spade.container.Container): the container to be attached to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span></div>
+
+<div class="viewcode-block" id="Agent.start"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.start">[docs]</a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_register</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Starts this agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            auto_register (bool): register the agent in the server (Default value = True)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_start</span><span class="p">(</span><span class="n">auto_register</span><span class="o">=</span><span class="n">auto_register</span><span class="p">)</span></div>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_async_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_register</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Starts the agent from a coroutine. This fires some actions:</span>
+
+<span class="sd">            * if auto_register: register the agent in the server</span>
+<span class="sd">            * runs the event loop</span>
+<span class="sd">            * connects the agent to the server</span>
+<span class="sd">            * runs the registered behaviours</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          auto_register (bool, optional): register the agent in the server (Default value = True)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">XMPPClient</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_security</span><span class="p">,</span> <span class="n">auto_register</span>
+        <span class="p">)</span>
+        <span class="c1"># Presence service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presence</span> <span class="o">=</span> <span class="n">PresenceManager</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">approve_all</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_connect</span><span class="p">()</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection</span><span class="p">()</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">behaviour</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
+                <span class="n">behaviour</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">behaviour</span><span class="p">),</span> <span class="n">FSMBehaviour</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">state</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">behaviour</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overload this method to hook a plugin before connection is done</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overload this method to hook a plugin after connection is done</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_async_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;connect and authenticate to the XMPP server. Async mode.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connected_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">disconnected_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">failed_auth_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="n">connected_task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connected_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;connected&quot;</span>
+        <span class="p">)</span>
+        <span class="n">disconnected_task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">disconnected_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;disconnected&quot;</span>
+        <span class="p">)</span>
+        <span class="n">failed_auth_task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">failed_auth_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;failed_auth&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;session_start&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connected_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;disconnected&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">disconnected_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span>
+            <span class="s2">&quot;failed_all_auth&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">failed_auth_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message_received</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xmpp_port</span><span class="p">)</span>
+
+        <span class="n">done</span><span class="p">,</span> <span class="n">pending</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">connected_task</span><span class="p">,</span> <span class="n">disconnected_task</span><span class="p">,</span> <span class="n">failed_auth_task</span><span class="p">],</span>
+            <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">pending</span><span class="p">:</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">task</span>
+
+            <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;failed_auth&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AuthenticationFailure</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not authenticate the agent. Check user and password or use auto_register=True&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">task</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;disconnected&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DisconnectedException</span><span class="p">(</span>
+                    <span class="s2">&quot;Error during the connection with the server&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="p">)</span><span class="si">}</span><span class="s2"> connected and authenticated.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Agent.setup"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.setup">[docs]</a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setup agent before startup.</span>
+<span class="sd">        This coroutine may be overloaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the name of the agent (the string before the &#39;@&#39;)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the name of the agent (the string before the &#39;@&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="o">.</span><span class="n">node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">avatar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a unique avatar for the agent based on its JID.</span>
+<span class="sd">        Uses Gravatar service with MonsterID option.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          str: the url of the agent&#39;s avatar</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_avatar_url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jid</span><span class="o">.</span><span class="n">bare</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Agent.build_avatar_url"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.build_avatar_url">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_avatar_url</span><span class="p">(</span><span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Static method to build a gravatar url with the agent&#39;s JID</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          jid (aioxmpp.JID): an XMPP identifier</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          str: a URL for the gravatar</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">md5</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">jid</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>  <span class="c1"># nosec</span>
+        <span class="k">return</span> <span class="s2">&quot;http://www.gravatar.com/avatar/</span><span class="si">{md5}</span><span class="s2">?d=monsterid&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">md5</span><span class="o">=</span><span class="n">digest</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Agent.submit"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.submit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">:</span> <span class="n">Coroutine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Task</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs a coroutine in the event loop of the agent.</span>
+<span class="sd">        this call is not blocking.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          coro (Coroutine): the coroutine to be run</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            asyncio.Task: the Task assigned to the coroutine execution</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Agent.add_behaviour"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.add_behaviour">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_behaviour</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">:</span> <span class="n">BehaviourType</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Template</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds and starts a behaviour to the agent.</span>
+<span class="sd">        If template is not None it is used to match</span>
+<span class="sd">        new messages and deliver them to the behaviour.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour to be started</span>
+<span class="sd">          template (spade.template.Template, optional): the template to match messages with (Default value = None)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">behaviour</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">behaviour</span><span class="p">),</span> <span class="n">FSMBehaviour</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">behaviour</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">behaviour</span><span class="o">.</span><span class="n">set_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">behaviour</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="n">behaviour</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Agent.remove_behaviour"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.remove_behaviour">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">remove_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">CyclicBehaviour</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a behaviour from the agent.</span>
+<span class="sd">        The behaviour is first killed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to be removed</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_behaviour</span><span class="p">(</span><span class="n">behaviour</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This behaviour is not registered&quot;</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">behaviour</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Agent.has_behaviour"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.has_behaviour">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">has_behaviour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">behaviour</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">CyclicBehaviour</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a behaviour is added to an agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          behaviour (Type[spade.behaviour.CyclicBehaviour]): the behaviour instance to check</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          bool: a boolean that indicates wether the behaviour is inside the agent.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">behaviour</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span></div>
+
+<div class="viewcode-block" id="Agent.stop"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.stop">[docs]</a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stops this agent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_stop</span><span class="p">()</span></div>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_async_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops an agent and kills all its behaviours.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presence</span><span class="o">.</span><span class="n">set_unavailable</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">behav</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span><span class="p">:</span>
+            <span class="n">behav</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">is_started</span><span class="p">():</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">web</span><span class="o">.</span><span class="n">runner</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="c1"># Disconnect from XMPP server</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Client disconnected.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Agent.is_alive"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.is_alive">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the agent is alive.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          bool: wheter the agent is alive or not</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Agent.set"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.set">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stores a knowledge item in the agent knowledge base.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          name (str): name of the item</span>
+<span class="sd">          value (object): value of the item</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="Agent.get"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.get">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recovers a knowledge item from the agent&#39;s knowledge base.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          name(str): name of the item</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          object: the object retrieved or None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_message_received</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">slixmppMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Callback run when an XMPP Message is reveived.</span>
+<span class="sd">        This callback delivers the message to every behaviour</span>
+<span class="sd">        that is waiting for it. First, the aioxmpp.Message is</span>
+<span class="sd">        converted to spade.message.Message</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          msg (slixmpp.Message): the message just received.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list(asyncio.Future): a list of futures of the appended of the message at each matched behaviour.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">from_node</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Agent.dispatch"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.dispatch">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dispatch the message to every behaviour that is waiting for</span>
+<span class="sd">        it using their templates match.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          msg (spade.message.Message): the message to dispatch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list(asyncio.Future): a list of tasks for each message queuing in each matching behavior.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got message: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">behaviour</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">behaviours</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">msg</span><span class="p">)):</span>
+            <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">behaviour</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">msg</span><span class="p">)))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message enqueued to behaviour: </span><span class="si">{</span><span class="n">behaviour</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">behaviour</span><span class="p">))</span>
+            <span class="n">matched</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matched</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No behaviour matched for message: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tasks</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
