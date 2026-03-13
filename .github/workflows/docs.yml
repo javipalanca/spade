@@ -84,3 +84,11 @@ jobs:
           destination_dir: ${{ env.DOCS_DESTINATION_DIR }}
           keep_files: true
           enable_jekyll: true
+
+      - name: Trigger main site rebuild
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.DEPLOY_PAT }}
+          repository: javipalanca/javipalanca.github.io
+          event-type: update-spade-docs-event
