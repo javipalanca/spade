@@ -138,6 +138,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  
@@ -195,6 +196,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="spade.html#spade.message.MessageBase.body">body (spade.message.MessageBase property)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.build">build() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
       <li><a href="spade.html#spade.agent.Agent.build_avatar_url">build_avatar_url() (spade.agent.Agent static method)</a>
 </li>
   </ul></td>
@@ -209,13 +212,19 @@
 </li>
       <li><a href="spade.html#spade.presence.Contact">Contact (class in spade.presence)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="spade.html#spade.presence.ContactNotFound">ContactNotFound</a>
 </li>
       <li><a href="spade.html#spade.container.Container">Container (class in spade.container)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="spade.html#spade.cli.create_cli">create_cli() (in module spade.cli)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_inform_message">create_inform_message() (spade.fipa_message.FIPAMessageBuilder class method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_request_message">create_request_message() (spade.fipa_message.FIPAMessageBuilder class method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_response_message">create_response_message() (spade.fipa_message.FIPAMessageBuilder class method)</a>
 </li>
       <li><a href="spade.html#spade.behaviour.CyclicBehaviour">CyclicBehaviour (class in spade.behaviour)</a>
 </li>
@@ -267,8 +276,12 @@
 </li>
       <li><a href="spade.html#spade.web.WebApp.find_behaviour">find_behaviour() (spade.web.WebApp method)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder">FIPAMessageBuilder (class in spade.fipa_message)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser">FIPAMessageParser (class in spade.fipa_message)</a>
+</li>
       <li><a href="spade.html#spade.message.MessageBase.from_node">from_node() (spade.message.MessageBase class method)</a>
 </li>
       <li><a href="spade.html#spade.behaviour.FSMBehaviour">FSMBehaviour (class in spade.behaviour)</a>
@@ -295,13 +308,23 @@
 </li>
       <li><a href="spade.html#spade.presence.PresenceManager.get_contacts">get_contacts() (spade.presence.PresenceManager method)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_conversation_id">get_conversation_id() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_custom_metadata">get_custom_metadata() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_language">get_language() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
       <li><a href="spade.html#spade.web.WebApp.get_messages">get_messages() (spade.web.WebApp method)</a>
+</li>
+      <li><a href="spade.html#spade.message.MessageBase.get_metadata">get_metadata() (spade.message.MessageBase method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="spade.html#spade.message.MessageBase.get_metadata">get_metadata() (spade.message.MessageBase method)</a>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_ontology">get_ontology() (spade.fipa_message.FIPAMessageParser method)</a>
 </li>
       <li><a href="spade.html#spade.container.get_or_create_eventloop">get_or_create_eventloop() (in module spade.container)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_performative">get_performative() (spade.fipa_message.FIPAMessageParser method)</a>
 </li>
       <li><a href="spade.html#spade.presence.Contact.get_presence">get_presence() (spade.presence.Contact method)</a>
 
@@ -310,6 +333,10 @@
 </li>
       </ul></li>
       <li><a href="spade.html#spade.presence.PresenceManager.get_priority">get_priority() (spade.presence.PresenceManager method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_protocol">get_protocol() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.get_reply_with">get_reply_with() (spade.fipa_message.FIPAMessageParser method)</a>
 </li>
       <li><a href="spade.html#spade.presence.PresenceManager.get_show">get_show() (spade.presence.PresenceManager method)</a>
 </li>
@@ -345,6 +372,8 @@
 </li>
       <li><a href="spade.html#spade.web.WebApp.index">index() (spade.web.WebApp method)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.InvalidPerformativeError">InvalidPerformativeError</a>
+</li>
       <li><a href="spade.html#spade.agent.Agent.is_alive">is_alive() (spade.agent.Agent method)</a>
 </li>
       <li><a href="spade.html#spade.presence.Contact.is_available">is_available() (spade.presence.Contact method)</a>
@@ -364,6 +393,8 @@
       <li><a href="spade.html#spade.web.WebApp.is_started">is_started() (spade.web.WebApp method)</a>
 </li>
       <li><a href="spade.html#spade.presence.Contact.is_subscribed">is_subscribed() (spade.presence.Contact method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.is_valid_fipa_message">is_valid_fipa_message() (spade.fipa_message.FIPAMessageParser method)</a>
 </li>
       <li><a href="spade.html#spade.behaviour.FSMBehaviour.is_valid_transition">is_valid_transition() (spade.behaviour.FSMBehaviour method)</a>
 </li>
@@ -392,6 +423,10 @@
 
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.LANGUAGES">LANGUAGES (spade.fipa_message.FIPAMessageBuilder attribute)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="spade.html#spade.trace.TraceStore.len">len() (spade.trace.TraceStore method)</a>
 </li>
@@ -436,6 +471,8 @@
         <li><a href="spade.html#module-spade.cli">spade.cli</a>
 </li>
         <li><a href="spade.html#module-spade.container">spade.container</a>
+</li>
+        <li><a href="spade.html#module-spade.fipa_message">spade.fipa_message</a>
 </li>
         <li><a href="spade.html#module-spade.message">spade.message</a>
 </li>
@@ -506,6 +543,12 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.parse_body">parse_body() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.PerformativeNotSetError">PerformativeNotSetError</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.PERFORMATIVES">PERFORMATIVES (spade.fipa_message.FIPAMessageBuilder attribute)</a>
+</li>
       <li><a href="spade.html#spade.behaviour.PeriodicBehaviour.period">period (spade.behaviour.PeriodicBehaviour property)</a>
 </li>
       <li><a href="spade.html#spade.behaviour.PeriodicBehaviour">PeriodicBehaviour (class in spade.behaviour)</a>
@@ -524,7 +567,11 @@
 </li>
       <li><a href="spade.html#spade.presence.PresenceType">PresenceType (class in spade.presence)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.print_debug_info">print_debug_info() (spade.fipa_message.FIPAMessageParser method)</a>
+</li>
       <li><a href="spade.html#spade.presence.PresenceType.PROBE">PROBE (spade.presence.PresenceType attribute)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.PROTOCOLS">PROTOCOLS (spade.fipa_message.FIPAMessageBuilder attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -580,7 +627,17 @@
 </li>
       <li><a href="spade.html#spade.presence.PresenceManager.set_available">set_available() (spade.presence.PresenceManager method)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_body">set_body() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
       <li><a href="spade.html#spade.agent.Agent.set_container">set_container() (spade.agent.Agent method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_conversation_id">set_conversation_id() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_custom_metadata">set_custom_metadata() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_in_reply_to">set_in_reply_to() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_language">set_language() (spade.fipa_message.FIPAMessageBuilder method)</a>
 </li>
       <li><a href="spade.html#spade.agent.Agent.set_loop">set_loop() (spade.agent.Agent method)</a>
 </li>
@@ -588,7 +645,15 @@
 </li>
       <li><a href="spade.html#spade.behaviour.State.set_next_state">set_next_state() (spade.behaviour.State method)</a>
 </li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_ontology">set_ontology() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_performative">set_performative() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
       <li><a href="spade.html#spade.presence.PresenceManager.set_presence">set_presence() (spade.presence.PresenceManager method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_protocol">set_protocol() (spade.fipa_message.FIPAMessageBuilder method)</a>
+</li>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_reply_by">set_reply_by() (spade.fipa_message.FIPAMessageBuilder method)</a>
 </li>
       <li><a href="spade.html#spade.behaviour.CyclicBehaviour.set_template">set_template() (spade.behaviour.CyclicBehaviour method)</a>
 </li>
@@ -616,6 +681,8 @@
         <li><a href="spade.html#module-spade.agent">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     spade.behaviour
 
@@ -630,13 +697,18 @@
         <li><a href="spade.html#module-spade.cli">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     spade.container
 
       <ul>
         <li><a href="spade.html#module-spade.container">module</a>
+</li>
+      </ul></li>
+      <li>
+    spade.fipa_message
+
+      <ul>
+        <li><a href="spade.html#module-spade.fipa_message">module</a>
 </li>
       </ul></li>
       <li>
@@ -756,6 +828,14 @@
       <li><a href="spade.html#spade.presence.Contact.update_presence">update_presence() (spade.presence.Contact method)</a>
 </li>
       <li><a href="spade.html#spade.presence.Contact.update_subscription">update_subscription() (spade.presence.Contact method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="spade.html#spade.fipa_message.FIPAMessageParser.validate_fipa_message">validate_fipa_message() (spade.fipa_message.FIPAMessageParser method)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -36,6 +36,14 @@ spade.container module
    :undoc-members:
    :show-inheritance:
 
+spade.fipa\_message module
+--------------------------
+
+.. automodule:: spade.fipa_message
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 spade.message module
 --------------------
 
