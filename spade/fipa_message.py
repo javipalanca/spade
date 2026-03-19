@@ -204,8 +204,8 @@ class FIPAMessageBuilder:
         """
         if as_json:
             if isinstance(content, str):
-                 # Treat string content as already-serialized JSON
-                 self.message.body = content
+                # Treat string content as already-serialized JSON
+                self.message.body = content
             else:
                 self.message.body = json.dumps(content, ensure_ascii=False)
             self.metadata["content-type"] = "application/json"
@@ -233,8 +233,7 @@ class FIPAMessageBuilder:
         """
         if language not in self.LANGUAGES:
             logger.warning(
-                "Language '%s' is not in the list of known languages",
-                language
+                "Language '%s' is not in the list of known languages", language
             )
 
         self.metadata["language"] = language
@@ -255,8 +254,7 @@ class FIPAMessageBuilder:
         """
         if protocol not in self.PROTOCOLS:
             logger.warning(
-            "Protocol '%s' is not in the list of known protocols",
-            protocol
+                "Protocol '%s' is not in the list of known protocols", protocol
             )
 
         self.metadata["protocol"] = protocol
@@ -576,14 +574,14 @@ class FIPAMessageParser:
         Parse the message body according to its language.
 
         Returns:
-            Any: Parsed content. If the language is "json" (or the body looks 
-            like JSON), returns the decoded JSON (typically a dict or list). 
-            If JSON parsing fails or the body is not JSON, returns the 
+            Any: Parsed content. If the language is "json" (or the body looks
+            like JSON), returns the decoded JSON (typically a dict or list).
+            If JSON parsing fails or the body is not JSON, returns the
             original body string unchanged.
 
         Note:
-            This method does NOT raise ``json.JSONDecodeError``. Instead, it 
-            gracefully returns the raw body string when JSON decoding fails, 
+            This method does NOT raise ``json.JSONDecodeError``. Instead, it
+            gracefully returns the raw body string when JSON decoding fails,
             allowing callers to handle malformed content as needed.
 
         Example:
