@@ -52,6 +52,12 @@ def test_make_reply(message):
     assert reply.get_metadata("metadata2") == "value2"
 
 
+def test_make_reply_metadata_is_independent(message):
+    reply = message.make_reply()
+    reply.set_metadata("metadata1", "changed")
+    assert message.get_metadata("metadata1") == "value1"
+
+
 def test_message_from_node_attribute_error():
     with pytest.raises(AttributeError):
         Message.from_node(Message())
