@@ -12,7 +12,7 @@ FIPA-ACL messages that comply with the Foundation for Intelligent Physical Agent
 import json
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Union
 
 from spade.message import Message
 
@@ -180,7 +180,7 @@ class FIPAMessageBuilder:
         return self
 
     def set_body(
-        self, content: dict | str | Any, as_json: bool = True
+        self, content: Union[dict, str, Any], as_json: bool = True
     ) -> "FIPAMessageBuilder":
         """
         Set the message body content.
