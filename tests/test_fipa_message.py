@@ -255,3 +255,107 @@ def test_fipa_message_parser_get_custom_metadata():
     assert parser.get_custom_metadata("another-field") == "123"
     assert parser.get_custom_metadata("non-existent") is None
     assert parser.get_custom_metadata("non-existent", "default") == "default"
+
+
+# =============================================================================
+# validate_fipa_message() coverage
+# =============================================================================
+
+def test_validate_fipa_message_success():
+    """Test validation success path with all required fields"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "performative": "inform",
+        "conversation-id": "test_conv_123",
+        "language": "json",
+    }
+    mock_message.body = '{"key": "value"}'
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    assert is_valid is True
+    assert error_msg == ""
+
+
+def test_validate_fipa_message_missing_performative():
+    """Test validation fails when performative is missing"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "conversation-id": "test_conv_123",
+        # Missing performative
+    }
+    mock_message.body = '{"key": "value"}'
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    assert is_valid is False
+    assert "Missing 'performative' field" in error_msg
+
+
+def test_validate_fipa_message_invalid_performative():
+    """Test validation fails when performative is not in FIPA list"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "performative": "invalid_performative_xyz",
+        "conversation-id": "test_conv_123",
+    }
+    mock_message.body = '{"key": "value"}'
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    assert is_valid is False
+    assert "Performative 'invalid_performative_xyz' is not valid" in error_msg
+
+
+def test_validate_fipa_message_missing_conversation_id():
+    """Test validation fails when conversation-id is missing"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "performative": "inform",
+        # Missing conversation-id
+    }
+    mock_message.body = '{"key": "value"}'
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    assert is_valid is False
+    assert "Missing 'conversation-id' field" in error_msg
+
+
+def test_validate_fipa_message_invalid_json_body():
+    """Test validation fails when language is json but body is invalid JSON"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "performative": "inform",
+        "conversation-id": "test_conv_123",
+        "language": "json",
+    }
+    mock_message.body = 'not valid json {'  # Invalid JSON
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    assert is_valid is False
+    assert "Message body is not valid JSON" in error_msg
+
+
+def test_validate_fipa_message_json_body_with_string_language():
+    """Test validation passes when body is JSON but language is not 'json'"""
+    mock_message = Message()
+    mock_message.metadata = {
+        "performative": "inform",
+        "conversation-id": "test_conv_123",
+        "language": "string",  # Not 'json'
+    }
+    mock_message.body = '{"key": "value"}'  # Valid JSON but language != 'json'
+
+    parser = FIPAMessageParser(mock_message)
+    is_valid, error_msg = parser.validate_fipa_message()
+
+    # Should pass because JSON validation only happens when language == 'json'
+    assert is_valid is True
+    assert error_msg == ""
