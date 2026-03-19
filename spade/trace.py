@@ -1,7 +1,7 @@
 # coding=utf-8
 import datetime
 import itertools
-from typing import Optional, List
+from typing import List, Optional, Tuple
 
 from slixmpp import JID
 
@@ -50,7 +50,7 @@ class TraceStore(object):
         """
         return len(self.store)
 
-    def all(self, limit: Optional[int] = None) -> List[Message]:
+    def all(self, limit: Optional[int] = None) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
         """
         Returns all the events, until a limit if defined
 
@@ -63,7 +63,7 @@ class TraceStore(object):
         """
         return self.store[:limit][::-1]
 
-    def received(self, limit: Optional[int] = None) -> List[Message]:
+    def received(self, limit: Optional[int] = None) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
         """
         Returns all the events that have been received (excluding sent events), until a limit if defined
 
@@ -85,7 +85,7 @@ class TraceStore(object):
         limit: Optional[int] = None,
         to: Optional[str] = None,
         category: Optional[str] = None,
-    ) -> List[Message]:
+    ) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
         """
         Returns the events that match the filters
 
