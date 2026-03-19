@@ -273,7 +273,7 @@ class Message(MessageBase):
             sender=str(self.to),
             body=self.body,
             thread=self.thread,
-            metadata=self.metadata.copy(),
+            metadata=self.metadata,
         )
 
     def prepare(self, client: ClientXMPP) -> SlixmppMessage:
