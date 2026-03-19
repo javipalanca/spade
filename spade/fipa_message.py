@@ -12,7 +12,7 @@ FIPA-ACL messages that comply with the Foundation for Intelligent Physical Agent
 import json
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, ClassVar, Union
+from typing import Any, ClassVar, Union, Optional
 
 from spade.message import Message
 
@@ -325,7 +325,7 @@ class FIPAMessageBuilder:
 
         Args:
             key (str): Metadata key.
-            value: Metadata value.
+            value: Metadata value. It will be converted to a string for storage.
 
         Returns:
             FIPAMessageBuilder: Self for method chaining.
@@ -333,7 +333,7 @@ class FIPAMessageBuilder:
         Example:
             >>> builder.set_custom_metadata("priority", "high")
         """
-        self.metadata[key] = value
+        self.metadata[str(key)] = str(value)
         return self
 
     def build(self) -> Message:
@@ -394,7 +394,7 @@ class FIPAMessageBuilder:
 
     @classmethod
     def create_request_message(
-        cls, sender: str, receiver: str, action: str, parameters: dict | None = None
+        cls, sender: str, receiver: str, action: str, parameters: Optional[dict] = None
     ) -> Message:
         """
         Convenience method to create 'request' messages.
