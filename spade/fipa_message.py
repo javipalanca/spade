@@ -13,8 +13,11 @@ import json
 import uuid
 from datetime import datetime, timedelta
 from typing import Any, ClassVar, Union, Optional
+import logging
 
 from spade.message import Message
+
+logger = logging.getLogger(__name__)
 
 
 class InvalidPerformativeError(ValueError):
@@ -29,7 +32,7 @@ class InvalidPerformativeError(ValueError):
 
         Args:
             performative (str): The performative that caused the error.
-            valid_performatives (list): List of valid performatives.
+            valid_performatives: The valid performatives (e.g., a list or formatted string).
         """
         self.performative = performative
         self.valid_performatives = valid_performatives
@@ -187,18 +190,24 @@ class FIPAMessageBuilder:
 
         Args:
             content: Message content. Can be dict, str, or other type.
-            as_json (bool): If True, converts content to JSON.
-                           If False, uses content as string.
+            as_json (bool): If True, serializes non-string content to JSON or
+                            treats string content as already-serialized JSON.
+                            If False, uses content as string.
 
         Returns:
             FIPAMessageBuilder: Self for method chaining.
 
         Example:
             >>> builder.set_body({"data": "value"}, as_json=True)
+            >>> builder.set_body('{"data": "value"}', as_json=True)
             >>> builder.set_body("plain text", as_json=False)
         """
-        if as_json and not isinstance(content, str):
-            self.message.body = json.dumps(content, ensure_ascii=False)
+        if as_json:
+            if isinstance(content, str):
+                 # Treat string content as already-serialized JSON
+                 self.message.body = content
+            else:
+                self.message.body = json.dumps(content, ensure_ascii=False)
             self.metadata["content-type"] = "application/json"
             self.metadata["language"] = "json"
         else:
@@ -223,8 +232,9 @@ class FIPAMessageBuilder:
             >>> builder.set_language("json")
         """
         if language not in self.LANGUAGES:
-            print(
-                f"Warning: Language '{language}' is not in the list of known languages"
+            logger.warning(
+                "Language '%s' is not in the list of known languages",
+                language
             )
 
         self.metadata["language"] = language
@@ -244,8 +254,9 @@ class FIPAMessageBuilder:
             >>> builder.set_protocol("fipa-request")
         """
         if protocol not in self.PROTOCOLS:
-            print(
-                f"Warning: Protocol '{protocol}' is not in the list of known protocols"
+            logger.warning(
+            "Protocol '%s' is not in the list of known protocols",
+            protocol
             )
 
         self.metadata["protocol"] = protocol
@@ -565,10 +576,19 @@ class FIPAMessageParser:
         Parse the message body according to its language.
 
         Returns:
-            Parsed content. For JSON returns dict, for others returns str.
+            Any: Parsed content. If the language is "json" (or the body looks 
+            like JSON), returns the decoded JSON (typically a dict or list). 
+            If JSON parsing fails or the body is not JSON, returns the 
+            original body string unchanged.
 
-        Raises:
-            json.JSONDecodeError: If body is invalid JSON.
+        Note:
+            This method does NOT raise ``json.JSONDecodeError``. Instead, it 
+            gracefully returns the raw body string when JSON decoding fails, 
+            allowing callers to handle malformed content as needed.
+
+        Example:
+            >>> parser = FIPAMessageParser(message)
+            >>> content = parser.parse_body()  # Returns dict if JSON, str otherwise
         """
         language = self.get_language()
 
@@ -596,12 +616,10 @@ class FIPAMessageParser:
         Check if the message has the basic FIPA-ACL structure.
 
         Returns:
-            bool: True if message has performative and conversation-id.
+            bool: True if message passes FIPA-ACL validation.
         """
-        has_performative = "performative" in self.metadata
-        has_conversation_id = "conversation-id" in self.metadata
-
-        return has_performative and has_conversation_id
+        is_valid, _ = self.validate_fipa_message()
+        return is_valid
 
     def validate_fipa_message(self) -> tuple[bool, str]:
         """
@@ -631,35 +649,46 @@ class FIPAMessageParser:
 
         return True, ""
 
-    def print_debug_info(self) -> None:
+    def print_debug_info(self) -> str:
         """
-        Print debug information about the FIPA message.
+        Build and log debug information about the FIPA message.
+
+        Returns:
+            str: The formatted debug string (also logged via logger.info).
         """
-        print(f"\n{'='*60}")
-        print("FIPA-ACL MESSAGE RECEIVED")
-        print(f"{'='*60}")
-        print(f"From: {self.message.sender}")
-        print(f"To: {self.message.to}")
-        print(f"Performative: {self.get_performative()}")
-        print(f"Conversation-ID: {self.get_conversation_id()}")
-        print(f"Ontology: {self.get_ontology()}")
-        print(f"Language: {self.get_language()}")
-        print(f"Protocol: {self.get_protocol()}")
-        print(f"Reply-With: {self.get_reply_with()}")
-        print(f"Body length: {len(self.message.body)} chars")
-        print(f"{'='*60}")
+        lines = [
+            "=" * 60,
+            "FIPA-ACL MESSAGE RECEIVED",
+            "=" * 60,
+            f"From: {self.message.sender}",
+            f"To: {self.message.to}",
+            f"Performative: {self.get_performative()}",
+            f"Conversation-ID: {self.get_conversation_id()}",
+            f"Ontology: {self.get_ontology()}",
+            f"Language: {self.get_language()}",
+            f"Protocol: {self.get_protocol()}",
+            f"Reply-With: {self.get_reply_with()}",
+            f"Body length: {len(self.message.body)} chars",
+            "=" * 60,
+        ]
 
         # Show body if it's short
         if len(self.message.body) < 500:
             try:
                 parsed = self.parse_body()
-                print("Content:")
-                print(json.dumps(parsed, indent=2, ensure_ascii=False))
+                lines.append("Content:")
+                lines.append(json.dumps(parsed, indent=2, ensure_ascii=False))
             except (json.JSONDecodeError, TypeError):
-                print("Content (raw):")
-                print(
-                    self.message.body[:200]
-                    + ("..." if len(self.message.body) > 200 else "")
-                )
+                lines.append("Content (raw):")
+                preview = self.message.body[:200]
+                if len(self.message.body) > 200:
+                    preview += "..."
+                lines.append(preview)
 
-        print(f"{'='*60}")
+        lines.append("=" * 60)
+
+        # Build final string and log it
+        debug_str = "\n".join(lines)
+        logger.info(debug_str)
+
+        return debug_str
