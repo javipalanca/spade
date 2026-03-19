@@ -391,7 +391,7 @@
             <span class="n">sender</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">),</span>
             <span class="n">body</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
             <span class="n">thread</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.prepare"><a class="viewcode-back" href="../../spade.html#spade.message.Message.prepare">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientXMPP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SlixmppMessage</span><span class="p">:</span>
