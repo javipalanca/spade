@@ -238,3 +238,123 @@ The code below would output
 
     Process finished with exit code 0
 
+Using FIPA Messages
+-------------------
+
+SPADE provides the ``FIPAMessageBuilder`` class to simplify the creation of
+FIPA-ACL compliant messages. This is an alternative to the basic ``Message``
+class when structured and standardized communication between agents is required.
+
+Creating a Message
+~~~~~~~~~~~~~~~~~~
+
+You can create a FIPA message using a fluent interface:
+
+::
+
+    from spade.fipa_message import FIPAMessageBuilder
+
+    msg = (
+        FIPAMessageBuilder(sender="agent1@localhost", receiver="agent2@localhost")
+        .set_performative("inform")
+        .set_body({"data": "Hello World"}, as_json=True)
+        .set_ontology("example")
+        .build()
+    )
+
+    await self.send(msg)
+
+In this example:
+
+* **performative** defines the intention of the message (e.g., ``inform``, ``request``)
+* **body** contains the message content (typically JSON)
+* **ontology** provides context for the content
+
+The builder automatically includes metadata such as conversation identifiers
+and timestamps.
+
+Sending Messages
+~~~~~~~~~~~~~~~~
+
+Sending a FIPA message works the same as with a regular message:
+
+::
+
+    await self.send(msg)
+
+.. note::
+   The ``send`` method is an asynchronous coroutine and must always be used with ``await``.
+
+Receiving and Parsing Messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To process a received FIPA message, use the ``FIPAMessageParser``:
+
+::
+
+    from spade.fipa_message import FIPAMessageParser
+
+    msg = await self.receive(timeout=10)
+
+    if msg:
+        parser = FIPAMessageParser(msg)
+
+        print(parser.get_performative())
+        print(parser.get_ontology())
+        print(parser.parse_body())
+
+The parser extracts metadata and automatically handles JSON content.
+
+Sending Responses
+~~~~~~~~~~~~~~~~~
+
+FIPA messages are typically part of a conversation. To reply while preserving
+the conversation context, use:
+
+::
+
+    response = FIPAMessageBuilder.create_response_message(
+        original_msg=msg,
+        content={"status": "ok"},
+        performative="confirm"
+    )
+
+    await self.send(response)
+
+This ensures that the response keeps the correct conversation identifiers and
+references to the original message.
+
+Convenience Methods
+~~~~~~~~~~~~~~~~~~~
+
+The builder provides helper methods for common message types:
+
+::
+
+    # Inform message
+    msg = FIPAMessageBuilder.create_inform_message(
+        sender="a@localhost",
+        receiver="b@localhost",
+        content={"value": 1}
+    )
+
+    # Request message
+    msg = FIPAMessageBuilder.create_request_message(
+        sender="a@localhost",
+        receiver="b@localhost",
+        action="get-data",
+        parameters={"id": 1}
+    )
+
+Notes
+~~~~~
+
+* The performative must be a valid FIPA-ACL performative.
+* Message content is typically encoded as JSON.
+* Responses should be created using the builder to preserve conversation context.
+* Templates can be used to filter messages based on performative:
+
+::
+
+    template = Template()
+    template.set_metadata("performative", "inform")
