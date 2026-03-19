@@ -11,7 +11,7 @@ from spade.fipa_message import (
     InvalidPerformativeError,
     PerformativeNotSetError,
 )
-
+from spade.message import Message
 
 def test_fipa_message_builder_initialization():
     """Test FIPA message builder initialization"""
@@ -82,8 +82,8 @@ def test_fipa_message_builder_build_success():
     message = builder.build()
 
     assert message is not None
-    assert message.sender == "sender@localhost"
-    assert message.to == "receiver@localhost"
+    assert str(message.sender) == "sender@localhost"
+    assert str(message.to) == "receiver@localhost"
     assert message.metadata["performative"] == "inform"
     assert json.loads(message.body) == content
 
@@ -124,7 +124,7 @@ def test_create_request_message():
 def test_create_response_message():
     """Test creation of response message"""
     # Create an original message to respond to
-    original_message = MagicMock()
+    original_message = Message()
     original_message.sender = "original_sender@localhost"
     original_message.to = "original_receiver@localhost"
     original_message.metadata = {
@@ -141,8 +141,8 @@ def test_create_response_message():
     )
 
     assert response.metadata["performative"] == "inform"
-    assert response.sender == "original_receiver@localhost"  # Swap sender/receiver
-    assert response.to == "original_sender@localhost"
+    assert str(response.sender) == "original_receiver@localhost"  # Swap sender/receiver
+    assert str(response.to) == "original_sender@localhost"
     assert response.metadata["conversation-id"] == "test_conv_123"
     assert response.metadata["in-reply-to"] == "original_reply_456"
     assert json.loads(response.body)["result"] == "success"
@@ -245,13 +245,13 @@ def test_fipa_message_parser_get_custom_metadata():
         "performative": "inform",
         "conversation-id": "test_conv",
         "custom-field": "custom-value",
-        "another-field": 123,
+        "another-field": "123",
     }
     mock_message.body = '{"key": "value"}'
 
     parser = FIPAMessageParser(mock_message)
 
     assert parser.get_custom_metadata("custom-field") == "custom-value"
-    assert parser.get_custom_metadata("another-field") == 123
+    assert parser.get_custom_metadata("another-field") == "123"
     assert parser.get_custom_metadata("non-existent") is None
     assert parser.get_custom_metadata("non-existent", "default") == "default"
