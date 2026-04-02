@@ -50,7 +50,9 @@ class TraceStore(object):
         """
         return len(self.store)
 
-    def all(self, limit: Optional[int] = None) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
+    def all(
+        self, limit: Optional[int] = None
+    ) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
         """
         Returns all the events, until a limit if defined
 
@@ -63,7 +65,9 @@ class TraceStore(object):
         """
         return self.store[:limit][::-1]
 
-    def received(self, limit: Optional[int] = None) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
+    def received(
+        self, limit: Optional[int] = None
+    ) -> List[Tuple[datetime.datetime, Message, Optional[str]]]:
         """
         Returns all the events that have been received (excluding sent events), until a limit if defined
 
