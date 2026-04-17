@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import io
 from unittest.mock import AsyncMock, Mock, MagicMock
 
 import pytest
@@ -23,7 +24,7 @@ from spade.behaviour import (
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
 from .conftest import wait_for_behaviour_is_killed
-from .factories import MockedAgentFactory
+from .factories import MockedAgentFactory, MockedSecondAgentFactory
 
 STATE_ONE = "STATE_ONE"
 STATE_TWO = "STATE_TWO"
@@ -382,13 +383,13 @@ async def test_send_message_without_sender():
 
 
 async def test_send_file(tmp_path):
-    mock_file = tmp_path / "test.txt"
-    mock_file.write_text("Testing!")
+    mock_input_file = io.BytesIO(b"Testing!")
 
     class UploadBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.url = await self.send_file(filename=mock_file)
+            self.agent.url = await self.send_file(filename="test.txt", input_file=mock_input_file)
             msg = Message(to=self.agent.jid_to_send, metadata={"0363_url": self.agent.url})
+            await self.send(msg)
             self.kill()
 
     class DownloadBehaviour(OneShotBehaviour):
@@ -400,8 +401,11 @@ async def test_send_file(tmp_path):
 
     uploader: Agent = MockedAgentFactory()
     up_beh = UploadBehaviour()
+    up_beh.send_file = AsyncMock(return_value="http://fake-url.net/fiile")
     uploader.add_behaviour(up_beh)
-    downloader: Agent = MockedAgentFactory()
+    uploader.jid_to_send = "fake2@jid"
+
+    downloader: Agent = MockedSecondAgentFactory()
     down_beh = DownloadBehaviour()
     downloader.add_behaviour(down_beh)
 

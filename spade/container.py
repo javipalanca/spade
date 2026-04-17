@@ -63,7 +63,7 @@ class Container(object):
     process.
     The container is a singleton.
     """
-
+    __slots__ = ('__agents', 'loop', 'is_running')
     def __init__(self):
         self.__agents = {}
         self.loop = get_or_create_eventloop()
