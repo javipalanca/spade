@@ -5,7 +5,6 @@ from unittest.mock import AsyncMock, Mock, MagicMock
 
 import pytest
 import slixmpp.stanza
-from docutils.utils.math.latex2mathml import mo
 
 from slixmpp import JID
 

@@ -14,7 +14,6 @@ from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.presence import Contact
 from spade.template import Template
-from tests.factories import MockedAgentFactory, MockedSecondAgentFactory
 
 JID = "test@localhost"
 JID2 = "test2@localhost"

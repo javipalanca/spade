@@ -53,7 +53,7 @@ class XMPPClient(ClientXMPP):
         try:
             await resp.send()
         except IqError as e:
-            if e.iq['error']['condition'] == 'conflict':
+            if e.iq["error"]["condition"] == "conflict":
                 self.logger.debug("Account already exists. Trying to login")
             pass
         except IqTimeout:

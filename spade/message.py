@@ -13,7 +13,9 @@ logger = logging.getLogger("spade.Message")
 
 class MessageBase(object):
     """Base class for message handling in SPADE."""
-    __slots__ = ('sent', '_to', '_sender', '_body', '_thread', '_metadata')
+
+    __slots__ = ("sent", "_to", "_sender", "_body", "_thread", "_metadata")
+
     def __init__(
         self,
         to: Union[str, JID, None] = None,
