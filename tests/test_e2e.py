@@ -1,4 +1,5 @@
 import asyncio
+import io
 from unittest.mock import patch
 
 import pytest
@@ -13,6 +14,7 @@ from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.presence import Contact
 from spade.template import Template
+from tests.factories import MockedAgentFactory, MockedSecondAgentFactory
 
 JID = "test@localhost"
 JID2 = "test2@localhost"
@@ -240,15 +242,18 @@ async def test_presence_subscribe():
 
 
 @pytest.mark.asyncio
+@pytest.mark.skip(reason="Wait until fix on PyJabber")
 async def test_send_file(tmp_path):
-    mock_file = tmp_path / "test.txt"
-    mock_file.write_text("Testing!")
+    mock_input_file = io.BytesIO(b"Testing!")
+
 
     class UploadBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.url = await self.send_file(filename=mock_file)
+            self.agent.url = await self.send_file(filename="test.txt", input_file=mock_input_file)
             msg = Message(to=self.agent.jid_to_send, metadata={"0363_url": self.agent.url})
+            await self.send(msg)
             self.kill()
+
 
     class DownloadBehaviour(OneShotBehaviour):
         async def run(self):
@@ -257,10 +262,11 @@ async def test_send_file(tmp_path):
                 self.agent.url = msg.get_metadata("0363_url")
             self.kill()
 
-    uploader: Agent = MockedAgentFactory()
+
+    uploader: Agent = Agent(jid="uploader@localhost", password="1234")
     up_beh = UploadBehaviour()
     uploader.add_behaviour(up_beh)
-    downloader: Agent = MockedAgentFactory()
+    downloader: Agent = Agent(jid="downloader@localhost", password="1234")
     down_beh = DownloadBehaviour()
     downloader.add_behaviour(down_beh)
 
