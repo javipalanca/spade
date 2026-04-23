@@ -396,11 +396,14 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         except UploadServiceNotFound:
             logger.error("HTTP Upload service not found in server. Unable to upload")
             return None
-        except FileTooBig as e:
-            logger.error(e)
+        except FileTooBig:
+            logger.error("File exceed the size limits of the server")
             return None
-        except HTTPError as e:
-            logger.error(e)
+        except HTTPError:
+            logger.error("HTTP Error during the upload")
+            return None
+        except Exception:
+            logger.error("Service unavailable")
             return None
 
     async def download_file(self, url: str, dest_path: Optional[str]):
