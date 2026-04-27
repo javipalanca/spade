@@ -376,7 +376,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 msg = None
         return msg
 
-    async def send_file(
+    async def upload_file(
         self, filename: str, input_file: Union[IO[bytes], None]
     ) -> Union[str, None]:
         """
@@ -384,11 +384,65 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
         Args:
             filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
-            input_file (IO[bytes]): Binary file stream on the file
+            input_file (IO[bytes]): Optional binary file stream on the file
 
         Returns:
             An url used to download the uploaded file (GET HTTP method)
         """
+        try:
+            return await self.agent.client["xep_0363"].upload_file(
+                filename=filename, input_file=input_file
+            )
+        except UploadServiceNotFound:
+            logger.error("HTTP Upload service not found in server. Unable to upload")
+            return None
+        except FileTooBig:
+            logger.error("File exceed the size limits of the server")
+            return None
+        except HTTPError:
+            logger.error("HTTP Error during the upload")
+            return None
+        except Exception:
+            logger.error("Service unavailable")
+            return None
+
+    async def send_file(self, to: str, url: str) -> None:
+        """
+        Sends the url containing the file uploaded via the ``upload_file`` method.
+        This method does not ensure nor check that the url is valid.
+
+        Args:
+            to (str): JID of the agent to send the file
+            url (str): Url obtained by using the ``upload_file`` class method
+
+        """
+        msg = Message(to=to)
+        msg.set_metadata("performative", "0363")
+        msg.set_metadata("url", url)
+        await self.send(msg)
+
+    async def upload_and_send_file(
+        self, to: str, filename: str, input_file: Union[IO[bytes], None]
+    ) -> Union[str, None]:
+        """
+        Discovers the XEP 0363 service, and tries to send the file.
+        In a success case, the url of the file will be automatically send
+        to the ``to`` parameter
+
+        Args:
+            to (str): JID of the user to send the new uploaded file
+            filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
+            input_file (IO[bytes]): Optional binary file stream on the file
+
+        Returns:
+            The url obtained in the file upload. Can be reused with other agents.
+        """
+        url = await self.upload_file(filename, input_file)
+        if url:
+            await self.send_file(to, url)
+            return url
+
+
         try:
             return await self.agent.client["xep_0363"].upload_file(
                 filename=filename, input_file=input_file
