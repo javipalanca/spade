@@ -52,12 +52,12 @@ dev = [
     "pytest-mock==3.6.1",
     "python-coveralls==2.9.3",
     "requests==2.32.3",
-    "parsel==1.9.1",
-    "sphinx_rtd_theme==1.0.0",
-    "testfixtures==7.0.0",
-    "pytest-aiohttp==1.0.4",
-    "factory-boy==3.2.1",
-    "click==8.1.7",
+    "parsel==1.10.0",
+    "sphinx_rtd_theme==3.1.0",
+    "testfixtures==8.3.0",
+    "pytest-aiohttp==1.1.0",
+    "factory-boy==3.3.3",
+    "click==8.1.8",
 ]
 
 [project.urls]
