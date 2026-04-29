@@ -6,6 +6,13 @@ on:
 jobs:
   test-windows:
     runs-on: windows-latest
+
+    services:
+      pyjabber:
+        image: din0thor/pyjabber:latest
+        ports:
+          - 5222:5222
+
     strategy:
       fail-fast: false
       matrix:
@@ -14,7 +21,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v5
-    
+
     - name: Set up Python
       uses: actions/setup-python@v6
       with:

@@ -6,6 +6,13 @@ on:
 jobs:
   test-linux-with-coverage:
     runs-on: ubuntu-latest
+
+    services:
+      pyjabber:
+        image: din0thor/pyjabber:latest
+        ports:
+          - 5222:5222
+
     strategy:
       fail-fast: false
       matrix:
