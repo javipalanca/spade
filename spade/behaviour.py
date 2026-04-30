@@ -442,7 +442,6 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             await self.send_file(to, url)
             return url
 
-
         try:
             return await self.agent.client["xep_0363"].upload_file(
                 filename=filename, input_file=input_file
