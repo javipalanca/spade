@@ -6,13 +6,6 @@ on:
 jobs:
   test-macos:
     runs-on: macos-latest
-
-    services:
-      pyjabber:
-        image: din0thor/pyjabber:latest
-        ports:
-          - 5222:5222
-
     strategy:
       fail-fast: false
       matrix:
@@ -39,4 +32,4 @@ jobs:
 
     - name: Test with pytest
       run: |
-        uv run pytest -q
+        uv run pytest --ignore=tests/test_e2e.py -q

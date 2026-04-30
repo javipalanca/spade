@@ -62,4 +62,4 @@ jobs:
 
     - name: Test with pytest
       run: |
-        uv run pytest -q
+        uv run pytest --ignore=tests/test_e2e.py -q
