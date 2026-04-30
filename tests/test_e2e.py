@@ -4,7 +4,6 @@ from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
-import pytest_asyncio
 from slixmpp import Presence
 
 import spade
@@ -226,14 +225,16 @@ async def test_presence_subscribe():
 async def test_send_file(tmp_path):
     mock_input_file = io.BytesIO(b"Testing!")
 
-
     class UploadBehaviour(OneShotBehaviour):
         async def run(self):
-            self.agent.url = await self.send_file(filename="test.txt", input_file=mock_input_file)
-            msg = Message(to=self.agent.jid_to_send, metadata={"0363_url": self.agent.url})
+            self.agent.url = await self.send_file(
+                filename="test.txt", input_file=mock_input_file
+            )
+            msg = Message(
+                to=self.agent.jid_to_send, metadata={"0363_url": self.agent.url}
+            )
             await self.send(msg)
             self.kill()
-
 
     class DownloadBehaviour(OneShotBehaviour):
         async def run(self):
@@ -241,7 +242,6 @@ async def test_send_file(tmp_path):
             if msg:
                 self.agent.url = msg.get_metadata("0363_url")
             self.kill()
-
 
     uploader: Agent = Agent(jid="uploader@localhost", password="1234")
     up_beh = UploadBehaviour()

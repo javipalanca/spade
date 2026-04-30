@@ -20,6 +20,7 @@ class MockedAgentFactory(factory.Factory):
     jid = "fake@jid"
     password = "fake_password"
 
+
 class MockedSecondAgentFactory(factory.Factory):
     class Meta:
         model = MockedConnectedAgent

@@ -386,7 +386,9 @@ async def test_send_file(tmp_path):
 
     class UploadBehaviour(OneShotBehaviour):
         async def run(self):
-            url = await self.upload_file(filename="test.txt", input_file=mock_input_file)
+            url = await self.upload_file(
+                filename="test.txt", input_file=mock_input_file
+            )
             await self.send_file(to=self.agent.jid_to_send, url=url)
             self.kill(exit_code=url)
 
@@ -415,6 +417,7 @@ async def test_send_file(tmp_path):
     assert downloader.url is not None
     assert up_beh.exit_code == downloader.url
 
+
 async def test_send_file_unique_method(tmp_path):
     mock_input_file = io.BytesIO(b"Testing!")
 
@@ -423,7 +426,7 @@ async def test_send_file_unique_method(tmp_path):
             url = await self.upload_and_send_file(
                 to=self.agent.jid_to_send,
                 filename="test.txt",
-                input_file=mock_input_file
+                input_file=mock_input_file,
             )
             self.kill(exit_code=url)
 
@@ -452,6 +455,7 @@ async def test_send_file_unique_method(tmp_path):
     assert downloader.url is not None
     assert up_beh.exit_code == downloader.url
 
+
 async def test_send_file_template(tmp_path):
     mock_input_file = io.BytesIO(b"Testing!")
 
@@ -460,7 +464,7 @@ async def test_send_file_template(tmp_path):
             url = await self.upload_and_send_file(
                 to=self.agent.jid_to_send,
                 filename="test.txt",
-                input_file=mock_input_file
+                input_file=mock_input_file,
             )
             self.kill(exit_code=url)
 
@@ -493,6 +497,7 @@ async def test_send_file_template(tmp_path):
     assert downloader.url is not None
     assert up_beh.exit_code == downloader.url
 
+
 async def test_send_file_not_template(tmp_path):
     mock_input_file = io.BytesIO(b"Testing!")
 
@@ -501,7 +506,7 @@ async def test_send_file_not_template(tmp_path):
             url = await self.upload_and_send_file(
                 to=self.agent.jid_to_send,
                 filename="test.txt",
-                input_file=mock_input_file
+                input_file=mock_input_file,
             )
             self.kill(exit_code=url)
 
@@ -534,6 +539,7 @@ async def test_send_file_not_template(tmp_path):
 
     assert down_beh.exit_code == "None"
     assert up_beh.exit_code == "http://fake-url.net/fiile"
+
 
 async def test_receive():
     class RecvBehaviour(OneShotBehaviour):
