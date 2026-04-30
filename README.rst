@@ -67,7 +67,7 @@ Features
 * Asyncio-based
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
-* Supports large file share via HTTP (XEP-0363)
+* Supports large file share via HTTP (XEP-0363_)
 * Web-based interface
 * Incorporates a custom XMPP server (PyJabber)
 * Use any XMPP server
