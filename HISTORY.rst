@@ -5,8 +5,7 @@ History
 4.1.3 (2026-04-28)
 ---------------------
 * Added support to UV (pyproject.toml), and migrate in pipelines (build, test, deploy and docs build)
-* Fixed slixmpp default TLS direct connection in versions > 1.10.0. It is encouraged by the RFC to
-start the bare connection and later upgrade it to TLS
+* Fixed slixmpp default TLS direct connection in versions > 1.10.0. It is encouraged by the RFC to start the bare connection and later upgrade it to TLS
 * Added new methods to share large files via HTTP using the XEP 0363 and the own server (PyJabber)
 * Added FIPA-ACL messages builder and parser.
 * Added support to the XEP 0363 (file upload via HTTP) allowing to share large files between agents
