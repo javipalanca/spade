@@ -4,6 +4,7 @@ History
 
 4.1.3 (2026-04-28)
 ---------------------
+* Dropped support to Python 3.9 due to incompatibility with some dependencies. SPADE now officially supports Python 3.14
 * Added support to UV (pyproject.toml), and migrate in pipelines (build, test, deploy and docs build)
 * Fixed slixmpp default TLS direct connection in versions > 1.10.0. It is encouraged by the RFC to start the bare connection and later upgrade it to TLS
 * Added new methods to share large files via HTTP using the XEP 0363 and the own server (PyJabber)
