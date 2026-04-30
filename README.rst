@@ -63,12 +63,13 @@ Features
 
 * Multi-agent platform based on XMPP_
 * Presence notification allows the system to know the current state of the agents in real-time
-* Python >=3.8
+* Python >=3.10
 * Asyncio-based
 * Agent model based on behaviours
 * Supports FIPA metadata using XMPP Data Forms (XEP-0004_: Data Forms)
+* Supports large file share via HTTP (XEP-0363)
 * Web-based interface
-* Incorporates a custom XMPP server (pyjabber)
+* Incorporates a custom XMPP server (PyJabber)
 * Use any XMPP server
 
 Plugins
@@ -97,6 +98,7 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _XMPP: http://www.xmpp.org
 .. _`XEP-0004` : https://xmpp.org/extensions/xep-0004.html
+.. _`XEP-0363` : https://xmpp.org/extensions/xep-0363.html
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 
