@@ -52,12 +52,9 @@ class XMPPClient(ClientXMPP):
 
         try:
             await resp.send()
-        except IqError:
-            """
-                If the user is already registered, it will return an IQ error
-                We can safely ignore it. The client will try the auth process
-                right after the ibr process
-            """
+        except IqError as e:
+            if e.iq["error"]["condition"] == "conflict":
+                self.logger.debug("Account already exists. Trying to login")
             pass
         except IqTimeout:
             raise RegistrationException("Timeout error during the register process.")

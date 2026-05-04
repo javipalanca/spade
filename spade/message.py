@@ -14,6 +14,8 @@ logger = logging.getLogger("spade.Message")
 class MessageBase(object):
     """Base class for message handling in SPADE."""
 
+    __slots__ = ("sent", "_to", "_sender", "_body", "_thread", "_metadata")
+
     def __init__(
         self,
         to: Union[str, JID, None] = None,
@@ -29,52 +31,12 @@ class MessageBase(object):
         self.thread = thread
 
         if metadata is None:
-            self.metadata = {}
+            self._metadata = {}
         else:
             for key, value in metadata.items():
                 if not isinstance(key, str) or not isinstance(value, str):
                     raise TypeError("Key and Value of metadata MUST be strings")
-            self.metadata = metadata
-
-    @classmethod
-    def from_node(cls, node: SlixmppMessage) -> Type["MessageBase"]:
-        """
-        Creates a new spade.message.Message from a slixmpp.stanza.Message
-
-        Args:
-          node (slixmpp.stanza.Message): a slixmpp Message
-
-        Returns:
-          spade.message.Message: a new spade Message
-
-        """
-        if not isinstance(node, SlixmppMessage):
-            raise AttributeError("node must be a slixmpp.stanza.Message instance")
-        msg = cls()
-        msg.to = node["to"]
-        msg.sender = node["from"]
-
-        if isinstance(node["body"], dict):
-            for body in node["body"].values():
-                msg.body = body
-                break
-        else:
-            msg.body = node["body"]
-
-        for data in [pl for pl in node.get_payload() if pl.tag == "{jabber:x:data}x"]:
-            title_elem = data.find("{jabber:x:data}title")
-            if title_elem is not None and title_elem.text == SPADE_X_METADATA:
-                for field in data.findall("{jabber:x:data}field"):
-                    value_elem = field.find("{jabber:x:data}value")
-                    value_text = value_elem.text if value_elem is not None else None
-                    if field.attrib["var"] != "_thread_node":
-                        if value_text is not None:
-                            msg.set_metadata(field.attrib["var"], value_text)
-                    else:
-                        if value_text is not None:
-                            msg.thread = value_text
-
-        return msg
+            self._metadata = metadata
 
     @property
     def to(self) -> JID:
@@ -179,6 +141,46 @@ class MessageBase(object):
             raise TypeError("'thread' MUST be a string")
         self._thread = value
 
+    @classmethod
+    def from_node(cls, node: SlixmppMessage) -> Type["MessageBase"]:
+        """
+        Creates a new spade.message.Message from a slixmpp.stanza.Message
+
+        Args:
+          node (slixmpp.stanza.Message): a slixmpp Message
+
+        Returns:
+          spade.message.Message: a new spade Message
+
+        """
+        if not isinstance(node, SlixmppMessage):
+            raise AttributeError("node must be a slixmpp.stanza.Message instance")
+        msg = cls()
+        msg.to = node["to"]
+        msg.sender = node["from"]
+
+        if isinstance(node["body"], dict):
+            for body in node["body"].values():
+                msg.body = body
+                break
+        else:
+            msg.body = node["body"]
+
+        for data in [pl for pl in node.get_payload() if pl.tag == "{jabber:x:data}x"]:
+            title_elem = data.find("{jabber:x:data}title")
+            if title_elem is not None and title_elem.text == SPADE_X_METADATA:
+                for field in data.findall("{jabber:x:data}field"):
+                    value_elem = field.find("{jabber:x:data}value")
+                    value_text = value_elem.text if value_elem is not None else None
+                    if field.attrib["var"] != "_thread_node":
+                        if value_text is not None:
+                            msg.set_metadata(field.attrib["var"], value_text)
+                    else:
+                        if value_text is not None:
+                            msg.thread = value_text
+
+        return msg
+
     def set_metadata(self, key: str, value: str) -> None:
         """
         Add a new metadata to the message
@@ -190,7 +192,7 @@ class MessageBase(object):
         """
         if not isinstance(key, str) or not isinstance(value, str):
             raise TypeError("'key' and 'value' of metadata MUST be strings")
-        self.metadata[key] = value
+        self._metadata[key] = value
 
     def get_metadata(self, key: str) -> Union[str, None]:
         """
@@ -203,7 +205,7 @@ class MessageBase(object):
           str: the value of the metadata (or None)
 
         """
-        return self.metadata[key] if key in self.metadata else None
+        return self._metadata[key] if key in self._metadata else None
 
     @staticmethod
     def empty_jid(jid: JID):
@@ -239,7 +241,7 @@ class MessageBase(object):
         if self.thread and (message.thread is None or message.thread != self.thread):
             return False
 
-        for key, value in self.metadata.items():
+        for key, value in self._metadata.items():
             if message.get_metadata(key) != value:
                 return False
 
@@ -269,11 +271,11 @@ class Message(MessageBase):
 
         """
         return Message(
-            to=str(self.sender),
-            sender=str(self.to),
+            to=self.sender,
+            sender=self.to,
             body=self.body,
             thread=self.thread,
-            metadata=self.metadata.copy(),
+            metadata=self._metadata.copy(),
         )
 
     def prepare(self, client: ClientXMPP) -> SlixmppMessage:
@@ -294,10 +296,10 @@ class Message(MessageBase):
         msg.chat()
 
         # Send metadata using xep-0004: Data Forms (https://xmpp.org/extensions/xep-0004.html)
-        if len(self.metadata):
+        if len(self._metadata):
             form = Form()
             form["type"] = "form"
-            for name, value in self.metadata.items():
+            for name, value in self._metadata.items():
                 form.add_field(var=name, ftype="text-single", value=value)
 
             if self.thread:
@@ -311,7 +313,7 @@ class Message(MessageBase):
         return msg
 
     def __str__(self) -> str:
-        s = f'<message to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self.metadata}>'
+        s = f'<message to="{self.to}" from="{self.sender}" thread="{self.thread}" metadata={self._metadata}>'
         if self.body:
             s += "\n" + self.body + "\n"
         s += "</message>"

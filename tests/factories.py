@@ -21,6 +21,14 @@ class MockedAgentFactory(factory.Factory):
     password = "fake_password"
 
 
+class MockedSecondAgentFactory(factory.Factory):
+    class Meta:
+        model = MockedConnectedAgent
+
+    jid = "fake2@jid"
+    password = "fake_password"
+
+
 class MockedPresenceConnectedAgent(Agent):
     def __init__(
         self,

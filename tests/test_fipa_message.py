@@ -13,6 +13,7 @@ from spade.fipa_message import (
 )
 from spade.message import Message
 
+
 def test_fipa_message_builder_initialization():
     """Test FIPA message builder initialization"""
     builder = FIPAMessageBuilder("sender@localhost", "receiver@localhost")
@@ -261,6 +262,7 @@ def test_fipa_message_parser_get_custom_metadata():
 # validate_fipa_message() coverage
 # =============================================================================
 
+
 def test_validate_fipa_message_success():
     """Test validation success path with all required fields"""
     mock_message = Message()
@@ -334,7 +336,7 @@ def test_validate_fipa_message_invalid_json_body():
         "conversation-id": "test_conv_123",
         "language": "json",
     }
-    mock_message.body = 'not valid json {'  # Invalid JSON
+    mock_message.body = "not valid json {"  # Invalid JSON
 
     parser = FIPAMessageParser(mock_message)
     is_valid, error_msg = parser.validate_fipa_message()

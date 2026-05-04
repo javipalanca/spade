@@ -37,7 +37,7 @@ class InvalidPerformativeError(ValueError):
         self.performative = performative
         self.valid_performatives = valid_performatives
         super().__init__(
-            f"Invalid performative '{performative}'. " f"Valid: {valid_performatives}"
+            f"Invalid performative '{performative}'. Valid: {valid_performatives}"
         )
 
 

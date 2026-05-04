@@ -15,7 +15,7 @@ def test_match():
     template.to = "recv1@host"
     template.body = "Hello World"
     template.thread = "thread-id"
-    template.metadata = {"performative": "query"}
+    template._metadata = {"performative": "query"}
 
     message = Message()
     message.sender = "sender1@host"
@@ -81,7 +81,7 @@ def test_match_false_thread():
 
 def test_match_false_metadata():
     template = Template()
-    template.metadata = {"performative": "query"}
+    template._metadata = {"performative": "query"}
 
     message = Message()
 
@@ -94,7 +94,7 @@ def test_match_false_metadata():
 
 def test_match_false_metadata_with_different_key():
     template = Template()
-    template.metadata = {"performative": "query"}
+    template._metadata = {"performative": "query"}
 
     message = Message()
     message.set_metadata("language", "query")
@@ -107,7 +107,7 @@ def test_match_and():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -116,14 +116,14 @@ def test_match_and():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert not (t1 & t2).match(m2)
 
     m3 = Message()
     m3.sender = "sender1@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "query"}
+    m3._metadata = {"performative": "query"}
 
     assert (t1 & t2).match(m3)
 
@@ -133,7 +133,7 @@ def test_match_iand():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -143,14 +143,14 @@ def test_match_iand():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert not t1.match(m2)
 
     m3 = Message()
     m3.sender = "sender1@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "query"}
+    m3._metadata = {"performative": "query"}
 
     assert t1.match(m3)
 
@@ -160,7 +160,7 @@ def test_match_or():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -169,14 +169,14 @@ def test_match_or():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert (t1 | t2).match(m2)
 
     m3 = Message()
     m3.sender = "sender2@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "inform"}
+    m3._metadata = {"performative": "inform"}
 
     assert not (t1 | t2).match(m3)
 
@@ -186,7 +186,7 @@ def test_match_ior():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -197,14 +197,14 @@ def test_match_ior():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert t1.match(m2)
 
     m3 = Message()
     m3.sender = "sender2@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "inform"}
+    m3._metadata = {"performative": "inform"}
 
     assert not t1.match(m3)
 
@@ -214,7 +214,7 @@ def test_match_xor():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -223,14 +223,14 @@ def test_match_xor():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert (t1 ^ t2).match(m2)
 
     m3 = Message()
     m3.sender = "sender2@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "inform"}
+    m3._metadata = {"performative": "inform"}
 
     assert not (t1 ^ t2).match(m3)
 
@@ -249,7 +249,7 @@ def test_match_ixor():
     t1.sender = "sender1@host"
     t2 = Template()
     t2.to = "recv1@host"
-    t2.metadata = {"performative": "query"}
+    t2._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -260,14 +260,14 @@ def test_match_ixor():
 
     m2 = Message()
     m2.to = "recv1@host"
-    m2.metadata = {"performative": "query"}
+    m2._metadata = {"performative": "query"}
 
     assert t1.match(m2)
 
     m3 = Message()
     m3.sender = "sender2@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "inform"}
+    m3._metadata = {"performative": "inform"}
 
     assert not t1.match(m3)
 
@@ -287,7 +287,7 @@ def test_match_not():
     t1 = Template()
     t1.sender = "sender1@host"
     t1.to = "recv1@host"
-    t1.metadata = {"performative": "query"}
+    t1._metadata = {"performative": "query"}
 
     m1 = Message()
     m1.sender = "sender1@host"
@@ -303,7 +303,7 @@ def test_match_not():
     m3 = Message()
     m3.sender = "sender1@host"
     m3.to = "recv1@host"
-    m3.metadata = {"performative": "query"}
+    m3._metadata = {"performative": "query"}
 
     assert not (~t1).match(m3)
 

@@ -358,3 +358,89 @@ Notes
 
     template = Template()
     template.set_metadata("performative", "inform")
+
+
+Sending large files
+-------------------
+SPADE includes native support for file exchange between agents via HTTP (XEP-0363).
+This allows sharing large files between each online agent in a more secure and robust way compared with
+data serialization via XMPP stanzas
+
+Prerequisites
+~~~~~~~~~~~~~
+To use this feature, ensure that:
+
+* Your XMPP server supports ``urn:xmpp:http:upload:0``.
+* The agent has the necessary permissions configured for file uploads on the server component.
+
+.. note::
+    This prerequisites only applies for users that prefer to run its own XMPP server.
+    The integrated server in SPADE supports this feature without extra configuration.
+
+Sending a File
+~~~~~~~~~~~~~~
+To send a file, you need to use the ``upload_and_send_file`` method within your agent's behavior to share the file
+and communicate its location. On the receiving end, the agent listens for the message containing the file metadata by using
+the ``performative`` metadata with the value ``0363``. When a message is received, a ``url`` metadata will be present. It is
+the parameter required in the ``download_file`` to obtain the shared file.
+
+The following example demonstrates how to implement both the sender and the receiver behaviors:
+
+.. code-block:: python
+
+    class SharerBehaviour(OneShotBehaviour):
+        async def run(self):
+            with open("text.txt", "rb") as file:
+                url = await self.upload_and_send_file(
+                    to="receiver@localhost",
+                    filename="test.txt",
+                    input_file=file
+                )
+
+    class ReceiveFileBehaviour(CyclicBehaviour):
+        async def run(self):
+        msg = self.receive(5)
+        if msg:
+            url = msg.get_metadata("url")
+            if url:
+                await self.download_file(url, "path/to/download")
+
+    receive_template = Template()
+    receive_template.set_metadata("performative", "0363")
+
+    sharer = Agent("uploader@localhost", "1234")
+    sharer.add_behaviour(SharerBehaviour())
+
+    receiver = Agent("receiver@localhost", "1234")
+    receiver.add_behaviour(ReceiveFileBehaviour(), receive_template)
+
+The ``upload_and_send_file`` returns the url of the file, and can be reused with other agents during the same session
+(i.e., the server didn't restart since the file was uploaded)
+
+It is possible to upload and send the file in separated methods, to achieve more customized behaviours:
+
+.. code-block:: python
+
+    class UploadAndSendBehaviour(OneShotBehaviour):
+        async def run(self):
+            with open("text.txt", "rb") as file:
+                url = await self.upload_file(filename="test.txt", input_file=file)
+                await self.send_file(to="receiver@localhost", url=url)
+
+    class ReceiveFileBehaviour(CyclicBehaviour):
+        async def run(self):
+        msg = self.receive(5)
+        if msg:
+            url = msg.get_metadata("url")
+            if url:
+                await self.download_file(url, "path/to/download")
+
+    receive_template = Template()
+    receive_template.set_metadata("performative", "0363")
+
+    sharer = Agent("uploader@localhost", "1234")
+    sharer.add_behaviour(UploadAndSendBehaviour())
+
+    receiver = Agent("receiver@localhost", "1234")
+    receiver.add_behaviour(ReceiveFileBehaviour(), receive_template)
+

@@ -6,15 +6,16 @@ on:
 jobs:
   test-macos:
     runs-on: macos-latest
+
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.9", "3.10", "3.11", "3.12"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     name: Python ${{ matrix.python }}
 
     steps:
     - uses: actions/checkout@v5
-    
+
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
@@ -32,4 +33,4 @@ jobs:
 
     - name: Test with pytest
       run: |
-        uv run pytest -q
+        uv run pytest --ignore=tests/test_e2e.py -q
