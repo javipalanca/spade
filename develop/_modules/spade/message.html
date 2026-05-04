@@ -1,20 +1,20 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>spade.message &mdash; SPADE 4.1.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/jquery.js"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+      <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -60,14 +60,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> SPADE
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SPADE
           </a>
-              <div class="version">
-                4.1.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -104,9 +105,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>spade.message</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">spade.message</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -132,6 +133,8 @@
 <div class="viewcode-block" id="MessageBase"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">MessageBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for message handling in SPADE.&quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;sent&quot;</span><span class="p">,</span> <span class="s2">&quot;_to&quot;</span><span class="p">,</span> <span class="s2">&quot;_sender&quot;</span><span class="p">,</span> <span class="s2">&quot;_body&quot;</span><span class="p">,</span> <span class="s2">&quot;_thread&quot;</span><span class="p">,</span> <span class="s2">&quot;_metadata&quot;</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">to</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JID</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -147,52 +150,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">thread</span>
 
         <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key and Value of metadata MUST be strings&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
-
-<div class="viewcode-block" id="MessageBase.from_node"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase.from_node">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">SlixmppMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;MessageBase&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new spade.message.Message from a slixmpp.stanza.Message</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">          node (slixmpp.stanza.Message): a slixmpp Message</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">          spade.message.Message: a new spade Message</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">SlixmppMessage</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;node must be a slixmpp.stanza.Message instance&quot;</span><span class="p">)</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">to</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
-                <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span>
-
-        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[</span><span class="n">pl</span> <span class="k">for</span> <span class="n">pl</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">get_payload</span><span class="p">()</span> <span class="k">if</span> <span class="n">pl</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{jabber:x:data}x&quot;</span><span class="p">]:</span>
-            <span class="n">title_elem</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}title&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">title_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">title_elem</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">SPADE_X_METADATA</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}field&quot;</span><span class="p">):</span>
-                    <span class="n">value_elem</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}value&quot;</span><span class="p">)</span>
-                    <span class="n">value_text</span> <span class="o">=</span> <span class="n">value_elem</span><span class="o">.</span><span class="n">text</span> <span class="k">if</span> <span class="n">value_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;_thread_node&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">value_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">msg</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">],</span> <span class="n">value_text</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">value_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">msg</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">value_text</span>
-
-        <span class="k">return</span> <span class="n">msg</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">metadata</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JID</span><span class="p">:</span>
@@ -297,6 +260,46 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;thread&#39; MUST be a string&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">value</span>
 
+<div class="viewcode-block" id="MessageBase.from_node"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase.from_node">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">SlixmppMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;MessageBase&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new spade.message.Message from a slixmpp.stanza.Message</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          node (slixmpp.stanza.Message): a slixmpp Message</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          spade.message.Message: a new spade Message</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">SlixmppMessage</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;node must be a slixmpp.stanza.Message instance&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">to</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="p">[</span><span class="n">pl</span> <span class="k">for</span> <span class="n">pl</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">get_payload</span><span class="p">()</span> <span class="k">if</span> <span class="n">pl</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{jabber:x:data}x&quot;</span><span class="p">]:</span>
+            <span class="n">title_elem</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}title&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">title_elem</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">SPADE_X_METADATA</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}field&quot;</span><span class="p">):</span>
+                    <span class="n">value_elem</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;{jabber:x:data}value&quot;</span><span class="p">)</span>
+                    <span class="n">value_text</span> <span class="o">=</span> <span class="n">value_elem</span><span class="o">.</span><span class="n">text</span> <span class="k">if</span> <span class="n">value_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;_thread_node&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">value_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">msg</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">],</span> <span class="n">value_text</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">value_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">msg</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">value_text</span>
+
+        <span class="k">return</span> <span class="n">msg</span></div>
+
 <div class="viewcode-block" id="MessageBase.set_metadata"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase.set_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new metadata to the message</span>
@@ -308,7 +311,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;key&#39; and &#39;value&#39; of metadata MUST be strings&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 <div class="viewcode-block" id="MessageBase.get_metadata"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase.get_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -321,7 +324,7 @@
 <span class="sd">          str: the value of the metadata (or None)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="k">else</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="k">else</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="MessageBase.empty_jid"><a class="viewcode-back" href="../../spade.html#spade.message.MessageBase.empty_jid">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">empty_jid</span><span class="p">(</span><span class="n">jid</span><span class="p">:</span> <span class="n">JID</span><span class="p">):</span>
@@ -357,7 +360,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="ow">and</span> <span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">thread</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">message</span><span class="o">.</span><span class="n">thread</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -387,11 +390,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Message</span><span class="p">(</span>
-            <span class="n">to</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">),</span>
-            <span class="n">sender</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">),</span>
+            <span class="n">to</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">,</span>
+            <span class="n">sender</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="p">,</span>
             <span class="n">body</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
             <span class="n">thread</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Message.prepare"><a class="viewcode-back" href="../../spade.html#spade.message.Message.prepare">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">ClientXMPP</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SlixmppMessage</span><span class="p">:</span>
@@ -412,10 +415,10 @@
         <span class="n">msg</span><span class="o">.</span><span class="n">chat</span><span class="p">()</span>
 
         <span class="c1"># Send metadata using xep-0004: Data Forms (https://xmpp.org/extensions/xep-0004.html)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">):</span>
             <span class="n">form</span> <span class="o">=</span> <span class="n">Form</span><span class="p">()</span>
             <span class="n">form</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;form&quot;</span>
-            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">form</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s2">&quot;text-single&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">:</span>
@@ -429,7 +432,7 @@
         <span class="k">return</span> <span class="n">msg</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;message to=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="si">}</span><span class="s1">&quot; from=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="si">}</span><span class="s1">&quot; thread=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="si">}</span><span class="s1">&quot; metadata=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;message to=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">to</span><span class="si">}</span><span class="s1">&quot; from=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="si">}</span><span class="s1">&quot; thread=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="si">}</span><span class="s1">&quot; metadata=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="si">}</span><span class="s1">&gt;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">body</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/message&gt;&quot;</span>

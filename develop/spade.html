@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>spade package &mdash; SPADE 4.1.2 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+      <script src="_static/doctools.js"></script>
+      <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -63,14 +63,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> SPADE
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPADE
           </a>
-              <div class="version">
-                4.1.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -107,9 +108,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="api.html">API Documentation</a> &raquo;</li>
-      <li>spade package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API Documentation</a></li>
+      <li class="breadcrumb-item active">spade package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/spade.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -485,13 +486,12 @@ To be implemented by user.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.send_file">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.send_file" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the XEP 0363 service, and tries to send the file.</p>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.send_file" title="Permalink to this definition"></a></dt>
+<dd><p>Sends the url containing the file uploaded via the <code class="docutils literal notranslate"><span class="pre">upload_file</span></code> method.
+This method does not ensure nor check that the url is valid.</p>
 <dl class="simple">
-<dt>Args:</dt><dd><p>filename (str): Path to the file to upload (or only the name if <code class="docutils literal notranslate"><span class="pre">input_file</span></code> is provided)
-input_file (IO[bytes]): Binary file stream on the file</p>
-</dd>
-<dt>Returns:</dt><dd><p>An url used to download the uploaded file (GET HTTP method)</p>
+<dt>Args:</dt><dd><p>to (str): JID of the agent to send the file
+url (str): Url obtained by using the <code class="docutils literal notranslate"><span class="pre">upload_file</span></code> class method</p>
 </dd>
 </dl>
 </dd></dl>
@@ -532,6 +532,35 @@ messages with this behaviour.</p>
 <dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.start" title="Permalink to this definition"></a></dt>
 <dd><p>starts behaviour in the event loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.upload_and_send_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upload_and_send_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.upload_and_send_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.upload_and_send_file" title="Permalink to this definition"></a></dt>
+<dd><p>Discovers the XEP 0363 service, and tries to send the file.
+In a success case, the url of the file will be automatically send
+to the <code class="docutils literal notranslate"><span class="pre">to</span></code> parameter</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>to (str): JID of the user to send the new uploaded file
+filename (str): Path to the file to upload (or only the name if <code class="docutils literal notranslate"><span class="pre">input_file</span></code> is provided)
+input_file (IO[bytes]): Optional binary file stream on the file</p>
+</dd>
+<dt>Returns:</dt><dd><p>The url obtained in the file upload. Can be reused with other agents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spade.behaviour.CyclicBehaviour.upload_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/spade/behaviour.html#CyclicBehaviour.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.behaviour.CyclicBehaviour.upload_file" title="Permalink to this definition"></a></dt>
+<dd><p>Discovers the XEP 0363 service, and tries to send the file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Path to the file to upload (or only the name if <code class="docutils literal notranslate"><span class="pre">input_file</span></code> is provided)
+input_file (IO[bytes]): Optional binary file stream on the file</p>
+</dd>
+<dt>Returns:</dt><dd><p>An url used to download the uploaded file (GET HTTP method)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1189,6 +1218,11 @@ without having previously set the corresponding performative.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.message.Message.sent">
+<span class="sig-name descname"><span class="pre">sent</span></span><a class="headerlink" href="#spade.message.Message.sent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1272,6 +1306,11 @@ The message can be a Message object or a Template object.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.message.MessageBase.sent">
+<span class="sig-name descname"><span class="pre">sent</span></span><a class="headerlink" href="#spade.message.MessageBase.sent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="spade.message.MessageBase.set_metadata">
@@ -1625,6 +1664,11 @@ value (str): value of the metadata</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spade.template.</span></span><span class="sig-name descname"><span class="pre">Template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">JID</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spade/template.html#Template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spade.template.Template" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#spade.template.BaseTemplate" title="spade.template.BaseTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a>, <a class="reference internal" href="#spade.message.MessageBase" title="spade.message.MessageBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageBase</span></code></a></p>
 <p>Template for message matching</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spade.template.Template.sent">
+<span class="sig-name descname"><span class="pre">sent</span></span><a class="headerlink" href="#spade.template.Template.sent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
