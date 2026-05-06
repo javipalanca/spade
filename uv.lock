@@ -1453,7 +1453,7 @@ wheels = [
 
 [[package]]
 name = "pyjabber"
-version = "0.4.2"
+version = "0.4.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -1471,9 +1471,9 @@ dependencies = [
     { name = "uvloop", marker = "sys_platform != 'win32'" },
     { name = "winloop", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a0/28/59b3362406ad42746b62e58f06daa29b742dda7d02562f5b2a7b49dfef39/pyjabber-0.4.2.tar.gz", hash = "sha256:9bc963c5566dd78976b92c5b7fd0764f517b115b10ee3fb9422a42fe06918269", size = 957673, upload-time = "2026-04-02T09:01:14.755Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/85/2831376f076fcfad00d648adbc5b89be21646a05af7285b6609e07ddf41a/pyjabber-0.4.4.tar.gz", hash = "sha256:3d587e64d355a281813ba69ad7b3b0e6a6381dc48c6809db15db272df247f6f7", size = 962812, upload-time = "2026-04-30T08:17:10.833Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/2f/51697e950d174e34a5acfa4e5a5a8996cfcefefec4376aebaaae5e3460e1/pyjabber-0.4.2-py3-none-any.whl", hash = "sha256:fa9f0731529dffadfb0d20f361a14d55b3ae026e1c43898fa5ee89582996ac9b", size = 986151, upload-time = "2026-04-02T09:01:13.101Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/dc/5c1c557a4ba075e33e0bb114dd5186dc0313320ca8a5fde1725bbffc34d1/pyjabber-0.4.4-py3-none-any.whl", hash = "sha256:7fd712a19b37c0e59fe8883d0be913e6edc847fbe223b36dac44027cd13d6c3b", size = 990798, upload-time = "2026-04-30T08:17:07.364Z" },
 ]
 
 [[package]]
@@ -1907,7 +1907,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "jinja2-time", specifier = "==0.2.0" },
     { name = "parsel", marker = "extra == 'dev'", specifier = "==1.10.0" },
-    { name = "pyjabber", specifier = ">=0.4.2" },
+    { name = "pyjabber", specifier = ">=0.4.3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = "==8.3.4" },
     { name = "pytest-aiohttp", marker = "extra == 'dev'", specifier = "==1.1.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = "==0.24.0" },
@@ -1922,7 +1922,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = "==0.3.3" },
     { name = "setuptools", marker = "extra == 'dev'", specifier = "==80.9.0" },
     { name = "singletonify", specifier = "==0.2.4" },
-    { name = "slixmpp-multiplatform", specifier = ">=1.12.0" },
+    { name = "slixmpp-multiplatform", specifier = "==1.12.0" },
     { name = "sphinx", marker = "extra == 'dev'", specifier = "==6.0.0" },
     { name = "sphinx-rtd-theme", marker = "extra == 'dev'", specifier = "==3.1.0" },
     { name = "testfixtures", marker = "extra == 'dev'", specifier = "==8.3.0" },

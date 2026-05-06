@@ -42,7 +42,7 @@ async def start_server_in_loop(runner: AppRunner, hostname: str, port: int, agen
 
 class WebApp(object):
     """Module to handle agent's web interface"""
-
+    __slots__ = ('agent', 'server', 'hostname', 'port', 'runner', 'app', 'loaders', 'menu_entries')
     def __init__(self, agent):
         self.agent = agent
         self.server = None

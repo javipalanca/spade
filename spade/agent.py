@@ -34,6 +34,7 @@ class DisconnectedException(Exception):
 
 
 class Agent(object):
+    __slots__ = ('jid', 'password', 'xmpp_port', 'verify_security', 'behaviours', '_values', 'client', 'presence', 'loop', 'container', 'web', 'traces', '_alive')
     def __init__(
         self, jid: str, password: str, port: int = 5222, verify_security: bool = False
     ):

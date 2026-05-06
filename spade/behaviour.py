@@ -49,7 +49,7 @@ class NotValidTransition(Exception):
 
 class CyclicBehaviour(object, metaclass=ABCMeta):
     """This behaviour is executed cyclically until it is stopped."""
-
+    __slots__ = ('agent', 'template', '_force_kill', '_is_done', '_exit_code', 'presence', 'web', 'is_running', 'queue')
     def __init__(self):
         self.agent = None
         self.template = None
@@ -500,7 +500,7 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
 class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """This behaviour is only executed once"""
-
+    __slots__ = '_already_executed'
     def __init__(self):
         super().__init__()
         self._already_executed = False
@@ -515,7 +515,7 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
 class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """This behaviour is executed periodically with an interval"""
-
+    __slots__ = ('_period', '_next_activation')
     def __init__(self, period: float, start_at: Optional[datetime] = None):
         """
         Creates a periodic behaviour.
@@ -570,7 +570,7 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
 class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
     """This behaviour is executed once at after specified datetime"""
-
+    __slots__ = ('_timeout', '_timeout_triggered')
     def __init__(self, start_at):
         """
         Creates a timeout behaviour, which is run at start_at
@@ -608,10 +608,11 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
 
 class State(OneShotBehaviour, metaclass=ABCMeta):
     """A state of a FSMBehaviour is a OneShotBehaviour"""
-
+    __slots__ = ('next_state', 'receive')
     def __init__(self):
         super().__init__()
         self.next_state = None
+        self.receive = None
 
     def set_next_state(self, state_name: str) -> None:
         """
@@ -628,7 +629,7 @@ class State(OneShotBehaviour, metaclass=ABCMeta):
 
 class FSMBehaviour(CyclicBehaviour):
     """A behaviour composed of states (oneshotbehaviours) that may transition from one state to another."""
-
+    __slots__ = ('_states', '_transitions', 'current_state')
     def __init__(self):
         super().__init__()
         self._states: Dict[str, State] = {}
