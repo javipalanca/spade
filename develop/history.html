@@ -162,10 +162,11 @@
 <ul class="simple">
 <li><p>Dropped support to Python 3.9 due to incompatibility with some dependencies. SPADE now officially supports Python 3.14</p></li>
 <li><p>Added support to UV (pyproject.toml), and migrate in pipelines (build, test, deploy and docs build)</p></li>
-<li><p>Fixed slixmpp default TLS direct connection in versions &gt; 1.10.0. It is encouraged by the RFC to start the bare connection and later upgrade it to TLS</p></li>
 <li><p>Added new methods to share large files via HTTP using the XEP 0363 and the own server (PyJabber)</p></li>
 <li><p>Added FIPA-ACL messages builder and parser.</p></li>
 <li><p>Added support to the XEP 0363 (file upload via HTTP) allowing to share large files between agents</p></li>
+<li><p>Use of __slots__ in class instances to reduce memory usage and improve performance</p></li>
+<li><p>Fixed slixmpp default TLS direct connection in versions &gt; 1.10.0. It is encouraged by the RFC to start the bare connection and later upgrade it to TLS</p></li>
 <li><p>Fixed data integrity in message’s metadata during the reply</p></li>
 </ul>
 </section>

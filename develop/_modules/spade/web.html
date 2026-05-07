@@ -162,6 +162,17 @@
 <div class="viewcode-block" id="WebApp"><a class="viewcode-back" href="../../spade.html#spade.web.WebApp">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">WebApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Module to handle agent&#39;s web interface&quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;agent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;server&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hostname&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;port&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;runner&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;app&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;loaders&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;menu_entries&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">agent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="kc">None</span>

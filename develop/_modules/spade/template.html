@@ -169,6 +169,8 @@
 <div class="viewcode-block" id="NOTTemplate"><a class="viewcode-back" href="../../spade.html#spade.template.NOTTemplate">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">NOTTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="s2">&quot;expr&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
 
@@ -179,6 +181,8 @@
 
 <div class="viewcode-block" id="ORTemplate"><a class="viewcode-back" href="../../spade.html#spade.template.ORTemplate">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ORTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;expr1&quot;</span><span class="p">,</span> <span class="s2">&quot;expr2&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr1</span><span class="p">,</span> <span class="n">expr2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expr1</span> <span class="o">=</span> <span class="n">expr1</span>
@@ -192,6 +196,8 @@
 <div class="viewcode-block" id="ANDTemplate"><a class="viewcode-back" href="../../spade.html#spade.template.ANDTemplate">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ANDTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;expr1&quot;</span><span class="p">,</span> <span class="s2">&quot;expr2&quot;</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr1</span><span class="p">,</span> <span class="n">expr2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expr1</span> <span class="o">=</span> <span class="n">expr1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expr2</span> <span class="o">=</span> <span class="n">expr2</span>
@@ -203,6 +209,8 @@
 
 <div class="viewcode-block" id="XORTemplate"><a class="viewcode-back" href="../../spade.html#spade.template.XORTemplate">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">XORTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;expr1&quot;</span><span class="p">,</span> <span class="s2">&quot;expr2&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr1</span><span class="p">,</span> <span class="n">expr2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expr1</span> <span class="o">=</span> <span class="n">expr1</span>

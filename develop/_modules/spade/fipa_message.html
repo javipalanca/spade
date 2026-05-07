@@ -146,6 +146,8 @@
 <span class="sd">    that is not defined in the FIPA-ACL specification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;valid_performatives&quot;</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">performative</span><span class="p">,</span> <span class="n">valid_performatives</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with the invalid performative and valid ones.</span>
 
@@ -231,6 +233,7 @@
         <span class="s2">&quot;fipa-brokering&quot;</span><span class="p">:</span> <span class="s2">&quot;Brokering protocol&quot;</span><span class="p">,</span>
         <span class="s2">&quot;fipa-recruiting&quot;</span><span class="p">:</span> <span class="s2">&quot;Recruiting protocol&quot;</span><span class="p">,</span>
     <span class="p">}</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -610,6 +613,8 @@
 <span class="sd">    Provides methods for extracting and validating FIPA metadata</span>
 <span class="sd">    from incoming messages.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

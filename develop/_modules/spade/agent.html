@@ -153,6 +153,25 @@
 
 
 <div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;jid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;xmpp_port&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify_security&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;behaviours&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_values&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;presence&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;loop&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;container&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;web&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;traces&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_alive&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hook_plugin_before_connection_cb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hook_plugin_after_connection_cb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__dict__&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5222</span><span class="p">,</span> <span class="n">verify_security</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
@@ -188,6 +207,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">traces</span> <span class="o">=</span> <span class="n">TraceStore</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_hook_plugin_after_connection</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_hook_plugin_before_connection</span>
+        <span class="p">)</span>
+
+        <span class="c1"># if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:</span>
+        <span class="c1">#     self._hook_plugin_before_connection = self._default_hook_plugin_before_connection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span>
+
+    <span class="nd">@_hook_plugin_after_connection</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span>
+
+    <span class="nd">@_hook_plugin_before_connection</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Agent.set_loop"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.set_loop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span></div>
@@ -248,13 +293,13 @@
                         <span class="n">state</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
                 <span class="n">behaviour</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_default_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overload this method to hook a plugin before connection is done</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_default_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overload this method to hook a plugin after connection is done</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -127,12 +127,19 @@
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.agent.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.add_behaviour"><code class="docutils literal notranslate"><span class="pre">Agent.add_behaviour()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.avatar"><code class="docutils literal notranslate"><span class="pre">Agent.avatar</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.behaviours"><code class="docutils literal notranslate"><span class="pre">Agent.behaviours</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.build_avatar_url"><code class="docutils literal notranslate"><span class="pre">Agent.build_avatar_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.client"><code class="docutils literal notranslate"><span class="pre">Agent.client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.container"><code class="docutils literal notranslate"><span class="pre">Agent.container</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.dispatch"><code class="docutils literal notranslate"><span class="pre">Agent.dispatch()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.get"><code class="docutils literal notranslate"><span class="pre">Agent.get()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.has_behaviour"><code class="docutils literal notranslate"><span class="pre">Agent.has_behaviour()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.is_alive"><code class="docutils literal notranslate"><span class="pre">Agent.is_alive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.jid"><code class="docutils literal notranslate"><span class="pre">Agent.jid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.loop"><code class="docutils literal notranslate"><span class="pre">Agent.loop</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.name"><code class="docutils literal notranslate"><span class="pre">Agent.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.password"><code class="docutils literal notranslate"><span class="pre">Agent.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.presence"><code class="docutils literal notranslate"><span class="pre">Agent.presence</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.remove_behaviour"><code class="docutils literal notranslate"><span class="pre">Agent.remove_behaviour()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.set"><code class="docutils literal notranslate"><span class="pre">Agent.set()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.set_container"><code class="docutils literal notranslate"><span class="pre">Agent.set_container()</span></code></a></li>
@@ -141,6 +148,10 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.start"><code class="docutils literal notranslate"><span class="pre">Agent.start()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.stop"><code class="docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.submit"><code class="docutils literal notranslate"><span class="pre">Agent.submit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.traces"><code class="docutils literal notranslate"><span class="pre">Agent.traces</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.verify_security"><code class="docutils literal notranslate"><span class="pre">Agent.verify_security</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.web"><code class="docutils literal notranslate"><span class="pre">Agent.web</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.agent.Agent.xmpp_port"><code class="docutils literal notranslate"><span class="pre">Agent.xmpp_port</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.agent.AuthenticationFailure"><code class="docutils literal notranslate"><span class="pre">AuthenticationFailure</span></code></a></li>
@@ -150,18 +161,22 @@
 <li class="toctree-l2"><a class="reference internal" href="spade.html#module-spade.behaviour">spade.behaviour module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.behaviour.BehaviourNotFinishedException"><code class="docutils literal notranslate"><span class="pre">BehaviourNotFinishedException</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.agent"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.agent</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.download_file"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.download_file()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.enqueue"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.enqueue()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.exit_code"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.exit_code</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.get"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.get()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.is_done"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.is_done()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.is_killed"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.is_killed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.is_running"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.is_running</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.join"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.join()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.kill"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.kill()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.mailbox_size"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.mailbox_size()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.match"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.match()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.on_end"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.on_end()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.on_start"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.on_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.on_end"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.on_end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.on_start"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.on_start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.presence"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.presence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.queue"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.queue</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.receive"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.receive()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.run"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.run()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.send"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.send()</span></code></a></li>
@@ -170,18 +185,21 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.set_agent"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.set_agent()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.set_template"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.set_template()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.start"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.template"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.template</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.upload_and_send_file"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.upload_and_send_file()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.upload_file"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.upload_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.CyclicBehaviour.web"><code class="docutils literal notranslate"><span class="pre">CyclicBehaviour.web</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.add_state"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.add_state()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.add_transition"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.add_transition()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.current_state"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.current_state</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.get_state"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.get_state()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.get_states"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.get_states()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.is_valid_transition"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.is_valid_transition()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.run"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.setup"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.setup"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.setup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.FSMBehaviour.to_graphviz"><code class="docutils literal notranslate"><span class="pre">FSMBehaviour.to_graphviz()</span></code></a></li>
 </ul>
 </li>
@@ -193,6 +211,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.behaviour.State"><code class="docutils literal notranslate"><span class="pre">State</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.State.next_state"><code class="docutils literal notranslate"><span class="pre">State.next_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.State.receive"><code class="docutils literal notranslate"><span class="pre">State.receive</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.behaviour.State.set_next_state"><code class="docutils literal notranslate"><span class="pre">State.set_next_state()</span></code></a></li>
 </ul>
 </li>
@@ -220,6 +240,8 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_inform_message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.create_inform_message()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_request_message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.create_request_message()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.create_response_message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.create_response_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.metadata"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.metadata</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_body"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.set_body()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_conversation_id"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.set_conversation_id()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageBuilder.set_custom_metadata"><code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder.set_custom_metadata()</span></code></a></li>
@@ -240,12 +262,18 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.get_protocol"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.get_protocol()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.get_reply_with"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.get_reply_with()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.is_valid_fipa_message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.is_valid_fipa_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.metadata"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.metadata</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.parse_body"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.parse_body()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.print_debug_info"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.print_debug_info()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.FIPAMessageParser.validate_fipa_message"><code class="docutils literal notranslate"><span class="pre">FIPAMessageParser.validate_fipa_message()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="spade.html#spade.fipa_message.InvalidPerformativeError"><code class="docutils literal notranslate"><span class="pre">InvalidPerformativeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="spade.html#spade.fipa_message.InvalidPerformativeError"><code class="docutils literal notranslate"><span class="pre">InvalidPerformativeError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.InvalidPerformativeError.performative"><code class="docutils literal notranslate"><span class="pre">InvalidPerformativeError.performative</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.fipa_message.InvalidPerformativeError.valid_performatives"><code class="docutils literal notranslate"><span class="pre">InvalidPerformativeError.valid_performatives</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.fipa_message.PerformativeNotSetError"><code class="docutils literal notranslate"><span class="pre">PerformativeNotSetError</span></code></a></li>
 </ul>
 </li>
@@ -276,9 +304,17 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="spade.html#module-spade.presence">spade.presence module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.presence.Contact"><code class="docutils literal notranslate"><span class="pre">Contact</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.ask"><code class="docutils literal notranslate"><span class="pre">Contact.ask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.current_presence"><code class="docutils literal notranslate"><span class="pre">Contact.current_presence</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.get_presence"><code class="docutils literal notranslate"><span class="pre">Contact.get_presence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.groups"><code class="docutils literal notranslate"><span class="pre">Contact.groups</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.is_available"><code class="docutils literal notranslate"><span class="pre">Contact.is_available()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.is_subscribed"><code class="docutils literal notranslate"><span class="pre">Contact.is_subscribed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.jid"><code class="docutils literal notranslate"><span class="pre">Contact.jid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.last_presence"><code class="docutils literal notranslate"><span class="pre">Contact.last_presence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.name"><code class="docutils literal notranslate"><span class="pre">Contact.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.resources"><code class="docutils literal notranslate"><span class="pre">Contact.resources</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.subscription"><code class="docutils literal notranslate"><span class="pre">Contact.subscription</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.update_presence"><code class="docutils literal notranslate"><span class="pre">Contact.update_presence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.Contact.update_subscription"><code class="docutils literal notranslate"><span class="pre">Contact.update_subscription()</span></code></a></li>
 </ul>
@@ -286,10 +322,18 @@
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.presence.ContactNotFound"><code class="docutils literal notranslate"><span class="pre">ContactNotFound</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo"><code class="docutils literal notranslate"><span class="pre">PresenceInfo</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo.is_available"><code class="docutils literal notranslate"><span class="pre">PresenceInfo.is_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo.priority"><code class="docutils literal notranslate"><span class="pre">PresenceInfo.priority</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo.show"><code class="docutils literal notranslate"><span class="pre">PresenceInfo.show</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo.status"><code class="docutils literal notranslate"><span class="pre">PresenceInfo.status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceInfo.type"><code class="docutils literal notranslate"><span class="pre">PresenceInfo.type</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.presence.PresenceManager"><code class="docutils literal notranslate"><span class="pre">PresenceManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.agent"><code class="docutils literal notranslate"><span class="pre">PresenceManager.agent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.approve_all"><code class="docutils literal notranslate"><span class="pre">PresenceManager.approve_all</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.approve_subscription"><code class="docutils literal notranslate"><span class="pre">PresenceManager.approve_subscription()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.contacts"><code class="docutils literal notranslate"><span class="pre">PresenceManager.contacts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.current_presence"><code class="docutils literal notranslate"><span class="pre">PresenceManager.current_presence</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.get_contact"><code class="docutils literal notranslate"><span class="pre">PresenceManager.get_contact()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.get_contact_presence"><code class="docutils literal notranslate"><span class="pre">PresenceManager.get_contact_presence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.get_contacts"><code class="docutils literal notranslate"><span class="pre">PresenceManager.get_contacts()</span></code></a></li>
@@ -301,13 +345,13 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.handle_roster_update"><code class="docutils literal notranslate"><span class="pre">PresenceManager.handle_roster_update()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.handle_subscription"><code class="docutils literal notranslate"><span class="pre">PresenceManager.handle_subscription()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.is_available"><code class="docutils literal notranslate"><span class="pre">PresenceManager.is_available()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_available"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_available()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_presence_received"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_presence_received()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_subscribe"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_subscribe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_subscribed"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_subscribed()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unavailable"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unavailable()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unsubscribe"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unsubscribe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unsubscribed"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unsubscribed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_available"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_presence_received"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_presence_received</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_subscribe"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_subscribe</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_subscribed"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_subscribed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unavailable"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unavailable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unsubscribe"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unsubscribe</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.on_unsubscribed"><code class="docutils literal notranslate"><span class="pre">PresenceManager.on_unsubscribed</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.set_available"><code class="docutils literal notranslate"><span class="pre">PresenceManager.set_available()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.set_presence"><code class="docutils literal notranslate"><span class="pre">PresenceManager.set_presence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.presence.PresenceManager.set_unavailable"><code class="docutils literal notranslate"><span class="pre">PresenceManager.set_unavailable()</span></code></a></li>
@@ -341,15 +385,20 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="spade.html#module-spade.template">spade.template module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.template.ANDTemplate"><code class="docutils literal notranslate"><span class="pre">ANDTemplate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ANDTemplate.expr1"><code class="docutils literal notranslate"><span class="pre">ANDTemplate.expr1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ANDTemplate.expr2"><code class="docutils literal notranslate"><span class="pre">ANDTemplate.expr2</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ANDTemplate.match"><code class="docutils literal notranslate"><span class="pre">ANDTemplate.match()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.template.BaseTemplate"><code class="docutils literal notranslate"><span class="pre">BaseTemplate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.template.NOTTemplate"><code class="docutils literal notranslate"><span class="pre">NOTTemplate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.NOTTemplate.expr"><code class="docutils literal notranslate"><span class="pre">NOTTemplate.expr</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.NOTTemplate.match"><code class="docutils literal notranslate"><span class="pre">NOTTemplate.match()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.template.ORTemplate"><code class="docutils literal notranslate"><span class="pre">ORTemplate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ORTemplate.expr1"><code class="docutils literal notranslate"><span class="pre">ORTemplate.expr1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ORTemplate.expr2"><code class="docutils literal notranslate"><span class="pre">ORTemplate.expr2</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.ORTemplate.match"><code class="docutils literal notranslate"><span class="pre">ORTemplate.match()</span></code></a></li>
 </ul>
 </li>
@@ -358,6 +407,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="spade.html#spade.template.XORTemplate"><code class="docutils literal notranslate"><span class="pre">XORTemplate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.XORTemplate.expr1"><code class="docutils literal notranslate"><span class="pre">XORTemplate.expr1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.XORTemplate.expr2"><code class="docutils literal notranslate"><span class="pre">XORTemplate.expr2</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.template.XORTemplate.match"><code class="docutils literal notranslate"><span class="pre">XORTemplate.match()</span></code></a></li>
 </ul>
 </li>
@@ -371,6 +422,8 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.trace.TraceStore.len"><code class="docutils literal notranslate"><span class="pre">TraceStore.len()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.trace.TraceStore.received"><code class="docutils literal notranslate"><span class="pre">TraceStore.received()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.trace.TraceStore.reset"><code class="docutils literal notranslate"><span class="pre">TraceStore.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.trace.TraceStore.size"><code class="docutils literal notranslate"><span class="pre">TraceStore.size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.trace.TraceStore.store"><code class="docutils literal notranslate"><span class="pre">TraceStore.store</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -381,15 +434,23 @@
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.add_menu_entry"><code class="docutils literal notranslate"><span class="pre">WebApp.add_menu_entry()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.add_post"><code class="docutils literal notranslate"><span class="pre">WebApp.add_post()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.add_template_path"><code class="docutils literal notranslate"><span class="pre">WebApp.add_template_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.agent"><code class="docutils literal notranslate"><span class="pre">WebApp.agent</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.agent_processor"><code class="docutils literal notranslate"><span class="pre">WebApp.agent_processor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.app"><code class="docutils literal notranslate"><span class="pre">WebApp.app</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.find_behaviour"><code class="docutils literal notranslate"><span class="pre">WebApp.find_behaviour()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.get_agent"><code class="docutils literal notranslate"><span class="pre">WebApp.get_agent()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.get_behaviour"><code class="docutils literal notranslate"><span class="pre">WebApp.get_behaviour()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.get_messages"><code class="docutils literal notranslate"><span class="pre">WebApp.get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.hostname"><code class="docutils literal notranslate"><span class="pre">WebApp.hostname</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.index"><code class="docutils literal notranslate"><span class="pre">WebApp.index()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.is_started"><code class="docutils literal notranslate"><span class="pre">WebApp.is_started()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.kill_behaviour"><code class="docutils literal notranslate"><span class="pre">WebApp.kill_behaviour()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.loaders"><code class="docutils literal notranslate"><span class="pre">WebApp.loaders</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.menu_entries"><code class="docutils literal notranslate"><span class="pre">WebApp.menu_entries</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.port"><code class="docutils literal notranslate"><span class="pre">WebApp.port</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.runner"><code class="docutils literal notranslate"><span class="pre">WebApp.runner</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.send_agent"><code class="docutils literal notranslate"><span class="pre">WebApp.send_agent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.server"><code class="docutils literal notranslate"><span class="pre">WebApp.server</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.setup_routes"><code class="docutils literal notranslate"><span class="pre">WebApp.setup_routes()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.start"><code class="docutils literal notranslate"><span class="pre">WebApp.start()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="spade.html#spade.web.WebApp.stop_agent"><code class="docutils literal notranslate"><span class="pre">WebApp.stop_agent()</span></code></a></li>
