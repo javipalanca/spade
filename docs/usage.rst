@@ -56,8 +56,8 @@ This approach is useful for more complex MAS integrations and for obtaining a de
     │ URL:                                                                 │
     │   -  https://spadeagents.eu                                          │
     │ Documentation:                                                       │
-    │   -  http://spade-mas.readthedocs.io/                                │
-    ╰────────────────── Version: 4.1.2      License: MIT ──────────────────╯
+    │   -  https://spadeagents.eu/docs/spade/                              │
+    ╰────────────────── Version: 4.1.3      License: MIT ──────────────────╯
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:89 - Starting server...
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:133 - Client domain => 0.0.0.0
     yyyy-m-d h:m:s | INFO     | pyjabber.server:run_server:134 - Server is listening clients on [('0.0.0.0', 5222), ('158.42.184.157', 5222)]
@@ -125,8 +125,8 @@ the following output
 And that's it! We have built our first SPADE Agent in 6 lines of code. Easy, isn't it? Of course, this is a very very
 dumb agent that does nothing, but it serves well as a starting point to understand the logics behind SPADE.
 
-.. note:: A SPADE agent is an asyncronous agent. That means that all the code to run an agent must be executed in an
-    asyncronous loop. This is done by the ``spade.run()`` function. This function receives a coroutine as a parameter
+.. note:: A SPADE agent is an asynchronous agent. That means that all the code to run an agent must be executed in an
+    asynchronous loop. This is done by the ``spade.run()`` function. This function receives a coroutine as a parameter
     and runs it in an async loop. In our example, the ``main()`` coroutine is the one that is run in the loop.
 
 .. note:: If you need to run a set of agents in parallel you can use the ``spade.start_agents(agent_list)`` function. This function

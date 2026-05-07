@@ -87,14 +87,14 @@ def test_message_from_node():
 
     assert msg.thread == "thread-id"
     assert msg.get_metadata("performative") == "request"
-    assert msg.metadata == {"performative": "request"}
+    assert msg._metadata == {"performative": "request"}
 
 
 def test_thread_empty():
     msg = Message(thread=None)
 
     assert msg.thread is None
-    assert msg.metadata == {}
+    assert msg._metadata == {}
 
     mock_client = MagicMock()
     mock_client.Message.return_value = slixmpp.stanza.Message()

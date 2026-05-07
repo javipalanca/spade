@@ -186,7 +186,7 @@ async def test_submit_send():
 
     assert str(agent.recv_msg.to) == "fake@jid"
     assert agent.recv_msg.body == "BODY"
-    assert agent.recv_msg.metadata == {"performative": "TEST"}
+    assert agent.recv_msg._metadata == {"performative": "TEST"}
 
 
 async def test_stop_agent_with_blocking_await():

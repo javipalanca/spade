@@ -1,0 +1,59 @@
+# This workflow is dedicated to building and saving the UV cache for Windows environments.
+# It is triggered on dependency file changes, manually, or on a schedule to warm the cache
+# for other workflows, helping to speed up their execution by providing a pre-built cache.
+name: Build UV Global Cache (Windows Only)
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - "uv.lock"
+      - "pyproject.toml"
+      - "requirements.txt"
+  workflow_dispatch:
+  schedule:
+    # Every 5 days at midnight UTC, before cache expiry (7 days)
+    - cron: "0 0 */5 * *"
+
+jobs:
+  build-cache-windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12"]
+    
+    name: Cache Windows / Python ${{ matrix.python }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install uv
+        run: |
+          irm https://astral.sh/uv/0.8.15/install.ps1 | iex
+          $env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
+          Add-Content -Path $env:GITHUB_PATH -Value "$env:USERPROFILE\.local\bin"
+        shell: powershell
+
+      - name: Install dependencies and populate cache
+        run: |
+          echo "Building global UV cache for Windows Python ${{ matrix.python }}..."
+          uv sync --extra dev
+          echo "Cache populated successfully"
+
+      - name: Save uv caches (Windows)
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~\AppData\Local\uv\cache
+            ~\AppData\Roaming\uv
+            .venv
+          key: uv-windows-latest-py${{ matrix.python }}-${{ hashFiles('uv.lock', 'pyproject.toml', 'requirements.txt') }}

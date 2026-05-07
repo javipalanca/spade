@@ -1,0 +1,46 @@
+name: Ubuntu Tests with Coverage
+
+on:
+  workflow_call:
+
+jobs:
+  test-linux-with-coverage:
+    runs-on: ubuntu-latest
+
+    services:
+      pyjabber:
+        image: din0thor/pyjabber:latest
+        ports:
+          - 5222:5222
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    name: Python ${{ matrix.python }} with coverage
+
+    steps:
+    - uses: actions/checkout@v5
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "0.8.15"
+    - name: Set up dependencies
+      run: |
+        uv sync --extra dev
+    - name: Run coverage
+      run: |
+        uv run coverage erase
+        uv run coverage run --source=spade -m pytest -q
+        uv run coverage xml -o coverage.xml
+    - name: Coveralls
+      uses: javipalanca/coveralls-python-action@develop
+      with:
+        parallel: true
+        flag-name: Unit Test
+    - name: Send coverage report to codecov
+      uses: codecov/codecov-action@v5

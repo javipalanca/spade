@@ -100,7 +100,7 @@ def create_cli():
             "[green]URL:[/green]\n"
             "  - [cyan] https://spadeagents.eu[/cyan]\n"
             "[green]Documentation:[/green]\n"
-            "  - [cyan] http://spade-mas.readthedocs.io/[/cyan]"
+            "  - [cyan] https://spadeagents.eu/docs/spade/[/cyan]"
         )
 
         footer = f"[cyan]Version:[/cyan] {spade.__version__}   [magenta]License:[/magenta] MIT"

@@ -5,6 +5,7 @@ from typing import Union, List
 
 from . import agent
 from . import behaviour
+from . import fipa_message
 from . import message
 from . import template
 from .agent import AgentType
@@ -12,9 +13,9 @@ from .container import run_container as run  # noqa: F401
 
 __author__ = """Javi Palanca"""
 __email__ = "jpalanca@gmail.com"
-__version__ = "4.1.2"
+__version__ = "4.1.3"
 
-__all__ = ["agent", "behaviour", "message", "template"]
+__all__ = ["agent", "behaviour", "fipa_message", "message", "template"]
 
 logger = logging.getLogger("SPADE")
 

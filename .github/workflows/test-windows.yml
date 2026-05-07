@@ -1,0 +1,59 @@
+name: Windows Tests
+
+on:
+  workflow_call:
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    name: Python ${{ matrix.python }}
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Restore global uv cache
+      id: cache-restore-windows
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          ~\AppData\Local\uv\cache
+          ~\AppData\Roaming\uv
+          .venv
+        key: uv-windows-latest-py${{ matrix.python }}-${{ hashFiles('uv.lock', 'pyproject.toml', 'requirements.txt') }}
+        restore-keys: |
+          uv-windows-latest-py${{ matrix.python }}-
+
+    - name: Install uv
+      run: |
+        irm https://astral.sh/uv/0.8.15/install.ps1 | iex
+        $env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
+        Add-Content -Path $env:GITHUB_PATH -Value "$env:USERPROFILE\.local\bin"
+      shell: powershell
+
+    - name: Set up dependencies
+      run: |
+        uv sync --extra dev
+
+    - name: Save uv cache (if cache miss)
+      if: steps.cache-restore-windows.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          ~\AppData\Local\uv\cache
+          ~\AppData\Roaming\uv
+          .venv
+        key: uv-windows-latest-py${{ matrix.python }}-${{ hashFiles('uv.lock', 'pyproject.toml', 'requirements.txt') }}
+
+    - name: Test with pytest
+      run: |
+        uv run pytest --ignore=tests/test_e2e.py -q

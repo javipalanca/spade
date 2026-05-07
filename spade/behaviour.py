@@ -1,13 +1,23 @@
 import asyncio
 import collections
 import logging
+import os
+from pathlib import Path
 import time
 import traceback
 from abc import ABCMeta, abstractmethod
 from asyncio import CancelledError
 from datetime import timedelta, datetime
 from threading import Event
-from typing import Any, Optional, Dict, TypeVar
+from typing import IO, Any, Optional, Dict, TypeVar, Union
+from urllib.parse import urlparse
+
+import aiohttp
+from slixmpp.plugins.xep_0363.http_upload import (
+    UploadServiceNotFound,
+    FileTooBig,
+    HTTPError,
+)
 
 from .message import Message
 from .template import Template
@@ -40,6 +50,20 @@ class NotValidTransition(Exception):
 class CyclicBehaviour(object, metaclass=ABCMeta):
     """This behaviour is executed cyclically until it is stopped."""
 
+    __slots__ = (
+        "agent",
+        "template",
+        "_force_kill",
+        "_is_done",
+        "_exit_code",
+        "presence",
+        "web",
+        "is_running",
+        "queue",
+        "on_start",
+        "on_end",
+    )
+
     def __init__(self):
         self.agent = None
         self.template = None
@@ -51,6 +75,12 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
         self.is_running = False
 
         self.queue = None
+
+        if type(self).on_start is CyclicBehaviour.on_start:
+            self.on_start = self._default_on_start
+
+        if type(self).on_end is CyclicBehaviour.on_end:
+            self.on_end = self._default_on_end
 
     def set_agent(self, agent) -> None:
         """
@@ -246,13 +276,13 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
             if timeout is not None and t - t_start > timeout:
                 raise TimeoutError
 
-    async def on_start(self) -> None:
+    async def _default_on_start(self) -> None:
         """
         Coroutine called before the behaviour is started.
         """
         pass
 
-    async def on_end(self) -> None:
+    async def _default_on_end(self) -> None:
         """
         Coroutine called after the behaviour is done or killed.
         """
@@ -366,6 +396,121 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
                 msg = None
         return msg
 
+    async def upload_file(
+        self, filename: str, input_file: Union[IO[bytes], None]
+    ) -> Union[str, None]:
+        """
+        Discovers the XEP 0363 service, and tries to send the file.
+
+        Args:
+            filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
+            input_file (IO[bytes]): Optional binary file stream on the file
+
+        Returns:
+            An url used to download the uploaded file (GET HTTP method)
+        """
+        try:
+            return await self.agent.client["xep_0363"].upload_file(
+                filename=filename, input_file=input_file
+            )
+        except UploadServiceNotFound:
+            logger.error("HTTP Upload service not found in server. Unable to upload")
+            return None
+        except FileTooBig:
+            logger.error("File exceed the size limits of the server")
+            return None
+        except HTTPError:
+            logger.error("HTTP Error during the upload")
+            return None
+        except Exception:
+            logger.error("Service unavailable")
+            return None
+
+    async def send_file(self, to: str, url: str) -> None:
+        """
+        Sends the url containing the file uploaded via the ``upload_file`` method.
+        This method does not ensure nor check that the url is valid.
+
+        Args:
+            to (str): JID of the agent to send the file
+            url (str): Url obtained by using the ``upload_file`` class method
+
+        """
+        msg = Message(to=to)
+        msg.set_metadata("performative", "0363")
+        msg.set_metadata("url", url)
+        await self.send(msg)
+
+    async def upload_and_send_file(
+        self, to: str, filename: str, input_file: Union[IO[bytes], None]
+    ) -> Union[str, None]:
+        """
+        Discovers the XEP 0363 service, and tries to send the file.
+        In a success case, the url of the file will be automatically send
+        to the ``to`` parameter
+
+        Args:
+            to (str): JID of the user to send the new uploaded file
+            filename (str): Path to the file to upload (or only the name if ``input_file`` is provided)
+            input_file (IO[bytes]): Optional binary file stream on the file
+
+        Returns:
+            The url obtained in the file upload. Can be reused with other agents.
+        """
+        url = await self.upload_file(filename, input_file)
+        if url:
+            await self.send_file(to, url)
+            return url
+
+        try:
+            return await self.agent.client["xep_0363"].upload_file(
+                filename=filename, input_file=input_file
+            )
+        except UploadServiceNotFound:
+            logger.error("HTTP Upload service not found in server. Unable to upload")
+            return None
+        except FileTooBig:
+            logger.error("File exceed the size limits of the server")
+            return None
+        except HTTPError:
+            logger.error("HTTP Error during the upload")
+            return None
+        except Exception:
+            logger.error("Service unavailable")
+            return None
+
+    async def download_file(self, url: str, dest_path: Optional[str]):
+        """
+        Downloads a file from a 0363 slot (url) into the ``dest_path``
+        (or execution dir if not provided)
+
+        Args:
+            url (str): URL of the slot to download.
+            dest_path (str): Path to put the downloaded file. Must be an existing dir.
+        """
+        if dest_path is None:
+            dest_path = os.getcwd()
+
+        path = Path(dest_path)
+        if path.suffix or not path.is_dir():
+            raise ValueError(
+                "dest_path must be an existing valid dir, with no filename"
+            )
+
+        filename = Path(urlparse(url).path).name or "download"
+        filepath = path / filename
+
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as resp:
+                    with open(filepath, "wb") as file:
+                        async for chunk in resp.content.iter_chunked(8192):
+                            file.write(chunk)
+
+            return filepath
+        except aiohttp.ClientError as e:
+            logger.error(f"Error downloading from {url}: {e}")
+
     def __str__(self) -> str:
         return "{}/{}".format(
             "/".join(base.__name__ for base in self.__class__.__bases__),
@@ -375,6 +520,8 @@ class CyclicBehaviour(object, metaclass=ABCMeta):
 
 class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """This behaviour is only executed once"""
+
+    __slots__ = "_already_executed"
 
     def __init__(self):
         super().__init__()
@@ -390,6 +537,8 @@ class OneShotBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 
 class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
     """This behaviour is executed periodically with an interval"""
+
+    __slots__ = ("_period", "_next_activation")
 
     def __init__(self, period: float, start_at: Optional[datetime] = None):
         """
@@ -446,6 +595,8 @@ class PeriodicBehaviour(CyclicBehaviour, metaclass=ABCMeta):
 class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
     """This behaviour is executed once at after specified datetime"""
 
+    __slots__ = ("_timeout", "_timeout_triggered")
+
     def __init__(self, start_at):
         """
         Creates a timeout behaviour, which is run at start_at
@@ -484,9 +635,12 @@ class TimeoutBehaviour(OneShotBehaviour, metaclass=ABCMeta):
 class State(OneShotBehaviour, metaclass=ABCMeta):
     """A state of a FSMBehaviour is a OneShotBehaviour"""
 
+    __slots__ = ("next_state", "receive")
+
     def __init__(self):
         super().__init__()
         self.next_state = None
+        self.receive = None
 
     def set_next_state(self, state_name: str) -> None:
         """
@@ -504,14 +658,17 @@ class State(OneShotBehaviour, metaclass=ABCMeta):
 class FSMBehaviour(CyclicBehaviour):
     """A behaviour composed of states (oneshotbehaviours) that may transition from one state to another."""
 
+    __slots__ = ("_states", "_transitions", "current_state", "setup")
+
     def __init__(self):
         super().__init__()
         self._states: Dict[str, State] = {}
         self._transitions = collections.defaultdict(list)
         self.current_state: Optional[str] = None
+        self.setup = self._default_setup
         self.setup()
 
-    def setup(self) -> None:
+    def _default_setup(self) -> None:
         """ """
         pass
 

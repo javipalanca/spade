@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import io
 from unittest.mock import AsyncMock, Mock, MagicMock
 
 import pytest
@@ -22,7 +23,7 @@ from spade.behaviour import (
 from spade.message import Message, SPADE_X_METADATA
 from spade.template import Template
 from .conftest import wait_for_behaviour_is_killed
-from .factories import MockedAgentFactory
+from .factories import MockedAgentFactory, MockedSecondAgentFactory
 
 STATE_ONE = "STATE_ONE"
 STATE_TWO = "STATE_TWO"
@@ -62,10 +63,6 @@ def fsm():
     fsm_.add_state(STATE_THREE, state_three)
     fsm_.add_transition(STATE_ONE, STATE_TWO)
     fsm_.add_transition(STATE_TWO, STATE_THREE)
-
-    fsm_.state_one = state_one
-    fsm_.state_two = state_two
-    fsm_.state_three = state_three
 
     return fsm_
 
@@ -378,6 +375,166 @@ async def test_send_message_without_sender():
     assert msg_arg["from"] == JID("fake@jid")
 
     await agent.stop()
+
+
+async def test_send_file(tmp_path):
+    mock_input_file = io.BytesIO(b"Testing!")
+
+    class UploadBehaviour(OneShotBehaviour):
+        async def run(self):
+            url = await self.upload_file(
+                filename="test.txt", input_file=mock_input_file
+            )
+            await self.send_file(to=self.agent.jid_to_send, url=url)
+            self.kill(exit_code=url)
+
+    class DownloadBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(10)
+            if msg:
+                self.agent.url = msg.get_metadata("url")
+            self.kill()
+
+    uploader: Agent = MockedAgentFactory()
+    up_beh = UploadBehaviour()
+    up_beh.upload_file = AsyncMock(return_value="http://fake-url.net/fiile")
+    uploader.add_behaviour(up_beh)
+    uploader.jid_to_send = "fake2@jid"
+
+    downloader: Agent = MockedSecondAgentFactory()
+    down_beh = DownloadBehaviour()
+    downloader.add_behaviour(down_beh)
+
+    await asyncio.gather(*[uploader.start(), downloader.start()])
+    assert uploader.is_alive() and downloader.is_alive()
+
+    await asyncio.gather(*[up_beh.join(), down_beh.join()])
+
+    assert downloader.url is not None
+    assert up_beh.exit_code == downloader.url
+
+
+async def test_send_file_unique_method(tmp_path):
+    mock_input_file = io.BytesIO(b"Testing!")
+
+    class UploadBehaviour(OneShotBehaviour):
+        async def run(self):
+            url = await self.upload_and_send_file(
+                to=self.agent.jid_to_send,
+                filename="test.txt",
+                input_file=mock_input_file,
+            )
+            self.kill(exit_code=url)
+
+    class DownloadBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(10)
+            if msg:
+                self.agent.url = msg.get_metadata("url")
+            self.kill()
+
+    uploader: Agent = MockedAgentFactory()
+    up_beh = UploadBehaviour()
+    up_beh.upload_file = AsyncMock(return_value="http://fake-url.net/fiile")
+    uploader.add_behaviour(up_beh)
+    uploader.jid_to_send = "fake2@jid"
+
+    downloader: Agent = MockedSecondAgentFactory()
+    down_beh = DownloadBehaviour()
+    downloader.add_behaviour(down_beh)
+
+    await asyncio.gather(*[uploader.start(), downloader.start()])
+    assert uploader.is_alive() and downloader.is_alive()
+
+    await asyncio.gather(*[up_beh.join(), down_beh.join()])
+
+    assert downloader.url is not None
+    assert up_beh.exit_code == downloader.url
+
+
+async def test_send_file_template(tmp_path):
+    mock_input_file = io.BytesIO(b"Testing!")
+
+    class UploadBehaviour(OneShotBehaviour):
+        async def run(self):
+            url = await self.upload_and_send_file(
+                to=self.agent.jid_to_send,
+                filename="test.txt",
+                input_file=mock_input_file,
+            )
+            self.kill(exit_code=url)
+
+    class DownloadBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(10)
+            if msg:
+                self.agent.url = msg.get_metadata("url")
+            self.kill()
+
+    uploader: Agent = MockedAgentFactory()
+    up_beh = UploadBehaviour()
+    up_beh.upload_file = AsyncMock(return_value="http://fake-url.net/fiile")
+    uploader.add_behaviour(up_beh)
+    uploader.jid_to_send = "fake2@jid"
+
+    downloader: Agent = MockedSecondAgentFactory()
+    down_beh = DownloadBehaviour()
+
+    down_template = Template()
+    down_template.set_metadata("performative", "0363")
+
+    downloader.add_behaviour(down_beh)
+
+    await asyncio.gather(*[uploader.start(), downloader.start()])
+    assert uploader.is_alive() and downloader.is_alive()
+
+    await asyncio.gather(*[up_beh.join(), down_beh.join()])
+
+    assert downloader.url is not None
+    assert up_beh.exit_code == downloader.url
+
+
+async def test_send_file_not_template(tmp_path):
+    mock_input_file = io.BytesIO(b"Testing!")
+
+    class UploadBehaviour(OneShotBehaviour):
+        async def run(self):
+            url = await self.upload_and_send_file(
+                to=self.agent.jid_to_send,
+                filename="test.txt",
+                input_file=mock_input_file,
+            )
+            self.kill(exit_code=url)
+
+    class DownloadBehaviour(OneShotBehaviour):
+        async def run(self):
+            msg = await self.receive(3)
+            exit_code = "None"
+            if msg:
+                exit_code = msg.get_metadata("url")
+            self.kill(exit_code=exit_code)
+
+    uploader: Agent = MockedAgentFactory()
+    up_beh = UploadBehaviour()
+    up_beh.upload_file = AsyncMock(return_value="http://fake-url.net/fiile")
+    uploader.add_behaviour(up_beh)
+    uploader.jid_to_send = "fake2@jid"
+
+    downloader: Agent = MockedSecondAgentFactory()
+    down_beh = DownloadBehaviour()
+
+    down_template = Template()
+    down_template.set_metadata("performative", "not_0363")
+
+    downloader.add_behaviour(down_beh, down_template)
+
+    await asyncio.gather(*[uploader.start(), downloader.start()])
+    assert uploader.is_alive() and downloader.is_alive()
+
+    await asyncio.gather(*[up_beh.join(), down_beh.join()])
+
+    assert down_beh.exit_code == "None"
+    assert up_beh.exit_code == "http://fake-url.net/fiile"
 
 
 async def test_receive():
@@ -834,23 +991,23 @@ async def test_fsm_behaviour(fsm):
 
     agent.add_behaviour(fsm)
     assert fsm.current_state == STATE_ONE
-    assert not fsm.state_one.is_done()
-    await wait_for_behaviour_is_killed(fsm.state_one)
+    assert not fsm._states[STATE_ONE].is_done()
+    await wait_for_behaviour_is_killed(fsm._states[STATE_ONE])
     assert agent.state == STATE_ONE
     agent.sync1_behaviour.set()
-    await fsm.state_one.join()
+    await fsm._states[STATE_ONE].join()
 
     assert fsm.current_state == STATE_TWO
-    assert not fsm.state_two.is_done()
-    await wait_for_behaviour_is_killed(fsm.state_two)
+    assert not fsm._states[STATE_TWO].is_done()
+    await wait_for_behaviour_is_killed(fsm._states[STATE_TWO])
     assert agent.state == STATE_TWO
     agent.sync2_behaviour.set()
-    await fsm.state_two.join()
+    await fsm._states[STATE_TWO].join()
 
     assert fsm.current_state == STATE_THREE
-    await wait_for_behaviour_is_killed(fsm.state_three)
+    await wait_for_behaviour_is_killed(fsm._states[STATE_THREE])
     assert agent.state == STATE_THREE
-    await fsm.state_three.join()
+    await fsm._states[STATE_THREE].join()
 
     await agent.stop()
 

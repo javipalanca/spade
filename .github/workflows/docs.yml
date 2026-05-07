@@ -1,0 +1,94 @@
+name: Build and Deploy Docs
+
+on:
+  push:
+    branches: ["master", "develop"]
+    paths:
+      - "docs/**"
+      - "spade/**"
+      - "readthedocs.yml"
+      - "pyproject.toml"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    branches: ["master", "develop"]
+    paths:
+      - "docs/**"
+      - "spade/**"
+      - "readthedocs.yml"
+      - "pyproject.toml"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOCS_DESTINATION_DIR: ${{ github.ref == 'refs/heads/develop' && 'develop' || 'stable' }}
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.15"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --extra dev --frozen
+
+      - name: Build Sphinx docs
+        run: |
+          uv run --no-sync sphinx-apidoc -f -o docs/ spade
+          uv run --no-sync sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-html
+          path: docs/_build/html
+
+  deploy-docs:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    permissions:
+      contents: write
+    steps:
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-html
+          path: docs/_build/html
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/_build/html
+          destination_dir: ${{ env.DOCS_DESTINATION_DIR }}
+          keep_files: true
+          enable_jekyll: true
+
+      - name: Trigger main site rebuild
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.DEPLOY_PAT }}
+          repository: javipalanca/javipalanca.github.io
+          event-type: update-spade-docs-event
