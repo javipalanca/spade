@@ -1,20 +1,20 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>spade.agent &mdash; SPADE 4.1.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>spade.agent &mdash; SPADE 4.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/jquery.js"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+      <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> SPADE
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SPADE
           </a>
-              <div class="version">
-                4.1.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -72,9 +73,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>spade.agent</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">spade.agent</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -120,6 +121,25 @@
 
 
 <div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;jid&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;xmpp_port&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify_security&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;behaviours&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_values&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;client&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;presence&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;loop&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;container&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;web&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;traces&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_alive&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hook_plugin_before_connection_cb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;_hook_plugin_after_connection_cb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;__dict__&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">jid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5222</span><span class="p">,</span> <span class="n">verify_security</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
@@ -155,6 +175,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">traces</span> <span class="o">=</span> <span class="n">TraceStore</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_alive</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_hook_plugin_after_connection</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_default_hook_plugin_before_connection</span>
+        <span class="p">)</span>
+
+        <span class="c1"># if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:</span>
+        <span class="c1">#     self._hook_plugin_before_connection = self._default_hook_plugin_before_connection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span>
+
+    <span class="nd">@_hook_plugin_after_connection</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_after_connection_cb</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span>
+
+    <span class="nd">@_hook_plugin_before_connection</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hook_plugin_before_connection_cb</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Agent.set_loop"><a class="viewcode-back" href="../../spade.html#spade.agent.Agent.set_loop">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">loop</span></div>
@@ -215,13 +261,13 @@
                         <span class="n">state</span><span class="o">.</span><span class="n">set_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
                 <span class="n">behaviour</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_default_hook_plugin_before_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overload this method to hook a plugin before connection is done</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_default_hook_plugin_after_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overload this method to hook a plugin after connection is done</span>
 <span class="sd">        &quot;&quot;&quot;</span>

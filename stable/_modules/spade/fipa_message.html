@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spade.fipa_message &mdash; SPADE 4.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+      <script src="../../_static/jquery.js"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+      <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SPADE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">SPADE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foreword.html">Foreword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model.html">The SPADE Agent Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../agents.html">Agent communications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../behaviours.html">Advanced Behaviours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../presence.html">Presence Notification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../web.html">Web Graphical Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extending.html">Extending SPADE with plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SPADE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">spade.fipa_message</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for spade.fipa_message</h1><div class="highlight"><pre>
+<span></span><span class="c1"># fipa_message.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for creating and handling FIPA-ACL messages compatible with SPADE.</span>
+
+<span class="sd">Based on the FIPA ACL Message Structure Specification:</span>
+<span class="sd">http://www.fipa.org/specs/fipa00061/SC00061G.html</span>
+
+<span class="sd">This module provides tools for building, validating, and parsing</span>
+<span class="sd">FIPA-ACL messages that comply with the Foundation for Intelligent Physical Agents (FIPA) standards.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">spade.message</span><span class="w"> </span><span class="kn">import</span> <span class="n">Message</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="InvalidPerformativeError"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.InvalidPerformativeError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">InvalidPerformativeError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when an invalid performative is provided.</span>
+
+<span class="sd">    This exception is raised when attempting to use a performative</span>
+<span class="sd">    that is not defined in the FIPA-ACL specification.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;valid_performatives&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">performative</span><span class="p">,</span> <span class="n">valid_performatives</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with the invalid performative and valid ones.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            performative (str): The performative that caused the error.</span>
+<span class="sd">            valid_performatives: The valid performatives (e.g., a list or formatted string).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">performative</span> <span class="o">=</span> <span class="n">performative</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_performatives</span> <span class="o">=</span> <span class="n">valid_performatives</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid performative &#39;</span><span class="si">{</span><span class="n">performative</span><span class="si">}</span><span class="s2">&#39;. Valid: </span><span class="si">{</span><span class="n">valid_performatives</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PerformativeNotSetError"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.PerformativeNotSetError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PerformativeNotSetError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when performative is not set before building the message.</span>
+
+<span class="sd">    This exception is raised when attempting to build a FIPA-ACL message</span>
+<span class="sd">    without having previously set the corresponding performative.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the exception with a descriptive message.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;Performative not set. Use set_performative() before build().&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FIPAMessageBuilder"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FIPAMessageBuilder</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builder for FIPA-ACL messages for agent communication.</span>
+
+<span class="sd">    This class provides a fluent interface for creating messages</span>
+<span class="sd">    that follow the FIPA Agent Communication Language standard.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        message (Message): The SPADE Message object being built</span>
+<span class="sd">        metadata (Dict): Dictionary with FIPA-ACL metadata</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Standard FIPA-ACL performatives (FIPA SC00037J)</span>
+    <span class="n">PERFORMATIVES</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;accept-proposal&quot;</span><span class="p">:</span> <span class="s2">&quot;Accept a proposal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;agree&quot;</span><span class="p">:</span> <span class="s2">&quot;Agree to perform an action&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cancel&quot;</span><span class="p">:</span> <span class="s2">&quot;Cancel a previously agreed action&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cfp&quot;</span><span class="p">:</span> <span class="s2">&quot;Call for proposal (request proposals)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;confirm&quot;</span><span class="p">:</span> <span class="s2">&quot;Confirm that something is true&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;disconfirm&quot;</span><span class="p">:</span> <span class="s2">&quot;Inform that something is false&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;failure&quot;</span><span class="p">:</span> <span class="s2">&quot;Report failure to execute action&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inform&quot;</span><span class="p">:</span> <span class="s2">&quot;Inform that something is true&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inform-if&quot;</span><span class="p">:</span> <span class="s2">&quot;Inform whether a proposition is true&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inform-ref&quot;</span><span class="p">:</span> <span class="s2">&quot;Inform the value of a reference&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;not-understood&quot;</span><span class="p">:</span> <span class="s2">&quot;Indicate that the message was not understood&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;propagate&quot;</span><span class="p">:</span> <span class="s2">&quot;Ask an agent to send a message to others&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;propose&quot;</span><span class="p">:</span> <span class="s2">&quot;Make a proposal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;Ask an agent to act as proxy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;query-if&quot;</span><span class="p">:</span> <span class="s2">&quot;Ask whether a proposition is true&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;query-ref&quot;</span><span class="p">:</span> <span class="s2">&quot;Ask the value of a reference&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;refuse&quot;</span><span class="p">:</span> <span class="s2">&quot;Refuse to perform an action&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;reject-proposal&quot;</span><span class="p">:</span> <span class="s2">&quot;Reject a proposal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="s2">&quot;Request that an action be performed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;request-when&quot;</span><span class="p">:</span> <span class="s2">&quot;Request that an action be performed when a condition holds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;request-whenever&quot;</span><span class="p">:</span> <span class="s2">&quot;Request that an action be performed whenever a condition holds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;subscribe&quot;</span><span class="p">:</span> <span class="s2">&quot;Subscribe to information&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Supported content languages</span>
+    <span class="n">LANGUAGES</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;fipa-sl&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPA Semantic Language (standard)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-sl0&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPA SL level 0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-sl1&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPA SL level 1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-sl2&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPA SL level 2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="s2">&quot;JavaScript Object Notation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;xml&quot;</span><span class="p">:</span> <span class="s2">&quot;Extensible Markup Language&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="s2">&quot;Plain text string&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># FIPA interaction protocols</span>
+    <span class="n">PROTOCOLS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;fipa-request&quot;</span><span class="p">:</span> <span class="s2">&quot;Request protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-query&quot;</span><span class="p">:</span> <span class="s2">&quot;Query protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-subscribe&quot;</span><span class="p">:</span> <span class="s2">&quot;Subscribe protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-propose&quot;</span><span class="p">:</span> <span class="s2">&quot;Propose protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-contract-net&quot;</span><span class="p">:</span> <span class="s2">&quot;Contract net protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-brokering&quot;</span><span class="p">:</span> <span class="s2">&quot;Brokering protocol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fipa-recruiting&quot;</span><span class="p">:</span> <span class="s2">&quot;Recruiting protocol&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a new FIPA-ACL message builder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sender (str): JID of the sending agent (e.g., &quot;agent1@localhost&quot;)</span>
+<span class="sd">            receiver (str): JID of the receiving agent (e.g., &quot;agent2@localhost&quot;)</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder = FIPAMessageBuilder(</span>
+<span class="sd">            ...     sender=&quot;monitor@localhost&quot;,</span>
+<span class="sd">            ...     receiver=&quot;validator@localhost&quot;</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">sender</span><span class="o">=</span><span class="n">sender</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="n">receiver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Default FIPA-ACL values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_default_metadata</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_default_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Configure default values for FIPA-ACL metadata.</span>
+
+<span class="sd">        This method sets the default values for FIPA-ACL metadata</span>
+<span class="sd">        that should be present in all messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Generate unique conversation ID by default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;conversation-id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;conv-</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Generate unique message ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;reply-with&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;msg-</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Standard default values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>  <span class="c1"># Default encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;json&quot;</span>  <span class="c1"># Default language (not FIPA standard but useful)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ontology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;fipa-agent-communication&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;performative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># Initialize performative as None for testing</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Creation timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;creation-timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_performative"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_performative">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_performative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">performative</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the speech act (performative) of the message.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            performative (str): Type of speech act. Must be one of the</span>
+<span class="sd">                               valid FIPA-ACL performatives.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the performative is not valid.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_performative(&quot;inform&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">performative</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PERFORMATIVES</span><span class="p">:</span>
+            <span class="n">valid_performatives</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PERFORMATIVES</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="k">raise</span> <span class="n">InvalidPerformativeError</span><span class="p">(</span><span class="n">performative</span><span class="p">,</span> <span class="n">valid_performatives</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;performative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">performative</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_body"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_body">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_body</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">as_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the message body content.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            content: Message content. Can be dict, str, or other type.</span>
+<span class="sd">            as_json (bool): If True, serializes non-string content to JSON or</span>
+<span class="sd">                            treats string content as already-serialized JSON.</span>
+<span class="sd">                            If False, uses content as string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_body({&quot;data&quot;: &quot;value&quot;}, as_json=True)</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_body(&#39;{&quot;data&quot;: &quot;value&quot;}&#39;, as_json=True)</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_body(&quot;plain text&quot;, as_json=False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">as_json</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="c1"># Treat string content as already-serialized JSON</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">content</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;application/json&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text/plain&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_language"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_language">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the content language.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            language (str): Content language. Recommended to use</span>
+<span class="sd">                           &quot;json&quot;, &quot;xml&quot;, or &quot;fipa-sl&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_language(&quot;json&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">language</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LANGUAGES</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Language &#39;</span><span class="si">%s</span><span class="s2">&#39; is not in the list of known languages&quot;</span><span class="p">,</span> <span class="n">language</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_protocol"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_protocol">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protocol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the interaction protocol.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            protocol (str): FIPA protocol. E.g., &quot;fipa-request&quot;, &quot;fipa-subscribe&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_protocol(&quot;fipa-request&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">protocol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PROTOCOLS</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Protocol &#39;</span><span class="si">%s</span><span class="s2">&#39; is not in the list of known protocols&quot;</span><span class="p">,</span> <span class="n">protocol</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;protocol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">protocol</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_ontology"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_ontology">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_ontology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the message ontology.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ontology (str): Ontology that defines the terms/concepts used.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_ontology(&quot;database-update&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;ontology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ontology</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_conversation_id"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_conversation_id">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_conversation_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conversation_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a specific conversation ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            conversation_id (str): Unique ID for the conversation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            If not set, one is automatically generated with UUID.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_conversation_id(&quot;db-update-123&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;conversation-id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conversation_id</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_in_reply_to"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_in_reply_to">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_in_reply_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reply_to</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set which message is being replied to.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            reply_to (str): Value of the &#39;reply-with&#39; field from the original message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_in_reply_to(&quot;msg-abc123&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;in-reply-to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reply_to</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_reply_by"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_reply_by">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_reply_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minutes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set deadline for response.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            minutes (int): Minutes until response wait expires.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_reply_by(10)  # 10 minutes to respond</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">expiry_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">minutes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;reply-by&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expiry_time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.set_custom_metadata"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.set_custom_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">set_custom_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FIPAMessageBuilder&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add custom metadata to the message.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): Metadata key.</span>
+<span class="sd">            value: Metadata value. It will be converted to a string for storage.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FIPAMessageBuilder: Self for method chaining.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; builder.set_custom_metadata(&quot;priority&quot;, &quot;high&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.build"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.build">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build and return the SPADE Message object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Message: Message object ready to send.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If performative has not been set.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; msg = builder.build()</span>
+<span class="sd">            &gt;&gt;&gt; await agent.send(msg)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Verify that performative has been set</span>
+        <span class="k">if</span> <span class="s2">&quot;performative&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;performative&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PerformativeNotSetError</span><span class="p">()</span>
+
+        <span class="c1"># Apply metadata to message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.create_inform_message"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.create_inform_message">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_inform_message</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ontology</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;general&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convenience method to create &#39;inform&#39; messages.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sender (str): Sender JID.</span>
+<span class="sd">            receiver (str): Receiver JID.</span>
+<span class="sd">            content (Dict): Message content.</span>
+<span class="sd">            ontology (str): Message ontology.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Message: FIPA-ACL &#39;inform&#39; message.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; msg = FIPAMessageBuilder.create_inform_message(</span>
+<span class="sd">            ...     sender=&quot;agent1@localhost&quot;,</span>
+<span class="sd">            ...     receiver=&quot;agent2@localhost&quot;,</span>
+<span class="sd">            ...     content={&quot;data&quot;: &quot;value&quot;},</span>
+<span class="sd">            ...     ontology=&quot;database&quot;</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">receiver</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_performative</span><span class="p">(</span><span class="s2">&quot;inform&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_body</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_ontology</span><span class="p">(</span><span class="n">ontology</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_protocol</span><span class="p">(</span><span class="s2">&quot;fipa-subscribe&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.create_request_message"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.create_request_message">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_request_message</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">sender</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">receiver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convenience method to create &#39;request&#39; messages.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sender (str): Sender JID.</span>
+<span class="sd">            receiver (str): Receiver JID.</span>
+<span class="sd">            action (str): Action to request.</span>
+<span class="sd">            parameters (Dict): Action parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Message: FIPA-ACL &#39;request&#39; message.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; msg = FIPAMessageBuilder.create_request_message(</span>
+<span class="sd">            ...     sender=&quot;agent1@localhost&quot;,</span>
+<span class="sd">            ...     receiver=&quot;agent2@localhost&quot;,</span>
+<span class="sd">            ...     action=&quot;update-database&quot;,</span>
+<span class="sd">            ...     parameters={&quot;table&quot;: &quot;users&quot;}</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">content</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">,</span>
+            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">receiver</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_performative</span><span class="p">(</span><span class="s2">&quot;request&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_body</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_ontology</span><span class="p">(</span><span class="s2">&quot;action-request&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_protocol</span><span class="p">(</span><span class="s2">&quot;fipa-request&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_reply_by</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageBuilder.create_response_message"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageBuilder.create_response_message">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_response_message</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">original_msg</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">performative</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;confirm&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Message</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a response message to another message.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            original_msg (Message): Original message being responded to.</span>
+<span class="sd">            content (Dict): Response content.</span>
+<span class="sd">            performative (str): Response performative (&quot;confirm&quot;, &quot;failure&quot;, etc.).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Message: FIPA-ACL response message.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; response = FIPAMessageBuilder.create_response_message(</span>
+<span class="sd">            ...     original_msg=received_msg,</span>
+<span class="sd">            ...     content={&quot;status&quot;: &quot;success&quot;},</span>
+<span class="sd">            ...     performative=&quot;confirm&quot;</span>
+<span class="sd">            ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract metadata from original message</span>
+        <span class="n">original_metadata</span> <span class="o">=</span> <span class="n">original_msg</span><span class="o">.</span><span class="n">metadata</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="p">(</span>
+                <span class="n">sender</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">original_msg</span><span class="o">.</span><span class="n">to</span><span class="p">),</span>  <span class="c1"># Swap sender/receiver</span>
+                <span class="n">receiver</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">original_msg</span><span class="o">.</span><span class="n">sender</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">set_performative</span><span class="p">(</span><span class="n">performative</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_body</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">set_ontology</span><span class="p">(</span><span class="n">original_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ontology&quot;</span><span class="p">,</span> <span class="s2">&quot;response&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">set_conversation_id</span><span class="p">(</span><span class="n">original_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;conversation-id&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">set_in_reply_to</span><span class="p">(</span><span class="n">original_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reply-with&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">set_protocol</span><span class="p">(</span><span class="n">original_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="s2">&quot;fipa-request&quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FIPAMessageParser"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FIPAMessageParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parser for received FIPA-ACL messages.</span>
+
+<span class="sd">    Provides methods for extracting and validating FIPA metadata</span>
+<span class="sd">    from incoming messages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the parser with a received message.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            message (Message): Received SPADE message.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">metadata</span>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_performative"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_performative">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_performative</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the message performative.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Message performative, or &quot;unknown&quot; if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_conversation_id"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_conversation_id">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_conversation_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the conversation ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Conversation ID, or &quot;unknown&quot; if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;conversation-id&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_ontology"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_ontology">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_ontology</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the message ontology.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Message ontology, or &quot;unknown&quot; if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ontology&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_language"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_language">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the content language.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Content language, or &quot;unknown&quot; if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_protocol"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_protocol">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the interaction protocol.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: FIPA protocol, or &quot;unknown&quot; if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_reply_with"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_reply_with">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_reply_with</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the message ID for responses.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Value of &#39;reply-with&#39;, or empty string if not present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reply-with&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.get_custom_metadata"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.get_custom_metadata">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_custom_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get custom metadata.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): Metadata key.</span>
+<span class="sd">            default: Default value if key does not exist.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: Metadata value or default value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.parse_body"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.parse_body">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_body</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse the message body according to its language.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: Parsed content. If the language is &quot;json&quot; (or the body looks</span>
+<span class="sd">            like JSON), returns the decoded JSON (typically a dict or list).</span>
+<span class="sd">            If JSON parsing fails or the body is not JSON, returns the</span>
+<span class="sd">            original body string unchanged.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method does NOT raise ``json.JSONDecodeError``. Instead, it</span>
+<span class="sd">            gracefully returns the raw body string when JSON decoding fails,</span>
+<span class="sd">            allowing callers to handle malformed content as needed.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; parser = FIPAMessageParser(message)</span>
+<span class="sd">            &gt;&gt;&gt; content = parser.parse_body()  # Returns dict if JSON, str otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_language</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">language</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+                <span class="c1"># If JSON parsing fails, return body as string</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If language is not explicitly &#39;json&#39;, try to detect if it&#39;s JSON</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Check if body looks like JSON (starts with { or [)</span>
+                <span class="n">body_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span>
+                <span class="k">if</span> <span class="n">body_str</span> <span class="ow">and</span> <span class="n">body_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;[&quot;</span><span class="p">)):</span>
+                    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body_str</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+                <span class="c1"># If not valid JSON or not a string, return as is</span>
+                <span class="k">pass</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.is_valid_fipa_message"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.is_valid_fipa_message">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid_fipa_message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the message has the basic FIPA-ACL structure.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if message passes FIPA-ACL validation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_fipa_message</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">is_valid</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.validate_fipa_message"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.validate_fipa_message">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate_fipa_message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fully validate a FIPA-ACL message and return error details.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple[bool, str]: (is_valid, error_message_or_empty)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check performative</span>
+        <span class="k">if</span> <span class="s2">&quot;performative&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Missing &#39;performative&#39; field&quot;</span>
+
+        <span class="n">performative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;performative&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">performative</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FIPAMessageBuilder</span><span class="o">.</span><span class="n">PERFORMATIVES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Performative &#39;</span><span class="si">{</span><span class="n">performative</span><span class="si">}</span><span class="s2">&#39; is not valid&quot;</span>
+
+        <span class="c1"># Check conversation-id</span>
+        <span class="k">if</span> <span class="s2">&quot;conversation-id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Missing &#39;conversation-id&#39; field&quot;</span>
+
+        <span class="c1"># Check that body is valid JSON if language is JSON</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_language</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Message body is not valid JSON&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="FIPAMessageParser.print_debug_info"><a class="viewcode-back" href="../../spade.html#spade.fipa_message.FIPAMessageParser.print_debug_info">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">print_debug_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build and log debug information about the FIPA message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The formatted debug string (also logged via logger.info).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+            <span class="s2">&quot;FIPA-ACL MESSAGE RECEIVED&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;From: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">sender</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;To: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">to</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Performative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_performative</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Conversation-ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_conversation_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Ontology: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ontology</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Language: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_language</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Protocol: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_protocol</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Reply-With: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_reply_with</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Body length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">)</span><span class="si">}</span><span class="s2"> chars&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Show body if it&#39;s short</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_body</span><span class="p">()</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Content:&quot;</span><span class="p">)</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">parsed</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Content (raw):&quot;</span><span class="p">)</span>
+                <span class="n">preview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="n">preview</span> <span class="o">+=</span> <span class="s2">&quot;...&quot;</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preview</span><span class="p">)</span>
+
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+        <span class="c1"># Build final string and log it</span>
+        <span class="n">debug_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">debug_str</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">debug_str</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Javi Palanca.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

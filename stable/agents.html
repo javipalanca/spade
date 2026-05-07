@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agent communications &mdash; SPADE 4.1.2 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>Agent communications &mdash; SPADE 4.1.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+      <script src="_static/doctools.js"></script>
+      <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,14 +31,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> SPADE
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPADE
           </a>
-              <div class="version">
-                4.1.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -53,6 +54,20 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Agent communications</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#using-templates">Using templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sending-and-receiving-messages">Sending and Receiving Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-fipa-messages">Using FIPA Messages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-message">Creating a Message</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-messages">Sending Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiving-and-parsing-messages">Receiving and Parsing Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-responses">Sending Responses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#convenience-methods">Convenience Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-large-files">Sending large files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-a-file">Sending a File</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="behaviours.html">Advanced Behaviours</a></li>
@@ -79,8 +94,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Agent communications</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Agent communications</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/agents.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -315,6 +330,195 @@ Agents<span class="w"> </span>finished
 Process<span class="w"> </span>finished<span class="w"> </span>with<span class="w"> </span><span class="nb">exit</span><span class="w"> </span>code<span class="w"> </span><span class="m">0</span>
 </pre></div>
 </div>
+</section>
+<section id="using-fipa-messages">
+<h2>Using FIPA Messages<a class="headerlink" href="#using-fipa-messages" title="Permalink to this heading"></a></h2>
+<p>SPADE provides the <code class="docutils literal notranslate"><span class="pre">FIPAMessageBuilder</span></code> class to simplify the creation of
+FIPA-ACL compliant messages. This is an alternative to the basic <code class="docutils literal notranslate"><span class="pre">Message</span></code>
+class when structured and standardized communication between agents is required.</p>
+<section id="creating-a-message">
+<h3>Creating a Message<a class="headerlink" href="#creating-a-message" title="Permalink to this heading"></a></h3>
+<p>You can create a FIPA message using a fluent interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spade.fipa_message</span><span class="w"> </span><span class="kn">import</span> <span class="n">FIPAMessageBuilder</span>
+
+<span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">FIPAMessageBuilder</span><span class="p">(</span><span class="n">sender</span><span class="o">=</span><span class="s2">&quot;agent1@localhost&quot;</span><span class="p">,</span> <span class="n">receiver</span><span class="o">=</span><span class="s2">&quot;agent2@localhost&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">set_performative</span><span class="p">(</span><span class="s2">&quot;inform&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">set_body</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">},</span> <span class="n">as_json</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">set_ontology</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example:</p>
+<ul class="simple">
+<li><p><strong>performative</strong> defines the intention of the message (e.g., <code class="docutils literal notranslate"><span class="pre">inform</span></code>, <code class="docutils literal notranslate"><span class="pre">request</span></code>)</p></li>
+<li><p><strong>body</strong> contains the message content (typically JSON)</p></li>
+<li><p><strong>ontology</strong> provides context for the content</p></li>
+</ul>
+<p>The builder automatically includes metadata such as conversation identifiers
+and timestamps.</p>
+</section>
+<section id="sending-messages">
+<h3>Sending Messages<a class="headerlink" href="#sending-messages" title="Permalink to this heading"></a></h3>
+<p>Sending a FIPA message works the same as with a regular message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">send</span></code> method is an asynchronous coroutine and must always be used with <code class="docutils literal notranslate"><span class="pre">await</span></code>.</p>
+</div>
+</section>
+<section id="receiving-and-parsing-messages">
+<h3>Receiving and Parsing Messages<a class="headerlink" href="#receiving-and-parsing-messages" title="Permalink to this heading"></a></h3>
+<p>To process a received FIPA message, use the <code class="docutils literal notranslate"><span class="pre">FIPAMessageParser</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">spade.fipa_message</span><span class="w"> </span><span class="kn">import</span> <span class="n">FIPAMessageParser</span>
+
+<span class="n">msg</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">FIPAMessageParser</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get_performative</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get_ontology</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_body</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The parser extracts metadata and automatically handles JSON content.</p>
+</section>
+<section id="sending-responses">
+<h3>Sending Responses<a class="headerlink" href="#sending-responses" title="Permalink to this heading"></a></h3>
+<p>FIPA messages are typically part of a conversation. To reply while preserving
+the conversation context, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">FIPAMessageBuilder</span><span class="o">.</span><span class="n">create_response_message</span><span class="p">(</span>
+    <span class="n">original_msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+    <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">},</span>
+    <span class="n">performative</span><span class="o">=</span><span class="s2">&quot;confirm&quot;</span>
+<span class="p">)</span>
+
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This ensures that the response keeps the correct conversation identifiers and
+references to the original message.</p>
+</section>
+<section id="convenience-methods">
+<h3>Convenience Methods<a class="headerlink" href="#convenience-methods" title="Permalink to this heading"></a></h3>
+<p>The builder provides helper methods for common message types:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inform message</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">FIPAMessageBuilder</span><span class="o">.</span><span class="n">create_inform_message</span><span class="p">(</span>
+    <span class="n">sender</span><span class="o">=</span><span class="s2">&quot;a@localhost&quot;</span><span class="p">,</span>
+    <span class="n">receiver</span><span class="o">=</span><span class="s2">&quot;b@localhost&quot;</span><span class="p">,</span>
+    <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Request message</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">FIPAMessageBuilder</span><span class="o">.</span><span class="n">create_request_message</span><span class="p">(</span>
+    <span class="n">sender</span><span class="o">=</span><span class="s2">&quot;a@localhost&quot;</span><span class="p">,</span>
+    <span class="n">receiver</span><span class="o">=</span><span class="s2">&quot;b@localhost&quot;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;get-data&quot;</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>The performative must be a valid FIPA-ACL performative.</p></li>
+<li><p>Message content is typically encoded as JSON.</p></li>
+<li><p>Responses should be created using the builder to preserve conversation context.</p></li>
+<li><p>Templates can be used to filter messages based on performative:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">()</span>
+<span class="n">template</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;inform&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sending-large-files">
+<h2>Sending large files<a class="headerlink" href="#sending-large-files" title="Permalink to this heading"></a></h2>
+<p>SPADE includes native support for file exchange between agents via HTTP (XEP-0363).
+This allows sharing large files between each online agent in a more secure and robust way compared with
+data serialization via XMPP stanzas</p>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h3>
+<p>To use this feature, ensure that:</p>
+<ul class="simple">
+<li><p>Your XMPP server supports <code class="docutils literal notranslate"><span class="pre">urn:xmpp:http:upload:0</span></code>.</p></li>
+<li><p>The agent has the necessary permissions configured for file uploads on the server component.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This prerequisites only applies for users that prefer to run its own XMPP server.
+The integrated server in SPADE supports this feature without extra configuration.</p>
+</div>
+</section>
+<section id="sending-a-file">
+<h3>Sending a File<a class="headerlink" href="#sending-a-file" title="Permalink to this heading"></a></h3>
+<p>To send a file, you need to use the <code class="docutils literal notranslate"><span class="pre">upload_and_send_file</span></code> method within your agent’s behavior to share the file
+and communicate its location. On the receiving end, the agent listens for the message containing the file metadata by using
+the <code class="docutils literal notranslate"><span class="pre">performative</span></code> metadata with the value <code class="docutils literal notranslate"><span class="pre">0363</span></code>. When a message is received, a <code class="docutils literal notranslate"><span class="pre">url</span></code> metadata will be present. It is
+the parameter required in the <code class="docutils literal notranslate"><span class="pre">download_file</span></code> to obtain the shared file.</p>
+<p>The following example demonstrates how to implement both the sender and the receiver behaviors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SharerBehaviour</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;text.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">upload_and_send_file</span><span class="p">(</span>
+                <span class="n">to</span><span class="o">=</span><span class="s2">&quot;receiver@localhost&quot;</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span>
+                <span class="n">input_file</span><span class="o">=</span><span class="n">file</span>
+            <span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReceiveFileBehaviour</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;path/to/download&quot;</span><span class="p">)</span>
+
+<span class="n">receive_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">()</span>
+<span class="n">receive_template</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;0363&quot;</span><span class="p">)</span>
+
+<span class="n">sharer</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="s2">&quot;uploader@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+<span class="n">sharer</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">SharerBehaviour</span><span class="p">())</span>
+
+<span class="n">receiver</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="s2">&quot;receiver@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+<span class="n">receiver</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">ReceiveFileBehaviour</span><span class="p">(),</span> <span class="n">receive_template</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">upload_and_send_file</span></code> returns the url of the file, and can be reused with other agents during the same session
+(i.e., the server didn’t restart since the file was uploaded)</p>
+<p>It is possible to upload and send the file in separated methods, to achieve more customized behaviours:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">UploadAndSendBehaviour</span><span class="p">(</span><span class="n">OneShotBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;text.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span> <span class="n">input_file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_file</span><span class="p">(</span><span class="n">to</span><span class="o">=</span><span class="s2">&quot;receiver@localhost&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReceiveFileBehaviour</span><span class="p">(</span><span class="n">CyclicBehaviour</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;path/to/download&quot;</span><span class="p">)</span>
+
+<span class="n">receive_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">()</span>
+<span class="n">receive_template</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;performative&quot;</span><span class="p">,</span> <span class="s2">&quot;0363&quot;</span><span class="p">)</span>
+
+<span class="n">sharer</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="s2">&quot;uploader@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+<span class="n">sharer</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">UploadAndSendBehaviour</span><span class="p">())</span>
+
+<span class="n">receiver</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span><span class="s2">&quot;receiver@localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+<span class="n">receiver</span><span class="o">.</span><span class="n">add_behaviour</span><span class="p">(</span><span class="n">ReceiveFileBehaviour</span><span class="p">(),</span> <span class="n">receive_template</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
