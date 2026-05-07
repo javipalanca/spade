@@ -17,6 +17,8 @@ def _agent_in_msg(agent, msg):
 class TraceStore(object):
     """Stores and allows queries about events."""
 
+    __slots__ = ("size", "store")
+
     def __init__(self, size: int):
         self.size = size
         self.store = []

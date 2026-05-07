@@ -64,10 +64,6 @@ def fsm():
     fsm_.add_transition(STATE_ONE, STATE_TWO)
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
-    fsm_.state_one = state_one
-    fsm_.state_two = state_two
-    fsm_.state_three = state_three
-
     return fsm_
 
 
@@ -995,23 +991,23 @@ async def test_fsm_behaviour(fsm):
 
     agent.add_behaviour(fsm)
     assert fsm.current_state == STATE_ONE
-    assert not fsm.state_one.is_done()
-    await wait_for_behaviour_is_killed(fsm.state_one)
+    assert not fsm._states[STATE_ONE].is_done()
+    await wait_for_behaviour_is_killed(fsm._states[STATE_ONE])
     assert agent.state == STATE_ONE
     agent.sync1_behaviour.set()
-    await fsm.state_one.join()
+    await fsm._states[STATE_ONE].join()
 
     assert fsm.current_state == STATE_TWO
-    assert not fsm.state_two.is_done()
-    await wait_for_behaviour_is_killed(fsm.state_two)
+    assert not fsm._states[STATE_TWO].is_done()
+    await wait_for_behaviour_is_killed(fsm._states[STATE_TWO])
     assert agent.state == STATE_TWO
     agent.sync2_behaviour.set()
-    await fsm.state_two.join()
+    await fsm._states[STATE_TWO].join()
 
     assert fsm.current_state == STATE_THREE
-    await wait_for_behaviour_is_killed(fsm.state_three)
+    await wait_for_behaviour_is_killed(fsm._states[STATE_THREE])
     assert agent.state == STATE_THREE
-    await fsm.state_three.join()
+    await fsm._states[STATE_THREE].join()
 
     await agent.stop()
 

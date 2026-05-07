@@ -27,6 +27,8 @@ class InvalidPerformativeError(ValueError):
     that is not defined in the FIPA-ACL specification.
     """
 
+    __slots__ = ("performative", "valid_performatives")
+
     def __init__(self, performative, valid_performatives):
         """Initialize the exception with the invalid performative and valid ones.
 
@@ -112,6 +114,7 @@ class FIPAMessageBuilder:
         "fipa-brokering": "Brokering protocol",
         "fipa-recruiting": "Recruiting protocol",
     }
+    __slots__ = ("message", "metadata")
 
     def __init__(self, sender: str, receiver: str):
         """
@@ -491,6 +494,8 @@ class FIPAMessageParser:
     Provides methods for extracting and validating FIPA metadata
     from incoming messages.
     """
+
+    __slots__ = ("message", "metadata")
 
     def __init__(self, message: Message):
         """
