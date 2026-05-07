@@ -64,10 +64,6 @@ def fsm():
     fsm_.add_transition(STATE_ONE, STATE_TWO)
     fsm_.add_transition(STATE_TWO, STATE_THREE)
 
-    # fsm_.state_one = state_one
-    # fsm_.state_two = state_two
-    # fsm_.state_three = state_three
-
     return fsm_
 
 

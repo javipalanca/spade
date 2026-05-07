@@ -49,7 +49,9 @@ class BaseTemplate(metaclass=ABCMeta):
 
 class NOTTemplate(BaseTemplate):
     """ """
-    __slots__ = 'expr'
+
+    __slots__ = "expr"
+
     def __init__(self, expr):
         self.expr = expr
 
@@ -60,7 +62,9 @@ class NOTTemplate(BaseTemplate):
 
 class ORTemplate(BaseTemplate):
     """ """
-    __slots__ = ('expr1', 'expr2')
+
+    __slots__ = ("expr1", "expr2")
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2
@@ -72,7 +76,9 @@ class ORTemplate(BaseTemplate):
 
 class ANDTemplate(BaseTemplate):
     """ """
-    __slots__ = ('expr1', 'expr2')
+
+    __slots__ = ("expr1", "expr2")
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2
@@ -84,7 +90,9 @@ class ANDTemplate(BaseTemplate):
 
 class XORTemplate(BaseTemplate):
     """ """
-    __slots__ = ('expr1', 'expr2')
+
+    __slots__ = ("expr1", "expr2")
+
     def __init__(self, expr1, expr2):
         self.expr1 = expr1
         self.expr2 = expr2

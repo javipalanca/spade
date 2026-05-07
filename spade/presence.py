@@ -33,7 +33,8 @@ class PresenceType(Enum):
 
 
 class PresenceInfo:
-    __slots__ = ('type', 'show', 'status', 'priority')
+    __slots__ = ("type", "show", "status", "priority")
+
     def __init__(
         self,
         presence_type: PresenceType,
@@ -70,7 +71,17 @@ class PresenceInfo:
 
 
 class Contact:
-    __slots__ = ('jid', 'name', 'subscription', 'ask', 'groups', 'resources', 'current_presence', 'last_presence')
+    __slots__ = (
+        "jid",
+        "name",
+        "subscription",
+        "ask",
+        "groups",
+        "resources",
+        "current_presence",
+        "last_presence",
+    )
+
     def __init__(self, jid: JID, name: str, subscription: str, ask: str, groups: list):
         self.jid = jid
         self.name = name
@@ -128,21 +139,38 @@ class Contact:
 
 
 class PresenceManager:
-    __slots__ = ('contacts', 'agent', 'current_presence', 'approve_all', 'on_subscribe', 'on_subscribed',
-                 'on_unsubscribe', 'on_unsubscribed', 'on_presence_received', 'on_available', 'on_unavailable')
+    __slots__ = (
+        "contacts",
+        "agent",
+        "current_presence",
+        "approve_all",
+        "on_subscribe",
+        "on_subscribed",
+        "on_unsubscribe",
+        "on_unsubscribed",
+        "on_presence_received",
+        "on_available",
+        "on_unavailable",
+    )
+
     def __init__(self, agent, approve_all: bool = False):
         self.contacts: Dict[str, Contact] = {}
         self.agent = agent
         self.current_presence: Optional[PresenceInfo] = None
         self.approve_all = approve_all
 
-        self.on_subscribe = self.default_on_subscribe
-        self.on_subscribed = self.default_on_subscribed
-        self.on_unsubscribe = self.default_on_unsubscribe
-        self.on_unsubscribed = self.default_on_unsubscribed
-        self.on_presence_received = self.default_on_presence_received
-        self.on_available = self.default_on_available
-        self.on_unavailable = self.default_on_unavailable
+        callbacks = (
+            "on_subscribe",
+            "on_subscribed",
+            "on_unsubscribe",
+            "on_unsubscribed",
+            "on_presence_received",
+            "on_available",
+            "on_unavailable",
+        )
+        for name in callbacks:
+            if getattr(type(self), name) is getattr(PresenceManager, name):
+                setattr(self, name, getattr(self, f"_default_{name}"))
 
         # Adding event handlers to handle incoming presence and subscription events
         self.agent.client.add_event_handler("presence_available", self.handle_presence)
@@ -392,22 +420,22 @@ class PresenceManager:
         self.agent.client.send_presence(pto=jid, ptype="subscribed")
 
     # User-overridable methods
-    def default_on_subscribe(self, peer_jid: str):
+    def _default_on_subscribe(self, peer_jid: str):
         pass
 
-    def default_on_subscribed(self, peer_jid: str):
+    def _default_on_subscribed(self, peer_jid: str):
         pass
 
-    def default_on_unsubscribe(self, peer_jid: str):
+    def _default_on_unsubscribe(self, peer_jid: str):
         pass
 
-    def default_on_unsubscribed(self, peer_jid: str):
+    def _default_on_unsubscribed(self, peer_jid: str):
         pass
 
-    def default_on_presence_received(self, presence: Presence):
+    def _default_on_presence_received(self, presence: Presence):
         pass
 
-    def default_on_available(
+    def _default_on_available(
         self,
         peer_jid: str,
         presence_info: PresenceInfo,
@@ -415,7 +443,7 @@ class PresenceManager:
     ):
         pass
 
-    def default_on_unavailable(
+    def _default_on_unavailable(
         self,
         peer_jid: str,
         presence_info: PresenceInfo,

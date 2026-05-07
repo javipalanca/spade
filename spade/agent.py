@@ -34,7 +34,25 @@ class DisconnectedException(Exception):
 
 
 class Agent(object):
-    __slots__ = ('jid', 'password', 'xmpp_port', 'verify_security', 'behaviours', '_values', 'client', 'presence', 'loop', 'container', 'web', 'traces', '_alive')
+    __slots__ = (
+        "jid",
+        "password",
+        "xmpp_port",
+        "verify_security",
+        "behaviours",
+        "_values",
+        "client",
+        "presence",
+        "loop",
+        "container",
+        "web",
+        "traces",
+        "_alive",
+        "_hook_plugin_before_connection_cb",
+        "_hook_plugin_after_connection_cb",
+        "__dict__",
+    )
+
     def __init__(
         self, jid: str, password: str, port: int = 5222, verify_security: bool = False
     ):
@@ -70,6 +88,32 @@ class Agent(object):
         self.traces = TraceStore(size=1000)
 
         self._alive = asyncio.Event()
+
+        self._hook_plugin_after_connection_cb = (
+            self._default_hook_plugin_after_connection
+        )
+        self._hook_plugin_before_connection_cb = (
+            self._default_hook_plugin_before_connection
+        )
+
+        # if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:
+        #     self._hook_plugin_before_connection = self._default_hook_plugin_before_connection
+
+    @property
+    def _hook_plugin_after_connection(self):
+        return self._hook_plugin_after_connection_cb
+
+    @_hook_plugin_after_connection.setter
+    def _hook_plugin_after_connection(self, value):
+        self._hook_plugin_after_connection_cb = value
+
+    @property
+    def _hook_plugin_before_connection(self):
+        return self._hook_plugin_before_connection_cb
+
+    @_hook_plugin_before_connection.setter
+    def _hook_plugin_before_connection(self, value):
+        self._hook_plugin_before_connection_cb = value
 
     def set_loop(self, loop) -> None:
         self.loop = loop
@@ -130,13 +174,13 @@ class Agent(object):
                         state.set_agent(self)
                 behaviour.start()
 
-    async def _hook_plugin_before_connection(self) -> None:
+    async def _default_hook_plugin_before_connection(self) -> None:
         """
         Overload this method to hook a plugin before connection is done
         """
         pass
 
-    async def _hook_plugin_after_connection(self) -> None:
+    async def _default_hook_plugin_after_connection(self) -> None:
         """
         Overload this method to hook a plugin after connection is done
         """
