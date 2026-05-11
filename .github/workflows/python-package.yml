@@ -5,7 +5,7 @@ name: Python package
 
 on:
   push:
-    branches: [ master, develop, gh-testing ]
+    branches: [ beta/5.0.0 ]
     tags:
       - "*"
     paths-ignore:
