@@ -665,7 +665,10 @@ class FSMBehaviour(CyclicBehaviour):
         self._states: Dict[str, State] = {}
         self._transitions = collections.defaultdict(list)
         self.current_state: Optional[str] = None
-        self.setup = self._default_setup
+
+        if type(self).setup is FSMBehaviour.setup:
+            self.setup = self._default_setup
+
         self.setup()
 
     def _default_setup(self) -> None:

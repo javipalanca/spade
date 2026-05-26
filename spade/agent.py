@@ -48,8 +48,8 @@ class Agent(object):
         "web",
         "traces",
         "_alive",
-        "_hook_plugin_before_connection_cb",
-        "_hook_plugin_after_connection_cb",
+        "_hook_plugin_before_connection",
+        "_hook_plugin_after_connection",
         "__dict__",
     )
 
@@ -89,31 +89,11 @@ class Agent(object):
 
         self._alive = asyncio.Event()
 
-        self._hook_plugin_after_connection_cb = (
-            self._default_hook_plugin_after_connection
-        )
-        self._hook_plugin_before_connection_cb = (
-            self._default_hook_plugin_before_connection
-        )
+        if type(self)._hook_plugin_after_connection is Agent._hook_plugin_after_connection:
+            self._hook_plugin_after_connection = self._default_hook_plugin_after_connection
 
-        # if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:
-        #     self._hook_plugin_before_connection = self._default_hook_plugin_before_connection
-
-    @property
-    def _hook_plugin_after_connection(self):
-        return self._hook_plugin_after_connection_cb
-
-    @_hook_plugin_after_connection.setter
-    def _hook_plugin_after_connection(self, value):
-        self._hook_plugin_after_connection_cb = value
-
-    @property
-    def _hook_plugin_before_connection(self):
-        return self._hook_plugin_before_connection_cb
-
-    @_hook_plugin_before_connection.setter
-    def _hook_plugin_before_connection(self, value):
-        self._hook_plugin_before_connection_cb = value
+        if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:
+            self._hook_plugin_before_connection = self._default_hook_plugin_before_connection
 
     def set_loop(self, loop) -> None:
         self.loop = loop
@@ -175,15 +155,11 @@ class Agent(object):
                 behaviour.start()
 
     async def _default_hook_plugin_before_connection(self) -> None:
-        """
-        Overload this method to hook a plugin before connection is done
-        """
+        """ """
         pass
 
     async def _default_hook_plugin_after_connection(self) -> None:
-        """
-        Overload this method to hook a plugin after connection is done
-        """
+        """ """
         pass
 
     async def _async_connect(self) -> None:  # pragma: no cover
