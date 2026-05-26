@@ -89,11 +89,21 @@ class Agent(object):
 
         self._alive = asyncio.Event()
 
-        if type(self)._hook_plugin_after_connection is Agent._hook_plugin_after_connection:
-            self._hook_plugin_after_connection = self._default_hook_plugin_after_connection
+        if (
+            type(self)._hook_plugin_after_connection
+            is Agent._hook_plugin_after_connection
+        ):
+            self._hook_plugin_after_connection = (
+                self._default_hook_plugin_after_connection
+            )
 
-        if type(self)._hook_plugin_before_connection is Agent._hook_plugin_before_connection:
-            self._hook_plugin_before_connection = self._default_hook_plugin_before_connection
+        if (
+            type(self)._hook_plugin_before_connection
+            is Agent._hook_plugin_before_connection
+        ):
+            self._hook_plugin_before_connection = (
+                self._default_hook_plugin_before_connection
+            )
 
     def set_loop(self, loop) -> None:
         self.loop = loop
