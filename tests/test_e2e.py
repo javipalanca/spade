@@ -13,6 +13,8 @@ from spade.message import Message
 from spade.presence import Contact
 from spade.template import Template
 
+pytestmark = pytest.mark.e2e
+
 
 async def test_connection():
     jid = f"{str(uuid4())}@localhost"

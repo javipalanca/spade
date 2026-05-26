@@ -52,10 +52,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## check style with flake8
-	ruff check spade tests
+	ruff check src/spade tests
 
 format: ## format code with black
-	ruff format spade tests
+	ruff format src/spade tests
 
 test: ## run tests quickly with the default Python
 	pytest
@@ -72,7 +72,7 @@ coverage: ## check code coverage quickly with the default Python
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/spade.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ spade
+	sphinx-apidoc -o docs/ src/spade
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

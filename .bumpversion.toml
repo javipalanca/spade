@@ -25,12 +25,12 @@ post_commit_hooks = []
 allow_shell_hooks = true
 
 [[tool.bumpversion.files]]
-filename = "spade/__init__.py"
+filename = "src/spade/__init__.py"
 search = "__version__ = \"{current_version}\""
 replace = "__version__ = \"{new_version}\""
 
 [[tool.bumpversion.files]]
-filename = "spade/templates/internal_tpl_base.html"
+filename = "src/spade/templates/internal_tpl_base.html"
 search = "<b>Version</b> {current_version}"
 replace = "<b>Version</b> {new_version}"
 

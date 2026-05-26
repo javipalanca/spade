@@ -12,24 +12,19 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-import spade
-import sys
 import os
-
-# If extensions (or modules to document with autodoc) are in another
-# directory, add these directories to sys.path here. If the directory is
-# relative to the documentation root, use os.path.abspath to make it
-# absolute, like shown here.
-# sys.path.insert(0, os.path.abspath('.'))
+import sys
 
 # Get the project root dir, which is the parent dir of this
 cwd = os.getcwd()
 project_root = os.path.dirname(cwd)
+src_root = os.path.join(project_root, "src")
 
-# Insert the project root dir as the first element in the PYTHONPATH.
-# This lets us ensure that the source package is imported, and that its
-# version is used.
+# Insert src/ first so autodoc imports the in-repo package after src-layout migration.
+sys.path.insert(0, src_root)
 sys.path.insert(0, project_root)
+
+import spade
 
 
 # -- General configuration ---------------------------------------------

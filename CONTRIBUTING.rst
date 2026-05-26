@@ -89,14 +89,14 @@ Ready to contribute? Here's how to set up `spade` for local development.
 5. When you're done making changes, check that your changes pass the linter and tests, including testing other Python versions with tox::
 
     With uv (recommended):
-    $ uv run ruff check spade tests
-    $ uv run ruff format --check spade tests
+    $ uv run ruff check src/spade tests
+    $ uv run ruff format --check src/spade tests
     $ uv run pytest
     $ uv run tox
 
     Or with traditional tools:
-    $ ruff check spade tests
-    $ ruff format --check spade tests
+    $ ruff check src/spade tests
+    $ ruff format --check src/spade tests
     $ pytest
     $ tox
 

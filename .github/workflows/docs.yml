@@ -5,7 +5,7 @@ on:
     branches: ["master", "develop"]
     paths:
       - "docs/**"
-      - "spade/**"
+      - "src/spade/**"
       - "readthedocs.yml"
       - "pyproject.toml"
       - ".github/workflows/docs.yml"
@@ -13,7 +13,7 @@ on:
     branches: ["master", "develop"]
     paths:
       - "docs/**"
-      - "spade/**"
+      - "src/spade/**"
       - "readthedocs.yml"
       - "pyproject.toml"
       - ".github/workflows/docs.yml"
@@ -53,7 +53,7 @@ jobs:
 
       - name: Build Sphinx docs
         run: |
-          uv run --no-sync sphinx-apidoc -f -o docs/ spade
+          uv run --no-sync sphinx-apidoc -f -o docs/ src/spade
           uv run --no-sync sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
 
       - name: Upload docs artifact

@@ -35,8 +35,11 @@ jobs:
     - name: Run coverage
       run: |
         uv run coverage erase
-        uv run coverage run --source=spade -m pytest -q
+        uv run coverage run --source=spade -m pytest -m "not e2e" -q
         uv run coverage xml -o coverage.xml
+    - name: Run E2E tests
+      run: |
+        uv run pytest -m "e2e" -q --tb=short
     - name: Coveralls
       uses: javipalanca/coveralls-python-action@develop
       with:
