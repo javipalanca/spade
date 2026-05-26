@@ -2,6 +2,13 @@
 History
 =======
 
+4.1.4 (2026-05-26)
+---------------------
+* Hotfix in overridable methods for Agent and Behaviour classes
+* Unify overridable methods approach for __slots__ compability
+* Fix Python compability range [3.10 - 3.14]
+* Added missing dependency (packaging)
+
 4.1.3 (2026-04-28)
 ---------------------
 * Dropped support to Python 3.9 due to incompatibility with some dependencies. SPADE now officially supports Python 3.14
